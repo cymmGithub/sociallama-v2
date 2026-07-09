@@ -37,6 +37,8 @@ Constraints from Satus conventions (AGENTS.md): images through `@/components/ui/
 
 **D8 — Fonts via `next/font/google` in `lib/styles/fonts.ts`**: Exo 2 (400/800, `latin` + `latin-ext`) as display/body-heading face, Manrope (400/600, `latin` + `latin-ext`) as body/utility face. Polish diacritics require `latin-ext` (verified during mock build — missing subset produces visible fallback).
 
+**D9 — Minimal header + overlay menu (brightscout pattern).** The header bar is reduced to logo + CTA pill + Menu pill at every breakpoint; the v1 inline desktop links and hover submenu are removed. The Menu toggle opens a full-viewport overlay on a fixed `cream` theme (it does not inherit the scroll-chapter theme; the closed bar still tints per chapter): two columns — BRANŻE (six industries, content-export order/spelling) and USŁUGI (Content, Sprzedaż, Kreacje & Wideo, Szkolenia i kursy) — plus a utility row with O NAS, contact email, and socials. KONTAKT is dropped as a link since the CTA pill is the contact action. Menu links ship *before* their pages exist (subpages arrive in a near-future change); until then they resolve to the themed not-found page — accepted interim state. Industry routes are provisionally `/branze/<kebab-slug>` (e.g. `/branze/nieruchomosci-budownictwo`) — adjust when the subpages change defines them. Nav content in `lib/content/home.ts` restructures from flat `nav.links` to `menu: { branze, uslugi, utility }`.
+
 ## Risks / Trade-offs
 
 - [Hero choreography doesn't land] → D4 fallback: regenerate hero clip; layout and timeline code unchanged.

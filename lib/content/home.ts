@@ -10,10 +10,14 @@
  * are excluded; only real, attributed testimonials are kept.
  */
 
-export interface NavLink {
+export interface MenuItem {
   label: string
   href: string
-  children?: { label: string; href: string }[]
+}
+
+export interface MenuColumn {
+  label: string
+  items: MenuItem[]
 }
 
 export interface SocialLink {
@@ -63,25 +67,52 @@ export interface NewsPost {
 
 // —— Site chrome ————————————————————————————————————————————————————————————
 
+// Minimal bar (logo + CTA + Menu) at every breakpoint; the overlay below is
+// the only navigation surface (design D9).
 export const nav = {
   logoAlt: 'Social Lama',
   logo: '/assets/logo.svg',
-  links: [
-    { label: 'O NAS', href: '/#o-nas' },
+  cta: {
+    label: 'POROZMAWIAJMY O TWOIM BIZNESIE',
+    labelShort: 'POROZMAWIAJMY',
+    href: '/#kontakt',
+  },
+  menuLabel: 'Menu',
+} as const
+
+// Overlay menu. Industry routes are provisional `/branze/<slug>` (D9) —
+// subpages arrive in a near-future change; until then links resolve to the
+// themed not-found page (accepted interim state).
+export const menu = {
+  columns: [
+    {
+      label: 'BRANŻE',
+      items: [
+        {
+          label: 'Nieruchomości & Budownictwo',
+          href: '/branze/nieruchomosci-budownictwo',
+        },
+        { label: 'Moda', href: '/branze/moda' },
+        { label: 'Zdrowie', href: '/branze/zdrowie' },
+        { label: 'Edukacja', href: '/branze/edukacja' },
+        { label: 'Usługi biznesowe', href: '/branze/uslugi-biznesowe' },
+        { label: 'Retail & E-commerce', href: '/branze/retail-e-commerce' },
+      ],
+    },
     {
       label: 'USŁUGI',
-      href: '/uslugi',
-      children: [
+      items: [
         { label: 'Content', href: '/uslugi/content' },
         { label: 'Sprzedaż', href: '/uslugi/sprzedaz' },
         { label: 'Kreacje & Wideo', href: '/uslugi/kreacje-wideo' },
+        { label: 'Szkolenia i kursy', href: '/szkolenia' },
       ],
     },
-    { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
-    { label: 'BRANŻE', href: '/branze' },
-    { label: 'KONTAKT', href: '/#kontakt' },
-  ] satisfies NavLink[],
-  cta: { label: 'POROZMAWIAJMY O TWOIM BIZNESIE', href: '/#kontakt' },
+  ] satisfies MenuColumn[],
+  utility: [
+    { label: 'O NAS', href: '/#o-nas' },
+    { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
+  ] satisfies MenuItem[],
 } as const
 
 export const socials: SocialLink[] = [

@@ -10,6 +10,10 @@
   gap: var(--gap);
   padding: var(--safe);
   color: var(--color-secondary);
+  /* Solid bar (brightscout-style) so content never collides with the chrome;
+     follows the chapter theme and eases in sync with the page morph. */
+  background-color: var(--color-primary);
+  transition: background-color 900ms var(--ease-out-expo);
 }
 
 .logo {
@@ -18,8 +22,14 @@
 
 .logoMark {
   display: block;
-  width: 128px;
-  height: 32px;
+  /* Mobile stays compact — logo + both pills must fit a 390px bar. */
+  width: 118px;
+  height: 30px;
+
+  @media (--desktop) {
+    width: 212px;
+    height: 53px;
+  }
   background-color: var(--color-secondary);
   mask-repeat: no-repeat;
   mask-position: left center;
@@ -27,142 +37,249 @@
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: left center;
   -webkit-mask-size: contain;
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gap) * 0.5);
+}
+
+.cta,
 .toggle {
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--color-secondary);
-  background: none;
-  border: none;
-
-  @media (--desktop) {
-    display: none;
-  }
-}
-
-.nav {
-  display: none;
-
-  @media (--desktop) {
-    display: flex;
-    align-items: center;
-    gap: calc(var(--gap) * 1.5);
-  }
-}
-
-.navOpen {
-  display: flex;
-  position: absolute;
-  inset: 100% var(--safe) auto;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--gap);
-  padding: var(--gap);
-  border-radius: 14px;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-
-  @media (--desktop) {
-    flex-direction: row;
-    align-items: center;
-    gap: calc(var(--gap) * 1.25);
-  }
-}
-
-.item {
-  position: relative;
-}
-
-.link {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  transition: color var(--duration-fast) var(--ease-out-expo);
-
-  @media (--hover) {
-    &:hover {
-      color: var(--color-contrast);
-    }
-  }
-}
-
-.submenu {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4em;
-  padding-top: 0.5em;
-  padding-left: var(--gap);
-
-  @media (--desktop) {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    padding: var(--gap);
-    border-radius: 10px;
-    background-color: var(--surface-2);
-    border: 1px solid var(--line);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(6px);
-    transition:
-      opacity var(--duration-fast) var(--ease-out-expo),
-      transform var(--duration-fast) var(--ease-out-expo),
-      visibility var(--duration-fast);
-  }
-}
-
-.hasChildren {
-  @media (--hover) {
-    &:hover .submenu {
-      opacity: 1;
-      visibility: visible;
-      transform: none;
-    }
-  }
-}
-
-.subLink {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  white-space: nowrap;
-  transition: color var(--duration-fast) var(--ease-out-expo);
-
-  @media (--hover) {
-    &:hover {
-      color: var(--color-contrast);
-    }
-  }
-}
-
-.cta {
   display: inline-flex;
   align-items: center;
+  gap: 0.5em;
   padding: 0.7em 1.2em;
   border-radius: 999px;
-  background-color: var(--color-contrast);
-  color: var(--color-primary);
   font-family: var(--font-display);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   font-size: 0.72rem;
+
+  @media (--desktop) {
+    font-size: 1rem;
+  }
   white-space: nowrap;
-  text-align: center;
-  transition: transform var(--duration-fast) var(--ease-out-expo);
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.cta {
+  /* Fixed brand colors (not theme slots): orange pill, black label — constant
+     across chapters and with the menu open. */
+  background-color: var(--color-orange);
+  color: var(--color-black);
 
   @media (--hover) {
     &:hover {
       transform: translateY(-1px);
     }
   }
+}
+
+.toggle {
+  background: none;
+  border: 1px solid var(--line-strong);
+  color: var(--color-secondary);
+
+  @media (--hover) {
+    &:hover {
+      border-color: var(--color-contrast);
+    }
+  }
+}
+
+.toggleIcon {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+/* —— Overlay ————————————————————————————————————————————————————————— */
+
+/*
+ * Open choreography (brightscout feel): the solid panel wipes down from under
+ * the bar first, then the content rises/fades in with a gentle stagger. On
+ * close the content dims fast and the panel wipes back up after a short beat.
+ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  overflow-y: auto;
+  visibility: hidden;
+  transform: translateY(-100%);
+  transition:
+    transform 600ms var(--ease-out-expo) 120ms,
+    visibility 0s linear 720ms;
+}
+
+.overlayOpen {
+  visibility: visible;
+  transform: none;
+  transition:
+    transform 600ms var(--ease-out-expo),
+    visibility 0s;
+}
+
+/* Content cascade — each node carries --i (top-to-bottom order) from the TSX. */
+.stagger {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 180ms var(--ease-out-expo),
+    transform 180ms var(--ease-out-expo);
+}
+
+.overlayOpen .stagger {
+  opacity: 1;
+  transform: none;
+  transition-duration: 550ms;
+  transition-delay: calc(220ms + var(--i, 0) * 35ms);
+}
+
+/* Reduced motion: the global `*` rule loses to these classes' specificity
+   (same caveat as the reveal primitive in global.css), so neutralize here —
+   the overlay and its content snap open/closed with no wipe, fade, or delay. */
+@media (--reduced-motion) {
+  .overlay,
+  .overlayOpen,
+  .stagger,
+  .overlayOpen .stagger {
+    transition: none;
+  }
+}
+
+.overlayInner {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--safe) * 2);
+  /* Top padding clears the fixed bar. */
+  padding: calc(var(--safe) * 5) var(--safe) calc(var(--safe) * 1.5);
+}
+
+.columns {
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+
+  @media (--desktop) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.columnLabel {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
+}
+
+.columnItems {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuLink {
+  display: block;
+  padding-block: 0.45em;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  line-height: 1.2;
+  transition:
+    color var(--duration-fast) var(--ease-out-expo),
+    padding-left var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      color: var(--color-contrast);
+      padding-left: 0.3em;
+    }
+  }
+}
+
+.utility {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-top: var(--gap);
+  border-top: 1px solid var(--line);
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.utilityLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em 1.5em;
+}
+
+.utilityLink {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  transition: color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      color: var(--color-contrast);
+    }
+  }
+}
+
+.socials {
+  display: flex;
+  gap: var(--gap);
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  transition: border-color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      border-color: var(--color-contrast);
+    }
+  }
+}
+
+.socialIcon {
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-secondary);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
 }

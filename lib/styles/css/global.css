@@ -4,6 +4,15 @@ html {
   --scrollbar-gutter: 0px;
   scrollbar-gutter: stable; /* This is needed to prevent the scrollbar from jumping */
 
+  /* Hide the native page scrollbar (Lenis drives scrolling; matches the
+     full-bleed agency aesthetic). Nested scroll areas keep their thin bars.
+     Bring back a styled indicator anytime via components/ui/scrollbar. */
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none; /* older Safari — modern engines honor scrollbar-width */
+  }
+
   &.lenis-stopped {
     --scrollbar-gutter: var(--scrollbar-width);
   }

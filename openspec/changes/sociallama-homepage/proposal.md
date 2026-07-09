@@ -13,6 +13,7 @@ Social Lama needs a new agency homepage that competes visually with awwwards-tie
 - Generate 4 new video clips via Higgsfield MCP matching the established asset system (same llama character from hero poster reference, flat plum `#892f53` background, ~3s loops): `service-content`, `service-sprzedaz`, `service-kreacje`, `cta-llama`.
 - Copy existing hero assets (`hero.mp4`, `hero-mobile.mp4`, posters) into `public/clips/`.
 - Content is hardcoded as typed data (`content.ts`) from the verified content export — no CMS in this change (explicitly deferred).
+- Header reduced to logo + CTA + Menu at all breakpoints, with a full-viewport overlay menu (BRANŻE / USŁUGI columns + utility row) replacing inline links — brightscout pattern (D9). Menu links precede their subpages, which arrive in a near-future change.
 - Cut from v1 (content-starved): FAQ section (0 real FAQs), NewsLAMA grid (only 1 real post → single large card instead).
 
 ## Capabilities
@@ -22,6 +23,7 @@ Social Lama needs a new agency homepage that competes visually with awwwards-tie
 - `brand-theme`: Social Lama design tokens (palette, typography, gutter scale) integrated into Satus Tailwind v4 / CSS custom property system.
 - `video-playback`: Reusable video component with poster, lazy loop autoplay, reduced-motion and responsive-source behavior; seamless background-blend convention for plum-backed clips.
 - `homepage`: The Social Lama homepage — section structure, content, scroll narrative, chapter background morph, and per-section motion behaviors.
+- `site-nav`: Minimal header bar (logo + CTA + Menu at all breakpoints) and the full-viewport overlay menu with BRANŻE/USŁUGI columns and utility row.
 
 ### Modified Capabilities
 

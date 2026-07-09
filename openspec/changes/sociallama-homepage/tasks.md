@@ -33,6 +33,13 @@
 
   Note: `app/(home)/` route group; sections in `app/(home)/sections/`. `<Header>`/`<Footer>` chrome customized to Social Lama nav/footer.
 
+## 6. Header & menu overlay (D9)
+
+- [x] 6.1 Restructure nav content in `lib/content/home.ts`: `menu: { branze, uslugi, utility }` per site-nav spec (export order/spelling; provisional `/branze/<slug>` routes); drop KONTAKT link
+- [x] 6.2 Rebuild header bar: logo ~20% larger, CTA pill + pill-styled Menu toggle, identical at all breakpoints; remove inline links and hover submenu <!-- sizes revised on review: +40% on desktop (logo 212px, pills 1rem); mobile stays compact (390px bar budget). CTA shortens to "POROZMAWIAJMY" on mobile per spec allowance -->
+- [x] 6.3 Build the menu overlay: fixed `cream` theme, two columns + utility row, scroll lock, Escape/close with focus return, reduced-motion (no transition), open/close animation otherwise <!-- animation revised on review (brightscout feel): solid panel wipes down 600ms, content cascades in with 35ms/item stagger; measured live. Native page scrollbar hidden globally (global.css) — kills the gutter strip beside the overlay; styled indicator available later via components/ui/scrollbar -->
+- [x] 6.4 Verify in browser: desktop + mobile, keyboard flow (tab/Escape/focus return), closed-bar chapter tinting still works, links navigate (themed 404 interim accepted), 0 console errors <!-- PASS: aria-expanded/focus-return/Escape/scroll-lock/inert-when-closed verified; mobile 390px fits (380px bar) with hamburger-free minimal bar; reduced-motion snaps (module-level override, global * rule loses specificity); 0 console errors on fresh load; bun run check green -->
+
 ## 5. Verification & polish
 
 - [ ] 5.1 Hero choreography review on the running site — decide D4: keep turn-toward-headline or regenerate hero (sunglasses-drop fallback); implement outcome
