@@ -125,7 +125,14 @@ export const socials: SocialLink[] = [
 // —— Hero ——————————————————————————————————————————————————————————————————
 
 export const hero = {
-  headline: ['STRATEGY', 'THAT WORKS', 'WITH SOCIAL LAMA'],
+  headline: {
+    /* First line rotates through the offer; the remaining lines are static
+       ("THAT WORKS" renders in the accent color). */
+    /* Short single words so the longest rotator token doesn't cap the headline
+       size; the full "Kreacje & Wideo" name lives in the menu and services. */
+    rotator: ['STRATEGY', 'CONTENT', 'SPRZEDAŻ', 'KREACJE', 'WIDEO'],
+    lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
+  },
   llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
   video: {
     src: '/clips/hero.mp4',

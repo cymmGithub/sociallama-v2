@@ -3,7 +3,7 @@ import { Exo_2, Manrope } from 'next/font/google'
 // Display / heading face. `latin-ext` is required for Polish diacritics
 // (ą ć ę ł ń ó ś ż) in headlines like "SPRZEDAŻ" / "Usługi".
 const display = Exo_2({
-  weight: ['400', '800'],
+  weight: ['300', '400', '700', '800'],
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--next-font-display',
