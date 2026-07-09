@@ -1,0 +1,48 @@
+.section {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(28px);
+
+  padding-block: calc(var(--safe) * 6);
+  padding-inline: var(--safe);
+  display: flex;
+  justify-content: center;
+}
+
+.figure {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2);
+  text-align: center;
+}
+
+.quote {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.author {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 1rem;
+  color: var(--color-contrast);
+}
+
+.company {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+}

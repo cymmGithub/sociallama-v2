@@ -1,0 +1,71 @@
+'use client'
+
+import { useScrollTrigger } from 'hamo'
+import { useState } from 'react'
+import { Image } from '@/components/ui/image'
+import { howItWorks } from '@/lib/content/home'
+import s from './how-it-works.module.css'
+
+const STEP_COUNT = howItWorks.steps.length
+
+export function HowItWorks() {
+  const [active, setActive] = useState(0)
+
+  // Same scroll-trigger mechanism <Fold> is built on, driving both the pin
+  // range and sequential step activation. Progress 0→1 maps to steps 01–05.
+  const [setRectRef] = useScrollTrigger({
+    start: 'top top',
+    end: 'bottom bottom',
+    onProgress: ({ progress }: { progress: number }) => {
+      const index = Math.min(STEP_COUNT - 1, Math.floor(progress * STEP_COUNT))
+      setActive(index)
+    },
+  })
+
+  return (
+    <section ref={setRectRef} className={s.pin} aria-label="Jak to działa">
+      <div className={s.sticky}>
+        <div className={s.head}>
+          <h2 className={s.heading}>
+            {howItWorks.heading.map((line) => (
+              <span key={line} className={s.headingLine}>
+                {line}
+              </span>
+            ))}
+          </h2>
+          <p className={s.subhead}>{howItWorks.subhead}</p>
+        </div>
+
+        <ol className={s.steps}>
+          {howItWorks.steps.map((step, index) => (
+            <li
+              key={step.number}
+              className={s.step}
+              data-active={index === active}
+            >
+              <span className={s.number}>{step.number}</span>
+              <div className={s.stepMedia}>
+                <Image
+                  src={step.image}
+                  alt=""
+                  fill
+                  objectFit="contain"
+                  mobileSize="30vw"
+                  desktopSize="12vw"
+                />
+              </div>
+              <p className={s.stepText}>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div className={s.progress} aria-hidden="true">
+          <span
+            className={s.progressBar}
+            style={{ '--fill': `${((active + 1) / STEP_COUNT) * 100}%` }}
+          />
+        </div>
+      </div>
+    </section>
+  )
+}
