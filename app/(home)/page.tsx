@@ -27,11 +27,14 @@ export default function HomePage() {
   return (
     <Wrapper theme="plum">
       <Chapters>
-        {/* Chapter 1 — plum */}
-        <>
+        {/* Chapter 1 — plum. Hero + logo belt share the first viewport: the
+            hero flexes to fill, the belt pins to the bottom edge. On short
+            viewports the column grows past 100svh (hero keeps its min-height
+            floor) and the belt drops below the fold. */}
+        <div className="flex min-h-svh flex-col">
           <Hero />
           <ClientLogos />
-        </>
+        </div>
         {/* Chapter 2 — cream */}
         <>
           <WhyThatWorks />

@@ -4,6 +4,11 @@
 
   .inner {
     display: flex;
+    /* Each repeated copy must keep its full content width: as flex items the
+       copies would otherwise shrink to fit the clipped container and paint on
+       top of each other (and the RAF loop moduloes by the first copy's
+       measured width, so a shrunken copy also breaks the wrap distance). */
+    flex-shrink: 0;
     white-space: nowrap;
     transform: translate3d(0, 0, 0);
 

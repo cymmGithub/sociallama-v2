@@ -1,5 +1,10 @@
 .hero {
-  min-height: 100svh;
+  /* The chapter-1 viewport wrapper (page.tsx) owns 100svh; the hero fills the
+     space left above the logo belt. The floor keeps the clamp()-sized headline
+     readable on short viewports (~660px) — the belt overflows below the fold
+     instead of crushing the hero. */
+  flex: 1;
+  min-height: 620px;
   display: flex;
   align-items: center;
   padding-block: calc(var(--safe) * 4) var(--safe);

@@ -1,6 +1,9 @@
 .section {
+  position: relative;
+  /* Above the hero (its copy column sits at z 1) so open testimonial cards
+     float over the headline/video instead of clipping behind them. */
+  z-index: 2;
   padding-block: calc(var(--safe) * 2);
-  border-block: 1px solid var(--line);
 }
 
 .marquee {
@@ -15,22 +18,131 @@
 }
 
 .item {
+  position: relative;
   flex: 0 0 auto;
 }
 
+/* Cream chip behind the hovered logo: brand colors are illegible directly on
+   plum (dark navy/blue marks vanish), so the color reveal happens on a light
+   pill that echoes the testimonial card above. Absolutely positioned so the
+   belt layout never shifts. */
+.item::before {
+  content: "";
+  position: absolute;
+  inset: -10px -16px;
+  border-radius: 12px;
+  background-color: var(--color-cream);
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease-out-expo);
+}
+
 .logo {
+  position: relative;
   width: 140px;
   height: 44px;
   object-fit: contain;
-  /* Render every client mark as a uniform cream silhouette so colored/dark
-     logos stay legible on the plum chapter. */
+  /* Render every client mark as a uniform white silhouette while the belt sits
+     on the plum chapter. The filter states below are written as matching
+     function lists (never `none`) so they interpolate instead of snapping. */
   filter: brightness(0) invert(1);
   opacity: 0.7;
-  transition: opacity var(--duration) var(--ease-out-expo);
+  transition:
+    opacity var(--duration) var(--ease-out-expo),
+    filter var(--duration) var(--ease-out-expo);
+}
 
-  @media (--hover) {
-    &:hover {
-      opacity: 1;
-    }
+/* The chapter background is a fixed layer that morphs to cream while the belt
+   is still on screen (Chapters mirrors the active theme onto <html>) — flip
+   the silhouette to ink so the logos never sit white-on-cream mid-scroll. */
+:global(html[data-theme="cream"]) .logo {
+  filter: brightness(0) invert(0);
+}
+
+/* Spotlight: while some logo is hovered, it reveals its brand colors and the
+   rest dim hard. Scoped to .track (the ul inside each marquee repeat) — the
+   aria-hidden clone a belt-width away stays at resting opacity, which is
+   imperceptible off-focus. Mouse-like pointers only: on touch, taps emulate
+   sticky :hover, so the whole interaction is disabled there. */
+@media (hover: hover) and (pointer: fine) {
+  .track:has(.item:hover) .item:not(:hover) .logo {
+    opacity: 0.2;
   }
+
+  .item:hover::before {
+    opacity: 1;
+  }
+
+  .item:hover .logo {
+    opacity: 1;
+    filter: brightness(1) invert(0);
+  }
+}
+
+/* ---- Testimonial card above the hovered logo ---- */
+.card {
+  position: absolute;
+  bottom: calc(100% + 22px);
+  left: 50%;
+  /* --shift (set from JS on mouseenter) nudges edge cards back inside the
+     viewport; the caret below counter-shifts to stay over the logo. */
+  transform: translate(calc(-50% + var(--shift, 0px)), 10px);
+  width: min(400px, 82vw);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  /* The marquee track sets `white-space: nowrap` (and this repo assigns fonts
+     per-section, so inherited text falls back to the browser serif) — reset
+     both or the quote renders as one endless serif line. */
+  white-space: normal;
+  font-family: var(--font-mono);
+  padding: 1.4rem 1.5rem 1.25rem;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo),
+    visibility var(--duration-fast);
+  z-index: 1;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  /* Counter-shift keeps the caret over the logo; clamp keeps it on the card */
+  left: clamp(22px, calc(50% - var(--shift, 0px)), calc(100% - 22px));
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-top-color: var(--color-cream);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover .card {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(calc(-50% + var(--shift, 0px)), 0);
+  }
+}
+
+.quote {
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.author strong {
+  font-weight: 700;
+}
+
+.author span {
+  opacity: 0.65;
 }

@@ -6,8 +6,9 @@
  * Components MUST NOT hardcode copy; import from here instead.
  *
  * Excluded from v1 (content-starved, per proposal): FAQ (0 real entries) and the
- * multi-post blog grid (1 real post → a single card). The 8 lorem testimonials
- * are excluded; only real, attributed testimonials are kept.
+ * multi-post blog grid (1 real post → a single card). The featured testimonial
+ * is real and attributed; the client-marquee hover cards mix 4 verified quotes
+ * with 9 lorem placeholders (each flagged with a TODO — launch blocker).
  */
 
 export interface MenuItem {
@@ -30,6 +31,8 @@ export interface SocialLink {
 export interface Client {
   name: string
   logo: string
+  /** Quote shown in the hover card above the logo in the client marquee. */
+  testimonial?: Testimonial
 }
 
 export interface Service {
@@ -144,20 +147,142 @@ export const hero = {
 
 // —— Clients ————————————————————————————————————————————————————————————————
 
+// Shared body for the 9 unverified hover-card quotes (mirrors the reference
+// DB). Every entry using it is a launch blocker — see the TODOs below.
+const placeholderQuote =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+
 export const clients: Client[] = [
-  { name: 'Aflofarm', logo: '/assets/clients/aflofarm.png' },
-  { name: 'Aquael', logo: '/assets/clients/aquael.png' },
-  { name: 'Funtronic', logo: '/assets/clients/funtronic.png' },
-  { name: 'Intrum Justitia', logo: '/assets/clients/intrum.png' },
-  { name: 'Kontigo', logo: '/assets/clients/kontigo.png' },
-  { name: 'Medicover Sport', logo: '/assets/clients/medicover.png' },
-  { name: 'Oryginalny Sok', logo: '/assets/clients/oryginalny-sok.png' },
-  { name: 'Press-Service', logo: '/assets/clients/press-service.png' },
-  { name: 'Riviera', logo: '/assets/clients/riviera.png' },
-  { name: 'Roche', logo: '/assets/clients/roche.png' },
-  { name: 'Uniphar', logo: '/assets/clients/uniphar.png' },
-  { name: 'Worldline', logo: '/assets/clients/worldline.png' },
-  { name: 'pracuj.pl', logo: '/assets/clients/pracuj.png' },
+  {
+    name: 'Aflofarm',
+    logo: '/assets/clients/aflofarm.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Aflofarm',
+    },
+  },
+  {
+    name: 'Aquael',
+    logo: '/assets/clients/aquael.png',
+    testimonial: {
+      quote:
+        'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
+      author: 'Beata Nartowska',
+      company: 'Aquael',
+    },
+  },
+  {
+    name: 'Funtronic',
+    logo: '/assets/clients/funtronic.png',
+    testimonial: {
+      quote:
+        'Szczerze rekomenduję współpracę z agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele.',
+      author: 'Piotr Treszczotko',
+      company: 'Funtronic',
+    },
+  },
+  {
+    name: 'Intrum Justitia',
+    logo: '/assets/clients/intrum.png',
+    testimonial: {
+      quote:
+        'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Polecamy współpracę z zespołem Social Lama.',
+      author: 'Katarzyna Gosiewska',
+      company: 'Intrum Justitia',
+    },
+  },
+  {
+    name: 'Kontigo',
+    logo: '/assets/clients/kontigo.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Kontigo',
+    },
+  },
+  {
+    name: 'Medicover Sport',
+    logo: '/assets/clients/medicover.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Medicover Sport',
+    },
+  },
+  {
+    name: 'Oryginalny Sok',
+    logo: '/assets/clients/oryginalny-sok.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Oryginalny Sok',
+    },
+  },
+  {
+    name: 'Press-Service',
+    logo: '/assets/clients/press-service.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Press-Service',
+    },
+  },
+  {
+    name: 'Riviera',
+    logo: '/assets/clients/riviera.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Riviera',
+    },
+  },
+  {
+    name: 'Roche',
+    logo: '/assets/clients/roche.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Roche',
+    },
+  },
+  {
+    name: 'Uniphar',
+    logo: '/assets/clients/uniphar.png',
+    testimonial: {
+      quote:
+        'Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
+      author: 'Marta Szwat',
+      company: 'Uniphar',
+    },
+  },
+  {
+    name: 'Worldline',
+    logo: '/assets/clients/worldline.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'Worldline',
+    },
+  },
+  {
+    name: 'pracuj.pl',
+    logo: '/assets/clients/pracuj.png',
+    // TODO: placeholder — replace before launch
+    testimonial: {
+      quote: placeholderQuote,
+      author: 'Imię Nazwisko',
+      company: 'pracuj.pl',
+    },
+  },
 ]
 
 // —— Why that works ————————————————————————————————————————————————————————
