@@ -39,26 +39,38 @@ The hero SHALL display the three-line headline ("STRATEGY / THAT WORKS / WITH SO
 - **THEN** no edge or rectangle of the video/poster is perceivable against the section background
 
 ### Requirement: Content sections from typed data
-All section copy (nav, hero, services, steps, client names, featured testimonial, blog card, footer, contact) SHALL come from `lib/content/home.ts`, matching the verified content export verbatim; components SHALL contain no hardcoded copy. FAQ and multi-post blog grid are excluded from v1.
+All section copy (nav, hero, services, steps, client names, featured testimonial, blog card, footer, contact) SHALL come from `lib/content/home.ts`; components SHALL contain no hardcoded copy. Non-services copy SHALL match the verified content export verbatim; the three service bodies are instead trimmed to one short sentence each (~20 words) for the autoplay-tabs layout, with the original long-form texts preserved in the content module (commented or exported separately) for future `/uslugi/*` pages. FAQ and multi-post blog grid are excluded from v1.
 
 #### Scenario: Content fidelity
 - **WHEN** the homepage renders
-- **THEN** the five how-it-works steps, three service descriptions, 13 client names, featured iRobot testimonial (Małgorzata Radomska), and footer contact details match the export exactly
+- **THEN** the five how-it-works steps, 13 client names, featured iRobot testimonial (Małgorzata Radomska), and footer contact details match the export exactly
+
+#### Scenario: Trimmed service bodies
+- **WHEN** the services section renders
+- **THEN** each of the three service descriptions is a single short sentence sourced from `lib/content/home.ts`, and the original long-form texts remain available in the content module
 
 #### Scenario: Excluded sections
 - **WHEN** the homepage renders
 - **THEN** no FAQ section exists and NewsLAMA shows exactly one large post card ("LinkedIn Premium — czy warto?")
 
 ### Requirement: Section motion behaviors
-The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / WITH SOCIAL LAMA" marquee via `<Marquee>`; why-that-works heading fill scrubbed by scroll progress; how-it-works pinned via `<Fold>` with the five steps highlighting sequentially by scroll progress; below-fold sections revealing on first viewport entry via `useReveal`. Every "THAT WORKS" occurrence on the homepage SHALL render bold in the orange accent, mirroring the hero headline (user decision, 2026-07-13): the big marquee's filled row is orange, and the why-that-works heading fills "WHY" to plum and "THAT WORKS" to orange.
+The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / WITH SOCIAL LAMA" marquee via `<Marquee>`; the why-that-works heading scrubbed word-by-word by scroll progress with its lead and paragraphs scrubbing as manifesto text (words fill from faint to full via `ProgressText`); how-it-works pinned via `<Fold>` with the five steps highlighting sequentially by scroll progress; below-fold sections other than services revealing on first viewport entry via `useReveal` — the services section's motion is owned by the autoplay-tabs component (see `services-autoplay-tabs`). Every "THAT WORKS" occurrence on the homepage SHALL render bold in the orange accent, mirroring the hero headline (user decision, 2026-07-13) — except the why-that-works heading, where "THAT WORKS" fills with the static orange-dominant grain-gradient (gggrain variant: base `#f09b39`, `#892f53` falloff, `feTurbulence` 0.55, soft-light) clipped to the letters, and "WHY" fills to the ink text color (user decisions, 2026-07-13). The big marquee's filled row remains flat orange.
 
 #### Scenario: Pinned how-it-works scrub
 - **WHEN** the user scrolls through the how-it-works section
 - **THEN** the section content stays pinned while steps 01–05 activate in order tied to scroll progress, and unpins after the last step
 
-#### Scenario: Heading fill scrub
+#### Scenario: Heading fill scrub with grain gradient
 - **WHEN** the "WHY THAT WORKS" heading passes through the viewport
-- **THEN** its fill progresses proportionally to scroll from unfilled to fully colored — "WHY" to plum, "THAT WORKS" to orange
+- **THEN** its words fill progressively — "WHY" to ink, "THAT WORKS" revealing the grain-gradient clipped inside the letters, continuous across words and line wraps
+
+#### Scenario: Manifesto copy scrub at display scale
+- **WHEN** the why-that-works manifesto (one sentence-case display-scale statement split mid-sentence: bold ink opening, muted gray closer — Azurio treatment, user decision 2026-07-13) and the supporting paragraphs (display font, bold, reading scale, same ink→muted split) pass through the viewport
+- **THEN** their words fill from faint (~0.33 opacity) to full opacity proportionally to scroll, each statement flows as a single paragraph across its strong/muted chunks, and the CTA link enters via reveal
+
+#### Scenario: Brand media beside supporting copy
+- **WHEN** the why-that-works bottom row renders
+- **THEN** the generated brand media (photoreal llama recording a reel; clip with the photo as its poster once the showreel lands) fills the left cell with the two supporting paragraphs and CTA at right; on mobile the row stacks
 
 #### Scenario: Big marquee accent
 - **WHEN** the full-bleed marquee renders in the light chapter
@@ -68,21 +80,21 @@ The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / W
 - **WHEN** the user scrolls from the pinned hero into chapter 2 at any speed (including while the ~0.9s background morph is still in flight)
 - **THEN** the why-that-works section shows its own sand ground continuous with the client-logos band — at no scroll position does its ink copy sit on the plum background
 
-### Requirement: Service cards with clip previews
-The three service cards (CONTENT, SPRZEDAŻ, KREACJE I WIDEO) SHALL each display a Higgsfield-generated character-consistent clip preview area; on pointer hover the clip plays, otherwise the poster frame is shown. If a clip is unavailable at ship time, the card SHALL render a static poster frame in the same slot.
-
-#### Scenario: Hover playback
-- **WHEN** the pointer enters a service card with an available clip
-- **THEN** the clip plays; **WHEN** the pointer leaves **THEN** it pauses and resets to poster
-
-#### Scenario: Touch devices
-- **WHEN** the device has no hover capability
-- **THEN** the clip area shows the poster frame (no hover-dependent dead state)
-
 ### Requirement: Homepage replaces the Satus manual
 `app/page.tsx` SHALL render the Social Lama homepage; the Satus onboarding manual page and its assets SHALL be removed from the route.
 
 #### Scenario: Root route
 - **WHEN** a visitor opens `/`
 - **THEN** the Social Lama homepage renders with metadata (title, description, OG image) for Social Lama, not Satus
+
+### Requirement: Progressive bottom blur
+The site layout SHALL render a fixed progressive blur strip at the viewport's bottom edge (stacked `backdrop-filter` layers with increasing radii and staggered masks) so departing content melts into frost, and SHALL hide it (fade) while any `[data-blur-edge-gate]` element intersects the viewport. The client-logos belt carries the gate attribute so the brand marquee is never frosted at page start (user decision, 2026-07-13).
+
+#### Scenario: Marquee never frosted
+- **WHEN** the page loads at the top with the client-logos belt on screen
+- **THEN** the blur strip is fully transparent; **WHEN** the user scrolls past the belt **THEN** the blur fades in and bottom-edge content blurs progressively
+
+#### Scenario: Pointer transparency
+- **WHEN** the blur strip overlays interactive content near the viewport bottom
+- **THEN** it never intercepts pointer events
 
