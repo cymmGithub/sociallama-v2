@@ -7,11 +7,11 @@
      much scrolling the head-turn spans. */
   height: 280vh;
 
-  /* Mobile scrubs too, over a shorter runway (reference: 155svh) — the
-     upward-glance clip is brief and the pinned column already fills most of
-     the viewport. */
+  /* Mobile scrubs too, over a shorter runway than desktop — the upward-glance
+     clip is brief. 185svh (up from the reference's 155svh, user request) keeps
+     the pin held a beat longer after the glance completes. */
   @media (--mobile) {
-    height: 155svh;
+    height: 185svh;
   }
 
   /* No scrub → no runway: reduced motion keeps the static poster. Collapse to
@@ -45,6 +45,13 @@
   align-items: center;
   padding-block: calc(var(--safe) * 4) var(--safe);
   padding-inline: var(--safe);
+
+  /* Mobile: no bottom padding and no vertical centering — the clip column
+     stretches so its bottom edge sits flush on the client-logos band. */
+  @media (--mobile) {
+    align-items: stretch;
+    padding-block: calc(var(--safe) * 4) 0;
+  }
 }
 
 /* Desktop clip/poster: bare, right-anchored against the section (reference
@@ -205,18 +212,22 @@
   -webkit-mask-size: contain;
 }
 
-/* Mobile-only media column (the desktop clip is the absolute .video above). */
+/* Mobile-only media column (the desktop clip is the absolute .video above):
+   full-bleed — escapes the hero's inline gutter and takes all height left
+   below the copy, so the clip meets the client-logos band with no plum gap. */
 .media {
-  width: 100%;
-  max-width: 460px;
+  flex: 1;
+  min-height: 0;
+  width: calc(100% + 2 * var(--safe));
+  margin-inline: calc(-1 * var(--safe));
 }
 
-/* Mobile clip (raw element, scrubbed like the desktop one): slightly-portrait
-   (0.92) box, cover-crop biased right so the llama stays centered. */
+/* Mobile clip (raw element, scrubbed like the desktop one): cover-crops the
+   full-bleed box, biased right so the llama stays centered. */
 .mobileVideo {
   display: block;
   width: 100%;
-  aspect-ratio: 0.92;
+  height: 100%;
   object-fit: cover;
   object-position: 65% center;
 }
