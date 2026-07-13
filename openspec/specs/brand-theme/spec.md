@@ -7,7 +7,7 @@ Define the Social Lama brand color tokens and the three page themes (`plum`, `cr
 ## Requirements
 
 ### Requirement: Brand palette as Satus theme tokens
-The styling system SHALL define the Social Lama palette (plum `#923156`, plum-hero `#892f53`, plum-dark `#722341`, orange `#ed8c1b`, ink `#2b1f24`, cream `#fbfaf6`, sand `#f0ece3`) in `lib/styles/colors.ts` and expose three named themes — `plum`, `cream`, `plum-deep` — through the existing `primary/secondary/contrast` slot system.
+The styling system SHALL define the Social Lama palette per the brand book "Social Lama nowe wytyczne stylistyczne" (plum `#913155`, orange `#f09b39`, ink `#2b1f24`, cream `#faf9f5`, sand `#e0ddd3`), plus two derived tokens outside the book — plum-hero `#892f53` (the hero clip's graded composite background) and plum-dark `#722341` (chapter-3 ground) — in `lib/styles/colors.ts`, and expose three named themes — `plum`, `cream`, `plum-deep` — through the existing `primary/secondary/contrast` slot system.
 
 #### Scenario: Theme tokens available to components
 - **WHEN** a section component references a theme slot (e.g., `contrast`) inside a chapter wrapper with theme `plum`
