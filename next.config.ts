@@ -124,7 +124,11 @@ const nextConfig: NextConfig = {
     ],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     qualities: [90],
-    formats: ['image/avif', 'image/webp'],
+    /* WebP only: the optimizer's AVIF output is squashed (750×563 from a
+       1370×1080 source) and range-flagged pc while the pixels are limited —
+       it renders dark, which breaks the hero's seamless clip composite.
+       Re-add AVIF once the optimizer emits correct geometry/range. */
+    formats: ['image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
