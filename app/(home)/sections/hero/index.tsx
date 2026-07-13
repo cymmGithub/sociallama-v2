@@ -111,7 +111,10 @@ export function Hero() {
         />
       ) : (
         media === 'poster' && (
-          /* SSR / pre-mount / reduced motion: static poster, same box. */
+          /* SSR / pre-mount / reduced motion: static poster, same box.
+             Unoptimized: the optimizer's WebP re-encode decodes a few RGB
+             points dark in Chromium, breaking the seamless composite the
+             poster is gated for — the raw frame-0 JPEG renders exact. */
           <Image
             src={hero.video.poster}
             alt={hero.llamaAlt}
@@ -119,6 +122,7 @@ export function Hero() {
             height={1080}
             desktopSize="46vw"
             preload
+            unoptimized
             className={s.video}
           />
         )

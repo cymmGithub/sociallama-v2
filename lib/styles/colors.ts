@@ -25,10 +25,11 @@ const themes = {
     secondary: colors.cream,
     contrast: colors.orange,
   },
-  // Chapter 2 — light. Cream ground, ink text; brand plum is the accent used
-  // for the scroll-scrubbed heading fill.
+  // Chapter 2 — light. Sand ground (matches the hero's client-logos band, user
+  // decision 2026-07-13), ink text; brand plum is the accent used for the
+  // scroll-scrubbed heading fill. Cream stays a surface color (cards, overlay).
   cream: {
-    primary: colors.cream,
+    primary: colors.sand,
     secondary: colors.ink,
     contrast: colors.plum,
   },

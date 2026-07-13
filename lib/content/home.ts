@@ -147,6 +147,8 @@ export const hero = {
 
 // —— Clients ————————————————————————————————————————————————————————————————
 
+export const clientsHeading = 'ZAUFALI NAM'
+
 // Shared body for the 9 unverified hover-card quotes (mirrors the reference
 // DB). Every entry using it is a launch blocker — see the TODOs below.
 const placeholderQuote =

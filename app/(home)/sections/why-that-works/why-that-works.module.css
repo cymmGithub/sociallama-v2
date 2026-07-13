@@ -1,4 +1,10 @@
 .section {
+  /* Own ground (user decision 2026-07-13): the chapter morph fires at viewport
+     center and takes ~0.9s, so without this the section spends a scroll-beat
+     on the hero's plum (illegible ink copy, sand belt sandwiched between two
+     plums). Solid sand starts chapter 2 at the belt; the morph still runs
+     behind it for the sections below. */
+  background-color: var(--color-sand);
   padding-block: calc(var(--safe) * 6);
   padding-inline: var(--safe);
   display: flex;

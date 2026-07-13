@@ -6,10 +6,14 @@ import { whyThatWorks } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
-// Scrub each word from faint ink to full plum (the theme `contrast` token) as
-// the heading passes through the viewport.
+// Scrub each word from faint ink to its full color as the heading passes
+// through the viewport. "WHY" fills to plum (the theme `contrast` token);
+// "THAT WORKS" fills to the brand orange — every occurrence of the phrase on
+// the homepage renders bold orange, mirroring the hero headline.
 function fill(node: HTMLSpanElement, active: boolean) {
-  node.style.color = active ? 'var(--color-contrast)' : 'var(--color-secondary)'
+  const filled =
+    node.textContent === 'WHY' ? 'var(--color-contrast)' : 'var(--color-orange)'
+  node.style.color = active ? filled : 'var(--color-secondary)'
   node.style.opacity = active ? '1' : '0.2'
 }
 

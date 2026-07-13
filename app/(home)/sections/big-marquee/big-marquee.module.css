@@ -22,7 +22,10 @@
 }
 
 .fill {
-  color: var(--color-contrast);
+  /* Brand rule: every "THAT WORKS" renders bold orange, mirroring the hero
+     headline — the orange palette token, not the chapter contrast slot
+     (which is plum in this chapter). */
+  color: var(--color-orange);
 }
 
 .outline {

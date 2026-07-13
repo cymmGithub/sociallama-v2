@@ -55,14 +55,17 @@
   @media (--desktop) {
     display: block;
     position: absolute;
-    /* Deeper top inset shrinks the llama below hero scale; the negative right
-       offset bleeds the clip's empty right margin off-screen so the llama
-       itself hugs the viewport edge. */
-    top: calc(var(--safe) * 3.5 + 53px);
+    /* Reference scale: bottom flush with the hero, right edge at the viewport
+       (this take has no empty right margin), top clearance only for the header
+       band (~safe padding + 53px logo) so the ears stay under the CTA/menu.
+       Height is explicit (not top/bottom stretch): <img> posters resolve an
+       auto height from their intrinsic ratio instead of the pins, which
+       shrank the poster out of the clip's box. */
+    top: calc(var(--safe) + 53px);
     bottom: 0;
-    right: calc(var(--safe) * -2);
+    right: 0;
     width: auto;
-    height: auto;
+    height: calc(100% - var(--safe) - 53px);
   }
 }
 

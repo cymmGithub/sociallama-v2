@@ -3,7 +3,7 @@
 import { useMediaQuery } from 'hamo'
 import { Image } from '@/components/ui/image'
 import { Marquee } from '@/components/ui/marquee'
-import { clients } from '@/lib/content/home'
+import { clients, clientsHeading } from '@/lib/content/home'
 import s from './client-logos.module.css'
 
 /* Keep the hover card on screen: cards are centred on their logo, so near the
@@ -30,7 +30,10 @@ export function ClientLogos() {
   const finePointer = useMediaQuery('(hover: hover) and (pointer: fine)')
 
   return (
-    <section className={s.section} aria-label="Zaufali nam">
+    <section className={s.section}>
+      {/* The visible heading names the section — no aria-label, so AT
+          announces "Zaufali nam" exactly once. */}
+      <h2 className={s.heading}>{clientsHeading}</h2>
       <Marquee
         className={s.marquee}
         repeat={2}
