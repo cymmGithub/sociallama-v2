@@ -72,7 +72,9 @@
 .inner {
   width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  /* Mobile: headline first, clip below — the llama glances up at the text
+     above it (reference arrangement). */
+  flex-direction: column;
   gap: calc(var(--gap) * 2);
   align-items: center;
 
