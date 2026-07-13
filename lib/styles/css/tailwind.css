@@ -10,17 +10,17 @@
 
   --color-*: initial;
 	--color-primary: #892f53;
-	--color-secondary: #fbfaf6;
-	--color-contrast: #ed8c1b;
+	--color-secondary: #faf9f5;
+	--color-contrast: #f09b39;
   --color-black: #000000;
 	--color-white: #ffffff;
-	--color-plum: #923156;
+	--color-plum: #913155;
 	--color-plum-hero: #892f53;
 	--color-plum-dark: #722341;
-	--color-orange: #ed8c1b;
+	--color-orange: #f09b39;
 	--color-ink: #2b1f24;
-	--color-cream: #fbfaf6;
-	--color-sand: #f0ece3;
+	--color-cream: #faf9f5;
+	--color-sand: #e0ddd3;
 
   --spacing-*: initial;
 	--spacing-0: 0;
@@ -36,18 +36,18 @@
 /** Custom theme overwrites **/
 [data-theme=plum] {
   --color-primary: #892f53;
-	--color-secondary: #fbfaf6;
-	--color-contrast: #ed8c1b;
+	--color-secondary: #faf9f5;
+	--color-contrast: #f09b39;
 }
 [data-theme=cream] {
-  --color-primary: #f0ece3;
+  --color-primary: #e0ddd3;
 	--color-secondary: #2b1f24;
-	--color-contrast: #923156;
+	--color-contrast: #913155;
 }
 [data-theme=plum-deep] {
   --color-primary: #722341;
-	--color-secondary: #fbfaf6;
-	--color-contrast: #ed8c1b;
+	--color-secondary: #faf9f5;
+	--color-contrast: #f09b39;
 }
   
 

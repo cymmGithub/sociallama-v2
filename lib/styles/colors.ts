@@ -2,14 +2,18 @@ const colors = {
   // Neutrals (kept for base utilities: bg-white, text-black, …)
   black: '#000000',
   white: '#ffffff',
-  // Social Lama brand palette
-  plum: '#923156',
+  // Social Lama brand palette — per the brand book ("Social Lama nowe
+  // wytyczne stylistyczne", 2026-07): white, cream, sand, orange, plum, ink.
+  plum: '#913155',
+  // Not in the brand book: plum-hero is the hero clip's graded background
+  // (seamless-composite token — clips are gated against it, never retint it
+  // to match a document); plum-dark is the chapter-3 ground.
   'plum-hero': '#892f53',
   'plum-dark': '#722341',
-  orange: '#ed8c1b',
+  orange: '#f09b39',
   ink: '#2b1f24',
-  cream: '#fbfaf6',
-  sand: '#f0ece3',
+  cream: '#faf9f5',
+  sand: '#e0ddd3',
 } as const
 
 // Three scroll chapters, expressed as Satus themes.
