@@ -7,13 +7,16 @@
      much scrolling the head-turn spans. */
   height: 280vh;
 
-  /* No scrub → no runway: mobile keeps the looping clip, reduced motion keeps
-     the static poster. Collapse to the column's own height so neither is
-     trapped in a multi-viewport scroll with no visible change. */
+  /* Mobile scrubs too, over a shorter runway (reference: 155svh) — the
+     upward-glance clip is brief and the pinned column already fills most of
+     the viewport. */
   @media (--mobile) {
-    height: auto;
+    height: 155svh;
   }
 
+  /* No scrub → no runway: reduced motion keeps the static poster. Collapse to
+     the column's own height so nobody is trapped in a multi-viewport scroll
+     with no visible change. (Declared after the mobile rule so it wins.) */
   @media (--reduced-motion) {
     height: auto;
   }
@@ -208,10 +211,12 @@
   max-width: 460px;
 }
 
-/* Mobile clip keeps the pre-change presentation until the mobile follow-up:
-   slightly-portrait (0.92) box, cover-crop biased right so the llama stays
-   centered. Scoped so it can't leak onto the desktop media. */
-.mobileVideo video,
-.mobileVideo img {
+/* Mobile clip (raw element, scrubbed like the desktop one): slightly-portrait
+   (0.92) box, cover-crop biased right so the llama stays centered. */
+.mobileVideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.92;
+  object-fit: cover;
   object-position: 65% center;
 }

@@ -27,8 +27,9 @@ export function useHeroScrubTarget() {
 /**
  * Chapter-1 scroll track: hero + client-logos belt pin as a sticky
  * viewport-height column while scroll through the runway scrubs the hero
- * clip. On mobile (looping clip, no scrub) and under reduced motion the
- * track collapses to a single viewport — no dead scroll runway.
+ * clip — head-turn on desktop (280vh runway), upward glance on mobile
+ * (155svh). Under reduced motion the track collapses to a single viewport —
+ * no dead scroll runway.
  */
 export function HeroTrack({ children }: { children: ReactNode }) {
   const targetRef = useRef(0)

@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useTempus } from 'tempus/react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { Video } from '@/components/ui/video'
 import { hero, socials } from '@/lib/content/home'
 import { breakpoints } from '@/styles/config'
 import s from './hero.module.css'
@@ -29,8 +28,8 @@ export function Hero() {
   // transition — waiting words snap into place unseen below the mask.
   const [rotation, setRotation] = useState({ index: 0, prev: -1 })
   // 'poster' until mount so SSR and hydration render the same static shell;
-  // then desktop gets the scrubbed clip, mobile the looping one. Reduced
-  // motion stays on the poster (no <video> element at all).
+  // then each breakpoint gets its scrubbed clip (head-turn on desktop, upward
+  // glance on mobile). Reduced motion stays on the poster (no <video>).
   const [media, setMedia] = useState<'poster' | 'desktop' | 'mobile'>('poster')
 
   useEffect(() => {
@@ -42,8 +41,8 @@ export function Hero() {
   }, [])
 
   // Seek loop (hero-scroll-scrub): the video is never played, only seeked
-  // toward the track's scrub target. No-ops until the desktop video mounts
-  // and its metadata (duration) arrives.
+  // toward the track's scrub target. No-ops until the active breakpoint's
+  // video mounts and its metadata (duration) arrives.
   useTempus(() => {
     const video = videoRef.current
     if (!(video && scrubTargetRef)) return
@@ -186,15 +185,19 @@ export function Hero() {
         </div>
 
         {media === 'mobile' && (
-          /* Mobile keeps the bare looping clip — no scrub — until the mobile
-             follow-up regenerates its emotional arc. */
+          /* Mobile scrubs too (reference behavior): the upward glance is
+             driven by the same seek loop — only one of the two <video>
+             variants mounts, so they share the ref. */
           <div className={s.media}>
-            <Video
+            <video
+              ref={videoRef}
               className={s.mobileVideo}
               src={hero.video.mobileSrc}
               poster={hero.video.posterMobile}
-              alt={hero.llamaAlt}
-              aspectRatio={0.92}
+              muted
+              playsInline
+              preload="auto"
+              aria-label={hero.llamaAlt}
             />
           </div>
         )}
