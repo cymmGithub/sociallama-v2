@@ -34,6 +34,12 @@
   display: block;
 }
 
+/* Brand rule: "…IT WORKS" phrases render bold orange, mirroring the hero's
+   "THAT WORKS" (orange palette token, not the chapter contrast slot). */
+.headingLine:last-child {
+  color: var(--color-orange);
+}
+
 .subhead {
   font-family: var(--font-mono);
   font-weight: 600;
