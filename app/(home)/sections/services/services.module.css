@@ -1,5 +1,7 @@
 .section {
-  padding-block: calc(var(--safe) * 4) calc(var(--safe) * 6);
+  --tab-dwell: 6000ms;
+
+  padding-block: calc(var(--safe) * 3) calc(var(--safe) * 4);
   padding-inline: var(--safe);
 }
 
@@ -7,7 +9,7 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--gap) * 0.5);
-  margin-bottom: calc(var(--safe) * 2);
+  margin-bottom: var(--safe);
 }
 
 .eyebrow {
@@ -26,44 +28,414 @@
   letter-spacing: -0.02em;
 }
 
-.grid {
+/* —— Desktop: shared stage + tab columns ——————————————————————————— */
+
+.tabs {
   --reveal-stagger: 120ms;
   --reveal-transform: translateY(32px);
 
-  display: grid;
-  gap: calc(var(--gap) * 2);
+  display: none;
 
   @media (--desktop) {
-    grid-template-columns: repeat(3, 1fr);
+    display: grid;
+    gap: calc(var(--gap) * 2);
   }
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--gap));
-  padding: calc(var(--gap) * 1.5);
+/* Height keys off the viewport (not 16:9) so the stage and the tab columns
+   share one screen — the media inside is sized relative to stage height. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  height: clamp(340px, 52svh, 680px);
   border-radius: 16px;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
+  overflow: hidden;
 }
 
-.media {
-  position: relative;
+/* Stacked per-tab layers crossfading above the shared backdrop. */
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.layer.isActive {
+  opacity: 1;
+}
+
+/* —— Grain-gradient backdrop (gggrain recipe, brand tokens) ————————— */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+}
+
+/* Pre-blurred light blobs — soft radial gradients (no filter) drifting on
+   compositor-only transforms. Reduced motion is neutralized globally. */
+.blob {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.blobOrange {
+  width: 72%;
+  top: -28%;
+  right: -16%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-orange) 80%, transparent),
+    transparent 72%
+  );
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+
+.blobPlum {
+  width: 85%;
+  bottom: -40%;
+  left: -22%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-plum-hero) 90%, var(--color-orange)),
+    transparent 70%
+  );
+  animation: drift-b 32s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  from {
+    transform: translate3d(-8%, -6%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(10%, 12%, 0) scale(1.18);
+  }
+}
+
+@keyframes drift-b {
+  from {
+    transform: translate3d(6%, 8%, 0) scale(1.1);
+  }
+  to {
+    transform: translate3d(-10%, -10%, 0) scale(0.95);
+  }
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
+  mix-blend-mode: soft-light;
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+/* The global reduced-motion neutralizer's `*` rule loses to these class
+   selectors (same pitfall global.css documents for [data-reveal]), so the
+   module opts its own animations out explicitly: static gradient, instant
+   tab switches. */
+@media (--reduced-motion) {
+  .blob {
+    animation: none;
+  }
+
+  .layer,
+  .panel,
+  .column {
+    transition: none;
+  }
+}
+
+/* —— Stage media: floating screenshot panels —————————————————————— */
+
+.panels {
+  position: absolute;
+  inset: 0;
+}
+
+.panel {
+  position: absolute;
   border-radius: 10px;
   overflow: hidden;
-  background-color: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 25%, transparent);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--color-ink) 40%, transparent);
+
+  /* Staggered entrance on tab activation (reveal vocabulary, tab-driven). */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 500ms var(--ease-out-expo),
+    transform 500ms var(--ease-out-expo);
 }
 
-.poster {
-  transition: transform var(--duration-slow) var(--ease-out-expo);
+.layer.isActive .panel {
+  opacity: 1;
+  transform: none;
+}
 
-  @media (--hover) {
-    .card:hover & {
-      transform: scale(1.04);
-    }
+.layer.isActive .panel:nth-child(1) {
+  transition-delay: 80ms;
+}
+
+.layer.isActive .panel:nth-child(2) {
+  transition-delay: 180ms;
+}
+
+.layer.isActive .panel:nth-child(3) {
+  transition-delay: 280ms;
+}
+
+.layer.isActive .panel:nth-child(4) {
+  transition-delay: 380ms;
+}
+
+.layer.isActive .panel:nth-child(5) {
+  transition-delay: 460ms;
+}
+
+.layer.isActive .panel:nth-child(6) {
+  transition-delay: 540ms;
+}
+
+/* Desktop stage geometry is height-relative (the stage is a viewport-capped
+   band, wider than 16:9) — width derives from each panel's aspect-ratio.
+   Slot order follows the content data: instagram, tiktok (hero), linkedin,
+   x, pinterest, youtube. Two stacked pairs flank the centered hero. */
+
+/* Instagram grid — far left, upper. */
+.layer .panel:nth-child(1) {
+  height: 48%;
+  left: 4%;
+  top: 10%;
+  rotate: -2deg;
+  z-index: 1;
+}
+
+/* TikTok profile — the hero panel, center, largest. */
+.layer .panel:nth-child(2) {
+  height: 74%;
+  left: 50%;
+  top: 9%;
+  translate: -50% 0;
+  z-index: 3;
+}
+
+/* LinkedIn page — inner right, lower. */
+.layer .panel:nth-child(3) {
+  height: 52%;
+  right: 13%;
+  top: 40%;
+  rotate: -1deg;
+  z-index: 2;
+}
+
+/* X profile — inner left, lower. */
+.layer .panel:nth-child(4) {
+  height: 52%;
+  left: 13%;
+  top: 42%;
+  rotate: 1deg;
+  z-index: 2;
+}
+
+/* Pinterest — far right, upper. */
+.layer .panel:nth-child(5) {
+  height: 48%;
+  right: 4%;
+  top: 8%;
+  rotate: 2deg;
+  z-index: 1;
+}
+
+/* YouTube — tucked between hero and the right pair. */
+.layer .panel:nth-child(6) {
+  height: 42%;
+  right: 27%;
+  top: 4%;
+  rotate: 1deg;
+  z-index: 1;
+}
+
+/* Sprzedaż dashboards (keyed by stage id — Content shares the same panel
+   count, so count-based keying would collide): symmetric landscape pairs
+   around the phone-framed Insights hero, LinkedIn Analytics tucked upper
+   center-left. Slot order: Ads Manager, IG Insights (hero), YT Studio,
+   X Analytics, TikTok Studio, LinkedIn Analytics. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
+  height: 44%;
+  left: 4%;
+  top: 8%;
+  rotate: -2deg;
+  z-index: 1;
+}
+
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
+  height: 72%;
+  left: 50%;
+  top: 11%;
+  translate: -50% 0;
+  rotate: 0deg;
+  z-index: 3;
+}
+
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
+  height: 44%;
+  left: auto;
+  right: 4%;
+  top: 8%;
+  rotate: 2deg;
+  z-index: 1;
+}
+
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(4) {
+  height: 44%;
+  left: 13%;
+  top: 48%;
+  rotate: 1deg;
+  z-index: 2;
+}
+
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
+  height: 44%;
+  left: auto;
+  right: 13%;
+  top: 46%;
+  rotate: -1deg;
+  z-index: 2;
+}
+
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
+  height: 38%;
+  left: 26%;
+  right: auto;
+  top: 4%;
+  rotate: 1deg;
+  z-index: 1;
+}
+
+/* —— Stage media: phone-framed vertical clip ——————————————————————— */
+
+.phone {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6%;
+}
+
+.phoneFrame {
+  height: 82%;
+  aspect-ratio: 9 / 16;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 30%, transparent);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+
+/* Paired clips float in opposite tilts. */
+.phoneFrame:nth-child(1):not(:only-child) {
+  rotate: -1.5deg;
+}
+
+.phoneFrame:nth-child(2) {
+  rotate: 1.5deg;
+}
+
+.phoneVideo {
+  width: 100%;
+  height: 100%;
+}
+
+/* —— Stage media: placeholder watermark (Sprzedaż) —————————————————— */
+
+.watermark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 9vw, 8rem);
+  letter-spacing: 0.02em;
+  color: transparent;
+  -webkit-text-stroke: 2px
+    color-mix(in srgb, var(--color-cream) 35%, transparent);
+}
+
+/* —— Tab columns ————————————————————————————————————————————————— */
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--gap) * 2);
+}
+
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.75);
+  padding-top: calc(var(--gap) * 0.75);
+  color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
+  transition: color 300ms ease;
+}
+
+.column.isActive {
+  color: var(--color-secondary);
+}
+
+/* Full-column click target under the content (Webflow pattern); the
+   "learn more" link stacks above it. */
+.tabButton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.bar {
+  height: 3px;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--color-secondary) 15%, transparent);
+}
+
+.fill {
+  height: 100%;
+  background-color: var(--color-contrast);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.fillLive {
+  animation: fill-dwell var(--tab-dwell) linear forwards;
+}
+
+.section[data-paused] .fillLive {
+  animation-play-state: paused;
+}
+
+.fillFull {
+  transform: scaleX(1);
+}
+
+@keyframes fill-dwell {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
@@ -73,17 +445,20 @@
   text-transform: uppercase;
   font-size: 1.5rem;
   letter-spacing: -0.01em;
+  color: currentColor;
 }
 
 .body {
   font-family: var(--font-mono);
   font-size: 0.95rem;
   line-height: 1.55;
-  color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
+  color: currentColor;
   flex: 1;
 }
 
 .link {
+  position: relative;
+  z-index: 2;
   align-self: start;
   margin-top: auto;
   font-family: var(--font-display);
@@ -94,4 +469,78 @@
   color: var(--color-contrast);
   border-bottom: 2px solid currentColor;
   padding-bottom: 0.3em;
+}
+
+/* —— Mobile: stacked blocks, no tab machinery ———————————————————————— */
+
+.stack {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(32px);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+
+  @media (--desktop) {
+    display: none;
+  }
+}
+
+.stackItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.stackStage {
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Static gradient on mobile: no drifting blobs, no timers. */
+.stackStage .blob {
+  animation: none;
+}
+
+/* Media renders directly in the stack stage (no crossfade layer). */
+.stackStage .panels,
+.stackStage .phone,
+.stackStage .watermark {
+  z-index: 1;
+}
+
+.stackStage .panel {
+  opacity: 1;
+  transform: none;
+}
+
+/* Wider panels in the smaller mobile stage so the screenshots stay legible;
+   only the first three render — more would shrink them all past usefulness. */
+.stackStage .panel:nth-child(1) {
+  width: 30%;
+  left: 3%;
+  top: 12%;
+}
+
+.stackStage .panel:nth-child(2) {
+  width: 54%;
+  left: 24%;
+  top: 8%;
+}
+
+.stackStage .panel:nth-child(3) {
+  width: 30%;
+  right: 2%;
+  top: 24%;
+}
+
+.stackStage .panel:nth-child(n + 4) {
+  display: none;
+}
+
+.stackStage .phoneFrame {
+  height: 92%;
 }

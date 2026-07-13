@@ -38,6 +38,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 
 | Component | Import | Type |
 |-----------|--------|------|
+| BlurEdge | `@/components/layout/blur-edge` | Client |
 | Footer | `@/components/layout/footer` | Server |
 | Header | `@/components/layout/header` | Client |
 | Lenis | `@/components/layout/lenis` | Client |

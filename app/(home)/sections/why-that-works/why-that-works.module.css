@@ -9,14 +9,7 @@
   padding-inline: var(--safe);
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 3);
-
-  @media (--desktop) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: calc(var(--gap) * 4);
-    align-items: start;
-  }
+  gap: calc(var(--safe) * 1.5);
 }
 
 .heading {
@@ -26,37 +19,98 @@
   letter-spacing: -0.03em;
   line-height: 0.9;
   font-size: clamp(2.75rem, 9vw, 7rem);
-
-  @media (--desktop) {
-    position: sticky;
-    top: calc(var(--safe) * 3);
-  }
 }
 
-.copy {
+/* Grain-gradient heading fill (why-manifesto-gradient): the user's gggrain
+   variant embedded verbatim as a data-URI SVG — its soft-light grain blend
+   happens inside the SVG document (CSS background layers can't blend).
+   Clipped to the text on the ProgressText wrapper so the gradient runs
+   continuously across words and line wraps; opaque-ink "WHY" paints over it.
+   Static by design: animating a background under background-clip: text
+   repaints glyphs per frame — the scroll scrub supplies the motion. */
+.headingFill {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700"><defs><linearGradient gradientTransform="rotate(-150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g2"><stop stop-color="%23892f53" offset="0"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><linearGradient gradientTransform="rotate(150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g3"><stop stop-color="%23f09b39"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><filter id="gr" x="-20%25" y="-20%25" width="140%25" height="140%25" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" result="t"/><feColorMatrix type="saturate" values="0" in="t" result="c"/><feComponentTransfer in="c" result="ct"><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -11"/></filter></defs><g><rect width="100%25" height="100%25" fill="%23f09b39"/><rect width="100%25" height="100%25" fill="url(%23g3)"/><rect width="100%25" height="100%25" fill="url(%23g2)"/><rect width="100%25" height="100%25" fill="transparent" filter="url(%23gr)" opacity="1" style="mix-blend-mode:soft-light"/></g></svg>');
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Words that expose the gradient (added by the scrub callback). */
+.gradientWord {
+  -webkit-text-fill-color: transparent;
+}
+
+/* Manifesto statement at display scale (Azurio treatment): sentence case,
+   tight leading, bold ink opening with a muted gray closer. */
+.manifesto {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.6vw, 3.6rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  max-width: 30ch;
+  color: var(--color-secondary);
+}
+
+/* ProgressText roots are inline-block (each wraps as its own box); paired
+   strong/muted chunks must flow as one paragraph, so force them inline — the
+   word spans inside stay inline-block for their transitions. */
+.manifestoPart {
+  display: inline;
+}
+
+/* The gray closer of each two-tone block. */
+.muted {
+  color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+}
+
+/* Supporting row: media left, remaining copy right. */
+.bottom {
   --reveal-stagger: 90ms;
   --reveal-transform: translateY(24px);
 
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--gap) * 4);
+    align-items: start;
+    margin-top: calc(var(--safe) * 0.5);
+  }
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.mediaVideo {
+  width: 100%;
+  height: 100%;
+}
+
+.copy {
   display: flex;
   flex-direction: column;
   gap: calc(var(--gap) * 1.5);
   max-width: 46ch;
 }
 
-.lead {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  letter-spacing: -0.01em;
-  color: var(--color-contrast);
-}
-
+/* Supporting paragraphs at reading scale, bolder and larger than body copy
+   (Azurio treatment, user decision 2026-07-13), ink with muted closers. */
 .para {
-  font-family: var(--font-mono);
-  font-size: clamp(0.95rem, 1.4vw, 1.125rem);
-  line-height: 1.55;
-  color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--color-secondary);
 }
 
 .link {

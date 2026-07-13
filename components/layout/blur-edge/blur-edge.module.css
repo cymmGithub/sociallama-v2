@@ -1,0 +1,88 @@
+.edge {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: clamp(120px, 20svh, 260px);
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* Each layer doubles the blur of the previous and is masked to its own band
+   (bands overlap by half, stepping 12.5% down the strip), producing a smooth
+   blur ramp instead of one hard frosted edge. The last band runs to the very
+   bottom so the edge never un-blurs. Layers fade individually — opacity on
+   the wrapper would form a group that breaks backdrop-filter sampling. */
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.edge.isVisible .layer {
+  opacity: 1;
+}
+
+.layer:nth-child(1) {
+  backdrop-filter: blur(0.5px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12.5%,
+    black 25%,
+    transparent 37.5%
+  );
+}
+
+.layer:nth-child(2) {
+  backdrop-filter: blur(1px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 12.5%,
+    black 25%,
+    black 37.5%,
+    transparent 50%
+  );
+}
+
+.layer:nth-child(3) {
+  backdrop-filter: blur(2px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 25%,
+    black 37.5%,
+    black 50%,
+    transparent 62.5%
+  );
+}
+
+.layer:nth-child(4) {
+  backdrop-filter: blur(4px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 37.5%,
+    black 50%,
+    black 62.5%,
+    transparent 75%
+  );
+}
+
+.layer:nth-child(5) {
+  backdrop-filter: blur(8px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 50%,
+    black 62.5%,
+    black 75%,
+    transparent 87.5%
+  );
+}
+
+.layer:nth-child(6) {
+  backdrop-filter: blur(16px);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 62.5%,
+    black 75%,
+    black 100%
+  );
+}

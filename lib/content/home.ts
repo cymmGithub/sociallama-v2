@@ -35,15 +35,46 @@ export interface Client {
   testimonial?: Testimonial
 }
 
+export interface StagePanel {
+  /** Screenshot path under /assets. */
+  src: string
+  alt: string
+  /** Natural pixel dimensions of the screenshot. */
+  width: number
+  height: number
+}
+
+export interface StageClip {
+  /** Clip path under /clips. */
+  src: string
+  /** Poster still path under /clips. */
+  poster: string
+  alt: string
+}
+
+/**
+ * Per-service stage media for the autoplay-tabs services section.
+ * `panels` float real screenshots over the grain-gradient, `video` renders
+ * phone-framed clips playing only while their tab is active, `placeholder`
+ * shows the styled gradient alone until real assets exist.
+ */
+export type ServiceStage =
+  | { kind: 'panels'; panels: StagePanel[] }
+  | { kind: 'video'; clips: StageClip[] }
+  | { kind: 'placeholder' }
+
 export interface Service {
   id: string
   title: string
+  /** One-sentence description shown in the tab column. */
   body: string
+  /** Original long-form description, reserved for the /uslugi/* detail pages. */
+  bodyLong: string
   link: { label: string; href: string }
-  /** Poster still shown until a generated clip is available (design D5). */
-  poster: string
-  /** Optional Higgsfield clip; deferred in v1 — cards fall back to the poster. */
-  clip?: string
+  /** Media composition for the shared services stage. */
+  stage: ServiceStage
+  /** Autoplay dwell override in ms (default 6000) — e.g. longer for video tabs. */
+  dwellMs?: number
 }
 
 export interface Step {
@@ -291,11 +322,28 @@ export const clients: Client[] = [
 
 export const whyThatWorks = {
   heading: ['WHY', 'THAT WORKS'],
-  lead: 'W skrócie: ponieważ znamy się na rzeczy.',
+  /* Display-scale statement (Azurio treatment, user decision 2026-07-13):
+     `strong` renders bold ink, `muted` closes in gray — one flowing sentence
+     split mid-statement, full original copy preserved across the two parts. */
+  manifesto: {
+    strong:
+      'Ponieważ znamy się na rzeczy. Zajmujemy się kompleksową obsługą marek w social mediach,',
+    muted:
+      'projektując strategie komunikacyjne dopasowane indywidualnie do potrzeb każdego biznesu.',
+  },
+  /* Supporting paragraphs share the manifesto's two-tone treatment (user
+     decision 2026-07-13): bold ink opening, muted gray closer. */
   paragraphs: [
-    'Zajmujemy się kompleksową obsługą marek w social mediach, projektując strategie komunikacyjne dopasowane indywidualnie do potrzeb każdego biznesu.',
-    'Prowadź atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych. Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
-    'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
+    {
+      strong:
+        'Prowadź atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych.',
+      muted: 'Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
+    },
+    {
+      strong:
+        'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu,',
+      muted: 'aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
+    },
   ],
   link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/#o-nas' },
 } as const
@@ -310,26 +358,125 @@ export const services = {
     {
       id: 'content',
       title: 'CONTENT',
-      body: 'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i możliwości, grupę docelową oraz wartości i charakter marki, by zbudować skuteczną komunikację w mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia, na bieżąco monitorujemy działania, konsekwentnie realizujemy plan i regularnie raportujemy wyniki.',
+      body: 'Strategia to nasz punkt wyjścia: poznajemy Waszą markę i odbiorców, by budować skuteczną komunikację w social mediach.',
+      bodyLong:
+        'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i możliwości, grupę docelową oraz wartości i charakter marki, by zbudować skuteczną komunikację w mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia, na bieżąco monitorujemy działania, konsekwentnie realizujemy plan i regularnie raportujemy wyniki.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
-      poster: '/clips/service-content-poster.jpg',
-      clip: '/clips/service-content.mp4',
+      stage: {
+        kind: 'panels',
+        panels: [
+          {
+            src: '/assets/services-instagram.png',
+            alt: 'Profil Social Lama na Instagramie — siatka postów',
+            width: 801,
+            height: 915,
+          },
+          {
+            src: '/assets/services-tiktok.png',
+            alt: 'Profil Social Lama na TikToku — 55,4 tys. polubień',
+            width: 1149,
+            height: 944,
+          },
+          {
+            src: '/assets/services-linkedin.png',
+            alt: 'Strona Social Lama na LinkedIn',
+            width: 827,
+            height: 918,
+          },
+          {
+            src: '/assets/services-x.png',
+            alt: 'Profil Social Lama na X',
+            width: 887,
+            height: 847,
+          },
+          {
+            src: '/assets/services-pinterest.png',
+            alt: 'Profil Social Lama na Pintereście',
+            width: 900,
+            height: 1117,
+          },
+          {
+            src: '/assets/services-youtube.png',
+            alt: 'Kanał Social Lama na YouTube',
+            width: 900,
+            height: 1117,
+          },
+        ],
+      },
     },
     {
       id: 'sprzedaz',
       title: 'SPRZEDAŻ',
-      body: 'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
+      body: 'Komunikacja ma spełniać swoją najważniejszą rolę: sprzedaż — skuteczność mierzymy sukcesem Twojego biznesu.',
+      bodyLong:
+        'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/sprzedaz' },
-      poster: '/clips/service-sprzedaz-poster.jpg',
-      clip: '/clips/service-sprzedaz.mp4',
+      stage: {
+        kind: 'panels',
+        panels: [
+          {
+            src: '/assets/services-ads.png',
+            alt: 'Menedżer reklam Meta — wyniki kampanii sprzedażowych',
+            width: 1100,
+            height: 821,
+          },
+          {
+            src: '/assets/services-insights.png',
+            alt: 'Statystyki Instagrama — wzrost zasięgu i obserwujących',
+            width: 900,
+            height: 1117,
+          },
+          {
+            src: '/assets/services-ytstudio.png',
+            alt: 'Statystyki kanału YouTube — wzrost wyświetleń',
+            width: 1100,
+            height: 821,
+          },
+          {
+            src: '/assets/services-xanalytics.png',
+            alt: 'Analityka X — wzrost wyświetleń i zaangażowania',
+            width: 1100,
+            height: 821,
+          },
+          {
+            src: '/assets/services-tiktokstudio.png',
+            alt: 'TikTok Studio — statystyki wyświetleń i obserwujących',
+            width: 1100,
+            height: 821,
+          },
+          {
+            src: '/assets/services-linkedin-analiza.png',
+            alt: 'Analiza strony LinkedIn — wzrost odwiedzin i obserwujących',
+            width: 1100,
+            height: 821,
+          },
+        ],
+      },
     },
     {
       id: 'kreacje',
       title: 'KREACJE I WIDEO',
-      body: 'Grafiki, wideo, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w social mediach. W naszych strategiach dbamy o różnorodność przekazów oraz dopasowanie ich do trendów i preferencji odbiorców.',
+      body: 'Grafiki, wideo, rolki i animacje — pełne spektrum kreacji dopasowanych do trendów i preferencji odbiorców.',
+      bodyLong:
+        'Grafiki, wideo, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w social mediach. W naszych strategiach dbamy o różnorodność przekazów oraz dopasowanie ich do trendów i preferencji odbiorców.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/kreacje-wideo' },
-      poster: '/clips/service-kreacje-poster.jpg',
-      clip: '/clips/service-kreacje.mp4',
+      // Longer dwell so the clips get time to actually play (user request).
+      dwellMs: 11000,
+      stage: {
+        kind: 'video',
+        clips: [
+          {
+            src: '/clips/kreacje-bts.mp4',
+            poster: '/clips/kreacje-bts-poster.jpg',
+            alt: 'Backstage nagrań dla Burger King',
+          },
+          {
+            src: '/clips/kreacje-dpd.mp4',
+            poster: '/clips/kreacje-dpd-poster.jpg',
+            alt: 'Relacja z eventu DPD',
+          },
+        ],
+      },
     },
   ] satisfies Service[],
 } as const

@@ -30,7 +30,10 @@ export function ClientLogos() {
   const finePointer = useMediaQuery('(hover: hover) and (pointer: fine)')
 
   return (
-    <section className={s.section}>
+    // data-blur-edge-gate: the viewport-bottom progressive blur stays hidden
+    // while this belt is on screen — the brand marquee must never be frosted
+    // at page start (user decision, 2026-07-13). See components/layout/blur-edge.
+    <section className={s.section} data-blur-edge-gate>
       {/* The visible heading names the section — no aria-label, so AT
           announces "Zaufali nam" exactly once. */}
       <h2 className={s.heading}>{clientsHeading}</h2>
