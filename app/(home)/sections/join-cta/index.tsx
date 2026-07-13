@@ -1,5 +1,5 @@
-import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { Video } from '@/components/ui/video'
 import { joinCta } from '@/lib/content/home'
 import s from './join-cta.module.css'
 
@@ -16,12 +16,12 @@ export function JoinCta() {
         </Link>
       </div>
       <div className={s.media}>
-        <Image
-          src={joinCta.poster}
-          alt=""
-          width={420}
-          height={420}
-          objectFit="contain"
+        {/* Clip background is flat #722341 (plum-dark), compositing seamlessly
+            onto the plum-deep chapter (design D3/D5). */}
+        <Video
+          src={joinCta.clip}
+          poster={joinCta.poster}
+          aspectRatio={1}
           className={s.llama}
         />
       </div>

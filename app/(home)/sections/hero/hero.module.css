@@ -1,14 +1,69 @@
+/* —— Scroll-scrub track (track.tsx) ——————————————————————————————————————
+   The sticky column (hero + logo belt) pins while scroll through the runway
+   scrubs the clip: 80% scrub, 20% hold. */
+
+.track {
+  /* Runway length is a tuned constant (design: 280vh initial) — it sets how
+     much scrolling the head-turn spans. */
+  height: 280vh;
+
+  /* No scrub → no runway: mobile keeps the looping clip, reduced motion keeps
+     the static poster. Collapse to the column's own height so neither is
+     trapped in a multi-viewport scroll with no visible change. */
+  @media (--mobile) {
+    height: auto;
+  }
+
+  @media (--reduced-motion) {
+    height: auto;
+  }
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  /* min-height (not height) so short viewports keep today's behavior: the
+     hero's 620px floor grows the column past the viewport and the belt drops
+     below the fold. */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
 .hero {
-  /* The chapter-1 viewport wrapper (page.tsx) owns 100svh; the hero fills the
-     space left above the logo belt. The floor keeps the clamp()-sized headline
-     readable on short viewports (~660px) — the belt overflows below the fold
-     instead of crushing the hero. */
+  /* The sticky column (track.tsx) owns 100svh; the hero fills the space left
+     above the logo belt. The floor keeps the clamp()-sized headline readable
+     on short viewports (~660px) — the belt overflows below the fold instead
+     of crushing the hero. */
+  position: relative;
   flex: 1;
   min-height: 620px;
   display: flex;
   align-items: center;
   padding-block: calc(var(--safe) * 4) var(--safe);
   padding-inline: var(--safe);
+}
+
+/* Desktop clip/poster: bare, right-anchored against the section (reference
+   geometry) — the clip's background is graded to exactly #892f53 and gated
+   (verify-clip-bg.ts), so its edges are invisible against the chapter. Top
+   inset keeps the llama's ears clear of the fixed header band (the header's
+   CTA/menu sit top-right, exactly where the llama is). */
+.video {
+  display: none;
+
+  @media (--desktop) {
+    display: block;
+    position: absolute;
+    /* Deeper top inset shrinks the llama below hero scale; the negative right
+       offset bleeds the clip's empty right margin off-screen so the llama
+       itself hugs the viewport edge. */
+    top: calc(var(--safe) * 3.5 + 53px);
+    bottom: 0;
+    right: calc(var(--safe) * -2);
+    width: auto;
+    height: auto;
+  }
 }
 
 .inner {
@@ -31,9 +86,10 @@
 
   @media (--desktop) {
     flex: 1 1 55%;
-    /* Let the nowrap headline overflow the column instead of widening it
-       (which would shrink the video). The overflow lands on the video's empty
-       flat-plum left half — invisible seam per the composite convention. */
+    /* Let the nowrap headline overflow the column. The overflow lands on the
+       clip's empty flat-plum left half — invisible seam per the
+       seamless-composite convention, and the llama turns to look at exactly
+       these words. */
     min-width: 0;
     position: relative;
     z-index: 1;
@@ -141,22 +197,16 @@
   -webkit-mask-size: contain;
 }
 
+/* Mobile-only media column (the desktop clip is the absolute .video above). */
 .media {
   width: 100%;
   max-width: 460px;
-
-  @media (--desktop) {
-    flex: 0 0 40%;
-    max-width: 560px;
-  }
 }
 
-/* Reference proportions: a slightly-portrait (0.92) media box. The 1.27:1
-   clip is cover-cropped, framing biased right so the llama stays centered. */
-.media video,
-.media img {
+/* Mobile clip keeps the pre-change presentation until the mobile follow-up:
+   slightly-portrait (0.92) box, cover-crop biased right so the llama stays
+   centered. Scoped so it can't leak onto the desktop media. */
+.mobileVideo video,
+.mobileVideo img {
   object-position: 65% center;
 }
-
-/* No border-radius / panel: the clip is authored on flat #892f53 so it
-   composites invisibly onto the plum chapter (seamless-composite, design D3). */

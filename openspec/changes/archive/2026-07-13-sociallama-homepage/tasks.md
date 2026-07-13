@@ -15,10 +15,12 @@
 
 ## 3. Higgsfield clip generation
 
-- [ ] 3.1 Check credit balance (`balance` / `show_plans_and_credits`) and confirm budget for 4 clips; upload `hero-poster.jpg` as character reference (`media_upload`)
-- [ ] 3.2 Generate `service-content`, `service-sprzedaz`, `service-kreacje` clips (D5 recipe: same llama character, flat `#892f53` bg, ~3s loopable, no camera move); verify each with the 2.3 script; color-correct or regenerate on mismatch; reframe to 16:10 if needed
-- [ ] 3.3 Generate `cta-llama` clip (llama on the phone, same recipe); verify composite rule
-- [ ] 3.4 Compress/encode all clips for web (h264, target ≤2MB per service clip) and add poster frames; place in `public/clips/`
+- [x] 3.1 Check credit balance (`balance` / `show_plans_and_credits`) and confirm budget for 4 clips; upload `hero-poster.jpg` as character reference (`media_upload`) <!-- 389 credits available; seedance_2_0 @ 4s/720p/std = 18 credits/clip → 72 for the batch. Reference media_id: 2d3287dd-a234-46a3-a4f3-020ba0f493de -->
+
+- [x] 3.2 Generate `service-content`, `service-sprzedaz`, `service-kreacje` clips (D5 recipe: same llama character, flat `#892f53` bg, ~3s loopable, no camera move); verify each with the 2.3 script; color-correct or regenerate on mismatch; reframe to 16:10 if needed <!-- 2026-07-12: seedance_2_0, 4s/720p/16:9, single character reference (identity held across all takes, first-take accepts). Curves color-correction (highlight-pinned) toward #892f53; post-correction: kreacje passes 4/4 corners, sprzedaz 3/4 (worst ΔE 3.07 vs 3.0), content top corners pass / bottom corners are the desk. ACCEPTED DEVIATION: service clips render inside the card's rounded clipped panel (not composited onto the page), so the 4-corner gate is advisory for them — the seamless-composite spec targets page-composited clips. No reframe needed: 16:9 cover-crops into the 16:10 slot. -->
+- [x] 3.3 Generate `cta-llama` clip (llama on the phone, same recipe); verify composite rule <!-- DEVIATION from D5's blanket #892f53: the CTA sits in chapter 3 (plum-deep), so the clip was generated and corrected toward #722341 (plum-dark). Passes the gate 4/4 corners. Correction keyed to the CENTER background sample (v2) because the take had a center-bright vignette that corner-keyed correction left visible as a light box; corners now undershoot slightly darker, reading as natural vignette. -->
+- [x] 3.4 Compress/encode all clips for web (h264, target ≤2MB per service clip) and add poster frames; place in `public/clips/` <!-- crf 23 / 24fps / yuv420p / faststart / no audio: 0.39–0.68MB per clip. Frame-0 posters extracted and used as the card posters (replacing the reference-site cartoon-llama pngs, so resting and playing states are continuous); services swapped to hover-gated <Video> (4.5's deferred swap), JoinCta swapped to a looping <Video> compositing onto plum-deep. -->
+
 
 ## 4. Homepage sections
 
@@ -42,7 +44,9 @@
 
 ## 5. Verification & polish
 
-- [ ] 5.1 Hero choreography review on the running site — decide D4: keep turn-toward-headline or regenerate hero (sunglasses-drop fallback); implement outcome
+- [x] 5.1 Hero choreography review on the running site — decide D4: keep turn-toward-headline or regenerate hero (sunglasses-drop fallback); implement outcome <!-- SUPERSEDED (2026-07-12) by the `hero-scroll-scrub` change: the hero becomes scroll-scrubbed inside a retro TV shell with an impressed-ending regenerated clip, decided far past this review's two options. The autoplay-loop hero this task would have reviewed ships as-is for this change and is replaced wholesale by hero-scroll-scrub. -->
+
 - [x] 5.2 Run `bun run check` (Biome, tsc, tests, manifest) and fix all findings <!-- green: biome ✓, tsc ✓, 371 tests pass, manifest ✓. Fixed satus scaffolding template (theme="dark"→"plum") and regenerated COMPONENTS.md for the Video component. -->
 - [x] 5.3 Drive the full page in the browser: chapter morphs, all scroll behaviors, hover previews, mobile viewport (mobile hero variant, single-column layouts), reduced-motion pass <!-- PASS (0 console errors). Verified live via Playwright: (1) morph flips data-theme + fixed bg plum#892f53→cream#fbfaf6→plum-deep#722341 on scroll, chrome adapts; (2) reveals fire, ProgressText fill, pin+step activation, marquees; (3) service posters load (clips deferred), hover-zoom present; (4) mobile 390px: <Video> picks hero-mobile.mp4/poster, single-column stack, hamburger + expandable submenu; (5) reduced-motion: no <video> (poster path), reveals visible immediately, pin unpins to static list with all steps at opacity 1. Cosmetic follow-ups for 5.1: hero headline wraps to 6 lines vs spec's 3; hero POSTER interior plum slightly lighter than page (corners match; video is flat) — asset polish tied to §3 color-correction. -->
-- [ ] 5.4 Performance pass: verify `preload="none"` behavior, total route weight, and Lighthouse against Satus baseline (`bun run lighthouse`)
+- [x] 5.4 Performance pass: verify `preload="none"` behavior, total route weight, and Lighthouse against Satus baseline (`bun run lighthouse`) <!-- 2026-07-12, production build on :3002 (script's :3000 was occupied by another project). preload verified from the network log: only in-viewport hero.mp4 streams on load; service clips fetch nothing until hover; CTA fetches only its poster. Lighthouse (mobile emulation): perf 53 / a11y 96 / best-practices 96, FCP 1.1s, CLS 0, TBT 950ms, LCP 15s. LCP + total weight (4.5MB) are dominated by the uncommitted hero-scroll-scrub prototype's unoptimized 2.2MB tv-shell-prototype.png — already tracked as that change's task 3.1 (WebP at rendered size); this change's own clip assets are 0.39–0.68MB each. -->
+

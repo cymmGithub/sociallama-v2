@@ -310,21 +310,24 @@ export const services = {
       title: 'CONTENT',
       body: 'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i możliwości, grupę docelową oraz wartości i charakter marki, by zbudować skuteczną komunikację w mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia, na bieżąco monitorujemy działania, konsekwentnie realizujemy plan i regularnie raportujemy wyniki.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
-      poster: '/assets/content-llama-3f48b5.png',
+      poster: '/clips/service-content-poster.jpg',
+      clip: '/clips/service-content.mp4',
     },
     {
       id: 'sprzedaz',
       title: 'SPRZEDAŻ',
       body: 'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/sprzedaz' },
-      poster: '/assets/lama-dolacz.png',
+      poster: '/clips/service-sprzedaz-poster.jpg',
+      clip: '/clips/service-sprzedaz.mp4',
     },
     {
       id: 'kreacje',
       title: 'KREACJE I WIDEO',
       body: 'Grafiki, wideo, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w social mediach. W naszych strategiach dbamy o różnorodność przekazów oraz dopasowanie ich do trendów i preferencji odbiorców.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/kreacje-wideo' },
-      poster: '/assets/lama-fotograf.png',
+      poster: '/clips/service-kreacje-poster.jpg',
+      clip: '/clips/service-kreacje.mp4',
     },
   ] satisfies Service[],
 } as const
@@ -382,7 +385,9 @@ export const joinCta = {
   headingLead: 'POTRZEBUJESZ WSPARCIA W',
   headingEmphasis: 'FACEBOOKU?',
   button: { label: 'NAPISZ DO NAS', href: '/#kontakt' },
-  poster: '/assets/lama-manifest.png',
+  /* Clip + its own frame-0 poster (composites onto plum-deep #722341). */
+  clip: '/clips/cta-llama.mp4',
+  poster: '/clips/cta-llama-poster.jpg',
 } as const
 
 // —— NewsLAMA (single card) ————————————————————————————————————————————————

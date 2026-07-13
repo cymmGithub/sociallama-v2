@@ -1,0 +1,73 @@
+# homepage
+
+## Purpose
+
+Define the Social Lama homepage: the three-chapter scroll narrative, hero, typed content sourcing, and section motion behaviors.
+
+## Requirements
+
+### Requirement: Three-chapter scroll narrative
+The homepage SHALL render as three sequential chapters — `plum` (nav, hero, client logos), `cream` (why-that-works, services, how-it-works, big marquee), `plum-deep` (testimonial, CTA, NewsLAMA, footer) — with the page background animating smoothly between chapter theme backgrounds as the user scrolls.
+
+#### Scenario: Background morph on chapter change
+- **WHEN** the scroll position crosses into a new chapter (center-of-viewport heuristic)
+- **THEN** the page background transitions to the new chapter's theme background over ~0.9s
+
+#### Scenario: Reduced motion
+- **WHEN** the user has `prefers-reduced-motion: reduce`
+- **THEN** chapter backgrounds change without animated transition and scroll-scrubbed effects render in their final state
+
+### Requirement: Hero with choreographed video
+The hero SHALL display the three-line headline ("STRATEGY / THAT WORKS / WITH SOCIAL LAMA") in the left column and the llama hero video framed in a retro TV shell (see `hero-tv-shell`) in the right column, on a section background of exactly `#892f53`. The desktop video SHALL NOT autoplay or loop: it is scrubbed by scroll while the hero and client-logos belt stay pinned (see `hero-scroll-scrub`). The headline lines SHALL stagger in via GSAP on first paint, independent of video time.
+
+#### Scenario: Entrance animation
+- **WHEN** the hero first mounts (motion allowed)
+- **THEN** the headline lines animate in staggered once and do not re-animate, regardless of video state or scroll position
+
+#### Scenario: Video not yet loaded
+- **WHEN** the video data has not arrived (slow network or reduced motion)
+- **THEN** the poster is visible inside the TV screen, and the headline entrance still runs on mount
+
+#### Scenario: Scroll reveals the llama's reaction
+- **WHEN** the visitor scrolls through the pinned hero
+- **THEN** the llama turns toward the headline in step with scroll, ending on the impressed pose for the hold phase
+
+### Requirement: Content sections from typed data
+All section copy (nav, hero, services, steps, client names, featured testimonial, blog card, footer, contact) SHALL come from `lib/content/home.ts`, matching the verified content export verbatim; components SHALL contain no hardcoded copy. FAQ and multi-post blog grid are excluded from v1.
+
+#### Scenario: Content fidelity
+- **WHEN** the homepage renders
+- **THEN** the five how-it-works steps, three service descriptions, 13 client names, featured iRobot testimonial (Małgorzata Radomska), and footer contact details match the export exactly
+
+#### Scenario: Excluded sections
+- **WHEN** the homepage renders
+- **THEN** no FAQ section exists and NewsLAMA shows exactly one large post card ("LinkedIn Premium — czy warto?")
+
+### Requirement: Section motion behaviors
+The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / WITH SOCIAL LAMA" marquee via `<Marquee>`; why-that-works heading fill scrubbed by scroll progress; how-it-works pinned via `<Fold>` with the five steps highlighting sequentially by scroll progress; below-fold sections revealing on first viewport entry via `useReveal`.
+
+#### Scenario: Pinned how-it-works scrub
+- **WHEN** the user scrolls through the how-it-works section
+- **THEN** the section content stays pinned while steps 01–05 activate in order tied to scroll progress, and unpins after the last step
+
+#### Scenario: Heading fill scrub
+- **WHEN** the "WHY THAT WORKS" heading passes through the viewport
+- **THEN** its fill progresses proportionally to scroll from unfilled to fully plum
+
+### Requirement: Service cards with clip previews
+The three service cards (CONTENT, SPRZEDAŻ, KREACJE I WIDEO) SHALL each display a Higgsfield-generated character-consistent clip preview area; on pointer hover the clip plays, otherwise the poster frame is shown. If a clip is unavailable at ship time, the card SHALL render a static poster frame in the same slot.
+
+#### Scenario: Hover playback
+- **WHEN** the pointer enters a service card with an available clip
+- **THEN** the clip plays; **WHEN** the pointer leaves **THEN** it pauses and resets to poster
+
+#### Scenario: Touch devices
+- **WHEN** the device has no hover capability
+- **THEN** the clip area shows the poster frame (no hover-dependent dead state)
+
+### Requirement: Homepage replaces the Satus manual
+`app/page.tsx` SHALL render the Social Lama homepage; the Satus onboarding manual page and its assets SHALL be removed from the route.
+
+#### Scenario: Root route
+- **WHEN** a visitor opens `/`
+- **THEN** the Social Lama homepage renders with metadata (title, description, OG image) for Social Lama, not Satus
