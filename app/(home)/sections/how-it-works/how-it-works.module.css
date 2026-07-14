@@ -4,8 +4,8 @@
      noticeably faster than the original 55svh cadence. */
   min-height: calc(100svh + var(--step-scroll, 40svh) * 5);
   padding-inline: var(--safe);
-  /* Grain-gradient (why-manifesto-gradient) shared by the heading, the active
-     card's wash, and its number — hoisted so the data URI lives here once. */
+  /* Grain-gradient (why-manifesto-gradient) shared by the heading fill and
+     the stage panel's grain overlay — hoisted so the data URI lives once. */
   --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700"><defs><linearGradient gradientTransform="rotate(-150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g2"><stop stop-color="%23892f53" offset="0"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><linearGradient gradientTransform="rotate(150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g3"><stop stop-color="%23f09b39"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><filter id="gr" x="-20%25" y="-20%25" width="140%25" height="140%25" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" result="t"/><feColorMatrix type="saturate" values="0" in="t" result="c"/><feComponentTransfer in="c" result="ct"><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -11"/></filter></defs><g><rect width="100%25" height="100%25" fill="%23f09b39"/><rect width="100%25" height="100%25" fill="url(%23g3)"/><rect width="100%25" height="100%25" fill="url(%23g2)"/><rect width="100%25" height="100%25" fill="transparent" filter="url(%23gr)" opacity="1" style="mix-blend-mode:soft-light"/></g></svg>');
 }
 
@@ -16,8 +16,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: calc(var(--gap) * 2.5);
-  padding-block: calc(var(--safe) * 2);
+  /* Tighter rhythm than the pre-stage layout: the plum panel adds height
+     around the cards, and the display-scale heading must stay on screen. */
+  gap: calc(var(--gap) * 1.5);
+  padding-block: calc(var(--safe) * 1.25);
 }
 
 .head {
@@ -72,6 +74,59 @@
   color: var(--color-contrast);
 }
 
+/* Plum stage panel (Mock B, user decision 2026-07-14): steps and progress sit
+   on a rounded plum gradient with an orange glow and grain — the same backdrop
+   language as the services stage above, so the chapter reads as one system.
+   Absolute palette tokens (plum/orange/cream/ink) keep the island theme-proof. */
+.stage {
+  position: relative;
+  border-radius: 20px;
+  padding: calc(var(--gap) * 1.5);
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+
+  /* Orange glow blob, top-right (services-stage recipe). */
+  &::before {
+    content: "";
+    position: absolute;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: -45%;
+    right: -12%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 75%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  /* Grain overlay over the whole panel. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    background-size: 480px 480px;
+    opacity: 0.14;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
 .steps {
   display: flex;
   flex-direction: column;
@@ -81,20 +136,10 @@
     flex-direction: row;
     align-items: stretch;
     gap: var(--gap);
-    /* Fixed row height = active card's natural height (130px icon + block
-       padding + borders). Without it, mid-transition text re-wrapping lets
-       the row breathe and the centered sticky column pops the heading
-       (user feedback 2026-07-14). Longer copy clips against the active
-       card's overflow: hidden instead of shifting layout. */
-    height: calc(130px + 3 * var(--gap) + 2px);
   }
 }
 
-/* Spotlight expand (Mock C, user decision 2026-07-14): on desktop the active
-   step physically grows into a horizontal feature panel — cream card, grain
-   wash, display-scale gradient number — while inactive steps compress to
-   number+icon chips. Emphasis is spatial, not just tonal. Mobile keeps the
-   stacked-cards presentation (all texts visible, tonal highlight). */
+/* Glassy cards on the plum stage; the active one lightens and glows orange. */
 .step {
   flex: 1;
   display: flex;
@@ -102,14 +147,15 @@
   gap: var(--gap);
   padding: calc(var(--gap));
   border-radius: 12px;
-  border: 1px solid transparent;
-  opacity: 0.28;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
+  opacity: 0.4;
   transition:
-    flex-grow var(--duration) var(--ease-out-expo),
     opacity var(--duration) var(--ease-out-expo),
     border-color var(--duration) var(--ease-out-expo),
     background-color var(--duration) var(--ease-out-expo),
-    box-shadow var(--duration) var(--ease-out-expo);
+    box-shadow var(--duration) var(--ease-out-expo),
+    transform var(--duration) var(--ease-out-expo);
 
   @media (--desktop) {
     flex-direction: column;
@@ -119,51 +165,11 @@
 
   &[data-active="true"] {
     opacity: 1;
-    border-color: var(--line-strong);
-    background-color: var(--surface-2);
-  }
-
-  @media (--desktop) {
-    &:not([data-active="true"]) {
-      flex-grow: 0.45;
-      align-items: center;
-      justify-content: flex-start;
-      opacity: 0.55;
-
-      & .stepText {
-        display: none;
-      }
-    }
-
-    &[data-active="true"] {
-      flex-grow: 2.6;
-      position: relative;
-      overflow: hidden;
-      flex-direction: row;
-      align-items: center;
-      gap: calc(var(--gap) * 1.5);
-      padding: calc(var(--gap) * 1.5);
-      background-color: #faf9f5;
-      border-color: color-mix(in srgb, var(--color-orange) 50%, transparent);
-      box-shadow: 0 24px 50px -24px
-        color-mix(in srgb, var(--color-plum) 50%, transparent);
-
-      /* Grain wash under the content (children get position: relative). */
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: var(--grain);
-        background-size: cover;
-        background-position: 50% 30%;
-        opacity: 0.22;
-        pointer-events: none;
-      }
-
-      & > * {
-        position: relative;
-      }
-    }
+    background-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-orange) 70%, transparent);
+    box-shadow: 0 0 60px -10px
+      color-mix(in srgb, var(--color-orange) 45%, transparent);
+    transform: scale(1.03);
   }
 }
 
@@ -171,40 +177,29 @@
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.5rem;
-  color: var(--color-contrast);
+  color: var(--color-orange);
   flex: 0 0 auto;
-
-  @media (--desktop) {
-    /* Display-scale gradient number on the active panel — same grain window
-       as the "IT WORKS" heading line (em-coupled, so it scales with type). */
-    .step[data-active="true"] & {
-      font-size: 5.5rem;
-      line-height: 1;
-      background-image: var(--grain);
-      background-size: 6.26em 6.26em;
-      background-position: -1.78em -2.8em;
-      background-repeat: no-repeat;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  }
 }
 
 .stepMedia {
   position: relative;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
 
   @media (--desktop) {
     width: 64px;
     height: 64px;
+  }
 
-    .step[data-active="true"] & {
-      width: 130px;
-      height: 130px;
-    }
+  /* Cream chip behind the icon — the ink strokes vanish on plum otherwise.
+     Painted by a pseudo so the fill <Image> (inset: 0) keeps its box. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 12px;
+    background-color: var(--color-cream);
   }
 }
 
@@ -213,20 +208,13 @@
   font-weight: 700;
   font-size: 0.9rem;
   line-height: 1.45;
-
-  @media (--desktop) {
-    .step[data-active="true"] & {
-      font-size: 1.15rem;
-      line-height: 1.5;
-      max-width: 34ch;
-    }
-  }
+  color: var(--color-cream);
 }
 
 .progress {
   height: 3px;
   width: 100%;
-  background-color: var(--line);
+  background-color: color-mix(in srgb, var(--color-cream) 18%, transparent);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -235,14 +223,17 @@
   display: block;
   height: 100%;
   width: var(--fill, 20%);
-  background: linear-gradient(90deg, var(--color-plum), var(--color-orange));
+  background: linear-gradient(
+    90deg,
+    var(--color-plum-hero),
+    var(--color-orange)
+  );
   transition: width var(--duration) var(--ease-out-expo);
 }
 
 /* Reduced motion / no-pin fallback: render as a plain stacked list in its
-   final state (all steps visible), per the homepage reduced-motion scenario.
-   The spotlight compression is scroll-driven emphasis, so it reverts too:
-   every step reads as a full card with its text. */
+   final state (all steps visible on the stage), per the homepage
+   reduced-motion scenario. */
 @media (--reduced-motion) {
   .pin {
     min-height: auto;
@@ -253,24 +244,7 @@
     min-height: auto;
   }
 
-  /* All cards render full content, so the row sizes naturally. */
-  .steps {
-    height: auto;
-  }
-
   .step {
     opacity: 1;
-
-    @media (--desktop) {
-      &:not([data-active="true"]) {
-        flex-grow: 1;
-        opacity: 1;
-        align-items: flex-start;
-
-        & .stepText {
-          display: block;
-        }
-      }
-    }
   }
 }

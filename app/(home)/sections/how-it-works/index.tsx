@@ -36,39 +36,44 @@ export function HowItWorks() {
           <p className={s.subhead}>{howItWorks.subhead}</p>
         </div>
 
-        <ol className={s.steps}>
-          {howItWorks.steps.map((step, index) => (
-            <li
-              key={step.number}
-              className={s.step}
-              data-active={index === active}
-            >
-              <span className={s.number}>{step.number}</span>
-              <div className={s.stepMedia}>
-                <Image
-                  src={step.image}
-                  alt=""
-                  fill
-                  objectFit="contain"
-                  mobileSize="30vw"
-                  desktopSize="12vw"
-                  /* Tiny 3-color PNGs the optimizer can't improve — and its
-                     w=256 rendition inverts the ink strokes to white (same
-                     optimizer-bug family as the disabled AVIF in next.config).
-                     Serve the originals. */
-                  unoptimized
-                />
-              </div>
-              <p className={s.stepText}>{step.text}</p>
-            </li>
-          ))}
-        </ol>
+        {/* Plum stage panel (Mock B, user decision 2026-07-14): steps and
+            progress live on the services-stage backdrop language — rounded
+            plum gradient, orange glow, grain. */}
+        <div className={s.stage}>
+          <ol className={s.steps}>
+            {howItWorks.steps.map((step, index) => (
+              <li
+                key={step.number}
+                className={s.step}
+                data-active={index === active}
+              >
+                <span className={s.number}>{step.number}</span>
+                <div className={s.stepMedia}>
+                  <Image
+                    src={step.image}
+                    alt=""
+                    fill
+                    objectFit="contain"
+                    mobileSize="30vw"
+                    desktopSize="12vw"
+                    /* Tiny 3-color PNGs the optimizer can't improve — and its
+                       w=256 rendition inverts the ink strokes to white (same
+                       optimizer-bug family as the disabled AVIF in
+                       next.config). Serve the originals. */
+                    unoptimized
+                  />
+                </div>
+                <p className={s.stepText}>{step.text}</p>
+              </li>
+            ))}
+          </ol>
 
-        <div className={s.progress} aria-hidden="true">
-          <span
-            className={s.progressBar}
-            style={{ '--fill': `${((active + 1) / STEP_COUNT) * 100}%` }}
-          />
+          <div className={s.progress} aria-hidden="true">
+            <span
+              className={s.progressBar}
+              style={{ '--fill': `${((active + 1) / STEP_COUNT) * 100}%` }}
+            />
+          </div>
         </div>
       </div>
     </section>
