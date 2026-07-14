@@ -94,7 +94,10 @@ const nextConfig: NextConfig = {
     taint: true,
     cachedNavigations: true,
     prefetchInlining: true,
-    sri: { algorithm: 'sha384' },
+    /* No SRI: Vercel's skew protection injects the deployment id into chunk
+       bytes at deploy time, so build-time integrity hashes never match what's
+       served — the browser blocks the chunks and all client JS dies
+       (verified against dpl_E9hpuoE5oWqaH8eD5X7mm9sEfvd4, 2026-07-14). */
     optimizePackageImports: [
       '@react-three/drei',
       '@react-three/fiber',
