@@ -55,6 +55,38 @@ export function Hero() {
     }
   })
 
+  // iOS decode unlock: Safari ignores preload="auto" and never buffers or
+  // activates the decode pipeline for a video that is never play()ed — the
+  // poster paints but currentTime writes show nothing. Prime it with a muted
+  // play() → pause() (allowed without a gesture for muted+playsInline). Low
+  // Power Mode rejects programmatic play(), so retry once on first touch.
+  useEffect(() => {
+    if (media === 'poster') return
+    const video = videoRef.current
+    if (!video) return
+
+    let primed = false
+    const prime = () => {
+      if (primed) return
+      video
+        .play()
+        ?.then(() => {
+          primed = true
+          video.pause()
+        })
+        .catch(() => {
+          // Low Power Mode / restricted: the touchstart retry covers it.
+        })
+    }
+
+    prime()
+    window.addEventListener('touchstart', prime, {
+      once: true,
+      passive: true,
+    })
+    return () => window.removeEventListener('touchstart', prime)
+  }, [media])
+
   // Stagger the three headline lines in on first paint (design D4). Runs once
   // and never re-triggers; reduced motion leaves the final state untouched.
   useEffect(() => {
