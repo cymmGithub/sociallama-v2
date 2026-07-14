@@ -331,20 +331,14 @@ export const whyThatWorks = {
     muted:
       'projektując strategie komunikacyjne dopasowane indywidualnie do potrzeb każdego biznesu.',
   },
-  /* Supporting paragraphs share the manifesto's two-tone treatment (user
-     decision 2026-07-13): bold ink opening, muted gray closer. */
-  paragraphs: [
-    {
-      strong:
-        'Prowadź atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych.',
-      muted: 'Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
-    },
-    {
-      strong:
-        'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu,',
-      muted: 'aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
-    },
-  ],
+  /* Supporting copy: one paragraph, manifesto two-tone treatment (Mock A,
+     user decision 2026-07-14) — bold ink lead, muted gray closer. */
+  support: {
+    strong:
+      'Prowadź atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych. Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
+    muted:
+      'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
+  },
   link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/#o-nas' },
 } as const
 

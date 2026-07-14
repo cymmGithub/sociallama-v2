@@ -2,8 +2,8 @@
 
 import cn from 'clsx'
 import { ProgressText } from '@/components/effects/progress-text'
+import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { Video } from '@/components/ui/video'
 import { whyThatWorks } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
@@ -59,38 +59,36 @@ export function WhyThatWorks() {
         </ProgressText>
       </p>
 
-      {/* Supporting row: brand showreel left (Seedance clip started from the
-          generated office photo — the poster is its exact first frame, so
-          poster→playback is seamless), remaining copy right. The paragraphs
+      {/* Supporting row: team photo left, remaining copy right. The paragraphs
           repeat the manifesto's two-tone treatment at reading scale. */}
       <div ref={bottomRef} className={s.bottom}>
         <div data-reveal-item className={s.media}>
-          <Video
-            src="/clips/why-showreel.mp4"
-            poster="/clips/why-showreel-poster.jpg"
-            alt="Lama nagrywająca rolkę w biurze agencji, wokół ikony social mediów"
-            className={s.mediaVideo}
+          <Image
+            src="/assets/why-team.jpg"
+            alt="Zespół agencji Social Lama"
+            fill
+            objectFit="cover"
+            mobileSize="100vw"
+            desktopSize="45vw"
           />
         </div>
         <div className={s.copy}>
-          {whyThatWorks.paragraphs.map((paragraph) => (
-            <p key={paragraph.strong.slice(0, 24)} className={s.para}>
-              <ProgressText
-                className={s.manifestoPart ?? ''}
-                start="top bottom"
-                end="center center"
-              >
-                {paragraph.strong}
-              </ProgressText>{' '}
-              <ProgressText
-                className={cn(s.manifestoPart, s.muted)}
-                start="top bottom"
-                end="center center"
-              >
-                {paragraph.muted}
-              </ProgressText>
-            </p>
-          ))}
+          <p className={s.para}>
+            <ProgressText
+              className={s.manifestoPart ?? ''}
+              start="top bottom"
+              end="center center"
+            >
+              {whyThatWorks.support.strong}
+            </ProgressText>{' '}
+            <ProgressText
+              className={cn(s.manifestoPart, s.muted)}
+              start="top bottom"
+              end="center center"
+            >
+              {whyThatWorks.support.muted}
+            </ProgressText>
+          </p>
           <span data-reveal-item>
             <Link className={s.link} href={whyThatWorks.link.href}>
               {whyThatWorks.link.label}
