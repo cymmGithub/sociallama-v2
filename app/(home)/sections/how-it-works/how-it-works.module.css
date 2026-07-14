@@ -4,8 +4,7 @@
      noticeably faster than the original 55svh cadence. */
   min-height: calc(100svh + var(--step-scroll, 40svh) * 5);
   padding-inline: var(--safe);
-  /* Grain-gradient (why-manifesto-gradient) shared by the heading fill and
-     the stage panel's grain overlay — hoisted so the data URI lives once. */
+  /* Grain-gradient (why-manifesto-gradient) for the stage panel's overlay. */
   --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700"><defs><linearGradient gradientTransform="rotate(-150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g2"><stop stop-color="%23892f53" offset="0"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><linearGradient gradientTransform="rotate(150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g3"><stop stop-color="%23f09b39"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><filter id="gr" x="-20%25" y="-20%25" width="140%25" height="140%25" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" result="t"/><feColorMatrix type="saturate" values="0" in="t" result="c"/><feComponentTransfer in="c" result="ct"><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -11"/></filter></defs><g><rect width="100%25" height="100%25" fill="%23f09b39"/><rect width="100%25" height="100%25" fill="url(%23g3)"/><rect width="100%25" height="100%25" fill="url(%23g2)"/><rect width="100%25" height="100%25" fill="transparent" filter="url(%23gr)" opacity="1" style="mix-blend-mode:soft-light"/></g></svg>');
 }
 
@@ -20,6 +19,15 @@
      around the cards, and the display-scale heading must stay on screen. */
   gap: calc(var(--gap) * 1.5);
   padding-block: calc(var(--safe) * 1.25);
+
+  /* Mobile (user feedback 2026-07-14): heading and all five steps share the
+     pinned viewport. `safe center` degrades to top-aligned on short screens,
+     so overflow clips at the bottom instead of eating the heading. */
+  @media (--mobile) {
+    justify-content: safe center;
+    gap: var(--gap);
+    padding-block: var(--safe);
+  }
 }
 
 .head {
@@ -42,27 +50,11 @@
   display: block;
 }
 
-/* Brand rule: "…IT WORKS" mirrors "WHY THAT WORKS" — the same grain-gradient
-   (why-manifesto-gradient) clipped inside the letters instead of a flat orange
-   fill. The span is its own block line, so the gradient sits directly on it.
-   Static by design: animating a background under background-clip: text repaints
-   glyphs per frame. */
+/* Brand rule: "…IT WORKS" phrases render bold orange, mirroring the hero's
+   "THAT WORKS". Flat fill by choice (user decision 2026-07-14): the grain
+   gradient now lives on the stage panel below, and both at once is too much. */
 .headingLine:last-child {
-  background-image: var(--grain);
-  /* This span is a full-width block line, so `cover` would render the image
-     at the heading width and park the letters on its dull mauve left edge.
-     Instead pin the image window explicitly so "IT WORKS" sweeps the same
-     28%→100% slice of the image that "THAT WORKS" samples in the why section
-     (its gradient box is the 949px inline wrapper; the words sit at x270–949,
-     vertical center band). Em units keep the mapping intact at every viewport:
-     the text's em-width is fixed by the font metrics, so image and letters
-     scale together exactly like the why section's text-width-coupled box. */
-  background-size: 6.26em 6.26em;
-  background-position: -1.78em -2.8em;
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--color-orange);
 }
 
 .subhead {
@@ -91,6 +83,11 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--gap) * 1.5);
+
+  @media (--mobile) {
+    padding: var(--gap);
+    gap: var(--gap);
+  }
 
   /* Orange glow blob, top-right (services-stage recipe). */
   &::before {
@@ -130,7 +127,7 @@
 .steps {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 1.25);
+  gap: calc(var(--gap) * 0.75);
 
   @media (--desktop) {
     flex-direction: row;
@@ -157,6 +154,10 @@
     box-shadow var(--duration) var(--ease-out-expo),
     transform var(--duration) var(--ease-out-expo);
 
+  @media (--mobile) {
+    padding: calc(var(--gap) * 0.75);
+  }
+
   @media (--desktop) {
     flex-direction: column;
     align-items: flex-start;
@@ -181,25 +182,17 @@
   flex: 0 0 auto;
 }
 
+/* Icons are cream+orange PNGs (strokes recolored from ink, user decision
+   2026-07-14) so they sit directly on the plum cards, matching the text. */
 .stepMedia {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   flex: 0 0 auto;
 
   @media (--desktop) {
     width: 64px;
     height: 64px;
-  }
-
-  /* Cream chip behind the icon — the ink strokes vanish on plum otherwise.
-     Painted by a pseudo so the fill <Image> (inset: 0) keeps its box. */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -8px;
-    border-radius: 12px;
-    background-color: var(--color-cream);
   }
 }
 
@@ -209,6 +202,11 @@
   font-size: 0.9rem;
   line-height: 1.45;
   color: var(--color-cream);
+
+  @media (--mobile) {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
 }
 
 .progress {
