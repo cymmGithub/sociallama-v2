@@ -86,7 +86,14 @@ export interface Step {
 export interface Testimonial {
   quote: string
   author: string
-  company: string
+  /** Company is optional — some references are given without one. */
+  company?: string
+  /** Square author photo (public path). Present on the carousel testimonials;
+   *  absent on the lightweight client hover-card quotes. */
+  image?: string
+  /** Company logo (public path). Rendered white on the dark ground; when
+   *  absent the `company` text is shown instead. */
+  logo?: string
 }
 
 export interface NewsPost {
@@ -514,14 +521,34 @@ export const howItWorks = {
 
 export const marquee = ['THAT WORKS', 'WITH SOCIAL LAMA'] as const
 
-// —— Featured testimonial ——————————————————————————————————————————————————
+// —— Testimonials ——————————————————————————————————————————————————————————
 
-export const featuredTestimonial: Testimonial = {
-  quote:
-    'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić. Zespół wyróżnia się dużą wiedzą i kompetencjami, a także partnerskim podejściem do współpracy — zawsze możemy liczyć na zaangażowanie, sprawną komunikację i realne wsparcie w realizacji celów.',
-  author: 'Małgorzata Radomska',
-  company: 'iRobot Polska',
-}
+export const testimonials: Testimonial[] = [
+  {
+    quote:
+      'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić. Zespół wyróżnia się dużą wiedzą i kompetencjami, a także partnerskim podejściem do współpracy — zawsze możemy liczyć na zaangażowanie, sprawną komunikację i realne wsparcie w realizacji celów.',
+    author: 'Małgorzata Radomska',
+    company: 'iRobot Polska',
+    image: '/assets/testimonial-radomska.jpg',
+    logo: '/assets/clients/irobot.svg',
+  },
+  {
+    quote:
+      'Jesteśmy zadowoleni z działań Social Lamy w mediach społecznościowych. Agencja stworzyła koncepcję profilu i strategię komunikacji dla jednego z naszych produktów od podstaw, skutecznie i konsekwentnie pozyskując coraz szerszą grupę zaangażowanych odbiorców. Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
+    author: 'Marta Szwat',
+    company: 'Uniphar',
+    image: '/assets/testimonial-szwat.jpg',
+    logo: '/assets/clients/uniphar.png',
+  },
+  {
+    quote:
+      'Agencja Social Lama to profesjonalny zespół specjalistów, który wspierał działania marki STAG w obrębie social media. Agencja opracowała strategię komunikacji, która odpowiadała naszym celom wizerunkowym i prowadziła komunikację w dwóch językach. Rekomenduję agencję Social Lama ze względu na proaktywność, kreatywność i zaangażowanie w powierzony projekt.',
+    author: 'Marta Jemiejłańczuk',
+    company: 'STAG',
+    image: '/assets/testimonial-jemiejlanczuk.jpg',
+    logo: '/assets/clients/stag.svg',
+  },
+]
 
 // —— CTA ————————————————————————————————————————————————————————————————————
 
