@@ -214,20 +214,21 @@
 
 /* Mobile-only media column (the desktop clip is the absolute .video above):
    full-bleed — escapes the hero's inline gutter and takes all height left
-   below the copy, so the clip meets the client-logos band with no plum gap. */
+   below the copy, so the image meets the client-logos band with no plum gap. */
 .media {
+  position: relative;
   flex: 1;
   min-height: 0;
   width: calc(100% + 2 * var(--safe));
   margin-inline: calc(-1 * var(--safe));
+
+  @media (--desktop) {
+    display: none;
+  }
 }
 
-/* Mobile clip (raw element, scrubbed like the desktop one): cover-crops the
+/* Mobile poster (static image, user decision 2026-07-14): cover-crops the
    full-bleed box, biased right so the llama stays centered. */
-.mobileVideo {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.mobileImage {
   object-position: 65% center;
 }

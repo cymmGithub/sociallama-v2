@@ -28,16 +28,18 @@ export function Hero() {
   // transition — waiting words snap into place unseen below the mask.
   const [rotation, setRotation] = useState({ index: 0, prev: -1 })
   // 'poster' until mount so SSR and hydration render the same static shell;
-  // then each breakpoint gets its scrubbed clip (head-turn on desktop, upward
-  // glance on mobile). Reduced motion stays on the poster (no <video>).
-  const [media, setMedia] = useState<'poster' | 'desktop' | 'mobile'>('poster')
+  // then desktop gets its scrubbed head-turn clip. Mobile stays static — a
+  // poster image, no video (user decision 2026-07-14: simpler and immune to
+  // iOS's never-played-video decode restrictions). Reduced motion stays on
+  // the poster too.
+  const [media, setMedia] = useState<'poster' | 'desktop'>('poster')
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const mobile = window.matchMedia(
       `(max-width: ${breakpoints.dt - 0.02}px)`
     ).matches
-    setMedia(mobile ? 'mobile' : 'desktop')
+    if (!mobile) setMedia('desktop')
   }, [])
 
   // Seek loop (hero-scroll-scrub): the video is never played, only seeked
@@ -215,23 +217,20 @@ export function Hero() {
           </ul>
         </div>
 
-        {media === 'mobile' && (
-          /* Mobile scrubs too (reference behavior): the upward glance is
-             driven by the same seek loop — only one of the two <video>
-             variants mounts, so they share the ref. */
-          <div className={s.media}>
-            <video
-              ref={videoRef}
-              className={s.mobileVideo}
-              src={hero.video.mobileSrc}
-              poster={hero.video.posterMobile}
-              muted
-              playsInline
-              preload="auto"
-              aria-label={hero.llamaAlt}
-            />
-          </div>
-        )}
+        {/* Mobile media: static poster, full-bleed (user decision 2026-07-14
+            — no scrubbed clip on mobile). Rendered unconditionally; CSS hides
+            the box on desktop, so SSR and reduced motion get it for free. */}
+        <div className={s.media}>
+          <Image
+            src={hero.video.posterMobile}
+            alt={hero.llamaAlt}
+            fill
+            objectFit="cover"
+            className={s.mobileImage}
+            mobileSize="100vw"
+            preload
+          />
+        </div>
       </div>
     </section>
   )
