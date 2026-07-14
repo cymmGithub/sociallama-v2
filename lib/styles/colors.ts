@@ -8,7 +8,7 @@ const colors = {
   // Not in the brand book: plum-hero is the hero clip's graded background
   // (seamless-composite token — clips are gated against it, never retint it
   // to match a document); plum-dark is the chapter-3 ground.
-  'plum-hero': '#892f53',
+  'plum-hero': '#853253',
   'plum-dark': '#722341',
   orange: '#f09b39',
   ink: '#2b1f24',
