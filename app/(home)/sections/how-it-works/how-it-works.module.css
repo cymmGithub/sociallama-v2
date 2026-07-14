@@ -1,7 +1,12 @@
 .pin {
-  /* Enter + one screen of scroll per step; the sticky child pins across it. */
-  min-height: calc(100svh + var(--step-scroll, 55svh) * 5);
+  /* Enter + a beat of scroll per step; the sticky child pins across it.
+     40svh per step (user feedback 2026-07-14): step changes should come
+     noticeably faster than the original 55svh cadence. */
+  min-height: calc(100svh + var(--step-scroll, 40svh) * 5);
   padding-inline: var(--safe);
+  /* Grain-gradient (why-manifesto-gradient) shared by the heading, the active
+     card's wash, and its number — hoisted so the data URI lives here once. */
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700"><defs><linearGradient gradientTransform="rotate(-150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g2"><stop stop-color="%23892f53" offset="0"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><linearGradient gradientTransform="rotate(150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g3"><stop stop-color="%23f09b39"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><filter id="gr" x="-20%25" y="-20%25" width="140%25" height="140%25" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" result="t"/><feColorMatrix type="saturate" values="0" in="t" result="c"/><feComponentTransfer in="c" result="ct"><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -11"/></filter></defs><g><rect width="100%25" height="100%25" fill="%23f09b39"/><rect width="100%25" height="100%25" fill="url(%23g3)"/><rect width="100%25" height="100%25" fill="url(%23g2)"/><rect width="100%25" height="100%25" fill="transparent" filter="url(%23gr)" opacity="1" style="mix-blend-mode:soft-light"/></g></svg>');
 }
 
 .sticky {
@@ -27,17 +32,35 @@
   text-transform: uppercase;
   line-height: 0.9;
   letter-spacing: -0.03em;
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  /* Match the "WHY THAT WORKS" display scale (user request 2026-07-14). */
+  font-size: clamp(2.75rem, 9vw, 7rem);
 }
 
 .headingLine {
   display: block;
 }
 
-/* Brand rule: "…IT WORKS" phrases render bold orange, mirroring the hero's
-   "THAT WORKS" (orange palette token, not the chapter contrast slot). */
+/* Brand rule: "…IT WORKS" mirrors "WHY THAT WORKS" — the same grain-gradient
+   (why-manifesto-gradient) clipped inside the letters instead of a flat orange
+   fill. The span is its own block line, so the gradient sits directly on it.
+   Static by design: animating a background under background-clip: text repaints
+   glyphs per frame. */
 .headingLine:last-child {
-  color: var(--color-orange);
+  background-image: var(--grain);
+  /* This span is a full-width block line, so `cover` would render the image
+     at the heading width and park the letters on its dull mauve left edge.
+     Instead pin the image window explicitly so "IT WORKS" sweeps the same
+     28%→100% slice of the image that "THAT WORKS" samples in the why section
+     (its gradient box is the 949px inline wrapper; the words sit at x270–949,
+     vertical center band). Em units keep the mapping intact at every viewport:
+     the text's em-width is fixed by the font metrics, so image and letters
+     scale together exactly like the why section's text-width-coupled box. */
+  background-size: 6.26em 6.26em;
+  background-position: -1.78em -2.8em;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subhead {
@@ -56,10 +79,22 @@
 
   @media (--desktop) {
     flex-direction: row;
+    align-items: stretch;
     gap: var(--gap);
+    /* Fixed row height = active card's natural height (130px icon + block
+       padding + borders). Without it, mid-transition text re-wrapping lets
+       the row breathe and the centered sticky column pops the heading
+       (user feedback 2026-07-14). Longer copy clips against the active
+       card's overflow: hidden instead of shifting layout. */
+    height: calc(130px + 3 * var(--gap) + 2px);
   }
 }
 
+/* Spotlight expand (Mock C, user decision 2026-07-14): on desktop the active
+   step physically grows into a horizontal feature panel — cream card, grain
+   wash, display-scale gradient number — while inactive steps compress to
+   number+icon chips. Emphasis is spatial, not just tonal. Mobile keeps the
+   stacked-cards presentation (all texts visible, tonal highlight). */
 .step {
   flex: 1;
   display: flex;
@@ -70,9 +105,11 @@
   border: 1px solid transparent;
   opacity: 0.28;
   transition:
+    flex-grow var(--duration) var(--ease-out-expo),
     opacity var(--duration) var(--ease-out-expo),
     border-color var(--duration) var(--ease-out-expo),
-    background-color var(--duration) var(--ease-out-expo);
+    background-color var(--duration) var(--ease-out-expo),
+    box-shadow var(--duration) var(--ease-out-expo);
 
   @media (--desktop) {
     flex-direction: column;
@@ -85,6 +122,49 @@
     border-color: var(--line-strong);
     background-color: var(--surface-2);
   }
+
+  @media (--desktop) {
+    &:not([data-active="true"]) {
+      flex-grow: 0.45;
+      align-items: center;
+      justify-content: flex-start;
+      opacity: 0.55;
+
+      & .stepText {
+        display: none;
+      }
+    }
+
+    &[data-active="true"] {
+      flex-grow: 2.6;
+      position: relative;
+      overflow: hidden;
+      flex-direction: row;
+      align-items: center;
+      gap: calc(var(--gap) * 1.5);
+      padding: calc(var(--gap) * 1.5);
+      background-color: #faf9f5;
+      border-color: color-mix(in srgb, var(--color-orange) 50%, transparent);
+      box-shadow: 0 24px 50px -24px
+        color-mix(in srgb, var(--color-plum) 50%, transparent);
+
+      /* Grain wash under the content (children get position: relative). */
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--grain);
+        background-size: cover;
+        background-position: 50% 30%;
+        opacity: 0.22;
+        pointer-events: none;
+      }
+
+      & > * {
+        position: relative;
+      }
+    }
+  }
 }
 
 .number {
@@ -93,6 +173,22 @@
   font-size: 1.5rem;
   color: var(--color-contrast);
   flex: 0 0 auto;
+
+  @media (--desktop) {
+    /* Display-scale gradient number on the active panel — same grain window
+       as the "IT WORKS" heading line (em-coupled, so it scales with type). */
+    .step[data-active="true"] & {
+      font-size: 5.5rem;
+      line-height: 1;
+      background-image: var(--grain);
+      background-size: 6.26em 6.26em;
+      background-position: -1.78em -2.8em;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
 }
 
 .stepMedia {
@@ -102,15 +198,29 @@
   flex: 0 0 auto;
 
   @media (--desktop) {
-    width: 88px;
-    height: 88px;
+    width: 64px;
+    height: 64px;
+
+    .step[data-active="true"] & {
+      width: 130px;
+      height: 130px;
+    }
   }
 }
 
 .stepText {
   font-family: var(--font-mono);
+  font-weight: 700;
   font-size: 0.9rem;
   line-height: 1.45;
+
+  @media (--desktop) {
+    .step[data-active="true"] & {
+      font-size: 1.15rem;
+      line-height: 1.5;
+      max-width: 34ch;
+    }
+  }
 }
 
 .progress {
@@ -125,12 +235,14 @@
   display: block;
   height: 100%;
   width: var(--fill, 20%);
-  background-color: var(--color-contrast);
+  background: linear-gradient(90deg, var(--color-plum), var(--color-orange));
   transition: width var(--duration) var(--ease-out-expo);
 }
 
 /* Reduced motion / no-pin fallback: render as a plain stacked list in its
-   final state (all steps visible), per the homepage reduced-motion scenario. */
+   final state (all steps visible), per the homepage reduced-motion scenario.
+   The spotlight compression is scroll-driven emphasis, so it reverts too:
+   every step reads as a full card with its text. */
 @media (--reduced-motion) {
   .pin {
     min-height: auto;
@@ -141,7 +253,24 @@
     min-height: auto;
   }
 
+  /* All cards render full content, so the row sizes naturally. */
+  .steps {
+    height: auto;
+  }
+
   .step {
     opacity: 1;
+
+    @media (--desktop) {
+      &:not([data-active="true"]) {
+        flex-grow: 1;
+        opacity: 1;
+        align-items: flex-start;
+
+        & .stepText {
+          display: block;
+        }
+      }
+    }
   }
 }

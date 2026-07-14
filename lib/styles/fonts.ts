@@ -13,7 +13,9 @@ const display = Exo_2({
 // Body / utility face. Kept under the `--next-font-mono` variable name so the
 // existing typography scale and CSS references resolve without change.
 const mono = Manrope({
-  weight: ['400', '600'],
+  /* 700 backs the bold how-it-works step copy — without the loaded face the
+     browser silently substitutes 600 (user feedback 2026-07-14). */
+  weight: ['400', '600', '700'],
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--next-font-mono',

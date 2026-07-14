@@ -52,6 +52,11 @@ export function HowItWorks() {
                   objectFit="contain"
                   mobileSize="30vw"
                   desktopSize="12vw"
+                  /* Tiny 3-color PNGs the optimizer can't improve — and its
+                     w=256 rendition inverts the ink strokes to white (same
+                     optimizer-bug family as the disabled AVIF in next.config).
+                     Serve the originals. */
+                  unoptimized
                 />
               </div>
               <p className={s.stepText}>{step.text}</p>
