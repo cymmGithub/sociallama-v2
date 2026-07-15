@@ -17,12 +17,54 @@ for (const column of menu.columns) {
 }
 const utilityStaggerIndex = staggerCursor
 
+// Keep the bar revealed within this many pixels of the top so a fresh load or
+// a scroll-to-top always shows it, regardless of the last scroll direction.
+const REVEAL_AT_TOP = 80
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const lenis = useLenis()
 
   const close = () => setMenuOpen(false)
+
+  // Scroll position below which the bar stays revealed regardless of scroll
+  // direction. Defaults to a sliver below the top; on the home page it extends
+  // to the hero scrub track's pin-release point so the bar never hides while
+  // the hero clip is scrubbing (user request 2026-07-15).
+  const revealUntilRef = useRef(REVEAL_AT_TOP)
+
+  useEffect(() => {
+    const measure = () => {
+      const track = document.querySelector<HTMLElement>('[data-hero-track]')
+      if (!track) {
+        revealUntilRef.current = REVEAL_AT_TOP
+        return
+      }
+      // Pin releases when the track's bottom reaches the viewport bottom — the
+      // scroll offset where the scrubbed hero unpins and content starts moving.
+      const top = track.getBoundingClientRect().top + window.scrollY
+      const release = top + track.offsetHeight - window.innerHeight
+      revealUntilRef.current = Math.max(REVEAL_AT_TOP, release)
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
+  // Hide-on-scroll-down, reveal-on-scroll-up. Only act on an explicit Lenis
+  // direction — leaving state untouched on 0 (at rest) stops the bar popping
+  // back in when a downward scroll pauses. The menu-open override lives in the
+  // render, since lenis.stop() freezes this callback while the overlay is open.
+  useLenis((instance) => {
+    if (instance.scroll <= revealUntilRef.current) {
+      setHidden(false)
+      return
+    }
+    if (instance.direction === 1) setHidden(true)
+    else if (instance.direction === -1) setHidden(false)
+  }, [])
 
   // While the overlay is open: lock scroll (Lenis + the html.overflow-hidden
   // rule in global.css) and close on Escape. Cleanup restores scroll and
@@ -50,7 +92,10 @@ export function Header() {
     <>
       {/* The bar adopts the cream theme while the overlay is open so its
           chapter-tinted elements stay legible above the cream panel. */}
-      <header className={s.header} {...(menuOpen && { 'data-theme': 'cream' })}>
+      <header
+        className={cn(s.header, hidden && !menuOpen && s.headerHidden)}
+        {...(menuOpen && { 'data-theme': 'cream' })}
+      >
         <Link
           className={s.logo}
           href="/"

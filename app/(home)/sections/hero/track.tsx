@@ -43,7 +43,7 @@ export function HeroTrack({ children }: { children: ReactNode }) {
   })
 
   return (
-    <div ref={setRectRef} className={s.track}>
+    <div ref={setRectRef} className={s.track} data-hero-track>
       <div className={s.sticky}>
         <ScrubTargetContext.Provider value={targetRef}>
           {children}

@@ -13,7 +13,15 @@
   /* Solid bar (brightscout-style) so content never collides with the chrome;
      follows the chapter theme and eases in sync with the page morph. */
   background-color: var(--color-primary);
-  transition: background-color 900ms var(--ease-out-expo);
+  transition:
+    background-color 900ms var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+/* Hide-on-scroll-down: slide the fixed bar out of view. Reveal-on-scroll-up
+   restores translateY(0); the transform transition above animates both. */
+.headerHidden {
+  transform: translateY(-100%);
 }
 
 .logo {
