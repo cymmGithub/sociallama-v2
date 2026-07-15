@@ -7,14 +7,14 @@
  * rail that doubles as the only navigation. The slider autoplays on a 7 s
  * rhythm with a thin orange progress bar filling along the active rail row.
  *
- * Autoplay engine (the mock's proven approach): a setTimeout chain plus
- * performance.now() bookkeeping so hover can pause and resume from the same
- * point. The progress bar is a pure CSS scaleX animation keyed off
+ * Autoplay engine (the mock's proven approach): a setTimeout chain advancing on
+ * a fixed cycle. The progress bar is a pure CSS scaleX animation keyed off
  * aria-selected, so it restarts in lockstep with the timer when the active row
- * changes and freezes via data-paused — no rAF, JS and CSS stay in sync.
- * Hover pauses temporarily; on touch-only devices any manual pick (rail tap or
- * swipe) stops autoplay for the page view. prefers-reduced-motion skips
- * scheduling entirely (CSS kills the slide + progress animations too).
+ * changes — no rAF, JS and CSS stay in sync. On hover devices a rail pick just
+ * restarts the rhythm from the chosen testimonial (autoplay never pauses); on
+ * touch-only devices any manual pick (rail tap or swipe) stops autoplay for the
+ * page view. prefers-reduced-motion skips scheduling entirely (CSS kills the
+ * slide + progress animations too).
  */
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
@@ -40,7 +40,6 @@ export function Testimonial() {
 
   const [active, setActive] = useState(0)
   const [leaving, setLeaving] = useState<number | null>(null)
-  const [paused, setPaused] = useState(false)
   // Touch: a manual pick stops autoplay permanently for this page view.
   const [stopped, setStopped] = useState(false)
 
@@ -51,9 +50,6 @@ export function Testimonial() {
   autoplayRef.current = autoplay
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const startedRef = useRef(0)
-  const remainingRef = useRef(CYCLE)
-  const pausedRef = useRef(false)
   const touchStartX = useRef<number | null>(null)
 
   const clearTimer = useCallback(() => {
@@ -77,8 +73,6 @@ export function Testimonial() {
     (ms: number) => {
       clearTimer()
       if (!autoplayRef.current) return
-      startedRef.current = performance.now()
-      remainingRef.current = ms
       timerRef.current = setTimeout(() => {
         select((activeRef.current + 1) % COUNT)
         schedule(CYCLE)
@@ -88,8 +82,7 @@ export function Testimonial() {
   )
 
   // Start (or tear down) the loop whenever eligibility flips — reduced-motion
-  // toggled, or a touch pick stopped it. Hover pause is handled imperatively
-  // below, so `paused` is deliberately not a dependency here.
+  // toggled, or a touch pick stopped it.
   useEffect(() => {
     if (autoplay) schedule(CYCLE)
     else clearTimer()
@@ -105,8 +98,9 @@ export function Testimonial() {
     []
   )
 
-  // Manual pick (rail tap or swipe): restart the rhythm on hover devices; stop
-  // it for good on touch-only ones — the user chose this testimonial.
+  // Manual pick (rail tap or swipe): restart the rhythm from the chosen
+  // testimonial on hover devices; stop it for good on touch-only ones — the
+  // user chose this testimonial.
   const pick = useCallback(
     (i: number) => {
       const same = i === activeRef.current
@@ -115,31 +109,11 @@ export function Testimonial() {
         setStopped(true)
         clearTimer()
       } else if (!same) {
-        // Restart the rhythm from the chosen testimonial — but if the pointer
-        // is still over the section (paused), hold at 0 and let mouseleave
-        // resume it, so a pick-while-hovering doesn't silently unpause.
-        remainingRef.current = CYCLE
-        if (!pausedRef.current) schedule(CYCLE)
+        schedule(CYCLE)
       }
     },
     [touchOnly, select, schedule, clearTimer]
   )
-
-  // Hover holds the slider and its progress bar in place, resuming from the
-  // same point on leave (no-op on touch, where mouseenter never fires).
-  const onEnter = () => {
-    if (!autoplayRef.current) return
-    clearTimer()
-    remainingRef.current -= performance.now() - startedRef.current
-    pausedRef.current = true
-    setPaused(true)
-  }
-  const onLeave = () => {
-    if (!autoplayRef.current) return
-    pausedRef.current = false
-    setPaused(false)
-    schedule(Math.max(0, remainingRef.current))
-  }
 
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0]?.clientX ?? null
@@ -164,9 +138,6 @@ export function Testimonial() {
       aria-labelledby={labelId}
       data-blur-edge-gate
       data-autoplay={autoplay ? 'true' : 'false'}
-      data-paused={paused ? 'true' : undefined}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
     >
       <h2 id={labelId} className="sr-only">
         Opinie klientów

@@ -170,7 +170,7 @@
 /* Autoplay progress: a thin orange line filling along the active row's bottom
    edge; when it reaches the end the slider advances (JS timer runs the same
    7 s). Gated on data-autoplay so reduced-motion and touch-stopped states show
-   no bar; frozen mid-fill by data-paused on hover. */
+   no bar. */
 .progress {
   position: absolute;
   left: 0;
@@ -185,10 +185,6 @@
 
 .section[data-autoplay="true"] .client[aria-selected="true"] .progress {
   animation: fill 7000ms linear forwards;
-}
-
-.section[data-paused="true"] .client[aria-selected="true"] .progress {
-  animation-play-state: paused;
 }
 
 @keyframes fill {
