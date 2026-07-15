@@ -94,6 +94,18 @@ export interface Testimonial {
   /** Company logo (public path). Rendered white on the dark ground; when
    *  absent the `company` text is shown instead. */
   logo?: string
+  /** Short pull-phrase shown in display type above the full quote, with
+   *  `highlight` knocked out in the contrast colour (rendered as `<mark>`).
+   *  Present on the rail testimonials; absent on the lightweight client
+   *  hover-card quotes. Split into plain-string segments so the content module
+   *  stays free of markup — the component renders `before <mark>highlight</mark>
+   *  after`. Pull-phrases must be verbatim excerpts of the quote wherever
+   *  possible; a rephrased excerpt is a launch blocker until signed off. */
+  pull?: {
+    before?: string
+    highlight: string
+    after?: string
+  }
 }
 
 export interface NewsPost {
@@ -531,6 +543,11 @@ export const testimonials: Testimonial[] = [
     company: 'iRobot Polska',
     image: '/assets/testimonial-radomska.jpg',
     logo: '/assets/clients/irobot.svg',
+    pull: {
+      before: 'Z pełnym przekonaniem ',
+      highlight: 'możemy ją polecić',
+      after: '.',
+    },
   },
   {
     quote:
@@ -539,6 +556,14 @@ export const testimonials: Testimonial[] = [
     company: 'Uniphar',
     image: '/assets/testimonial-szwat.jpg',
     logo: '/assets/clients/uniphar.png',
+    // TODO(sign-off): rephrased excerpt — condenses the verbatim "…do realizacji
+    // projektów, które wymagają wyjścia poza szablon"; needs client sign-off
+    // before launch (same category as the lorem-placeholder launch blockers).
+    pull: {
+      before: 'Projekty, które wymagają ',
+      highlight: 'wyjścia poza szablon',
+      after: '.',
+    },
   },
   {
     quote:
@@ -547,6 +572,10 @@ export const testimonials: Testimonial[] = [
     company: 'STAG',
     image: '/assets/testimonial-jemiejlanczuk.jpg',
     logo: '/assets/clients/stag.svg',
+    pull: {
+      highlight: 'Proaktywność, kreatywność',
+      after: ' i zaangażowanie.',
+    },
   },
 ]
 

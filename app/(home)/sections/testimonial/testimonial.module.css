@@ -3,186 +3,257 @@
 
   padding-block: calc(var(--safe) * 6);
   padding-inline: var(--safe);
-  display: flex;
-  justify-content: center;
 }
 
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.carousel {
-  width: 100%;
-  max-width: 860px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(var(--gap) * 2.5);
-
-  &:focus-visible {
-    outline: 2px solid var(--color-contrast);
-    outline-offset: calc(var(--gap) * 1.5);
-    border-radius: 6px;
-  }
-}
-
-/* All slides occupy one grid cell, so the viewport reserves the height of the
-   tallest quote (inactive slides stay in flow via visibility: hidden) — moving
-   between testimonials never shifts the dots or the sections below. */
-.viewport {
+/* Asymmetric: the quote stage dominates, the rail is a fixed-ish column that
+   never collapses below a legible width. */
+.grid {
   display: grid;
-  width: 100%;
+  grid-template-columns: minmax(0, 2.9fr) minmax(300px, 0.85fr);
+  gap: clamp(32px, 4vw, 80px);
+  align-items: center;
+}
+
+/* All slides occupy one grid cell, so the stage reserves the height of the
+   tallest slide and moving between testimonials never shifts the rail or the
+   sections below. */
+.stage {
+  display: grid;
 }
 
 .slide {
   grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /* Center in the reserved (tallest-quote) height so shorter slides don't
-     pool empty space above the dots. */
-  justify-content: center;
-  gap: calc(var(--gap) * 2);
-  text-align: center;
+  gap: clamp(18px, 2.6vh, 28px);
   opacity: 0;
   visibility: hidden;
+  /* Base state = incoming: enter from the right. */
+  transform: translateX(40px);
   transition:
-    opacity 500ms var(--ease-out-expo),
-    transform 500ms var(--ease-out-expo);
-  transform: translateY(8px);
+    opacity 480ms var(--ease-out-expo),
+    transform 480ms var(--ease-out-expo),
+    visibility 0s 480ms;
+
+  /* Exiting slide overrides the base transform to leave toward the left.
+     Declared before [data-active] so the active slide wins the cascade at
+     equal specificity. */
+  &[data-leaving="true"] {
+    transform: translateX(-40px);
+  }
 
   &[data-active="true"] {
     opacity: 1;
     visibility: visible;
     transform: none;
+    transition-delay: 140ms, 140ms, 0s;
+  }
+}
+
+.pull {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 5.6vw, 6rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  /* Wide enough that the longest highlighted unit ("Proaktywność,
+     kreatywność", ~24ch) stays on one line instead of breaking mid-phrase. */
+  max-width: 27ch;
+
+  & mark {
+    background: none;
+    /* Key words knocked out in the contrast colour, no underline band. */
+    color: var(--color-orange);
   }
 }
 
 .quote {
-  font-family: var(--font-display);
-  font-weight: 400;
-  /* Smaller than the former single-quote scale: three quotes of very different
-     lengths share one reserved height, and each now sits above a photo. */
-  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
+  font-family: var(--font-mono);
+  font-size: clamp(1.2rem, 1.7vw, 1.85rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  max-width: 76ch;
 }
 
-.media {
-  position: relative;
-  width: 96px;
-  height: 96px;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid color-mix(in srgb, var(--color-contrast) 70%, transparent);
-}
-
-.caption {
+.rail {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.6em;
 }
 
-/* Client logo, white on the dark ground (the source marks are brand-colored,
-   so knock them to a single tone for a consistent row). Capped by height;
-   width follows the wordmark's aspect. */
-.logo {
-  width: auto;
-  height: 26px;
-  /* Use each wordmark's own aspect, not the 180×56 box passed to <Image>. */
-  aspect-ratio: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
-}
-
-.author {
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  font-size: 1rem;
-  color: var(--color-contrast);
-}
-
-.company {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
-}
-
-.controls {
+/* Rail row: dimmed by default, brightened + orange-barred when active. */
+.client {
   display: flex;
   align-items: center;
-  gap: calc(var(--gap) * 1.5);
-}
-
-.arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--color-secondary) 30%, transparent);
-  color: var(--color-secondary);
-  font-size: 1.4rem;
-  line-height: 1;
+  gap: 20px;
+  text-align: left;
+  padding: 24px 24px 24px 28px;
+  border-left: 3px solid transparent;
+  border-top: 1px solid color-mix(in srgb, var(--color-cream) 10%, transparent);
+  opacity: 0.45;
   transition:
-    border-color var(--duration) var(--ease-out-expo),
-    background-color var(--duration) var(--ease-out-expo);
+    opacity 300ms var(--ease-out-expo),
+    border-color 300ms var(--ease-out-expo),
+    background-color 300ms var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+
+  &:last-child {
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-cream) 10%, transparent);
+  }
+
+  &[aria-selected="true"] {
+    opacity: 1;
+    border-left-color: var(--color-orange);
+    background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
+  }
 
   @media (--hover) {
     &:hover {
-      border-color: var(--color-contrast);
-      background-color: color-mix(
-        in srgb,
-        var(--color-contrast) 12%,
-        transparent
-      );
+      opacity: 0.85;
     }
+
+    &[aria-selected="true"]:hover {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: -2px;
+    opacity: 1;
   }
 }
 
-.dots {
+.avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+/* Orange ring with a ground-coloured gap on the active row. */
+.client[aria-selected="true"] .avatar {
+  box-shadow:
+    0 0 0 2px var(--color-plum-dark),
+    0 0 0 4px var(--color-orange);
+}
+
+.who {
   display: flex;
-  align-items: center;
-  gap: calc(var(--gap) * 0.75);
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+
+  & b {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
 }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background-color: color-mix(in srgb, var(--color-secondary) 30%, transparent);
-  transition:
-    width var(--duration) var(--ease-out-expo),
-    background-color var(--duration) var(--ease-out-expo);
+/* Company logo knocked to white on the dark ground. Capped by height; width
+   follows the wordmark's own aspect, not the 180×56 box passed to <Image>. */
+.logo {
+  height: 22px;
+  width: auto;
+  aspect-ratio: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  align-self: flex-start;
 }
 
-.dotActive {
-  width: 24px;
-  background-color: var(--color-contrast);
+/* Autoplay progress: a thin orange line filling along the active row's bottom
+   edge; when it reaches the end the slider advances (JS timer runs the same
+   7 s). Gated on data-autoplay so reduced-motion and touch-stopped states show
+   no bar; frozen mid-fill by data-paused on hover. */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
 }
 
-/* Reduced motion: switch instantly, no cross-fade drift. */
+.section[data-autoplay="true"] .client[aria-selected="true"] .progress {
+  animation: fill 7000ms linear forwards;
+}
+
+.section[data-paused="true"] .client[aria-selected="true"] .progress {
+  animation-play-state: paused;
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Mobile: rail becomes a horizontal 3-chip row above the quote stage — avatar
+   + name, orange top bar on the active chip, logos dropped. */
+@media (--mobile) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .rail {
+    flex-direction: row;
+    order: -1;
+  }
+
+  .client {
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 8px;
+    border-left: 0;
+    border-top: 3px solid transparent;
+    text-align: center;
+    align-items: center;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &[aria-selected="true"] {
+      border-left-color: transparent;
+      border-top-color: var(--color-orange);
+    }
+  }
+
+  .who b {
+    font-size: 0.7rem;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .pull {
+    max-width: none;
+  }
+}
+
+/* Reduced motion: switch instantly, no directional slide, no progress fill. */
 @media (--reduced-motion) {
   .slide {
     transition: none;
     transform: none;
+  }
+
+  .section[data-autoplay="true"] .client[aria-selected="true"] .progress {
+    animation: none;
   }
 }
