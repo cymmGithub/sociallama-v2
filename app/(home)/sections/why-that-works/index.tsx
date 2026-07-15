@@ -9,16 +9,13 @@ import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
 // Scrub each word from faint to full as the heading passes through the
-// viewport. "WHY" fills to the ink text color; "THAT WORKS" reveals the
-// grain-gradient clipped inside the letters (why-manifesto-gradient) — the
-// gradient image lives on the ProgressText wrapper so it runs continuously
-// across words and line wraps, and each non-WHY word goes transparent-fill
-// to expose it. Opacity carries the fill-in reading for both.
+// viewport. "WHY" fills to the ink text color; "THAT WORKS" fills to flat
+// orange. Opacity carries the fill-in reading for both.
 function fill(node: HTMLSpanElement, active: boolean) {
   if (node.textContent === 'WHY') {
     node.style.color = 'var(--color-secondary)'
   } else {
-    node.classList.add(s.gradientWord ?? '')
+    node.style.color = 'var(--color-orange)'
   }
   node.style.opacity = active ? '1' : '0.2'
 }
@@ -29,12 +26,7 @@ export function WhyThatWorks() {
   return (
     <section className={s.section} id="o-nas">
       <h2 className={s.heading}>
-        <ProgressText
-          className={s.headingFill ?? ''}
-          start="top bottom"
-          end="center center"
-          onChange={fill}
-        >
+        <ProgressText start="top bottom" end="center center" onChange={fill}>
           {whyThatWorks.heading.join(' ')}
         </ProgressText>
       </h2>
