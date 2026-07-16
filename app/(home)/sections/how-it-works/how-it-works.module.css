@@ -152,6 +152,9 @@
   border-radius: 12px;
   border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
   background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
+  /* Smooth the panel grain behind the glass so the noise reads on the exposed
+     background only — the cards keep their clean smooth-gradient show-through. */
+  backdrop-filter: blur(6px);
   opacity: 0.4;
   transition:
     opacity var(--duration) var(--ease-out-expo),
