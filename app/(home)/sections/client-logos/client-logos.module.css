@@ -132,10 +132,26 @@
   border-top-color: var(--color-cream);
 }
 
+/* Hover bridge: an invisible strip over the logo↔card gap (22px + caret), so
+   the cursor can travel from the logo up into the card without the card
+   closing — the card holds a real button now. Inherits the card's
+   pointer-events, so a hidden card's bridge intercepts nothing. */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 26px;
+}
+
 @media (hover: hover) and (pointer: fine) {
+  /* The card is a descendant of .item, so hovering the card (or its bridge)
+     keeps .item:hover true — that's the whole persistence model. */
   .item:hover .card {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
     transform: translate(calc(-50% + var(--shift, 0px)), 0);
   }
 }
@@ -145,10 +161,44 @@
   line-height: 1.55;
 }
 
+/* Author footer: portrait (or initials placeholder) beside the name. The
+   brand's logo is deliberately absent — the card is anchored to the hovered
+   logo (user decision, 2026-07-16). */
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.cardAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+/* Initials on the plum gradient until the client delivers a portrait —
+   same placeholder language as the services stage. */
+.cardAvatarPh {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    120% 140% at 20% 0%,
+    var(--color-plum) 0%,
+    var(--color-plum-dark) 100%
+  );
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
 .author {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
   font-size: 0.85rem;
   line-height: 1.35;
 }
@@ -159,4 +209,99 @@
 
 .author span {
   opacity: 0.65;
+}
+
+/* ---- Case-study CTA row ---- */
+.ctaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+
+.ctaHint {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+}
+
+.ctaWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.cta {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink);
+  background: var(--color-orange);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.6em 1.4em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 200ms var(--ease-out-expo),
+    box-shadow 200ms var(--ease-out-expo);
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px
+    color-mix(in srgb, var(--color-orange) 45%, transparent);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--color-plum);
+  outline-offset: 2px;
+}
+
+/* Click feedback: the CTA navigates nowhere yet — a small ink bubble answers
+   instead ("waiting for case study :)"), auto-hidden by the component. */
+.tip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 6px;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 220ms var(--ease-out-expo),
+    translate 220ms var(--ease-out-expo),
+    visibility 220ms;
+}
+
+.tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-ink);
+}
+
+.tip[data-show="true"] {
+  opacity: 1;
+  visibility: visible;
+  translate: -50% 0;
 }

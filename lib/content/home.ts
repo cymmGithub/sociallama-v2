@@ -92,8 +92,9 @@ export interface Testimonial {
   author: string
   /** Company is optional — some references are given without one. */
   company?: string
-  /** Square author photo (public path). Present on the carousel testimonials;
-   *  absent on the lightweight client hover-card quotes. */
+  /** Square author photo (public path). Present on the carousel testimonials
+   *  and the verified hover-card quotes; hover cards without one render an
+   *  initials placeholder instead. */
   image?: string
   /** Company logo (public path). Rendered white on the dark ground; when
    *  absent the `company` text is shown instead. */
@@ -204,6 +205,15 @@ export const hero = {
 
 export const clientsHeading = 'ZAUFALI NAM'
 
+// Hover-card CTA. The button deliberately navigates nowhere — case-study pages
+// don't exist yet, so a click answers with a playful tooltip instead of a dead
+// link (user decision 2026-07-16; tip copy verbatim, English on purpose).
+export const clientCardCta = {
+  hint: 'Zobacz więcej',
+  label: 'Case study',
+  tip: 'waiting for case study :)',
+} as const
+
 // Shared body for the 9 unverified hover-card quotes (mirrors the reference
 // DB). Every entry using it is a launch blocker — see the TODOs below.
 const placeholderQuote =
@@ -228,6 +238,7 @@ export const clients: Client[] = [
         'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
       author: 'Beata Nartowska',
       company: 'Aquael',
+      image: '/assets/testimonial-nartowska.jpg',
     },
   },
   {
@@ -238,6 +249,7 @@ export const clients: Client[] = [
         'Szczerze rekomenduję współpracę z agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele.',
       author: 'Piotr Treszczotko',
       company: 'Funtronic',
+      image: '/assets/testimonial-treszczotko.jpg',
     },
   },
   {
@@ -248,6 +260,7 @@ export const clients: Client[] = [
         'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Polecamy współpracę z zespołem Social Lama.',
       author: 'Katarzyna Gosiewska',
       company: 'Intrum Justitia',
+      image: '/assets/testimonial-gosiewska.jpg',
     },
   },
   {
@@ -318,6 +331,7 @@ export const clients: Client[] = [
         'Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
       author: 'Marta Szwat',
       company: 'Uniphar',
+      image: '/assets/testimonial-szwat.jpg',
     },
   },
   {
@@ -359,7 +373,7 @@ export const whyThatWorks = {
      user decision 2026-07-14) — bold ink lead, muted gray closer. */
   support: {
     strong:
-      'Prowadź atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych. Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
+      'Prowadź z nami atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych. Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
     muted:
       'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
