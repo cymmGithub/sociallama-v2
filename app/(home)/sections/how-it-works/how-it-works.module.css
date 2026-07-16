@@ -4,8 +4,12 @@
      noticeably faster than the original 55svh cadence. */
   min-height: calc(100svh + var(--step-scroll, 40svh) * 5);
   padding-inline: var(--safe);
-  /* Grain-gradient (why-manifesto-gradient) for the stage panel's overlay. */
-  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" width="700" height="700"><defs><linearGradient gradientTransform="rotate(-150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g2"><stop stop-color="%23892f53" offset="0"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><linearGradient gradientTransform="rotate(150,0.5,0.5)" x1="50%25" y1="0%25" x2="50%25" y2="100%25" id="g3"><stop stop-color="%23f09b39"/><stop stop-color="rgba(255,255,255,0)" stop-opacity="0" offset="1"/></linearGradient><filter id="gr" x="-20%25" y="-20%25" width="140%25" height="140%25" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="2" stitchTiles="stitch" result="t"/><feColorMatrix type="saturate" values="0" in="t" result="c"/><feComponentTransfer in="c" result="ct"><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 19 -11"/></filter></defs><g><rect width="100%25" height="100%25" fill="%23f09b39"/><rect width="100%25" height="100%25" fill="url(%23g3)"/><rect width="100%25" height="100%25" fill="url(%23g2)"/><rect width="100%25" height="100%25" fill="transparent" filter="url(%23gr)" opacity="1" style="mix-blend-mode:soft-light"/></g></svg>');
+  /* Pure-noise film grain for the stage panel's overlay — the services Grain
+     recipe (feTurbulence → desaturate → contrast boost → alpha threshold) as a
+     tileable data-URI, so both stages dither their gradients the same way.
+     The previous gggrain image baked its own gradients and, tiled at 14%
+     opacity, contributed no usable noise — the glow's radial edge showed raw. */
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
 }
 
 .sticky {
@@ -112,8 +116,10 @@
     position: absolute;
     inset: 0;
     background-image: var(--grain);
-    background-size: 480px 480px;
-    opacity: 0.14;
+    /* 1:1 with the SVG's own 700px canvas and the services .grain opacity, so
+       both stages carry identical noise density and scale. */
+    background-size: 700px 700px;
+    opacity: 0.38;
     mix-blend-mode: soft-light;
     pointer-events: none;
   }
