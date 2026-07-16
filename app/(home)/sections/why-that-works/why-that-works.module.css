@@ -65,11 +65,129 @@
   }
 }
 
+/* —— Team stage ————————————————————————————————————————————————————
+   Plum grain-gradient stage recipe, duplicated per house convention — the
+   same backdrop as services.module.css (.backdrop/.blobOrange/.grain) and
+   how-it-works.module.css (.stage). Keep the three modules in sync by hand. */
 .media {
   position: relative;
   aspect-ratio: 4 / 3;
   border-radius: 14px;
   overflow: hidden;
+  /* Size container so avatar/chip dimensions track the box, not the viewport. */
+  container-type: inline-size;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  /* Pure-noise film grain tile — same data-URI as the how-it-works .stage. */
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  /* Orange glow blob, top-right (services-stage recipe). */
+  &::before {
+    content: "";
+    position: absolute;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: -45%;
+    right: -12%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 75%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  /* Grain overlay over the whole panel. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    /* 1:1 with the SVG's own 700px canvas and the sibling stages' grain, so
+       all three panels carry identical noise density and scale. */
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Lift stage contents above the ::after grain (tree order paints the
+     pseudo-element over the children otherwise). */
+  & > * {
+    z-index: 1;
+  }
+}
+
+/* Scattered avatar sticker: %-positioned square box, per-item placement and
+   tilt via inline custom properties from the position array in index.tsx.
+   No border/outline — the stickers bake their own white outline; the drop
+   shadow follows the alpha channel to seat them on the stage. */
+.avatar {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  aspect-ratio: 1;
+  transform: rotate(var(--r));
+  pointer-events: none;
+
+  /* Glass bubble seated behind each sticker (user decision 2026-07-16): the
+     how-it-works glass-card recipe bent into a circle. Sits behind the img
+     in tree order, so the sticker's own white outline and head pop-out stay
+     on top, unclipped. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
+    background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Seat shadow on the img, not the wrapper — drop-shadow traces rendered
+     alpha, and on the wrapper it would halo the glass bubble instead of
+     seating the sticker. */
+  & img {
+    filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.28));
+  }
+}
+
+/* Certificate chips row along the stage bottom. */
+.chips {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 6%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gap) * 0.75);
+  pointer-events: none;
+}
+
+/* Cream chip presenting a credential mark unmodified (trademark hygiene:
+   no recolor, no crop — objectFit contain inside the inner media box). */
+.chip {
+  height: 14cqw;
+  border-radius: 12px;
+  background-color: var(--color-cream);
+  box-shadow:
+    inset 0 0 0 1px var(--color-sand),
+    0 10px 24px rgb(0 0 0 / 0.25);
+  padding: 2cqw 2.5cqw;
+  transform: rotate(var(--r));
+}
+
+/* Inner box carrying the cert image; its aspect ratio comes from the mark's
+   intrinsic ratio so the cream padding frames it evenly. */
+.chipMedia {
+  position: relative;
+  height: 100%;
+  aspect-ratio: var(--ar);
 }
 
 /* Copy fills its grid column (Mock A, user decision 2026-07-14) — no width

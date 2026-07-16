@@ -68,9 +68,13 @@ The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / W
 - **WHEN** the why-that-works manifesto (one sentence-case display-scale statement split mid-sentence: bold ink opening, muted gray closer — Azurio treatment, user decision 2026-07-13) and the supporting paragraphs (display font, bold, reading scale, same ink→muted split) pass through the viewport
 - **THEN** their words fill from faint (~0.33 opacity) to full opacity proportionally to scroll, each statement flows as a single paragraph across its strong/muted chunks, and the CTA link enters via reveal
 
-#### Scenario: Brand media beside supporting copy
+#### Scenario: Team stage beside supporting copy
 - **WHEN** the why-that-works bottom row renders
-- **THEN** the generated brand media (photoreal llama recording a reel; clip with the photo as its poster once the showreel lands) fills the left cell with the two supporting paragraphs and CTA at right; on mobile the row stacks
+- **THEN** the left media cell (aspect-ratio 4/3, radius 14px) renders a live CSS team stage — the plum grain-gradient stage recipe shared with the services and how-it-works panels (plum 160° gradient, orange glow blob, feTurbulence grain at soft-light 0.38) — with the 10 team avatar stickers scattered across its upper two-thirds (percentage-based positions, per-item rotations within ±6°, visible size variance, loose two-row cluster), each seated on a translucent glass bubble that leaves the sticker's own outline and head pop-out unclipped (user decision, 2026-07-16), and the DIMAQ professional and Meta Small Business Academy certificates as gently tilted (±3°) cream chips along the bottom; the supporting paragraphs and CTA sit at right; on mobile the row stacks (user decision, 2026-07-16)
+
+#### Scenario: Team stage assets stay light
+- **WHEN** the team stage renders at any viewport
+- **THEN** avatars are served as optimized assets (≈400px WebP via the `Image` component, not the 810px source PNGs), certificate marks render unmodified (no recolor, distortion, or crop) on their chips, and the retired `why-team.jpg` is no longer shipped
 
 #### Scenario: Big marquee accent
 - **WHEN** the full-bleed marquee renders in the light chapter
