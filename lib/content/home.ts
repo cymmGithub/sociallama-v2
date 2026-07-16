@@ -313,16 +313,6 @@ export const clients: Client[] = [
     },
   },
   {
-    name: 'Roche',
-    logo: '/assets/clients/roche.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Roche',
-    },
-  },
-  {
     name: 'Uniphar',
     logo: '/assets/clients/uniphar.png',
     testimonial: {
