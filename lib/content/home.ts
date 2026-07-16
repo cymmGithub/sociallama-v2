@@ -638,12 +638,26 @@ export const testimonials: Testimonial[] = [
 // —— CTA ————————————————————————————————————————————————————————————————————
 
 export const joinCta = {
-  headingLead: 'POTRZEBUJESZ WSPARCIA W',
-  headingEmphasis: 'FACEBOOKU?',
+  headingLead: 'POTRZEBUJESZ WSPARCIA',
+  /* Rotating token = preposition + locative + "?" in one string — Polish
+     locative case forces per-word prepositions (W FACEBOOKU / NA
+     INSTAGRAMIE), and keeping the "?" inside the token means it never
+     detaches from the sliding word. Each entry pairs with a still image
+     graded to flat #722341 (plum-deep, seamless composite — gated by
+     verify-clip-bg.ts). */
+  rotator: [
+    { token: 'W FACEBOOKU?', image: '/clips/cta-facebook.jpg' },
+    { token: 'NA INSTAGRAMIE?', image: '/clips/cta-instagram.jpg' },
+    { token: 'NA TIKTOKU?', image: '/clips/cta-tiktok.jpg' },
+    { token: 'NA LINKEDINIE?', image: '/clips/cta-linkedin.jpg' },
+    { token: 'NA PINTEREŚCIE?', image: '/clips/cta-pinterest.jpg' },
+    { token: 'NA X?', image: '/clips/cta-x.jpg' },
+    { token: 'NA YOUTUBIE?', image: '/clips/cta-youtube.jpg' },
+    { token: 'W STRATEGII?', image: '/clips/cta-strategia.jpg' },
+    { token: 'W WIDEO?', image: '/clips/cta-wideo.jpg' },
+  ],
+  llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
   button: { label: 'NAPISZ DO NAS', href: '/#kontakt' },
-  /* Clip + its own frame-0 poster (composites onto plum-deep #722341). */
-  clip: '/clips/cta-llama.mp4',
-  poster: '/clips/cta-llama-poster.jpg',
 } as const
 
 // —— NewsLAMA (single card) ————————————————————————————————————————————————

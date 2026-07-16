@@ -35,8 +35,37 @@
   font-size: clamp(2.25rem, 6vw, 4.5rem);
 }
 
-.emphasis {
+/* —— Locative token rotator (hero's masked-slide recipe) ————————————————
+   Tokens stack in one grid cell (the row sizes to the widest token, so the
+   heading block never resizes between entries); only the incoming and
+   outgoing tokens transition — the rest snap into the waiting position
+   below, hidden by the mask. */
+.tokenMask {
+  display: block;
+  overflow-x: visible;
+  overflow-y: clip;
+  padding-block: 0.02em;
+}
+
+.rotator {
+  display: inline-grid;
   color: var(--color-contrast);
+}
+
+.rotatorWord {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transform: translateY(120%);
+}
+
+.rotatorWordActive {
+  transform: none;
+  transition: transform 650ms var(--ease-out-expo);
+}
+
+.rotatorWordLeaving {
+  transform: translateY(-120%);
+  transition: transform 650ms var(--ease-out-expo);
 }
 
 .button {
@@ -66,16 +95,26 @@
   }
 }
 
+/* Images stack in one square grid cell and crossfade; the active one is
+   opaque. Everything stays mounted so swaps never show a decode flash. */
 .media {
   flex: 0 0 auto;
   width: min(70vw, 320px);
+  display: grid;
 
   @media (--desktop) {
     width: 360px;
   }
 }
 
-.llama {
+.slide {
+  grid-area: 1 / 1;
   width: 100%;
   height: auto;
+  opacity: 0;
+  transition: opacity 650ms var(--ease-out-expo);
+}
+
+.slideActive {
+  opacity: 1;
 }
