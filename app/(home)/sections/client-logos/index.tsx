@@ -1,6 +1,7 @@
 'use client'
 
 import { useMediaQuery } from 'hamo'
+import { ArrowRight } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Marquee } from '@/components/ui/marquee'
@@ -121,7 +122,6 @@ export function ClientLogos() {
                     </p>
                   </div>
                   <div className={s.ctaRow}>
-                    <span className={s.ctaHint}>{clientCardCta.hint}</span>
                     <span className={s.ctaWrap}>
                       <span
                         className={s.tip}
@@ -135,7 +135,8 @@ export function ClientLogos() {
                         className={s.cta}
                         onClick={() => showTip(client.name)}
                       >
-                        {clientCardCta.label}&nbsp;→
+                        {clientCardCta.label}
+                        <ArrowRight className={s.ctaIcon} aria-hidden="true" />
                       </button>
                     </span>
                   </div>

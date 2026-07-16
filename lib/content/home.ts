@@ -209,7 +209,6 @@ export const clientsHeading = 'ZAUFALI NAM'
 // don't exist yet, so a click answers with a playful tooltip instead of a dead
 // link (user decision 2026-07-16; tip copy verbatim, English on purpose).
 export const clientCardCta = {
-  hint: 'Zobacz więcej',
   label: 'Case study',
   tip: 'waiting for case study :)',
 } as const
