@@ -92,7 +92,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.1",
     "babel-plugin-react-compiler": "^1.0.0",
-    "deslop-cli": "0.7.3",
+    "deslop-cli": "0.7.8",
     "happy-dom": "^20.10.6",
     "lefthook": "^2.1.9",
     "postcss-functions": "^4.0.2",
