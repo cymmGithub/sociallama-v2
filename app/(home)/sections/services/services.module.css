@@ -343,7 +343,7 @@
   box-shadow: 0 24px 60px color-mix(in srgb, var(--color-ink) 45%, transparent);
 }
 
-/* Paired clips float in opposite tilts. */
+/* Clips float in alternating tilts so the trio reads as a scattered set. */
 .phoneFrame:nth-child(1):not(:only-child) {
   rotate: -1.5deg;
 }
@@ -352,9 +352,59 @@
   rotate: 1.5deg;
 }
 
+.phoneFrame:nth-child(3) {
+  rotate: -1.5deg;
+}
+
 .phoneVideo {
   width: 100%;
   height: 100%;
+}
+
+/* Placeholder card (clip not shot yet): the same frame chrome as the video
+   cards, filled with a warm plum→orange brand glow carrying the iRobot
+   wordmark and a "Wkrótce" pill — an intentional coming-soon card, not a hole. */
+/* Frame keeps the clip cards' block + aspect-ratio sizing untouched; only the
+   fill changes. Centering happens in the inner wrapper so the content can't
+   inflate the 9/16 box. */
+.phonePlaceholder {
+  background: radial-gradient(
+    115% 80% at 50% 32%,
+    color-mix(in srgb, var(--color-orange) 24%, var(--color-plum)),
+    var(--color-plum-dark) 72%
+  );
+}
+
+.placeholderInner {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12%;
+  padding: 14%;
+  text-align: center;
+}
+
+.placeholderLogo {
+  width: 72%;
+  height: auto;
+  /* Knock the colored wordmark to clean white on the plum card. */
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+.placeholderTag {
+  padding: 0.55em 1.15em;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 40%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(0.58rem, 0.8vw, 0.76rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  white-space: nowrap;
 }
 
 /* —— Stage media: placeholder watermark (Sprzedaż) —————————————————— */
@@ -541,6 +591,8 @@
   display: none;
 }
 
+/* Three frames (two clips + the iRobot placeholder) must fit the narrower
+   mobile stage side by side, so they run shorter than the desktop pair. */
 .stackStage .phoneFrame {
-  height: 92%;
+  height: 76%;
 }
