@@ -76,13 +76,25 @@
   max-width: 76ch;
 }
 
+/* Depth-stack window (Mock B): all six rows share one grid cell in a
+   fixed-height centered window and are pushed to their wrap-around slots by
+   translateY — sliding never changes the rail's outer height or the sections
+   around it. */
 .rail {
-  display: flex;
-  flex-direction: column;
+  /* One slot step = full row height (48px block padding + 68px avatar +
+     1px border), so the three full-band rows sit flush like the old rail. */
+  --step: 117px;
+  display: grid;
+  align-items: center;
+  /* Window: the ±2 steps around the centered row plus one receded (0.68-
+     scaled) row's height peeking at each edge. */
+  height: calc(var(--step) * 4 + var(--step) * 0.68);
+  overflow: hidden;
 }
 
 /* Rail row: dimmed by default, brightened + orange-barred when active. */
 .client {
+  grid-area: 1 / 1;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -91,17 +103,16 @@
   border-left: 3px solid transparent;
   border-top: 1px solid color-mix(in srgb, var(--color-cream) 10%, transparent);
   opacity: 0.45;
+  transform: translateY(calc(var(--slot, 0) * var(--step)))
+    scale(var(--scale, 1));
   transition:
+    transform 500ms var(--ease-out-expo),
     opacity 300ms var(--ease-out-expo),
+    filter 300ms var(--ease-out-expo),
     border-color 300ms var(--ease-out-expo),
     background-color 300ms var(--ease-out-expo);
   position: relative;
   overflow: hidden;
-
-  &:last-child {
-    border-bottom: 1px solid
-      color-mix(in srgb, var(--color-cream) 10%, transparent);
-  }
 
   &[aria-selected="true"] {
     opacity: 1;
@@ -124,6 +135,59 @@
     outline-offset: -2px;
     opacity: 1;
   }
+}
+
+/* Depth slots: ±1 keep the plain dim treatment, ±2 recede picker-wheel style
+   (scaled, faded, softly blurred — "more entries exist"), +3 is the wrap slot:
+   invisible and out of the focus/a11y order. Rows glide between slots via the
+   transform transition above. */
+.client[data-slot="-1"] {
+  --slot: -1;
+}
+
+.client[data-slot="1"] {
+  --slot: 1;
+}
+
+.client[data-slot="-2"],
+.client[data-slot="2"],
+.client[data-slot="3"] {
+  --scale: 0.68;
+  opacity: 0.22;
+  filter: blur(1.5px);
+}
+
+.client[data-slot="-2"] {
+  --slot: -2;
+}
+
+.client[data-slot="2"] {
+  --slot: 2;
+}
+
+.client[data-slot="3"] {
+  --slot: 3;
+  visibility: hidden;
+  transition: none;
+}
+
+/* Receded rows are still live tabs: hint on hover, lift fully on focus. */
+@media (--hover) {
+  .client[data-slot="-2"]:hover,
+  .client[data-slot="2"]:hover {
+    opacity: 0.45;
+  }
+}
+
+.client[data-slot]:focus-visible {
+  opacity: 1;
+  filter: none;
+}
+
+/* A row wrapping through the hidden slot repositions with transitions off —
+   it must never visibly fly across the rail (spec: wrap without teleport). */
+.client[data-teleport="true"] {
+  transition: none;
 }
 
 .avatar {
@@ -196,8 +260,11 @@
   }
 }
 
-/* Mobile: rail becomes a horizontal 3-chip row above the quote stage — avatar
-   + name, orange top bar on the active chip, logos dropped. */
+/* Mobile: rail becomes a horizontal peek strip above the quote stage — same
+   slot model on the X axis. Chips are a quarter of the strip wide, so ±1 sit
+   flush beside the active chip (three full chips) and ±2 straddle the strip
+   edges half-cropped, fading out under the gradient mask ("more entries").
+   Avatar + name, orange top bar on the active chip, logos dropped. */
 @media (--mobile) {
   .grid {
     grid-template-columns: 1fr;
@@ -205,12 +272,21 @@
   }
 
   .rail {
-    flex-direction: row;
     order: -1;
+    height: auto;
+    align-items: stretch;
+    justify-items: center;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 18%,
+      #000 82%,
+      transparent
+    );
   }
 
   .client {
-    flex: 1;
+    width: 25%;
     flex-direction: column;
     gap: 10px;
     padding: 14px 8px;
@@ -218,15 +294,20 @@
     border-top: 3px solid transparent;
     text-align: center;
     align-items: center;
-
-    &:last-child {
-      border-bottom: 0;
-    }
+    transform: translateX(calc(var(--slot, 0) * 100%));
 
     &[aria-selected="true"] {
       border-left-color: transparent;
       border-top-color: var(--color-orange);
     }
+  }
+
+  /* Cropping + the edge fade signal "more" here — no depth scaling at chip
+     size (a 0.68-scale chip is illegible), so ±2 keep the plain dim look. */
+  .client[data-slot="-2"],
+  .client[data-slot="2"] {
+    opacity: 0.45;
+    filter: none;
   }
 
   .who b {
@@ -240,13 +321,25 @@
   .pull {
     max-width: none;
   }
+
+  /* The stage spans the full viewport here, so a parked incoming slide
+     (translateX(40px) resting state) would otherwise widen the page and let
+     it wiggle sideways. Clip (not hidden) — no scroll container is created. */
+  .stage {
+    overflow-x: clip;
+  }
 }
 
-/* Reduced motion: switch instantly, no directional slide, no progress fill. */
+/* Reduced motion: switch instantly, no directional slide, no progress fill,
+   rail rows snap to their slots without gliding. */
 @media (--reduced-motion) {
   .slide {
     transition: none;
     transform: none;
+  }
+
+  .client {
+    transition: none;
   }
 
   .section[data-autoplay="true"] .client[aria-selected="true"] .progress {

@@ -582,6 +582,43 @@ export const testimonials: Testimonial[] = [
       after: ' i zaangażowanie.',
     },
   },
+  {
+    quote:
+      'Szczerze rekomenduję współpracę z agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele. Jesteśmy zadowoleni z efektów działań zespołu.',
+    author: 'Piotr Treszczotko',
+    company: 'Funtronic',
+    image: '/assets/testimonial-treszczotko.jpg',
+    logo: '/assets/clients/funtronic.png',
+    pull: {
+      before: 'Zespół ',
+      highlight: 'doskonale zrozumiał',
+      after: ' nasze potrzeby.',
+    },
+  },
+  {
+    quote:
+      'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty. Agencja proponuje nowe rozwiązania i pomysły, które wspólnie wcielamy w życie.',
+    author: 'Beata Nartowska',
+    company: 'Aquael',
+    image: '/assets/testimonial-nartowska.jpg',
+    logo: '/assets/clients/aquael.png',
+    pull: {
+      highlight: 'W pełni odpowiada',
+      after: ' naszym oczekiwaniom.',
+    },
+  },
+  {
+    quote:
+      'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Ze względu na cele i grupę docelową, wspólnie zdecydowaliśmy się na komunikację w serwisie LinkedIn. Polecamy współpracę z zespołem Social Lama.',
+    author: 'Katarzyna Gosiewska',
+    company: 'Intrum',
+    image: '/assets/testimonial-gosiewska.jpg',
+    logo: '/assets/clients/intrum.png',
+    pull: {
+      highlight: 'Polecamy współpracę',
+      after: ' z zespołem Social Lama.',
+    },
+  },
 ]
 
 // —— CTA ————————————————————————————————————————————————————————————————————

@@ -1,11 +1,14 @@
 'use client'
 
 /**
- * Testimonials — pull-quote + client rail (openspec/changes/testimonial-pull-quote-rail,
- * Makieta 1). A short pull-phrase in display type with an orange <mark> sits
- * above the full quote at reading size; all three clients stay visible in a
- * rail that doubles as the only navigation. The slider autoplays on a 7 s
- * rhythm with a thin orange progress bar filling along the active rail row.
+ * Testimonials — pull-quote + client rail (openspec/changes/testimonial-pull-quote-rail
+ * + testimonial-depth-rail, Makieta 1 / Mock B). A short pull-phrase in display
+ * type with an orange <mark> sits above the full quote at reading size; the
+ * rail doubles as the only navigation. With six clients the rail is a centered
+ * depth window: three full rows in the middle band, the prev/next entries
+ * receded picker-wheel style, the sixth hidden — each row positioned by its
+ * wrap-around slot (see slotOf). The slider autoplays on a 7 s rhythm with a
+ * thin orange progress bar filling along the active rail row.
  *
  * Autoplay engine (the mock's proven approach): a setTimeout chain advancing on
  * a fixed cycle. The progress bar is a pure CSS scaleX animation keyed off
@@ -31,6 +34,14 @@ const SWIPE_THRESHOLD = 40
 // The exiting slide keeps its data-leaving flag for one transition so it
 // animates out to the left instead of snapping (see the CSS).
 const LEAVE_MS = 500
+
+// Wrap-around slot of entry `i` relative to `anchor`: 0 = centered/active,
+// ±1 = full band, ±2 = receded, +3 = hidden (styled per slot in the CSS).
+// Also doubles as the signed shortest distance between two indices.
+const slotOf = (i: number, anchor: number) => {
+  const offset = (((i - anchor) % COUNT) + COUNT) % COUNT
+  return offset > COUNT / 2 ? offset - COUNT : offset
+}
 
 export function Testimonial() {
   const ref = useReveal<HTMLElement>()
@@ -176,41 +187,53 @@ export function Testimonial() {
         {/* Rail = the slider's tab strip (each row selects a testimonial), so
             role="tablist" over a plain container is the right ARIA, not a nav. */}
         <div className={s.rail} role="tablist" aria-label="Wybierz opinię">
-          {testimonials.map((t, i) => (
-            <button
-              type="button"
-              key={t.author}
-              className={s.client}
-              role="tab"
-              aria-selected={i === active}
-              aria-label={`Opinia ${i + 1}: ${t.author}`}
-              onClick={() => pick(i)}
-            >
-              {t.image && (
-                <Image
-                  src={t.image}
-                  alt={t.author}
-                  width={136}
-                  height={136}
-                  className={s.avatar}
-                />
-              )}
-              <span className={s.who}>
-                {t.logo && (
+          {testimonials.map((t, i) => {
+            const slot = slotOf(i, active)
+            // While a change is in flight (`leaving` holds the previous
+            // active), a row whose slot didn't move by the window's signed
+            // delta must have wrapped through the hidden slot — flag it so
+            // the CSS repositions it without a visible glide across the rail.
+            const prevSlot = leaving === null ? slot : slotOf(i, leaving)
+            const delta = leaving === null ? 0 : slotOf(active, leaving)
+            const wrapped = prevSlot - delta !== slot
+            return (
+              <button
+                type="button"
+                key={t.author}
+                className={s.client}
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`Opinia ${i + 1}: ${t.author}`}
+                data-slot={slot}
+                data-teleport={wrapped}
+                onClick={() => pick(i)}
+              >
+                {t.image && (
                   <Image
-                    src={t.logo}
-                    alt={t.company ?? t.author}
-                    width={180}
-                    height={56}
-                    objectFit="contain"
-                    className={s.logo}
+                    src={t.image}
+                    alt={t.author}
+                    width={136}
+                    height={136}
+                    className={s.avatar}
                   />
                 )}
-                <b>{t.author}</b>
-              </span>
-              <span className={s.progress} aria-hidden />
-            </button>
-          ))}
+                <span className={s.who}>
+                  {t.logo && (
+                    <Image
+                      src={t.logo}
+                      alt={t.company ?? t.author}
+                      width={180}
+                      height={56}
+                      objectFit="contain"
+                      className={s.logo}
+                    />
+                  )}
+                  <b>{t.author}</b>
+                </span>
+                <span className={s.progress} aria-hidden />
+              </button>
+            )
+          })}
         </div>
       </div>
     </section>
