@@ -2,9 +2,15 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { pl } from '@payloadcms/translations/languages/pl'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
+import { env } from '@/lib/env'
+import { categories } from '@/lib/payload/collections/categories'
+import { media } from '@/lib/payload/collections/media'
+import { posts } from '@/lib/payload/collections/posts'
+import { users } from '@/lib/payload/collections/users'
 import { requirePayloadEnv } from '@/lib/payload/env'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -18,8 +24,23 @@ export default buildConfig({
       connectionString: databaseUrl,
     },
   }),
-  collections: [],
+  collections: [posts, categories, media, users],
   editor: lexicalEditor(),
+  admin: {
+    user: users.slug,
+  },
+  plugins: [
+    // Media storage lives in Vercel Blob. Without the token the app still
+    // boots (uploads fall back to local disk in dev) — see .env.example.
+    ...(env.BLOB_READ_WRITE_TOKEN
+      ? [
+          vercelBlobStorage({
+            collections: { media: true },
+            token: env.BLOB_READ_WRITE_TOKEN,
+          }),
+        ]
+      : []),
+  ],
   // Polish-only admin: the client's editors work in Polish (site content is
   // Polish-only too; content localization is intentionally not enabled).
   i18n: {
