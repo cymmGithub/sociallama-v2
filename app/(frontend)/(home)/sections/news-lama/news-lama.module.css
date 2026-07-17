@@ -11,8 +11,14 @@
 .heading {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  /* Same scale as the services "Usługi" heading */
+  font-size: clamp(2.5rem, 7vw, 5rem);
   letter-spacing: -0.02em;
+}
+
+.headingAccent {
+  /* Orange in the plum-deep chapter */
+  color: var(--color-contrast);
 }
 
 .card {

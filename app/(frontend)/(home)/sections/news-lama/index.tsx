@@ -22,6 +22,8 @@ export interface NewsLamaPost {
   coverAlt: string
 }
 
+const HEADING_ACCENT = 'LAMA'
+
 export function NewsLama({ post }: { post: NewsLamaPost }) {
   const ref = useReveal<HTMLElement>()
 
@@ -31,9 +33,20 @@ export function NewsLama({ post }: { post: NewsLamaPost }) {
     year: 'numeric',
   })
 
+  // "NewsLAMA" → "News" + accented "LAMA" (copy stays in lib/content/home.ts)
+  const hasAccent = news.heading.endsWith(HEADING_ACCENT)
+  const headingPrefix = hasAccent
+    ? news.heading.slice(0, -HEADING_ACCENT.length)
+    : news.heading
+
   return (
     <section ref={ref} className={s.section}>
-      <h2 className={s.heading}>{news.heading}</h2>
+      <h2 className={s.heading}>
+        {headingPrefix}
+        {hasAccent && (
+          <span className={s.headingAccent}>{HEADING_ACCENT}</span>
+        )}
+      </h2>
 
       <Link data-reveal-item className={s.card} href={post.href}>
         <div className={s.media}>
