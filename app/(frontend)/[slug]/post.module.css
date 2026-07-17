@@ -1,0 +1,174 @@
+.article {
+  --post-measure: 70ch;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 2);
+  /* Clear the solid fixed header bar */
+  padding-block: calc(var(--header-height) + var(--safe) * 3)
+    calc(var(--safe) * 6);
+  padding-inline: var(--safe);
+  /* Body/utility face — headings opt into the display face below */
+  font-family: var(--font-mono);
+}
+
+.header {
+  width: min(100%, var(--post-measure));
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: calc(var(--gap) / 2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8125rem;
+}
+
+.category {
+  padding: 0.375em 0.875em;
+  border-radius: 999px;
+  background-color: var(--color-contrast);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.date {
+  color: color-mix(in srgb, var(--color-secondary) 64%, transparent);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  text-wrap: pretty;
+}
+
+.cover {
+  position: relative;
+  width: min(100%, 72rem);
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+/*
+ * Rich-text body. Headings, lists, quotes, and inline elements come from
+ * the default Lexical converters as plain tags — this module is their
+ * single styling surface (design decision D5).
+ */
+.body {
+  width: min(100%, var(--post-measure));
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.75);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-top: calc(var(--gap) * 0.75);
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+
+  a {
+    color: var(--color-contrast);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    transition: opacity var(--duration-fast);
+
+    &:hover {
+      opacity: 0.72;
+    }
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li::marker {
+    color: var(--color-contrast);
+  }
+
+  blockquote {
+    margin-block: calc(var(--gap) / 2);
+    padding: calc(var(--gap) * 0.75) var(--gap);
+    border-left: 3px solid var(--color-contrast);
+    border-radius: 0 12px 12px 0;
+    background-color: var(--surface-2);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1875rem;
+    line-height: 1.4;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--line-strong);
+    margin-block: var(--gap);
+  }
+}
+
+.figure {
+  display: block;
+  margin-block: calc(var(--gap) / 2);
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
