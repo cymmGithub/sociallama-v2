@@ -245,7 +245,7 @@ export interface AddArrayObjectElementOp {
    * property, e.g. `'images.remotePatterns'`.
    */
   propertyPath: string
-  /** The object literal to append, as source text, e.g. `{ protocol: 'https', hostname: 'cdn.sanity.io' }` */
+  /** The object literal to append, as source text, e.g. `{ protocol: 'https', hostname: 'cdn.example.com' }` */
   objectText: string
   /** Property name + value identifying an already-present matching element. */
   matchProperty: { name: string; value: string }

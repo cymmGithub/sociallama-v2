@@ -69,19 +69,18 @@ Generated: 2026-01-01
     const output = renderDeploymentChecklist({
       projectName: 'Acme',
       integrations: [
-        { name: 'Sanity', configured: true },
+        { name: 'Shopify', configured: true },
         { name: 'HubSpot', configured: true },
       ],
       date: '2026-01-01',
     })
 
-    expect(output).toContain('## Sanity CMS')
-    expect(output).toContain('- URL: `https://your-domain.com/api/revalidate`')
+    expect(output).toContain('## Shopify')
     expect(output).toContain('## HubSpot')
-    expect(output).not.toContain('## Shopify')
+    expect(output).not.toContain('## Mailchimp')
 
     // Integration sections appear between Pre-Deployment and Performance.
-    expect(output.indexOf('## Sanity CMS')).toBeLessThan(
+    expect(output.indexOf('## Shopify')).toBeLessThan(
       output.indexOf('## HubSpot')
     )
     expect(output.indexOf('## HubSpot')).toBeLessThan(
@@ -108,11 +107,11 @@ Generated: 2026-01-01
   it('omits the warning line for a configured integration', () => {
     const output = renderDeploymentChecklist({
       projectName: 'Acme',
-      integrations: [{ name: 'Sanity', configured: true }],
+      integrations: [{ name: 'Shopify', configured: true }],
       date: '2026-01-01',
     })
 
-    expect(output).toContain('## Sanity CMS')
+    expect(output).toContain('## Shopify')
     expect(output).not.toContain('Not yet configured')
   })
 })
@@ -121,7 +120,7 @@ describe('renderInventory', () => {
   it('renders integrations, components, and pages', () => {
     const output = renderInventory({
       date: '2026-01-01',
-      integrations: [{ name: 'Sanity', configured: true }],
+      integrations: [{ name: 'Shopify', configured: true }],
       uiComponents: ['button', 'select'],
       layoutComponents: ['wrapper'],
       effectComponents: ['parallax'],
@@ -131,7 +130,7 @@ describe('renderInventory', () => {
     expect(output).toContain('# Component Inventory')
     expect(output).toContain('Generated: 2026-01-01')
     expect(output).toContain('## Installed Integrations')
-    expect(output).toContain('- Sanity')
+    expect(output).toContain('- Shopify')
     expect(output).not.toContain('needs configuration')
     expect(output).toContain('## UI Components')
     expect(output).toContain('- `button`')
@@ -173,7 +172,7 @@ describe('renderInventory', () => {
   it('renders scan-error fallbacks when a scan returns null', () => {
     const output = renderInventory({
       date: '2026-01-01',
-      integrations: [{ name: 'Sanity', configured: true }],
+      integrations: [{ name: 'Shopify', configured: true }],
       uiComponents: null,
       layoutComponents: null,
       effectComponents: null,

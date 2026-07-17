@@ -126,8 +126,8 @@ describe('removeIfStatement', () => {
 
   it('leaves if-statements with a different condition untouched', () => {
     const fixture = `function handler() {
-  if (isSanityWebhook) {
-    return sanityRevalidate()
+  if (isAcmeWebhook) {
+    return acmeRevalidate()
   }
   if (isShopifyWebhook) {
     return shopifyRevalidate()
@@ -136,8 +136,8 @@ describe('removeIfStatement', () => {
 }
 `
     const result = applyOpsToText(fixture, [op])
-    expect(result).toContain('if (isSanityWebhook)')
-    expect(result).toContain('sanityRevalidate()')
+    expect(result).toContain('if (isAcmeWebhook)')
+    expect(result).toContain('acmeRevalidate()')
     expect(result).not.toContain('isShopifyWebhook')
     expect(result).not.toContain('shopifyRevalidate')
   })
@@ -176,7 +176,7 @@ function b() {
 describe('Shopify webhook dispatch strip (composed ops)', () => {
   const routeFixture = `import { revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
-import { parseBody } from 'next-sanity/webhook'
+import { parseBody } from 'acme-cms/webhook'
 import { revalidate as shopifyRevalidate } from '@/integrations/shopify/revalidate'
 import { getClientIP, rateLimit, rateLimiters } from '@/lib/utils/rate-limit'
 
@@ -197,7 +197,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const secret = process.env.SANITY_REVALIDATE_SECRET
+    const secret = process.env.ACME_REVALIDATE_SECRET
     if (!secret) {
       return new Response('Webhook secret not configured', { status: 503 })
     }
@@ -222,9 +222,9 @@ export async function POST(request: NextRequest) {
     expect(result).not.toContain('shopifyRevalidate')
     expect(result).not.toContain('isShopifyWebhook')
 
-    // Untouched: rate limiting and the Sanity revalidation path.
+    // Untouched: rate limiting and the CMS revalidation path.
     expect(result).toContain('rateLimit(')
-    expect(result).toContain('SANITY_REVALIDATE_SECRET')
+    expect(result).toContain('ACME_REVALIDATE_SECRET')
     expect(result).toContain('export async function POST')
 
     // Idempotent — re-applying to the already-stripped result changes nothing.
@@ -407,23 +407,23 @@ describe('addArrayStringElement', () => {
 // ---------------------------------------------------------------------------
 
 describe('addArrayObjectElement', () => {
-  const addSanityPattern: AstOperation = {
+  const addExamplePattern: AstOperation = {
     kind: 'addArrayObjectElement',
     variableName: 'nextConfig',
     propertyPath: 'images.remotePatterns',
-    objectText: "{ protocol: 'https', hostname: 'cdn.sanity.io' }",
-    matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
+    objectText: "{ protocol: 'https', hostname: 'cdn.example.com' }",
+    matchProperty: { name: 'hostname', value: 'cdn.example.com' },
   }
 
   it('should append the object when no element matches', () => {
-    const result = applyOpsToText(nextConfigFixture, [addSanityPattern])
+    const result = applyOpsToText(nextConfigFixture, [addExamplePattern])
 
-    expect(result).toContain('cdn.sanity.io')
-    expect(count(result, 'cdn.sanity.io')).toBe(1)
+    expect(result).toContain('cdn.example.com')
+    expect(count(result, 'cdn.example.com')).toBe(1)
     // Existing element survives.
     expect(result).toContain('cdn.shopify.com')
     // Adding twice is a no-op.
-    expect(applyOpsToText(result, [addSanityPattern])).toBe(result)
+    expect(applyOpsToText(result, [addExamplePattern])).toBe(result)
   })
 
   it('should be an exact no-op when a matching element is present', () => {
@@ -453,9 +453,9 @@ describe('addArrayObjectElement', () => {
   })
 
   it('should append to a compact single-line array (formatting variant)', () => {
-    const result = applyOpsToText(compactConfigFixture, [addSanityPattern])
+    const result = applyOpsToText(compactConfigFixture, [addExamplePattern])
 
-    expect(result).toContain('cdn.sanity.io')
+    expect(result).toContain('cdn.example.com')
     expect(result).toContain('cdn.shopify.com')
   })
 })
@@ -762,7 +762,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io',
+        hostname: 'cdn.example.com',
       },
     ],
   },
@@ -822,18 +822,18 @@ export default nextConfig
         kind: 'removeArrayObjectElement',
         variableName: 'nextConfig',
         propertyPath: 'images.remotePatterns',
-        matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
+        matchProperty: { name: 'hostname', value: 'cdn.example.com' },
       },
       {
         kind: 'addArrayObjectElement',
         variableName: 'nextConfig',
         propertyPath: 'images.remotePatterns',
-        objectText: "{ protocol: 'https', hostname: 'cdn.sanity.io' }",
-        matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
+        objectText: "{ protocol: 'https', hostname: 'cdn.example.com' }",
+        matchProperty: { name: 'hostname', value: 'cdn.example.com' },
       },
     ])
 
-    expect(count(result, 'cdn.sanity.io')).toBe(1)
+    expect(count(result, 'cdn.example.com')).toBe(1)
     expect(count(result, 'cdn.shopify.com')).toBe(1)
   })
 
@@ -856,7 +856,7 @@ export default nextConfig
 
     expect(result).not.toContain('images.ctfassets.net')
     expect(count(result, 'cdn.shopify.com')).toBe(1)
-    expect(count(result, 'cdn.sanity.io')).toBe(1)
+    expect(count(result, 'cdn.example.com')).toBe(1)
   })
 
   it('remove then add import leaves the declaration present exactly once', () => {

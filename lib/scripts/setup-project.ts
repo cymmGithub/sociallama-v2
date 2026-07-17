@@ -62,21 +62,14 @@ import {
 export const PROJECT_PRESETS = {
   editorial: {
     name: 'Editorial',
-    description: 'Content-driven site with Sanity CMS and HubSpot forms',
-    integrations: ['sanity', 'hubspot', 'mailchimp'],
+    description: 'Content-driven site with HubSpot forms and newsletters',
+    integrations: ['hubspot', 'mailchimp'],
   },
   studio: {
     name: 'Studio',
     description:
       'Full creative suite with WebGL, CMS, animations, and all integrations',
-    integrations: [
-      'sanity',
-      'shopify',
-      'hubspot',
-      'mailchimp',
-      'webgl',
-      'theatre',
-    ],
+    integrations: ['shopify', 'hubspot', 'mailchimp', 'webgl', 'theatre'],
   },
   boutique: {
     name: 'Boutique',
@@ -87,14 +80,7 @@ export const PROJECT_PRESETS = {
     name: 'Gallery',
     description:
       'Immersive e-commerce experience with 3D product showcases and CMS',
-    integrations: [
-      'sanity',
-      'shopify',
-      'hubspot',
-      'mailchimp',
-      'webgl',
-      'theatre',
-    ],
+    integrations: ['shopify', 'hubspot', 'mailchimp', 'webgl', 'theatre'],
   },
   blank: {
     name: 'Blank',

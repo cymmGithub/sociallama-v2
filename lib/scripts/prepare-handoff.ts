@@ -46,7 +46,7 @@ const isRegistryId = (id: string): id is IntegrationId => REGISTRY_IDS.has(id)
  * Determine which integrations actually ship on disk (audit H7 — "presence
  * = disk", not "presence = configured env").
  *
- * Bundle-backed integrations (sanity, shopify, hubspot, mailchimp, webgl,
+ * Bundle-backed integrations (shopify, hubspot, mailchimp, webgl,
  * theatre) are reported only when `isInstalled` finds their code on disk —
  * an integration stripped by `setup:project` must not appear here, even if
  * its env vars happen to still be set in the current shell.

@@ -4,7 +4,7 @@ import s from './not-configured.module.css'
 
 interface NotConfiguredProps {
   /**
-   * Name of the integration (e.g., 'Sanity', 'Shopify', 'HubSpot')
+   * Name of the integration (e.g., 'Shopify', 'HubSpot', 'Mailchimp')
    */
   integration: string
   /**
@@ -29,15 +29,6 @@ const INTEGRATION_INFO: Record<
   string,
   { description: string; docsUrl: string; envVars: string[] }
 > = {
-  Sanity: {
-    description: 'Headless CMS with visual editing and real-time collaboration',
-    docsUrl: 'https://www.sanity.io/docs',
-    envVars: [
-      'NEXT_PUBLIC_SANITY_PROJECT_ID',
-      'NEXT_PUBLIC_SANITY_DATASET',
-      'NEXT_PUBLIC_SANITY_API_READ_TOKEN',
-    ],
-  },
   Shopify: {
     description: 'E-commerce platform with cart and checkout functionality',
     docsUrl: 'https://shopify.dev/docs/storefronts/headless',
@@ -69,9 +60,9 @@ const INTEGRATION_INFO: Record<
  * import { isConfigured } from '@/integrations/registry'
  * import { NotConfigured } from '@/components/ui/not-configured'
  *
- * export default function SanityPage() {
- *   if (!isConfigured('sanity')) {
- *     return <NotConfigured integration="Sanity" />
+ * export default function ShopPage() {
+ *   if (!isConfigured('shopify')) {
+ *     return <NotConfigured integration="Shopify" />
  *   }
  *   // ... rest of page
  * }

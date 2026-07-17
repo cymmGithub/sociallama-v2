@@ -164,7 +164,7 @@ export const readPayloadPackageJson = async (
 
 /**
  * Recursively list the files under a payload directory, returned as paths
- * relative to the payload root (e.g. 'lib/integrations/sanity/client.ts'),
+ * relative to the payload root (e.g. 'lib/integrations/shopify/client.ts'),
  * sorted for deterministic output. Fails loudly when the directory is absent.
  */
 export const listPayloadFiles = async (

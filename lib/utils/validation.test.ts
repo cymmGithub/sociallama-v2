@@ -14,7 +14,6 @@ import {
   mailchimpEnvSchema,
   parseFormData,
   phoneSchema,
-  sanityEnvSchema,
   shopifyEnvSchema,
   turnstileEnvSchema,
 } from './validation'
@@ -22,36 +21,6 @@ import {
 // ============================================
 // Environment Variable Schemas
 // ============================================
-
-describe('sanityEnvSchema', () => {
-  test('valid config passes', () => {
-    const result = sanityEnvSchema.safeParse({
-      NEXT_PUBLIC_SANITY_PROJECT_ID: 'abc123',
-      NEXT_PUBLIC_SANITY_DATASET: 'production',
-    })
-    expect(result.success).toBe(true)
-  })
-
-  test('missing fields fails', () => {
-    const result = sanityEnvSchema.safeParse({})
-    expect(result.success).toBe(false)
-  })
-
-  test('empty strings fail', () => {
-    const result = sanityEnvSchema.safeParse({
-      NEXT_PUBLIC_SANITY_PROJECT_ID: '',
-      NEXT_PUBLIC_SANITY_DATASET: '',
-    })
-    expect(result.success).toBe(false)
-  })
-
-  test('partial config fails', () => {
-    const result = sanityEnvSchema.safeParse({
-      NEXT_PUBLIC_SANITY_PROJECT_ID: 'abc123',
-    })
-    expect(result.success).toBe(false)
-  })
-})
 
 describe('shopifyEnvSchema', () => {
   test('valid config passes', () => {

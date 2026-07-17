@@ -12,7 +12,7 @@ import { z } from 'zod'
  *
  * // Type-safe access with IntelliSense
  * const url = env.NEXT_PUBLIC_BASE_URL // string | undefined
- * const projectId = env.NEXT_PUBLIC_SANITY_PROJECT_ID // string | undefined
+ * const databaseUrl = env.DATABASE_URL // string | undefined
  * ```
  */
 
@@ -25,22 +25,6 @@ const envSchema = z.object({
   DATABASE_URL: z.string().optional(),
   PAYLOAD_SECRET: z.string().optional(),
   BLOB_READ_WRITE_TOKEN: z.string().optional(),
-
-  // Sanity (supports both Satus and Vercel Marketplace conventions)
-  NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().optional(),
-  NEXT_PUBLIC_SANITY_DATASET: z.string().optional(),
-  // Public read token; NEXT_PUBLIC_ variant supports Vercel Marketplace installs
-  NEXT_PUBLIC_SANITY_API_READ_TOKEN: z.string().optional(),
-  // Server-side fallback read token (non-NEXT_PUBLIC_ variant for Vercel Marketplace)
-  SANITY_API_READ_TOKEN: z.string().optional(),
-  // Private server-side token for mutations (Satus convention)
-  SANITY_PRIVATE_TOKEN: z.string().optional(),
-  // Alias for SANITY_PRIVATE_TOKEN used by Vercel Marketplace provisioning
-  SANITY_API_WRITE_TOKEN: z.string().optional(),
-  // Vercel Marketplace may provision project ID under this name (Studio convention)
-  SANITY_STUDIO_PROJECT_ID: z.string().optional(),
-  // Webhook secret for on-demand revalidation (app/api/revalidate)
-  SANITY_REVALIDATE_SECRET: z.string().optional(),
 
   // Shopify
   SHOPIFY_STORE_DOMAIN: z.string().optional(),

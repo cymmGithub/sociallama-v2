@@ -282,7 +282,7 @@ describe('round trip: shopify', () => {
     project = await createTempProject()
 
     expectClean(
-      await runSetup(project, 'sanity,hubspot,mailchimp,webgl,theatre'),
+      await runSetup(project, 'hubspot,mailchimp,webgl,theatre'),
       'setup:project (subtract shopify)'
     )
 
@@ -352,7 +352,7 @@ describe('round trip: webgl without theatre', () => {
     project = await createTempProject()
 
     expectClean(
-      await runSetup(project, 'sanity,shopify,hubspot,mailchimp'),
+      await runSetup(project, 'shopify,hubspot,mailchimp'),
       'setup:project (subtract webgl + theatre)'
     )
 
@@ -464,7 +464,7 @@ describe('lean typecheck: --keep ""', () => {
     expectClean(await runSetup(project, ''), 'setup:project --keep "" (lean)')
 
     // Integration folders must be gone
-    expect(await pathExists(join(project, 'lib/integrations/sanity'))).toBe(
+    expect(await pathExists(join(project, 'lib/integrations/shopify'))).toBe(
       false
     )
     expect(await pathExists(join(project, 'lib/webgl'))).toBe(false)
@@ -539,53 +539,7 @@ describe('lean typecheck: --keep "" --clean-homepage', () => {
 })
 
 // ---------------------------------------------------------------------------
-// Additive setup: --keep sanity — sanity restored, webgl absent, typecheck ok
-// ---------------------------------------------------------------------------
-
-describe('additive setup: --keep sanity', () => {
-  let project = ''
-
-  afterAll(async () => {
-    if (project) await rm(project, { recursive: true, force: true })
-  })
-
-  it('sanity restored from snapshot, webgl absent, typecheck passes', async () => {
-    project = await createTempProject()
-
-    expectClean(
-      await runSetup(project, 'sanity'),
-      'setup:project --keep sanity'
-    )
-
-    // Sanity folder must be present (restored from snapshot)
-    expect(await pathExists(join(project, 'lib/integrations/sanity'))).toBe(
-      true
-    )
-
-    // app/(frontend)/layout.tsx must contain SanityLive (overwriteFiles restores it)
-    const layout = await readProjectFile(project, 'app/(frontend)/layout.tsx')
-    expect(layout).toContain('SanityLive')
-
-    // WebGL must be absent
-    expect(await pathExists(join(project, 'lib/webgl'))).toBe(false)
-
-    // Self-prune ran
-    expect(
-      await pathExists(join(project, 'lib/scripts/setup-project.ts'))
-    ).toBe(false)
-
-    // typecheck
-    const result = await runTypecheck(project)
-    if (result.exitCode !== 0) {
-      throw new Error(
-        `tsc --noEmit failed on --keep sanity output (exit ${result.exitCode})\n--- stdout ---\n${result.stdout}\n--- stderr ---\n${result.stderr}`
-      )
-    }
-  })
-})
-
-// ---------------------------------------------------------------------------
-// Additive setup: --preset editorial — sanity+hubspot+mailchimp, no webgl
+// Additive setup: --preset editorial — hubspot+mailchimp, no webgl
 // ---------------------------------------------------------------------------
 
 describe('additive setup: --preset editorial', () => {
@@ -609,9 +563,6 @@ describe('additive setup: --preset editorial', () => {
     )
 
     // Editorial integrations present
-    expect(await pathExists(join(project, 'lib/integrations/sanity'))).toBe(
-      true
-    )
     expect(await pathExists(join(project, 'lib/integrations/hubspot'))).toBe(
       true
     )
@@ -665,9 +616,6 @@ describe('additive setup: --preset studio', () => {
     )
 
     // All integration folders present
-    expect(await pathExists(join(project, 'lib/integrations/sanity'))).toBe(
-      true
-    )
     expect(await pathExists(join(project, 'lib/integrations/shopify'))).toBe(
       true
     )

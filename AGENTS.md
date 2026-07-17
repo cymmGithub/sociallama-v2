@@ -242,15 +242,15 @@ export function ProductView({ product }: { product: Product }) {
 import { isConfigured } from '@/integrations/registry'
 import { NotConfigured } from '@/components/ui/not-configured'
 
-export default async function SanityPage() {
-  if (!isConfigured('sanity')) {
-    return <NotConfigured integration="Sanity" />
+export default async function ShopPage() {
+  if (!isConfigured('shopify')) {
+    return <NotConfigured integration="Shopify" />
   }
   // ... normal page logic
 }
 ```
 
-Available checks: `isConfigured('sanity' | 'shopify' | 'hubspot' | 'mailchimp' | 'turnstile')`.
+Available checks: `isConfigured('payload' | 'shopify' | 'hubspot' | 'mailchimp' | 'turnstile' | 'analytics')`.
 
 Adding a new integration: add its Zod schema to `@/utils/validation`, add one entry to `lib/integrations/registry.ts`. The `doctor.ts` and listing helpers derive automatically. See `lib/integrations/README.md`.
 
@@ -358,8 +358,6 @@ async function fetchUserData(id: string) {
 }
 ```
 
-All `sanityFetch` calls include `cacheSignal()` automatically.
-
 **React 19 ref as prop** - No `forwardRef` needed.
 
 ```tsx
@@ -379,12 +377,12 @@ Cache Components are enabled globally (`cacheComponents: true` in `next.config.t
 | Real-time (live feeds, prices) | `cache: 'no-store'` |
 
 Critical rules:
-- Any fetch that calls `cacheTag()` (e.g. `sanityFetch`) MUST run inside a
-  `'use cache'` function. Calling it in a bare Server Component throws
-  `cacheTag() can only be called inside a "use cache" function`. Wrap the fetch
-  in a small helper — `async function load() { 'use cache'; return sanityFetch(...) }` —
-  and reuse it across the page body and `generateMetadata` (this also dedupes the
-  request). See `lib/integrations/sanity/README.md`.
+- Any fetch that calls `cacheTag()` (e.g. the Payload queries in
+  `lib/payload/queries.ts`) MUST run inside a `'use cache'` function. Calling
+  it in a bare Server Component throws `cacheTag() can only be called inside
+  a "use cache" function`. Wrap the fetch in a small `'use cache'` helper and
+  export it wrapped in React `cache()` so the page body and `generateMetadata`
+  share one invocation per request (see `lib/payload/queries.ts`).
 - Wrap cached components in `<Suspense>` boundaries with loading fallbacks
 - Use `revalidateTag()` / `revalidatePath()` in webhook handlers
 - Test with hard refresh (bypasses router cache) AND normal navigation
@@ -462,7 +460,7 @@ Pre-commit hook (lefthook) runs in parallel on staged files: Biome check + tsc t
 | `SECURITY.md` | Security policy and vulnerability reporting |
 | `components/README.md` | Component inventory and conventions |
 | `lib/README.md` | Library structure overview |
-| `lib/integrations/README.md` | Per-integration docs (Sanity, Shopify, HubSpot) |
+| `lib/integrations/README.md` | Per-integration docs (Shopify, HubSpot, Mailchimp) |
 | `lib/styles/README.md` | Design system and style generation |
 | `components/effects/README.md` | Animation component docs |
 

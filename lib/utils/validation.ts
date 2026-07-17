@@ -17,16 +17,6 @@ export const phoneSchema = z
 // Per-integration env schemas
 // ---------------------------------------------------------------------------
 
-/** Environment variables required by the Sanity CMS integration. */
-export const sanityEnvSchema = z.object({
-  NEXT_PUBLIC_SANITY_PROJECT_ID: z
-    .string()
-    .min(1, { error: 'NEXT_PUBLIC_SANITY_PROJECT_ID is required' }),
-  NEXT_PUBLIC_SANITY_DATASET: z
-    .string()
-    .min(1, { error: 'NEXT_PUBLIC_SANITY_DATASET is required' }),
-})
-
 /** Environment variables required by the Shopify Storefront integration. */
 export const shopifyEnvSchema = z.object({
   SHOPIFY_STORE_DOMAIN: z

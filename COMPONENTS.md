@@ -23,7 +23,6 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Menu | `@/components/ui/menu` | Client |
 | NotConfigured | `@/components/ui/not-configured` | Server |
 | RealViewport | `@/components/ui/real-viewport` | Client |
-| SanityImage | `@/components/ui/sanity-image` | Server |
 | Scrollbar | `@/components/ui/scrollbar` | Client |
 | Select | `@/components/ui/select` | Client |
 | Switch | `@/components/ui/switch` | Client |
@@ -105,7 +104,6 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Export | Signature |
 |--------|-----------|
 | generatePageMetadata | `(options: GenerateMetadataOptions) => Metadata` |
-| generateSanityMetadata | `(options: { // Fields are nullable to accept TypeGen query-result types directly // (projections type optional fields as `T | null`). document: { title?: string | null metadata?: { title?: string | null description?: string | null keywords?: string[] | null noIndex?: boolean | null } | null _updatedAt?: string | null publishedAt?: string | null } url?: string type?: 'website' | 'article' }) => Metadata` |
 
 ### Raf (`@/utils/raf`)
 
@@ -143,7 +141,6 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | parseApiResponse | `(schema: z.ZodType<T>, data: unknown, context?: string) => T` |
 | emailSchema | `ZodEmail` |
 | phoneSchema | `ZodString` |
-| sanityEnvSchema | `ZodObject<{ NEXT_PUBLIC_SANITY_PROJECT_ID: ZodString; NEXT_PUBLIC_SANITY_DATA...` |
 | shopifyEnvSchema | `ZodObject<{ SHOPIFY_STORE_DOMAIN: ZodString; SHOPIFY_STOREFRONT_ACCESS_TOKEN:...` |
 | hubspotEnvSchema | `ZodObject<{ HUBSPOT_ACCESS_TOKEN: ZodOptional<ZodString>; NEXT_PUBLIC_HUBSPOT...` |
 | mailchimpEnvSchema | `ZodObject<{ MAILCHIMP_API_KEY: ZodString; MAILCHIMP_SERVER_PREFIX: ZodString;...` |

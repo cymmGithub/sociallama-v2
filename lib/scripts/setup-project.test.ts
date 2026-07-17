@@ -435,15 +435,13 @@ describe('Preset Configurations', () => {
     }
   })
 
-  it('editorial should have Sanity and HubSpot', () => {
-    expect(presets.editorial).toContain('sanity')
+  it('editorial should have HubSpot without WebGL or Shopify', () => {
     expect(presets.editorial).toContain('hubspot')
     expect(presets.editorial).not.toContain('webgl')
     expect(presets.editorial).not.toContain('shopify')
   })
 
   it('studio should have all integrations', () => {
-    expect(presets.studio).toContain('sanity')
     expect(presets.studio).toContain('shopify')
     expect(presets.studio).toContain('hubspot')
     expect(presets.studio).toContain('webgl')
@@ -454,13 +452,11 @@ describe('Preset Configurations', () => {
     expect(presets.boutique).toContain('shopify')
     expect(presets.boutique).toContain('hubspot')
     expect(presets.boutique).not.toContain('webgl')
-    expect(presets.boutique).not.toContain('sanity')
   })
 
   it('gallery should have Shopify with WebGL', () => {
     expect(presets.gallery).toContain('shopify')
     expect(presets.gallery).toContain('webgl')
-    expect(presets.gallery).toContain('sanity')
   })
 
   it('blank should have no integrations', () => {
@@ -482,10 +478,10 @@ const nextConfig: NextConfig = {
       '@react-three/fiber',
       'gsap',
       'three',
-      '@sanity/client',
-      '@sanity/image-url',
-      '@sanity/asset-utils',
-      '@portabletext/react',
+      '@example/client',
+      '@example/image-url',
+      '@example/asset-utils',
+      '@example/rich-text',
     ],
   },
   images: {
@@ -496,7 +492,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn.sanity.io',
+        hostname: 'cdn.example.com',
       },
     ],
   },
@@ -508,24 +504,24 @@ const nextConfig: NextConfig = {
   const nextConfigFormattingVariant = `
 const nextConfig: NextConfig = {
   experimental: {
-    optimizePackageImports: ["@react-three/drei","@react-three/fiber","gsap","three","@sanity/client","@sanity/image-url","@sanity/asset-utils","@portabletext/react"],
+    optimizePackageImports: ["@react-three/drei","@react-three/fiber","gsap","three","@example/client","@example/image-url","@example/asset-utils","@example/rich-text"],
   },
   images: {
-    remotePatterns: [{"protocol":"https","hostname":"cdn.shopify.com"},{"protocol":"https","hostname":"cdn.sanity.io"}],
+    remotePatterns: [{"protocol":"https","hostname":"cdn.shopify.com"},{"protocol":"https","hostname":"cdn.example.com"}],
   },
 }
 `
 
-  it('should remove cdn.sanity.io from remotePatterns', () => {
+  it('should remove cdn.example.com from remotePatterns', () => {
     const result = applyOpsToText(nextConfigFixture, [
       {
         kind: 'removeArrayObjectElement',
         variableName: 'nextConfig',
         propertyPath: 'images.remotePatterns',
-        matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
+        matchProperty: { name: 'hostname', value: 'cdn.example.com' },
       },
     ])
-    expect(result).not.toContain('cdn.sanity.io')
+    expect(result).not.toContain('cdn.example.com')
     expect(result).toContain('cdn.shopify.com')
   })
 
@@ -539,15 +535,15 @@ const nextConfig: NextConfig = {
       },
     ])
     expect(result).not.toContain('cdn.shopify.com')
-    expect(result).toContain('cdn.sanity.io')
+    expect(result).toContain('cdn.example.com')
   })
 
-  it('should remove @sanity packages from optimizePackageImports', () => {
-    const sanityOps = [
-      '@sanity/client',
-      '@sanity/image-url',
-      '@sanity/asset-utils',
-      '@portabletext/react',
+  it('should remove a package group from optimizePackageImports', () => {
+    const exampleOps = [
+      '@example/client',
+      '@example/image-url',
+      '@example/asset-utils',
+      '@example/rich-text',
     ].map((value) => ({
       kind: 'removeArrayStringElement' as const,
       variableName: 'nextConfig',
@@ -556,15 +552,15 @@ const nextConfig: NextConfig = {
     }))
 
     let result = nextConfigFixture
-    for (const op of sanityOps) {
+    for (const op of exampleOps) {
       result = applyOpsToText(result, [op])
     }
 
-    expect(result).not.toContain('@sanity/client')
-    expect(result).not.toContain('@sanity/image-url')
-    expect(result).not.toContain('@sanity/asset-utils')
-    expect(result).not.toContain('@portabletext/react')
-    // Non-Sanity entries must survive
+    expect(result).not.toContain('@example/client')
+    expect(result).not.toContain('@example/image-url')
+    expect(result).not.toContain('@example/asset-utils')
+    expect(result).not.toContain('@example/rich-text')
+    // Other entries must survive
     expect(result).toContain('gsap')
     expect(result).toContain('@react-three/drei')
   })
@@ -590,7 +586,7 @@ const nextConfig: NextConfig = {
     expect(result).not.toContain("'three'")
     // Non-WebGL entries must survive
     expect(result).toContain('gsap')
-    expect(result).toContain('@sanity/client')
+    expect(result).toContain('@example/client')
   })
 
   it('should handle formatting variants the old regex would have missed', () => {
@@ -604,7 +600,7 @@ const nextConfig: NextConfig = {
       },
     ])
     expect(result).not.toContain('cdn.shopify.com')
-    expect(result).toContain('cdn.sanity.io')
+    expect(result).toContain('cdn.example.com')
   })
 })
 
@@ -671,7 +667,7 @@ describe('Additive Transforms (remove → add round trips)', () => {
    * assert the additive ops are idempotent on the restored result.
    */
   const roundTrip = (
-    bundleName: 'sanity' | 'shopify' | 'webgl' | 'theatre',
+    bundleName: 'shopify' | 'webgl' | 'theatre',
     file: string
   ): { lean: string; restored: string } | undefined => {
     const bundle = INTEGRATION_BUNDLES[bundleName]
@@ -750,27 +746,12 @@ describe('Additive Transforms (remove → add round trips)', () => {
     expect(count(result.restored, 'id="webgl"')).toBe(1)
   })
 
-  it('sanity: next.config.ts regains remotePattern and package imports exactly once', () => {
-    const result = roundTrip('sanity', 'next.config.ts')
-    if (!result) return
-
-    expect(result.lean).not.toContain('cdn.sanity.io')
-    expect(count(result.restored, 'cdn.sanity.io')).toBe(1)
-    expect(count(result.restored, "'@sanity/client'")).toBe(1)
-    expect(count(result.restored, "'@sanity/image-url'")).toBe(1)
-    expect(count(result.restored, "'@sanity/asset-utils'")).toBe(1)
-    expect(count(result.restored, "'@portabletext/react'")).toBe(1)
-    // The shopify pattern is untouched
-    expect(count(result.restored, 'cdn.shopify.com')).toBe(1)
-  })
-
   it('shopify: next.config.ts regains the cdn.shopify.com remotePattern exactly once', () => {
     const result = roundTrip('shopify', 'next.config.ts')
     if (!result) return
 
     expect(result.lean).not.toContain('cdn.shopify.com')
     expect(count(result.restored, 'cdn.shopify.com')).toBe(1)
-    expect(count(result.restored, 'cdn.sanity.io')).toBe(1)
   })
 
   it('webgl overwrite: the lean wrapper matches the expected lean state', () => {
@@ -798,7 +779,7 @@ describe('Additive Transforms (remove → add round trips)', () => {
 
 describe('planInstallSet (H6 — --force reinstall regression)', () => {
   const statuses = [
-    { id: 'sanity', installed: true },
+    { id: 'shopify', installed: true },
     { id: 'webgl', installed: false },
     { id: 'theatre', installed: true },
   ]
@@ -807,21 +788,21 @@ describe('planInstallSet (H6 — --force reinstall regression)', () => {
     const { toInstall, alreadyInstalled } = planInstallSet(statuses, false)
 
     expect(toInstall.map((s) => s.id)).toEqual(['webgl'])
-    expect(alreadyInstalled.map((s) => s.id)).toEqual(['sanity', 'theatre'])
+    expect(alreadyInstalled.map((s) => s.id)).toEqual(['shopify', 'theatre'])
   })
 
   it('with --force, queues already-installed bundles for reinstall too', () => {
     const { toInstall, alreadyInstalled } = planInstallSet(statuses, true)
 
     // Every requested bundle is queued — --force is no longer a no-op.
-    expect(toInstall.map((s) => s.id)).toEqual(['sanity', 'webgl', 'theatre'])
+    expect(toInstall.map((s) => s.id)).toEqual(['shopify', 'webgl', 'theatre'])
     // Still reported as "already installed" for the reinstall-vs-fresh message.
-    expect(alreadyInstalled.map((s) => s.id)).toEqual(['sanity', 'theatre'])
+    expect(alreadyInstalled.map((s) => s.id)).toEqual(['shopify', 'theatre'])
   })
 
   it('--force on an all-installed set is never empty (was the H6 no-op bug)', () => {
     const allInstalled = [
-      { id: 'sanity', installed: true },
+      { id: 'shopify', installed: true },
       { id: 'webgl', installed: true },
     ]
 
@@ -836,12 +817,11 @@ describe('planInstallSet (H6 — --force reinstall regression)', () => {
 
 describe('declaredBundlePaths / findMissingPaths (H8 preflight)', () => {
   it('declaredBundlePaths collects folders, files, and overwriteFiles for kept bundles', () => {
-    const paths = declaredBundlePaths(['sanity'])
+    const paths = declaredBundlePaths(['shopify'])
 
-    expect(paths).toContain('lib/integrations/sanity')
-    expect(paths).toContain('app/api/draft-mode/enable/route.ts')
+    expect(paths).toContain('lib/integrations/shopify')
     // overwriteFiles
-    expect(paths).toContain('app/(frontend)/layout.tsx')
+    expect(paths).toContain('app/api/revalidate/route.ts')
   })
 
   it('declaredBundlePaths is empty for an empty keep set', () => {
@@ -878,15 +858,15 @@ describe('declaredBundlePaths / findMissingPaths (H8 preflight)', () => {
 
 describe('getFlagValue (L4 — duplicate flag warning)', () => {
   it('returns the single value when the flag is passed once', () => {
-    expect(getFlagValue(['--keep', 'sanity'], '--keep')).toBe('sanity')
+    expect(getFlagValue(['--keep', 'shopify'], '--keep')).toBe('shopify')
   })
 
   it('keeps first-wins semantics when the flag is passed twice', () => {
     const result = getFlagValue(
-      ['--keep', 'sanity', '--keep', 'webgl'],
+      ['--keep', 'shopify', '--keep', 'webgl'],
       '--keep'
     )
-    expect(result).toBe('sanity')
+    expect(result).toBe('shopify')
   })
 
   it('warns naming the flag and the winning value on duplicates', () => {
@@ -917,7 +897,7 @@ describe('getFlagValue (L4 — duplicate flag warning)', () => {
     }
 
     try {
-      getFlagValue(['--keep', 'sanity'], '--keep')
+      getFlagValue(['--keep', 'shopify'], '--keep')
       getFlagValue(['--other', 'x'], '--keep')
     } finally {
       console.warn = originalWarn

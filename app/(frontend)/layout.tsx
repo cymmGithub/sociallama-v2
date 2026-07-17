@@ -3,15 +3,12 @@ import { TransformProvider } from 'hamo'
 import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
 import Script from 'next/script'
-import { VisualEditing } from 'next-sanity/visual-editing'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
 import { APP_BASE_URL, env } from '@/lib/env'
 import { OptionalFeatures } from '@/lib/features'
-import { isConfigured } from '@/lib/integrations/registry'
-import { SanityLive } from '@/lib/integrations/sanity/live'
 import { themes } from '@/lib/styles/colors'
 import { fontsVariable } from '@/lib/styles/fonts'
 import AppData from '@/package.json'
@@ -84,7 +81,6 @@ export const viewport: Viewport = {
 
 export default async function Layout({ children }: PropsWithChildren) {
   const { isEnabled: isDraftMode } = await draftMode()
-  const sanityConfigured = isConfigured('sanity')
 
   return (
     <html
@@ -126,16 +122,6 @@ export default async function Layout({ children }: PropsWithChildren) {
         </RealViewport>
         {/* Optional features - conditionally loaded based on configuration */}
         <OptionalFeatures />
-
-        {/* Sanity Live - renders unconditionally when Sanity is configured for real-time updates */}
-        {sanityConfigured && <SanityLive />}
-
-        {/* Sanity Visual Editing - only when draft mode is enabled */}
-        {sanityConfigured && isDraftMode && (
-          <Suspense fallback={null}>
-            <VisualEditing />
-          </Suspense>
-        )}
 
         {/* RAF management - lightweight, but don't patch in draft mode to avoid conflicts */}
         <ReactTempus patch={!isDraftMode} />

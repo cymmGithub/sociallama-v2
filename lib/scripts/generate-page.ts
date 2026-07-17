@@ -15,7 +15,6 @@ import { createDir } from './utils'
 
 interface PageOptions {
   webgl?: boolean
-  sanity?: boolean
   shopify?: boolean
   theme?: string
   css?: boolean
@@ -84,7 +83,6 @@ export async function promptPageConfig(): Promise<PageConfig> {
     options: {
       theme,
       webgl: integrations.includes('webgl'),
-      sanity: integrations.includes('sanity'),
       shopify: integrations.includes('shopify'),
       css: includeCss,
     },
@@ -95,25 +93,17 @@ export async function promptPageConfig(): Promise<PageConfig> {
  * Generate page.tsx content
  */
 function generatePageContent(pageName: string, options: PageOptions): string {
-  const { webgl, sanity, shopify, theme = 'dark' } = options
+  const { webgl, shopify, theme = 'dark' } = options
   const title = pageName.charAt(0).toUpperCase() + pageName.slice(1)
 
   const imports: string[] = [
     `import type { Metadata } from 'next'`,
     `import { Wrapper } from '@/components/layout/wrapper'`,
   ]
-  if (sanity || shopify) {
+  if (shopify) {
     imports.push(
       `import { isConfigured } from '@/lib/integrations/registry'`,
       `import { NotConfigured } from '@/components/ui/not-configured'`
-    )
-  }
-  if (sanity) {
-    imports.push(
-      `import { sanityFetch } from 'next-sanity/live'`,
-      `import { pageQuery } from '@/lib/integrations/sanity/queries'`,
-      `import type { Page } from '@/lib/integrations/sanity/sanity.types'`,
-      `import { generateSanityMetadata } from '@/lib/utils/metadata'`
     )
   }
   if (shopify) {
@@ -124,7 +114,7 @@ function generatePageContent(pageName: string, options: PageOptions): string {
     ' '
   )
 
-  const guard = (integration: 'Sanity' | 'Shopify', id: string) =>
+  const guard = (integration: 'Shopify', id: string) =>
     `  if (!isConfigured('${id}')) {
     return (
       <Wrapper theme="${theme}">
@@ -134,28 +124,18 @@ function generatePageContent(pageName: string, options: PageOptions): string {
   }`
 
   const preludeParts: string[] = []
-  if (sanity) preludeParts.push(guard('Sanity', 'sanity'))
   if (shopify) preludeParts.push(guard('Shopify', 'shopify'))
-  if (sanity) {
-    preludeParts.push(`  const { data } = await sanityFetch({
-    query: pageQuery,
-    params: { slug: '${pageName}' },
-  })`)
-  }
 
   // Section indent shifts when wrapped in <Cart>
   const indent = (depth: number) => '  '.repeat(depth)
   const sectionIndent = shopify ? indent(4) : indent(3)
   const contentIndent = shopify ? indent(5) : indent(4)
   const itemIndent = shopify ? indent(6) : indent(5)
-  const sanityHint = sanity
-    ? `\n${itemIndent}{/* Use data from Sanity: {data?.title} */}`
-    : ''
 
   const sectionJSX = `${sectionIndent}<section className="dr-py-100">
 ${contentIndent}<div className="container">
 ${itemIndent}<h1>${title}</h1>
-${itemIndent}{/* Your content here */}${sanityHint}
+${itemIndent}{/* Your content here */}
 ${contentIndent}</div>
 ${sectionIndent}</section>`
 
@@ -173,42 +153,13 @@ ${inner}
 
   const body = [...preludeParts, returnBlock].join('\n\n')
 
-  const metadataExport = sanity
-    ? `
-export async function generateMetadata(): Promise<Metadata> {
-  if (!isConfigured('sanity')) {
-    return {
-      title: '${title}',
-      description: '${title} page description',
-    }
-  }
-
-  const { data } = await sanityFetch({
-    query: pageQuery,
-    params: { slug: '${pageName}' },
-  })
-
-  if (!data) {
-    return {
-      title: '${title}',
-      description: '${title} page description',
-    }
-  }
-
-  return generateSanityMetadata({
-    document: data,
-    url: '/${pageName}',
-    type: 'website',
-  })
-}`
-    : `
+  const metadataExport = `
 export const metadata: Metadata = {
   title: '${title}',
   description: '${title} page description',
 }`
 
-  // Only Sanity requires top-level await for sanityFetch; Shopify-only pages stay sync.
-  const isAsync = sanity
+  const isAsync = false
 
   return `${imports.join('\n')}
 ${metadataExport}
@@ -270,12 +221,6 @@ export async function createPage(
 
   // Build next steps message
   const nextSteps = [`1. Customize ${pageDir}/page.tsx`]
-
-  if (options.sanity) {
-    nextSteps.push(
-      `2. Create a "${pageName}" page in your Sanity Studio (if enabled) or at sanity.io/manage`
-    )
-  }
 
   nextSteps.push(`${nextSteps.length + 1}. Add components to ${componentsDir}/`)
   nextSteps.push(`${nextSteps.length + 1}. Visit /${pageName} to see your page`)

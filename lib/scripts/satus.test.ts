@@ -21,7 +21,7 @@ import { parseAddArgs, resolveAddSet } from './satus'
 describe('parseAddArgs', () => {
   it('separates plugins from flags', () => {
     const { plugins, flags } = parseAddArgs([
-      'sanity',
+      'shopify',
       'webgl',
       '--from',
       '.',
@@ -29,7 +29,7 @@ describe('parseAddArgs', () => {
       '--yes',
     ])
 
-    expect(plugins).toEqual(['sanity', 'webgl'])
+    expect(plugins).toEqual(['shopify', 'webgl'])
     expect(flags.from).toBe('.')
     expect(flags.dryRun).toBe(true)
     expect(flags.yes).toBe(true)
@@ -51,22 +51,22 @@ describe('parseAddArgs', () => {
   })
 
   it('supports --ref with a separate value', () => {
-    const { flags } = parseAddArgs(['sanity', '--ref', '6f49149', '--force'])
+    const { flags } = parseAddArgs(['shopify', '--ref', '6f49149', '--force'])
     expect(flags.ref).toBe('6f49149')
     expect(flags.force).toBe(true)
   })
 
   it('fails loudly when a value flag has no value', () => {
-    expect(() => parseAddArgs(['sanity', '--from'])).toThrow(
+    expect(() => parseAddArgs(['shopify', '--from'])).toThrow(
       '--from requires a value'
     )
-    expect(() => parseAddArgs(['sanity', '--from', '--dry-run'])).toThrow(
+    expect(() => parseAddArgs(['shopify', '--from', '--dry-run'])).toThrow(
       '--from requires a value'
     )
   })
 
   it('fails loudly on unknown flags', () => {
-    expect(() => parseAddArgs(['sanity', '--frmo', '.'])).toThrow(
+    expect(() => parseAddArgs(['shopify', '--frmo', '.'])).toThrow(
       'Unknown flag: --frmo'
     )
   })
@@ -78,8 +78,8 @@ describe('parseAddArgs', () => {
 
 describe('resolveAddSet', () => {
   it('resolves a standalone plugin to itself', () => {
-    expect(resolveAddSet(['sanity'])).toEqual({
-      order: ['sanity'],
+    expect(resolveAddSet(['shopify'])).toEqual({
+      order: ['shopify'],
       implied: [],
     })
   })
@@ -104,7 +104,9 @@ describe('resolveAddSet', () => {
   })
 
   it('fails loudly on unknown plugin ids', () => {
-    expect(() => resolveAddSet(['sanityy'])).toThrow('Unknown plugin "sanityy"')
+    expect(() => resolveAddSet(['shopifyy'])).toThrow(
+      'Unknown plugin "shopifyy"'
+    )
   })
 })
 
@@ -114,9 +116,9 @@ describe('resolveAddSet', () => {
 
 describe('bundleProbePath', () => {
   it('uses the first folder as the installed probe', () => {
-    const sanity = INTEGRATION_BUNDLES.sanity
-    if (!sanity) throw new Error('sanity bundle not found')
-    expect(bundleProbePath(sanity)).toBe('lib/integrations/sanity')
+    const shopify = INTEGRATION_BUNDLES.shopify
+    if (!shopify) throw new Error('shopify bundle not found')
+    expect(bundleProbePath(shopify)).toBe('lib/integrations/shopify')
   })
 
   it('every bundle has a probe path', () => {
@@ -133,12 +135,12 @@ describe('bundleProbePath', () => {
 describe('findBarrelLine', () => {
   const barrel = `export * from './accordion'
 export * from './marquee'
-export * from './sanity-image'
+export * from './example-image'
 `
 
   it('finds the line matching a removal pattern', () => {
-    expect(findBarrelLine(barrel, 'sanity-image')).toBe(
-      "export * from './sanity-image'"
+    expect(findBarrelLine(barrel, 'example-image')).toBe(
+      "export * from './example-image'"
     )
   })
 
@@ -174,25 +176,25 @@ export * from './tabs'
 
   it('is idempotent when the line already exists', () => {
     const barrel = `export * from './accordion'
-export * from './sanity-image'
+export * from './example-image'
 `
-    expect(insertBarrelLine(barrel, "export * from './sanity-image'")).toBe(
+    expect(insertBarrelLine(barrel, "export * from './example-image'")).toBe(
       barrel
     )
   })
 
   it('creates content for an empty barrel', () => {
-    expect(insertBarrelLine('', "export * from './sanity-image'")).toBe(
-      "export * from './sanity-image'\n"
+    expect(insertBarrelLine('', "export * from './example-image'")).toBe(
+      "export * from './example-image'\n"
     )
   })
 
   it('appends to a file without export lines', () => {
     const result = insertBarrelLine(
       '// barrel\n',
-      "export * from './sanity-image'"
+      "export * from './example-image'"
     )
-    expect(result).toBe("// barrel\nexport * from './sanity-image'\n")
+    expect(result).toBe("// barrel\nexport * from './example-image'\n")
   })
 
   it('keeps comment headers above the sorted insert', () => {

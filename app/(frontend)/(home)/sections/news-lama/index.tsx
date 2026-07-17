@@ -43,9 +43,7 @@ export function NewsLama({ post }: { post: NewsLamaPost }) {
     <section ref={ref} className={s.section}>
       <h2 className={s.heading}>
         {headingPrefix}
-        {hasAccent && (
-          <span className={s.headingAccent}>{HEADING_ACCENT}</span>
-        )}
+        {hasAccent && <span className={s.headingAccent}>{HEADING_ACCENT}</span>}
       </h2>
 
       <Link data-reveal-item className={s.card} href={post.href}>

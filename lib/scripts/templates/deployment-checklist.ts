@@ -13,7 +13,7 @@
  * filter: unconfigured integrations still appear, with `configured: false`.
  */
 export interface IntegrationStatus {
-  /** Display name, e.g. 'Sanity', 'Shopify'. */
+  /** Display name, e.g. 'Shopify', 'HubSpot'. */
   name: string
   /** Whether the integration's env vars currently validate in this shell. */
   configured: boolean
@@ -60,19 +60,6 @@ export function renderDeploymentChecklist({
   lines.push('- [ ] Build passes without errors (`bun run build`)')
   lines.push('- [ ] TypeScript passes without errors (`bun typecheck`)')
   lines.push('')
-
-  const sanity = find('Sanity')
-  if (sanity) {
-    lines.push('## Sanity CMS')
-    lines.push('')
-    if (!sanity.configured) lines.push(NEEDS_CONFIG_LINE)
-    lines.push('- [ ] Production dataset selected')
-    lines.push('- [ ] CORS origins configured for production domain')
-    lines.push('- [ ] Webhook configured for revalidation')
-    lines.push('  - URL: `https://your-domain.com/api/revalidate`')
-    lines.push('- [ ] API tokens rotated for production')
-    lines.push('')
-  }
 
   const shopify = find('Shopify')
   if (shopify) {

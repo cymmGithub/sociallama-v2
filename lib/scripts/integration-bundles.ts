@@ -40,7 +40,7 @@ export type {
 export interface BarrelExport {
   /** Path to the barrel export file (e.g., 'components/ui/index.ts') */
   file: string
-  /** Pattern to match export lines to remove (e.g., 'sanity-image') */
+  /** Pattern to match export lines to remove (e.g., 'example-image') */
   pattern: string
 }
 
@@ -93,141 +93,6 @@ const defineBundles = <K extends string>(
 ): Record<K, IntegrationBundle> => bundles
 
 export const INTEGRATION_BUNDLES = defineBundles({
-  sanity: {
-    name: 'Sanity CMS',
-    description: 'Headless CMS with visual editing and real-time collaboration',
-    dependencies: [
-      '@portabletext/react',
-      '@sanity/asset-utils',
-      '@sanity/image-url',
-      '@sanity/visual-editing',
-      'next-sanity',
-    ],
-    devDependencies: ['@sanity/vision', 'sanity'],
-    folders: ['lib/integrations/sanity', 'components/ui/sanity-image'],
-    files: ['app/api/draft-mode/enable/route.ts'],
-    envVars: [
-      'NEXT_PUBLIC_SANITY_PROJECT_ID',
-      'NEXT_PUBLIC_SANITY_DATASET',
-      'NEXT_PUBLIC_SANITY_API_READ_TOKEN',
-      'SANITY_API_READ_TOKEN',
-      'SANITY_PRIVATE_TOKEN',
-      'SANITY_API_WRITE_TOKEN',
-      'SANITY_STUDIO_PROJECT_ID',
-      'SANITY_REVALIDATE_SECRET',
-    ],
-    barrelExports: [
-      { file: 'components/ui/index.ts', pattern: 'sanity-image' },
-    ],
-    codeTransforms: [
-      {
-        file: 'app/(frontend)/layout.tsx',
-        ops: [
-          // Remove `import { SanityLive } from '@/lib/integrations/sanity/live'`
-          { kind: 'removeImport', specifier: '@/lib/integrations/sanity/live' },
-          // Remove `{sanityConfigured && <SanityLive />}` JSX element
-          { kind: 'removeJsxElement', tagName: 'SanityLive' },
-          // Remove `{sanityConfigured && isDraftMode && (<Suspense>…<VisualEditing/></Suspense>)}`
-          // VisualEditing is from next-sanity, already handled by removing the import below,
-          // but we also remove the JSX element to avoid the dangling reference.
-          { kind: 'removeJsxElement', tagName: 'VisualEditing' },
-          // Remove `import { VisualEditing } from 'next-sanity/visual-editing'`
-          {
-            kind: 'removeImport',
-            specifier: 'next-sanity/visual-editing',
-          },
-          // Remove `const sanityConfigured = isConfigured('sanity')` variable
-          // (no longer used after the two sanity JSX blocks are removed)
-          { kind: 'removeVariableStatement', name: 'sanityConfigured' },
-          // Remove `import { isConfigured } from '@/lib/integrations/registry'`
-          // (only used for sanityConfigured in layout.tsx — now unused)
-          { kind: 'removeImport', specifier: '@/lib/integrations/registry' },
-        ],
-      },
-      {
-        file: 'next.config.ts',
-        ops: [
-          // Remove cdn.sanity.io from images.remotePatterns
-          {
-            kind: 'removeArrayObjectElement',
-            variableName: 'nextConfig',
-            propertyPath: 'images.remotePatterns',
-            matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
-          },
-          // Remove @sanity/* packages from experimental.optimizePackageImports
-          {
-            kind: 'removeArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/client',
-          },
-          {
-            kind: 'removeArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/image-url',
-          },
-          {
-            kind: 'removeArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/asset-utils',
-          },
-          {
-            kind: 'removeArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@portabletext/react',
-          },
-        ],
-      },
-    ],
-    // app/layout.tsx has complex Sanity wiring (SanityLive, VisualEditing,
-    // isConfigured call) that cannot be re-injected statement-by-statement
-    // safely.  Restore wholesale from the payload on `satus add sanity`.
-    overwriteFiles: ['app/(frontend)/layout.tsx'],
-    addTransforms: [
-      {
-        file: 'next.config.ts',
-        ops: [
-          // Re-add cdn.sanity.io to images.remotePatterns
-          {
-            kind: 'addArrayObjectElement',
-            variableName: 'nextConfig',
-            propertyPath: 'images.remotePatterns',
-            objectText: "{ protocol: 'https', hostname: 'cdn.sanity.io' }",
-            matchProperty: { name: 'hostname', value: 'cdn.sanity.io' },
-          },
-          // Re-add @sanity/* packages to experimental.optimizePackageImports
-          {
-            kind: 'addArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/client',
-          },
-          {
-            kind: 'addArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/image-url',
-          },
-          {
-            kind: 'addArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@sanity/asset-utils',
-          },
-          {
-            kind: 'addArrayStringElement',
-            variableName: 'nextConfig',
-            propertyPath: 'experimental.optimizePackageImports',
-            value: '@portabletext/react',
-          },
-        ],
-      },
-    ],
-  },
-
   shopify: {
     name: 'Shopify',
     description: 'E-commerce platform integration with cart and checkout',
@@ -256,8 +121,7 @@ export const INTEGRATION_BUNDLES = defineBundles({
         ],
       },
       // app/api/revalidate/route.ts is a SHARED core route (not deleted by any
-      // bundle's `folders`/`files` — Sanity's revalidation logic in the same
-      // file has no bundle ownership either). Only Shopify currently wires
+      // bundle's `folders`/`files`). Only Shopify currently wires
       // anything into it, so stripping Shopify must remove exactly its own
       // import + guard dispatch and nothing else.
       {
