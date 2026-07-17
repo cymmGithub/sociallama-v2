@@ -17,6 +17,11 @@ export const posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
     group: 'Treść',
+    // Preview button → authenticated draft-mode route → real post template
+    preview: (doc) =>
+      typeof doc?.slug === 'string' && doc.slug.length > 0
+        ? `/api/preview?path=${encodeURIComponent(`/${doc.slug}`)}`
+        : null,
   },
   versions: {
     // validate: true — Payload skips field validation on draft saves by
