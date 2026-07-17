@@ -656,7 +656,8 @@ export const joinCta = {
     likes: '1 024 polubienia',
     caption: 'Kiedy klient pyta, czy ogarniemy wszystko 🦙💪',
   },
-  llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
+  llamaAlt:
+    'Wieloręka lama w tweedowej kamizelce trzyma laptop, telefon, pędzel, klaps filmowy, kubek i paczkę — maskotka Social Lama',
   button: { label: 'NAPISZ DO NAS', href: '/#kontakt' },
 } as const
 
