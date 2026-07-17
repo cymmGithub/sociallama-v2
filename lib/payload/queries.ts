@@ -75,6 +75,23 @@ async function findPublishedPostSlugs(): Promise<string[]> {
   return result.docs.map((doc) => doc.slug)
 }
 
+/** Newest published post, for the homepage NewsLAMA section. */
+async function findLatestPost(): Promise<Post | null> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: PUBLISHED,
+    sort: '-publishedAt',
+    limit: 1,
+    depth: 2,
+  })
+  return result.docs[0] ?? null
+}
+
 export interface PostsPage {
   docs: Post[]
   page: number
@@ -169,6 +186,7 @@ async function findPostsForSitemap(): Promise<
  * hang the request (observed Next 16.2.10 + Payload 3.86).
  */
 export const getPostBySlug = cache(findPostBySlug)
+export const getLatestPost = cache(findLatestPost)
 export const getDraftPostBySlug = cache(findDraftPostBySlug)
 export const getPublishedPostSlugs = cache(findPublishedPostSlugs)
 export const getPostsPage = cache(findPostsPage)

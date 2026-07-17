@@ -1,4 +1,8 @@
 import type { CollectionConfig } from 'payload'
+import {
+  revalidatePostAfterChange,
+  revalidatePostAfterDelete,
+} from '@/lib/payload/revalidate'
 import { validatePostSlug } from '@/lib/payload/validate-slug'
 
 /**
@@ -30,6 +34,10 @@ export const posts: CollectionConfig = {
     drafts: {
       validate: true,
     },
+  },
+  hooks: {
+    afterChange: [revalidatePostAfterChange],
+    afterDelete: [revalidatePostAfterDelete],
   },
   access: {
     read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),

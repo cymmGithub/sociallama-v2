@@ -1,4 +1,8 @@
 import type { CollectionConfig } from 'payload'
+import {
+  revalidateCategoryAfterChange,
+  revalidateCategoryAfterDelete,
+} from '@/lib/payload/revalidate'
 import { validatePostSlug } from '@/lib/payload/validate-slug'
 
 /**
@@ -18,6 +22,10 @@ export const categories: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateCategoryAfterChange],
+    afterDelete: [revalidateCategoryAfterDelete],
   },
   fields: [
     {

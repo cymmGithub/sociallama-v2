@@ -113,16 +113,6 @@ export interface Testimonial {
   }
 }
 
-export interface NewsPost {
-  title: string
-  excerpt: string
-  category: string
-  date: string
-  href: string
-  cover: string
-  readLabel: string
-}
-
 // —— Site chrome ————————————————————————————————————————————————————————————
 
 // Minimal bar (logo + CTA + Menu) at every breakpoint; the overlay below is
@@ -633,12 +623,12 @@ export const joinCta = {
      INSTAGRAMIE), and keeping the "?" inside the token means it never
      detaches from the sliding word. */
   rotator: [
-    { token: 'W FACEBOOKU?' },
+    { token: 'NA FACEBOOKU?' },
     { token: 'NA INSTAGRAMIE?' },
     { token: 'NA TIKTOKU?' },
     { token: 'NA LINKEDINIE?' },
     { token: 'NA PINTEREŚCIE?' },
-    { token: 'NA X?' },
+    { token: 'NA X (TWITTERZE)?' },
     { token: 'NA YOUTUBIE?' },
     { token: 'W STRATEGII?' },
     { token: 'W WIDEO?' },
@@ -663,19 +653,11 @@ export const joinCta = {
 
 // —— NewsLAMA (single card) ————————————————————————————————————————————————
 
+// The post itself comes from Payload (latest published, fetched server-side
+// in app/(frontend)/(home)/page.tsx) — only the static labels live here.
 export const news = {
   heading: 'NewsLAMA',
   readLabel: 'PRZECZYTAJ',
-  post: {
-    title: 'LinkedIn Premium — czy warto?',
-    excerpt:
-      'Czy LinkedIn Premium jest wart swojej ceny? Sprawdzamy plany Career, Business, Sales Navigator i Recruiter Lite — komu się opłaca, a kto poradzi sobie bez.',
-    category: 'Marketing, Reklama, Seo, Social media',
-    date: '2025-12-30',
-    href: '/blog/linkedin-premium-czy-warto',
-    cover: '/assets/blog.png',
-    readLabel: 'PRZECZYTAJ',
-  } satisfies NewsPost,
 } as const
 
 // —— Footer ————————————————————————————————————————————————————————————————

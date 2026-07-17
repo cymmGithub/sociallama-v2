@@ -1,5 +1,11 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import {
+  getLatestPost,
+  resolveCategory,
+  resolveMedia,
+} from '@/lib/payload/queries'
+import type { Post } from '@/payload-types'
 import { Chapters } from './chapters'
 import { BigMarquee } from './sections/big-marquee'
 import { ClientLogos } from './sections/client-logos'
@@ -7,7 +13,7 @@ import { Hero } from './sections/hero'
 import { HeroTrack } from './sections/hero/track'
 import { HowItWorks } from './sections/how-it-works'
 import { JoinCta } from './sections/join-cta'
-import { NewsLama } from './sections/news-lama'
+import { NewsLama, type NewsLamaPost } from './sections/news-lama'
 import { Services } from './sections/services'
 import { Testimonial } from './sections/testimonial'
 import { WhyThatWorks } from './sections/why-that-works'
@@ -24,7 +30,25 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+function toNewsLamaPost(post: Post): NewsLamaPost {
+  const cover = resolveMedia(post.cover)
+  return {
+    title: post.title,
+    excerpt: post.excerpt ?? '',
+    category: resolveCategory(post.category)?.title ?? '',
+    date: post.publishedAt ?? post.createdAt,
+    href: `/${post.slug}`,
+    cover: cover?.sizes?.card?.url ?? cover?.url ?? '',
+    coverAlt: cover?.alt ?? '',
+  }
+}
+
+export default async function HomePage() {
+  // Latest published post for NewsLAMA; the section is omitted entirely
+  // when no post exists.
+  const latestPost = await getLatestPost()
+  const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
+
   return (
     <Wrapper theme="plum">
       <Chapters>
@@ -51,7 +75,7 @@ export default function HomePage() {
         <>
           <Testimonial />
           <JoinCta />
-          <NewsLama />
+          {newsPost && <NewsLama post={newsPost} />}
         </>
       </Chapters>
     </Wrapper>
