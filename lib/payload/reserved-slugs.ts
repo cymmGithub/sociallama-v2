@@ -15,6 +15,8 @@ export const RESERVED_SLUGS = [
   'api',
   'blog',
   'category',
+  'polityka-prywatnosci',
+  'zostan-lama',
   // Planned pages already linked from the footer
   'uslugi',
   'szkolenia',

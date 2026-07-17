@@ -1,6 +1,7 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+import { wpRedirects } from './lib/wp-redirects'
 
 // --- Storybook proxy ---------------------------------------------------------
 // Serves the standalone Storybook deployment at /storybook on this domain.
@@ -180,6 +181,11 @@ const nextConfig: NextConfig = {
   // would break the relative asset URLs). No redirect rule: with skip enabled,
   // a /storybook -> /storybook/ redirect matches /storybook/ too and self-loops.
   ...(STORYBOOK_PROXY_ENABLED ? { skipTrailingSlashRedirect: true } : {}),
+  // Legacy WordPress URLs (migrate-wp-content): /tag/* archives and WP pages
+  // 301 to their v2 equivalents — generated module, see lib/wp-redirects.ts.
+  // Legacy /blog/page/N needs no rule: the v2 hub uses the same pagination
+  // shape (blog/page/[number]) and serves it as 200.
+  redirects: async () => wpRedirects,
   rewrites: async () =>
     STORYBOOK_PROXY_ENABLED
       ? [
