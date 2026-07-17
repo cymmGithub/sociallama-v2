@@ -841,7 +841,7 @@ describe('declaredBundlePaths / findMissingPaths (H8 preflight)', () => {
     expect(paths).toContain('lib/integrations/sanity')
     expect(paths).toContain('app/api/draft-mode/enable/route.ts')
     // overwriteFiles
-    expect(paths).toContain('app/layout.tsx')
+    expect(paths).toContain('app/(frontend)/layout.tsx')
   })
 
   it('declaredBundlePaths is empty for an empty keep set', () => {

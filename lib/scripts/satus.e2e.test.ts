@@ -558,8 +558,8 @@ describe('additive setup: --keep sanity', () => {
       true
     )
 
-    // app/layout.tsx must contain SanityLive (overwriteFiles restores it)
-    const layout = await readProjectFile(project, 'app/layout.tsx')
+    // app/(frontend)/layout.tsx must contain SanityLive (overwriteFiles restores it)
+    const layout = await readProjectFile(project, 'app/(frontend)/layout.tsx')
     expect(layout).toContain('SanityLive')
 
     // WebGL must be absent
