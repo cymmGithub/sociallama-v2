@@ -15,6 +15,9 @@ export const RESERVED_SLUGS = [
   'api',
   'blog',
   'category',
+  // Planned pages already linked from the footer
+  'uslugi',
+  'szkolenia',
   // Preview-only Storybook proxy (next.config.ts rewrites)
   'storybook',
   // Root metadata files served from app/

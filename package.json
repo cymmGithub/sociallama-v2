@@ -17,6 +17,7 @@
     "payload": "payload",
     "payload:types": "payload generate:types",
     "payload:importmap": "payload generate:importmap",
+    "payload:seed": "bun ./lib/payload/seed.ts",
     "clean": "rm -rf .next node_modules/.cache",
     "lint": "biome lint --max-diagnostics=200",
     "lint:fix": "biome lint --write --unsafe --max-diagnostics=200",

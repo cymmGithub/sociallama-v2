@@ -19,7 +19,12 @@ export const posts: CollectionConfig = {
     group: 'Treść',
   },
   versions: {
-    drafts: true,
+    // validate: true — Payload skips field validation on draft saves by
+    // default, which would let a draft claim a reserved slug (e.g. `blog`)
+    // and only fail at publish. Validate every save instead.
+    drafts: {
+      validate: true,
+    },
   },
   access: {
     read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),
