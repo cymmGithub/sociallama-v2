@@ -1,3 +1,4 @@
+import type { Route } from 'next'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -9,5 +10,5 @@ export async function GET(request: Request) {
   const draft = await draftMode()
   draft.disable()
 
-  redirect(path.startsWith('/') ? path : '/')
+  redirect((path.startsWith('/') ? path : '/') as Route)
 }

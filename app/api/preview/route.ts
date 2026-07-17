@@ -1,4 +1,5 @@
 import config from '@payload-config'
+import type { Route } from 'next'
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
@@ -27,5 +28,5 @@ export async function GET(request: Request) {
   const draft = await draftMode()
   draft.enable()
 
-  redirect(path)
+  redirect(path as Route)
 }
