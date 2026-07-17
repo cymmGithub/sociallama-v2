@@ -3,6 +3,23 @@ import { expect, test } from '@playwright/test'
 import { themes } from '../lib/styles/colors'
 
 test.describe('Home page smoke', () => {
+  test('hero has its own opaque plum ground (no morph-layer bleed)', async ({
+    page,
+  }) => {
+    // The hero video is grade-matched to plum and stays pinned past the point
+    // where the chapter observer flips the SHARED background to cream. The
+    // hero must paint its own opaque plum so the video never composites onto
+    // the cream chapter (which read as a detached plum rectangle). Guard the
+    // computed background — deterministic, no scroll/timing dependence.
+    await page.goto('/')
+    // The hero is the <section>; the track/sticky/video wrappers share the
+    // hero-module prefix, so scope to the section element.
+    const hero = page.locator('section[class*="hero-module"]').first()
+    await expect(hero).toBeAttached()
+    // --color-plum-hero #853253
+    await expect(hero).toHaveCSS('background-color', 'rgb(133, 50, 83)')
+  })
+
   test('renders, has no console errors, passes a11y', async ({ page }) => {
     const consoleErrors: string[] = []
     const pageErrors: string[] = []

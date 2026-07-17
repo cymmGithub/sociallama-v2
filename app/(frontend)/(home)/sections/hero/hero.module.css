@@ -46,6 +46,15 @@
   padding-block: calc(var(--safe) * 4) var(--safe);
   padding-inline: var(--safe);
 
+  /* Own opaque plum ground — NOT the shared morph layer. The hero video is
+     grade-matched to this plum, and the sticky pin keeps the hero on screen
+     past the point where the chapter observer flips the shared background to
+     cream. Compositing the video onto a static local plum (instead of the
+     transitioning layer beneath) stops the video's backdrop reading as a
+     detached plum rectangle over the cream chapter as the pin releases.
+     Matches the chapter-1 plum exactly, so the first viewport is unchanged. */
+  background-color: var(--color-plum-hero);
+
   /* Mobile: no bottom padding and no vertical centering — the clip column
      stretches so its bottom edge sits flush on the client-logos band. */
   @media (--mobile) {
