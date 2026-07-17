@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { createContext, use, useEffect, useState } from 'react'
 import type { Themes } from '@/styles/colors'
 import { type ThemeName, themes } from '@/styles/config'
@@ -52,8 +51,6 @@ export function Theme({
   theme: ThemeName
   global?: boolean
 }) {
-  const pathname = usePathname()
-
   // `currentTheme` defaults to the route's `theme` prop but can still be
   // overridden at runtime via the `setTheme` action. When the prop changes
   // (navigation), we re-sync *during render* — React's recommended replacement
@@ -67,12 +64,19 @@ export function Theme({
     setCurrentTheme(theme)
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: we need to trigger on path change
+  // NOTE: `pathname` must NOT be a dependency here. Next 16 keeps the
+  // previous page mounted (Activity back/forward cache), and a pathname dep
+  // makes the HIDDEN page's Theme re-fire on navigation too — racing the
+  // incoming page's effect for the html attribute, so the losing order left
+  // the old page's theme stuck (seen as plum-deep chrome on the homepage
+  // after visiting /kontakt). Activity re-runs a shown tree's effects on
+  // every reactivation regardless of deps, so the visible page always
+  // re-asserts its theme without the dep.
   useEffect(() => {
     if (global) {
       document.documentElement.setAttribute('data-theme', currentTheme)
     }
-  }, [pathname, currentTheme, global])
+  }, [currentTheme, global])
 
   const contextValue: ThemeContextStandard = {
     state: {

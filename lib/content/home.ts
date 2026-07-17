@@ -123,7 +123,7 @@ export const nav = {
   cta: {
     label: 'POROZMAWIAJMY O TWOIM BIZNESIE',
     labelShort: 'POROZMAWIAJMY',
-    href: '/#kontakt',
+    href: '/kontakt',
   },
   menuLabel: 'Menu',
 } as const
@@ -648,7 +648,7 @@ export const joinCta = {
   },
   llamaAlt:
     'Wieloręka lama w tweedowej kamizelce trzyma laptop, telefon, pędzel, klaps filmowy, kubek i paczkę — maskotka Social Lama',
-  button: { label: 'NAPISZ DO NAS', href: '/#kontakt' },
+  button: { label: 'NAPISZ DO NAS', href: '/kontakt' },
 } as const
 
 // —— NewsLAMA (single card) ————————————————————————————————————————————————
@@ -674,7 +674,7 @@ export const footer = {
         { label: 'USŁUGI', href: '/uslugi' },
         { label: 'SZKOLENIA I KURS', href: '/szkolenia' },
         { label: 'BLOG', href: '/blog' },
-        { label: 'KONTAKT', href: '/#kontakt' },
+        { label: 'KONTAKT', href: '/kontakt' },
       ],
     },
     {
@@ -684,7 +684,7 @@ export const footer = {
         { label: 'USŁUGI', href: '/uslugi' },
         { label: 'SZKOLENIA I KURS', href: '/szkolenia' },
         { label: 'BLOG', href: '/blog' },
-        { label: 'KONTAKT', href: '/#kontakt' },
+        { label: 'KONTAKT', href: '/kontakt' },
       ],
     },
   ],

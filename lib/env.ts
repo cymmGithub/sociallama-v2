@@ -44,6 +44,14 @@ const envSchema = z.object({
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: z.string().optional(),
   CLOUDFLARE_TURNSTILE_SECRET_KEY: z.string().optional(),
 
+  // Contact email (SMTP — Google Workspace). Absent → /kontakt renders but
+  // cannot deliver; the action fails gracefully. See lib/integrations/email.
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.string().optional(),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  CONTACT_INBOX: z.string().optional(),
+
   // Analytics
   NEXT_PUBLIC_GOOGLE_ANALYTICS: z.string().optional(),
   NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID: z.string().optional(),

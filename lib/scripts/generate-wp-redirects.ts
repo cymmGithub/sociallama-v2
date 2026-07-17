@@ -89,9 +89,8 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
     note: 'why-us page → about section anchor',
   },
   '/kontakt': {
-    kind: 'redirect',
-    to: '/#kontakt',
-    note: 'contact page → footer CTA anchor (NOTE: no id="kontakt" anchor exists on the v2 homepage yet — footer already links there; lands at top of page until one is added)',
+    kind: 'keep',
+    note: 'add-contact-page: served by the real v2 /kontakt route (HTTP 200), no longer redirected to the footer anchor',
   },
   '/zostan-lama': {
     kind: 'keep',

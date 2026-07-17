@@ -38,6 +38,7 @@ export function useForm<T = unknown>({
   initialState = null,
   onBlur = false,
   formId = '',
+  invalidMessage = (name: string) => `Invalid ${name}`,
 }: UseFormOptions<T>): UseFormReturn<T> {
   const [formState, formAction] = useActionState(
     action as FormAction<unknown>,
@@ -50,6 +51,12 @@ export function useForm<T = unknown>({
   const inputsRefs = useRef<
     Record<string, HTMLInputElement | HTMLTextAreaElement | null>
   >({})
+  // Fields already seeded by initializeInput. A callback ref's identity changes
+  // every render, so React detaches (node = null) then re-attaches each render;
+  // keying "new registration" off the transiently-null inputsRefs re-ran
+  // initializeInput, whose setState forced another render — an infinite loop.
+  // Guarding on the field name initializes exactly once per form instance.
+  const initializedRefs = useRef<Set<string>>(new Set())
 
   // Initialize state for a field when it first registers.
   // Hidden fields are always auto-valid. Otherwise, seed by requiredness:
@@ -80,9 +87,7 @@ export function useForm<T = unknown>({
       const next = { ...prev }
       for (const [name, valid] of Object.entries(isValid)) {
         if (valid) continue
-        const element = inputsRefs.current[name]
-        const label = element?.id || element?.name || name
-        next[name] = { state: true, message: `Invalid ${label}` }
+        next[name] = { state: true, message: invalidMessage(name) }
       }
       return next
     })
@@ -143,7 +148,7 @@ export function useForm<T = unknown>({
       ...prev,
       [name]: {
         state: !isValidValue && value !== '',
-        message: isValidValue ? '' : `Invalid ${element.id || element.name}`,
+        message: isValidValue ? '' : invalidMessage(name),
       },
     }))
   }
@@ -151,9 +156,9 @@ export function useForm<T = unknown>({
   function register(name: string) {
     return {
       ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
-        const isNewRegistration = !inputsRefs.current[name] && node
         inputsRefs.current[name] = node
-        if (isNewRegistration) {
+        if (node && !initializedRefs.current.has(name)) {
+          initializedRefs.current.add(name)
           initializeInput(name, node)
         }
       },

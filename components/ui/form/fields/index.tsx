@@ -195,6 +195,7 @@ export function CheckboxesField({
             key={value}
             className={cn(s.option, selected.includes(value) && s.selected)}
             type="button"
+            aria-pressed={selected.includes(value)}
             onClick={() => handleToggle(value)}
           >
             <span>{label}</span>

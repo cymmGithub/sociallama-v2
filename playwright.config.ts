@@ -3,7 +3,13 @@ import { defineConfig } from '@playwright/test'
 export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.e2e.ts',
-  fullyParallel: true,
+  // Serial: every test shares ONE dev server, and the WebGL homepage +
+  // full-page-scroll + axe tests starve each other's hydration when run in
+  // parallel — client-effect assertions (data-theme, data-chrome, gsap
+  // intros) then time out flakily. One worker keeps them deterministic.
+  fullyParallel: false,
+  workers: 1,
+  timeout: 60_000,
   forbidOnly: !!process.env.CI,
   reporter: 'list',
   use: {

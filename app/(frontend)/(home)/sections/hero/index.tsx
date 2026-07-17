@@ -105,7 +105,14 @@ export function Hero() {
       ease: 'expo.out',
     })
     return () => {
-      tween.kill()
+      // revert(), not kill(): kill() leaves the lines at the from-state
+      // (yPercent 120, offscreen) and poisons GSAP's transform cache, so the
+      // next run's gsap.from() animates 120 → 120 and the headline never
+      // appears. That next run is real: StrictMode double-invokes this effect,
+      // and Next 16's Activity cache re-runs it when navigating back here
+      // (first seen returning from /kontakt). revert() restores the pre-tween
+      // styles so every re-run starts from a clean slate.
+      tween.revert()
     }
   }, [])
 

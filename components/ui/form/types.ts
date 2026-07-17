@@ -16,12 +16,20 @@ export type FieldError = {
   message: string
 }
 
+/**
+ * Formats the client-side validation message for an invalid field, keyed by
+ * its registration name. Lets a localized form override the default English
+ * `Invalid <field>` text without touching the kit.
+ */
+export type InvalidMessageFn = (fieldName: string) => string
+
 // Form hook options
 export interface UseFormOptions<T = unknown> {
   action: FormAction<T>
   initialState?: FormState<T> | null
   onBlur?: boolean
   formId?: string
+  invalidMessage?: InvalidMessageFn
 }
 
 // Form hook return value
@@ -54,6 +62,7 @@ export interface FormProps<T = unknown>
   formId?: string
   onSuccess?: (state: FormState<T>) => void
   onError?: (state: FormState<T>) => void
+  invalidMessage?: InvalidMessageFn
 }
 
 // Context state

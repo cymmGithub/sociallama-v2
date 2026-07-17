@@ -1,0 +1,397 @@
+/*
+ * Scoped styling for /kontakt (add-contact-page, design D3) — built 1:1 from
+ * the approved mock (contact-brightscout-vibe.html, bold-marquee variant).
+ *
+ * The page renders inside <Wrapper theme="plum-deep">; the :has() rule below
+ * repaints the chrome (header/footer both use --color-primary) to the page's
+ * warm near-black so the fixed bar reads as part of the dark canvas, per the
+ * mock. The cream menu overlay is unaffected — it sets data-theme on itself,
+ * and an element-level custom property always beats this root-level one.
+ *
+ * The contact form reuses the components/ui/form kit; fields are re-skinned
+ * into the mock's numbered-underline look via descendant selectors under
+ * .formShell (the kit only forwards className onto the field wrapper).
+ */
+
+.page {
+  /* Mock palette — page-local values; accents reuse global tokens. */
+  --ground: #161216;
+  --muted: #8f838b;
+  --line: rgba(244, 239, 233, 0.16);
+  --line-strong: rgba(244, 239, 233, 0.34);
+  --band-ink: #241318;
+
+  background-color: var(--ground);
+  color: var(--color-cream);
+  /* Entrance: fade + rise on mount, matching the header Menu overlay's feel
+     (ease-out-expo). Runs once when the page mounts — initial load or client
+     navigation. `both` holds the from-state during any delay (no flash). */
+  animation: kontakt-enter 600ms var(--ease-out-expo) both;
+}
+
+/* Chrome adopts the page ground: header + footer paint --color-primary.
+   The attribute is set by <DarkChrome/> only while /kontakt is the active
+   page — see dark-chrome.tsx for why :has(.page) is wrong here. */
+:global(html[data-chrome="kontakt"]) {
+  --color-primary: #161216;
+}
+
+@keyframes kontakt-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* —— Marquee hero ———————————————————————————————————————————————————————— */
+
+.hero {
+  padding-block: calc(var(--safe) * 3) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  overflow: hidden;
+}
+
+.row {
+  width: 100%;
+}
+
+.fill,
+.outline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: clamp(3.5rem, 14vw, 12rem);
+  white-space: nowrap;
+}
+
+.fill {
+  color: var(--color-orange);
+}
+
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-cream);
+}
+
+/* —— Lede ————————————————————————————————————————————————————————————————— */
+
+.lede {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  max-width: 1240px;
+  margin: 52px auto 0;
+  padding-inline: var(--safe);
+}
+
+.ledeArrow {
+  color: var(--color-orange);
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.ledeText {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.45;
+  max-width: 34ch;
+}
+
+/* —— Form ————————————————————————————————————————————————————————————————— */
+
+.formSection {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: clamp(60px, 9vh, 120px) var(--safe) clamp(70px, 10vh, 130px);
+}
+
+.formShell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(38px, 5vw, 72px);
+  counter-reset: field;
+}
+
+/* Fields span the full row by default; name/email share one (.half). */
+.formShell .field {
+  counter-increment: field;
+  grid-column: 1 / -1;
+  gap: 20px;
+}
+
+.formShell .half {
+  grid-column: auto / span 1;
+}
+
+/* "01 — Imię" label line (mock .num). */
+.formShell .field label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.formShell .field label::before {
+  content: counter(field, decimal-leading-zero) " — ";
+}
+
+/* Big display-face underline inputs (mock .fld). */
+.formShell input:not([type="hidden"]),
+.formShell textarea {
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 0 0 16px;
+  background: transparent;
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(21px, 2.3vw, 28px);
+  line-height: 1.3;
+  transition: border-color 250ms var(--ease-out-expo);
+}
+
+.formShell input::placeholder,
+.formShell textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.formShell input:focus,
+.formShell textarea:focus {
+  outline: none;
+  border-bottom-color: var(--color-orange);
+}
+
+.formShell input:focus-visible,
+.formShell textarea:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 4px;
+}
+
+.formShell textarea {
+  resize: none;
+  min-height: 52px;
+}
+
+/* Service pills (mock .spill) — aria-pressed marks the selected state. */
+.formShell button[aria-pressed] {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--muted);
+  padding: 12px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 180ms var(--ease-out-expo),
+    border-color 180ms var(--ease-out-expo),
+    background-color 180ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .formShell button[aria-pressed]:hover {
+    border-color: var(--color-cream);
+    color: var(--color-cream);
+  }
+}
+
+.formShell button[aria-pressed]:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+.formShell button[aria-pressed="true"] {
+  background: var(--color-cream);
+  color: var(--ground);
+  border-color: var(--color-cream);
+}
+
+/* Send row: ghost pill + reassurance note (mock .send). */
+.send {
+  grid-column: 1 / -1;
+  margin-top: clamp(10px, 2vh, 24px);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.send button[type="submit"] {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  padding: 16px 34px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-cream);
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .send button[type="submit"]:hover {
+    background: var(--color-cream);
+    color: var(--ground);
+    border-color: var(--color-cream);
+  }
+}
+
+.send button[type="submit"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.send button[type="submit"]:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+.note {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.messages {
+  grid-column: 1 / -1;
+}
+
+/* —— Brand belt (dark variant) ———————————————————————————————————————————— */
+
+/* The reused ClientLogos section paints its band + edge fades with
+   --color-sand and its heading with --color-ink; remapping the tokens in this
+   scope turns the belt white-on-black to match the page (user decision
+   2026-07-17). Testimonial cards keep their own cream/ink surfaces. */
+.brands {
+  --color-sand: var(--ground);
+}
+
+.brands h2 {
+  color: var(--color-cream);
+}
+
+/* Force the client logo PNGs to white (they're drawn for the sand band);
+   testimonial portraits inside the hover cards keep their true colors. */
+.brands img {
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.brands [class*="__card"] img {
+  filter: none;
+  opacity: 1;
+}
+
+/* —— Metrics band ————————————————————————————————————————————————————————— */
+
+.metrics {
+  background: var(--color-orange);
+  color: var(--band-ink);
+}
+
+.metricsInner {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: clamp(64px, 9vh, 120px) var(--safe);
+}
+
+.metricsHead {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: clamp(40px, 6vh, 72px);
+}
+
+.metricsSmile {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.metricsHeadText {
+  font-size: clamp(15px, 1.5vw, 18px);
+  max-width: 30ch;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.metric {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 20px;
+  padding-block: clamp(26px, 4vh, 42px);
+  border-top: 1px solid rgba(36, 19, 24, 0.28);
+}
+
+.metric:last-child {
+  border-bottom: 1px solid rgba(36, 19, 24, 0.28);
+}
+
+.metricValue {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(44px, 7vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.metricCaption {
+  font-size: clamp(14px, 1.4vw, 17px);
+  text-align: right;
+  max-width: 22ch;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* —— Responsive ——————————————————————————————————————————————————————————— */
+
+@media (--mobile) {
+  .formShell {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .formShell .half {
+    grid-column: 1 / -1;
+  }
+
+  .metric {
+    grid-template-columns: 1fr;
+  }
+
+  .metricCaption {
+    text-align: left;
+  }
+}
+
+/* —— Reduced motion ——————————————————————————————————————————————————————— */
+
+@media (--reduced-motion) {
+  .page {
+    animation: none;
+  }
+
+  .formShell input:not([type="hidden"]),
+  .formShell textarea,
+  .formShell button[aria-pressed],
+  .send button[type="submit"] {
+    transition: none;
+  }
+}

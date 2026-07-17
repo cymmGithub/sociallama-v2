@@ -76,6 +76,7 @@ export function Form<T = unknown>({
   formId,
   onSuccess,
   onError,
+  invalidMessage,
   className,
   ...props
 }: FormProps<T>) {
@@ -94,6 +95,7 @@ export function Form<T = unknown>({
   } = useForm({
     action: action as FormAction<unknown>,
     ...(formId && { formId }),
+    ...(invalidMessage && { invalidMessage }),
     initialState: null,
   })
 

@@ -1,4 +1,10 @@
-.block {
+/* :where() keeps this reset at zero specificity so a consumer's own sizing
+   class (e.g. testimonial `.avatar { width: 68px }`) always wins regardless
+   of stylesheet order. Without it the winner flips whenever this sheet gets
+   (re)injected after the consumer's — seen in dev on Activity back/forward
+   navigation, where the duplicate injection made rail avatars blow up to
+   their intrinsic size and SVG logos collapse to 0. */
+:where(.block) {
   width: auto;
   height: auto;
   display: block;

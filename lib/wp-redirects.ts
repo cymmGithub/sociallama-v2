@@ -32,8 +32,6 @@ export const wpRedirects: WpRedirect[] = [
   },
   // /oferta/pinterest/ — platform offer page → services section anchor
   { source: '/oferta/pinterest', destination: '/#uslugi', statusCode: 301 },
-  // /kontakt/ — contact page → footer CTA anchor (NOTE: no id="kontakt" anchor exists on the v2 homepage yet — footer already links there; lands at top of page until one is added)
-  { source: '/kontakt', destination: '/#kontakt', statusCode: 301 },
   // /oferta/facebook/ — platform offer page → services section anchor
   { source: '/oferta/facebook', destination: '/#uslugi', statusCode: 301 },
   // /oferta/instagram/ — platform offer page → services section anchor
