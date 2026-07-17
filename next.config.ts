@@ -1,4 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 
 // --- Storybook proxy ---------------------------------------------------------
@@ -197,4 +198,4 @@ const bundleAnalyzerPlugin = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-export default bundleAnalyzerPlugin(nextConfig)
+export default withPayload(bundleAnalyzerPlugin(nextConfig))

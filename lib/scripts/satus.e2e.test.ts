@@ -46,6 +46,10 @@ const COPY_FILES = [
   // Required for typecheck gates: references next/image-types (asset module
   // declarations) and .next/types/routes.d.ts (stubbed by setup:project).
   'next-env.d.ts',
+  // Payload platform roots: app/(payload) is copied with app/, and its files
+  // resolve the @payload-config tsconfig alias to these root-level files.
+  'payload.config.ts',
+  'payload-types.ts',
 ]
 
 /**

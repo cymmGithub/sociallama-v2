@@ -31,6 +31,7 @@
       }
     ],
     "paths": {
+      "@payload-config": ["./payload.config.ts"],
       "@/*": ["./*"],
       "@/hooks/*": ["./lib/hooks/*"],
       "@/styles/*": ["./lib/styles/*"],

@@ -89,6 +89,16 @@ export const turnstileEnvSchema = z.object({
 })
 
 /**
+ * Environment variables required by the Payload CMS platform.
+ * `BLOB_READ_WRITE_TOKEN` is intentionally not listed: media uploads need it,
+ * but the platform boots without it (the Blob storage plugin self-disables).
+ */
+export const payloadEnvSchema = z.object({
+  DATABASE_URL: z.string().min(1, { error: 'DATABASE_URL is required' }),
+  PAYLOAD_SECRET: z.string().min(1, { error: 'PAYLOAD_SECRET is required' }),
+})
+
+/**
  * Environment variables for analytics integrations.
  * At least one of `NEXT_PUBLIC_GOOGLE_ANALYTICS` or
  * `NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID` must be provided.

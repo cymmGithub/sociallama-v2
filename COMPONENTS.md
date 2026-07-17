@@ -148,6 +148,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | hubspotEnvSchema | `ZodObject<{ HUBSPOT_ACCESS_TOKEN: ZodOptional<ZodString>; NEXT_PUBLIC_HUBSPOT...` |
 | mailchimpEnvSchema | `ZodObject<{ MAILCHIMP_API_KEY: ZodString; MAILCHIMP_SERVER_PREFIX: ZodString;...` |
 | turnstileEnvSchema | `ZodObject<{ NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: ZodString; CLOUDFLARE_...` |
+| payloadEnvSchema | `ZodObject<{ DATABASE_URL: ZodString; PAYLOAD_SECRET: ZodString; }, $strip>` |
 | analyticsEnvSchema | `ZodObject<{ NEXT_PUBLIC_GOOGLE_ANALYTICS: ZodOptional<ZodString>; NEXT_PUBLIC...` |
 | coreEnvSchema | `ZodObject<{ NEXT_PUBLIC_BASE_URL: ZodOptional<ZodURL>; }, $strip>` |
 
@@ -175,7 +176,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | getConfigured | `() => string[]` |
 | getUnconfigured | `() => string[]` |
 | IntegrationEntry |  |
-| integrations | `{ readonly sanity: { readonly name: "Sanity"; readonly envSchema: ZodObject<{...` |
+| integrations | `{ readonly payload: { readonly name: "Payload"; readonly envSchema: ZodObject...` |
 | IntegrationId | `keyof typeof integrations` |
 | devOnlyRemovables | `readonly ["webgl", "theatre"]` |
 | RemovableId | `IntegrationId | (typeof devOnlyRemovables)[number]` |
@@ -186,6 +187,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 
 | Alias | Maps To |
 |-------|---------|
+| `@payload-config` | `./payload.config.ts` |
 | `@/*` | `./*` |
 | `@/hooks/*` | `./lib/hooks/*` |
 | `@/styles/*` | `./lib/styles/*` |

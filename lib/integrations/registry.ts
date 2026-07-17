@@ -15,6 +15,7 @@ import {
   analyticsEnvSchema,
   hubspotEnvSchema,
   mailchimpEnvSchema,
+  payloadEnvSchema,
   sanityEnvSchema,
   shopifyEnvSchema,
   turnstileEnvSchema,
@@ -30,6 +31,11 @@ export interface IntegrationEntry {
 }
 
 export const integrations = {
+  payload: {
+    name: 'Payload',
+    envSchema: payloadEnvSchema,
+    docsUrl: 'https://payloadcms.com/docs',
+  },
   sanity: {
     name: 'Sanity',
     envSchema: sanityEnvSchema,

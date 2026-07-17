@@ -29,7 +29,9 @@
       "!**/*.mdx",
       "!**/tailwind.css",
       "!**/root.css",
-      "!**/*.grit"
+      "!**/*.grit",
+      "!app/(payload)",
+      "!payload-types.ts"
     ]
   },
 
