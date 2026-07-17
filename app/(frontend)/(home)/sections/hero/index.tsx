@@ -7,11 +7,10 @@ import { useTempus } from 'tempus/react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { hero, socials } from '@/lib/content/home'
+import { useRotator } from '@/lib/hooks/use-rotator'
 import { breakpoints } from '@/styles/config'
 import s from './hero.module.css'
 import { useHeroScrubTarget } from './track'
-
-const ROTATOR_INTERVAL = 2600
 
 /* Scrub smoothing (design D3): per-frame lerp toward the target time, and the
    minimum remaining delta worth a `currentTime` write — perpetual micro-seeks
@@ -24,9 +23,11 @@ export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const scrubTargetRef = useHeroScrubTarget()
-  // prev tracks the word sliding out so only it (and the incoming word)
-  // transition — waiting words snap into place unseen below the mask.
-  const [rotation, setRotation] = useState({ index: 0, prev: -1 })
+  // Rotates the first headline word through the offer. Static under reduced
+  // motion (shows the first word only); paused while the hero is off screen.
+  const { ref: rotatorRef, rotation } = useRotator<HTMLElement>(
+    hero.headline.rotator.length
+  )
   // 'poster' until mount so SSR and hydration render the same static shell;
   // then desktop gets its scrubbed head-turn clip. Mobile stays static — a
   // poster image, no video (user decision 2026-07-14: simpler and immune to
@@ -116,22 +117,8 @@ export function Hero() {
     }
   }, [])
 
-  // Rotate the first headline word through the offer. Static under reduced
-  // motion (shows the first word only).
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const id = setInterval(() => {
-      setRotation((state) => ({
-        index: (state.index + 1) % hero.headline.rotator.length,
-        prev: state.index,
-      }))
-    }, ROTATOR_INTERVAL)
-    return () => clearInterval(id)
-  }, [])
-
   return (
-    <section className={s.hero}>
+    <section ref={rotatorRef} className={s.hero}>
       {/* Desktop media: bare right-anchored clip composited directly onto the
           #892f53 chapter (seamless-composite — the clip is graded to the token
           and gated by verify-clip-bg.ts). Absolute against the section, like

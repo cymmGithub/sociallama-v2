@@ -90,85 +90,94 @@ export function Services() {
         <h2 className={s.heading}>{services.heading}</h2>
       </header>
 
-      {/* Desktop: shared stage + tab columns */}
-      <div ref={revealRef} className={s.tabs}>
-        <div data-reveal-item className={s.stage}>
-          <Backdrop />
-          {services.items.map((service, index) => (
-            <div
-              key={service.id}
-              id={stageId(service)}
-              className={cn(s.layer, index === active && s.isActive)}
-              aria-hidden={index !== active}
-            >
-              <StageMedia service={service} active={index === active} />
-            </div>
-          ))}
-          <Grain />
-        </div>
-
-        <ul className={s.columns}>
-          {services.items.map((service, index) => {
-            const isActive = index === active
-            return (
-              <li
+      {/* Desktop: shared stage + tab columns. Both variants stay mounted only
+          until the breakpoint resolves post-mount (SSR and first paint render
+          both, CSS hides the wrong one); after that the hidden copy unmounts
+          so its videos, observers, and grain SVGs are torn down. */}
+      {isDesktop !== false && (
+        <div ref={revealRef} className={s.tabs}>
+          <div data-reveal-item className={s.stage}>
+            <Backdrop />
+            {services.items.map((service, index) => (
+              <div
                 key={service.id}
-                data-reveal-item
-                className={cn(s.column, isActive && s.isActive)}
+                id={stageId(service)}
+                className={cn(s.layer, index === active && s.isActive)}
+                aria-hidden={index !== active}
               >
-                <button
-                  type="button"
-                  className={s.tabButton}
-                  aria-expanded={isActive}
-                  aria-controls={stageId(service)}
-                  onClick={() => select(index)}
+                <StageMedia service={service} active={index === active} />
+              </div>
+            ))}
+            <Grain />
+          </div>
+
+          <ul className={s.columns}>
+            {services.items.map((service, index) => {
+              const isActive = index === active
+              return (
+                <li
+                  key={service.id}
+                  data-reveal-item
+                  className={cn(s.column, isActive && s.isActive)}
                 >
-                  <span className="sr-only">{service.title}</span>
-                </button>
-                <div className={s.bar}>
-                  {autoplay && isActive ? (
-                    <div
-                      key={cycle}
-                      className={cn(s.fill, s.fillLive)}
-                      style={
-                        service.dwellMs
-                          ? { animationDuration: `${service.dwellMs}ms` }
-                          : undefined
-                      }
-                      onAnimationEnd={advance}
-                    />
-                  ) : (
-                    <div className={cn(s.fill, reducedMotion && s.fillFull)} />
-                  )}
-                </div>
-                <h3 className={s.title}>{service.title}</h3>
-                <p className={s.body}>{service.body}</p>
-                <Link className={s.link} href={service.link.href}>
-                  {service.link.label}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
+                  <button
+                    type="button"
+                    className={s.tabButton}
+                    aria-expanded={isActive}
+                    aria-controls={stageId(service)}
+                    onClick={() => select(index)}
+                  >
+                    <span className="sr-only">{service.title}</span>
+                  </button>
+                  <div className={s.bar}>
+                    {autoplay && isActive ? (
+                      <div
+                        key={cycle}
+                        className={cn(s.fill, s.fillLive)}
+                        style={
+                          service.dwellMs
+                            ? { animationDuration: `${service.dwellMs}ms` }
+                            : undefined
+                        }
+                        onAnimationEnd={advance}
+                      />
+                    ) : (
+                      <div
+                        className={cn(s.fill, reducedMotion && s.fillFull)}
+                      />
+                    )}
+                  </div>
+                  <h3 className={s.title}>{service.title}</h3>
+                  <p className={s.body}>{service.body}</p>
+                  <Link className={s.link} href={service.link.href}>
+                    {service.link.label}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
 
       {/* Mobile: stacked blocks, no tab machinery */}
-      <ul ref={stackRevealRef} className={s.stack}>
-        {services.items.map((service) => (
-          <li key={service.id} data-reveal-item className={s.stackItem}>
-            <div className={s.stackStage}>
-              <Backdrop />
-              <StageMedia service={service} active />
-              <Grain />
-            </div>
-            <h3 className={s.title}>{service.title}</h3>
-            <p className={s.body}>{service.body}</p>
-            <Link className={s.link} href={service.link.href}>
-              {service.link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {isDesktop !== true && (
+        <ul ref={stackRevealRef} className={s.stack}>
+          {services.items.map((service) => (
+            <li key={service.id} data-reveal-item className={s.stackItem}>
+              <div className={s.stackStage}>
+                <Backdrop />
+                <StageMedia service={service} active />
+                <Grain />
+              </div>
+              <h3 className={s.title}>{service.title}</h3>
+              <p className={s.body}>{service.body}</p>
+              <Link className={s.link} href={service.link.href}>
+                {service.link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }
@@ -249,50 +258,39 @@ function StageMedia({
     )
   }
 
-  if (stage.kind === 'video') {
-    return (
-      <div className={s.phone}>
-        {stage.clips.map((clip) =>
-          'placeholder' in clip ? (
-            <div
-              key={clip.placeholder}
-              className={cn(s.phoneFrame, s.phonePlaceholder)}
-              role="img"
-              aria-label={clip.placeholder}
-            >
-              <div className={s.placeholderInner}>
-                <Image
-                  src="/assets/clients/irobot.svg"
-                  alt=""
-                  width={1024}
-                  height={203}
-                  className={s.placeholderLogo}
-                />
-                <span className={s.placeholderTag}>Wkrótce</span>
-              </div>
-            </div>
-          ) : (
-            <div key={clip.src} className={s.phoneFrame}>
-              <Video
-                src={clip.src}
-                poster={clip.poster}
-                alt={clip.alt}
-                autoPlay={active}
-                className={s.phoneVideo}
-              />
-            </div>
-          )
-        )}
-      </div>
-    )
-  }
-
-  // Placeholder (Sprzedaż): deliberately styled gradient-only stage with the
-  // service title as an outlined watermark — swapped for real results assets
-  // when the user provides them.
   return (
-    <p className={s.watermark} aria-hidden="true">
-      {service.title}
-    </p>
+    <div className={s.phone}>
+      {stage.clips.map((clip) =>
+        'placeholder' in clip ? (
+          <div
+            key={clip.placeholder}
+            className={cn(s.phoneFrame, s.phonePlaceholder)}
+            role="img"
+            aria-label={clip.placeholder}
+          >
+            <div className={s.placeholderInner}>
+              <Image
+                src="/assets/clients/irobot.svg"
+                alt=""
+                width={1024}
+                height={203}
+                className={s.placeholderLogo}
+              />
+              <span className={s.placeholderTag}>Wkrótce</span>
+            </div>
+          </div>
+        ) : (
+          <div key={clip.src} className={s.phoneFrame}>
+            <Video
+              src={clip.src}
+              poster={clip.poster}
+              alt={clip.alt}
+              autoPlay={active}
+              className={s.phoneVideo}
+            />
+          </div>
+        )
+      )}
+    </div>
   )
 }

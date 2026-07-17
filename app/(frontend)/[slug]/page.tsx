@@ -3,6 +3,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Image } from '@/components/ui/image'
+import { OG_BASE } from '@/lib/content/site'
 import {
   getDraftPostBySlug,
   getPostBySlug,
@@ -10,6 +11,7 @@ import {
   resolveCategory,
   resolveMedia,
 } from '@/lib/payload/queries'
+import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
 import s from './post.module.css'
 import { PostRichText } from './rich-text'
@@ -61,10 +63,7 @@ export async function generateMetadata({
     alternates: { canonical: `/${post.slug}` },
     openGraph: {
       type: 'article',
-      // Page-level openGraph replaces the layout's whole og object (no deep
-      // merge), so brand identity must be restated here.
-      siteName: 'Social Lama',
-      locale: 'pl_PL',
+      ...OG_BASE,
       title,
       ...(description ? { description } : {}),
       url: `/${post.slug}`,
@@ -89,11 +88,7 @@ export default async function PostPage({ params }: PageProps) {
   const category = resolveCategory(post.category)
   const cover = resolveMedia(post.cover)
   const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString('pl-PL', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })
+    ? formatPostDate(post.publishedAt)
     : null
 
   return (

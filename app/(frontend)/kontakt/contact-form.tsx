@@ -13,11 +13,6 @@ import { sendContactEmail } from '@/lib/integrations/email/action'
 import s from './kontakt.module.css'
 import { TurnstileWidget } from './turnstile-widget'
 
-const SERVICE_OPTIONS = contactServices.map((service) => ({
-  label: service.label,
-  value: service.value,
-}))
-
 // Client-side validation copy, keyed by field name — Polish, sourced from
 // content. Passed to the form kit's `invalidMessage` formatter so the reused
 // hook stops emitting its default English `Invalid <field>` text.
@@ -61,7 +56,7 @@ export function ContactForm() {
         className={cn(s.field)}
         name="services"
         label={contactForm.fields.services.label}
-        options={SERVICE_OPTIONS}
+        options={contactServices}
       />
       <TextareaField
         className={cn(s.field)}

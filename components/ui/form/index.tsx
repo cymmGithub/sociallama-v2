@@ -1,7 +1,14 @@
 'use client'
 
 import cn from 'clsx'
-import { createContext, use, useEffect, useState } from 'react'
+import {
+  createContext,
+  use,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { mutate } from '@/utils/raf'
 import s from './form.module.css'
 import { useForm } from './hook'
@@ -122,27 +129,42 @@ export function Form<T = unknown>({
   }, [formState, onSuccess, onError])
 
   // Reset form function for actions
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setKey(crypto.randomUUID())
-  }
+  }, [])
 
-  const contextValue: FormContextStandard = {
-    state: {
+  // Memoized so context consumers re-render when form state changes, not on
+  // every Form render.
+  const contextValue: FormContextStandard = useMemo(
+    () => ({
+      state: {
+        formState,
+        isPending,
+        isReady,
+        isActive,
+        isValid,
+        errors,
+      },
+      actions: {
+        register,
+        resetForm,
+      },
+      meta: {
+        formId: formId ?? '',
+      },
+    }),
+    [
       formState,
       isPending,
       isReady,
       isActive,
       isValid,
       errors,
-    },
-    actions: {
       register,
       resetForm,
-    },
-    meta: {
-      formId: formId ?? '',
-    },
-  }
+      formId,
+    ]
+  )
 
   return (
     <FormContext.Provider value={contextValue}>

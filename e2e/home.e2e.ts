@@ -1,6 +1,10 @@
-import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 import { themes } from '../lib/styles/colors'
+import {
+  collectPageErrors,
+  expectNoSeriousA11yViolations,
+  hexToRgb,
+} from './helpers'
 
 test.describe('Home page smoke', () => {
   test('hero has its own opaque plum ground (no morph-layer bleed)', async ({
@@ -16,23 +20,15 @@ test.describe('Home page smoke', () => {
     // hero-module prefix, so scope to the section element.
     const hero = page.locator('section[class*="hero-module"]').first()
     await expect(hero).toBeAttached()
-    // --color-plum-hero #853253
-    await expect(hero).toHaveCSS('background-color', 'rgb(133, 50, 83)')
+    // --color-plum-hero, the plum theme ground
+    await expect(hero).toHaveCSS(
+      'background-color',
+      hexToRgb(themes.plum.primary)
+    )
   })
 
   test('renders, has no console errors, passes a11y', async ({ page }) => {
-    const consoleErrors: string[] = []
-    const pageErrors: string[] = []
-
-    page.on('console', (msg) => {
-      if (msg.type() === 'error') {
-        consoleErrors.push(msg.text())
-      }
-    })
-
-    page.on('pageerror', (error) => {
-      pageErrors.push(error.message)
-    })
+    const { consoleErrors, pageErrors } = collectPageErrors(page)
 
     // Reduced motion keeps the scan deterministic: the global --reduced-motion
     // rule neutralizes transitions, the testimonial autoplay never schedules,
@@ -89,17 +85,11 @@ test.describe('Home page smoke', () => {
     //   the adjacent Polish subheads carry the information.
     // - testimonial queue cards: dimmed upcoming entries reach full contrast
     //   when active; aria-labels name each entry for AT users.
-    const results = await new AxeBuilder({ page })
-      .exclude('[class*="progress-text-module"]')
-      .exclude(
-        '[class*="how-it-works-module"] [class*="headingLine"]:last-child'
-      )
-      .exclude('[class*="big-marquee-module"] [class*="fill"]')
-      .exclude('[class*="testimonial-module"] [class*="client"]')
-      .analyze()
-    const seriousViolations = results.violations.filter(
-      (v) => v.impact === 'critical' || v.impact === 'serious'
-    )
-    expect(seriousViolations).toEqual([])
+    await expectNoSeriousA11yViolations(page, [
+      '[class*="progress-text-module"]',
+      '[class*="how-it-works-module"] [class*="headingLine"]:last-child',
+      '[class*="big-marquee-module"] [class*="fill"]',
+      '[class*="testimonial-module"] [class*="client"]',
+    ])
   })
 })

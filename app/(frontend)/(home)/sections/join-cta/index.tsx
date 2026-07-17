@@ -8,35 +8,21 @@ import {
   MoreHorizontal,
   Send,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
 import { joinCta } from '@/lib/content/home'
+import { useRotator } from '@/lib/hooks/use-rotator'
 import s from './join-cta.module.css'
 
-const ROTATOR_INTERVAL = 2600
-
 export function JoinCta() {
-  // prev tracks the token sliding out so only it (and the incoming token)
-  // transition — waiting tokens snap into place unseen below the mask.
-  const [rotation, setRotation] = useState({ index: 0, prev: -1 })
-
-  // Rotate the locative token through the offer. Static under reduced motion
-  // (shows the first entry only).
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const id = setInterval(() => {
-      setRotation((state) => ({
-        index: (state.index + 1) % joinCta.rotator.length,
-        prev: state.index,
-      }))
-    }, ROTATOR_INTERVAL)
-    return () => clearInterval(id)
-  }, [])
+  // Rotates the locative token through the offer. Static under reduced
+  // motion (shows the first entry only); paused while off screen.
+  const { ref: rotatorRef, rotation } = useRotator<HTMLElement>(
+    joinCta.rotator.length
+  )
 
   return (
-    <section className={s.section}>
+    <section ref={rotatorRef} className={s.section}>
       <div className={s.copy}>
         {/* The visual token rotates; expose a stable accessible name. */}
         <h2

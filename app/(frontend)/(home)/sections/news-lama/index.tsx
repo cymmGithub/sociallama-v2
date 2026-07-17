@@ -4,6 +4,7 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { news } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import { formatPostDate } from '@/lib/utils/format-date'
 import s from './news-lama.module.css'
 
 /**
@@ -27,11 +28,7 @@ const HEADING_ACCENT = 'LAMA'
 export function NewsLama({ post }: { post: NewsLamaPost }) {
   const ref = useReveal<HTMLElement>()
 
-  const formattedDate = new Date(post.date).toLocaleDateString('pl-PL', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
+  const formattedDate = formatPostDate(post.date)
 
   // "NewsLAMA" → "News" + accented "LAMA" (copy stays in lib/content/home.ts)
   const hasAccent = news.heading.endsWith(HEADING_ACCENT)

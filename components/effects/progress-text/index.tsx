@@ -80,13 +80,19 @@ export function ProgressText({
   style,
 }: ProgressTextProps) {
   const wordsRefs = useRef<HTMLSpanElement[]>([])
+  // Last value passed to onChange per word, so scroll frames only touch the
+  // words that crossed their threshold instead of restyling every word.
+  const lastValues = useRef<boolean[]>([])
 
   const [setRectRef] = useScrollTrigger({
     start,
     end,
     onProgress: ({ progress }) => {
       wordsRefs.current.forEach((node, i) => {
-        onChange?.(node, progress > i / wordsRefs.current.length)
+        const value = progress > i / wordsRefs.current.length
+        if (lastValues.current[i] === value) return
+        lastValues.current[i] = value
+        onChange?.(node, value)
       })
     },
   })

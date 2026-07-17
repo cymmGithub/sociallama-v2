@@ -1,15 +1,11 @@
 import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { BlogListing } from '@/app/(frontend)/blog/listing'
+import { parsePageNumber } from '@/app/(frontend)/blog/pagination'
 import { getCategories, getPostsPage } from '@/lib/payload/queries'
 
 interface PageProps {
   params: Promise<{ number: string }>
-}
-
-function parsePageNumber(raw: string): number | null {
-  const page = Number(raw)
-  return Number.isInteger(page) && page >= 1 ? page : null
 }
 
 export async function generateStaticParams() {

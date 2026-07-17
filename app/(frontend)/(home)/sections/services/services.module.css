@@ -407,22 +407,6 @@
   white-space: nowrap;
 }
 
-/* —— Stage media: placeholder watermark (Sprzedaż) —————————————————— */
-
-.watermark {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(3rem, 9vw, 8rem);
-  letter-spacing: 0.02em;
-  color: transparent;
-  -webkit-text-stroke: 2px
-    color-mix(in srgb, var(--color-cream) 35%, transparent);
-}
-
 /* —— Tab columns ————————————————————————————————————————————————— */
 
 .columns {
@@ -557,8 +541,7 @@
 
 /* Media renders directly in the stack stage (no crossfade layer). */
 .stackStage .panels,
-.stackStage .phone,
-.stackStage .watermark {
+.stackStage .phone {
   z-index: 1;
 }
 

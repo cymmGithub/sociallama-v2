@@ -68,6 +68,18 @@ export const mailchimpEnvSchema = z.object({
     .min(1, { error: 'MAILCHIMP_AUDIENCE_ID is required' }),
 })
 
+/**
+ * Environment variables required for contact-form email delivery (SMTP
+ * transport + destination inbox). `SMTP_PORT` is optional — the transport
+ * defaults to 587.
+ */
+export const emailEnvSchema = z.object({
+  SMTP_HOST: z.string().min(1, { error: 'SMTP_HOST is required' }),
+  SMTP_USER: z.string().min(1, { error: 'SMTP_USER is required' }),
+  SMTP_PASS: z.string().min(1, { error: 'SMTP_PASS is required' }),
+  CONTACT_INBOX: z.string().min(1, { error: 'CONTACT_INBOX is required' }),
+})
+
 /** Environment variables required by Cloudflare Turnstile captcha. */
 export const turnstileEnvSchema = z.object({
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: z

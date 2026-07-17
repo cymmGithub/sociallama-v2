@@ -59,13 +59,11 @@ export type StageClip =
 /**
  * Per-service stage media for the autoplay-tabs services section.
  * `panels` float real screenshots over the grain-gradient, `video` renders
- * phone-framed clips playing only while their tab is active, `placeholder`
- * shows the styled gradient alone until real assets exist.
+ * phone-framed clips playing only while their tab is active.
  */
 export type ServiceStage =
   | { kind: 'panels'; panels: StagePanel[] }
   | { kind: 'video'; clips: StageClip[] }
-  | { kind: 'placeholder' }
 
 export interface Service {
   id: string

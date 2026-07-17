@@ -1,7 +1,14 @@
-import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 import { contactForm, contactMetrics } from '../lib/content/contact'
 import { clientsHeading } from '../lib/content/home'
+import { themes } from '../lib/styles/colors'
+import {
+  collectPageErrors,
+  expectNoSeriousA11yViolations,
+  HYDRATED,
+  hexToRgb,
+  waitForHydration,
+} from './helpers'
 
 /**
  * /kontakt regression suite (add-contact-page). Guards the failures found
@@ -13,25 +20,9 @@ import { clientsHeading } from '../lib/content/home'
  * - English fallback validation copy on a Polish form
  */
 
-const DARK_CHROME = 'rgb(22, 18, 22)' // #161216 — kontakt page ground
-const PLUM_CHROME = 'rgb(133, 50, 83)' // #853253 — homepage plum theme
-
-/** Generous timeout for assertions that depend on client-side effects: under
- * full-suite parallelism the shared dev server starves hydration well past
- * Playwright's 5s default. */
-const HYDRATED = { timeout: 20_000 } as const
-
-/** Wait until the page has hydrated. Lenis (mounted by every Wrapper page)
- * stamps `.lenis` on <html> from a client effect, so its presence proves
- * React effects are running — required before asserting on data-chrome,
- * data-theme, client-side validation, or router navigation. */
-async function waitForHydration(page: import('@playwright/test').Page) {
-  await page.waitForFunction(
-    () => document.documentElement.className.includes('lenis'),
-    undefined,
-    { timeout: 30_000 }
-  )
-}
+// #161216 — kontakt page ground (page-module value, no theme token yet)
+const DARK_CHROME = 'rgb(22, 18, 22)'
+const PLUM_CHROME = hexToRgb(themes.plum.primary)
 
 test.describe('Kontakt page', () => {
   test('legacy /kontakt URL serves the page directly (no 301)', async ({
@@ -65,12 +56,7 @@ test.describe('Kontakt page', () => {
   test('renders all sections without errors, dark chrome, passes a11y', async ({
     page,
   }) => {
-    const consoleErrors: string[] = []
-    const pageErrors: string[] = []
-    page.on('console', (msg) => {
-      if (msg.type() === 'error') consoleErrors.push(msg.text())
-    })
-    page.on('pageerror', (error) => pageErrors.push(error.message))
+    const { consoleErrors, pageErrors } = collectPageErrors(page)
 
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/kontakt')
@@ -111,14 +97,10 @@ test.describe('Kontakt page', () => {
     // A11y (critical + serious). Exclusions mirror home.e2e.ts's documented
     // brand exceptions: the decorative marquee rows are aria-hidden brand
     // treatment (orange fill / outline stroke), not informational text.
-    const results = await new AxeBuilder({ page })
-      .exclude('[class*="kontakt-module"] [class*="fill"]')
-      .exclude('[class*="kontakt-module"] [class*="outline"]')
-      .analyze()
-    const seriousViolations = results.violations.filter(
-      (v) => v.impact === 'critical' || v.impact === 'serious'
-    )
-    expect(seriousViolations).toEqual([])
+    await expectNoSeriousA11yViolations(page, [
+      '[class*="kontakt-module"] [class*="fill"]',
+      '[class*="kontakt-module"] [class*="outline"]',
+    ])
   })
 
   test('dark chrome does not leak onto other pages (Activity cache)', async ({
@@ -213,8 +195,7 @@ test.describe('Kontakt page', () => {
   test('validates in Polish and reaches a terminal submit state', async ({
     page,
   }) => {
-    const pageErrors: string[] = []
-    page.on('pageerror', (error) => pageErrors.push(error.message))
+    const { pageErrors } = collectPageErrors(page)
 
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/kontakt')

@@ -13,6 +13,12 @@ function pageHref(basePath: string, page: number): string {
   return page <= 1 ? basePath : `${basePath}/page/${page}`
 }
 
+/** Parse a `/page/[number]` route param; null unless a positive integer. */
+export function parsePageNumber(raw: string): number | null {
+  const page = Number(raw)
+  return Number.isInteger(page) && page >= 1 ? page : null
+}
+
 /** Crawlable numbered pagination; page 1 lives at the base path itself. */
 export function Pagination({ basePath, page, totalPages }: PaginationProps) {
   if (totalPages <= 1) {

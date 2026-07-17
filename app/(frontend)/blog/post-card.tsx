@@ -1,16 +1,9 @@
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
+import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
 import s from './blog.module.css'
-
-export function formatPostDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('pl-PL', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
 
 /** Listing card used by /blog and /category/{slug}. Links to the
  *  root-level post URL. */

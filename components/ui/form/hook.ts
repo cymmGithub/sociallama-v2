@@ -3,6 +3,7 @@ import {
   type FocusEventHandler,
   type FormEvent,
   useActionState,
+  useCallback,
   useRef,
   useState,
   useTransition,
@@ -51,11 +52,9 @@ export function useForm<T = unknown>({
   const inputsRefs = useRef<
     Record<string, HTMLInputElement | HTMLTextAreaElement | null>
   >({})
-  // Fields already seeded by initializeInput. A callback ref's identity changes
-  // every render, so React detaches (node = null) then re-attaches each render;
-  // keying "new registration" off the transiently-null inputsRefs re-ran
-  // initializeInput, whose setState forced another render — an infinite loop.
-  // Guarding on the field name initializes exactly once per form instance.
+  // Fields already seeded by initializeInput. Ref callbacks still re-fire on
+  // remounts (StrictMode double-invoke, form reset via key); guarding on the
+  // field name initializes exactly once per form instance.
   const initializedRefs = useRef<Set<string>>(new Set())
 
   // Initialize state for a field when it first registers.
@@ -153,13 +152,32 @@ export function useForm<T = unknown>({
     }))
   }
 
-  function register(name: string) {
-    return {
+  // Registrations are memoized per field name so the callback ref (and the
+  // change/blur handlers) keep a stable identity across renders — React
+  // otherwise detaches (node = null) and re-attaches every field's ref on
+  // every render. The closures read the latest logic through handlersRef so
+  // they never go stale.
+  const registrationsRef = useRef<
+    Record<string, ReturnType<UseFormReturn['register']>>
+  >({})
+  const handlersRef = useRef({
+    initializeInput,
+    setToActiveInput,
+    validate,
+    onBlur,
+  })
+  handlersRef.current = { initializeInput, setToActiveInput, validate, onBlur }
+
+  const register = useCallback((name: string) => {
+    const existing = registrationsRef.current[name]
+    if (existing) return existing
+
+    const registration = {
       ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
         inputsRefs.current[name] = node
         if (node && !initializedRefs.current.has(name)) {
           initializedRefs.current.add(name)
-          initializeInput(name, node)
+          handlersRef.current.initializeInput(name, node)
         }
       },
       onChange: ({
@@ -167,9 +185,9 @@ export function useForm<T = unknown>({
       }: Parameters<
         ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
       >[0]) => {
-        setToActiveInput(target.value, name)
-        if (!onBlur) {
-          validate(target.value, name)
+        handlersRef.current.setToActiveInput(target.value, name)
+        if (!handlersRef.current.onBlur) {
+          handlersRef.current.validate(target.value, name)
         }
       },
       onBlur: ({
@@ -177,12 +195,14 @@ export function useForm<T = unknown>({
       }: Parameters<
         FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
       >[0]) => {
-        if (onBlur) {
-          validate(target.value, name)
+        if (handlersRef.current.onBlur) {
+          handlersRef.current.validate(target.value, name)
         }
       },
     }
-  }
+    registrationsRef.current[name] = registration
+    return registration
+  }, [])
 
   return {
     formState: formState as FormState<T> | null,

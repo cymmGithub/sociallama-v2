@@ -156,20 +156,20 @@ export function TextareaField({
 
 type CheckboxesFieldProps = {
   className?: string
-  options: { label: string; value: string }[]
-  name?: string
+  options: readonly { label: string; value: string }[]
+  name: string
   label?: string
 }
 
 export function CheckboxesField({
   className,
   options,
-  name = 'interests',
-  label = 'Select topics of interest',
+  name,
+  label,
 }: CheckboxesFieldProps) {
   const { actions } = useFormContext()
   const { register } = actions
-  const [selected, setSelected] = useState<string[]>(['all'])
+  const [selected, setSelected] = useState<string[]>([])
 
   const handleToggle = (value: string) => {
     setSelected((prev) =>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { BlogListing } from '@/app/(frontend)/blog/listing'
+import { parsePageNumber } from '@/app/(frontend)/blog/pagination'
 import {
   getCategories,
   getCategoryBySlug,
@@ -11,17 +12,14 @@ interface PageProps {
   params: Promise<{ category: string; number: string }>
 }
 
-function parsePageNumber(raw: string): number | null {
-  const page = Number(raw)
-  return Number.isInteger(page) && page >= 1 ? page : null
-}
-
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { category: slug, number } = await params
+  // Cached query (React cache + 'use cache') — shared with the page body.
+  const category = await getCategoryBySlug(slug)
   return {
-    title: `Kategoria ${slug} — strona ${number}`,
+    title: `Kategoria ${category?.title ?? slug} — strona ${number}`,
     alternates: { canonical: `/category/${slug}/page/${number}` },
   }
 }

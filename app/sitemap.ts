@@ -1,22 +1,17 @@
 import type { MetadataRoute } from 'next'
 import { APP_BASE_URL } from '@/lib/env'
 import { getCategories, getPostsForSitemap } from '@/lib/payload/queries'
+import { STATIC_ROUTES } from '@/lib/static-routes'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseRoutes: MetadataRoute.Sitemap = [
-    {
-      url: APP_BASE_URL,
+  const baseRoutes: MetadataRoute.Sitemap = STATIC_ROUTES.map(
+    ({ path, changeFrequency, priority }) => ({
+      url: path === '/' ? APP_BASE_URL : `${APP_BASE_URL}${path}`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${APP_BASE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    },
-  ]
+      changeFrequency,
+      priority,
+    })
+  )
 
   // Published posts only — getPostsForSitemap constrains _status; drafts
   // never appear here.

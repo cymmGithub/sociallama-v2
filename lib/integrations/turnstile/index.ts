@@ -23,6 +23,22 @@ export interface TurnstileValidationResult {
 export async function validateTurnstile(
   token: string
 ): Promise<TurnstileValidationResult> {
+  // Unconfigured comes first: without a secret no widget is rendered, so no
+  // token exists either — fail open in development, closed in production.
+  const secret = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error(
+        'CLOUDFLARE_TURNSTILE_SECRET_KEY not configured in production'
+      )
+      return { isValid: false, errors: ['security_configuration_error_'] }
+    }
+    console.warn(
+      'CLOUDFLARE_TURNSTILE_SECRET_KEY not found - skipping in development'
+    )
+    return { isValid: true, errors: [] }
+  }
+
   if (!token) {
     return {
       isValid: false,
@@ -31,21 +47,6 @@ export async function validateTurnstile(
   }
 
   try {
-    const secret = env.CLOUDFLARE_TURNSTILE_SECRET_KEY
-    if (!secret) {
-      // Fail closed in production, fail open in development
-      if (process.env.NODE_ENV === 'production') {
-        console.error(
-          'CLOUDFLARE_TURNSTILE_SECRET_KEY not configured in production'
-        )
-        return { isValid: false, errors: ['security_configuration_error_'] }
-      }
-      console.warn(
-        'CLOUDFLARE_TURNSTILE_SECRET_KEY not found - skipping in development'
-      )
-      return { isValid: true, errors: [] }
-    }
-
     const response = await fetchWithTimeout(
       'https://challenges.cloudflare.com/turnstile/v0/siteverify',
       {

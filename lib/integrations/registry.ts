@@ -13,6 +13,7 @@
 import type { z } from 'zod'
 import {
   analyticsEnvSchema,
+  emailEnvSchema,
   hubspotEnvSchema,
   mailchimpEnvSchema,
   payloadEnvSchema,
@@ -54,6 +55,11 @@ export const integrations = {
     name: 'Turnstile',
     envSchema: turnstileEnvSchema,
     docsUrl: 'https://developers.cloudflare.com/turnstile/',
+  },
+  email: {
+    name: 'Email (SMTP)',
+    envSchema: emailEnvSchema,
+    docsUrl: 'https://nodemailer.com/smtp/',
   },
   analytics: {
     name: 'Analytics',

@@ -6,17 +6,18 @@ import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
+import {
+  APP_DEFAULT_TITLE,
+  APP_DESCRIPTION,
+  APP_NAME,
+  APP_TITLE_TEMPLATE,
+  OG_BASE,
+} from '@/lib/content/site'
 import { APP_BASE_URL, env } from '@/lib/env'
 import { OptionalFeatures } from '@/lib/features'
 import { themes } from '@/lib/styles/colors'
 import { fontsVariable } from '@/lib/styles/fonts'
 import '@/lib/styles/css/index.css'
-
-const APP_NAME = 'Social Lama'
-const APP_DEFAULT_TITLE = 'Social Lama'
-const APP_TITLE_TEMPLATE = '%s — Social Lama'
-const APP_DESCRIPTION =
-  'Agencja social media. Kompleksowa obsługa marek w mediach społecznościowych: strategia, content, sprzedaż, kreacje i wideo.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_BASE_URL),
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   openGraph: {
     type: 'website',
-    siteName: APP_NAME,
+    ...OG_BASE,
     title: {
       default: APP_DEFAULT_TITLE,
       template: APP_TITLE_TEMPLATE,
@@ -52,7 +53,6 @@ export const metadata: Metadata = {
         alt: APP_DEFAULT_TITLE,
       },
     ],
-    locale: 'pl_PL',
   },
   twitter: {
     card: 'summary_large_image',

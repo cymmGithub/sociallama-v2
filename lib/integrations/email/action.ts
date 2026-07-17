@@ -15,8 +15,8 @@ const SERVICE_LABELS = new Map<string, string>(
 
 /**
  * Contact form schema. `services` arrives as the JSON string emitted by the
- * form kit's CheckboxesField (defaults to `["all"]` when untouched), so we
- * parse it and keep only known service values.
+ * form kit's CheckboxesField, so we parse it and keep only known service
+ * values.
  */
 const contactSchema = z.object({
   name: z.string().min(1, { error: contactForm.errors.name }),
@@ -50,21 +50,16 @@ export async function sendContactEmail(
   _prevState: FormState | null,
   formData: FormData
 ): Promise<FormState> {
-  // Skip Turnstile only when it's unconfigured outside production (no widget
-  // is rendered, so no token exists — validateTurnstile rejects the empty
-  // token before its own dev fail-open branch). Production without a secret
-  // still validates and fails closed, matching the shared validator.
-  const turnstileConfigured = Boolean(env.CLOUDFLARE_TURNSTILE_SECRET_KEY)
-  if (turnstileConfigured || process.env.NODE_ENV === 'production') {
-    const turnstile = await validateFormWithTurnstile(formData)
-    if (!turnstile.isValid) {
-      return {
-        status: 400,
-        message: contactForm.messages.security,
-        fieldErrors: {
-          turnstile: turnstile.errors[0] ?? 'security_verification_required_',
-        },
-      }
+  // validateTurnstile handles the unconfigured case itself: fail open in
+  // development (no widget, no token), fail closed in production.
+  const turnstile = await validateFormWithTurnstile(formData)
+  if (!turnstile.isValid) {
+    return {
+      status: 400,
+      message: contactForm.messages.security,
+      fieldErrors: {
+        turnstile: turnstile.errors[0] ?? 'security_verification_required_',
+      },
     }
   }
 

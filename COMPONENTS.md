@@ -62,6 +62,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | useDeviceDetection | `@/hooks/use-device-detection` | `()` |
 | usePrefetch | `@/hooks/use-prefetch` | `(href: Route | null | undefined, options?: IntersectionObserverInit)` |
 | useReveal | `@/hooks/use-reveal` | `({ threshold = 0, rootMargin = '0px 0px -25% 0px', once = true, }: UseRevealOptions = {})` |
+| useRotator | `@/hooks/use-rotator` | `(length: number) => { ref: RefObject<T | null>; rotation: RotationState }` |
 | useOnlineStatus | `@/hooks/use-sync-external` | `() => boolean` |
 | usePreferredColorScheme | `@/hooks/use-sync-external` | `() => 'light' | 'dark'` |
 | usePreferredReducedMotion | `@/hooks/use-sync-external` | `() => boolean` |
@@ -84,6 +85,12 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Export | Signature |
 |--------|-----------|
 | runFormAction | `({ rateLimitPrefix, schema, formData, rateLimitMessage = 'rate_limit_exceeded_', rateLimiter = rateLimiters.standard, run, }: RunFormActionOptions<T>) => Promise<FormState>` |
+
+### Format-date (`@/utils/format-date`)
+
+| Export | Signature |
+|--------|-----------|
+| formatPostDate | `(iso: string) => string` |
 
 ### Math (`@/utils/math`)
 
@@ -144,6 +151,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | shopifyEnvSchema | `ZodObject<{ SHOPIFY_STORE_DOMAIN: ZodString; SHOPIFY_STOREFRONT_ACCESS_TOKEN:...` |
 | hubspotEnvSchema | `ZodObject<{ HUBSPOT_ACCESS_TOKEN: ZodOptional<ZodString>; NEXT_PUBLIC_HUBSPOT...` |
 | mailchimpEnvSchema | `ZodObject<{ MAILCHIMP_API_KEY: ZodString; MAILCHIMP_SERVER_PREFIX: ZodString;...` |
+| emailEnvSchema | `ZodObject<{ SMTP_HOST: ZodString; SMTP_USER: ZodString; SMTP_PASS: ZodString;...` |
 | turnstileEnvSchema | `ZodObject<{ NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: ZodString; CLOUDFLARE_...` |
 | payloadEnvSchema | `ZodObject<{ DATABASE_URL: ZodString; PAYLOAD_SECRET: ZodString; }, $strip>` |
 | analyticsEnvSchema | `ZodObject<{ NEXT_PUBLIC_GOOGLE_ANALYTICS: ZodOptional<ZodString>; NEXT_PUBLIC...` |

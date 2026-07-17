@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import {
   getLatestPost,
   resolveCategory,
@@ -20,17 +21,13 @@ import { WhyThatWorks } from './sections/why-that-works'
 
 export const metadata: Metadata = {
   title: 'Strategy that works',
-  description:
-    'Agencja social media. Kompleksowa obsługa marek w mediach społecznościowych: strategia, content, sprzedaż, kreacje i wideo.',
+  description: APP_DESCRIPTION,
   openGraph: {
     title: 'Strategy that works',
     description:
       'Kompleksowa obsługa marek w social mediach: strategia, content, sprzedaż, kreacje i wideo.',
     type: 'website',
-    // Page-level openGraph replaces the layout's whole og object (no deep
-    // merge), so brand identity must be restated here.
-    siteName: 'Social Lama',
-    locale: 'pl_PL',
+    ...OG_BASE,
   },
 }
 
