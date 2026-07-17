@@ -1,9 +1,16 @@
 'use client'
 
 import cn from 'clsx'
+import {
+  Bookmark,
+  Heart,
+  MessageCircle,
+  MoreHorizontal,
+  Send,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { Video } from '@/components/ui/video'
 import { joinCta } from '@/lib/content/home'
 import s from './join-cta.module.css'
 
@@ -15,7 +22,7 @@ export function JoinCta() {
   const [rotation, setRotation] = useState({ index: 0, prev: -1 })
 
   // Rotate the locative token through the offer. Static under reduced motion
-  // (shows the first entry only — word and image alike).
+  // (shows the first entry only).
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -58,23 +65,45 @@ export function JoinCta() {
           {joinCta.button.label}
         </Link>
       </div>
-      {/* Images stack in one grid cell and crossfade off the same rotation
-          state as the heading, so word and image stay index-locked. All nine
-          stay mounted (decoded) for flash-free swaps; each is graded to flat
-          #722341, compositing seamlessly onto the plum-deep chapter. */}
-      <div className={s.media} role="img" aria-label={joinCta.llamaAlt}>
-        {joinCta.rotator.map((entry, index) => (
-          <Image
-            key={entry.token}
-            src={entry.image}
-            alt=""
-            width={1080}
-            height={1080}
-            desktopSize="25vw"
-            mobileSize="70vw"
-            className={cn(s.slide, index === rotation.index && s.slideActive)}
+      {/* Looping clip on its own clock — no sync with the heading rotator —
+          wrapped in fake sponsored-post chrome: the CTA literally becomes the
+          ad we'd run for ourselves. Post chrome is decorative (icons hidden
+          from AT); the video keeps the accessible label. */}
+      <div className={s.media}>
+        <div className={s.card}>
+          <div className={s.cardHeader}>
+            <Link
+              className={s.cardProfile}
+              href={joinCta.post.href}
+              aria-label={`${joinCta.post.handle} na Instagramie`}
+            >
+              <span className={s.avatar} aria-hidden="true" />
+              <span className={s.cardIdentity}>
+                <b>{joinCta.post.handle}</b>
+                <span>{joinCta.post.meta}</span>
+              </span>
+            </Link>
+            <MoreHorizontal className={s.cardMore} aria-hidden="true" />
+          </div>
+          <Video
+            src={joinCta.clip}
+            poster={joinCta.poster}
+            alt={joinCta.llamaAlt}
+            aspectRatio={1}
           />
-        ))}
+          <div className={s.cardFooter}>
+            <div className={s.cardActions} aria-hidden="true">
+              <Heart />
+              <MessageCircle />
+              <Send />
+              <Bookmark className={s.cardSave} />
+            </div>
+            <b className={s.cardLikes}>{joinCta.post.likes}</b>
+            <p className={s.cardCaption}>
+              <b>{joinCta.post.handle}</b> {joinCta.post.caption}
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -1,25 +1,6 @@
-# join-cta-rotator
+# join-cta-rotator (delta)
 
-## Purpose
-
-Define the join-cta section: the rotating locative heading, the looping multi-arm llama clip presented inside sponsored-post chrome, the seamless-composite requirements for the prepared clip and its poster, and the poster-based reduced-motion/pre-hydration fallback.
-
-## Requirements
-
-### Requirement: Rotating locative heading
-The join-cta heading SHALL render the static lead "POTRZEBUJESZ WSPARCIA" followed by a rotating emphasized token cycling through exactly nine entries in order: `W FACEBOOKU?`, `NA INSTAGRAMIE?`, `NA TIKTOKU?`, `NA LINKEDINIE?`, `NA PINTEREŚCIE?`, `NA X?`, `NA YOUTUBIE?`, `W STRATEGII?`, `W WIDEO?`. Each token SHALL contain its preposition and trailing question mark so the phrase stays grammatical (Polish locative case) and the `?` never detaches from the sliding word. The transition SHALL be the hero's masked vertical slide (~650ms, `expo.out`-family ease, outgoing word up / incoming word from below, non-participating words hidden by the mask), advancing every 2600ms. All copy SHALL come from `lib/content/home.ts`.
-
-#### Scenario: Word advance
-- **WHEN** the rotation interval elapses with motion allowed
-- **THEN** the current token slides up out of the mask while the next token slides into place, and after the ninth token the cycle wraps to the first
-
-#### Scenario: Layout stability
-- **WHEN** any token is active
-- **THEN** the heading block's size does not change between tokens (the rotator cell reserves the widest token) and no token is visibly clipped horizontally
-
-#### Scenario: Stable accessible name
-- **WHEN** assistive technology reads the section heading
-- **THEN** it announces the full first-entry phrase ("POTRZEBUJESZ WSPARCIA W FACEBOOKU?") regardless of which token is visually active, and the rotating spans are hidden from the accessibility tree
+## ADDED Requirements
 
 ### Requirement: Looping clip media column
 The join-cta media column SHALL render a single square video clip of the multi-arm llama via the `components/ui/video` primitive — muted, inline, looping, poster-first (`preload="none"`), playing only while in the viewport. The clip SHALL run on its own loop clock with no synchronization to the heading rotator. The video SHALL be exposed to assistive technology with the existing `joinCta.llamaAlt` label. Clip and poster paths SHALL come from `lib/content/home.ts` (`joinCta.clip`, `joinCta.poster`), and the `rotator` entries SHALL carry tokens only (no per-entry image field).
@@ -33,7 +14,7 @@ The join-cta media column SHALL render a single square video clip of the multi-a
 - **THEN** the video pauses, and it resumes when the section re-enters the viewport
 
 ### Requirement: Prepared clip asset
-The shipped clip SHALL be derived from the lama-showcase source (`work.mp4`) by: square crop containing the llama and all six props (window tuned so the llama's foreground mass median lands on the frame center), color grade toward plum-deep `#722341`, an edge-feathered blend to exactly flat `#722341` at the frame boundary, and ping-pong concatenation (forward + reversed) so the loop point is seamless. The final encode MUST pass the corner-sampling gate (`bun lib/scripts/verify-clip-bg.ts <clip> '#722341'`) and SHALL weigh no more than ~3 MB, in family with the other `public/clips/*.mp4` assets. The stream SHALL carry explicit color tags matching how its pixels were written (smpte170m family), so browsers decode without a hue shift. The theme token SHALL NOT be adjusted to match the asset; if grading cannot pass the gate without visibly degrading the llama, the clip SHALL be regenerated on a flat `#722341` background instead.
+The shipped clip SHALL be derived from the lama-showcase source (`work.mp4`) by: square crop containing the llama and all six props, color grade toward plum-deep `#722341`, an edge-feathered blend to exactly flat `#722341` at the frame boundary, and ping-pong concatenation (forward + reversed) so the loop point is seamless. The final encode MUST pass the corner-sampling gate (`bun lib/scripts/verify-clip-bg.ts <clip> '#722341'`) and SHALL weigh no more than ~3 MB, in family with the other `public/clips/*.mp4` assets. The theme token SHALL NOT be adjusted to match the asset; if grading cannot pass the gate without visibly degrading the llama, the clip SHALL be regenerated on a flat `#722341` background instead.
 
 #### Scenario: Gate enforcement
 - **WHEN** the final clip's four corner samples deviate from `#722341` beyond the gate tolerance (±3 per RGB channel or ΔE ≥ 3)
@@ -60,3 +41,17 @@ The clip SHALL be presented inside white sponsored-post chrome (user pick 2026-0
 #### Scenario: Profile link
 - **WHEN** the user activates the avatar/handle in the card header
 - **THEN** `https://www.instagram.com/social.lama/` opens in a new tab with `rel="noopener noreferrer"`
+
+## REMOVED Requirements
+
+### Requirement: Word-synchronized image stack
+**Reason**: The media column is now a single continuously-looping clip; a nine-image crossfade synchronized to the heading no longer exists, and no word↔media synchronization remains by design (user decision 2026-07-17).
+**Migration**: Delete the nine `public/clips/cta-*.jpg` assets, the `rotator[].image` content fields, and the stack/crossfade markup and CSS in `app/(home)/sections/join-cta/`.
+
+### Requirement: Seamless-composite image assets
+**Reason**: The nine generated stills are deleted along with the stack. The seamless-composite convention itself carries over to the clip and poster via the "Prepared clip asset" and "Poster fallback" requirements.
+**Migration**: The `#722341` corner gate now applies to `cta-llama-work.mp4` and its poster instead of the nine JPGs.
+
+### Requirement: Static fallback replaces the CTA clip
+**Reason**: Reversed — the section ships a video again (user decision 2026-07-17). The reduced-motion and pre-hydration guarantees are preserved by the "Poster fallback" requirement; the first-entry heading behavior is unchanged under the still-active "Rotating locative heading" requirement.
+**Migration**: New assets are named `cta-llama-work.mp4` / `cta-llama-work-poster.jpg` — the retired `cta-llama.mp4` / `cta-llama-poster.jpg` names stay retired.

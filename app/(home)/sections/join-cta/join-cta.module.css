@@ -10,6 +10,9 @@
   @media (--desktop) {
     flex-direction: row;
     justify-content: space-between;
+    /* Top-align the copy with the card's upper edge (user request
+       2026-07-17) instead of centering the columns on each other. */
+    align-items: flex-start;
     text-align: left;
   }
 }
@@ -22,7 +25,13 @@
 
   @media (--desktop) {
     align-items: flex-start;
-    max-width: 60%;
+    /* Tight cap: the box would otherwise reserve the widest rotator token's
+       width and pin the card flush right. Long tokens overflow the column
+       (hero's recipe) onto the empty middle / card plum instead. */
+    max-width: 48%;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -32,7 +41,7 @@
   text-transform: uppercase;
   line-height: 0.95;
   letter-spacing: -0.02em;
-  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-size: clamp(2.5rem, 6.5vw, 6.75rem);
 }
 
 /* —— Locative token rotator (hero's masked-slide recipe) ————————————————
@@ -81,7 +90,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   transition: transform var(--duration-fast) var(--ease-out-expo);
 
   @media (--desktop) {
@@ -95,26 +104,129 @@
   }
 }
 
-/* Images stack in one square grid cell and crossfade; the active one is
-   opaque. Everything stays mounted so swaps never show a decode flash. */
+/* Square box for the looping llama clip (the Video primitive fills it and
+   reserves the 1:1 ratio itself). Hero-scale: the llama dominates the media
+   column (user request 2026-07-17) — the clip composites seamlessly, so a
+   large box costs nothing visually. */
 .media {
   flex: 0 0 auto;
-  width: min(70vw, 320px);
-  display: grid;
+  width: min(82vw, 420px);
 
   @media (--desktop) {
-    width: 360px;
+    width: min(38vw, 560px);
+    /* Center the card in the space right of the copy — flush-right reads
+       off-balance at this width (auto margins absorb the free space). */
+    margin-inline: auto;
   }
 }
 
-.slide {
-  grid-area: 1 / 1;
-  width: 100%;
-  height: auto;
-  opacity: 0;
-  transition: opacity 650ms var(--ease-out-expo);
+/* —— Sponsored-post chrome (user pick 2026-07-17) ————————————————————————
+   White post card wraps the clip — the CTA becomes the ad we'd run. Fixed
+   light palette on purpose: the card reads as a foreign artifact (a post),
+   not as part of the chapter theme. */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #111;
+  text-align: left;
+  /* The global reset unsets font-family — the card must opt into the body
+     face explicitly (it sits on white, outside the chapter's type system). */
+  font-family: var(--font-mono);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 32px 70px rgb(0 0 0 / 0.35);
+
+  b {
+    font-weight: 700;
+  }
 }
 
-.slideActive {
-  opacity: 1;
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+/* Avatar + handle link out to the real profile. */
+.cardProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  @media (--hover) {
+    &:hover b {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Llama logomark on the chapter plum — brand avatar, no extra asset. */
+.avatar {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background:
+    var(--color-primary) url("/assets/logo.svg") center / 65% auto no-repeat;
+}
+
+.cardIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+
+  b {
+    font-size: 0.875rem;
+    line-height: 1.1;
+  }
+
+  span {
+    font-size: 0.75rem;
+    line-height: 1.1;
+    color: #8a8a8a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cardMore {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px 16px;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.cardSave {
+  margin-left: auto;
+}
+
+.cardLikes {
+  font-size: 0.875rem;
+}
+
+.cardCaption {
+  font-size: 0.875rem;
+  line-height: 1.35;
 }

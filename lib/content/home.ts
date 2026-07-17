@@ -631,20 +631,31 @@ export const joinCta = {
   /* Rotating token = preposition + locative + "?" in one string — Polish
      locative case forces per-word prepositions (W FACEBOOKU / NA
      INSTAGRAMIE), and keeping the "?" inside the token means it never
-     detaches from the sliding word. Each entry pairs with a still image
-     graded to flat #722341 (plum-deep, seamless composite — gated by
-     verify-clip-bg.ts). */
+     detaches from the sliding word. */
   rotator: [
-    { token: 'W FACEBOOKU?', image: '/clips/cta-facebook.jpg' },
-    { token: 'NA INSTAGRAMIE?', image: '/clips/cta-instagram.jpg' },
-    { token: 'NA TIKTOKU?', image: '/clips/cta-tiktok.jpg' },
-    { token: 'NA LINKEDINIE?', image: '/clips/cta-linkedin.jpg' },
-    { token: 'NA PINTEREŚCIE?', image: '/clips/cta-pinterest.jpg' },
-    { token: 'NA X?', image: '/clips/cta-x.jpg' },
-    { token: 'NA YOUTUBIE?', image: '/clips/cta-youtube.jpg' },
-    { token: 'W STRATEGII?', image: '/clips/cta-strategia.jpg' },
-    { token: 'W WIDEO?', image: '/clips/cta-wideo.jpg' },
+    { token: 'W FACEBOOKU?' },
+    { token: 'NA INSTAGRAMIE?' },
+    { token: 'NA TIKTOKU?' },
+    { token: 'NA LINKEDINIE?' },
+    { token: 'NA PINTEREŚCIE?' },
+    { token: 'NA X?' },
+    { token: 'NA YOUTUBIE?' },
+    { token: 'W STRATEGII?' },
+    { token: 'W WIDEO?' },
   ],
+  /* Looping multi-arm llama clip, graded + edge-feathered to flat #722341
+     (plum-deep, seamless composite — gated by verify-clip-bg.ts). */
+  clip: '/clips/cta-llama-work.mp4',
+  poster: '/clips/cta-llama-work-poster.jpg',
+  /* Sponsored-post chrome around the clip (user pick 2026-07-17): the CTA
+     literally becomes the ad we'd run for ourselves. */
+  post: {
+    href: 'https://www.instagram.com/social.lama/',
+    handle: 'social.lama',
+    meta: 'Sponsorowane • i tak to polubisz',
+    likes: '1 024 polubienia',
+    caption: 'Kiedy klient pyta, czy ogarniemy wszystko 🦙💪',
+  },
   llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
   button: { label: 'NAPISZ DO NAS', href: '/#kontakt' },
 } as const
