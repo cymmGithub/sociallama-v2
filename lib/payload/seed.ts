@@ -1,14 +1,40 @@
 /**
- * Seed script — run with `bun run payload:seed`.
+ * Seed script — run with `bun run payload:seed` (dev database) or
+ * `bun run payload:seed --prod` (uses DATABASE_URL_PROD from .env.local).
  *
  * Idempotent: creates the live site's four categories and one published
  * seed post ("LinkedIn Premium — czy warto?", the post the homepage
  * NewsLAMA card points at), skipping anything that already exists.
  * Full WordPress content arrives via the separate migrate-wp-content change.
+ *
+ * NOTE: writes from this script bypass the deployed app, so its revalidation
+ * hooks can't reach the live cache — after seeding prod, redeploy (or
+ * revalidate) for the content to appear.
  */
 
-import config from '@payload-config'
-import { getPayload } from 'payload'
+// The env decision must happen before the config loads — payload.config.ts
+// validates DATABASE_URL at import time, so both imports below are dynamic.
+if (process.argv.includes('--prod')) {
+  const prodUrl = process.env.DATABASE_URL_PROD
+  if (!prodUrl) {
+    throw new Error(
+      'payload:seed --prod requires DATABASE_URL_PROD in .env.local'
+    )
+  }
+  process.env.DATABASE_URL = prodUrl
+  // CRITICAL: in dev mode Payload push-syncs schema on init, which would
+  // stamp the prod DB as dev-managed and hang `payload migrate` on deploy.
+  // (cast: @types/node marks NODE_ENV readonly)
+  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+}
+
+const dbHost = new URL(
+  (process.env.DATABASE_URL ?? '').replace(/^postgres(?:ql)?:/, 'http:')
+).hostname
+console.log(`Seeding database: ${dbHost}\n`)
+
+const { default: config } = await import('@payload-config')
+const { getPayload } = await import('payload')
 
 const CATEGORIES = [
   { title: 'Marketing', slug: 'marketing' },
@@ -154,3 +180,7 @@ if (existingPost.totalDocs > 0) {
 
 console.log('Seed complete.')
 process.exit(0)
+
+// All imports are dynamic (env must win before config loads); keep the file
+// a module for TypeScript's top-level await.
+export {}
