@@ -39,7 +39,8 @@
 }
 
 .date {
-  color: color-mix(in srgb, var(--color-secondary) 64%, transparent);
+  /* ≥4.5:1 on the cream surface (a11y small-text contrast) */
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
 
 .title {
