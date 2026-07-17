@@ -11,6 +11,7 @@
     "dev": "bun ./lib/scripts/dev.ts",
     "dev:https": "bun ./lib/scripts/dev.ts --https",
     "build": "bun run setup:styles && next build",
+    "build:vercel": "payload migrate && bun run build",
     "start": "next start",
     "preview": "bun run build && next start",
     "check": "biome check && bun node_modules/typescript7/bin/tsc --noEmit && bun test && bun run manifest:check",

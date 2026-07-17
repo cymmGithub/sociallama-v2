@@ -31,7 +31,8 @@
       "!**/root.css",
       "!**/*.grit",
       "!app/(payload)",
-      "!payload-types.ts"
+      "!payload-types.ts",
+      "!migrations"
     ]
   },
 
