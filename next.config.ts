@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   poweredByHeader: false,
   typedRoutes: true,
+  // Payload's sharp dependency loads libvips at runtime; the serverless file
+  // tracer misses these platform-specific binaries (@img/*), which crashes
+  // every dynamic route on Vercel with ERR_DLOPEN_FAILED. Force-include them.
+  outputFileTracingIncludes: {
+    '/**': ['./node_modules/@img/**'],
+  },
   turbopack: {
     rules: {
       '*.svg': {
