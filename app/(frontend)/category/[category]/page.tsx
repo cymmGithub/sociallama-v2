@@ -18,6 +18,11 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const categories = await getCategories()
+  // Cache Components requires a non-empty result; on an empty CMS prerender
+  // one guaranteed-404 path so the build succeeds.
+  if (categories.length === 0) {
+    return [{ category: 'placeholder-bez-tresci' }]
+  }
   return categories.map((category) => ({ category: category.slug }))
 }
 

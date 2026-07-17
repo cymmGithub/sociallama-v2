@@ -27,6 +27,12 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const slugs = await getPublishedPostSlugs()
+  // Cache Components requires generateStaticParams to be non-empty; on an
+  // empty CMS (fresh deploy before seeding) prerender one guaranteed-404 path
+  // so the build succeeds.
+  if (slugs.length === 0) {
+    return [{ slug: 'placeholder-bez-tresci' }]
+  }
   return slugs.map((slug) => ({ slug }))
 }
 
