@@ -19,14 +19,18 @@ import { Testimonial } from './sections/testimonial'
 import { WhyThatWorks } from './sections/why-that-works'
 
 export const metadata: Metadata = {
-  title: 'Social Lama — Strategy that works',
+  title: 'Strategy that works',
   description:
     'Agencja social media. Kompleksowa obsługa marek w mediach społecznościowych: strategia, content, sprzedaż, kreacje i wideo.',
   openGraph: {
-    title: 'Social Lama — Strategy that works',
+    title: 'Strategy that works',
     description:
       'Kompleksowa obsługa marek w social mediach: strategia, content, sprzedaż, kreacje i wideo.',
     type: 'website',
+    // Page-level openGraph replaces the layout's whole og object (no deep
+    // merge), so brand identity must be restated here.
+    siteName: 'Social Lama',
+    locale: 'pl_PL',
   },
 }
 

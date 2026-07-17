@@ -62,11 +62,14 @@
 }
 
 .category {
-  color: var(--color-contrast);
+  /* Cream-lifted orange: plain --color-orange sits at ~3:1 on the card's plum
+     gradient; this tint holds WCAG AA (≥4.5:1) for small meta text. */
+  color: color-mix(in srgb, var(--color-orange) 45%, var(--color-cream));
 }
 
 .date {
-  color: color-mix(in srgb, var(--color-secondary) 60%, transparent);
+  /* 80% is the floor: WCAG AA (≥4.5:1) against the card's plum gradient. */
+  color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
 }
 
 .title {
@@ -91,7 +94,8 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   font-size: 0.8rem;
-  color: var(--color-contrast);
+  /* Same cream-lifted orange as .category — AA on the card gradient. */
+  color: color-mix(in srgb, var(--color-orange) 45%, var(--color-cream));
   border-bottom: 2px solid currentColor;
   align-self: start;
   padding-bottom: 0.3em;

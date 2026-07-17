@@ -61,6 +61,10 @@ export async function generateMetadata({
     alternates: { canonical: `/${post.slug}` },
     openGraph: {
       type: 'article',
+      // Page-level openGraph replaces the layout's whole og object (no deep
+      // merge), so brand identity must be restated here.
+      siteName: 'Social Lama',
+      locale: 'pl_PL',
       title,
       ...(description ? { description } : {}),
       url: `/${post.slug}`,

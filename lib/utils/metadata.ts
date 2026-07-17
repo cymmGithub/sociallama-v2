@@ -54,7 +54,7 @@ export function generatePageMetadata(
     keywords,
     image,
     url,
-    siteName = 'Satūs',
+    siteName = 'Social Lama',
     noIndex = false,
     type = 'website',
     publishedTime,
@@ -81,7 +81,7 @@ export function generatePageMetadata(
       description,
       url: fullUrl,
       siteName,
-      locale: 'en_US',
+      locale: 'pl_PL',
       type,
       images: [
         {

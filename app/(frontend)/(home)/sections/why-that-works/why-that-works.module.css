@@ -40,9 +40,10 @@
   display: inline;
 }
 
-/* The gray closer of each two-tone block. */
+/* The gray closer of each two-tone block. 55% is the floor: the lit scrub
+   state must hold WCAG AA large-text contrast (≥3:1) on the sand ground. */
 .muted {
-  color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
 /* Supporting row: media left, remaining copy right. */

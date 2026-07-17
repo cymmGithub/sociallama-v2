@@ -2,7 +2,6 @@ import { Analytics } from '@vercel/analytics/next'
 import { TransformProvider } from 'hamo'
 import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
-import Script from 'next/script'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
 import { Link } from '@/components/ui/link'
@@ -11,13 +10,13 @@ import { APP_BASE_URL, env } from '@/lib/env'
 import { OptionalFeatures } from '@/lib/features'
 import { themes } from '@/lib/styles/colors'
 import { fontsVariable } from '@/lib/styles/fonts'
-import AppData from '@/package.json'
 import '@/lib/styles/css/index.css'
 
-const APP_NAME = AppData.name
-const APP_DEFAULT_TITLE = 'Satūs'
-const APP_TITLE_TEMPLATE = '%s - Satūs'
-const APP_DESCRIPTION = AppData.description
+const APP_NAME = 'Social Lama'
+const APP_DEFAULT_TITLE = 'Social Lama'
+const APP_TITLE_TEMPLATE = '%s — Social Lama'
+const APP_DESCRIPTION =
+  'Agencja social media. Kompleksowa obsługa marek w mediach społecznościowych: strategia, content, sprzedaż, kreacje i wideo.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_BASE_URL),
@@ -29,9 +28,6 @@ export const metadata: Metadata = {
   description: APP_DESCRIPTION,
   alternates: {
     canonical: '/',
-    languages: {
-      'en-US': '/en-US',
-    },
   },
   appleWebApp: {
     capable: true,
@@ -56,7 +52,7 @@ export const metadata: Metadata = {
         alt: APP_DEFAULT_TITLE,
       },
     ],
-    locale: 'en_US',
+    locale: 'pl_PL',
   },
   twitter: {
     card: 'summary_large_image',
@@ -66,9 +62,6 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
-  authors: [
-    { name: 'darkroom.engineering', url: 'https://darkroom.engineering' },
-  ],
   ...(env.NEXT_PUBLIC_FACEBOOK_APP_ID
     ? { other: { 'fb:app_id': env.NEXT_PUBLIC_FACEBOOK_APP_ID } }
     : {}),
@@ -84,7 +77,7 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   return (
     <html
-      lang="en"
+      lang="pl"
       dir="ltr"
       className={fontsVariable}
       // Default theme rendered server-side for no-flash initial paint; the
@@ -94,11 +87,6 @@ export default async function Layout({ children }: PropsWithChildren) {
       // otherwise trip a hydration warning.
       suppressHydrationWarning
     >
-      {/* this helps to track Satus usage thanks to Wappalyzer */}
-      <Script
-        id="satus-version"
-        async
-      >{`window.satusVersion = '${AppData.version}';`}</Script>
       <body>
         {/* Skip link for keyboard navigation accessibility */}
         <Suspense fallback={null}>
