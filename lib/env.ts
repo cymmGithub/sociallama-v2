@@ -69,7 +69,11 @@ export const env: Env = envSchema.parse(process.env)
  * omitting it causes all canonical URLs, sitemaps, and OG images to resolve
  * to localhost, breaking SEO entirely.
  */
-export const APP_BASE_URL = env.NEXT_PUBLIC_BASE_URL ?? 'https://localhost:3000'
+// Trailing slash stripped: consumers join paths as `${APP_BASE_URL}/blog`,
+// and a slash-suffixed env value would produce `//blog` URLs.
+export const APP_BASE_URL = (
+  env.NEXT_PUBLIC_BASE_URL ?? 'https://localhost:3000'
+).replace(/\/+$/, '')
 
 if (
   process.env.NODE_ENV === 'production' &&
