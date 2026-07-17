@@ -23,5 +23,5 @@
 ## 4. Parity gate and cutover readiness
 
 - [x] 4.1 Build `lib/scripts/check-url-parity.ts`: fetch live Yoast sitemaps, request every URL against a target base URL, report 200/301/404 per URL, exit non-zero on any 404
-- [ ] 4.2 Run gate against preview deployment; iterate until zero 404s (posts/hub/categories 200, tags/pages/legacy pagination 301)
+- [x] 4.2 Run gate against preview deployment; iterate until zero 404s (posts/hub/categories 200, tags/pages/legacy pagination 301)
 - [x] 4.3 Document the cutover checklist: final re-import while WP still publishes → parity gate re-run → DNS cutover
