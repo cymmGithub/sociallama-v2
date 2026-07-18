@@ -8,9 +8,33 @@ on:
   pull_request:
     branches: [main]
 
+# Throwaway Payload env for CI. The app fails loudly without a database and
+# secret (lib/payload/env.ts), and both `next build` and the dev server load
+# the Payload config — so each job runs against the ephemeral Postgres service
+# defined below. None of these values touch a real environment.
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/sociallama_ci
+  PAYLOAD_SECRET: ci-ephemeral-secret-not-used-outside-ci
+  NEXT_PUBLIC_BASE_URL: http://localhost:3000
+
 jobs:
   ci:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sociallama_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v7
@@ -21,6 +45,11 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      # Create the schema on the fresh Postgres before the build collects page
+      # data (prerendered routes query the Payload Local API).
+      - name: Run database migrations
+        run: bun run payload migrate
 
       # Build first: generates next-env.d.ts + .next/types (gitignored) that
       # tsc needs, and catches RSC/prerender regressions before deploy.
@@ -37,6 +66,21 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: sociallama_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v7
 
@@ -49,6 +93,10 @@ jobs:
 
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
+
+      # Schema must exist before the dev server serves any DB-backed page.
+      - name: Run database migrations
+        run: bun run payload migrate
 
       # playwright.config.ts boots the dev server itself (webServer), so no
       # separate server step is needed here.
