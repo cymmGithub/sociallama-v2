@@ -665,24 +665,41 @@ export const footer = {
   // Giant outline wordmark — the sign-off treatment (echoes the /kontakt hero
   // outline marquee). CSS uppercases it.
   wordmark: 'Social Lama',
-  headline: 'POROZMAWIAJMY O TWOJEJ MARCE',
+  headline: 'POROZMAWIAJMY O TWOIM BIZNESIE',
   cta: { label: 'NAPISZ DO NAS', href: '/kontakt' },
-  // Single nav column — the former NAWIGACJA/OFERTA pair listed identical links
-  // (user decision 2026-07-18: collapse to one).
-  nav: {
-    title: 'NAWIGACJA',
-    links: [
-      { label: 'O NAS', href: '/#o-nas' },
-      { label: 'USŁUGI', href: '/uslugi' },
-      { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
-      { label: 'BLOG', href: '/blog' },
-      { label: 'KONTAKT', href: '/kontakt' },
-    ],
-  },
+  columns: [
+    {
+      title: 'NAWIGACJA',
+      links: [
+        { label: 'O NAS', href: '/#o-nas' },
+        { label: 'USŁUGI', href: '/uslugi' },
+        { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
+        { label: 'BLOG', href: '/blog' },
+        { label: 'KONTAKT', href: '/kontakt' },
+      ],
+    },
+    {
+      // Industry pages don't exist yet — links point home for now. Swap to the
+      // provisional /branze/<slug> routes (see menu.columns BRANŻE) once they
+      // ship.
+      title: 'OFERTA',
+      links: [
+        { label: 'Nieruchomości & Budownictwo', href: '/' },
+        { label: 'Moda', href: '/' },
+        { label: 'Zdrowie', href: '/' },
+        { label: 'Edukacja', href: '/' },
+        { label: 'Usługi biznesowe', href: '/' },
+        { label: 'Retail & E-commerce', href: '/' },
+      ],
+    },
+  ],
   contact: {
     phone: '+48 796 996 118',
     email: 'halohalo@sociallama.pl',
-    address: 'ul. Płocka 9/11B, 01-231 Warszawa',
+    addresses: [
+      'ul. Płocka 9/11B, 01-231 Warszawa',
+      'ul. Januszowicka 5/121, 53-135 Wrocław',
+    ],
   },
   copyright: 'Copyright 2025 sociallama. All rights reserved.',
   legal: [

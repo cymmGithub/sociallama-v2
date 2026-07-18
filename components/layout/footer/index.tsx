@@ -6,8 +6,21 @@ import s from './footer.module.css'
 export function Footer() {
   return (
     <footer className={s.footer} id="kontakt">
-      {/* Sign-off wordmark — giant outline stroke, the last brand beat. */}
-      <span className={s.wordmark}>{footer.wordmark}</span>
+      {/* Sign-off wordmark — the last brand beat. Rendered as an SVG stroke
+          (not CSS -webkit-text-stroke, which fringes at large sizes); the
+          viewBox matches the glyph metrics so it fills the width undistorted,
+          and non-scaling-stroke keeps the outline a crisp constant weight. */}
+      <svg
+        className={s.wordmark}
+        viewBox="0 100 1228 240"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label={footer.wordmark}
+      >
+        <text x="0" y="300" vectorEffect="non-scaling-stroke">
+          {footer.wordmark}
+        </text>
+      </svg>
 
       <div className={s.body}>
         <div className={s.invite}>
@@ -19,18 +32,24 @@ export function Footer() {
           </Link>
         </div>
 
-        <nav className={s.column} aria-label="Stopka">
-          <p className={s.columnTitle}>{footer.nav.title}</p>
-          <ul className={s.links}>
-            {footer.nav.links.map((link) => (
-              <li key={link.label}>
-                <Link className={s.link} href={link.href}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {footer.columns.map((column) => (
+          <nav
+            key={column.title}
+            className={s.column}
+            aria-label={column.title}
+          >
+            <p className={s.columnTitle}>{column.title}</p>
+            <ul className={s.links}>
+              {column.links.map((link) => (
+                <li key={link.label}>
+                  <Link className={s.link} href={link.href}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
 
         <div className={s.column}>
           <p className={s.columnTitle}>KONTAKT</p>
@@ -45,7 +64,11 @@ export function Footer() {
                 {footer.contact.email}
               </Link>
             </li>
-            <li className={s.address}>{footer.contact.address}</li>
+            {footer.contact.addresses.map((address) => (
+              <li key={address} className={s.address}>
+                {address}
+              </li>
+            ))}
           </ul>
 
           <ul className={s.socials}>
