@@ -1,0 +1,54 @@
+.belt {
+  position: relative;
+  width: 100%;
+}
+
+/* Edge fades dissolve the track ends into the ground. Transparent by default,
+   so the bare primitive shows no fade until the consumer sets --belt-edge. */
+.belt::before,
+.belt::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.belt::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    var(--belt-edge, transparent),
+    transparent
+  );
+}
+
+.belt::after {
+  right: 0;
+  background: linear-gradient(
+    270deg,
+    var(--belt-edge, transparent),
+    transparent
+  );
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--gap) * 3);
+  padding-inline: calc(var(--gap) * 1.5);
+}
+
+.item {
+  flex: 0 0 auto;
+}
+
+.logo {
+  width: 140px;
+  height: 44px;
+  object-fit: contain;
+  filter: var(--belt-logo-filter, none);
+  opacity: var(--belt-logo-opacity, 1);
+}

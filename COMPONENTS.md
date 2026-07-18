@@ -13,6 +13,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 |-----------|--------|------|
 | Accordion | `@/components/ui/accordion` | Client |
 | AlertDialog | `@/components/ui/alert-dialog` | Client |
+| BrandBelt | `@/components/ui/brand-belt` | Server |
 | Checkbox | `@/components/ui/checkbox` | Client |
 | ErrorView | `@/components/ui/error-view` | Client |
 | Fold | `@/components/ui/fold` | Client |

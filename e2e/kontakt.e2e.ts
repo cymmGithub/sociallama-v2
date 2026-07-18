@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { contactForm, contactMetrics } from '../lib/content/contact'
-import { clientsHeading } from '../lib/content/home'
+import { clients } from '../lib/content/home'
 import { themes } from '../lib/styles/colors'
 import {
   collectPageErrors,
@@ -70,9 +70,13 @@ test.describe('Kontakt page', () => {
     await expect(page.locator('input[name="email"]')).toBeVisible()
     await expect(page.locator('textarea[name="message"]')).toBeVisible()
     await expect(page.locator('button[aria-pressed]')).toHaveCount(5)
-    await expect(
-      page.getByRole('heading', { name: clientsHeading })
-    ).toBeVisible()
+    // Brand belt: plain scrolling logos, no heading. The aria-hidden marquee
+    // clones drop out of the a11y tree, so this matches the one live logo.
+    const firstClient = clients[0]
+    if (!firstClient) throw new Error('clients fixture is empty')
+    await expect(page.getByRole('img', { name: firstClient.name })).toBeVisible(
+      HYDRATED
+    )
     for (const metric of contactMetrics) {
       await expect(page.getByText(metric.value, { exact: true })).toBeVisible()
     }

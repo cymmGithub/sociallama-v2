@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import { BrandBelt } from '@/components/ui/brand-belt'
 import { contactMeta } from '@/lib/content/contact'
-import { ClientLogos } from '../(home)/sections/client-logos'
+import { clients } from '@/lib/content/home'
 import { ContactForm } from './contact-form'
 import { ContactHero } from './contact-hero'
 import { ContactMetrics } from './contact-metrics'
@@ -32,9 +33,16 @@ export default function ContactPage() {
           <ContactForm />
         </div>
         {/* Brand marquee between the form and the numbers (user decision
-            2026-07-17) — the homepage "Zaufali nam" belt, dark variant. */}
-        <div className={s.brands}>
-          <ClientLogos />
+            2026-07-17) — a plain scrolling logo belt, dark variant. The gate
+            keeps the belt from being frosted by the viewport-bottom BlurEdge
+            while it's on screen (see components/layout/blur-edge). */}
+        <div className={s.brands} data-blur-edge-gate>
+          <BrandBelt
+            logos={clients.map((client) => ({
+              name: client.name,
+              src: client.logo,
+            }))}
+          />
         </div>
         <ContactMetrics />
       </div>
