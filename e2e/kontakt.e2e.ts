@@ -53,6 +53,46 @@ test.describe('Kontakt page', () => {
     await expect(page).toHaveTitle(/Kontakt/)
   })
 
+  test('navigating to /kontakt from a scrolled homepage lands at the top', async ({
+    page,
+  }) => {
+    // Regression: the custom <Link> uses scroll={false} and Lenis carries its
+    // scroll position across route changes, so /kontakt opened at the previous
+    // page's offset (e.g. mid-metrics) instead of the top. No reduced-motion
+    // emulation — the bug is motion-independent and it disables wheel scroll.
+    await page.goto('/')
+    await waitForHydration(page)
+
+    // Scroll the homepage into its lower sections by driving Lenis with wheel
+    // events (root mode listens on window). Keep the offset within /kontakt's
+    // scrollable range so a preserved position would be observable, not clamped.
+    await page.evaluate(async () => {
+      let guard = 0
+      while (window.scrollY < 900 && guard++ < 300) {
+        window.dispatchEvent(
+          new WheelEvent('wheel', {
+            deltaY: 250,
+            bubbles: true,
+            cancelable: true,
+          })
+        )
+        await new Promise((r) => setTimeout(r, 12))
+      }
+    })
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY), HYDRATED)
+      .toBeGreaterThan(500)
+
+    // Click a /kontakt link (join-CTA button / footer link).
+    await page.locator('a[href="/kontakt"]').last().click()
+    await expect(page).toHaveURL('/kontakt', HYDRATED)
+
+    // The new route must open at the top, not at the carried-over offset.
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY), HYDRATED)
+      .toBeLessThan(10)
+  })
+
   test('renders all sections without errors, dark chrome, passes a11y', async ({
     page,
   }) => {

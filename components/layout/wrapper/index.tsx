@@ -14,6 +14,7 @@ import { BlurEdge } from '@/components/layout/blur-edge'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { Lenis } from '@/components/layout/lenis'
+import { ScrollReset } from '@/components/layout/scroll-reset'
 import { Theme } from '@/components/layout/theme'
 import type { ThemeName } from '@/styles/config'
 import { Canvas } from '@/webgl/components/canvas'
@@ -126,6 +127,9 @@ export function Wrapper({
           syncScrollTrigger
         />
       )}
+      {/* Land every client navigation at the top (Link uses scroll={false}
+          and Lenis persists its position across routes). */}
+      <ScrollReset />
     </Theme>
   )
 }
