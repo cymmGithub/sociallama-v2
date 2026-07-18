@@ -1,4 +1,5 @@
 import cn from 'clsx'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Link } from '@/components/ui/link'
 import s from './blog.module.css'
 
@@ -30,8 +31,11 @@ export function Pagination({ basePath, page, totalPages }: PaginationProps) {
   return (
     <nav className={s.pagination} aria-label="Paginacja">
       {page > 1 && (
-        <Link className={s.pageLink} href={pageHref(basePath, page - 1)}>
-          ← Nowsze
+        <Link
+          className={cn(s.pageLink, s.pageNav)}
+          href={pageHref(basePath, page - 1)}
+        >
+          <ArrowLeft aria-hidden="true" /> Nowsze
         </Link>
       )}
       {pages.map((n) => (
@@ -45,8 +49,11 @@ export function Pagination({ basePath, page, totalPages }: PaginationProps) {
         </Link>
       ))}
       {page < totalPages && (
-        <Link className={s.pageLink} href={pageHref(basePath, page + 1)}>
-          Starsze →
+        <Link
+          className={cn(s.pageLink, s.pageNav)}
+          href={pageHref(basePath, page + 1)}
+        >
+          Starsze <ArrowRight aria-hidden="true" />
         </Link>
       )}
     </nav>

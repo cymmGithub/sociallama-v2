@@ -95,13 +95,15 @@
 
 .ledeArrow {
   color: var(--color-orange);
-  font-size: 22px;
-  line-height: 1;
-  margin-top: 2px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-top: 3px;
 }
 
 .ledeText {
-  font-size: clamp(16px, 1.5vw, 19px);
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.9vw, 22px);
   line-height: 1.45;
   max-width: 34ch;
 }
@@ -144,6 +146,15 @@
 
 .formShell .field label::before {
   content: counter(field, decimal-leading-zero) " — ";
+}
+
+/* Subtle dot before "opcjonalnie" (replaces a raw · glyph). */
+.formShell .field label .labelSep {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  vertical-align: -0.02em;
+  margin-inline: 0.4em;
 }
 
 /* Big display-face underline inputs (mock .fld). */
@@ -201,8 +212,11 @@
     background-color 180ms var(--ease-out-expo);
 }
 
+/* Brighten only unselected pills on hover. A selected pill already has a cream
+   fill; brightening its text to cream too would make the label cream-on-cream
+   (invisible), so it keeps its selected colors on hover. */
 @media (--hover) {
-  .formShell button[aria-pressed]:hover {
+  .formShell button[aria-pressed="false"]:hover {
     border-color: var(--color-cream);
     color: var(--color-cream);
   }
@@ -230,6 +244,9 @@
 }
 
 .send button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
   font-size: 15px;
   padding: 16px 34px;
@@ -252,6 +269,11 @@
   }
 }
 
+.send button[type="submit"] svg {
+  width: 18px;
+  height: 18px;
+}
+
 .send button[type="submit"][aria-disabled="true"] {
   opacity: 0.4;
   cursor: not-allowed;
@@ -263,6 +285,7 @@
 }
 
 .note {
+  font-family: var(--font-mono);
   font-size: 13px;
   color: var(--muted);
 }
@@ -304,13 +327,14 @@
 }
 
 .metricsSmile {
-  font-family: var(--font-display);
-  font-size: 22px;
-  line-height: 1;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .metricsHeadText {
-  font-size: clamp(15px, 1.5vw, 18px);
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.6vw, 20px);
   max-width: 30ch;
   line-height: 1.4;
   font-weight: 500;
@@ -339,7 +363,8 @@
 }
 
 .metricCaption {
-  font-size: clamp(14px, 1.4vw, 17px);
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.5vw, 18px);
   text-align: right;
   max-width: 22ch;
   font-weight: 500;

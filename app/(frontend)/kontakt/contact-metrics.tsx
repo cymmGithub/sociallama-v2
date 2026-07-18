@@ -1,3 +1,4 @@
+import { Smile } from 'lucide-react'
 import { contactMetrics, contactMetricsHead } from '@/lib/content/contact'
 import s from './kontakt.module.css'
 
@@ -10,9 +11,7 @@ export function ContactMetrics() {
     <section className={s.metrics}>
       <div className={s.metricsInner}>
         <div className={s.metricsHead}>
-          <span className={s.metricsSmile} aria-hidden="true">
-            ☺
-          </span>
+          <Smile className={s.metricsSmile} aria-hidden="true" />
           <p className={s.metricsHeadText}>{contactMetricsHead}</p>
         </div>
         {contactMetrics.map((metric) => (

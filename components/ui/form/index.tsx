@@ -189,6 +189,7 @@ export function SubmitButton({
   pendingText = 'Submitting...',
   successText = 'Success!',
   errorText = 'Error',
+  icon,
   ...props
 }: SubmitButtonProps) {
   const { state } = useFormContext()
@@ -225,6 +226,7 @@ export function SubmitButton({
       {...props}
     >
       <span>{buttonText}</span>
+      {icon}
     </button>
   )
 }

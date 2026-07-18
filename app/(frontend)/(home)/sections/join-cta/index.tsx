@@ -3,6 +3,7 @@
 import cn from 'clsx'
 import {
   Bookmark,
+  CircleSmall,
   Heart,
   MessageCircle,
   MoreHorizontal,
@@ -66,7 +67,15 @@ export function JoinCta() {
               <span className={s.avatar} aria-hidden="true" />
               <span className={s.cardIdentity}>
                 <b>{joinCta.post.handle}</b>
-                <span>{joinCta.post.meta}</span>
+                <span>
+                  {joinCta.post.meta}
+                  <CircleSmall
+                    className={s.metaSep}
+                    fill="currentColor"
+                    aria-hidden="true"
+                  />
+                  {joinCta.post.metaNote}
+                </span>
               </span>
             </Link>
             <MoreHorizontal className={s.cardMore} aria-hidden="true" />

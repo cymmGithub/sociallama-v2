@@ -195,6 +195,15 @@
   }
 }
 
+/* Subtle dot between "Sponsorowane" and the quip (replaces a raw • glyph). */
+.metaSep {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  vertical-align: -0.05em;
+  margin-inline: 0.35em;
+}
+
 .cardMore {
   margin-left: auto;
   width: 22px;

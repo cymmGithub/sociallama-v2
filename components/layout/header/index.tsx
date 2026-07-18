@@ -2,6 +2,7 @@
 
 import cn from 'clsx'
 import { useLenis } from 'lenis/react'
+import { Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from '@/components/ui/link'
 import { menu, nav, socials } from '@/lib/content/home'
@@ -129,7 +130,7 @@ export function Header() {
           >
             {nav.menuLabel}
             <span aria-hidden="true" className={s.toggleIcon}>
-              {menuOpen ? '✕' : '≡'}
+              {menuOpen ? <X /> : <Menu />}
             </span>
           </button>
         </div>

@@ -104,8 +104,13 @@
 }
 
 .toggleIcon {
-  font-size: 1.1em;
+  display: inline-flex;
   line-height: 1;
+
+  & svg {
+    width: 1.2em;
+    height: 1.2em;
+  }
 }
 
 /* —— Overlay ————————————————————————————————————————————————————————— */

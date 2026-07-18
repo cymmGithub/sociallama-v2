@@ -102,6 +102,8 @@ export interface SubmitButtonProps
   pendingText?: string
   successText?: string
   errorText?: string
+  /** Optional trailing icon (e.g. a Lucide glyph) rendered after the label. */
+  icon?: ReactNode
 }
 
 // Messages component props

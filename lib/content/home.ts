@@ -640,7 +640,8 @@ export const joinCta = {
   post: {
     href: 'https://www.instagram.com/social.lama/',
     handle: 'social.lama',
-    meta: 'Sponsorowane • i tak to polubisz',
+    meta: 'Sponsorowane',
+    metaNote: 'i tak to polubisz',
     likes: '1 024 polubienia',
     caption: 'Kiedy klient pyta, czy ogarniemy wszystko 🦙💪',
   },
@@ -661,31 +662,23 @@ export const news = {
 // —— Footer ————————————————————————————————————————————————————————————————
 
 export const footer = {
-  logoAlt: 'Social Lama',
-  logo: '/assets/footer-logo.svg',
+  // Giant outline wordmark — the sign-off treatment (echoes the /kontakt hero
+  // outline marquee). CSS uppercases it.
+  wordmark: 'Social Lama',
   headline: 'POROZMAWIAJMY O TWOJEJ MARCE',
-  columns: [
-    {
-      title: 'NAWIGACJA',
-      links: [
-        { label: 'O NAS', href: '/#o-nas' },
-        { label: 'USŁUGI', href: '/uslugi' },
-        { label: 'SZKOLENIA I KURS', href: '/szkolenia' },
-        { label: 'BLOG', href: '/blog' },
-        { label: 'KONTAKT', href: '/kontakt' },
-      ],
-    },
-    {
-      title: 'OFERTA',
-      links: [
-        { label: 'O NAS', href: '/#o-nas' },
-        { label: 'USŁUGI', href: '/uslugi' },
-        { label: 'SZKOLENIA I KURS', href: '/szkolenia' },
-        { label: 'BLOG', href: '/blog' },
-        { label: 'KONTAKT', href: '/kontakt' },
-      ],
-    },
-  ],
+  cta: { label: 'NAPISZ DO NAS', href: '/kontakt' },
+  // Single nav column — the former NAWIGACJA/OFERTA pair listed identical links
+  // (user decision 2026-07-18: collapse to one).
+  nav: {
+    title: 'NAWIGACJA',
+    links: [
+      { label: 'O NAS', href: '/#o-nas' },
+      { label: 'USŁUGI', href: '/uslugi' },
+      { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
+      { label: 'BLOG', href: '/blog' },
+      { label: 'KONTAKT', href: '/kontakt' },
+    ],
+  },
   contact: {
     phone: '+48 796 996 118',
     email: 'halohalo@sociallama.pl',

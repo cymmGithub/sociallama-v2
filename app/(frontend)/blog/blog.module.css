@@ -179,6 +179,18 @@
   }
 }
 
+/* Prev/next links pair an arrow icon with a word — align them on one line. */
+.pageNav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+
+  & svg {
+    width: 1em;
+    height: 1em;
+  }
+}
+
 .pageCurrent {
   background-color: var(--color-contrast);
   border-color: var(--color-contrast);

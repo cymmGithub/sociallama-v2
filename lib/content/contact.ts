@@ -25,7 +25,7 @@ export const contactMarquee = {
   outline: 'o Twoim biznesie',
 } as const
 
-// `↳` lede under the marquee.
+// Lede under the marquee (rendered with a CornerDownRight icon).
 export const contactLede =
   'Masz pomysł, markę do rozkręcenia albo po prostu chcesz pogadać? Napisz kilka słów — odezwiemy się z konkretami.'
 
@@ -44,14 +44,14 @@ export const contactForm = {
   fields: {
     name: { label: 'Imię', placeholder: 'Jak się do Ciebie zwracać?' },
     email: { label: 'E-mail', placeholder: 'twoj@adres.pl' },
-    services: { label: 'Czego dotyczy? · opcjonalnie' },
+    services: { label: 'Czego dotyczy?', optional: 'opcjonalnie' },
     message: {
       label: 'Twoja wiadomość',
       placeholder: 'Opowiedz nam krótko o swoim projekcie.',
     },
   },
   submit: {
-    default: 'Wyślij wiadomość →',
+    default: 'Wyślij wiadomość',
     pending: 'Wysyłamy…',
     success: 'Wysłane!',
     error: 'Spróbuj ponownie',
@@ -77,7 +77,7 @@ export const contactForm = {
 
 // —— Metrics band ————————————————————————————————————————————————————————————
 
-// Intro line above the numbers (mock's band head, next to the ☺ glyph).
+// Intro line above the numbers (mock's band head, next to the Smile icon).
 export const contactMetricsHead = 'Kilka liczb o tym, co robimy dla marek:'
 
 export const contactMetrics = [

@@ -1,6 +1,7 @@
 'use client'
 
 import cn from 'clsx'
+import { ArrowRight, CircleSmall } from 'lucide-react'
 import { Form, Messages, SubmitButton } from '@/components/ui/form'
 import {
   CheckboxesField,
@@ -55,7 +56,17 @@ export function ContactForm() {
       <CheckboxesField
         className={cn(s.field)}
         name="services"
-        label={contactForm.fields.services.label}
+        label={
+          <>
+            {contactForm.fields.services.label}
+            <CircleSmall
+              className={s.labelSep}
+              fill="currentColor"
+              aria-hidden="true"
+            />
+            {contactForm.fields.services.optional}
+          </>
+        }
         options={contactServices}
       />
       <TextareaField
@@ -76,6 +87,7 @@ export function ContactForm() {
           pendingText={contactForm.submit.pending}
           successText={contactForm.submit.success}
           errorText={contactForm.submit.error}
+          icon={<ArrowRight aria-hidden="true" />}
         >
           {contactForm.submit.default}
         </SubmitButton>

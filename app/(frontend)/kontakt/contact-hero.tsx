@@ -1,10 +1,11 @@
+import { CornerDownRight } from 'lucide-react'
 import { Marquee } from '@/components/ui/marquee'
 import { contactLede, contactMarquee, contactMeta } from '@/lib/content/contact'
 import s from './kontakt.module.css'
 
 /**
  * Marquee hero — the homepage BigMarquee treatment (orange fill over
- * outline-stroke, counter-scrolling), fed the contact copy, plus the `↳` lede.
+ * outline-stroke, counter-scrolling), fed the contact copy, plus the lede.
  * Purely decorative marquee, so it is aria-hidden; the lede carries the meaning.
  */
 export function ContactHero() {
@@ -26,9 +27,7 @@ export function ContactHero() {
         </Marquee>
       </section>
       <div className={s.lede}>
-        <span className={s.ledeArrow} aria-hidden="true">
-          ↳
-        </span>
+        <CornerDownRight className={s.ledeArrow} aria-hidden="true" />
         <p className={s.ledeText}>{contactLede}</p>
       </div>
     </>

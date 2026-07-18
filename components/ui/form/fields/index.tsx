@@ -2,7 +2,7 @@
 
 import { Field } from '@base-ui/react/field'
 import cn from 'clsx'
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { useFormContext } from '..'
 import s from './fields.module.css'
 
@@ -158,7 +158,7 @@ type CheckboxesFieldProps = {
   className?: string
   options: readonly { label: string; value: string }[]
   name: string
-  label?: string
+  label?: ReactNode
 }
 
 export function CheckboxesField({
