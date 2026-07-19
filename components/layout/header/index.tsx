@@ -22,9 +22,16 @@ const utilityStaggerIndex = staggerCursor
 // a scroll-to-top always shows it, regardless of the last scroll direction.
 const REVEAL_AT_TOP = 80
 
+// Fraction of the footer's height, measured up from the page bottom, that marks
+// the "footer zone": once scroll enters it the bar force-reveals and recolors to
+// the footer's dark palette (user request). main's bottom edge equals the
+// footer's top on every breakpoint, so distance-from-bottom detects it uniformly.
+const FOOTER_ZONE_FRACTION = 0.6
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
+  const [overFooter, setOverFooter] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const lenis = useLenis()
 
@@ -36,8 +43,16 @@ export function Header() {
   // the hero clip is scrubbing (user request 2026-07-15).
   const revealUntilRef = useRef(REVEAL_AT_TOP)
 
+  // Distance-from-bottom (px) below which the bar enters the footer zone.
+  const footerZoneRef = useRef(0)
+
   useEffect(() => {
     const measure = () => {
+      const footer = document.querySelector<HTMLElement>('footer')
+      footerZoneRef.current = footer
+        ? footer.offsetHeight * FOOTER_ZONE_FRACTION
+        : 0
+
       const track = document.querySelector<HTMLElement>('[data-hero-track]')
       if (!track) {
         revealUntilRef.current = REVEAL_AT_TOP
@@ -59,6 +74,16 @@ export function Header() {
   // back in when a downward scroll pauses. The menu-open override lives in the
   // render, since lenis.stop() freezes this callback while the overlay is open.
   useLenis((instance) => {
+    // Footer zone: force the bar in (overriding hide-on-scroll-down) and flag it
+    // so the render recolors it to the footer's dark palette.
+    const max = document.documentElement.scrollHeight - window.innerHeight
+    const inFooterZone = max - instance.scroll <= footerZoneRef.current
+    setOverFooter(inFooterZone)
+    if (inFooterZone) {
+      setHidden(false)
+      return
+    }
+
     if (instance.scroll <= revealUntilRef.current) {
       setHidden(false)
       return
@@ -95,6 +120,7 @@ export function Header() {
           chapter-tinted elements stay legible above the cream panel. */}
       <header
         className={cn(s.header, hidden && !menuOpen && s.headerHidden)}
+        data-over-footer={overFooter && !menuOpen ? '' : undefined}
         {...(menuOpen && { 'data-theme': 'cream' })}
       >
         <Link

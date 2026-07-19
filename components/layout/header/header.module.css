@@ -24,6 +24,17 @@
   transform: translateY(-100%);
 }
 
+/* Footer zone: the bar force-reveals (JS) and recolors to the footer's dark
+   palette so it and the revealed footer read as one dark bookend (user
+   request). Element-level tokens beat the chapter theme, exactly like the menu
+   overlay's cream override. The CTA stays a fixed orange/black pill; the logo
+   and toggle follow --color-secondary, so both flip automatically. #161216
+   matches the footer ground. */
+.header[data-over-footer] {
+  --color-primary: #161216;
+  --color-secondary: var(--color-cream);
+}
+
 .logo {
   flex: 0 0 auto;
 }
