@@ -63,6 +63,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* —— Footer reveal (desktop) ————————————————————————————————————————————————
+   The footer is pinned beneath the page and uncovered as the content scrolls
+   up over it (brightscout-style). For the reveal to read, #main-content must be
+   opaque and stacked ABOVE the sticky footer (see components/layout/footer):
+   footer z-index 0 < main 1 < BlurEdge 60 < header 100. The footer carries
+   data-blur-edge-gate so the bottom BlurEdge fades out as it emerges.
+   Desktop only — mobile keeps standard flow, and BlurEdge is display:none
+   there anyway. NOTE: an opaque #main-content would occlude a full-bleed WebGL
+   scene rendered behind it; no page does that today. #main-content already
+   carries `position: relative` (Tailwind) so z-index applies. */
+@media (--desktop) {
+  #main-content {
+    z-index: 1;
+    background-color: var(--color-primary);
+  }
+}
+
 /* Selection styling */
 *::selection {
   background-color: var(--color-contrast);

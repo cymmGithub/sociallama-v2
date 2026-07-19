@@ -20,6 +20,17 @@
   flex-direction: column;
   gap: calc(var(--safe) * 1.75);
   overflow: clip;
+
+  /* Reveal-from-underneath (desktop only, brightscout-style): pin the footer to
+     the viewport bottom and stack it below #main-content (z-index 1), so the
+     opaque page scrolls up to uncover it. Its own height is the reveal travel.
+     The element carries data-blur-edge-gate (see index.tsx) so the bottom
+     BlurEdge fades out as it emerges. Mobile keeps standard flow. */
+  @media (--desktop) {
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+  }
 }
 
 /* —— Giant wordmark —————————————————————————————————————————————————————————

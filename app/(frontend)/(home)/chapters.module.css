@@ -1,5 +1,13 @@
+.chaptersRoot {
+  /* Positioning context for .background — no z-index, so the layer's
+     z-index:-1 still resolves in #main-content's stacking context. */
+  position: relative;
+}
+
 .background {
-  position: fixed;
+  /* Absolute (not fixed): fills .chaptersRoot only, so the morph layer stops
+     at the chapters and doesn't blanket the sticky footer reveal below. */
+  position: absolute;
   inset: 0;
   z-index: -1;
   transition: background-color 900ms var(--ease-out-expo);

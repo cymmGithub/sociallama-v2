@@ -4,12 +4,15 @@
  * Three-chapter scroll narrative with an animated background morph.
  *
  * Each chapter is a `data-theme` wrapper so its sections resolve brand tokens
- * (`primary`/`secondary`/`contrast`). A single fixed background layer sits at
- * `z-index:-1` — painting above the body's background canvas but below content —
- * and its `background-color` transitions (~0.9s) between chapter theme
- * backgrounds as scroll crosses the viewport center (IntersectionObserver with a
- * center band). Chapters are transparent so the layer shows through; the hero
- * video therefore composites directly onto `#892f53` during chapter 1.
+ * (`primary`/`secondary`/`contrast`). A single background layer — absolutely
+ * positioned to fill `.chaptersRoot` — sits at `z-index:-1`, painting above
+ * `#main-content`'s background but below content, and its `background-color`
+ * transitions (~0.9s) between chapter theme backgrounds as scroll crosses the
+ * viewport center (IntersectionObserver with a center band). Chapters are
+ * transparent so the layer shows through; the hero video therefore composites
+ * directly onto `#892f53` during chapter 1. The layer is bounded to the
+ * chapters (not `position:fixed`) so it doesn't blanket the sticky footer far
+ * below and break the footer reveal.
  *
  * Reduced motion: the global `--reduced-motion` rule neutralizes the layer's
  * transition, so backgrounds snap instead of morphing.
@@ -61,7 +64,7 @@ export function Chapters({ children }: { children: React.ReactNode[] }) {
   }, [])
 
   return (
-    <>
+    <div className={s.chaptersRoot}>
       <div
         aria-hidden="true"
         className={s.background}
@@ -80,6 +83,6 @@ export function Chapters({ children }: { children: React.ReactNode[] }) {
           {children[index]}
         </div>
       ))}
-    </>
+    </div>
   )
 }

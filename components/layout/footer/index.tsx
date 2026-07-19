@@ -5,7 +5,7 @@ import s from './footer.module.css'
 
 export function Footer() {
   return (
-    <footer className={s.footer} id="kontakt">
+    <footer className={s.footer} id="kontakt" data-blur-edge-gate>
       {/* Sign-off wordmark — the last brand beat. Rendered as an SVG stroke
           (not CSS -webkit-text-stroke, which fringes at large sizes); the
           viewBox matches the glyph metrics so it fills the width undistorted,
