@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
+import { Preloader } from '@/components/layout/preloader'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
 import {
@@ -88,6 +89,8 @@ export default async function Layout({ children }: PropsWithChildren) {
       suppressHydrationWarning
     >
       <body>
+        {/* First-paint "Plum Curtain" intro — plays once per session, above all */}
+        <Preloader />
         {/* Skip link for keyboard navigation accessibility */}
         <Suspense fallback={null}>
           <Link

@@ -1,0 +1,119 @@
+/*
+ * "Plum Curtain" first-paint intro. Pure-CSS choreography so it plays at first
+ * paint without waiting for JS: the panels auto-play and finish lifted via
+ * `forwards`, and `.root` retires itself, so even with JS disabled the page is
+ * revealed and non-interactive-blocking. The component only layers on the
+ * scroll lock and node cleanup.
+ *
+ * Fixed ~2.1s timeline (see docs/superpowers/specs/2026-07-19-preloader-design.md).
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  /* Purely visual — never intercept clicks meant for the page beneath. */
+  pointer-events: none;
+  /* No-JS safety: once the lift is done, hide the (already off-screen) node. */
+  animation: retire 0.01s linear 2.1s forwards;
+}
+
+/* Reduced motion: no choreography at all. */
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    display: none;
+  }
+}
+
+/* Scroll is held while the curtain is up (class toggled from the effect). */
+:global(html.sl-intro-lock) {
+  overflow: hidden;
+}
+
+.panelBack,
+.panelFront {
+  position: absolute;
+  inset: 0;
+}
+
+/* Back layer lifts a beat after the front for a trailing, layered reveal. */
+.panelBack {
+  z-index: 1;
+  background-color: var(--color-plum-dark);
+  animation: lift 0.72s cubic-bezier(0.76, 0, 0.24, 1) 1.35s forwards;
+}
+
+.panelFront {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-plum);
+  animation: lift 0.72s cubic-bezier(0.76, 0, 0.24, 1) 1.22s forwards;
+}
+
+/* Clips the letters as they rise from the baseline. */
+.maskline {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+}
+
+.word {
+  display: flex;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 9vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-cream);
+}
+
+.ltr {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  /* per-letter stagger set inline via animation-delay */
+  animation: rise 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.rule {
+  position: absolute;
+  bottom: calc(50% - clamp(1.75rem, 6vw, 3.5rem));
+  left: 50%;
+  z-index: 2;
+  width: clamp(7.5rem, 34vw, 21rem);
+  height: 2px;
+  background-color: var(--color-orange);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  animation: rule 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+}
+
+@keyframes rise {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rule {
+  to {
+    transform: translateX(-50%) scaleX(1);
+  }
+}
+
+@keyframes lift {
+  to {
+    transform: translateY(-101%);
+  }
+}
+
+@keyframes retire {
+  to {
+    visibility: hidden;
+  }
+}
