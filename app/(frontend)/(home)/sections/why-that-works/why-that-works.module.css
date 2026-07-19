@@ -46,7 +46,7 @@
   color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
-/* Supporting row: media left, remaining copy right. */
+/* Supporting row: team stage left, remaining copy right. */
 .bottom {
   --reveal-stagger: 90ms;
   --reveal-transform: translateY(24px);
@@ -59,7 +59,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: calc(var(--gap) * 4);
-    /* Center the copy against the taller photo so slack distributes evenly
+    /* Center the copy against the taller stage so slack distributes evenly
        instead of pooling under the CTA (user feedback 2026-07-14). */
     align-items: center;
     margin-top: calc(var(--safe) * 0.5);
@@ -69,13 +69,14 @@
 /* —— Team stage ————————————————————————————————————————————————————
    Plum grain-gradient stage recipe, duplicated per house convention — the
    same backdrop as services.module.css (.backdrop/.blobOrange/.grain) and
-   how-it-works.module.css (.stage). Keep the three modules in sync by hand. */
-.media {
+   how-it-works.module.css (.stage). Keep the three modules in sync by hand.
+   Full-width panel holding the team grid mosaic. */
+.stage {
   position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: 14px;
+  border-radius: 20px;
   overflow: hidden;
-  /* Size container so avatar/chip dimensions track the box, not the viewport. */
+  padding: clamp(16px, 2.5vw, 36px);
+  /* Size container so mosaic gaps and cert media track the panel width. */
   container-type: inline-size;
   background: linear-gradient(
     160deg,
@@ -89,14 +90,14 @@
   &::before {
     content: "";
     position: absolute;
-    width: 70%;
+    width: 45%;
     aspect-ratio: 1;
     border-radius: 50%;
-    top: -45%;
-    right: -12%;
+    top: -30%;
+    right: -8%;
     background: radial-gradient(
       closest-side,
-      color-mix(in srgb, var(--color-orange) 75%, transparent),
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
       transparent 72%
     );
     pointer-events: none;
@@ -119,84 +120,126 @@
   /* Lift stage contents above the ::after grain (tree order paints the
      pseudo-element over the children otherwise). */
   & > * {
+    position: relative;
     z-index: 1;
   }
 }
 
-/* Scattered avatar sticker: %-positioned square box, per-item placement and
-   tilt via inline custom properties from the position array in index.tsx.
-   No border/outline — the stickers bake their own white outline; the drop
-   shadow follows the alpha channel to seat them on the stage. */
-.avatar {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--w);
+/* Uniform team grid: six columns of small square medallions on desktop (12
+   faces = 6×2 in the left cell), three on mobile. Certs occupy the row below
+   the faces (see .cert / .certLabel). */
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(6px, 1.2cqw, 12px);
+
+  @media (--mobile) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Square portrait medallion. Rest state saturates gently; the spotlight
+   (below) lifts one tile while the field dims. */
+.tile {
+  position: relative;
   aspect-ratio: 1;
-  transform: rotate(var(--r));
-  pointer-events: none;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-cream) 22%, transparent);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.4s ease,
+    box-shadow 0.4s ease;
 
-  /* Glass bubble seated behind each sticker (user decision 2026-07-16): the
-     how-it-works glass-card recipe bent into a circle. Sits behind the img
-     in tree order, so the sticker's own white outline and head pop-out stay
-     on top, unclipped. */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: -8%;
-    border-radius: 50%;
-    border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
-    background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
-    backdrop-filter: blur(6px);
-  }
-
-  /* Seat shadow on the img, not the wrapper — drop-shadow traces rendered
-     alpha, and on the wrapper it would halo the glass bubble instead of
-     seating the sticker. */
   & img {
-    filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.28));
+    filter: saturate(0.94);
+    transition: filter 0.4s ease;
   }
 }
 
-/* Certificate chips row along the stage bottom. */
-.chips {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 6%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: calc(var(--gap) * 0.75);
-  pointer-events: none;
+/* Spotlight-by-dimming: hovering the grid fades the field; the hovered tile
+   stays lit, scales up, and gains an orange ring. Cert cards are not .tile,
+   so they are excluded from the dim. */
+.mosaic:hover .tile {
+  opacity: 0.5;
 }
 
-/* Cream chip presenting a credential mark unmodified (trademark hygiene:
-   no recolor, no crop — objectFit contain inside the inner media box). */
-.chip {
-  height: 14cqw;
-  border-radius: 12px;
+.mosaic .tile:hover {
+  opacity: 1;
+  transform: scale(1.07);
+  z-index: 2;
+  box-shadow:
+    0 0 0 2px var(--color-orange),
+    0 20px 40px rgb(0 0 0 / 0.4);
+
+  & img {
+    filter: saturate(1.08) brightness(1.04);
+  }
+}
+
+/* Reduced motion: keep the spotlight legible (dim + orange ring) but drop the
+   scale so nothing moves. */
+@media (--reduced-motion) {
+  .mosaic .tile:hover {
+    transform: none;
+  }
+}
+
+/* "Certyfikaty" eyebrow opening the cert row (full width above the cards). */
+.certLabel {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  margin-top: calc(var(--gap) * 0.5);
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+}
+
+/* Cream card presenting a credential mark unmodified (trademark hygiene: no
+   recolor, no crop — objectFit contain inside the inner media box). Two cards
+   share the cert row (each half); full width, stacked, on mobile. */
+.cert {
+  grid-column: span 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2cqw, 18px) clamp(16px, 3cqw, 28px);
+  border-radius: 14px;
   background-color: var(--color-cream);
   box-shadow:
-    inset 0 0 0 1px var(--color-sand),
-    0 10px 24px rgb(0 0 0 / 0.25);
-  padding: 2cqw 2.5cqw;
-  transform: rotate(var(--r));
+    inset 0 0 0 1px color-mix(in srgb, var(--color-sand) 80%, transparent),
+    0 12px 26px rgb(0 0 0 / 0.28);
+
+  @media (--mobile) {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Inner box carrying the cert image; its aspect ratio comes from the mark's
    intrinsic ratio so the cream padding frames it evenly. */
-.chipMedia {
+.certMedia {
   position: relative;
-  height: 100%;
+  height: clamp(32px, 7cqw, 48px);
   aspect-ratio: var(--ar);
 }
 
-/* Copy fills its grid column (Mock A, user decision 2026-07-14) — no width
-   cap, so the single paragraph stretches into the space beside the photo. */
+/* Supporting copy + CTA beside the stage. On desktop the column stretches to
+   the grid's height and distributes its content top-to-bottom so the paragraph
+   top and CTA bottom align with the grid edges. */
 .copy {
   display: flex;
   flex-direction: column;
   gap: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    align-self: stretch;
+    justify-content: flex-start;
+    gap: calc(var(--gap) * 1.5);
+  }
 }
 
 /* Supporting paragraph at reading scale, bolder and larger than body copy
@@ -204,8 +247,8 @@
 .para {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.35rem, 2vw, 3.75rem);
-  line-height: 1.4;
+  font-size: clamp(1.3rem, 1.8vw, 2.4rem);
+  line-height: 1.44;
   letter-spacing: -0.01em;
   color: var(--color-secondary);
 }
