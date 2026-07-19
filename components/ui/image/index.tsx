@@ -293,6 +293,11 @@ export function Image({
       {...(finalPlaceholder && { placeholder: finalPlaceholder })}
       {...(blurDataURL && { blurDataURL })}
       preload={preload}
+      // Next 15+ decoupled `fetchPriority` from `preload`/`priority`: preload
+      // only emits the <link rel=preload>, so without this the LCP img and its
+      // preload link ship no fetchpriority=high hint. Default it when preloading;
+      // {...props} spreads last so an explicit caller value still wins.
+      {...(preload && { fetchPriority: 'high' as const })}
       {...props}
     />
   )

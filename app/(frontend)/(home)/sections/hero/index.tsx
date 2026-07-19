@@ -96,6 +96,11 @@ export function Hero() {
     const el = headlineRef.current
     if (!el) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // Skip on mobile: the hero is a static poster there, so running GSAP on
+    // mount only adds a main-thread task inside the LCP paint window. The
+    // headline lands in its natural (visible) state — same as reduced motion.
+    if (window.matchMedia(`(max-width: ${breakpoints.dt - 0.02}px)`).matches)
+      return
 
     const lines = el.querySelectorAll<HTMLElement>('[data-line]')
     const tween = gsap.from(lines, {
