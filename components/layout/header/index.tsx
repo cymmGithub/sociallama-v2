@@ -48,7 +48,7 @@ export function Header() {
 
   useEffect(() => {
     const measure = () => {
-      const footer = document.querySelector<HTMLElement>('footer')
+      const footer = document.querySelector<HTMLElement>('[data-site-footer]')
       footerZoneRef.current = footer
         ? footer.offsetHeight * FOOTER_ZONE_FRACTION
         : 0
@@ -75,16 +75,13 @@ export function Header() {
   // render, since lenis.stop() freezes this callback while the overlay is open.
   useLenis((instance) => {
     // Footer zone: force the bar in (overriding hide-on-scroll-down) and flag it
-    // so the render recolors it to the footer's dark palette.
-    const max = document.documentElement.scrollHeight - window.innerHeight
-    const inFooterZone = max - instance.scroll <= footerZoneRef.current
+    // so the render recolors it to the footer's dark palette. `instance.limit`
+    // is Lenis's cached max-scroll — no per-frame layout read.
+    const inFooterZone =
+      instance.limit - instance.scroll <= footerZoneRef.current
     setOverFooter(inFooterZone)
-    if (inFooterZone) {
-      setHidden(false)
-      return
-    }
 
-    if (instance.scroll <= revealUntilRef.current) {
+    if (inFooterZone || instance.scroll <= revealUntilRef.current) {
       setHidden(false)
       return
     }
@@ -120,7 +117,7 @@ export function Header() {
           chapter-tinted elements stay legible above the cream panel. */}
       <header
         className={cn(s.header, hidden && !menuOpen && s.headerHidden)}
-        data-over-footer={overFooter && !menuOpen ? '' : undefined}
+        {...(overFooter && !menuOpen && { 'data-over-footer': '' })}
         {...(menuOpen && { 'data-theme': 'cream' })}
       >
         <Link
