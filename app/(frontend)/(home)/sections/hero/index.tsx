@@ -220,6 +220,12 @@ export function Hero() {
             — no scrubbed clip on mobile). Rendered unconditionally; CSS hides
             the box on desktop, so SSR and reduced motion get it for free. */}
         <div className={s.media}>
+          {/* unoptimized: the poster's plum is graded to the --color-plum-hero
+              token (#853253) so it composites seamlessly onto the section
+              ground. Next's image optimizer re-encodes the WebP and shifts
+              this plum ~+5 on green (and differently per width — the known
+              width-specific color corruption), which would push it back off
+              the token. Serving the graded file as-is keeps render == source. */}
           <Image
             src={hero.video.posterMobile}
             alt={hero.llamaAlt}
@@ -228,6 +234,7 @@ export function Hero() {
             className={s.mobileImage}
             mobileSize="100vw"
             preload
+            unoptimized
           />
         </div>
       </div>

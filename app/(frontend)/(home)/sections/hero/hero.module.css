@@ -238,8 +238,9 @@
 
 /* Mobile poster (static image): a centered crop of the desktop poster (same
    llama both viewports, user decision 2026-07-19), cover-cropped to the box.
-   The crop is pre-centered on the llama, so plain center object-position holds
-   it in frame across phone aspect ratios. */
+   Anchored high (12% from top) so that when the browser URL bar shrinks the
+   viewport — and .media (flex:1) gets shorter — cover eats the shirt at the
+   bottom (which sits below the fold anyway) instead of clipping the ears. */
 .mobileImage {
-  object-position: center;
+  object-position: 50% 12%;
 }
