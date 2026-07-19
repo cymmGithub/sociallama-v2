@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import { contactForm, contactMetrics } from '../lib/content/contact'
 import { clients } from '../lib/content/home'
-import { themes } from '../lib/styles/colors'
+import { colors, themes } from '../lib/styles/colors'
 import {
   collectPageErrors,
   expectNoSeriousA11yViolations,
@@ -20,8 +20,8 @@ import {
  * - English fallback validation copy on a Polish form
  */
 
-// #161216 — kontakt page ground (page-module value, no theme token yet)
-const DARK_CHROME = 'rgb(22, 18, 22)'
+// Kontakt page / footer dark ground — the shared --color-ink-deep swatch.
+const DARK_CHROME = hexToRgb(colors['ink-deep'])
 const PLUM_CHROME = hexToRgb(themes.plum.primary)
 
 test.describe('Kontakt page', () => {

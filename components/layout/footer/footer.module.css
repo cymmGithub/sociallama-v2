@@ -1,12 +1,12 @@
 /*
  * Footer — the site's sign-off band. Pinned to the /kontakt near-black ground
- * (#161216) so the page ends on a deliberate dark slab instead of fading into
+ * (--color-ink-deep) so the page ends on a deliberate dark slab instead of fading into
  * more plum. Colours are set locally (not via [data-theme]) so the footer
  * renders identically on every route; on /kontakt the chrome is already dark
  * (see dark-chrome.tsx), so there is no conflict.
  */
 .footer {
-  --ground: #161216;
+  --ground: var(--color-ink-deep);
   --ink: var(--color-cream);
   --accent: var(--color-orange);
   --muted: #8f838b;

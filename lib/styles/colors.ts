@@ -12,6 +12,9 @@ const colors = {
   'plum-dark': '#722341',
   orange: '#f09b39',
   ink: '#2b1f24',
+  // Not in the brand book: the warm near-black ground for the dark canvases
+  // (footer sign-off + the /kontakt page). Darker and flatter than `ink`.
+  'ink-deep': '#161216',
   cream: '#faf9f5',
   sand: '#e0ddd3',
 } as const

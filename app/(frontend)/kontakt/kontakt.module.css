@@ -15,7 +15,7 @@
 
 .page {
   /* Mock palette — page-local values; accents reuse global tokens. */
-  --ground: #161216;
+  --ground: var(--color-ink-deep);
   --muted: #8f838b;
   --line: rgba(244, 239, 233, 0.16);
   --line-strong: rgba(244, 239, 233, 0.34);
@@ -33,7 +33,7 @@
    The attribute is set by <DarkChrome/> only while /kontakt is the active
    page — see dark-chrome.tsx for why :has(.page) is wrong here. */
 :global(html[data-chrome="kontakt"]) {
-  --color-primary: #161216;
+  --color-primary: var(--color-ink-deep);
 }
 
 @keyframes kontakt-enter {
