@@ -166,6 +166,11 @@ export const socials: SocialLink[] = [
   { label: 'TikTok', href: '#', icon: '/assets/icon-tiktok.svg' },
   { label: 'Instagram', href: '#', icon: '/assets/icon-instagram.svg' },
   { label: 'LinkedIn', href: '#', icon: '/assets/icon-linkedin.svg' },
+  {
+    label: 'X',
+    href: 'https://x.com/SocialLamaPL',
+    icon: '/assets/icon-x.svg',
+  },
 ]
 
 // —— Hero ——————————————————————————————————————————————————————————————————
