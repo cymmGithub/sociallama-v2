@@ -137,6 +137,14 @@
   z-index: 90;
   background-color: var(--color-primary);
   color: var(--color-secondary);
+  /* --line/--line-strong are declared at :root, so their var(--color-secondary)
+     bakes in the CHAPTER theme stamped on <html> as you scroll. Under the
+     overlay's forced cream theme that leaves the hairlines tinted for the
+     chapter (near-white over hero/plum) and they vanish on the cream panel.
+     Re-derive them here from the overlay's own --color-secondary so the menu
+     underlines and social borders read at every scroll position. */
+  --line: color-mix(in srgb, var(--color-secondary) 14%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-secondary) 28%, transparent);
   overflow-y: auto;
   visibility: hidden;
   transform: translateY(-100%);
