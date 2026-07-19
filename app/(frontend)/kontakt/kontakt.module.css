@@ -374,6 +374,14 @@
 /* —— Responsive ——————————————————————————————————————————————————————————— */
 
 @media (--mobile) {
+  /* Clear the fixed header explicitly. At mobile font sizes the marquee's
+     glyph bearing no longer covers the bar (it does on desktop, where the
+     caps are ~192px tall), so the first line rode under the header — key the
+     top clearance to the real header height instead. */
+  .hero {
+    padding-block-start: calc(var(--header-height) + var(--safe));
+  }
+
   .formShell {
     grid-template-columns: 1fr;
     gap: 40px;
