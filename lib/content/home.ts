@@ -183,8 +183,10 @@ export const hero = {
   video: {
     src: '/clips/hero.mp4',
     poster: '/clips/hero-poster.jpg',
-    /* Mobile shows this poster statically — no mobile clip (user decision
-       2026-07-14). The hero-mobile.mp4 asset stays for the Video stories. */
+    /* Mobile shows a static poster — no mobile clip (user decision 2026-07-14).
+       Same llama as desktop, just a centered crop of hero-poster.jpg (the wide
+       desktop frame reads off-center on a narrow screen); user decision
+       2026-07-19. The hero-mobile.mp4 asset stays for the Video stories. */
     posterMobile: '/clips/hero-mobile-poster.jpg',
   },
 } as const

@@ -7,11 +7,11 @@
      much scrolling the head-turn spans. */
   height: 280vh;
 
-  /* Mobile scrubs too, over a shorter runway than desktop — the upward-glance
-     clip is brief. 185svh (up from the reference's 155svh, user request) keeps
-     the pin held a beat longer after the glance completes. */
+  /* Mobile is a static poster — no scroll-driven scrub (user decision
+     2026-07-19). Collapse the runway to the column's own height so there's no
+     dead pinned scroll before the page moves on, same as reduced motion. */
   @media (--mobile) {
-    height: 185svh;
+    height: auto;
   }
 
   /* No scrub → no runway: reduced motion keeps the static poster. Collapse to
@@ -236,8 +236,10 @@
   }
 }
 
-/* Mobile poster (static image, user decision 2026-07-14): cover-crops the
-   full-bleed box, biased right so the llama stays centered. */
+/* Mobile poster (static image): a centered crop of the desktop poster (same
+   llama both viewports, user decision 2026-07-19), cover-cropped to the box.
+   The crop is pre-centered on the llama, so plain center object-position holds
+   it in frame across phone aspect ratios. */
 .mobileImage {
-  object-position: 65% center;
+  object-position: center;
 }
