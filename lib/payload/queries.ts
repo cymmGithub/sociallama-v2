@@ -178,6 +178,26 @@ async function findPostsForSitemap(): Promise<
   return result.docs
 }
 
+/** Published posts, newest first, with the fields the /llms.txt index needs. */
+async function findPostsForLlms(): Promise<
+  Pick<Post, 'title' | 'slug' | 'excerpt'>[]
+> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: PUBLISHED,
+    sort: '-publishedAt',
+    limit: 0,
+    pagination: false,
+    select: { title: true, slug: true, excerpt: true },
+  })
+  return result.docs
+}
+
 /*
  * Public API — each query is wrapped in React cache() so that
  * generateMetadata and the page body share ONE invocation per request.
@@ -193,6 +213,7 @@ export const getPostsPage = cache(findPostsPage)
 export const getCategories = cache(findCategories)
 export const getCategoryBySlug = cache(findCategoryBySlug)
 export const getPostsForSitemap = cache(findPostsForSitemap)
+export const getPostsForLlms = cache(findPostsForLlms)
 
 /** Resolve a maybe-unpopulated media relation (depth-dependent union). */
 export function resolveMedia(
