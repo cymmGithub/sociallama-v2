@@ -30,6 +30,13 @@
     position: sticky;
     bottom: 0;
     z-index: 0;
+    /* Fill the viewport so the bottom-pinned reveal never leaves a gap that
+       exposes the plum #main-content above the footer. The larger top padding
+       keeps the wordmark clear of the fixed header; the bottom bar's
+       margin-top:auto anchors it to the floor and absorbs the leftover height. */
+    min-height: 100dvh;
+    padding-top: 6.5rem;
+    gap: calc(var(--safe) * 1.1);
   }
 }
 
@@ -42,11 +49,12 @@
   width: 100%;
   height: auto;
   /* The SVG's height is locked to its width (fixed viewBox ratio), so on wide
-     screens it grows tall enough to push the footer past the viewport — and
-     because the footer reveals bottom-pinned, the overflow clips the wordmark
-     under the fixed header. Cap the height (proportional to the viewport) so
-     the footer stays bounded; preserveAspectRatio keeps it centred. */
-  max-height: min(340px, 40vh);
+     screens it grows tall enough to push the viewport-filling footer past the
+     header and clip the wordmark under it. Cap the height to whatever space is
+     left after the rest of the footer (~27rem) so it stays full-width when the
+     viewport is tall enough and only shrinks (centred, via preserveAspectRatio)
+     on short/ultrawide screens where it otherwise wouldn't fit. */
+  max-height: calc(100dvh - 32rem);
   margin-bottom: calc(var(--safe) * 1.25);
   overflow: visible;
 }
@@ -235,6 +243,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    /* Anchor to the footer floor so the viewport-filling footer keeps its
+       leftover height as breathing room above the copyright, not a gap. */
+    margin-top: auto;
   }
 }
 
