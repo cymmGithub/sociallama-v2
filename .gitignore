@@ -74,3 +74,9 @@ plans
 README.original.md
 media/
 .env*
+
+# Local working screenshots / scratch notes (not repo assets)
+/*.jpeg
+/*.jpg
+/*.png
+/perf-impro-suggestions.md
