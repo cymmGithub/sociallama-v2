@@ -362,12 +362,14 @@
      centered in its half, minimal padding, small radius, soft lift. The white
      backing keeps the logos' dark text legible on the plum stage. */
   justify-self: center;
-  width: fit-content;
+  /* Shared width so both chips match (fit-content would size each to its own
+     logo); wide enough for the larger DIMAQ mark, others centered inside. */
+  width: clamp(240px, 42cqw, 320px);
   max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(8px, 1.4cqw, 12px) clamp(12px, 2cqw, 18px);
+  padding: clamp(8px, 1.4cqw, 12px) clamp(22px, 4cqw, 40px);
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 6px 18px rgb(0 0 0 / 0.16);
