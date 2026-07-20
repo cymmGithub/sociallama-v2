@@ -231,11 +231,13 @@
 
 .menuLink {
   display: block;
-  padding-block: 0.45em;
+  padding-block: 0.3em;
   border-bottom: 1px solid var(--line);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  /* Sized so the twelve BRANŻE items + the utility row clear the viewport
+     without scrolling, down to ~768px-tall laptops. */
+  font-size: clamp(1rem, 1.85vw, 1.5rem);
   line-height: 1.2;
   transition:
     color var(--duration-fast) var(--ease-out-expo),
