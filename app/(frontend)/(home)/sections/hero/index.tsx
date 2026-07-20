@@ -32,7 +32,9 @@ export function Hero() {
   // then desktop gets its scrubbed head-turn clip. Mobile stays static — a
   // poster image, no video (user decision 2026-07-14: simpler and immune to
   // iOS's never-played-video decode restrictions). Reduced motion stays on
-  // the poster too.
+  // the poster too, as do touch-only devices above the dt breakpoint —
+  // tablets get the static poster, not the scroll scrub (user decision
+  // 2026-07-20). Same query as the track's runway collapse in the CSS.
   const [media, setMedia] = useState<'poster' | 'desktop'>('poster')
 
   useEffect(() => {
@@ -40,7 +42,10 @@ export function Hero() {
     const mobile = window.matchMedia(
       `(max-width: ${breakpoints.dt - 0.02}px)`
     ).matches
-    if (!mobile) setMedia('desktop')
+    const touchOnly = window.matchMedia(
+      '(any-pointer: coarse) and (hover: none)'
+    ).matches
+    if (!(mobile || touchOnly)) setMedia('desktop')
   }, [])
 
   // Seek loop (hero-scroll-scrub): the video is never played, only seeked
