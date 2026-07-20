@@ -73,9 +73,19 @@ export default async function ONasPage() {
       </div>
       <GoodOne />
       <Team />
-      {/* reused — plum-deep token context (native homepage look) */}
-      <div data-theme="plum-deep">
+      {/* reused — JoinCta sits on the same sand ground as the ClientLogos
+          ("ZAUFALI NAM") band above, per request; NewsLama keeps the native
+          plum-deep look. */}
+      <div
+        data-theme="cream"
+        style={{
+          backgroundColor: 'var(--color-sand)',
+          color: 'var(--color-ink)',
+        }}
+      >
         <JoinCta />
+      </div>
+      <div data-theme="plum-deep">
         {newsPost && <NewsLama post={newsPost} />}
       </div>
     </Wrapper>

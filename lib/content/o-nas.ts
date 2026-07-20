@@ -122,8 +122,11 @@ export const oNasGoodOne = {
 } as const
 
 // —— Team slider ("ZESPÓŁ SOCIAL LAMA" / "NASZE LAMY") — plum band ——————————————
-// Slider: one featured member (big photo + name/role/bio), prev/next arrows,
-// other members peeking behind. Bios are lorem placeholder for now.
+// Slider: one featured member (cutout portrait + name/role/bio), prev/next
+// arrows, teammates peeking behind. `surname` is the small label over the big
+// orange `given` name (mock treatment). Slider photos are transparent portrait
+// cutouts in /public/o-nas/slider (kept apart from the webp team grid). Three
+// members for now; bios are lorem placeholder.
 
 export const oNasTeam = {
   kickerLead: 'NASZE',
@@ -131,39 +134,25 @@ export const oNasTeam = {
   heading: 'ZESPÓŁ SOCIAL LAMA',
   members: [
     {
-      firstName: 'OZGA',
-      lastName: 'ANNA',
-      role: 'HEAD OF SOCIAL LAMA',
+      given: 'ANIA',
+      surname: 'OZGA',
+      role: 'Head of Social Media',
       bio: LOREM,
-      avatar: '',
+      photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      firstName: 'IMIĘ',
-      lastName: 'NAZWISKO',
-      role: 'STANOWISKO',
+      given: 'PIOTREK',
+      surname: 'ZACH',
+      role: 'Project Manager',
       bio: LOREM,
-      avatar: '',
+      photo: '/o-nas/slider/piotr-zach.png',
     },
     {
-      firstName: 'IMIĘ',
-      lastName: 'NAZWISKO',
-      role: 'STANOWISKO',
+      given: 'KAROLINA',
+      surname: 'MARCINOWSKA',
+      role: 'Wideo Content Creator',
       bio: LOREM,
-      avatar: '',
-    },
-    {
-      firstName: 'IMIĘ',
-      lastName: 'NAZWISKO',
-      role: 'STANOWISKO',
-      bio: LOREM,
-      avatar: '',
-    },
-    {
-      firstName: 'IMIĘ',
-      lastName: 'NAZWISKO',
-      role: 'STANOWISKO',
-      bio: LOREM,
-      avatar: '',
+      photo: '/o-nas/slider/karolina-marcinowska.png',
     },
   ],
 } as const

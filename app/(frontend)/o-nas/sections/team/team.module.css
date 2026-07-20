@@ -13,6 +13,12 @@
   background: var(--color-primary);
   color: var(--color-secondary);
   overflow: hidden;
+
+  @media (--desktop) {
+    /* Figures stand flush on the section's bottom edge — no plum gap beneath
+       the slider (they meet the sand band below). */
+    padding-bottom: 0;
+  }
 }
 
 /* —— Top row: "NASZE / LAMY" label (left) + "ZESPÓŁ SOCIAL LAMA" (right) —— */
@@ -83,9 +89,9 @@
 
   @media (--desktop) {
     display: grid;
-    grid-template-columns: 0.9fr 1fr;
+    grid-template-columns: 1.8fr 1fr;
     align-items: center;
-    gap: calc(var(--gap) * 4);
+    gap: calc(var(--gap) * 1.5);
   }
 }
 
@@ -95,51 +101,67 @@
   position: relative;
   isolation: isolate;
   width: 100%;
-  max-width: 480px;
+  max-width: 960px;
   margin-inline: auto;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 5 / 3;
+
+  /* Bottom-align within the grid row so the figures sit on the section floor
+     while the details column stays vertically centred. */
+  @media (--desktop) {
+    align-self: end;
+  }
 }
 
-/* Placeholder for a cutout portrait — a plum-tinted figure zone (NOT a glassy
-   card): no rounded frame, so the real transparent PNG drops straight in. */
+/* Each figure is a bottom-anchored box whose aspect-ratio matches the cutout,
+   so `contain` fills it edge-to-edge (no letterbox). All three share one ground
+   line and are placed by centre (left %); the hero is full-height, the peers
+   shorter and offset so the trio sits whole inside the stage. */
 .photo {
-  display: block;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--color-plum) 62%, var(--color-cream) 14%),
-    var(--color-plum-dark)
-  );
+  position: absolute;
+  bottom: 0;
+  aspect-ratio: 422 / 600;
+  transform: translateX(-50%);
 }
 
 .featured {
-  position: absolute;
-  inset: 0;
+  height: 100%;
+  left: 50%;
   z-index: 2;
-  display: grid;
-  place-items: center;
 }
 
-.photoIcon {
-  width: 34%;
-  height: auto;
-  color: color-mix(in srgb, var(--color-cream) 30%, transparent);
-}
-
-/* Faded teammates, one each side, behind the featured figure. */
+/* Neighbours behind the hero: shorter, whole and uncut within the stage, and
+   washed in a plum-magenta duotone so they recede while staying recognisable. */
 .peer {
+  height: 86%;
+  z-index: 1;
+  opacity: 0.9;
+  filter: saturate(0.6);
+}
+
+/* The wash is a magenta fill masked to the figure's own silhouette (its cutout
+   alpha), matching the img beneath it (same contain/bottom placement). */
+.peer::after {
+  content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
-  opacity: 0.32;
-  filter: saturate(0.7);
+  background: color-mix(in srgb, var(--color-primary) 60%, #d1568c);
+  opacity: 0.66;
+  -webkit-mask-image: var(--peer-src);
+  mask-image: var(--peer-src);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: bottom;
+  mask-position: bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .peerLeft {
-  transform: translateX(-46%) scale(0.9);
+  left: 21%;
 }
 
 .peerRight {
-  transform: translateX(46%) scale(0.9);
+  left: 79%;
 }
 
 /* Circular prev/next buttons flanking the figures. */
@@ -152,8 +174,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--color-cream) 45%, transparent);
-  background: color-mix(in srgb, var(--color-plum-dark) 55%, transparent);
+  border: 1.5px solid var(--color-cream);
+  background: color-mix(in srgb, var(--color-plum-dark) 82%, transparent);
   color: var(--color-cream);
   cursor: pointer;
   backdrop-filter: blur(6px);
@@ -165,17 +187,17 @@
 
 .navPrev {
   left: 0;
-  transform: translate(-60%, -50%);
+  transform: translate(35%, -50%);
 }
 
 .navNext {
   right: 0;
-  transform: translate(60%, -50%);
+  transform: translate(-35%, -50%);
 }
 
 .nav svg {
-  width: 42%;
-  height: 42%;
+  width: 50%;
+  height: 50%;
 }
 
 @media (--hover) {
@@ -198,7 +220,7 @@
   max-width: 46ch;
 }
 
-.firstName {
+.surname {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
@@ -209,7 +231,7 @@
 }
 
 /* Pairs with the `h2` display utility on the element; this only recolors it. */
-.lastName {
+.given {
   margin-top: 0.06em;
   color: var(--color-orange);
 }
@@ -249,8 +271,14 @@
     text-align: left;
   }
 
+  /* Too narrow for the trio — show the hero alone, cycled by the arrows. */
   .stage {
     max-width: 300px;
+    aspect-ratio: 422 / 600;
+  }
+
+  .peer {
+    display: none;
   }
 
   .text {

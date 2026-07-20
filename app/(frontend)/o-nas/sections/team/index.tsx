@@ -2,17 +2,18 @@
 
 /*
  * Team slider ("NASZE LAMY" / "ZESPÓŁ SOCIAL LAMA") — plum band, id="zespol"
- * (anchor for the about-intro CTA). A featured member with faded teammates
- * behind, circular prev/next arrows stepping oNasTeam.members with wrap-around,
- * and the member's name (surname big in orange) + role + bio on the right.
+ * (anchor for the about-intro CTA). One featured member shown whole, circular
+ * prev/next arrows stepping oNasTeam.members with wrap-around, and the member's
+ * name (surname over big orange given name) + role + bio on the right.
  *
- * Photos are PLACEHOLDER boxes (data-onas-img="team-photo") until the real
- * cutout PNGs are dropped in. Entrance uses the house reveal primitive.
+ * Photos are transparent portrait cutouts (public/o-nas/slider) that drop
+ * straight onto the plum band. Entrance uses the house reveal primitive.
  */
 
 import cn from 'clsx'
-import { ChevronLeft, ChevronRight, User } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
+import { Image } from '@/components/ui/image'
 import { oNasTeam } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
@@ -24,8 +25,11 @@ export function Team() {
 
   const [index, setIndex] = useState(0)
   // `?? members[0]` satisfies noUncheckedIndexedAccess; index is always wrapped
-  // in-bounds so the fallback never actually runs.
+  // in-bounds so the fallback never actually runs. Peers are the members either
+  // side of the featured one — shown whole and plum-tinted, framing the hero.
   const featured = members[index] ?? members[0]
+  const leftPeer = members[(index - 1 + count) % count] ?? members[0]
+  const rightPeer = members[(index + 1) % count] ?? members[0]
 
   // "ZESPÓŁ SOCIAL LAMA" → "ZESPÓŁ" / "SOCIAL LAMA" (two lines, per the mock).
   const [headLead, ...headRest] = oNasTeam.heading.split(' ')
@@ -58,19 +62,47 @@ export function Team() {
       </header>
 
       <div ref={revealRef} data-reveal-style="wipe" className={s.slider}>
-        {/* Figure stack: featured cutout centered, faded teammates left/right
-            behind it, flanked by the circular nav arrows. */}
+        {/* Coverflow stack: the featured cutout in front (full colour), the two
+            neighbours behind it plum-tinted and whole, flanked by the nav
+            arrows that cycle through the members. */}
         <div data-reveal-item className={s.stage}>
           <span
             className={cn(s.photo, s.peer, s.peerLeft)}
-            data-onas-img="team-photo-peer"
-          />
+            style={{ '--peer-src': `url(${leftPeer.photo})` }}
+            aria-hidden="true"
+          >
+            <Image
+              src={leftPeer.photo}
+              alt=""
+              fill
+              objectFit="contain"
+              mobileSize="34vw"
+              desktopSize="20vw"
+            />
+          </span>
           <span
             className={cn(s.photo, s.peer, s.peerRight)}
-            data-onas-img="team-photo-peer"
-          />
-          <span className={cn(s.photo, s.featured)} data-onas-img="team-photo">
-            <User className={s.photoIcon} aria-hidden="true" strokeWidth={1} />
+            style={{ '--peer-src': `url(${rightPeer.photo})` }}
+            aria-hidden="true"
+          >
+            <Image
+              src={rightPeer.photo}
+              alt=""
+              fill
+              objectFit="contain"
+              mobileSize="34vw"
+              desktopSize="20vw"
+            />
+          </span>
+          <span className={cn(s.photo, s.featured)}>
+            <Image
+              src={featured.photo}
+              alt=""
+              fill
+              objectFit="contain"
+              mobileSize="60vw"
+              desktopSize="30vw"
+            />
           </span>
 
           <button
@@ -93,8 +125,8 @@ export function Team() {
 
         {/* Details for the active member. aria-live announces the switch. */}
         <div data-reveal-item className={s.text} aria-live="polite">
-          <p className={s.firstName}>{featured.firstName}</p>
-          <p className={cn('h2', s.lastName)}>{featured.lastName}</p>
+          <p className={s.surname}>{featured.surname}</p>
+          <p className={cn('h2', s.given)}>{featured.given}</p>
           <p className={s.role}>{featured.role}</p>
           <p className={s.bio}>{featured.bio}</p>
         </div>
