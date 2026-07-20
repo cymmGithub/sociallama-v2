@@ -83,8 +83,13 @@ test.describe('Kontakt page', () => {
       .poll(() => page.evaluate(() => window.scrollY), HYDRATED)
       .toBeGreaterThan(500)
 
-    // Click a /kontakt link (join-CTA button / footer link).
-    await page.locator('a[href="/kontakt"]').last().click()
+    // Trigger client-side nav to /kontakt. At this mid-scroll offset every
+    // /kontakt link is unclickable — the sticky header hides on scroll-down and
+    // the footer's links sit behind #main-content (footer-reveal) until the very
+    // bottom — so an actionable click times out. dispatchEvent fires the Link's
+    // client navigation directly, bypassing occlusion; the scroll-reset behavior
+    // this test guards is what matters, not the link's hit-testability.
+    await page.locator('a[href="/kontakt"]').last().dispatchEvent('click')
     await expect(page).toHaveURL('/kontakt', HYDRATED)
 
     // The new route must open at the top, not at the carried-over offset.

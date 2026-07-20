@@ -44,7 +44,10 @@ export function Footer() {
             aria-label={column.title}
           >
             <p className={s.columnTitle}>{column.title}</p>
-            <ul className={s.links}>
+            <ul
+              className={s.links}
+              data-cols={column.links.length >= 9 ? '2' : undefined}
+            >
               {column.links.map((link) => (
                 <li key={link.label}>
                   <Link className={s.link} href={link.href}>

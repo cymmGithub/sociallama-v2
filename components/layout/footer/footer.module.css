@@ -41,6 +41,12 @@
   display: block;
   width: 100%;
   height: auto;
+  /* The SVG's height is locked to its width (fixed viewBox ratio), so on wide
+     screens it grows tall enough to push the footer past the viewport — and
+     because the footer reveals bottom-pinned, the overflow clips the wordmark
+     under the fixed header. Cap the height (proportional to the viewport) so
+     the footer stays bounded; preserveAspectRatio keeps it centred. */
+  max-height: min(340px, 40vh);
   margin-bottom: calc(var(--safe) * 1.25);
   overflow: visible;
 }
@@ -147,6 +153,18 @@
   display: flex;
   flex-direction: column;
   gap: 0.7em;
+}
+
+/* Long link lists (e.g. the 12-item OFERTA column) flow into as many columns as
+   the cell can fit — two on wide desktops, one on narrower ones — so the column
+   stays short and the footer doesn't outgrow the viewport. */
+@media (--desktop) {
+  .links[data-cols="2"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.7em 2rem;
+    align-content: start;
+  }
 }
 
 .link {
