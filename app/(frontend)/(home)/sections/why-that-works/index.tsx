@@ -1,6 +1,7 @@
 'use client'
 
 import cn from 'clsx'
+import { useEffect, useRef, useState } from 'react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -20,22 +21,57 @@ function fill(node: HTMLSpanElement, active: boolean) {
   node.style.opacity = active ? '1' : '0.2'
 }
 
-// Team roster as a grid of medallion portraits. Order is not meaningful —
-// portraits are decorative (the group label carries the meaning) — so this is
-// just the filename list; adding or removing a member is a one-line edit.
+// Team roster as a grid of medallion portraits, in presentation order
+// (leadership first). Each portrait reveals its name + role on hover (see
+// .caption in the stylesheet); adding or removing a member is a one-line edit.
 const TEAM = [
-  'avatar-01.webp',
-  'avatar-02.webp',
-  'avatar-03.webp',
-  'avatar-04.webp',
-  'avatar-05.webp',
-  'avatar-06.webp',
-  'avatar-07.webp',
-  'avatar-08.webp',
-  'avatar-09.webp',
-  'avatar-10.webp',
-  'avatar-11.webp',
-  'Agnieszka-sl.webp',
+  { file: 'anna-ozga.webp', name: 'Ania Ozga', role: 'Head of Social Media' },
+  { file: 'piotrek-zach.webp', name: 'Piotrek Zach', role: 'Project Manager' },
+  {
+    file: 'emilia-metryka.webp',
+    name: 'Emilia Metryka',
+    role: 'Social Media Manager',
+  },
+  {
+    file: 'paulina-hildebrand.webp',
+    name: 'Paulina Hildebrand',
+    role: 'Social Media Manager',
+  },
+  {
+    file: 'magda-rokicka.webp',
+    name: 'Magda Rokicka',
+    role: 'Social Media Manager',
+  },
+  {
+    file: 'karolina-marcinowska.webp',
+    name: 'Karolina Marcinowska',
+    role: 'Wideo Content Creator',
+  },
+  {
+    file: 'oliwia-witewska.webp',
+    name: 'Oliwia Witewska',
+    role: 'Social Media Specialist',
+  },
+  {
+    file: 'martyna-borowik.webp',
+    name: 'Martyna Borowik',
+    role: 'Senior Social Media Specialist',
+  },
+  {
+    file: 'kornelia-orlik.webp',
+    name: 'Kornelia Orlik',
+    role: 'Social Media Expert',
+  },
+  {
+    file: 'katarzyna-kaptur.webp',
+    name: 'Katarzyna Kaptur',
+    role: 'Social Media Expert',
+  },
+  {
+    file: 'agnieszka-klajbert.webp',
+    name: 'Agnieszka Klajbert',
+    role: 'Senior Social Media Specialist',
+  },
 ] as const
 
 // Credential cards sitting inline in the mosaic. Aspect ratios are the marks'
@@ -56,6 +92,23 @@ const CERTS = [
 
 export function WhyThatWorks() {
   const bottomRef = useReveal<HTMLDivElement>()
+  // Touch has no hover, so a tap toggles which portrait shows its caption
+  // (pointer devices use :hover and ignore this). null = none open.
+  const [active, setActive] = useState<string | null>(null)
+  const facesRef = useRef<HTMLDivElement>(null)
+
+  // Touch has no blur, so close the open portrait when a tap lands outside the
+  // grid (tapping another face is handled by its own button).
+  useEffect(() => {
+    if (!active) return
+    function handlePointerDown(event: PointerEvent) {
+      if (!facesRef.current?.contains(event.target as Node)) {
+        setActive(null)
+      }
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [active])
 
   return (
     <section className={s.section} id="o-nas">
@@ -99,17 +152,44 @@ export function WhyThatWorks() {
           aria-label="Zespół Social Lama"
         >
           <div className={s.mosaic}>
-            {TEAM.map((file) => (
-              <div key={file} className={s.tile}>
-                <Image
-                  src={`/assets/team/${file}`}
-                  alt=""
-                  fill
-                  mobileSize="30vw"
-                  desktopSize="16vw"
-                />
-              </div>
-            ))}
+            <div
+              ref={facesRef}
+              className={s.faces}
+              data-active={active ? '' : undefined}
+            >
+              {TEAM.map((member) => {
+                const isActive = active === member.file
+                return (
+                  <button
+                    key={member.file}
+                    type="button"
+                    className={cn(s.tile, isActive && s.isActive)}
+                    aria-pressed={isActive}
+                    aria-label={`${member.name}, ${member.role}`}
+                    onClick={() =>
+                      setActive((cur) =>
+                        cur === member.file ? null : member.file
+                      )
+                    }
+                  >
+                    <Image
+                      src={`/assets/team/${member.file}`}
+                      alt=""
+                      fill
+                      mobileSize="30vw"
+                      desktopSize="16vw"
+                    />
+                    {/* Name + role, shown on hover (pointer) or when tapped
+                        active (touch). aria-hidden: the button's aria-label
+                        already carries the identity. */}
+                    <div className={s.caption} aria-hidden="true">
+                      <span className={s.captionName}>{member.name}</span>
+                      <span className={s.captionRole}>{member.role}</span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
             <span className={s.certLabel}>Certyfikaty</span>
             {CERTS.map((c) => (
               <div key={c.src} className={s.cert}>
