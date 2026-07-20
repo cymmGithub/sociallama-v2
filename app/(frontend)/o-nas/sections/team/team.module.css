@@ -1,0 +1,267 @@
+/*
+ * Team slider band — plum canvas, orange accents (data-theme="plum" resolves
+ * --color-primary / --color-secondary / --color-contrast). Desktop: two
+ * columns — figure stack left, member details right. Under 800px it stacks.
+ */
+
+.section {
+  padding-block: calc(var(--safe) * 4);
+  padding-inline: var(--safe);
+  /* Flat plum-hero — the same ground as the hero and the reused JoinCta /
+     NewsLama sections below, so the whole plum region reads as one continuous
+     background instead of a gradient next to flat plum (user feedback). */
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  overflow: hidden;
+}
+
+/* —— Top row: "NASZE / LAMY" label (left) + "ZESPÓŁ SOCIAL LAMA" (right) —— */
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--gap);
+  margin-bottom: calc(var(--safe) * 2);
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.3);
+}
+
+/* "NASZE" — light Exo, wide tracking, over the heavy "LAMY" (mock 2026-07-20). */
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+  line-height: 1;
+  color: var(--color-secondary);
+}
+
+/* Homepage "Usługi" heading recipe — big display, recolored orange. */
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: var(--color-orange);
+}
+
+/* "ZESPÓŁ SOCIAL LAMA" — same light letter-spaced treatment, right-aligned,
+   two lines (each span is a line). */
+.heading {
+  font-family: var(--font-display);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1.35;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+  text-align: right;
+  /* Cancel the trailing letter-spacing so the text sits flush right. */
+  margin-right: -0.18em;
+  color: var(--color-secondary);
+}
+
+.heading span {
+  display: block;
+}
+
+/* —— Slider layout ——————————————————————————————————————————————————————— */
+
+.slider {
+  --reveal-stagger: 140ms;
+  --reveal-transform: translateY(28px);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 0.9fr 1fr;
+    align-items: center;
+    gap: calc(var(--gap) * 4);
+  }
+}
+
+/* —— Figure stack ————————————————————————————————————————————————————————— */
+
+.stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 5;
+}
+
+/* Placeholder for a cutout portrait — a plum-tinted figure zone (NOT a glassy
+   card): no rounded frame, so the real transparent PNG drops straight in. */
+.photo {
+  display: block;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-plum) 62%, var(--color-cream) 14%),
+    var(--color-plum-dark)
+  );
+}
+
+.featured {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+
+.photoIcon {
+  width: 34%;
+  height: auto;
+  color: color-mix(in srgb, var(--color-cream) 30%, transparent);
+}
+
+/* Faded teammates, one each side, behind the featured figure. */
+.peer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.32;
+  filter: saturate(0.7);
+}
+
+.peerLeft {
+  transform: translateX(-46%) scale(0.9);
+}
+
+.peerRight {
+  transform: translateX(46%) scale(0.9);
+}
+
+/* Circular prev/next buttons flanking the figures. */
+.nav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: clamp(46px, 3.6vw, 58px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 45%, transparent);
+  background: color-mix(in srgb, var(--color-plum-dark) 55%, transparent);
+  color: var(--color-cream);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo),
+    color 200ms var(--ease-out-expo);
+}
+
+.navPrev {
+  left: 0;
+  transform: translate(-60%, -50%);
+}
+
+.navNext {
+  right: 0;
+  transform: translate(60%, -50%);
+}
+
+.nav svg {
+  width: 42%;
+  height: 42%;
+}
+
+@media (--hover) {
+  .nav:hover {
+    background: var(--color-orange);
+    border-color: var(--color-orange);
+    color: var(--color-ink);
+  }
+}
+
+.nav:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* —— Member details ————————————————————————————————————————————————————— */
+
+.text {
+  position: relative;
+  max-width: 46ch;
+}
+
+.firstName {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+  color: var(--color-secondary);
+}
+
+/* Pairs with the `h2` display utility on the element; this only recolors it. */
+.lastName {
+  margin-top: 0.06em;
+  color: var(--color-orange);
+}
+
+.role {
+  margin-top: clamp(16px, 1.6vw, 22px);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
+  color: color-mix(in srgb, var(--color-secondary) 85%, transparent);
+}
+
+.bio {
+  margin-top: clamp(18px, 2vw, 26px);
+  padding-top: clamp(18px, 2vw, 26px);
+  border-top: 1px solid color-mix(in srgb, var(--color-cream) 18%, transparent);
+  max-width: 44ch;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1vw, 0.98rem);
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+}
+
+/* —— Mobile ——————————————————————————————————————————————————————————————— */
+
+@media (--mobile) {
+  .head {
+    flex-direction: column;
+    gap: calc(var(--gap) * 0.75);
+    margin-bottom: calc(var(--safe) * 1.5);
+  }
+
+  .heading {
+    max-width: none;
+    text-align: left;
+  }
+
+  .stage {
+    max-width: 300px;
+  }
+
+  .text {
+    max-width: none;
+  }
+}
+
+/* —— Reduced motion ——————————————————————————————————————————————————————— */
+
+@media (--reduced-motion) {
+  .nav {
+    transition: none;
+  }
+}

@@ -166,6 +166,27 @@ html.screenshot {
 }
 
 /*
+ * Reveal variant — "clip wipe": items draw on with a top-down clip instead of a
+ * fade + shift. Opt in per container with data-reveal-style="wipe" (used by the
+ * /o-nas sections). Only clip-path animates; the base fade/shift is overridden.
+ */
+[data-reveal][data-reveal-style="wipe"] [data-reveal-item] {
+  opacity: 1;
+  transform: none;
+  /* Bottom starts at 100% (fully hidden, wiping down to reveal). The negative
+     side insets — plus the negative top/bottom in the visible state below —
+     keep the resting clip from cutting glyph descenders (j, y, ę, g) or top
+     diacritics: clip-path otherwise clips to the exact border box. */
+  clip-path: inset(0 -0.04em 100% -0.04em);
+  transition: clip-path var(--reveal-duration, 750ms) var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-index, 0) * var(--reveal-stagger, 60ms));
+}
+
+[data-reveal="visible"][data-reveal-style="wipe"] [data-reveal-item] {
+  clip-path: inset(-0.08em -0.04em -0.24em -0.04em);
+}
+
+/*
  * Respect reduced-motion: neutralize CSS animations/transitions globally.
  * GSAP and WebGL animations gate themselves via usePreferredReducedMotion();
  * the reveal primitive's hook short-circuits to the visible state.
@@ -184,5 +205,9 @@ html.screenshot {
      items never animate even though that rule sets a `transition` shorthand. */
   [data-reveal] [data-reveal-item] {
     transition-duration: 0.01ms;
+  }
+
+  [data-reveal][data-reveal-style="wipe"] [data-reveal-item] {
+    clip-path: none;
   }
 }

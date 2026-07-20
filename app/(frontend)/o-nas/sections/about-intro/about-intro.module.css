@@ -1,0 +1,133 @@
+.section {
+  /* Reveal knobs (contract in global.css): rise + stagger the four items. */
+  --reveal-transform: translateY(28px);
+  --reveal-stagger: 90ms;
+  --reveal-duration: 720ms;
+
+  /* Sand ground — the homepage's light chapter color (cream theme primary),
+     which the ClientLogos belt also uses. data-theme="cream" (on the root)
+     resolves --color-secondary to ink so the copy reads on this ground even
+     though the page Wrapper is theme="plum". */
+  background-color: var(--color-sand);
+  color: var(--color-secondary);
+  padding-block: calc(var(--safe) * 3.5);
+  padding-inline: var(--safe);
+}
+
+.inner {
+  max-width: 1440px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+}
+
+/* —— Left: framed-illustration placeholder ———————————————————————————
+   The real asset (the whole framed llama artwork) drops into .placeholder as
+   one image; this is only a 1:1 stand-in carrying the data-onas-img slot. */
+.figure {
+  width: 100%;
+
+  @media (--mobile) {
+    max-width: 480px;
+    margin-inline: auto;
+  }
+}
+
+.illustration {
+  width: 100%;
+  height: auto;
+}
+
+/* —— Right: heading + body + CTA ——————————————————————————————————— */
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  line-height: 0.9;
+}
+
+/* "COŚ" — ink lead sitting just above the big orange word. */
+.lead {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.15rem, 2.4vw, 2rem);
+  color: var(--color-secondary);
+}
+
+/* "O LAMIE" — the h2 utility supplies the display size/weight; we only recolor
+   it to brand orange. */
+.rest {
+  color: var(--color-orange);
+}
+
+.body {
+  max-width: 46ch;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--color-secondary) 88%, transparent);
+}
+
+.ctaRow {
+  display: flex;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--color-secondary);
+}
+
+.ctaLabel {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.25em;
+  transition: border-color 260ms var(--ease-out-expo);
+}
+
+.ctaIcon {
+  width: 1.2em;
+  height: 1.2em;
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .cta:hover .ctaLabel {
+    border-bottom-color: currentColor;
+  }
+
+  .cta:hover .ctaIcon {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (--reduced-motion) {
+  .ctaLabel,
+  .ctaIcon {
+    transition: none;
+  }
+}

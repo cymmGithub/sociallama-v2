@@ -1,0 +1,118 @@
+/*
+ * VALUES band — solid orange chapter, dark ink text (brand tokens, not the
+ * theme tokens, so the band reads the same regardless of the active theme).
+ * Three columns on desktop wrapped around the center wordmark (per the mock);
+ * one flat, evenly-spaced stack on mobile.
+ */
+
+.section {
+  background-color: var(--color-orange);
+  color: var(--color-ink);
+  padding-block: calc(var(--safe) * 4);
+  padding-inline: var(--safe);
+}
+
+/* Mobile-first: the three column wrappers use `display: contents` so every
+   value block + the wordmark become direct children of this flex container and
+   share one gap. On desktop the wrappers become real flex columns inside a
+   3-col grid. */
+.grid {
+  --reveal-stagger: 90ms;
+  --reveal-transform: translateY(28px);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.75);
+  /* Center the grid instead of spanning full-bleed (was reading sloppy at wide
+     widths); columns sit closer together like the mock. */
+  max-width: 1280px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--gap) * 2.5);
+    align-items: start;
+  }
+}
+
+.col {
+  display: contents;
+
+  @media (--desktop) {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--safe) * 1.6);
+  }
+}
+
+.colCenter {
+  @media (--desktop) {
+    gap: calc(var(--safe) * 1.4);
+  }
+}
+
+/* —— Value block: bold title + small body ——————————————————————————————— */
+
+.value {
+  max-width: 40ch;
+}
+
+.valueTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 1.5vw, 1.9rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.valueBody {
+  margin-top: 0.7em;
+  font-family: var(--font-mono);
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  line-height: 1.55;
+  /* Bodies carry \n\n between paragraphs (content module); preserve the break. */
+  white-space: pre-line;
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+/* —— Center wordmark ("THAT WORKS / WITH SOCIAL LAMA") —————————————————— */
+
+.wordmark {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.84;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  color: var(--color-ink);
+
+  /* Lift the brand statement to the top of the mobile stack. */
+  @media (--mobile) {
+    order: -1;
+  }
+
+  /* Sit the wordmark lower so it aligns with the second row of the side
+     columns (mock), rather than hugging the value above it. */
+  @media (--desktop) {
+    margin-top: calc(var(--safe) * 2.75);
+  }
+}
+
+.wordLine {
+  display: block;
+}
+
+/* Short separator above stacked values within a column (mock detail). */
+@media (--desktop) {
+  .col .value:not(:first-child)::before {
+    content: "";
+    display: block;
+    width: clamp(56px, 5vw, 96px);
+    height: 2px;
+    margin-bottom: calc(var(--safe) * 1.2);
+    background: color-mix(in srgb, var(--color-ink) 42%, transparent);
+  }
+}

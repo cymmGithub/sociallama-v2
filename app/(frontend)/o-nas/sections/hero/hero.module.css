@@ -1,0 +1,150 @@
+/*
+ * /o-nas hero band — aligned to the homepage hero: solid plum ground (the plum
+ * theme primary, no gradient), homepage display type scale, and the homepage's
+ * outline-circle social row. The llama cutout is absolutely anchored to the
+ * band's bottom-right and bleeds off the bottom edge; on mobile it drops below
+ * the copy in a single centered column.
+ */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 90svh;
+  /* Clear the fixed header; a little breathing room at the bottom. */
+  padding-block: calc(var(--header-height) + var(--safe) * 2) var(--safe);
+  padding-inline: var(--safe);
+
+  display: flex;
+  align-items: center;
+
+  /* Same ground as the homepage hero: the plum theme primary the home chapter
+     composites onto — no gradient (user decision 2026-07-20). */
+  background: var(--color-primary);
+}
+
+.inner {
+  width: 100%;
+}
+
+/* —— Copy (headline + socials) ————————————————————————————————————————————— */
+
+.copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2);
+  /* Keep the copy clear of the llama on the right. */
+  max-width: 62%;
+}
+
+/* Mirrors the homepage headline: display face, uppercase, secondary (white)
+   base with the big line recolored to contrast (orange under plum). */
+.headline {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+}
+
+.lineSmall {
+  font-size: clamp(2rem, 5.2vw, 4.75rem);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.lineBig {
+  font-size: clamp(3.25rem, 11.2vw, 10.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--color-contrast);
+}
+
+/* —— Social row (homepage recipe: outline circles, masked glyphs) ——————————— */
+
+.socials {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: calc(var(--gap) * 1.2);
+  align-items: center;
+
+  @media (--mobile) {
+    gap: calc(var(--gap) * 0.75);
+  }
+}
+
+.social {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  transition: border-color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--mobile) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (--hover) {
+    &:hover {
+      border-color: var(--color-contrast);
+    }
+  }
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-secondary);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+/* —— Llama cutout (bottom-right, bleeding off the band) ——————————————————————— */
+
+.llama {
+  position: absolute;
+  right: var(--safe);
+  bottom: 0;
+  height: min(88%, 860px);
+  aspect-ratio: 1856 / 2304;
+  z-index: 0;
+}
+
+.llamaImg {
+  object-position: bottom center;
+}
+
+/* —— Mobile: single centered column ——————————————————————————————————————————— */
+
+@media (--mobile) {
+  .hero {
+    min-height: auto;
+  }
+
+  .copy {
+    max-width: none;
+  }
+
+  .llama {
+    position: relative;
+    inset: auto;
+    height: auto;
+    width: 72%;
+    margin: var(--safe) auto 0;
+  }
+}

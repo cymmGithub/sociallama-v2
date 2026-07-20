@@ -1,0 +1,81 @@
+/*
+ * "JESTEŚMY CZĘŚCIĄ GOOD ONE" band (/o-nas). Cream band, two columns: the Good
+ * One group wheel (single image) left, intro copy right. data-theme="cream" on
+ * the root resolves ink text + plum contrast; the ground is set to cream
+ * explicitly (lighter than the theme's sand `--color-primary`) per the mock.
+ * The reveal knobs live on `.inner` (the useReveal container); the two cells
+ * carry [data-reveal-item] and rise/fade in on entrance.
+ */
+
+.section {
+  /* Sand ground — the homepage's light chapter color, matching the neighboring
+     /o-nas light sections and the ClientLogos belt. */
+  background-color: var(--color-sand);
+  color: var(--color-secondary);
+  padding-block: calc(var(--safe) * 5);
+  padding-inline: var(--safe);
+}
+
+.inner {
+  --reveal-stagger: 140ms;
+  --reveal-transform: translateY(32px);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 2);
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: calc(var(--gap) * 4);
+  }
+}
+
+/* —— Left: the Good One wheel (single image; placeholder until the PNG) ——— */
+
+.wheel {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+.wheelImg {
+  width: 100%;
+  height: auto;
+}
+
+/* —— Right: intro copy ——————————————————————————————————————————————————— */
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.25);
+  max-width: 46ch;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  color: var(--color-secondary);
+}
+
+/* The `h2` utility supplies the display face/scale/leading; this only paints
+   the orange brand accent (the established orange-on-cream heading treatment,
+   as on "Zrealizowane projekty"). */
+.title {
+  color: var(--color-orange);
+}
+
+.body {
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.62;
+  color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
+  max-width: 48ch;
+}

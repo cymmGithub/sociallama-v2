@@ -1,0 +1,169 @@
+/**
+ * Copy + data for the `/o-nas` (About) page.
+ *
+ * Components never hardcode strings — every label reads from here (repo rule;
+ * mirrors home.ts / contact.ts). The reused homepage sections (ClientLogos,
+ * BigMarquee, JoinCta, NewsLama) keep their own copy from `home.ts`; only the
+ * /o-nas-specific sections live in this module.
+ *
+ * Placeholders (2026-07-20): value bodies, team bios (lorem), and project meta
+ * are placeholder pending final copy; images are empty strings until the Figma
+ * assets are pulled in.
+ */
+
+const LOREM =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.'
+
+// —— Page metadata ————————————————————————————————————————————————————————————
+
+export const oNasMeta = {
+  title: 'O nas',
+  description:
+    'Poznaj Social Lamę — agencję social media, która kompleksowo prowadzi komunikację marek w mediach społecznościowych: strategia, content, społeczność i skuteczne kampanie reklamowe.',
+} as const
+
+// —— Hero ("O AGENCJI") — plum band —————————————————————————————————————————————
+
+export const oNasHero = {
+  kicker: 'SOCIAL LAMA',
+  heading: 'O AGENCJI',
+} as const
+
+// —— About intro ("COŚ O LAMIE") — cream band ——————————————————————————————————
+
+export const oNasAbout = {
+  headingLead: 'COŚ',
+  headingRest: 'O LAMIE',
+  body: 'Social Lama to agencja social media zajmująca się kompleksową obsługą komunikacji marki w mediach społecznościowych oraz prowadzeniem efektywnej reklamy na Facebooku, Instagramie i pozostałych mediach społecznościowych. Przygotujemy skuteczną strategię, opracujemy kreatywną komunikację, zajmiemy się Twoją społecznością i stworzymy efektywną kampanię reklamową.',
+  cta: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '#zespol' },
+} as const
+
+// —— Values grid ("THAT WORKS WITH SOCIAL LAMA") — orange band ——————————————————
+// Central block is the static "THAT WORKS WITH SOCIAL LAMA" wordmark. Copy is
+// final from the mock; bodies may carry a blank line (\n\n) between paragraphs.
+
+export const oNasValues = {
+  center: { lead: 'THAT WORKS', rest: 'WITH SOCIAL LAMA' },
+  items: [
+    {
+      title: 'Partnerstwo strategiczne',
+      body: 'Nie realizujemy działań „dla obecności w social mediach”. Najpierw rozumiemy Twój biznes – jego cele, model działania, wyzwania i kontekst rynkowy – a dopiero potem projektujemy strategię. Dzięki temu możesz mieć pewność, że działania w social mediach realnie wspierają sprzedaż, generowanie leadów, rozpoznawalność czy budowanie marki.\n\nOtrzymujesz partnera, który myśli o Twoim wyniku, a nie tylko o publikacjach.',
+    },
+    {
+      title: 'Proaktywne podejście',
+      body: 'Nie czekamy na brief ani przypomnienie. Regularnie analizujemy wyniki, trendy i zmiany w algorytmach, aby proponować nowe kierunki i usprawnienia. Dla Ciebie oznacza to komfort współpracy i poczucie, że projekt jest pod stałą opieką.\n\nZyskujesz zespół, który myśli o rozwoju Twojej marki nawet wtedy, gdy Ty skupiasz się na innych obszarach biznesu.',
+    },
+    {
+      title: 'Skupienie na efektach',
+      body: 'Estetyka jest ważna, ale nie jest celem samym w sobie. Każde działanie ma określony cel i mierzalne wskaźniki sukcesu. Dzięki temu możesz raportować zarządowi lub właścicielom konkretne wyniki, a nie tylko zasięgi.\n\nNasze działania są projektowane tak, aby przekładały się na realną wartość biznesową.',
+    },
+    {
+      title: 'Eksperckość, która daje Ci przewagę',
+      body: 'Specjalizujemy się w social mediach i marketingu digital. Śledzimy trendy, narzędzia, zmiany technologiczne i wykorzystujemy je w praktyce. Współpracując z nami, zyskujesz dostęp do aktualnej wiedzy i sprawdzonych rozwiązań bez konieczności budowania wewnętrznego zespołu specjalistów.',
+    },
+    {
+      title: 'Indywidualne podejście',
+      body: 'Nie kopiujemy rozwiązań między klientami. Każda strategia powstaje w oparciu o specyfikę Twojej branży, odbiorców i etapu rozwoju firmy. To oznacza komunikację dopasowaną do Twojej marki, a nie „uniwersalny model działania”. Twoje cele są punktem wyjścia do wszystkich rekomendacji.',
+    },
+    {
+      title: 'Kompleksowość',
+      body: 'Jesteśmy częścią grupy marketingowo-doradczej Good One, co pozwala nam działać szerzej niż tylko w obszarze social media.\n\nDla Ciebie oznacza to jeden spójny kierunek działań i dostęp do szerokiego zaplecza kompetencji bez konieczności koordynowania wielu podmiotów.',
+    },
+    {
+      title: 'Transparentność',
+      body: 'Nie stosujemy drobnego druczku i nie ukrywamy zasad współpracy. To jawność i uczciwość działania.',
+    },
+  ],
+} as const
+
+// —— Projects ("Zrealizowane projekty") — cream band — PLACEHOLDER ——————————————
+
+export const oNasProjects = {
+  headingLead: 'Zrealizowane',
+  headingRest: 'projekty',
+  items: [
+    {
+      name: 'NAZWA PROJEKTU',
+      year: '2025',
+      client: 'NAZWA MARKI KLIENTA',
+      image: '',
+    },
+    {
+      name: 'NAZWA PROJEKTU',
+      year: '2025',
+      client: 'NAZWA MARKI KLIENTA',
+      image: '',
+    },
+    {
+      name: 'NAZWA PROJEKTU',
+      year: '2025',
+      client: 'NAZWA MARKI KLIENTA',
+      image: '',
+    },
+  ],
+} as const
+
+// —— "GOOD ONE" group wheel ("JESTEŚMY CZĘŚCIĄ GOOD ONE") — cream band —————————————
+// Radial logo wheel (left) + text (right). Body copy is final from the mock.
+
+export const oNasGoodOne = {
+  heading: 'JESTEŚMY CZĘŚCIĄ',
+  headingAccent: 'GOOD ONE',
+  body: 'Agencja Social Lama jest częścią grupy marketingowej Good One, dzięki czemu zapewnia kompleksowość usług poprzez dostęp do specjalistów z pozostałych obszarów komunikacji, takich jak: digital, social media, design, SEO i SEM, influencer marketing.',
+  center: 'GOOD ONE',
+  spokes: [
+    { label: 'Good One PR', kind: 'PUBLIC RELATIONS', logo: '' },
+    { label: 'Social Lama', kind: 'SOCIAL MEDIA', logo: '' },
+    { label: 'Diea', kind: 'GRAFIKA I DESIGN', logo: '' },
+    { label: 'TymKor media', kind: 'KAMPANIE REKLAMOWE', logo: '' },
+    { label: 'Folks', kind: 'INFLUENCER MARKETING', logo: '' },
+    { label: 'SEOFLY', kind: 'SEO & SEM', logo: '' },
+  ],
+} as const
+
+// —— Team slider ("ZESPÓŁ SOCIAL LAMA" / "NASZE LAMY") — plum band ——————————————
+// Slider: one featured member (big photo + name/role/bio), prev/next arrows,
+// other members peeking behind. Bios are lorem placeholder for now.
+
+export const oNasTeam = {
+  kickerLead: 'NASZE',
+  kickerRest: 'LAMY',
+  heading: 'ZESPÓŁ SOCIAL LAMA',
+  members: [
+    {
+      firstName: 'OZGA',
+      lastName: 'ANNA',
+      role: 'HEAD OF SOCIAL LAMA',
+      bio: LOREM,
+      avatar: '',
+    },
+    {
+      firstName: 'IMIĘ',
+      lastName: 'NAZWISKO',
+      role: 'STANOWISKO',
+      bio: LOREM,
+      avatar: '',
+    },
+    {
+      firstName: 'IMIĘ',
+      lastName: 'NAZWISKO',
+      role: 'STANOWISKO',
+      bio: LOREM,
+      avatar: '',
+    },
+    {
+      firstName: 'IMIĘ',
+      lastName: 'NAZWISKO',
+      role: 'STANOWISKO',
+      bio: LOREM,
+      avatar: '',
+    },
+    {
+      firstName: 'IMIĘ',
+      lastName: 'NAZWISKO',
+      role: 'STANOWISKO',
+      bio: LOREM,
+      avatar: '',
+    },
+  ],
+} as const

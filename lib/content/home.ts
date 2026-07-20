@@ -165,7 +165,7 @@ export const menu = {
     },
   ] satisfies MenuColumn[],
   utility: [
-    { label: 'O NAS', href: '/#o-nas' },
+    { label: 'O NAS', href: '/o-nas' },
     { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
   ] satisfies MenuItem[],
 } as const
@@ -370,7 +370,7 @@ export const whyThatWorks = {
     muted:
       'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
-  link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/#o-nas' },
+  link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/o-nas' },
 } as const
 
 // —— Services ————————————————————————————————————————————————————————————————
@@ -687,7 +687,7 @@ export const footer = {
     {
       title: 'NAWIGACJA',
       links: [
-        { label: 'O NAS', href: '/#o-nas' },
+        { label: 'O NAS', href: '/o-nas' },
         { label: 'USŁUGI', href: '/uslugi' },
         { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
         { label: 'BLOG', href: '/blog' },
