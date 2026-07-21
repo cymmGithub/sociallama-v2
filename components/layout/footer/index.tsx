@@ -1,6 +1,7 @@
 import { ArrowRight, CornerDownRight } from 'lucide-react'
 import { Link } from '@/components/ui/link'
 import { footer, socials } from '@/lib/content/home'
+import { footerWordmarkPath } from '@/lib/wordmark-paths'
 import s from './footer.module.css'
 
 export function Footer() {
@@ -11,20 +12,19 @@ export function Footer() {
       data-blur-edge-gate
       data-site-footer
     >
-      {/* Sign-off wordmark — the last brand beat. Rendered as an SVG stroke
-          (not CSS -webkit-text-stroke, which fringes at large sizes); the
-          viewBox matches the glyph metrics so it fills the width undistorted,
-          and non-scaling-stroke keeps the outline a crisp constant weight. */}
+      {/* Sign-off wordmark — the last brand beat. A single merged-outline path
+          (glyphs boolean-unioned in lib/scripts/gen-wordmark.py) so the tight
+          tracking has no crossing/doubled strokes where letters overlap; plain
+          <text> stroked each glyph separately and looked sloppy. non-scaling-
+          stroke keeps the outline a crisp constant weight at any width. */}
       <svg
         className={s.wordmark}
-        viewBox="0 100 1228 240"
+        viewBox={footerWordmarkPath.viewBox}
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={footer.wordmark}
       >
-        <text x="0" y="300" vectorEffect="non-scaling-stroke">
-          {footer.wordmark}
-        </text>
+        <path d={footerWordmarkPath.d} vectorEffect="non-scaling-stroke" />
       </svg>
 
       <div className={s.body}>

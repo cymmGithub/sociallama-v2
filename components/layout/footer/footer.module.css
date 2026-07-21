@@ -59,12 +59,7 @@
   overflow: visible;
 }
 
-.wordmark text {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 200px;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+.wordmark path {
   fill: none;
   stroke: var(--ink);
   /* Constant-width (non-scaling) stroke. Kept at 3px, not a hairline: Chrome

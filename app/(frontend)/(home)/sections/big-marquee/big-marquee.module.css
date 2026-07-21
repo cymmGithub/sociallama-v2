@@ -10,8 +10,7 @@
   width: 100%;
 }
 
-.fill,
-.outline {
+.fill {
   font-family: var(--font-display);
   font-weight: 800;
   text-transform: uppercase;
@@ -19,16 +18,26 @@
   line-height: 1;
   font-size: clamp(3.5rem, 14vw, 12rem);
   white-space: nowrap;
-}
-
-.fill {
   /* Brand rule: every "THAT WORKS" renders bold orange, mirroring the hero
      headline — the orange palette token, not the chapter contrast slot
      (which is plum in this chapter). */
   color: var(--color-orange);
 }
 
+/* Outline row is a single merged-outline SVG (see lib/wordmark-paths.ts): the
+   glyphs are boolean-unioned so tight tracking has no crossing/doubled strokes.
+   Sized to the fill row's cap height — the viewBox is the cap box, so 0.72em
+   against the shared display size lands its caps on the fill row's. */
 .outline {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-secondary);
+  display: block;
+  font-size: clamp(3.5rem, 14vw, 12rem);
+  height: 0.72em;
+  width: auto;
+  overflow: visible;
+}
+
+.outline path {
+  fill: none;
+  stroke: var(--color-secondary);
+  stroke-width: 2px;
 }
