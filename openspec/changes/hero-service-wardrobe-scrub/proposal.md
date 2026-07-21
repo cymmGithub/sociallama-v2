@@ -1,13 +1,14 @@
 ## Why
 
-The hero pairs a scroll-scrubbed llama (transparent frame sequence, head-turn) with a word rotator cycling the offer — STRATEGY → CONTENT → SPRZEDAŻ → KREACJE → WIDEO. Today those two are unrelated: the frames are scroll-driven, but the rotator cycles on a **timer**, so the word the visitor reads has nothing to do with what the llama is doing. The idea (from the client) is to make the mascot *embody each service*: dress the llama for each word, and advance the word and the outfit **together as the visitor scrolls** — so scrolling literally walks through the services, with the llama re-styled for each.
+The hero pairs a scroll-scrubbed llama (transparent frame sequence, head-turn) with a word rotator cycling the offer. Today those two are unrelated: the frames are scroll-driven, but the rotator cycles on a **timer**, so the word the visitor reads has nothing to do with what the llama is doing. The idea (from the client) is to make the mascot *embody each service*: dress the llama for each word, and advance the word and the outfit **together as the visitor scrolls** — so scrolling literally walks through the services, with the llama re-styled for each.
 
 ## What Changes
 
-- The word rotator becomes **scroll-driven** — its active index derives from the same hero scrub progress the frames already use (`wordIndex = floor(scrubProgress × 5)`), replacing the time-based `useRotator` for the hero.
-- A new hero frame sequence in which the llama wears **five service-themed outfits**, one per word, each occupying an exact equal block of the 60-frame runway (frames 0–12 STRATEGY … 48–60 WIDEO), with the approved neck-turn + subtle approving-nod motion running continuously across all blocks.
-- **Word ↔ outfit ↔ scroll locked in lockstep:** as scrub progress crosses each 1/5 boundary, the active word and the visible outfit advance together.
-- Reduced-motion / mobile (no scrub runway): the hero rests on **word 0 + outfit 0** statically (the poster is frame 0), with no timed cycling.
+- The word rotator becomes **scroll-driven** — its active index derives from the same hero scrub progress the frames already use, replacing the time-based `useRotator` for the hero.
+- A new hero frame sequence from a **single approved take** ("take 14"): the llama's outfit and sunglasses morph together through five word-themed looks while the head turns front → left at a steady pace, ending in profile with a subtle admiring settle. The looks were purpose-built to the words: bold color-blocked streetwear + rainbow wayfarers (KREACJE), all-black film-crew look + slim black rectangles (WIDEO), smart-casual cream overshirt + amber tortoiseshell (CONTENT), charcoal blazer + dark aviator-style shades (SPRZEDAŻ), sharp navy suit + thin silver frames (STRATEGY).
+- `hero.headline.rotator` in `home.ts` becomes KREACJE → WIDEO → CONTENT → SPRZEDAŻ → STRATEGY to match the take's outfit order (informal → formal, so the morphs stay subtle).
+- **Word boundaries follow the clip's real outfit cuts** (between frames 15/16, 29/30, 42/43, 48/49 of the 60-frame sequence), not an equal 1/5 grid; the fifth word holds through the profile + admiring settle.
+- Reduced-motion / mobile (no scrub runway): the hero rests on **word 0 + frame 0** statically, with no timed cycling.
 
 ## Capabilities
 
@@ -15,11 +16,10 @@ The hero pairs a scroll-scrubbed llama (transparent frame sequence, head-turn) w
 <!-- none -->
 
 ### Modified Capabilities
-- `hero-scroll-scrub`: adds a scroll-synced service-wardrobe requirement — the rotator word and the llama's outfit both derive from scrub progress and advance in lockstep across five equal blocks; the reduced-motion fallback rests on the first word/outfit.
+- `hero-scroll-scrub`: adds a scroll-synced service-wardrobe requirement — the rotator word derives from scrub progress and flips at the clip's outfit-transition boundaries; the reduced-motion fallback rests on the first word/outfit.
 
 ## Impact
 
-- **Code**: `app/(frontend)/(home)/sections/hero/index.tsx` (rotator → scroll-derived index via the existing scrub context), `track.tsx` / `frame-sequence.tsx` (expose `scrubTarget` to the headline; keep the frame-draw loop), and retiring `useRotator` for the hero (the hook stays for any other consumer). `lib/content/home.ts` `hero.headline.rotator` stays the source of the five words (optionally annotated with the outfit theme per word).
-- **Assets**: a regenerated `public/clips/hero-frames/001–060.webp` set (five themed-outfit blocks) + `hero.mp4` / posters, produced by the slice pipeline in `design.md`.
-- **Build gating**: the code change is small; the **build is gated on the five themed clips being generated and approved** (Higgsfield, iterated separately). Frame-perfect word↔outfit alignment depends on the deterministic slice method, not a single generation.
+- **Code**: `app/(frontend)/(home)/sections/hero/index.tsx` (rotator → scroll-derived index via the existing scrub context; `useRotator` retired for the hero), `lib/content/home.ts` (rotator word order).
+- **Assets**: regenerated `public/clips/hero-frames/001–060.webp` (from the approved take, 2K-upscaled then matted with bria-rmbg / RMBG 2.0 — replaces the u2net matte that left a gray halo and the soft 720p source) + `hero.mp4` / posters.
 - **Scope**: hero + `home.ts` rotator only. Independent of case-studies (different `home.ts` region) and o-nas.

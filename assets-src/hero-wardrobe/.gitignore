@@ -1,0 +1,21 @@
+# Regenerable intermediates (rebuild: extract frames from the take's mp4 with
+# ffmpeg fps=10, matte with matte.py REMBG_MODEL=bria-rmbg, composite with
+# composite-union.sh). Committed: mp4 takes (incl. 2K masters), scripts,
+# decision sheets/comparisons, final build webps, posters.
+frame-*.png
+take*-final/frame-*.png
+take*-final/flat/
+take*-final/tr-*.png
+t[0-9]*.png
+t[0-9][0-9]-*.png
+t[0-9]-*.png
+lab-t*.png
+tail-*.png
+sg-src-*.png
+preview-tile-*.png
+edge-*.png
+cur-*.png
+nobg-peek.png
+f-front*.png
+pair-orig.png
+pair-nobg.png

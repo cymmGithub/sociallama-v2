@@ -5,10 +5,12 @@ const colors = {
   // Social Lama brand palette — per the brand book ("Social Lama nowe
   // wytyczne stylistyczne", 2026-07): white, cream, sand, orange, plum, ink.
   plum: '#913155',
-  // Not in the brand book: plum-hero is the hero clip's graded background
-  // (seamless-composite token — clips are gated against it, never retint it
-  // to match a document); plum-dark is the chapter-3 ground.
-  'plum-hero': '#853253',
+  // plum-hero now equals the brand plum (brand book 2026-07): the hero frames
+  // are transparent and composited onto this CSS ground, and the baked assets
+  // (hero posters + hero.mp4 fallback) are graded to it — regenerate them if
+  // this ever changes. Kept as its own token because the hero/team grounds and
+  // chapter-1 theme consume it by name. plum-dark is the chapter-3 ground.
+  'plum-hero': '#913155',
   'plum-dark': '#722341',
   orange: '#f09b39',
   ink: '#2b1f24',
