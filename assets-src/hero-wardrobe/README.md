@@ -40,6 +40,9 @@ Intermediates (extracted PNGs, mattes) are gitignored; rebuild them:
 ```sh
 ffmpeg -i take14-final/take14-2k.mp4 -vf fps=10 -frames:v 60 frame-%03d.png
 REMBG_MODEL=bria-rmbg python3.11 matte.py frame-0*.png   # needs rembg + ~1GB model
+python3.11 decontam.py frame-NNN.matte.png out.png 1     # per frame: edge color
+                                                         # decontam + 1px erode
+                                                         # (kills the gray halo)
 ./composite-union.sh                                      # union bbox -> 1370x1080 webp
 ```
 
