@@ -1,0 +1,517 @@
+.article {
+  --measure: 72rem;
+  --prose: 70ch;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 2.5);
+  padding-block: calc(var(--header-height) + var(--safe) * 3)
+    calc(var(--safe) * 6);
+  padding-inline: var(--safe);
+  font-family: var(--font-mono);
+}
+
+/* —— Hero ———————————————————————————————————————————————————————— */
+
+.hero {
+  width: min(100%, var(--measure));
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+
+  & a {
+    transition: color var(--duration-fast);
+
+    &:hover {
+      color: var(--color-contrast);
+    }
+  }
+
+  & [aria-current] {
+    color: var(--color-secondary);
+  }
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  flex-wrap: wrap;
+}
+
+.clientLogo {
+  position: relative;
+  width: auto;
+  height: 2.25rem;
+}
+
+.clientLogo img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
+.clientName {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-contrast);
+}
+
+.period {
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.lead {
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
+  text-wrap: pretty;
+  max-width: var(--prose);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--gap) / 2);
+}
+
+.tag {
+  padding: 0.375em 0.875em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.cover {
+  position: relative;
+  width: min(100%, var(--measure));
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+/* —— Sections ————————————————————————————————————————————————————— */
+
+.section {
+  width: min(100%, var(--measure));
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Rich-text prose — mirrors the blog post body (single styling surface). */
+.prose {
+  width: min(100%, var(--prose));
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.75);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-top: calc(var(--gap) * 0.5);
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li::marker {
+    color: var(--color-contrast);
+  }
+
+  strong {
+    font-weight: 700;
+  }
+}
+
+/* —— Approach pillars ————————————————————————————————————————————— */
+
+/* Deck-faithful structure: each content pillar pairs its copy with the real
+   campaign creatives that ran under it, alternating sides down the page. */
+.pillars {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2.5);
+}
+
+.pillar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+    gap: calc(var(--gap) * 2);
+
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+/* Text-only pillar (no creatives yet) keeps prose measure. */
+.pillarSolo {
+  max-width: var(--prose);
+}
+
+.pillarText {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) / 2);
+
+  @media (--desktop) {
+    flex: 1 1 55%;
+  }
+}
+
+.pillarTag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-contrast);
+}
+
+.pillarHeading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.375rem, 2.6vw, 1.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.pillarBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.6);
+  font-size: 1rem;
+  line-height: 1.7;
+
+  strong {
+    font-weight: 700;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li::marker {
+    color: var(--color-contrast);
+  }
+}
+
+.pillarMedia {
+  display: flex;
+  gap: var(--gap);
+  justify-content: center;
+  align-items: flex-start;
+
+  @media (--desktop) {
+    flex: 1 1 45%;
+  }
+}
+
+/* Creative frame — natural aspect; the media keeps its device shape. */
+.shot {
+  flex: 0 1 30rem;
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  line-height: 0;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* Phone creatives read as phones, not blown-up posters; a pair sits side by
+   side with a slight stagger. */
+.shotPortrait {
+  flex: 0 1 15rem;
+
+  &:nth-child(2) {
+    margin-top: calc(var(--gap) * 1.5);
+  }
+}
+
+/* —— Results (metric tiles) ——————————————————————————————————————— */
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+}
+
+.resultGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.resultGroupTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-contrast);
+}
+
+.platformLogo {
+  width: auto;
+  height: 1.5em;
+}
+
+.tiles {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (--desktop) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Orange tiles — the numbers are the shareable, distinctive payload, so they
+   carry the brand accent and count up on scroll into view. */
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  padding: var(--gap);
+  border-radius: 18px;
+  background-color: var(--color-orange);
+  border: 1px solid
+    color-mix(in srgb, var(--color-ink) 12%, var(--color-orange));
+  color: var(--color-ink);
+  box-shadow: 0 6px 20px
+    color-mix(in srgb, var(--color-orange) 45%, transparent);
+}
+
+.tileValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  /* Steady width while the digits tick so the tile doesn't jitter. */
+  font-variant-numeric: tabular-nums;
+}
+
+.tileMetric {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+/* —— Gallery —————————————————————————————————————————————————————— */
+
+/* Masonry: the deck's real creatives mix portrait (phone posts) and landscape
+   (YouTube stills), so items keep their natural aspect instead of a forced crop. */
+.gallery {
+  columns: 1;
+  column-gap: var(--gap);
+
+  @media (--desktop) {
+    columns: 2;
+  }
+}
+
+.galleryItem {
+  break-inside: avoid;
+  margin-bottom: var(--gap);
+  border-radius: 18px;
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  line-height: 0;
+}
+
+.galleryItem img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* —— CTA —————————————————————————————————————————————————————————— */
+
+/* Closing block — the brand's dark "chapter 3" ground (plum) so the invitation
+   reads as a deliberate destination, not another card. */
+.cta {
+  position: relative;
+  overflow: hidden;
+  width: min(100%, var(--measure));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  padding: calc(var(--safe) * 4.5) var(--safe);
+  border-radius: 28px;
+  background-color: var(--color-plum-dark);
+  color: var(--color-cream);
+  text-align: center;
+}
+
+/* Warm orange glow bleeding up from the lower edge. */
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 90%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-orange) 34%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.cta > * {
+  position: relative;
+}
+
+.ctaEyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-orange);
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 20ch;
+}
+
+.ctaText {
+  max-width: 46ch;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(var(--gap) / 2);
+  margin-top: var(--gap);
+}
+
+.ctaPrimary {
+  padding: 0.9em 2em;
+  border-radius: 999px;
+  background-color: var(--color-orange);
+  color: var(--color-ink);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.ctaSecondary {
+  padding: 0.9em 2em;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 38%, transparent);
+  color: var(--color-cream);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  transition:
+    border-color var(--duration-fast),
+    color var(--duration-fast);
+
+  &:hover {
+    border-color: var(--color-orange);
+    color: var(--color-orange);
+  }
+}

@@ -19,7 +19,7 @@ The site SHALL render a `/case-studies` listing page presenting published case s
 - **THEN** every published case study appears as a card linking to `/case-studies/<slug>`, drafts excluded
 
 ### Requirement: Case study detail page
-A `/case-studies/[slug]` page SHALL render the study in semantic sections: a hero (`h1` title, client + logo, tags, period), a challenge section, an approach section, a results section presenting the per-platform metrics as tiles, an image gallery with descriptive alt text, and a call-to-action linking to contact and to other case studies. Unknown slugs SHALL 404.
+A `/case-studies/[slug]` page SHALL render the study in semantic sections: a hero (`h1` title, client + logo, tags, period), a client section, a challenge section, an approach section structured as content pillars (hashtag/label + heading + HTML copy + the campaign creatives that ran under it, at natural aspect), a results section presenting the per-platform metrics as tiles, an optional image gallery with descriptive alt text (fallback for studies without extracted creatives), and a call-to-action linking to contact and to other case studies. Unknown slugs SHALL 404.
 
 #### Scenario: Sections and headings
 - **WHEN** a published case study detail page renders

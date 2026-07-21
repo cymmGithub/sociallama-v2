@@ -3,7 +3,7 @@ import type {
   CollectionAfterChangeHook,
   CollectionAfterDeleteHook,
 } from 'payload'
-import type { Category, Post } from '@/payload-types'
+import type { CaseStudy, Category, Post, SocialPlatform } from '@/payload-types'
 
 /**
  * On-demand invalidation of the blog's cache tags (see
@@ -49,6 +49,43 @@ export const revalidatePostAfterDelete: CollectionAfterDeleteHook<Post> = ({
   doc,
 }) => {
   safeRevalidate('posts', `post:${doc.slug}`)
+  return doc
+}
+
+export const revalidateCaseStudyAfterChange: CollectionAfterChangeHook<
+  CaseStudy
+> = ({ doc, previousDoc }) => {
+  const touchesPublished =
+    doc._status === 'published' || previousDoc?._status === 'published'
+  if (!touchesPublished) {
+    return doc
+  }
+
+  safeRevalidate('case-studies', `case-study:${doc.slug}`)
+  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
+    safeRevalidate(`case-study:${previousDoc.slug}`)
+  }
+  return doc
+}
+
+export const revalidateCaseStudyAfterDelete: CollectionAfterDeleteHook<
+  CaseStudy
+> = ({ doc }) => {
+  safeRevalidate('case-studies', `case-study:${doc.slug}`)
+  return doc
+}
+
+export const revalidatePlatformAfterChange: CollectionAfterChangeHook<
+  SocialPlatform
+> = ({ doc }) => {
+  safeRevalidate('social-platforms')
+  return doc
+}
+
+export const revalidatePlatformAfterDelete: CollectionAfterDeleteHook<
+  SocialPlatform
+> = ({ doc }) => {
+  safeRevalidate('social-platforms')
   return doc
 }
 

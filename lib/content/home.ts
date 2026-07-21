@@ -33,6 +33,9 @@ export interface Client {
   logo: string
   /** Quote shown in the hover card above the logo in the client marquee. */
   testimonial?: Testimonial
+  /** Slug of this client's published case study, if one exists. When set, the
+   *  hover-card CTA links to `/case-studies/<slug>` instead of the tooltip. */
+  caseStudySlug?: string
 }
 
 export interface StagePanel {
@@ -380,6 +383,7 @@ export const clients: Client[] = [
   {
     name: 'pracuj.pl',
     logo: '/assets/clients/pracuj.png',
+    caseStudySlug: 'pracuj-pl',
     // TODO: placeholder — replace before launch
     testimonial: {
       quote: placeholderQuote,

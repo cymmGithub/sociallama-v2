@@ -4,6 +4,7 @@ import { useMediaQuery } from 'hamo'
 import { ArrowRight } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
+import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
 import { clientCardCta, clients, clientsHeading } from '@/lib/content/home'
 import s from './client-logos.module.css'
@@ -123,21 +124,41 @@ export function ClientLogos() {
                   </div>
                   <div className={s.ctaRow}>
                     <span className={s.ctaWrap}>
-                      <span
-                        className={s.tip}
-                        data-show={tipFor === client.name}
-                        role="status"
-                      >
-                        {clientCardCta.tip}
-                      </span>
-                      <button
-                        type="button"
-                        className={s.cta}
-                        onClick={() => showTip(client.name)}
-                      >
-                        {clientCardCta.label}
-                        <ArrowRight className={s.ctaIcon} aria-hidden="true" />
-                      </button>
+                      {client.caseStudySlug ? (
+                        // Real destination exists — link through to the study.
+                        <Link
+                          href={`/case-studies/${client.caseStudySlug}`}
+                          className={s.cta}
+                        >
+                          {clientCardCta.label}
+                          <ArrowRight
+                            className={s.ctaIcon}
+                            aria-hidden="true"
+                          />
+                        </Link>
+                      ) : (
+                        // No study yet — the button answers with a playful tip.
+                        <>
+                          <span
+                            className={s.tip}
+                            data-show={tipFor === client.name}
+                            role="status"
+                          >
+                            {clientCardCta.tip}
+                          </span>
+                          <button
+                            type="button"
+                            className={s.cta}
+                            onClick={() => showTip(client.name)}
+                          >
+                            {clientCardCta.label}
+                            <ArrowRight
+                              className={s.ctaIcon}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </>
+                      )}
                     </span>
                   </div>
                 </div>

@@ -19,6 +19,8 @@
     "payload:types": "payload generate:types",
     "payload:importmap": "payload generate:importmap",
     "payload:seed": "bun ./lib/payload/seed.ts",
+    "payload:seed:case-studies": "bun ./lib/payload/seed-case-studies.ts",
+    "payload:seed:platforms": "bun ./lib/payload/seed-social-platforms.ts",
     "clean": "rm -rf .next node_modules/.cache",
     "lint": "biome lint --max-diagnostics=200",
     "lint:fix": "biome lint --write --unsafe --max-diagnostics=200",

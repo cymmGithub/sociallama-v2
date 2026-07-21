@@ -7,9 +7,11 @@ import { pl } from '@payloadcms/translations/languages/pl'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { env } from '@/lib/env'
+import { caseStudies } from '@/lib/payload/collections/case-studies'
 import { categories } from '@/lib/payload/collections/categories'
 import { media } from '@/lib/payload/collections/media'
 import { posts } from '@/lib/payload/collections/posts'
+import { socialPlatforms } from '@/lib/payload/collections/social-platforms'
 import { users } from '@/lib/payload/collections/users'
 import { requirePayloadEnv } from '@/lib/payload/env'
 
@@ -24,7 +26,7 @@ export default buildConfig({
       connectionString: databaseUrl,
     },
   }),
-  collections: [posts, categories, media, users],
+  collections: [posts, caseStudies, categories, socialPlatforms, media, users],
   editor: lexicalEditor(),
   admin: {
     user: users.slug,

@@ -20,6 +20,7 @@ interface StaticRoute {
 export const STATIC_ROUTES: readonly StaticRoute[] = [
   { path: '/', changeFrequency: 'daily', priority: 1 },
   { path: '/blog', changeFrequency: 'daily', priority: 0.8 },
+  { path: '/case-studies', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/kontakt', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/zostan-lama', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/polityka-prywatnosci', changeFrequency: 'yearly', priority: 0.3 },

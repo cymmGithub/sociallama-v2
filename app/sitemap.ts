@@ -1,6 +1,10 @@
 import type { MetadataRoute } from 'next'
 import { APP_BASE_URL } from '@/lib/env'
-import { getCategories, getPostsForSitemap } from '@/lib/payload/queries'
+import {
+  getCaseStudiesForSitemap,
+  getCategories,
+  getPostsForSitemap,
+} from '@/lib/payload/queries'
 import { STATIC_ROUTES } from '@/lib/static-routes'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -13,16 +17,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
-  // Published posts only — getPostsForSitemap constrains _status; drafts
-  // never appear here.
-  const [posts, categories] = await Promise.all([
+  // Published only — both queries constrain _status; drafts never appear here.
+  const [posts, categories, caseStudies] = await Promise.all([
     getPostsForSitemap(),
     getCategories(),
+    getCaseStudiesForSitemap(),
   ])
 
   const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${APP_BASE_URL}/${post.slug}`,
     lastModified: new Date(post.updatedAt),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
+
+  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map((study) => ({
+    url: `${APP_BASE_URL}/case-studies/${study.slug}`,
+    lastModified: new Date(study.updatedAt),
     changeFrequency: 'monthly',
     priority: 0.7,
   }))
@@ -34,5 +45,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...baseRoutes, ...postRoutes, ...categoryRoutes]
+  return [...baseRoutes, ...postRoutes, ...caseStudyRoutes, ...categoryRoutes]
 }

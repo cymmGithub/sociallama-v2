@@ -68,7 +68,9 @@ export interface Config {
   blocks: {};
   collections: {
     posts: Post;
+    'case-studies': CaseStudy;
     categories: Category;
+    'social-platforms': SocialPlatform;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -79,7 +81,9 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     posts: PostsSelect<false> | PostsSelect<true>;
+    'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    'social-platforms': SocialPlatformsSelect<false> | SocialPlatformsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -239,6 +243,160 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies".
+ */
+export interface CaseStudy {
+  id: number;
+  title: string;
+  /**
+   * Adres case study: sociallama.pl/case-studies/{slug}. Małe litery, cyfry i myślniki.
+   */
+  slug: string;
+  /**
+   * Decyduje o kolejności na liście case studies.
+   */
+  publishedAt?: string | null;
+  client: {
+    name: string;
+    logo?: (number | null) | Media;
+    /**
+     * Sekcja „Nasz klient” — kim jest marka.
+     */
+    about?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Słowa kluczowe pokazywane w nagłówku, np. „Rekrutacja”.
+   */
+  tags?: string[] | null;
+  /**
+   * Np. „Marzec 2024 – obecnie”.
+   */
+  period?: string | null;
+  /**
+   * Krótki opis pokazywany na kartach i w wynikach wyszukiwania.
+   */
+  excerpt?: string | null;
+  cover?: (number | null) | Media;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  approach?:
+    | {
+        /**
+         * Np. „#HUMOR” — kampanijny hashtag filaru.
+         */
+        tag?: string | null;
+        heading: string;
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Zrzuty kreacji z kampanii (posty, kadry wideo) pokazywane obok treści.
+         */
+        media?: (number | Media)[] | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Metryki pogrupowane po platformie — renderowane jako kafelki.
+   */
+  results?:
+    | {
+        /**
+         * Np. „YouTube”, „TikTok”, „Volvo Car Warszawa”.
+         */
+        platform: string;
+        /**
+         * Np. „Wyświetlenia”.
+         */
+        metric: string;
+        /**
+         * Np. „11 mln”, „+7,9 tys.”.
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Wybrane materiały z kampanii. Alt tekst pochodzi z pliku.
+   */
+  gallery?: (number | Media)[] | null;
+  seo?: {
+    /**
+     * Domyślnie: tytuł case study.
+     */
+    metaTitle?: string | null;
+    /**
+     * Domyślnie: zajawka case study.
+     */
+    metaDescription?: string | null;
+    /**
+     * Domyślnie: okładka case study.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-platforms".
+ */
+export interface SocialPlatform {
+  id: number;
+  /**
+   * Wyświetlana nazwa, np. „TikTok”.
+   */
+  name: string;
+  /**
+   * Identyfikator do dopasowania (małe litery, bez spacji), np. „tiktok”.
+   */
+  key: string;
+  logo: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -292,8 +450,16 @@ export interface PayloadLockedDocument {
         value: number | Post;
       } | null)
     | ({
+        relationTo: 'case-studies';
+        value: number | CaseStudy;
+      } | null)
+    | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'social-platforms';
+        value: number | SocialPlatform;
       } | null)
     | ({
         relationTo: 'media';
@@ -370,11 +536,71 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "case-studies_select".
+ */
+export interface CaseStudiesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  publishedAt?: T;
+  client?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        about?: T;
+      };
+  tags?: T;
+  period?: T;
+  excerpt?: T;
+  cover?: T;
+  challenge?: T;
+  approach?:
+    | T
+    | {
+        tag?: T;
+        heading?: T;
+        body?: T;
+        media?: T;
+        id?: T;
+      };
+  results?:
+    | T
+    | {
+        platform?: T;
+        metric?: T;
+        value?: T;
+        id?: T;
+      };
+  gallery?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-platforms_select".
+ */
+export interface SocialPlatformsSelect<T extends boolean = true> {
+  name?: T;
+  key?: T;
+  logo?: T;
   updatedAt?: T;
   createdAt?: T;
 }
