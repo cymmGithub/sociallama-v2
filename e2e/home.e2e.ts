@@ -3,6 +3,7 @@ import { themes } from '../lib/styles/colors'
 import {
   collectPageErrors,
   expectNoSeriousA11yViolations,
+  gotoHydrated,
   hexToRgb,
 } from './helpers'
 
@@ -15,7 +16,7 @@ test.describe('Home page smoke', () => {
     // hero must paint its own opaque plum so the video never composites onto
     // the cream chapter (which read as a detached plum rectangle). Guard the
     // computed background — deterministic, no scroll/timing dependence.
-    await page.goto('/')
+    await gotoHydrated(page, '/')
     // The hero is the <section>; the track/sticky/video wrappers share the
     // hero-module prefix, so scope to the section element.
     const hero = page.locator('section[class*="hero-module"]').first()
@@ -35,7 +36,7 @@ test.describe('Home page smoke', () => {
     // and the chapter background snaps instead of morphing.
     await page.emulateMedia({ reducedMotion: 'reduce' })
 
-    await page.goto('/')
+    await gotoHydrated(page, '/')
 
     // `networkidle` never settles here — the WebGL scene and the dev HMR
     // socket keep the connection busy — so anchor on web assertions instead.

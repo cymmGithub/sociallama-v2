@@ -5,9 +5,9 @@ import { colors, themes } from '../lib/styles/colors'
 import {
   collectPageErrors,
   expectNoSeriousA11yViolations,
+  gotoHydrated,
   HYDRATED,
   hexToRgb,
-  waitForHydration,
 } from './helpers'
 
 /**
@@ -36,8 +36,7 @@ test.describe('Kontakt page', () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/')
 
     // The retired footer-anchor target must not linger anywhere.
     await expect(page.locator('a[href="/#kontakt"]')).toHaveCount(0)
@@ -60,8 +59,7 @@ test.describe('Kontakt page', () => {
     // scroll position across route changes, so /kontakt opened at the previous
     // page's offset (e.g. mid-metrics) instead of the top. No reduced-motion
     // emulation — the bug is motion-independent and it disables wheel scroll.
-    await page.goto('/')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/')
 
     // Scroll the homepage into its lower sections by driving Lenis with wheel
     // events (root mode listens on window). Keep the offset within /kontakt's
@@ -104,8 +102,7 @@ test.describe('Kontakt page', () => {
     const { consoleErrors, pageErrors } = collectPageErrors(page)
 
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/kontakt')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/kontakt')
 
     // Structure: sr-only h1, marquee copy, numbered form, pills, belt, band.
     await expect(
@@ -156,8 +153,7 @@ test.describe('Kontakt page', () => {
     page,
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/kontakt')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/kontakt')
     await expect(page.locator('html')).toHaveAttribute(
       'data-chrome',
       'kontakt',
@@ -187,8 +183,7 @@ test.describe('Kontakt page', () => {
     // instead of revert() left the headline lines stuck at their pre-reveal
     // offset (yPercent 120) whenever the effect re-ran — StrictMode double
     // effects and Next 16 Activity reactivation both do that.
-    await page.goto('/kontakt')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/kontakt')
     await page.locator('header a[href="/"]').click()
     await expect(page).toHaveURL('/', HYDRATED)
 
@@ -219,8 +214,7 @@ test.describe('Kontakt page', () => {
     // must never out-cascade the rail's sizing (:where() guard in
     // image.module.css) — the regression blew avatars up to intrinsic size
     // and collapsed the SVG logos to 0.
-    await page.goto('/')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/')
     await page.locator('header a[href="/kontakt"]').click()
     await expect(page).toHaveURL('/kontakt', HYDRATED)
     await page.goBack()
@@ -247,8 +241,7 @@ test.describe('Kontakt page', () => {
     const { pageErrors } = collectPageErrors(page)
 
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('/kontakt')
-    await waitForHydration(page)
+    await gotoHydrated(page, '/kontakt')
 
     // Invalid email → the localized client-side message, not "Invalid email".
     await page.locator('input[name="email"]').fill('niepoprawny-adres')

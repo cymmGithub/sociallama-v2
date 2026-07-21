@@ -29,6 +29,16 @@ export async function waitForHydration(page: Page) {
   )
 }
 
+/** Navigate, then wait for hydration — without blocking on the `load` event.
+ * The homepage's hero video + WebGL scene keep resources loading, so Playwright's
+ * default goto (`waitUntil: 'load'`) can exceed the test timeout on a slow CI
+ * runner. Anchor on `domcontentloaded` (the SSR HTML is fully parsed) and then
+ * `waitForHydration` (Lenis mounted) — the signal the interactions actually need. */
+export async function gotoHydrated(page: Page, path: string) {
+  await page.goto(path, { waitUntil: 'domcontentloaded' })
+  await waitForHydration(page)
+}
+
 /** Collect console errors and uncaught exceptions from registration onward;
  * assert the returned arrays are empty at the point the test cares about. */
 export function collectPageErrors(page: Page): {
