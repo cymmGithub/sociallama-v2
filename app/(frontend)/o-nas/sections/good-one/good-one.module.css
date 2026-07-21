@@ -28,23 +28,212 @@
 
   @media (--desktop) {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    /* The wheel column carries the larger share: the logos swing a footprint of
+       ~1.14× the orbit diameter (each reaches logo_r + half its block ≈ 0.57×
+       orbit from center), which must clear both the page edge and the copy. */
+    grid-template-columns: 1.25fr 0.75fr;
     align-items: center;
     gap: calc(var(--gap) * 4);
   }
 }
 
-/* —— Left: the Good One wheel (single image; placeholder until the PNG) ——— */
+/* —— Left: the Good One wheel ————————————————————————————————————————————— */
 
 .wheel {
   width: 100%;
   max-width: 560px;
   margin-inline: auto;
+
+  /* On desktop the wheel hosts the orbit, whose logos swing a footprint wider
+     than 560px. The section's "wipe" reveal keeps a border-box clip-path even
+     when settled, so a 560px cap would slice the logos at the 3/9 o'clock
+     extreme. Fill the column instead (the orbit still centers itself), widening
+     the clip box to contain the whole swing. Mobile keeps the 560px cap for the
+     static PNG. */
+  @media (--desktop) {
+    max-width: none;
+  }
 }
 
+/* Mobile fallback: the original flat PNG. Hidden at/above --desktop, where the
+   positioned-DOM orbit takes over. */
 .wheelImg {
   width: 100%;
   height: auto;
+
+  @media (--desktop) {
+    display: none;
+  }
+}
+
+/* —— Desktop orbit ————————————————————————————————————————————————————————
+
+   A single registered <angle>, --spin, drives the whole system. It is animated
+   0deg→360deg on EACH element whose own transform reads it (the ring group and
+   every logo), never on a shared parent: with `inherits: false` an animated
+   custom property only reaches the transform on the same element — animating it
+   on a parent would leave every child at the initial 0deg (all logos piled at
+   12 o'clock). All animated elements share one period + phase, so the ring's
+   orange dots stay locked inboard of their logos. Each logo counter-rotates by
+   the same angle to stay upright; the hub never rotates. */
+
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes spin {
+  to {
+    --spin: 360deg;
+  }
+}
+
+.orbit {
+  /* Radii/sizes are all fractions of the square orbit box, so the whole system
+     scales with one value. --orbit tracks the inner content width (capped at the
+     1240px layout max) rather than a raw vw, so the logo swing footprint stays
+     inside the wheel column at every desktop width instead of clipping on
+     narrower laptops. */
+  --orbit: calc(0.44 * min(1240px, 100vw - 2 * var(--safe)));
+  --period: 54s;
+  /* Ring sits well inside the logos (matches the source PNG's ~0.25 proportion)
+     so the orange dots clear each logo's inboard label. */
+  --ring-r: calc(var(--orbit) * 0.25);
+  --logo-r: calc(var(--orbit) * 0.42);
+  --dot-size: calc(var(--orbit) * 0.026);
+
+  display: none;
+
+  @media (--desktop) {
+    position: relative;
+    display: block;
+    width: var(--orbit);
+    height: var(--orbit);
+    margin-inline: auto;
+  }
+}
+
+/* Dotted ring track + the six orange spoke dots, co-rotating as one group. The
+   dots inherit this rotation from the parent transform; combined with each
+   dot's static --base they land at base+spin — the same angle as their logo. */
+.track {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--ring-r) * 2);
+  height: calc(var(--ring-r) * 2);
+  margin: calc(var(--ring-r) * -1);
+  transform: rotate(var(--spin));
+  animation: spin var(--period) linear infinite;
+}
+
+/* The dotted circle sits at r=50 — the viewBox edge — so it lands exactly under
+   the orange dots (both at radius --ring-r). overflow: visible keeps the round
+   dash-caps whole instead of clipping them at that edge as the ring turns. */
+.trackSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.trackCircle {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 2.6;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background: var(--color-orange);
+  transform: translate(-50%, -50%) rotate(var(--base))
+    translateY(calc(-1 * var(--ring-r)));
+}
+
+/* Each logo block revolves (rotate by base+spin, push out along the spoke) then
+   counter-rotates by the same angle so its logo + label stay upright. It reads
+   AND animates --spin on itself — see the note above. */
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--orbit) * 0.014);
+  width: calc(var(--orbit) * 0.3);
+  /* Trailing scale() shrinks a heavier logo block about its own center (so its
+     position is unchanged, only its size) — used to keep the two longest-label
+     blocks clear of the spoke dot. Defaults to 1. */
+  transform: translate(-50%, -50%) rotate(calc(var(--base) + var(--spin)))
+    translateY(calc(-1 * var(--logo-r)))
+    rotate(calc(-1 * (var(--base) + var(--spin)))) scale(var(--logo-scale, 1));
+  animation: spin var(--period) linear infinite;
+}
+
+.logoImg {
+  width: auto;
+  height: auto;
+  max-width: calc(var(--orbit) * 0.26);
+  max-height: calc(var(--orbit) * 0.09);
+}
+
+.dash {
+  width: calc(var(--orbit) * 0.05);
+  height: 2px;
+  background: var(--color-orange);
+}
+
+.kind {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: clamp(0.6rem, 0.85vw, 0.78rem);
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--color-secondary);
+}
+
+/* Stationary center mark. */
+.hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  transform: translate(-50%, -50%);
+}
+
+.hubImg {
+  width: auto;
+  height: auto;
+  max-width: calc(var(--orbit) * 0.3);
+  max-height: calc(var(--orbit) * 0.2);
+}
+
+/* Motion safety: pause offscreen (data-playing toggled by the in-view observer)
+   and halt entirely under reduced motion. With the animation off, --spin rests
+   at its 0deg initial value, so the logos + dots settle at their base angles —
+   the static wheel arrangement, upright. */
+.orbit[data-playing="false"] .track,
+.orbit[data-playing="false"] .logo {
+  animation-play-state: paused;
+}
+
+@media (--reduced-motion) {
+  .track,
+  .logo {
+    animation: none;
+  }
 }
 
 /* —— Right: intro copy ——————————————————————————————————————————————————— */

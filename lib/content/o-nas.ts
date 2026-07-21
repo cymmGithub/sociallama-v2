@@ -111,13 +111,56 @@ export const oNasGoodOne = {
   headingAccent: 'GOOD ONE',
   body: 'Agencja Social Lama jest częścią grupy marketingowej Good One, dzięki czemu zapewnia kompleksowość usług poprzez dostęp do specjalistów z pozostałych obszarów komunikacji, takich jak: digital, social media, design, SEO i SEM, influencer marketing.',
   center: 'GOOD ONE',
+  // Ordered clockwise from 12 o'clock — index drives the spoke angle (i * 60°)
+  // in the desktop orbit. `logo` crops (mark only, transparent) live under
+  // /public/o-nas/good-one/; `w`/`h` are their intrinsic px (for the aspect box).
   spokes: [
-    { label: 'Good One PR', kind: 'PUBLIC RELATIONS', logo: '' },
-    { label: 'Social Lama', kind: 'SOCIAL MEDIA', logo: '' },
-    { label: 'Diea', kind: 'GRAFIKA I DESIGN', logo: '' },
-    { label: 'TymKor media', kind: 'KAMPANIE REKLAMOWE', logo: '' },
-    { label: 'Folks', kind: 'INFLUENCER MARKETING', logo: '' },
-    { label: 'SEOFLY', kind: 'SEO & SEM', logo: '' },
+    {
+      label: 'Good One PR',
+      kind: 'PUBLIC RELATIONS',
+      logo: '/o-nas/good-one/goodone-pr.png',
+      w: 305,
+      h: 59,
+    },
+    {
+      label: 'Social Lama',
+      kind: 'SOCIAL MEDIA',
+      logo: '/o-nas/good-one/sociallama.png',
+      w: 184,
+      h: 134,
+    },
+    {
+      label: 'Diea',
+      kind: 'GRAFIKA I DESIGN',
+      logo: '/o-nas/good-one/diea.png',
+      w: 236,
+      h: 68,
+    },
+    // TymKor + Folks carry the two longest labels, which reach toward the spoke
+    // dot when the block swings through 3/9 o'clock — scale them down a touch.
+    {
+      label: 'TymKor media',
+      kind: 'KAMPANIE REKLAMOWE',
+      logo: '/o-nas/good-one/tymkor.png',
+      w: 218,
+      h: 69,
+      scale: 0.85,
+    },
+    {
+      label: 'Folks',
+      kind: 'INFLUENCER MARKETING',
+      logo: '/o-nas/good-one/folks.png',
+      w: 228,
+      h: 66,
+      scale: 0.85,
+    },
+    {
+      label: 'SEOFLY',
+      kind: 'SEO & SEM',
+      logo: '/o-nas/good-one/seofly.png',
+      w: 285,
+      h: 73,
+    },
   ],
 } as const
 
