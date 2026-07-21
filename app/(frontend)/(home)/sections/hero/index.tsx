@@ -3,26 +3,16 @@
 import cn from 'clsx'
 import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
-import { useTempus } from 'tempus/react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { hero, socials } from '@/lib/content/home'
 import { useRotator } from '@/lib/hooks/use-rotator'
 import { breakpoints } from '@/styles/config'
+import { HeroFrames } from './frame-sequence'
 import s from './hero.module.css'
-import { useHeroScrubTarget } from './track'
-
-/* Scrub smoothing (design D3): per-frame lerp toward the target time, and the
-   minimum remaining delta worth a `currentTime` write — perpetual micro-seeks
-   keep Chrome in a seeking state that composites frames wrong. The reference
-   used 0.22 against raw scroll; Lenis already smooths, so start higher. */
-const SCRUB_LERP = 0.35
-const SEEK_THRESHOLD = 0.02
 
 export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const scrubTargetRef = useHeroScrubTarget()
   // Rotates the first headline word through the offer. Static under reduced
   // motion (shows the first word only); paused while the hero is off screen.
   const { ref: rotatorRef, rotation } = useRotator<HTMLElement>(
@@ -47,53 +37,6 @@ export function Hero() {
     ).matches
     if (!(mobile || touchOnly)) setMedia('desktop')
   }, [])
-
-  // Seek loop (hero-scroll-scrub): the video is never played, only seeked
-  // toward the track's scrub target. No-ops until the active breakpoint's
-  // video mounts and its metadata (duration) arrives.
-  useTempus(() => {
-    const video = videoRef.current
-    if (!(video && scrubTargetRef)) return
-    if (!video.duration || Number.isNaN(video.duration)) return
-
-    const want = scrubTargetRef.current * (video.duration - 0.05)
-    const delta = want - video.currentTime
-    if (Math.abs(delta) > SEEK_THRESHOLD) {
-      video.currentTime += delta * SCRUB_LERP
-    }
-  })
-
-  // iOS decode unlock: Safari ignores preload="auto" and never buffers or
-  // activates the decode pipeline for a video that is never play()ed — the
-  // poster paints but currentTime writes show nothing. Prime it with a muted
-  // play() → pause() (allowed without a gesture for muted+playsInline). Low
-  // Power Mode rejects programmatic play(), so retry once on first touch.
-  useEffect(() => {
-    if (media === 'poster') return
-    const video = videoRef.current
-    if (!video) return
-
-    let primed = false
-    const prime = () => {
-      if (primed) return
-      video
-        .play()
-        ?.then(() => {
-          primed = true
-          video.pause()
-        })
-        .catch(() => {
-          // Low Power Mode / restricted: the touchstart retry covers it.
-        })
-    }
-
-    prime()
-    window.addEventListener('touchstart', prime, {
-      once: true,
-      passive: true,
-    })
-    return () => window.removeEventListener('touchstart', prime)
-  }, [media])
 
   // Stagger the three headline lines in on first paint (design D4). Runs once
   // and never re-triggers; reduced motion leaves the final state untouched.
@@ -129,36 +72,28 @@ export function Hero() {
 
   return (
     <section ref={rotatorRef} className={s.hero}>
-      {/* Desktop media: bare right-anchored clip composited directly onto the
-          #892f53 chapter (seamless-composite — the clip is graded to the token
-          and gated by verify-clip-bg.ts). Absolute against the section, like
-          the reference build; hidden on mobile via CSS. */}
+      {/* Desktop media: transparent head-turn frames (rembg matte) composited
+          live onto the #892f53 chapter via a <canvas>. No baked plum, so
+          Safari has no video colour pipeline to mis-manage — the reason we
+          moved off the clip. Absolute against the section; hidden on mobile. */}
       {media === 'desktop' ? (
-        /* Scrubbed by scroll: never played, only seeked (see the useTempus
-           loop above). Poster paints until data arrives. */
-        <video
-          ref={videoRef}
-          className={s.video}
-          src={hero.video.src}
-          poster={hero.video.poster}
-          muted
-          playsInline
-          preload="auto"
-          aria-label={hero.llamaAlt}
-        />
+        <HeroFrames alt={hero.llamaAlt} />
       ) : (
         media === 'poster' && (
-          /* SSR / pre-mount / reduced motion: static poster, same box.
-             Optimized WebP composites correctly; AVIF is disabled globally
-             (next.config images.formats) because the optimizer's AVIF output
-             is squashed and range-shifted, which broke this composite. */
+          /* SSR / pre-mount / reduced motion: the first matte frame, composited
+             onto the CSS plum exactly like the canvas — so the poster IS frame 0,
+             no baked-plum JPG to colour-desync from the scrubbed sequence.
+             unoptimized: Next's optimizer re-encodes WebP and shifts colour/alpha
+             (the known width-specific corruption), which would push the poster
+             off the canvas match — serve the matte as-is. */
           <Image
-            src={hero.video.poster}
+            src="/clips/hero-frames/001.webp"
             alt={hero.llamaAlt}
             width={1370}
             height={1080}
             desktopSize="46vw"
             preload
+            unoptimized
             className={s.video}
           />
         )
