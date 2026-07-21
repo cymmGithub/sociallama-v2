@@ -155,11 +155,20 @@ export const menu = {
       ],
     },
     {
+      // Strategia, Audyt i konsultacje, Influencer marketing route to
+      // /uslugi/<slug> pages that don't exist yet — accepted interim 404s;
+      // the slugs are final so the pages drop in without a menu change.
       label: 'USŁUGI',
       items: [
+        { label: 'Strategia', href: '/uslugi/strategia' },
         { label: 'Content', href: '/uslugi/content' },
         { label: 'Sprzedaż', href: '/uslugi/sprzedaz' },
         { label: 'Kreacje & Wideo', href: '/uslugi/kreacje-wideo' },
+        { label: 'Audyt i konsultacje', href: '/uslugi/audyt-i-konsultacje' },
+        {
+          label: 'Influencer marketing',
+          href: '/uslugi/influencer-marketing',
+        },
         { label: 'Szkolenia i kursy', href: '/szkolenia' },
       ],
     },
@@ -170,15 +179,46 @@ export const menu = {
   ] satisfies MenuItem[],
 } as const
 
+// Canonical, ordered social set — rendered identically everywhere social icons
+// appear (header overlay, footer, hero, o-nas hero). Order is Meta-first:
+// IG, FB, TikTok, X, LinkedIn, YouTube, Pinterest. Real profile destinations —
+// no `#` placeholders. External http(s) hrefs make <Link> open a new tab with
+// rel="noopener noreferrer" automatically (see components/ui/link).
 export const socials: SocialLink[] = [
-  { label: 'Facebook', href: '#', icon: '/assets/icon-facebook.svg' },
-  { label: 'TikTok', href: '#', icon: '/assets/icon-tiktok.svg' },
-  { label: 'Instagram', href: '#', icon: '/assets/icon-instagram.svg' },
-  { label: 'LinkedIn', href: '#', icon: '/assets/icon-linkedin.svg' },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/social.lama/',
+    icon: '/assets/icon-instagram.svg',
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/agencjasociallama/',
+    icon: '/assets/icon-facebook.svg',
+  },
+  {
+    label: 'TikTok',
+    href: 'https://www.tiktok.com/@social_lama',
+    icon: '/assets/icon-tiktok.svg',
+  },
   {
     label: 'X',
     href: 'https://x.com/SocialLamaPL',
     icon: '/assets/icon-x.svg',
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/sociallama/',
+    icon: '/assets/icon-linkedin.svg',
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@GOODONEGROUP',
+    icon: '/assets/icon-youtube.svg',
+  },
+  {
+    label: 'Pinterest',
+    href: 'https://pl.pinterest.com/social__lama/',
+    icon: '/assets/icon-pinterest.svg',
   },
 ]
 
