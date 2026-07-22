@@ -20,6 +20,9 @@
   --line: rgba(244, 239, 233, 0.16);
   --line-strong: rgba(244, 239, 233, 0.34);
   --band-ink: #241318;
+  /* Error accent — warm coral, distinct from the orange CTA, tuned to the dark
+     page (replaces the kit's default cool #dc2626). */
+  --field-error: #ff6b5b;
 
   background-color: var(--ground);
   color: var(--color-cream);
@@ -108,6 +111,12 @@
   max-width: 34ch;
 }
 
+/* Emphasised CTA inside the lede — the one warm accent in the copy. */
+.ledeCta {
+  color: var(--color-orange);
+  font-weight: 700;
+}
+
 /* —— Form ————————————————————————————————————————————————————————————————— */
 
 .formSection {
@@ -146,6 +155,12 @@
 
 .formShell .field label::before {
   content: counter(field, decimal-leading-zero) " — ";
+}
+
+/* Required-field asterisk (kit renders it as a bare <span aria-hidden> *</span>;
+   the optional-marker dot is an <svg>, so this only hits the asterisk). */
+.formShell .field label span {
+  color: var(--color-orange);
 }
 
 /* Subtle dot before "opcjonalnie" (replaces a raw · glyph). */
@@ -250,10 +265,12 @@
   font-family: var(--font-mono);
   font-size: 15px;
   padding: 16px 34px;
-  border: 1.5px solid var(--line-strong);
+  /* Primary conversion CTA — solid orange fill, dark ink (mirrors the metrics
+     band's orange-on-ink pairing). Hover inverts to cream below. */
+  border: 1.5px solid var(--color-orange);
   border-radius: 999px;
-  background: transparent;
-  color: var(--color-cream);
+  background: var(--color-orange);
+  color: var(--band-ink);
   cursor: pointer;
   transition:
     background-color 200ms var(--ease-out-expo),
@@ -261,11 +278,18 @@
     border-color 200ms var(--ease-out-expo);
 }
 
+/* Neutralise the kit's black clip-path "ripple" ::before — it's built for the
+   kit's light default button and turns this orange CTA black on hover. */
+.send button[type="submit"]::before {
+  content: none;
+}
+
 @media (--hover) {
   .send button[type="submit"]:hover {
-    background: var(--color-cream);
-    color: var(--ground);
-    border-color: var(--color-cream);
+    /* Deepen the orange (keeps the CTA identity); dark ink text stays. */
+    background: #d9812a;
+    color: var(--band-ink);
+    border-color: #d9812a;
   }
 }
 
@@ -290,8 +314,33 @@
   color: var(--muted);
 }
 
-.messages {
+/* RODO privacy note under the send row. */
+.privacy {
   grid-column: 1 / -1;
+  margin-top: -6px;
+  max-width: 60ch;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.privacy a {
+  color: var(--color-cream);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 180ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .privacy a:hover {
+    color: var(--color-orange);
+  }
+}
+
+.privacy a:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
 }
 
 /* —— Brand belt (dark variant) ———————————————————————————————————————————— */
@@ -304,6 +353,67 @@
   --belt-edge: var(--ground);
   --belt-logo-filter: brightness(0) invert(1);
   --belt-logo-opacity: 0.85;
+}
+
+/* —— "Co dalej?" steps ——————————————————————————————————————————————————— */
+
+.stepsInner {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: clamp(20px, 4vh, 48px) var(--safe) clamp(48px, 8vh, 96px);
+}
+
+.stepsHead {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: clamp(28px, 4vh, 48px);
+}
+
+.stepList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 3vw, 48px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+/* Hairline rhythm echoing the metrics band — one rule per step, on the ground. */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: clamp(20px, 3vh, 32px);
+  border-top: 1px solid var(--line-strong);
+}
+
+.stepNum {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 0.9;
+  color: var(--color-orange);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.2;
+  color: var(--color-cream);
+}
+
+.stepText {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.4;
+  color: var(--muted);
+  max-width: 24ch;
 }
 
 /* —— Metrics band ————————————————————————————————————————————————————————— */
@@ -391,6 +501,10 @@
     grid-column: 1 / -1;
   }
 
+  .stepList {
+    grid-template-columns: 1fr;
+  }
+
   .metric {
     grid-template-columns: 1fr;
   }
@@ -410,7 +524,8 @@
   .formShell input:not([type="hidden"]),
   .formShell textarea,
   .formShell button[aria-pressed],
-  .send button[type="submit"] {
+  .send button[type="submit"],
+  .privacy a {
     transition: none;
   }
 }

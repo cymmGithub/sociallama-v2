@@ -21,6 +21,10 @@ const SERVICE_LABELS = new Map<string, string>(
 const contactSchema = z.object({
   name: z.string().min(1, { error: contactForm.errors.name }),
   email: z.email({ error: contactForm.errors.email }),
+  // Optional callback number — no strict regex so international/informal
+  // formats are accepted (a rejected valid number is a lost lead). Keyed
+  // `phoneNumber` to dodge the form kit's built-in strict `phone` validator.
+  phoneNumber: z.string().trim().optional(),
   message: z.string().min(1, { error: contactForm.errors.message }),
   services: z
     .string()
@@ -91,6 +95,7 @@ export async function sendContactEmail(
           text: [
             `Imię: ${input.name}`,
             `E-mail: ${input.email}`,
+            `Telefon: ${input.phoneNumber || '—'}`,
             `Zainteresowania: ${services}`,
             '',
             'Wiadomość:',

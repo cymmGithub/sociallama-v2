@@ -28,7 +28,10 @@ export function ContactHero() {
       </section>
       <div className={s.lede}>
         <CornerDownRight className={s.ledeArrow} aria-hidden="true" />
-        <p className={s.ledeText}>{contactLede}</p>
+        <p className={s.ledeText}>
+          {contactLede.text}
+          <strong className={s.ledeCta}>{contactLede.cta}</strong>.
+        </p>
       </div>
     </>
   )

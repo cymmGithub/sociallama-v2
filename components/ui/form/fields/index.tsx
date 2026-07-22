@@ -34,7 +34,7 @@ type InputFieldProps = {
   type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'
   id: string
   name?: string
-  label?: string
+  label?: ReactNode
   placeholder?: string
   required?: boolean
   disabled?: boolean
@@ -83,10 +83,13 @@ export function InputField({
         {...register(fieldName)}
         render={<input />}
       />
+      {/* Plain element, not Base UI <Field.Error> — the latter renders only
+          from Base UI's own validity, so our custom validation state never
+          surfaced through it. */}
       {error?.state && error.message && (
-        <Field.Error className={cn(s.errorMessage)}>
+        <span className={cn(s.errorMessage)} role="alert">
           {error.message}
-        </Field.Error>
+        </span>
       )}
     </Field.Root>
   )
@@ -145,10 +148,13 @@ export function TextareaField({
         {...reg}
         render={<textarea rows={rows} />}
       />
+      {/* Plain element, not Base UI <Field.Error> — the latter renders only
+          from Base UI's own validity, so our custom validation state never
+          surfaced through it. */}
       {error?.state && error.message && (
-        <Field.Error className={cn(s.errorMessage)}>
+        <span className={cn(s.errorMessage)} role="alert">
           {error.message}
-        </Field.Error>
+        </span>
       )}
     </Field.Root>
   )

@@ -2,6 +2,7 @@
 
 import { Toast as BaseToast } from '@base-ui/react/toast'
 import cn from 'clsx'
+import { X } from 'lucide-react'
 import { type ComponentProps, createContext, type ReactNode, use } from 'react'
 import s from './toast.module.css'
 
@@ -101,9 +102,29 @@ type ViewportProps = ComponentProps<typeof BaseToast.Viewport> & {
 function Viewport({ className, ...props }: ViewportProps) {
   return (
     <BaseToast.Portal>
-      <BaseToast.Viewport className={cn(s.viewport, className)} {...props} />
+      <BaseToast.Viewport className={cn(s.viewport, className)} {...props}>
+        <ToastList />
+      </BaseToast.Viewport>
     </BaseToast.Portal>
   )
+}
+
+// Renders the live toast stack. Base UI's Title/Description read their text
+// from the `toast` object, so no children are needed.
+function ToastList() {
+  const { toasts } = BaseToast.useToastManager()
+  return toasts.map((toast) => (
+    <BaseToast.Root
+      key={toast.id}
+      toast={toast}
+      className={cn(s.root, toast.type && s[toast.type])}
+    >
+      <BaseToast.Title className={cn(s.title)} />
+      <BaseToast.Close className={cn(s.close)} aria-label="Zamknij">
+        <X aria-hidden="true" />
+      </BaseToast.Close>
+    </BaseToast.Root>
+  ))
 }
 
 function Root({ className, ...props }: ComponentProps<typeof BaseToast.Root>) {
