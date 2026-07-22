@@ -82,6 +82,21 @@
   color: var(--color-contrast);
 }
 
+/* Brand logo slot — fixed height, width auto so wide wordmarks and compact
+   badges share one left-aligned baseline (mirrors the detail page). */
+.cardLogo {
+  display: block;
+  position: relative;
+  width: auto;
+  height: 1.5rem;
+}
+
+.cardLogo img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
 .cardTitle {
   font-family: var(--font-display);
   font-weight: 800;
@@ -99,6 +114,24 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Topic tags — pill row matching the detail page's tag language. */
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--gap) / 3);
+}
+
+.cardTag {
+  padding: 0.3em 0.7em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-contrast);
 }
 
 .cardRead {

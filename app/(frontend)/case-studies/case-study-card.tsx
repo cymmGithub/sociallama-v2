@@ -8,6 +8,7 @@ import s from './case-studies.module.css'
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
   const cover = resolveMedia(study.cover)
   const coverUrl = cover?.sizes?.card?.url ?? cover?.url
+  const logo = resolveMedia(study.client.logo)
 
   return (
     <Link className={s.card} href={`/case-studies/${study.slug}`}>
@@ -24,10 +25,31 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         )}
       </span>
       <span className={s.cardBody}>
-        <span className={s.cardClient}>{study.client.name}</span>
+        {logo?.url ? (
+          <span className={s.cardLogo}>
+            <Image
+              src={logo.url}
+              alt={study.client.name}
+              width={logo.width ?? 120}
+              height={logo.height ?? 40}
+            />
+            <span className="sr-only">{study.client.name}</span>
+          </span>
+        ) : (
+          <span className={s.cardClient}>{study.client.name}</span>
+        )}
         <span className={s.cardTitle}>{caseStudyHeadline(study.title)}</span>
         {study.excerpt && (
           <span className={s.cardExcerpt}>{study.excerpt}</span>
+        )}
+        {study.tags && study.tags.length > 0 && (
+          <span className={s.cardTags}>
+            {study.tags.map((tag) => (
+              <span key={tag} className={s.cardTag}>
+                {tag}
+              </span>
+            ))}
+          </span>
         )}
         <span className={s.cardRead}>ZOBACZ CASE STUDY</span>
       </span>
