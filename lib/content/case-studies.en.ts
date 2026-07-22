@@ -28,6 +28,18 @@ export const caseStudyChrome = {
     results: 'Results',
     gallery: 'Gallery',
   },
+  resultsBand: {
+    clock: '9:41',
+    clockDate: 'Wednesday, mid-campaign',
+    replay: "The client's phone never got a quiet minute.",
+    now: 'now',
+    notifTemplates: [
+      'Your profile just grew by {value} — {metric}',
+      '{value} · {metric} — this is really happening',
+      '{metric}: {value} 🔥',
+      'New record: {value} ({metric})',
+    ],
+  },
   cta: {
     eyebrow: 'Your move',
     title: "Let's build something like this for your brand",

@@ -311,77 +311,267 @@
   }
 }
 
-/* —— Results (metric tiles) ——————————————————————————————————————— */
+/* —— Results (notification phone + metric list) ——————————————————— */
 
-.results {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--gap) * 1.5);
-}
-
-.resultGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-}
-
-.resultGroupTitle {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-contrast);
-}
-
-.platformLogo {
-  width: auto;
-  height: 1.5em;
-}
-
-.tiles {
+/* Text column | phone column — same editorial rhythm as the approach
+   pillars, which already put phone-framed media next to copy on cream. */
+.resultsGrid {
   display: grid;
-  gap: var(--gap);
-  grid-template-columns: repeat(2, 1fr);
+  gap: calc(var(--gap) * 2);
+  align-items: start;
 
   @media (--desktop) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr minmax(260px, 320px);
+    gap: clamp(32px, 5vw, 72px);
   }
 }
 
-/* Orange tiles — the numbers are the shareable, distinctive payload, so they
-   carry the brand accent and count up on scroll into view. */
-.tile {
+.metricList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.25em;
-  padding: var(--gap);
-  border-radius: 18px;
-  background-color: var(--color-orange);
-  border: 1px solid
-    color-mix(in srgb, var(--color-ink) 12%, var(--color-orange));
-  color: var(--color-ink);
-  box-shadow: 0 6px 20px
-    color-mix(in srgb, var(--color-orange) 45%, transparent);
 }
 
-.tileValue {
+.metricRow {
+  display: grid;
+  grid-template-columns: minmax(7.5ch, auto) 1fr;
+  align-items: baseline;
+  gap: calc(var(--gap) * 1.25);
+  padding: calc(var(--gap) * 0.75) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+}
+
+/* Orange display values on cream — the same accent job the old tiles did. */
+.metricValue {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-size: clamp(1.6rem, 3.6vw, 2.5rem);
   line-height: 1;
   letter-spacing: -0.02em;
-  /* Steady width while the digits tick so the tile doesn't jitter. */
+  color: var(--color-orange);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.metricMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metricName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Platform micro-label — the pillar-tag vocabulary (#HUMOR) reused. */
+.metricPlatform {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.resultsMedia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) * 0.75);
+}
+
+/* Caption under the phone; doubles as the replay control. Quiet sentence,
+   not a pill — the phone is the loud thing here. */
+.replayLink,
+.phoneCaption {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 4px 2px;
+  margin: 0;
+  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+  text-align: center;
+}
+
+.replayLink {
+  cursor: pointer;
+  transition: color var(--duration-fast);
+}
+
+.replayLink:hover {
+  color: var(--color-orange);
+}
+
+.phone {
+  border-radius: 44px;
+  border: 10px solid #000;
+  background: #000;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
+  aspect-ratio: 9 / 18.5;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+
+  @media (--desktop) {
+    margin: 0;
+  }
+}
+
+.phoneScreen {
+  position: absolute;
+  inset: 0;
+  border-radius: 34px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 12px 14px;
+  background: var(--color-plum-dark);
+  /* The screen is a dark object on a cream page — its text is cream. */
+  color: var(--color-cream);
+}
+
+/* Wallpaper = the study cover, under a scrim so notifications stay readable. */
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgb(10 6 9 / 0.55) 0%,
+    rgb(10 6 9 / 0.72) 55%,
+    rgb(10 6 9 / 0.85) 100%
+  );
+}
+
+.island {
+  position: relative;
+  z-index: 2;
+  width: 34%;
+  height: 22px;
+  background: #000;
+  border-radius: 999px;
+  margin: 0 auto 12px;
+  flex: none;
+}
+
+.lockClock {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  flex: none;
+  margin-bottom: 10px;
+}
+
+.lockTime {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.lockDate {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.notifStack {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notif {
+  background: color-mix(in srgb, var(--color-cream) 13%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
+  border-radius: 16px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(-14px) scale(0.97);
+  transition:
+    opacity 420ms var(--ease-out-expo),
+    transform 420ms var(--ease-out-expo);
+}
+
+.notifStack[data-played] .notif {
+  opacity: 1;
+  transform: none;
+}
+
+.notifApp {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--color-cream) 92%, transparent);
+  color: var(--color-ink);
+}
+
+.notifApp svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.notifBody {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.notifFrom {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.notifMsg {
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.notifMsg b {
+  color: var(--color-orange);
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
-.tileMetric {
-  font-size: 0.8125rem;
-  line-height: 1.35;
-  font-weight: 600;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+.notifWhen {
+  font-size: 0.6rem;
+  opacity: 0.55;
+  align-self: start;
 }
 
 /* —— Gallery —————————————————————————————————————————————————————— */

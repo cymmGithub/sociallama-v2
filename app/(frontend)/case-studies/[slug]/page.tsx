@@ -9,7 +9,6 @@ import {
   getCaseStudyBySlug,
   getDraftCaseStudyBySlug,
   getPublishedCaseStudySlugs,
-  getSocialPlatforms,
   resolveMedia,
 } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
@@ -71,10 +70,7 @@ export async function generateMetadata({
 
 export default async function CaseStudyPage({ params }: PageProps) {
   const { slug } = await params
-  const [study, platforms] = await Promise.all([
-    loadCaseStudy(slug),
-    getSocialPlatforms(),
-  ])
+  const study = await loadCaseStudy(slug)
   if (!study) {
     notFound()
   }
@@ -83,7 +79,6 @@ export default async function CaseStudyPage({ params }: PageProps) {
     <Wrapper theme="cream">
       <CaseStudyArticle
         study={study}
-        platforms={platforms}
         chrome={caseStudyChrome}
         basePath="/case-studies"
         contactHref="/kontakt"

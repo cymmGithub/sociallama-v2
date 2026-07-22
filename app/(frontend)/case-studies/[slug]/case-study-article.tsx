@@ -5,67 +5,35 @@ import { Link } from '@/components/ui/link'
 import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
-import type { CaseStudy, SocialPlatform } from '@/payload-types'
+import type { CaseStudy } from '@/payload-types'
 import s from './case-study.module.css'
-import { CountUp } from './count-up'
 import { CaseStudyJsonLd } from './json-ld'
-
-/** Group per-platform metrics for tile rendering, preserving order. */
-function groupResults(results: CaseStudy['results']) {
-  const groups: {
-    platform: string
-    items: { metric: string; value: string }[]
-  }[] = []
-  for (const result of results ?? []) {
-    let group = groups.find((g) => g.platform === result.platform)
-    if (!group) {
-      group = { platform: result.platform, items: [] }
-      groups.push(group)
-    }
-    group.items.push({ metric: result.metric, value: result.value })
-  }
-  return groups
-}
-
-/** Normalize a platform label for logo matching: "TikTok" → "tiktok". */
-const normalizePlatform = (value: string) =>
-  value.toLowerCase().replace(/[^a-z0-9]/g, '')
+import { ResultsNotifications } from './results-notifications'
 
 /**
  * The full case-study article, shared by the Polish (`/case-studies/[slug]`) and
  * English (`/en/case-studies/[slug]`) detail pages. Study fields come from
  * Payload (locale-resolved by the page); the page furniture — section headings,
  * breadcrumb, CTA — comes from `chrome`, and `basePath` / `contactHref` localize
- * the internal links.
+ * the internal links. (Notification app icons are inline brand marks in the
+ * results component — the CMS `social-platforms` logos are plum-toned site
+ * marks, wrong vocabulary for an app tile.)
  */
 export function CaseStudyArticle({
   study,
-  platforms,
   chrome,
   basePath,
   contactHref,
   locale,
 }: {
   study: CaseStudy
-  platforms: SocialPlatform[]
   chrome: LocalizedCaseStudies['caseStudyChrome']
   basePath: string
   contactHref: string
   locale: Locale
 }) {
-  // Match a result group's platform to its CMS-held logo (by key or name).
-  const platformLogos = new Map<string, ReturnType<typeof resolveMedia>>()
-  for (const platform of platforms) {
-    const media = resolveMedia(platform.logo)
-    if (media) {
-      platformLogos.set(normalizePlatform(platform.key), media)
-      platformLogos.set(normalizePlatform(platform.name), media)
-    }
-  }
-
   const logo = resolveMedia(study.client.logo)
   const cover = resolveMedia(study.cover)
-  const resultGroups = groupResults(study.results)
   const gallery = (study.gallery ?? [])
     .map((item) => resolveMedia(item))
     .filter((media): media is NonNullable<typeof media> => media !== null)
@@ -152,6 +120,25 @@ export function CaseStudyArticle({
           </section>
         )}
 
+        {/* Results directly after the challenge (order decision 2026-07-23):
+            the payoff numbers land before the how-we-did-it story. */}
+        {(study.results ?? []).length > 0 && (
+          <section className={s.section} aria-labelledby="wyniki">
+            <h2 className={s.sectionTitle} id="wyniki">
+              {chrome.sections.results}
+            </h2>
+            <ResultsNotifications
+              results={(study.results ?? []).map((result) => ({
+                platform: result.platform,
+                metric: result.metric,
+                value: result.value,
+              }))}
+              coverUrl={cover?.sizes?.card?.url ?? cover?.url ?? undefined}
+              strings={chrome.resultsBand}
+            />
+          </section>
+        )}
+
         {study.approach && study.approach.length > 0 && (
           <section className={s.section} aria-labelledby="podejscie">
             <h2 className={s.sectionTitle} id="podejscie">
@@ -207,48 +194,6 @@ export function CaseStudyArticle({
                         ))}
                       </div>
                     )}
-                  </div>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {resultGroups.length > 0 && (
-          <section className={s.section} aria-labelledby="wyniki">
-            <h2 className={s.sectionTitle} id="wyniki">
-              {chrome.sections.results}
-            </h2>
-            <div className={s.results}>
-              {resultGroups.map((group) => {
-                const platformLogo = platformLogos.get(
-                  normalizePlatform(group.platform)
-                )
-                return (
-                  <div key={group.platform} className={s.resultGroup}>
-                    <h3 className={s.resultGroupTitle}>
-                      {platformLogo?.url && (
-                        <Image
-                          className={s.platformLogo}
-                          src={platformLogo.url}
-                          alt=""
-                          width={platformLogo.width ?? 24}
-                          height={platformLogo.height ?? 24}
-                        />
-                      )}
-                      {group.platform}
-                    </h3>
-                    <div className={s.tiles}>
-                      {group.items.map((item) => (
-                        <div
-                          key={`${item.metric}-${item.value}`}
-                          className={s.tile}
-                        >
-                          <CountUp className={s.tileValue} value={item.value} />
-                          <span className={s.tileMetric}>{item.metric}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 )
               })}

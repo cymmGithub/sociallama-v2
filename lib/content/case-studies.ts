@@ -32,6 +32,24 @@ export const caseStudyChrome = {
     results: 'Wyniki',
     gallery: 'Galeria',
   },
+  /* The results section: an editorial metric list beside a phone lock screen
+   * filling with one push per CMS metric. Message templates rotate per
+   * notification; `{value}` and `{metric}` are replaced at render (metric
+   * lowercased mid-sentence). The lede names no client — grammar-safe for
+   * every study. */
+  resultsBand: {
+    clock: '9:41',
+    clockDate: 'środa, w trakcie kampanii',
+    /* Caption under the phone; doubles as the replay control. */
+    replay: 'Telefon klienta nie miał chwili spokoju.',
+    now: 'teraz',
+    notifTemplates: [
+      'Twój profil urósł o {value} — {metric}',
+      '{value} · {metric} — to dzieje się naprawdę',
+      '{metric}: {value} 🔥',
+      'Nowy rekord: {value} ({metric})',
+    ],
+  },
   cta: {
     eyebrow: 'Twój ruch',
     title: 'Zbudujmy coś podobnego dla Twojej marki',
