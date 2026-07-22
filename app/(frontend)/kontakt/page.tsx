@@ -6,6 +6,7 @@ import { clients } from '@/lib/content/home'
 import { ContactForm } from './contact-form'
 import { ContactHero } from './contact-hero'
 import { ContactMetrics } from './contact-metrics'
+import { ContactSteps } from './contact-steps'
 import { DarkChrome } from './dark-chrome'
 import s from './kontakt.module.css'
 
@@ -32,6 +33,7 @@ export default function ContactPage() {
         <div className={s.formSection}>
           <ContactForm />
         </div>
+        <ContactSteps />
         {/* Brand marquee between the form and the numbers (user decision
             2026-07-17) — a plain scrolling logo belt, dark variant. The gate
             keeps the belt from being frosted by the viewport-bottom BlurEdge

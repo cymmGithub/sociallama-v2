@@ -173,6 +173,10 @@ export function Form<T = unknown>({
         className={cn(s.form, className)}
         action={formAction}
         onSubmit={onSubmit}
+        // Custom validation owns error display (onSubmit reveals per-field
+        // messages when the form isn't ready); suppress the native bubbles so
+        // the two don't compete.
+        noValidate
         {...props}
       >
         {children}
@@ -193,7 +197,7 @@ export function SubmitButton({
   ...props
 }: SubmitButtonProps) {
   const { state } = useFormContext()
-  const { isReady, isPending, formState } = state
+  const { isPending, formState } = state
   const isSuccess = formState?.status === 200
   const isError = formState?.status && formState.status >= 400
 
@@ -209,16 +213,19 @@ export function SubmitButton({
   return (
     <button
       type="submit"
-      aria-disabled={!isReady || isPending}
+      // Stays enabled while the form is incomplete: clicking submits, and the
+      // form's onSubmit reveals per-field errors instead of the click silently
+      // doing nothing (a disabled submit is an anti-pattern). Only a request
+      // already in flight disables it, to prevent a double submit.
+      aria-disabled={isPending}
       onClick={(e) => {
-        if (!isReady || isPending) {
+        if (isPending) {
           e.preventDefault()
         }
       }}
       className={cn(
         className,
         s.submit,
-        !isReady && s.disabled,
         isPending && s.pending,
         isSuccess && s.submitted,
         isError && s.error
@@ -234,14 +241,13 @@ export function SubmitButton({
 // Messages (error display)
 export function Messages({ className, ...props }: MessagesProps) {
   const { state } = useFormContext()
-  const { errors, formState } = state
+  const { formState } = state
 
-  const allErrors = [
-    ...Object.values(errors).flatMap((e) => (e.state ? [e.message] : [])),
-    ...(formState?.status && formState.status >= 400
-      ? [formState.message]
-      : []),
-  ]
+  // Only surface server-level outcomes here (submission failed, rate limit,
+  // security). Per-field validation is shown inline under each field, so
+  // aggregating those into a list here would be redundant.
+  const allErrors =
+    formState?.status && formState.status >= 400 ? [formState.message] : []
 
   if (allErrors.length === 0) return null
 

@@ -104,6 +104,13 @@ export function useForm<T = unknown>({
     // Server-side Zod validation remains the authoritative gate either way.
     if (!isReady) {
       revealErrorsForInvalidFields()
+      // Move the user to the first missing/invalid field (its inline error is
+      // now visible). Registration order matches DOM order, so the first
+      // invalid key is the topmost field.
+      const firstInvalid = Object.keys(isValid).find((name) => !isValid[name])
+      const el = firstInvalid ? inputsRefs.current[firstInvalid] : null
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      el?.focus({ preventScroll: true })
       return
     }
 

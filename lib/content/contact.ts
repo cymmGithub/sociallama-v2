@@ -25,9 +25,30 @@ export const contactMarquee = {
   outline: 'o Twoim biznesie',
 } as const
 
-// Lede under the marquee (rendered with a CornerDownRight icon).
-export const contactLede =
-  'Masz pomysł, markę do rozkręcenia albo po prostu chcesz pogadać? Napisz kilka słów — odezwiemy się z konkretami.'
+// Lede under the marquee (rendered with a CornerDownRight icon). Offer-forward:
+// a short CTA to get in touch. `cta` is emphasised (orange bold) by the hero;
+// the 24h promise lives in the "Co dalej?" strip and the submit-row note.
+export const contactLede = {
+  text: 'Masz pomysł albo markę do rozkręcenia? Napisz kilka słów i ',
+  cta: 'umów bezpłatną konsultację',
+} as const
+
+// —— "Co dalej?" steps ———————————————————————————————————————————————————————
+
+// What-happens-next strip. Exactly three ordered steps: write → we respond in
+// 24h → we talk specifics. Step 3 deliberately promises a conversation, not
+// finished deliverables (honesty over inflation — see design.md).
+export const contactStepsHead = 'Co dalej?'
+
+export const contactSteps = [
+  { step: '1', title: 'Piszesz', text: 'Kilka słów wystarczy.' },
+  { step: '2', title: 'Odzywamy się', text: 'W 24h, w dni robocze.' },
+  {
+    step: '3',
+    title: 'Rozmawiamy o konkretach',
+    text: 'Pomysły, zakres, następne kroki.',
+  },
+] as const
 
 // —— Contact form ————————————————————————————————————————————————————————————
 
@@ -44,6 +65,12 @@ export const contactForm = {
   fields: {
     name: { label: 'Imię', placeholder: 'Jak się do Ciebie zwracać?' },
     email: { label: 'E-mail', placeholder: 'twoj@adres.pl' },
+    // Optional callback channel — opt-in nudge keeps friction near zero.
+    phone: {
+      label: 'Telefon',
+      optional: 'opcjonalnie',
+      placeholder: 'Wolisz, żebyśmy oddzwonili? Zostaw numer.',
+    },
     services: { label: 'Czego dotyczy?', optional: 'opcjonalnie' },
     message: {
       label: 'Twoja wiadomość',
@@ -51,13 +78,20 @@ export const contactForm = {
     },
   },
   submit: {
-    default: 'Wyślij wiadomość',
+    default: 'Umów bezpłatną konsultację',
     pending: 'Wysyłamy…',
     success: 'Wysłane!',
     error: 'Spróbuj ponownie',
   },
-  // Reassurance next to the submit pill (mock's send-row note).
-  note: 'Odpisujemy w ciągu jednego dnia roboczego.',
+  // Reassurance next to the submit pill — aligned to the lede's 24h promise.
+  note: 'Odzywamy się w 24h, w dni robocze.',
+  // RODO note near the submit row. Split so the component can wrap only the
+  // link in <Link>; the href points at the existing privacy page.
+  privacyNote: {
+    text: 'Twoje dane wykorzystamy tylko po to, żeby odpowiedzieć na wiadomość (i oddzwonić, jeśli zostawisz numer).',
+    linkLabel: 'Polityka prywatności',
+    linkHref: '/polityka-prywatnosci',
+  },
   // FormState.message returned by the server action (surfaced by <Messages/>).
   messages: {
     success: 'Dzięki! Odezwiemy się najszybciej, jak to możliwe.',
@@ -72,6 +106,8 @@ export const contactForm = {
     email: 'Podaj poprawny adres e-mail.',
     message: 'Napisz wiadomość.',
     fallback: 'Uzupełnij to pole.',
+    // Short inline hint shown under a missing required field.
+    required: 'Wymagane',
   },
 } as const
 

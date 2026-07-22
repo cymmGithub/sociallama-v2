@@ -10,7 +10,9 @@
   &.error {
     .input,
     .textarea {
-      border-color: #dc2626;
+      /* Themeable via --field-error so a page can match its palette; falls
+         back to the default red for any consumer that doesn't set it. */
+      border-color: var(--field-error, #dc2626);
     }
   }
 
@@ -68,7 +70,7 @@
 
 .errorMessage {
   font-size: 0.75rem;
-  color: #dc2626;
+  color: var(--field-error, #dc2626);
   margin-top: mobile-vw(2px);
 
   @media (--desktop) {
