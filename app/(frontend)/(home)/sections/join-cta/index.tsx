@@ -9,8 +9,8 @@ import {
   MoreHorizontal,
   Send,
 } from 'lucide-react'
+import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { Video } from '@/components/ui/video'
 import { joinCta, type LocalizedHome } from '@/lib/content/home'
 import { useRotator } from '@/lib/hooks/use-rotator'
 import s from './join-cta.module.css'
@@ -56,10 +56,14 @@ export function JoinCta({
           {content.button.label}
         </Link>
       </div>
-      {/* Looping clip on its own clock — no sync with the heading rotator —
-          wrapped in fake sponsored-post chrome: the CTA literally becomes the
+      {/* Wrapped in fake sponsored-post chrome: the CTA literally becomes the
           ad we'd run for ourselves. Post chrome is decorative (icons hidden
-          from AT); the video keeps the accessible label. */}
+          from AT); the media keeps the accessible label.
+          TEMP (2026-07-22): the looping llama clip is replaced by its first
+          frame served as a static image (`content.poster` == frame 0 of
+          `content.clip`). The mp4 stays in the repo for later — re-add the
+          Video import and swap this <Image> for <Video src={content.clip}> to
+          restore motion. */}
       <div className={s.media}>
         <div className={s.card}>
           <div className={s.cardHeader}>
@@ -84,9 +88,8 @@ export function JoinCta({
             </Link>
             <MoreHorizontal className={s.cardMore} aria-hidden="true" />
           </div>
-          <Video
-            src={content.clip}
-            poster={content.poster}
+          <Image
+            src={content.poster}
             alt={content.llamaAlt}
             aspectRatio={1}
           />
