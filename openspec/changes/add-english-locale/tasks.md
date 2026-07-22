@@ -31,9 +31,9 @@
 
 ## 6. SEO surface
 
-- [ ] 6.1 `alternates.languages` hreflang pairs (+ `x-default` → PL) on every mapped page, both directions, driven by the slug map.
-- [ ] 6.2 EN metadata (title/description/OG) per page from EN modules; EN URLs added to the sitemap.
-- [ ] 6.3 Confirm the URL-parity gate stays green (EN is additive; no PL URL changes).
+- [x] 6.1 `alternates.languages` hreflang pairs (+ `x-default` → PL) on every mapped page, both directions, driven by the slug map.
+- [x] 6.2 EN metadata (title/description/OG) per page from EN modules; EN URLs added to the sitemap.
+- [x] 6.3 Confirm the URL-parity gate stays green (EN is additive; no PL URL changes).
 
 ## 7. Verification
 

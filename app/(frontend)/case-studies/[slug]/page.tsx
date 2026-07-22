@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
 import { caseStudyChrome } from '@/lib/content/case-studies'
 import { OG_BASE } from '@/lib/content/site'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getCaseStudyBySlug,
   getDraftCaseStudyBySlug,
@@ -50,7 +51,7 @@ export async function generateMetadata({
   return {
     title,
     ...(description ? { description } : {}),
-    alternates: { canonical: `/case-studies/${study.slug}` },
+    alternates: alternatesForPath(`/case-studies/${study.slug}`),
     openGraph: {
       type: 'article',
       ...OG_BASE,

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import s from '../[slug]/post.module.css'
 
 /*
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: 'Polityka prywatności',
   description:
     'Polityka prywatności i informacja o sposobie ochrony danych osobowych użytkowników strony sociallama.pl.',
-  alternates: { canonical: '/polityka-prywatnosci' },
+  alternates: alternatesForPath('/polityka-prywatnosci'),
 }
 
 export default function PrivacyPolicyPage() {
