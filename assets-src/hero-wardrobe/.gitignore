@@ -20,3 +20,6 @@ f-front*.png
 pair-orig.png
 pair-nobg.png
 take*-final/clean/
+
+# new-looks: regenerable frame-assembly scratch (rebuild from anim-*.mp4 via the matte pipeline)
+new-looks/_*/

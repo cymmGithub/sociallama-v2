@@ -11,7 +11,7 @@ import { Chapters } from './chapters'
 import { BigMarquee } from './sections/big-marquee'
 import { ClientLogos } from './sections/client-logos'
 import { Hero } from './sections/hero'
-import { HeroTrack } from './sections/hero/track'
+import heroStyles from './sections/hero/hero.module.css'
 import { HowItWorks } from './sections/how-it-works'
 import { JoinCta } from './sections/join-cta'
 import { NewsLama, type NewsLamaPost } from './sections/news-lama'
@@ -53,16 +53,14 @@ export default async function HomePage() {
   return (
     <Wrapper theme="plum">
       <Chapters>
-        {/* Chapter 1 — plum. Hero + logo belt pin as one viewport-height
-            column inside a tall scroll track while the hero clip scrubs
-            (hero-scroll-scrub). On mobile and reduced motion the track
-            collapses to a single viewport. On short viewports the column
-            grows past 100svh (hero keeps its min-height floor) and the belt
-            drops below the fold. */}
-        <HeroTrack>
+        {/* Chapter 1 — plum. Hero + logo belt compose the first viewport as
+            a plain flex column in normal document flow (hero-intro-montage).
+            On short viewports the column grows past 100svh (hero keeps its
+            min-height floor) and the belt drops below the fold. */}
+        <div className={heroStyles.column}>
           <Hero />
           <ClientLogos />
-        </HeroTrack>
+        </div>
         {/* Chapter 2 — cream */}
         {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
         <>

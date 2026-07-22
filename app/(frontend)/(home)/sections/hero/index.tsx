@@ -2,47 +2,31 @@
 
 import cn from 'clsx'
 import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { hero, socials } from '@/lib/content/home'
+import { useRotator } from '@/lib/hooks/use-rotator'
 import { breakpoints } from '@/styles/config'
 import { HeroFrames } from './frame-sequence'
 import s from './hero.module.css'
-import { useHeroScrubTarget } from './track'
-
-/* Scrub-progress (0..1) upper edges of the first four rotator words, derived
-   from the hero clip's outfit cuts (between frames 15/16, 29/30, 42/43 and
-   48/49 of the 60-frame sequence). The five looks aren't evenly spaced, so the
-   words flip on these boundaries rather than a flat 1/5 grid; the fifth word
-   holds through the profile + admiring settle. */
-const WORD_BOUNDS = [0.246, 0.483, 0.703, 0.805] as const
-function wordIndexForProgress(p: number): number {
-  for (let i = 0; i < WORD_BOUNDS.length; i++) {
-    const bound = WORD_BOUNDS[i]
-    if (bound !== undefined && p < bound) return i
-  }
-  return WORD_BOUNDS.length
-}
 
 export function Hero() {
-  const headlineRef = useRef<HTMLHeadingElement>(null)
-  // The headline word is scroll-driven: as the hero scrubs, the active word
-  // advances in lockstep with the llama's outfit, flipping at the clip's
-  // outfit-transition points. Static (word 0) under reduced motion / mobile
-  // poster, where there is no scrub runway.
-  const scrubRef = useHeroScrubTarget()
-  const wordIndexRef = useRef(0)
-  // prev: -1 so the initial active word isn't also tagged "leaving" (which would
-  // park it in the out-of-mask position).
-  const [rotation, setRotation] = useState({ index: 0, prev: -1 })
+  // Timer-based word rotator (hero-intro-montage), same mechanism as JoinCta:
+  // 2600ms interval, paused off-screen, static first word under reduced
+  // motion. Fully independent of the llama montage — no outfit sync (user
+  // decision 2026-07-22; coupling was tried and felt flaky). The hook's ref
+  // doubles as the headline element ref for the stagger effect below.
+  const { ref: headlineRef, rotation } = useRotator<HTMLHeadingElement>(
+    hero.headline.rotator.length
+  )
   // 'poster' until mount so SSR and hydration render the same static shell;
-  // then desktop gets its scrubbed head-turn clip. Mobile stays static — a
+  // then desktop gets its one-shot head-turn montage. Mobile stays static — a
   // poster image, no video (user decision 2026-07-14: simpler and immune to
   // iOS's never-played-video decode restrictions). Reduced motion stays on
   // the poster too, as do touch-only devices above the dt breakpoint —
-  // tablets get the static poster, not the scroll scrub (user decision
-  // 2026-07-20). Same query as the track's runway collapse in the CSS.
+  // tablets get the static poster, not the montage (user decision
+  // 2026-07-20).
   const [media, setMedia] = useState<'poster' | 'desktop'>('poster')
 
   useEffect(() => {
@@ -55,24 +39,6 @@ export function Hero() {
     ).matches
     if (!(mobile || touchOnly)) setMedia('desktop')
   }, [])
-
-  // Drive the active word from the scrub target. A rAF loop reads the scrub ref
-  // (updated per scroll event, never via state) and setState only when the word
-  // index crosses a boundary — at most four re-renders across the whole runway.
-  useEffect(() => {
-    if (media !== 'desktop' || !scrubRef) return
-    let raf = 0
-    const tick = () => {
-      const idx = wordIndexForProgress(scrubRef.current ?? 0)
-      if (idx !== wordIndexRef.current) {
-        setRotation({ index: idx, prev: wordIndexRef.current })
-        wordIndexRef.current = idx
-      }
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [media, scrubRef])
 
   // Stagger the three headline lines in on first paint (design D4). Runs once
   // and never re-triggers; reduced motion leaves the final state untouched.
@@ -104,7 +70,7 @@ export function Hero() {
       // styles so every re-run starts from a clean slate.
       tween.revert()
     }
-  }, [])
+  }, [headlineRef.current])
 
   return (
     <section className={s.hero}>
