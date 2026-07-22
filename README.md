@@ -41,6 +41,20 @@ bun dev                      # open localhost:3000 for the manual
 
 Trim what you don't need: `bun run setup:project` strips unused integrations (code, deps, env) interactively.
 
+### Local database (worktree dev)
+
+Local development runs Postgres in a container instead of a Neon branch (avoids the shared-dev-DB schema thrash when worktrees diverge):
+
+```bash
+docker compose up -d   # Postgres 17 on :5434 (volume-backed)
+# then in .env.local:
+#   DATABASE_URL="postgresql://postgres:postgres@localhost:5434/sociallama_dev?sslmode=disable"
+bun payload migrate    # build the schema from committed migrations
+bun payload:seed && bun payload:seed:platforms && bun payload:seed:case-studies
+```
+
+Leave `BLOB_READ_WRITE_TOKEN` unset locally so media writes to disk — re-seeding then never collides with existing Vercel Blob files. To reset: `docker exec sociallama-postgres psql -U postgres -d sociallama_dev -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"` then re-migrate + seed. Production stays on Neon via Vercel.
+
 ## Components live in Storybook
 
 UI primitives are catalogued in Storybook rather than on an in-app page — isolated, with controls and autodocs. Source lives in `components/ui`; add a `*.stories.tsx` next to any new component.
