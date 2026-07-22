@@ -95,6 +95,26 @@ interface PillarSeed {
   media: GalleryImage[]
 }
 
+/**
+ * English translation of a study's localized fields (design 5.3). Pillars match
+ * the Polish pillars by index — same creatives, translated text — so the EN pass
+ * reuses the media uploaded during the Polish create.
+ */
+interface StudyEnSeed {
+  title: string
+  excerpt: string
+  tags: string[]
+  period: string
+  clientAbout: ReturnType<typeof richText>
+  challenge: ReturnType<typeof richText>
+  pillars: {
+    tag?: string
+    heading: string
+    body: ReturnType<typeof richText>
+  }[]
+  results: { platform: string; metric: string; value: string }[]
+}
+
 interface StudySeed {
   slug: string
   title: string
@@ -111,6 +131,7 @@ interface StudySeed {
   results: { platform: string; metric: string; value: string }[]
   gallery: GalleryImage[]
   publishedAt: string
+  en: StudyEnSeed
 }
 
 const STUDIES: StudySeed[] = [
@@ -234,6 +255,85 @@ const STUDIES: StudySeed[] = [
     // Creatives live in the pillars — no detached gallery for iRobot.
     gallery: [],
     publishedAt: '2025-01-15T10:00:00.000Z',
+    en: {
+      title:
+        'iRobot — humor and education that build the brand on YouTube and TikTok',
+      excerpt:
+        'Educational, humor-driven video for iRobot on YouTube and TikTok — 11M views and +7.9k subscribers on the brand channel.',
+      tags: ['Robot vacuums', 'Smart home', 'Clean home'],
+      period: 'March 2024 – present',
+      clientAbout: richText(
+        para(
+          'iRobot is a global leader in home robotics, pairing advanced technology with everyday usefulness. Through innovations like the Roomba® robot vacuum-and-mop, iRobot has helped people save time on cleaning for over 30 years.'
+        ),
+        para(
+          'iRobot helps you save time and energy on cleaning, freeing you to focus on what really matters — family, hobbies, and relaxation.'
+        )
+      ),
+      challenge: richText(
+        para(
+          'The main task was to educate audiences about the benefits of robot vacuums — in a light, approachable, and engaging way.'
+        ),
+        orderedList([
+          'Highlighting the time savings and convenience iRobot products bring versus traditional cleaning.',
+          'Educating people about advanced technology such as smart mapping.',
+          'Inspiring customers to swap everyday habits for more innovative ones.',
+        ])
+      ),
+      pillars: [
+        {
+          tag: '#HUMOR',
+          heading: 'Highlighting benefits and convenience',
+          body: richText(
+            para(
+              'In short, funny clips we show the everyday situations everyone knows — battling stubborn crumbs after breakfast or a growing pile of chores — and how Roomba handles them in a flash. The content lands with younger and older audiences alike, and attention-grabbing taglines build recognition and boost engagement.'
+            ),
+            para(
+              'With this series we educate, entertain, and nudge people to change their cleaning habits — showing that with iRobot life gets simpler (and more fun!).'
+            )
+          ),
+        },
+        {
+          tag: '#EDUCATION',
+          heading: 'Education and technology',
+          body: richText(
+            para(
+              'In short, dynamic videos we show how the robot uses its technology to handle everyday challenges. The material is light and visually appealing, with a subtle touch of humor, to educate viewers and get them interested in the modern solutions iRobot offers.'
+            )
+          ),
+        },
+        {
+          tag: '#INNOVATION',
+          heading: 'Innovative solutions',
+          body: richText(
+            para(
+              "Through engaging YouTube videos we present iRobot's innovative solutions in the context of everyday life. We show how the robots support pet owners, handling fur and dirt with ease."
+            ),
+            para(
+              'The content underlines that the time saved with iRobot can go to the things that truly matter — hobbies, relaxation, or family — creating positive brand associations and encouraging change.'
+            )
+          ),
+        },
+        {
+          tag: '#FOREVERYONE',
+          heading: 'Special campaigns',
+          body: richText(
+            para(
+              'We show how iRobot brings generations together and adapts to different lifestyles — from helping older people with daily chores to keeping families tidy. We prove that with iRobot life gets simpler and more convenient, and the technology works for every user.'
+            )
+          ),
+        },
+      ],
+      results: [
+        { platform: 'TikTok', metric: 'Views', value: '11M' },
+        { platform: 'TikTok', metric: 'Viewers', value: '149k' },
+        { platform: 'TikTok', metric: 'Likes', value: '27k' },
+        { platform: 'TikTok', metric: 'Shares', value: '1,616' },
+        { platform: 'TikTok', metric: 'Comments', value: '1,843' },
+        { platform: 'YouTube', metric: 'Views', value: '742k' },
+        { platform: 'YouTube', metric: 'New subscribers', value: '+7.9k' },
+      ],
+    },
   },
   {
     slug: 'pracuj-pl',
@@ -371,6 +471,93 @@ const STUDIES: StudySeed[] = [
     // Creatives live in the pillars — no detached gallery for pracuj-pl.
     gallery: [],
     publishedAt: '2025-01-20T10:00:00.000Z',
+    en: {
+      title:
+        'Pracuj.pl — building a TikTok community from scratch and a custom AR filter',
+      excerpt:
+        'Building the Pracuj.pl community on TikTok from zero: a custom AR filter, on-trend content, and influencer collaborations — 95.4M views and 52.6k followers.',
+      tags: ['Recruitment', 'Job market', 'AR filter'],
+      period: 'April 2022 – May 2026',
+      challenge: richText(
+        para(
+          'The goal was to build awareness, recognition, and trust in the brand among the younger generation (ages 17–26).'
+        ),
+        orderedList([
+          'Adapting the communication style to the target group while keeping it natural and authentic.',
+          'Creating video in two streams — humorous (trend-driven) and educational — to build the image of an expert and advisor.',
+          'Setting up collaborations with young-generation influencers to promote the JOBICON job fair.',
+          'Building a follower base practically from scratch.',
+        ])
+      ),
+      clientAbout: richText(
+        para(
+          'Pracuj.pl is Poland\'s leading recruitment platform, connecting employers with candidates at every stage of their careers. Beyond current job offers, it actively supports users\' professional growth with valuable blog content and its own podcast, "Dobra robota." Each year it also runs the free Jobicon job fair.'
+        ),
+        para(
+          "The brand's core mission is to help people find work suited to their needs, skills, and personality — and to build an ethical work culture in Poland."
+        )
+      ),
+      pillars: [
+        {
+          heading: 'A community built from scratch',
+          body: richText(
+            para(
+              'The Pracuj.pl profile was built entirely from zero. Growing a follower base was one of the key goals at the start of the collaboration. We approached it on two fronts: an effective communication strategy with a steady publishing rhythm, and an advertising strategy we rolled out and optimized to hit the goal faster.'
+            )
+          ),
+        },
+        {
+          tag: 'AR FILTER',
+          heading: 'The custom "Dream Job" filter',
+          body: richText(
+            para(
+              'We created a dedicated AR filter that users could apply to their own videos. It proved hugely popular — even influencers reached for it despite no formal collaboration. More than six months after launch, the tool was still drawing user interest.'
+            )
+          ),
+        },
+        {
+          tag: '#CONTENT',
+          heading: 'Educational content',
+          body: richText(
+            para(
+              'We share practical tips on recruitment, writing a CV, legal matters, and general career growth. We create content that pairs real substance with a modern format, so the knowledge is accessible, engaging, and easy to digest.'
+            )
+          ),
+        },
+        {
+          tag: '#CONTENT',
+          heading: 'Humorous content',
+          body: richText(
+            para(
+              "We tap the latest trends, popular filters, and funny insights to deliver light, entertaining content that fits the platform. The humor builds on RTM posts and current trends, adapted to the profile's theme."
+            )
+          ),
+        },
+        {
+          heading: 'Active moderation',
+          body: richText(
+            para(
+              "Activating content encouraged users to discuss and interact. As part of moderation, we also engage with other creators' content, which strengthens relationships, builds community, and extends reach."
+            )
+          ),
+        },
+        {
+          tag: '#INFLUENCER MARKETING',
+          heading: 'Working with influencers',
+          body: richText(
+            para(
+              "To promote the JOBICON Job Festival, we invite one-off collaborations with popular TikTok creators (e.g. @zetkacper — 1.1M followers, @stastrojanowski — 51k). The creators' authentic style and engaged communities translate into growing interest in the festival and attendance at the event."
+            )
+          ),
+        },
+      ],
+      results: [
+        { platform: 'TikTok', metric: 'Video views', value: '95.4M' },
+        { platform: 'TikTok', metric: 'Total viewers', value: '94.8M' },
+        { platform: 'TikTok', metric: 'Followers', value: '52.6k' },
+        { platform: 'TikTok', metric: 'Content likes', value: '104.8k' },
+      ],
+    },
   },
   {
     slug: 'volvo',
@@ -514,6 +701,107 @@ const STUDIES: StudySeed[] = [
     // Creatives live in the pillars — no detached gallery for volvo.
     gallery: [],
     publishedAt: '2025-01-25T10:00:00.000Z',
+    en: {
+      title:
+        'Volvo Car Warszawa and Dom Volvo — building the brands on LinkedIn, Facebook, and Instagram',
+      excerpt:
+        'Running and positioning the Volvo Car Warszawa and Dom Volvo profiles on Facebook, Instagram, and LinkedIn — personal branding, event coverage, and expert content.',
+      tags: ['Premium automotive', 'Electromobility', 'Safety'],
+      period: 'May – June 2025',
+      challenge: richText(
+        para(
+          "The task was to build both brands' standing on LinkedIn, Facebook, and Instagram."
+        ),
+        orderedList([
+          'Positioning the profiles as a leader in modern premium automotive in Warsaw.',
+          "Personal branding for Volvo's experts and advisors as ambassadors of safety and electromobility.",
+          "Creating a content strategy blending education, expertise, storytelling, and visual communication true to Volvo's brand DNA.",
+        ])
+      ),
+      clientAbout: richText(
+        para(
+          "Volvo Car Warszawa and Dom Volvo are authorized dealers specializing in Volvo's modern automotive solutions. With a broad lineup — including innovative electric and hybrid models — the showrooms let customers choose cars that pair advanced technology with the highest levels of safety and comfort."
+        ),
+        para(
+          'Both showrooms stand out for their individual approach to each customer, support at every stage, and a consistent rollout of electromobility and sustainable-mobility solutions.'
+        )
+      ),
+      pillars: [
+        {
+          tag: '#CONTENT STRUCTURE',
+          heading: 'Volvo Car Warszawa — industry leader and expert',
+          body: richText(
+            para(
+              'For each platform we rolled out a distinct content strategy:'
+            ),
+            bulletList([
+              'Facebook — coverage of events and community initiatives (Women in Tech, Safe Space), model launches (XC60, EX30), and practical service tips.',
+              'Instagram — events, behind-the-scenes, and the Volvo community as reels and stories, with the aesthetics and inspiration of daily showroom life.',
+              'LinkedIn — business networking, expert posts on safety and technology, offers for fleets and companies.',
+            ])
+          ),
+        },
+        {
+          tag: '#CONTENT STRUCTURE',
+          heading: 'Dom Volvo — a hub for the local community',
+          body: richText(
+            para(
+              "We built Dom Volvo's communication around the showroom's family, local character:"
+            ),
+            bulletList([
+              'Facebook — local and family events (EduMoto Picnic, Open Days, contests), new models, and used-car offers.',
+              'Instagram — a family vibe, behind-the-scenes showroom life, car design and details, quizzes, and special offers.',
+              'LinkedIn — local partnerships, CSR initiatives, and expert content for drivers and fleet managers.',
+            ])
+          ),
+        },
+        {
+          heading: 'Event collaboration',
+          body: richText(
+            para(
+              'We ran real-time event communication — live stories coverage, dynamic video content, and collaborations with influencer-marketing agencies:'
+            ),
+            bulletList([
+              'Museum Night — live coverage and video content in partnership with the Folks agency.',
+              "Volvo for Safety — dedicated stories and reels about the brand's safety philosophy.",
+              'Model-Making Picnic — coverage of the event atmosphere and family activities.',
+              'Midsommar at Dom Volvo — a 3-day presence at the event and content inspired by Swedish traditions.',
+            ])
+          ),
+        },
+        {
+          tag: 'CONTEST',
+          heading: "“Volvo through children's eyes”",
+          body: richText(
+            para(
+              'We ran a drawing contest for kids titled "What car should Volvo build, and why?" It culminated in an exhibition of the works paired with AI animations that turned the children\'s drawings into "living cars" on screen. We wrapped it all up with video and photo coverage on both brands\' social media.'
+            )
+          ),
+        },
+      ],
+      results: [
+        {
+          platform: 'Volvo Car Warszawa',
+          metric: 'New followers — Facebook',
+          value: '+1000',
+        },
+        {
+          platform: 'Volvo Car Warszawa',
+          metric: 'New followers — Instagram',
+          value: '+184',
+        },
+        {
+          platform: 'Dom Volvo',
+          metric: 'New followers — Facebook',
+          value: '+1000',
+        },
+        {
+          platform: 'Dom Volvo',
+          metric: 'New followers — Instagram',
+          value: '+97',
+        },
+      ],
+    },
   },
 ]
 
@@ -591,7 +879,12 @@ for (const study of STUDIES) {
   }
 
   // Pillars: upload each pillar's creatives, then assemble the array rows.
-  const approach = []
+  const approach: {
+    tag?: string
+    heading: string
+    body: unknown
+    media: number[]
+  }[] = []
   for (const pillar of study.pillars) {
     const media: number[] = []
     for (const image of pillar.media) {
@@ -610,7 +903,7 @@ for (const study of STUDIES) {
     })
   }
 
-  await payload.create({
+  const created = await payload.create({
     collection: 'case-studies',
     data: {
       title: study.title,
@@ -627,7 +920,8 @@ for (const study of STUDIES) {
       cover: cover.id,
       // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload on create
       challenge: study.challenge as any,
-      approach,
+      // biome-ignore lint/suspicious/noExplicitAny: hand-built approach rows; validated by Payload on create
+      approach: approach as any,
       results: study.results,
       gallery,
       publishedAt: study.publishedAt,
@@ -635,6 +929,38 @@ for (const study of STUDIES) {
     },
   })
   console.log(`+ case study created: ${study.slug}`)
+
+  // EN pass: update the same doc under locale 'en' with the translated localized
+  // fields, reusing each pillar's Polish media (matched by index).
+  const enApproach = study.en.pillars.map((pillar, i) => ({
+    ...(pillar.tag ? { tag: pillar.tag } : {}),
+    heading: pillar.heading,
+    // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload
+    body: pillar.body as any,
+    media: approach[i]?.media ?? [],
+  }))
+  await payload.update({
+    collection: 'case-studies',
+    id: created.id,
+    locale: 'en',
+    data: {
+      title: study.en.title,
+      client: {
+        name: study.clientName,
+        ...(logoId ? { logo: logoId } : {}),
+        // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload
+        about: study.en.clientAbout as any,
+      },
+      tags: study.en.tags,
+      period: study.en.period,
+      excerpt: study.en.excerpt,
+      // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload
+      challenge: study.en.challenge as any,
+      approach: enApproach,
+      results: study.en.results,
+    },
+  })
+  console.log(`  + EN translation: ${study.slug}`)
 }
 
 console.log('Case-study seed complete.')

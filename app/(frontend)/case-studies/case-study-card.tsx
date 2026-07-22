@@ -1,17 +1,26 @@
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { caseStudiesListing } from '@/lib/content/case-studies'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
 import s from './case-studies.module.css'
 
 /** Listing card for /case-studies. Links to the detail page. */
-export function CaseStudyCard({ study }: { study: CaseStudy }) {
+export function CaseStudyCard({
+  study,
+  basePath = '/case-studies',
+  readLabel = caseStudiesListing.cardRead,
+}: {
+  study: CaseStudy
+  basePath?: string
+  readLabel?: string
+}) {
   const cover = resolveMedia(study.cover)
   const coverUrl = cover?.sizes?.card?.url ?? cover?.url
   const logo = resolveMedia(study.client.logo)
 
   return (
-    <Link className={s.card} href={`/case-studies/${study.slug}`}>
+    <Link className={s.card} href={`${basePath}/${study.slug}`}>
       <span className={s.cardMedia}>
         {coverUrl && (
           <Image
@@ -51,7 +60,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
             ))}
           </span>
         )}
-        <span className={s.cardRead}>ZOBACZ CASE STUDY</span>
+        <span className={s.cardRead}>{readLabel}</span>
       </span>
     </Link>
   )

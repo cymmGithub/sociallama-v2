@@ -43,8 +43,15 @@ export default buildConfig({
         ]
       : []),
   ],
-  // Polish-only admin: the client's editors work in Polish (site content is
-  // Polish-only too; content localization is intentionally not enabled).
+  // Content localization: Polish is the default; English is the second locale
+  // for the case-studies collection (add-english-locale). `fallback: true` means
+  // an untranslated EN field renders its Polish value rather than empty.
+  localization: {
+    locales: ['pl', 'en'],
+    defaultLocale: 'pl',
+    fallback: true,
+  },
+  // Polish-only admin UI: the client's editors work in Polish.
   i18n: {
     supportedLanguages: { pl },
     fallbackLanguage: 'pl',

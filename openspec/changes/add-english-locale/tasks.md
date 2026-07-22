@@ -23,11 +23,11 @@
 
 ## 5. Case-studies localization (Payload)
 
-- [ ] 5.1 `payload.config.ts`: add the `localization` block (pl default, en, fallback true).
-- [ ] 5.2 `collections/case-studies.ts`: mark content fields `localized: true` per design D4 (slug NOT localized); boot against the Neon branch and let push restructure it.
-- [ ] 5.3 Extend `seed-case-studies.ts` with an EN pass (machine-translated + vibe-passed copy for all 3 studies) writing under `locale: 'en'`; run against the branch and verify in the admin.
-- [ ] 5.4 Queries: locale parameter on the case-study reads (`getCaseStudies`, `getCaseStudyBySlug`, sitemap variant); PL call sites unchanged.
-- [ ] 5.5 `/en/case-studies` listing + `/en/case-studies/[slug]` detail pages reusing the PL components with EN content and localized JSON-LD (`inLanguage: 'en'`).
+- [x] 5.1 `payload.config.ts`: add the `localization` block (pl default, en, fallback true).
+- [x] 5.2 `collections/case-studies.ts`: mark content fields `localized: true` per design D4 (slug NOT localized); boot against the Neon branch and let push restructure it.
+- [x] 5.3 Extend `seed-case-studies.ts` with an EN pass (machine-translated + vibe-passed copy for all 3 studies) writing under `locale: 'en'`; run against the branch and verify in the admin.
+- [x] 5.4 Queries: locale parameter on the case-study reads (`getCaseStudies`, `getCaseStudyBySlug`, sitemap variant); PL call sites unchanged.
+- [x] 5.5 `/en/case-studies` listing + `/en/case-studies/[slug]` detail pages reusing the PL components with EN content and localized JSON-LD (`inLanguage: 'en'`).
 
 ## 6. SEO surface
 

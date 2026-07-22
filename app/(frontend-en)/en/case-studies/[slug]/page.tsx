@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { CaseStudyArticle } from '@/app/(frontend)/case-studies/[slug]/case-study-article'
 import { Wrapper } from '@/components/layout/wrapper'
-import { caseStudyChrome } from '@/lib/content/case-studies'
-import { OG_BASE } from '@/lib/content/site'
+import { caseStudyChrome } from '@/lib/content/case-studies.en'
+import { OG_BASE } from '@/lib/content/site.en'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getCaseStudyBySlug,
   getDraftCaseStudyBySlug,
@@ -12,7 +14,6 @@ import {
   resolveMedia,
 } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
-import { CaseStudyArticle } from './case-study-article'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -20,17 +21,17 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const slugs = await getPublishedCaseStudySlugs()
-  // Cache Components requires a non-empty param set; on an empty CMS prerender
-  // one guaranteed-404 path so the build succeeds before seeding.
   if (slugs.length === 0) {
-    return [{ slug: 'placeholder-bez-tresci' }]
+    return [{ slug: 'placeholder-no-content' }]
   }
   return slugs.map((slug) => ({ slug }))
 }
 
 async function loadCaseStudy(slug: string): Promise<CaseStudy | null> {
   const { isEnabled: isDraft } = await draftMode()
-  return isDraft ? getDraftCaseStudyBySlug(slug) : getCaseStudyBySlug(slug)
+  return isDraft
+    ? getDraftCaseStudyBySlug(slug, 'en')
+    : getCaseStudyBySlug(slug, 'en')
 }
 
 export async function generateMetadata({
@@ -50,13 +51,13 @@ export async function generateMetadata({
   return {
     title,
     ...(description ? { description } : {}),
-    alternates: { canonical: `/case-studies/${study.slug}` },
+    alternates: alternatesForPath(`/en/case-studies/${study.slug}`),
     openGraph: {
       type: 'article',
       ...OG_BASE,
       title,
       ...(description ? { description } : {}),
-      url: `/case-studies/${study.slug}`,
+      url: `/en/case-studies/${study.slug}`,
       ...(ogUrl ? { images: [{ url: ogUrl, width: 1200, height: 630 }] } : {}),
       ...(study.publishedAt ? { publishedTime: study.publishedAt } : {}),
     },
@@ -68,7 +69,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function CaseStudyPage({ params }: PageProps) {
+export default async function EnCaseStudyPage({ params }: PageProps) {
   const { slug } = await params
   const [study, platforms] = await Promise.all([
     loadCaseStudy(slug),
@@ -84,9 +85,9 @@ export default async function CaseStudyPage({ params }: PageProps) {
         study={study}
         platforms={platforms}
         chrome={caseStudyChrome}
-        basePath="/case-studies"
-        contactHref="/kontakt"
-        locale="pl"
+        basePath="/en/case-studies"
+        contactHref="/en/contact"
+        locale="en"
       />
     </Wrapper>
   )
