@@ -1,4 +1,8 @@
-import { contactSteps, contactStepsHead } from '@/lib/content/contact'
+import {
+  contactSteps as contactStepsDefault,
+  contactStepsHead as contactStepsHeadDefault,
+  type LocalizedContact,
+} from '@/lib/content/contact'
 import s from './kontakt.module.css'
 
 /**
@@ -8,15 +12,21 @@ import s from './kontakt.module.css'
  * but on the dark ground. Step numbers are real text (from content), so the
  * order is announced to assistive tech.
  */
-export function ContactSteps() {
+export function ContactSteps({
+  head = contactStepsHeadDefault,
+  steps = contactStepsDefault,
+}: {
+  head?: LocalizedContact['contactStepsHead']
+  steps?: LocalizedContact['contactSteps']
+}) {
   return (
     <section className={s.steps} aria-labelledby="steps-head">
       <div className={s.stepsInner}>
         <h2 className={s.stepsHead} id="steps-head">
-          {contactStepsHead}
+          {head}
         </h2>
         <ol className={s.stepList}>
-          {contactSteps.map((item) => (
+          {steps.map((item) => (
             <li className={s.step} key={item.step}>
               <span className={s.stepNum}>{item.step}</span>
               <span className={s.stepTitle}>{item.title}</span>

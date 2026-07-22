@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { whyThatWorks } from '@/lib/content/home'
+import { type LocalizedHome, whyThatWorks } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
@@ -78,19 +78,15 @@ const TEAM = [
 // intrinsic pixel ratios so the cards frame them without distortion; marks
 // render unmodified (objectFit contain, no recolor or crop).
 const CERTS = [
-  {
-    src: '/assets/certs/dimaq.png',
-    alt: 'Certyfikat DIMAQ professional',
-    ar: '347 / 143',
-  },
-  {
-    src: '/assets/certs/meta.png',
-    alt: 'Certyfikat Meta Small Business Academy',
-    ar: '627 / 345',
-  },
+  { id: 'dimaq', src: '/assets/certs/dimaq.png', ar: '347 / 143' },
+  { id: 'meta', src: '/assets/certs/meta.png', ar: '627 / 345' },
 ] as const
 
-export function WhyThatWorks() {
+export function WhyThatWorks({
+  content = whyThatWorks,
+}: {
+  content?: LocalizedHome['whyThatWorks']
+}) {
   const bottomRef = useReveal<HTMLDivElement>()
   // Touch has no hover, so a tap toggles which portrait shows its caption
   // (pointer devices use :hover and ignore this). null = none open.
@@ -114,7 +110,7 @@ export function WhyThatWorks() {
     <section className={s.section} id="o-nas">
       <h2 className={s.heading}>
         <ProgressText start="top bottom" end="center center" onChange={fill}>
-          {whyThatWorks.heading.join(' ')}
+          {content.heading.join(' ')}
         </ProgressText>
       </h2>
 
@@ -127,14 +123,14 @@ export function WhyThatWorks() {
           start="top bottom"
           end="center center"
         >
-          {whyThatWorks.manifesto.strong}
+          {content.manifesto.strong}
         </ProgressText>{' '}
         <ProgressText
           className={cn(s.manifestoPart, s.muted)}
           start="top bottom"
           end="center center"
         >
-          {whyThatWorks.manifesto.muted}
+          {content.manifesto.muted}
         </ProgressText>
       </p>
 
@@ -149,7 +145,7 @@ export function WhyThatWorks() {
           data-reveal-item
           className={s.stage}
           role="group"
-          aria-label="Zespół Social Lama"
+          aria-label={content.teamLabel}
         >
           <div className={s.mosaic}>
             <div
@@ -190,13 +186,13 @@ export function WhyThatWorks() {
                 )
               })}
             </div>
-            <span className={s.certLabel}>Certyfikaty</span>
+            <span className={s.certLabel}>{content.certsLabel}</span>
             {CERTS.map((c) => (
               <div key={c.src} className={s.cert}>
                 <div className={s.certMedia} style={{ '--ar': c.ar }}>
                   <Image
                     src={c.src}
-                    alt={c.alt}
+                    alt={content.certAlt[c.id]}
                     fill
                     objectFit="contain"
                     mobileSize="45vw"
@@ -214,19 +210,19 @@ export function WhyThatWorks() {
               start="top bottom"
               end="center center"
             >
-              {whyThatWorks.support.strong}
+              {content.support.strong}
             </ProgressText>{' '}
             <ProgressText
               className={cn(s.manifestoPart, s.muted)}
               start="top bottom"
               end="center center"
             >
-              {whyThatWorks.support.muted}
+              {content.support.muted}
             </ProgressText>
           </p>
           <span data-reveal-item>
-            <Link className={s.link} href={whyThatWorks.link.href}>
-              {whyThatWorks.link.label}
+            <Link className={s.link} href={content.link.href}>
+              {content.link.label}
             </Link>
           </span>
         </div>

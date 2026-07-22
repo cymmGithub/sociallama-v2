@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { oNasValues } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasValues } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './values-grid.module.css'
 
@@ -17,14 +17,6 @@ import s from './values-grid.module.css'
  * useReveal primitive (each value block + the wordmark carries data-reveal-item).
  */
 
-const { center, items } = oNasValues
-
-const leftItems = [items[0], items[3], items[5]]
-const rightItems = [items[2], items[4], items[6]]
-const centerTop = items[1]
-
-const words = [...center.lead.split(' '), ...center.rest.split(' ')]
-
 type ValueContent = { title: string; body: string }
 
 function Value({ title, body }: ValueContent) {
@@ -36,22 +28,35 @@ function Value({ title, body }: ValueContent) {
   )
 }
 
-export function ValuesGrid() {
+export function ValuesGrid({
+  content = oNasValues,
+}: {
+  content?: LocalizedONas['oNasValues']
+}) {
   const gridRef = useReveal<HTMLDivElement>()
+
+  // Column layout (items 0,3,5 | 1 + wordmark | 2,4,6) is fixed by the mock —
+  // the seven values are invariant across locales. Widening makes indexed access
+  // possibly-undefined, so the render guards each slot.
+  const { center, items } = content
+  const leftItems = [items[0], items[3], items[5]]
+  const rightItems = [items[2], items[4], items[6]]
+  const centerTop = items[1]
+  const words = [...center.lead.split(' '), ...center.rest.split(' ')]
 
   return (
     <section className={s.section} data-onas-section="values-grid">
       <div ref={gridRef} data-reveal-style="wipe" className={s.grid}>
         {/* Left column */}
         <div className={s.col}>
-          {leftItems.map((item) => (
-            <Value key={item.title} {...item} />
-          ))}
+          {leftItems.map(
+            (item) => item && <Value key={item.title} {...item} />
+          )}
         </div>
 
         {/* Center column: value + wordmark */}
         <div className={cn(s.col, s.colCenter)}>
-          <Value {...centerTop} />
+          {centerTop && <Value {...centerTop} />}
 
           <div className={s.wordmark}>
             {words.map((word) => (
@@ -64,9 +69,9 @@ export function ValuesGrid() {
 
         {/* Right column */}
         <div className={s.col}>
-          {rightItems.map((item) => (
-            <Value key={item.title} {...item} />
-          ))}
+          {rightItems.map(
+            (item) => item && <Value key={item.title} {...item} />
+          )}
         </div>
       </div>
     </section>

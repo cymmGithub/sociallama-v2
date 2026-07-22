@@ -22,7 +22,11 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
-import { testimonials } from '@/lib/content/home'
+import {
+  type LocalizedHome,
+  testimonialLabels,
+  testimonials,
+} from '@/lib/content/home'
 import { useMediaQuery, usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './testimonial.module.css'
@@ -43,7 +47,13 @@ const slotOf = (i: number, anchor: number) => {
   return offset > COUNT / 2 ? offset - COUNT : offset
 }
 
-export function Testimonial() {
+export function Testimonial({
+  content = testimonials,
+  labels = testimonialLabels,
+}: {
+  content?: LocalizedHome['testimonials']
+  labels?: LocalizedHome['testimonialLabels']
+}) {
   const ref = useReveal<HTMLElement>()
   const labelId = useId()
   const reducedMotion = usePreferredReducedMotion()
@@ -151,7 +161,7 @@ export function Testimonial() {
       data-autoplay={autoplay ? 'true' : 'false'}
     >
       <h2 id={labelId} className="sr-only">
-        Opinie klientów
+        {labels.sectionTitle}
       </h2>
 
       <div
@@ -164,7 +174,7 @@ export function Testimonial() {
             slide's height — switching never shifts the rail or the sections
             below (layout-stable directional transition). */}
         <div className={s.stage}>
-          {testimonials.map((t, i) => (
+          {content.map((t, i) => (
             <article
               key={t.author}
               className={s.slide}
@@ -186,8 +196,8 @@ export function Testimonial() {
 
         {/* Rail = the slider's tab strip (each row selects a testimonial), so
             role="tablist" over a plain container is the right ARIA, not a nav. */}
-        <div className={s.rail} role="tablist" aria-label="Wybierz opinię">
-          {testimonials.map((t, i) => {
+        <div className={s.rail} role="tablist" aria-label={labels.railLabel}>
+          {content.map((t, i) => {
             const slot = slotOf(i, active)
             // While a change is in flight (`leaving` holds the previous
             // active), a row whose slot didn't move by the window's signed
@@ -203,7 +213,7 @@ export function Testimonial() {
                 className={s.client}
                 role="tab"
                 aria-selected={i === active}
-                aria-label={`Opinia ${i + 1}: ${t.author}`}
+                aria-label={`${labels.itemLabel} ${i + 1}: ${t.author}`}
                 data-slot={slot}
                 data-teleport={wrapped}
                 onClick={() => pick(i)}

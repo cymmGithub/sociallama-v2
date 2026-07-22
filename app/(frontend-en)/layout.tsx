@@ -7,20 +7,26 @@ import { ReactTempus } from 'tempus/react'
 import { ChromeProvider } from '@/components/layout/chrome-provider'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
-import { footer, menu, nav } from '@/lib/content/home'
+import { footer, menu, nav } from '@/lib/content/home.en'
 import {
   APP_DEFAULT_TITLE,
   APP_DESCRIPTION,
   APP_NAME,
   APP_TITLE_TEMPLATE,
   OG_BASE,
-} from '@/lib/content/site'
+} from '@/lib/content/site.en'
 import { APP_BASE_URL, env } from '@/lib/env'
 import { OptionalFeatures } from '@/lib/features'
 import { themes } from '@/lib/styles/colors'
 import { fontsVariable } from '@/lib/styles/fonts'
 import '@/lib/styles/css/index.css'
 
+/**
+ * English root layout (design D1). A sibling of the Polish `(frontend)` root
+ * layout — its own `<html lang="en">` document and the English chrome — so the
+ * `/en` tree is additive and Polish URLs never move. Multiple root layouts is a
+ * documented App Router pattern; crossing locales is a full document load.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(APP_BASE_URL),
   applicationName: APP_NAME,
@@ -30,7 +36,7 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   alternates: {
-    canonical: '/',
+    canonical: '/en',
   },
   appleWebApp: {
     capable: true,
@@ -46,7 +52,7 @@ export const metadata: Metadata = {
       template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
-    url: APP_BASE_URL,
+    url: `${APP_BASE_URL}/en`,
     images: [
       {
         url: '/opengraph-image.jpg',
@@ -79,18 +85,13 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   return (
     <html
-      lang="pl"
+      lang="en"
       dir="ltr"
       className={fontsVariable}
-      // Default theme rendered server-side for no-flash initial paint; the
-      // client <Theme> updates data-theme per route via effect.
       data-theme="plum"
-      // NOTE: data-theme is updated client-side per route, which would
-      // otherwise trip a hydration warning.
       suppressHydrationWarning
     >
       <body>
-        {/* Skip link for keyboard navigation accessibility */}
         <Suspense fallback={null}>
           <Link
             href="#main-content"
@@ -99,23 +100,18 @@ export default async function Layout({ children }: PropsWithChildren) {
             Skip to main content
           </Link>
         </Suspense>
-        {/* Critical: CSS custom properties needed for layout */}
         <RealViewport>
           <TransformProvider>
             {/*
               DO NOT add Header or Footer here.
               They are included in the <Wrapper> component used by each page.
-              See: components/layout/wrapper/index.tsx
             */}
-            <ChromeProvider locale="pl" chrome={{ nav, menu, footer }}>
+            <ChromeProvider locale="en" chrome={{ nav, menu, footer }}>
               {children}
             </ChromeProvider>
           </TransformProvider>
         </RealViewport>
-        {/* Optional features - conditionally loaded based on configuration */}
         <OptionalFeatures />
-
-        {/* RAF management - lightweight, but don't patch in draft mode to avoid conflicts */}
         <ReactTempus patch={!isDraftMode} />
         <Analytics />
       </body>

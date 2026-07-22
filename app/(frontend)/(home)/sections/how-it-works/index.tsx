@@ -3,12 +3,15 @@
 import { useScrollTrigger } from 'hamo'
 import { useState } from 'react'
 import { Image } from '@/components/ui/image'
-import { howItWorks } from '@/lib/content/home'
+import { howItWorks, type LocalizedHome } from '@/lib/content/home'
 import s from './how-it-works.module.css'
 
-const STEP_COUNT = howItWorks.steps.length
-
-export function HowItWorks() {
+export function HowItWorks({
+  content = howItWorks,
+}: {
+  content?: LocalizedHome['howItWorks']
+}) {
+  const stepCount = content.steps.length
   const [active, setActive] = useState(0)
 
   // Same scroll-trigger mechanism <Fold> is built on, driving both the pin
@@ -17,23 +20,23 @@ export function HowItWorks() {
     start: 'top top',
     end: 'bottom bottom',
     onProgress: ({ progress }: { progress: number }) => {
-      const index = Math.min(STEP_COUNT - 1, Math.floor(progress * STEP_COUNT))
+      const index = Math.min(stepCount - 1, Math.floor(progress * stepCount))
       setActive(index)
     },
   })
 
   return (
-    <section ref={setRectRef} className={s.pin} aria-label="Jak to działa">
+    <section ref={setRectRef} className={s.pin} aria-label={content.ariaLabel}>
       <div className={s.sticky}>
         <div className={s.head}>
           <h2 className={s.heading}>
-            {howItWorks.heading.map((line) => (
+            {content.heading.map((line) => (
               <span key={line} className={s.headingLine}>
                 {line}
               </span>
             ))}
           </h2>
-          <p className={s.subhead}>{howItWorks.subhead}</p>
+          <p className={s.subhead}>{content.subhead}</p>
         </div>
 
         {/* Plum stage panel (Mock B, user decision 2026-07-14): steps and
@@ -41,7 +44,7 @@ export function HowItWorks() {
             plum gradient, orange glow, grain. */}
         <div className={s.stage}>
           <ol className={s.steps}>
-            {howItWorks.steps.map((step, index) => (
+            {content.steps.map((step, index) => (
               <li
                 key={step.number}
                 className={s.step}
@@ -71,7 +74,7 @@ export function HowItWorks() {
           <div className={s.progress} aria-hidden="true">
             <span
               className={s.progressBar}
-              style={{ '--fill': `${((active + 1) / STEP_COUNT) * 100}%` }}
+              style={{ '--fill': `${((active + 1) / stepCount) * 100}%` }}
             />
           </div>
         </div>

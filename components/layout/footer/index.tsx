@@ -1,10 +1,15 @@
+'use client'
+
 import { ArrowRight, CornerDownRight } from 'lucide-react'
+import { useChrome } from '@/components/layout/chrome-provider'
+import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
-import { footer, socials } from '@/lib/content/home'
+import { socials } from '@/lib/content/home'
 import { footerWordmarkPath } from '@/lib/wordmark-paths'
 import s from './footer.module.css'
 
 export function Footer() {
+  const { footer } = useChrome().chrome
   return (
     <footer
       className={s.footer}
@@ -60,7 +65,7 @@ export function Footer() {
         ))}
 
         <div className={s.column}>
-          <p className={s.columnTitle}>KONTAKT</p>
+          <p className={s.columnTitle}>{footer.contactTitle}</p>
           <ul className={s.contact}>
             <li>
               <Link className={s.link} href={`tel:${footer.contact.phone}`}>
@@ -113,6 +118,7 @@ export function Footer() {
             </li>
           ))}
         </ul>
+        <LocaleToggle linkClassName={s.legalLink} />
       </div>
     </footer>
   )

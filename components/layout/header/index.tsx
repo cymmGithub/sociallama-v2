@@ -4,19 +4,11 @@ import cn from 'clsx'
 import { useLenis } from 'lenis/react'
 import { Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { useChrome } from '@/components/layout/chrome-provider'
+import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
-import { menu, nav, socials } from '@/lib/content/home'
+import { socials } from '@/lib/content/home'
 import s from './header.module.css'
-
-// Top-to-bottom cascade order for the overlay content (--i drives each node's
-// transition-delay): column label, its items, next column, then the utility row.
-const columnOffsets: number[] = []
-let staggerCursor = 0
-for (const column of menu.columns) {
-  columnOffsets.push(staggerCursor)
-  staggerCursor += 1 + column.items.length
-}
-const utilityStaggerIndex = staggerCursor
 
 // Keep the bar revealed within this many pixels of the top so a fresh load or
 // a scroll-to-top always shows it, regardless of the last scroll direction.
@@ -29,6 +21,7 @@ const REVEAL_AT_TOP = 80
 const FOOTER_ZONE_FRACTION = 0.6
 
 export function Header() {
+  const { nav, menu } = useChrome().chrome
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [overFooter, setOverFooter] = useState(false)
@@ -111,6 +104,16 @@ export function Header() {
     }
   }, [menuOpen, lenis])
 
+  // Top-to-bottom cascade order for the overlay content (--i drives each node's
+  // transition-delay): column label, its items, next column, then the utility row.
+  const columnOffsets: number[] = []
+  let staggerCursor = 0
+  for (const column of menu.columns) {
+    columnOffsets.push(staggerCursor)
+    staggerCursor += 1 + column.items.length
+  }
+  const utilityStaggerIndex = staggerCursor
+
   return (
     <>
       {/* The bar adopts the cream theme while the overlay is open so its
@@ -148,7 +151,7 @@ export function Header() {
             className={s.toggle}
             aria-expanded={menuOpen}
             aria-controls="site-menu"
-            aria-label={menuOpen ? 'Zamknij menu' : 'Otwórz menu'}
+            aria-label={menuOpen ? nav.menuCloseLabel : nav.menuOpenLabel}
             onClick={() => setMenuOpen((prev) => !prev)}
           >
             {nav.menuLabel}
@@ -156,6 +159,8 @@ export function Header() {
               {menuOpen ? <X /> : <Menu />}
             </span>
           </button>
+
+          <LocaleToggle linkClassName={s.localeBarLink} />
         </div>
       </header>
 
@@ -165,13 +170,13 @@ export function Header() {
         id="site-menu"
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={nav.menuDialogLabel}
         data-theme="cream"
         inert={!menuOpen}
         className={cn(s.overlay, menuOpen && s.overlayOpen)}
       >
         <div className={s.overlayInner}>
-          <nav aria-label="Główna nawigacja" className={s.columns}>
+          <nav aria-label={nav.navLabel} className={s.columns}>
             {menu.columns.map((column, columnIndex) => (
               <div key={column.label} className={s.column}>
                 <p

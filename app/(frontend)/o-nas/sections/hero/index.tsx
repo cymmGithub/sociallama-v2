@@ -1,7 +1,7 @@
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { socials } from '@/lib/content/home'
-import { oNasHero } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasHero } from '@/lib/content/o-nas'
 import s from './hero.module.css'
 
 /*
@@ -12,14 +12,18 @@ import s from './hero.module.css'
  * recipe as the homepage and footer. The llama cutout bleeds to the band's
  * bottom-right edge in place of the homepage's scrubbed clip.
  */
-export function OnasHero() {
+export function OnasHero({
+  content = oNasHero,
+}: {
+  content?: LocalizedONas['oNasHero']
+}) {
   return (
     <section className={s.hero} data-theme="plum" data-onas-section="hero">
       <div className={s.inner}>
         <div className={s.copy}>
           <h1 className={s.headline}>
-            <span className={s.lineSmall}>{oNasHero.kicker}</span>
-            <span className={s.lineBig}>{oNasHero.heading}</span>
+            <span className={s.lineSmall}>{content.kicker}</span>
+            <span className={s.lineBig}>{content.heading}</span>
           </h1>
 
           <ul className={s.socials}>
@@ -48,7 +52,7 @@ export function OnasHero() {
           <Image
             className={s.llamaImg}
             src="/o-nas/hero-llama.png"
-            alt="Lama Social Lamy w beżowym płaszczu, machająca do kamery"
+            alt={content.llamaAlt}
             fill
             objectFit="contain"
             desktopSize="45vw"

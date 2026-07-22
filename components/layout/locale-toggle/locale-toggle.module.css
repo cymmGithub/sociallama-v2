@@ -1,0 +1,28 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* The passed-in link class sets colour/size to match the surrounding chrome;
+   these rules only handle the active/inactive emphasis. */
+.toggle a {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.toggle a:hover,
+.toggle a[aria-current] {
+  opacity: 1;
+}
+
+.sep {
+  opacity: 0.4;
+  user-select: none;
+}

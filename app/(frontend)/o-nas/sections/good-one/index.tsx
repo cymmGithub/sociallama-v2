@@ -2,7 +2,7 @@
 
 import { type CSSProperties, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
-import { oNasGoodOne } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasGoodOne } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './good-one.module.css'
 
@@ -25,7 +25,11 @@ import s from './good-one.module.css'
  * data-theme="cream" resolves ink text + plum contrast against the explicit
  * cream ground (the section sits between two plum bands on the page).
  */
-export function GoodOne() {
+export function GoodOne({
+  content = oNasGoodOne,
+}: {
+  content?: LocalizedONas['oNasGoodOne']
+}) {
   const ref = useReveal<HTMLDivElement>()
   const orbitRef = useRef<HTMLDivElement>(null)
   const [playing, setPlaying] = useState(false)
@@ -66,7 +70,7 @@ export function GoodOne() {
               >
                 <circle className={s.trackCircle} cx="50" cy="50" r="50" />
               </svg>
-              {oNasGoodOne.spokes.map((company, i) => (
+              {content.spokes.map((company, i) => (
                 <span
                   key={company.label}
                   className={s.dot}
@@ -75,7 +79,7 @@ export function GoodOne() {
               ))}
             </div>
 
-            {oNasGoodOne.spokes.map((company, i) => (
+            {content.spokes.map((company, i) => (
               <div
                 key={company.label}
                 className={s.logo}
@@ -106,7 +110,7 @@ export function GoodOne() {
               <Image
                 className={s.hubImg}
                 src="/o-nas/good-one/hub.png"
-                alt={oNasGoodOne.center}
+                alt={content.center}
                 width={275}
                 height={129}
                 objectFit="contain"
@@ -121,7 +125,7 @@ export function GoodOne() {
           <Image
             className={s.wheelImg}
             src="/o-nas/good-one-wheel.png"
-            alt="Grupa Good One: Good One PR, SEOFLY, Folks, TymKor media, Diea i Social Lama"
+            alt={content.wheelAlt}
             aspectRatio={971 / 831}
             block
             mobileSize="90vw"
@@ -130,9 +134,9 @@ export function GoodOne() {
         </div>
 
         <div data-reveal-item className={s.copy}>
-          <p className={s.eyebrow}>{oNasGoodOne.heading}</p>
-          <h2 className={`h2 ${s.title}`}>{oNasGoodOne.headingAccent}</h2>
-          <p className={s.body}>{oNasGoodOne.body}</p>
+          <p className={s.eyebrow}>{content.heading}</p>
+          <h2 className={`h2 ${s.title}`}>{content.headingAccent}</h2>
+          <p className={s.body}>{content.body}</p>
         </div>
       </div>
     </section>

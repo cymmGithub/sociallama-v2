@@ -14,25 +14,33 @@ import cn from 'clsx'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { Image } from '@/components/ui/image'
-import { oNasTeam } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasTeam } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
 
-export function Team() {
+export function Team({
+  content = oNasTeam,
+}: {
+  content?: LocalizedONas['oNasTeam']
+}) {
   const revealRef = useReveal<HTMLDivElement>()
-  const members = oNasTeam.members
+  const members = content.members
   const count = members.length
 
   const [index, setIndex] = useState(0)
-  // `?? members[0]` satisfies noUncheckedIndexedAccess; index is always wrapped
-  // in-bounds so the fallback never actually runs. Peers are the members either
-  // side of the featured one — shown whole and plum-tinted, framing the hero.
-  const featured = members[index] ?? members[0]
-  const leftPeer = members[(index - 1 + count) % count] ?? members[0]
-  const rightPeer = members[(index + 1) % count] ?? members[0]
+
+  // `first` is the guaranteed fallback — members is non-empty by design, and the
+  // guard narrows away the widened-array `undefined` so featured/peers are
+  // definite. index is always wrapped in-bounds, so the fallback never runs.
+  const first = members[0]
+  if (!first) return null
+
+  const featured = members[index] ?? first
+  const leftPeer = members[(index - 1 + count) % count] ?? first
+  const rightPeer = members[(index + 1) % count] ?? first
 
   // "ZESPÓŁ SOCIAL LAMA" → "ZESPÓŁ" / "SOCIAL LAMA" (two lines, per the mock).
-  const [headLead, ...headRest] = oNasTeam.heading.split(' ')
+  const [headLead, ...headRest] = content.heading.split(' ')
 
   function prev() {
     setIndex((i) => (i - 1 + count) % count)
@@ -52,8 +60,8 @@ export function Team() {
       <header className={s.head}>
         {/* Homepage "Usługi" pattern: small white eyebrow over a big orange word. */}
         <div className={s.label}>
-          <p className={s.eyebrow}>{oNasTeam.kickerLead}</p>
-          <p className={s.title}>{oNasTeam.kickerRest}</p>
+          <p className={s.eyebrow}>{content.kickerLead}</p>
+          <p className={s.title}>{content.kickerRest}</p>
         </div>
         <p className={s.heading}>
           <span>{headLead}</span>
@@ -109,7 +117,7 @@ export function Team() {
             type="button"
             className={cn(s.nav, s.navPrev)}
             onClick={prev}
-            aria-label="Poprzednia osoba"
+            aria-label={content.prevLabel}
           >
             <ChevronLeft aria-hidden="true" />
           </button>
@@ -117,7 +125,7 @@ export function Team() {
             type="button"
             className={cn(s.nav, s.navNext)}
             onClick={next}
-            aria-label="Następna osoba"
+            aria-label={content.nextLabel}
           >
             <ChevronRight aria-hidden="true" />
           </button>
