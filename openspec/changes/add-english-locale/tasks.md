@@ -37,9 +37,9 @@
 
 ## 7. Verification
 
-- [ ] 7.1 Typecheck + Biome clean; every `.en.ts` module `satisfies` its PL type (parity gate compiles).
-- [ ] 7.2 Drive on :3003: every EN URL from the map returns 200 with `lang="en"`, PL pages unchanged with `lang="pl"`; toggle round-trips PL↔EN on every mapped page; unmapped (blog post) toggles to `/en`.
-- [ ] 7.3 EN chrome shows no BLOG links anywhere; `/en` has no NewsLAMA section.
-- [ ] 7.4 Case studies: all 3 EN detail pages render translated content (fallback shows no raw empty fields); EN contact form submits with EN validation messages and delivers a lead email with EN labels (or graceful-failure path if SMTP unset).
-- [ ] 7.5 View-source spot check: hreflang pairs present on both locales' pages; sitemap contains EN URLs; JSON-LD `inLanguage` correct.
-- [ ] 7.6 Native-speaker-style read-through of all EN surfaces (the "human vibe" pass is part of done).
+- [x] 7.1 Typecheck + Biome clean; every `.en.ts` module `satisfies` its PL type (parity gate compiles).
+- [x] 7.2 Drive on :3003: every EN URL from the map returns 200 with `lang="en"`, PL pages unchanged with `lang="pl"`; toggle round-trips PL↔EN on every mapped page; unmapped (blog post) toggles to `/en`.
+- [x] 7.3 EN chrome shows no BLOG links anywhere; `/en` has no NewsLAMA section.
+- [x] 7.4 Case studies: all 3 EN detail pages render translated content (fallback shows no raw empty fields); EN contact form submits with EN validation messages and delivers a lead email with EN labels (or graceful-failure path if SMTP unset).
+- [x] 7.5 View-source spot check: hreflang pairs present on both locales' pages; sitemap contains EN URLs; JSON-LD `inLanguage` correct.
+- [x] 7.6 Native-speaker-style read-through of all EN surfaces (the "human vibe" pass is part of done).
