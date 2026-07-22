@@ -39,7 +39,7 @@
 - [x] 6b.1 `pdfimages`-extract iRobot's real campaign creatives from the source PDF; drop the slide-dump gallery for iRobot
 - [x] 6b.2 Restructure `approach` as a pillar array (tag + heading + richText + media[]) + `client.about`; regenerate migration + types
 - [x] 6b.3 Reseed all three studies (pillar copy from the decks); verify the woven detail layout
-- [ ] 6b.4 Pracuj.pl + Volvo creatives pending their source PDFs (galleries keep slides until then)
+- [x] 6b.4 Pracuj.pl + Volvo creatives extracted from their source PDFs and woven into pillars (galleries removed for all three)
 
 ## 7. Verify + ship
 
