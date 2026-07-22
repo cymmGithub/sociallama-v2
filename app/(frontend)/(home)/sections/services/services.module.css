@@ -207,120 +207,232 @@
   transition-delay: 540ms;
 }
 
+.layer.isActive .panel:nth-child(7) {
+  transition-delay: 620ms;
+}
+
+.layer.isActive .panel:nth-child(8) {
+  transition-delay: 700ms;
+}
+
+.layer.isActive .panel:nth-child(9) {
+  transition-delay: 780ms;
+}
+
+.layer.isActive .panel:nth-child(10) {
+  transition-delay: 860ms;
+}
+
 /* Desktop stage geometry is height-relative (the stage is a viewport-capped
    band, wider than 16:9) — width derives from each panel's aspect-ratio.
-   Slot order follows the content data: instagram, tiktok (hero), linkedin,
-   x, pinterest, youtube. Two stacked pairs flank the centered hero. */
 
-/* Instagram grid — far left, upper. */
-.layer .panel:nth-child(1) {
-  height: 48%;
-  left: 4%;
-  top: 10%;
-  rotate: -2deg;
-  z-index: 1;
-}
+   CONTENT: seven case-study creatives collaged around a centered hero. Slot
+   order follows the content data: volvo-vcw-post (hero), pracuj-humor-cat,
+   irobot-gallery-1, volvo-event-ex30, irobot-gallery-4 (landscape),
+   pracuj-ar-creator, volvo-vcw-goracy. Scoped to the content stage so the
+   sprzedaż device slots below don't inherit these positions. */
 
-/* TikTok profile — the hero panel, center, largest. */
-.layer .panel:nth-child(2) {
-  height: 74%;
+/* Volvo VCW post — the hero panel, center, tallest. */
+.layer .panels[data-stage="content"] .panel:nth-child(1) {
+  height: 78%;
   left: 50%;
-  top: 9%;
+  top: 8%;
   translate: -50% 0;
-  z-index: 3;
+  z-index: 4;
 }
 
-/* LinkedIn page — inner right, lower. */
-.layer .panel:nth-child(3) {
+/* Pracuj humor cat — inner left, flanking the hero. */
+.layer .panels[data-stage="content"] .panel:nth-child(2) {
   height: 52%;
-  right: 13%;
-  top: 40%;
-  rotate: -1deg;
-  z-index: 2;
-}
-
-/* X profile — inner left, lower. */
-.layer .panel:nth-child(4) {
-  height: 52%;
-  left: 13%;
-  top: 42%;
-  rotate: 1deg;
-  z-index: 2;
-}
-
-/* Pinterest — far right, upper. */
-.layer .panel:nth-child(5) {
-  height: 48%;
-  right: 4%;
-  top: 8%;
-  rotate: 2deg;
-  z-index: 1;
-}
-
-/* YouTube — tucked between hero and the right pair. */
-.layer .panel:nth-child(6) {
-  height: 42%;
-  right: 27%;
-  top: 4%;
-  rotate: 1deg;
-  z-index: 1;
-}
-
-/* Sprzedaż dashboards (keyed by stage id — Content shares the same panel
-   count, so count-based keying would collide): symmetric landscape pairs
-   around the phone-framed Insights hero, LinkedIn Analytics tucked upper
-   center-left. Slot order: Ads Manager, IG Insights (hero), YT Studio,
-   X Analytics, TikTok Studio, LinkedIn Analytics. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
-  height: 44%;
-  left: 4%;
-  top: 8%;
-  rotate: -2deg;
-  z-index: 1;
-}
-
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
-  height: 72%;
-  left: 50%;
-  top: 11%;
-  translate: -50% 0;
-  rotate: 0deg;
-  z-index: 3;
-}
-
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
-  height: 44%;
-  left: auto;
-  right: 4%;
-  top: 8%;
-  rotate: 2deg;
-  z-index: 1;
-}
-
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(4) {
-  height: 44%;
-  left: 13%;
-  top: 48%;
-  rotate: 1deg;
-  z-index: 2;
-}
-
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
-  height: 44%;
-  left: auto;
-  right: 13%;
-  top: 46%;
-  rotate: -1deg;
-  z-index: 2;
-}
-
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
-  height: 38%;
   left: 26%;
-  right: auto;
-  top: 4%;
-  rotate: 1deg;
+  top: 40%;
+  rotate: 2deg;
+  z-index: 3;
+}
+
+/* Volvo VCW gorący — inner right, flanking the hero. */
+.layer .panels[data-stage="content"] .panel:nth-child(3) {
+  height: 52%;
+  right: 26%;
+  top: 40%;
+  rotate: -2deg;
+  z-index: 3;
+}
+
+/* Pracuj AR creator — far left, upper. */
+.layer .panels[data-stage="content"] .panel:nth-child(4) {
+  height: 44%;
+  left: 5%;
+  top: 8%;
+  rotate: -3deg;
   z-index: 1;
+}
+
+/* Volvo EX30 event — far right, upper. */
+.layer .panels[data-stage="content"] .panel:nth-child(5) {
+  height: 44%;
+  right: 4%;
+  top: 8%;
+  rotate: 3deg;
+  z-index: 1;
+}
+
+/* Pracuj humor POV — far left, lower. */
+.layer .panels[data-stage="content"] .panel:nth-child(6) {
+  height: 44%;
+  left: 6%;
+  top: 50%;
+  rotate: 3deg;
+  z-index: 2;
+}
+
+/* Volvo Noc Muzeów — far right, lower. */
+.layer .panels[data-stage="content"] .panel:nth-child(7) {
+  height: 44%;
+  right: 4%;
+  top: 52%;
+  rotate: -2deg;
+  z-index: 2;
+}
+
+/* Wide-screen-only extras (≥1440px): three more creatives tucked into the
+   collage gaps. Hidden below 1440px so the base seven don't crowd. */
+.layer .panels[data-stage="content"] .panel:nth-child(n + 8) {
+  display: none;
+}
+
+@media (width >= 1440px) {
+  .layer .panels[data-stage="content"] .panel:nth-child(n + 8) {
+    display: block;
+  }
+
+  /* Pracuj AR grid — upper center-left gap. */
+  .layer .panels[data-stage="content"] .panel:nth-child(8) {
+    height: 34%;
+    left: 34%;
+    top: 4%;
+    rotate: 2deg;
+    z-index: 1;
+  }
+
+  /* Volvo konkurs podium — upper center-right gap. */
+  .layer .panels[data-stage="content"] .panel:nth-child(9) {
+    height: 34%;
+    right: 34%;
+    top: 4%;
+    rotate: -2deg;
+    z-index: 1;
+  }
+
+  /* Pracuj edu — right-center channel between the inner-right and far-right
+     panels (fills the mid-right gap without occluding either). */
+  .layer .panels[data-stage="content"] .panel:nth-child(10) {
+    height: 34%;
+    right: 15%;
+    top: 40%;
+    rotate: -2deg;
+    z-index: 2;
+  }
+}
+
+/* SPRZEDAŻ: five device-mockup creatives (iPad / MacBook) exported with their
+   frames + drop-shadows baked in on transparency, so they float as bare panels
+   — the floating-card chrome is stripped (no border, radius, fill, shadow, or
+   clip). Scoped without `.layer` so the reset also applies in the mobile stack.
+   Slot order follows the data: Meta Ads (iPad, hero), X, TikTok, YouTube,
+   LinkedIn. */
+.panels[data-stage="sprzedaz"] .panel {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* Four lanes across the wide stage — the Meta Ads iPad and the IG phone each
+   get their own central lane (no stacking), flanked by the two laptop/tablet
+   stacks. Slot order follows the data: 1 Meta Ads (iPad), 2 X, 3 TikTok,
+   4 YouTube, 5 LinkedIn, 6 IG Insights (phone). */
+
+/* Meta Ads iPad — central-left lane, largest landscape device. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
+  height: 74%;
+  left: 37%;
+  top: 12%;
+  translate: -50% 0;
+  z-index: 2;
+}
+
+/* X Analytics Mac — far left, upper. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
+  height: 48%;
+  left: -3%;
+  top: 5%;
+  rotate: -3deg;
+  z-index: 1;
+}
+
+/* TikTok Studio Mac — far right, upper. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
+  height: 48%;
+  right: -3%;
+  top: 5%;
+  rotate: 3deg;
+  z-index: 1;
+}
+
+/* YouTube iPad — far left, lower. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(4) {
+  height: 46%;
+  left: 1%;
+  top: 50%;
+  rotate: 2deg;
+  z-index: 1;
+}
+
+/* LinkedIn Mac — far right, lower. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
+  height: 46%;
+  right: 1%;
+  top: 50%;
+  rotate: -2deg;
+  z-index: 1;
+}
+
+/* Instagram Insights phone — central-right lane, portrait, its own space. */
+.layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
+  height: 86%;
+  left: 62%;
+  top: 6%;
+  translate: -50% 0;
+  rotate: 2deg;
+  z-index: 3;
+}
+
+/* Wider screens have more room than the height-capped stage gives back, so the
+   device mockups grow to keep the collage full. */
+@media (width >= 1600px) {
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
+    height: 84%;
+    top: 8%;
+  }
+
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(2),
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
+    height: 56%;
+    top: 2%;
+  }
+
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(4),
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
+    height: 54%;
+    top: 46%;
+  }
+
+  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
+    height: 96%;
+    top: 2%;
+  }
 }
 
 /* —— Stage media: phone-framed vertical clip ——————————————————————— */
@@ -572,6 +684,40 @@
 
 .stackStage .panel:nth-child(n + 4) {
   display: none;
+}
+
+/* Sprzedaż device mockups are landscape (iPad / Mac), so size them by height
+   (width follows the aspect) — Meta Ads iPad hero centered, X + TikTok Macs
+   flanking. Only the first three render on mobile (rule above). */
+.stackStage .panels[data-stage="sprzedaz"] .panel {
+  width: auto;
+}
+
+.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
+  height: 56%;
+  left: 50%;
+  right: auto;
+  top: 22%;
+  translate: -50% 0;
+  rotate: 0deg;
+  z-index: 3;
+}
+
+.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
+  height: 40%;
+  left: 1%;
+  top: 12%;
+  rotate: -3deg;
+  z-index: 2;
+}
+
+.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
+  height: 40%;
+  left: auto;
+  right: 1%;
+  top: 14%;
+  rotate: 3deg;
+  z-index: 2;
 }
 
 /* Three frames (two clips + the iRobot placeholder) must fit the narrower

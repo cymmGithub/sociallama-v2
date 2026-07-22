@@ -41,7 +41,7 @@ export interface Client {
 }
 
 export interface StagePanel {
-  /** Screenshot path under /assets. */
+  /** Screenshot path (under /assets or /case-studies). */
   src: string
   alt: string
   /** Natural pixel dimensions of the screenshot. */
@@ -456,42 +456,70 @@ export const services = {
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
       stage: {
         kind: 'panels',
+        // Ten Volvo + Pracuj.pl case-study creatives. The stage renders the
+        // first seven on desktop; the last three are wide-screen-only extras
+        // (≥1440px) — see the `panel:nth-child(n + 8)` rules in the CSS. Mobile
+        // shows only the first three (existing rule), so 1–3 read as a trio.
         panels: [
           {
-            src: '/assets/services-instagram.png',
-            alt: 'Profil Social Lama na Instagramie — siatka postów',
-            width: 801,
-            height: 915,
+            src: '/case-studies/volvo/volvo-vcw-post.jpg',
+            alt: 'Post Volvo Car Warszawa na Instagramie prezentujący samochód Volvo',
+            width: 351,
+            height: 760,
           },
           {
-            src: '/assets/services-tiktok.png',
-            alt: 'Profil Social Lama na TikToku — 55,4 tys. polubień',
-            width: 1149,
-            height: 944,
+            src: '/case-studies/pracuj-pl/pracuj-pl-humor-cat.jpg',
+            alt: 'Humorystyczny film Pracuj.pl na TikToku z memem — „Memy wcielone w życie”',
+            width: 528,
+            height: 1148,
           },
           {
-            src: '/assets/services-linkedin.png',
-            alt: 'Strona Social Lama na LinkedIn',
-            width: 827,
-            height: 918,
+            src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
+            alt: 'Kreacja Volvo „Gorący okres?” o przygotowaniu auta na lato',
+            width: 351,
+            height: 760,
           },
           {
-            src: '/assets/services-x.png',
-            alt: 'Profil Social Lama na X',
-            width: 887,
-            height: 847,
+            src: '/case-studies/pracuj-pl/pracuj-pl-ar-creator.jpg',
+            alt: 'Twórczyni nagrywająca film z filtrem AR „Wymarzona praca” Pracuj.pl',
+            width: 555,
+            height: 1200,
           },
           {
-            src: '/assets/services-pinterest.png',
-            alt: 'Profil Social Lama na Pintereście',
-            width: 900,
-            height: 1117,
+            src: '/case-studies/volvo/volvo-event-ex30.jpg',
+            alt: 'Elektryczne Volvo EX30 prezentowane na wydarzeniu plenerowym',
+            width: 406,
+            height: 720,
           },
           {
-            src: '/assets/services-youtube.png',
-            alt: 'Kanał Social Lama na YouTube',
-            width: 900,
-            height: 1117,
+            src: '/case-studies/pracuj-pl/pracuj-pl-humor-pov.jpg',
+            alt: 'Humorystyczny film Pracuj.pl na TikToku w formacie POV o szukaniu pracy',
+            width: 528,
+            height: 1148,
+          },
+          {
+            src: '/case-studies/volvo/volvo-event-noc.jpg',
+            alt: 'Relacja z Nocy Muzeów w salonie Volvo — koncert w nastrojowym oświetleniu',
+            width: 406,
+            height: 720,
+          },
+          {
+            src: '/case-studies/pracuj-pl/pracuj-pl-ar-grid.jpg',
+            alt: 'Strona filtra AR „Wymarzona praca – Pracuj.pl” na TikToku z siatką filmów użytkowników',
+            width: 362,
+            height: 776,
+          },
+          {
+            src: '/case-studies/volvo/volvo-konkurs-podium.jpg',
+            alt: 'Podium zwycięzców dziecięcego konkursu rysunkowego Volvo na evencie plenerowym',
+            width: 406,
+            height: 720,
+          },
+          {
+            src: '/case-studies/pracuj-pl/pracuj-pl-edu.jpg',
+            alt: 'Edukacyjny film Pracuj.pl na TikToku — „Jak napisać list motywacyjny?”',
+            width: 328,
+            height: 701,
           },
         ],
       },
@@ -503,44 +531,48 @@ export const services = {
       bodyLong:
         'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/sprzedaz' },
+      // Device-mockup creatives (iPad / MacBook) exported with their frames and
+      // shadows baked in on transparency, so they render as bare floating panels
+      // (no card chrome — see the frameless rule in the CSS). Mobile shows the
+      // first three (existing rule).
       stage: {
         kind: 'panels',
         panels: [
           {
-            src: '/assets/services-ads.png',
-            alt: 'Menedżer reklam Meta — wyniki kampanii sprzedażowych',
-            width: 1100,
-            height: 821,
+            src: '/assets/sprzedaz-meta-ads.png',
+            alt: 'Menedżer reklam Meta — wyniki kampanii sprzedażowych na iPadzie',
+            width: 1350,
+            height: 1080,
           },
           {
-            src: '/assets/services-insights.png',
-            alt: 'Statystyki Instagrama — wzrost zasięgu i obserwujących',
+            src: '/assets/sprzedaz-x.png',
+            alt: 'Analityka X — wzrost wyświetleń i zaangażowania na MacBooku',
+            width: 1350,
+            height: 1080,
+          },
+          {
+            src: '/assets/sprzedaz-tiktok.png',
+            alt: 'TikTok Studio — statystyki wyświetleń i obserwujących na MacBooku',
+            width: 1350,
+            height: 1080,
+          },
+          {
+            src: '/assets/sprzedaz-youtube.png',
+            alt: 'Statystyki kanału YouTube — wzrost wyświetleń na iPadzie',
+            width: 1350,
+            height: 1080,
+          },
+          {
+            src: '/assets/sprzedaz-linkedin.png',
+            alt: 'Analiza strony LinkedIn — wzrost odwiedzin i obserwujących na MacBooku',
+            width: 1350,
+            height: 1080,
+          },
+          {
+            src: '/assets/sprzedaz-instagram.png',
+            alt: 'Statystyki Instagrama — wzrost zasięgu i obserwujących na iPhonie',
             width: 900,
             height: 1117,
-          },
-          {
-            src: '/assets/services-ytstudio.png',
-            alt: 'Statystyki kanału YouTube — wzrost wyświetleń',
-            width: 1100,
-            height: 821,
-          },
-          {
-            src: '/assets/services-xanalytics.png',
-            alt: 'Analityka X — wzrost wyświetleń i zaangażowania',
-            width: 1100,
-            height: 821,
-          },
-          {
-            src: '/assets/services-tiktokstudio.png',
-            alt: 'TikTok Studio — statystyki wyświetleń i obserwujących',
-            width: 1100,
-            height: 821,
-          },
-          {
-            src: '/assets/services-linkedin-analiza.png',
-            alt: 'Analiza strony LinkedIn — wzrost odwiedzin i obserwujących',
-            width: 1100,
-            height: 821,
           },
         ],
       },
