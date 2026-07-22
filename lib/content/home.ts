@@ -235,9 +235,10 @@ export const hero = {
        size; the full "Kreacje & Wideo" name lives in the menu and services. */
     /* Order matches the hero clip's outfit sequence so each word lands on its
        look as the scroll scrubs: streetwear→KREACJE, all-black film look→WIDEO,
-       cream overshirt→CONTENT, blazer→SPRZEDAŻ, navy suit + admiring
-       profile→STRATEGY (hero-service-wardrobe-scrub). */
-    rotator: ['KREACJE', 'WIDEO', 'CONTENT', 'SPRZEDAŻ', 'STRATEGY'],
+       cream overshirt→TREŚCI, blazer→SPRZEDAŻ, navy suit + admiring
+       profile→STRATEGIA (hero-service-wardrobe-scrub). All-Polish rotator
+       (2026-07-22 fix): CONTENT/STRATEGY were English leftovers. */
+    rotator: ['KREACJE', 'WIDEO', 'TREŚCI', 'SPRZEDAŻ', 'STRATEGIA'],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
   },
   llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
