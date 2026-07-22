@@ -45,4 +45,4 @@
 
 - [x] 7.1 Playwright: listing renders cards; each detail page renders all sections; unknown slug 404s; drafts hidden
 - [x] 7.2 Confirm JSON-LD validates and canonical/sitemap are correct
-- [x] 7.3 Biome + TypeScript clean (365 tests pass, manifest current); run migration `--prod` at merge — **pending: merge-time prod-DB step**
+- [x] 7.3 Biome + TypeScript clean (365 tests pass, manifest current); merged to `main`, prod migration applied, prod seeded (`--prod` case-studies + platforms). Shared dev/prod Blob store required deleting the dev-uploaded case-study/platform blobs before the prod seed re-uploaded them (identical, deterministic URLs). Redeploy after seeding so the statically-built listing + sitemap pick up the published studies.
