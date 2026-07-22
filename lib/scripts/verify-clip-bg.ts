@@ -10,7 +10,7 @@
  *
  * Usage:
  *   bun lib/scripts/verify-clip-bg.ts <clip.mp4> [#hex]
- *   bun lib/scripts/verify-clip-bg.ts public/clips/hero.mp4 '#892f53'
+ *   bun lib/scripts/verify-clip-bg.ts public/clips/hero.mp4 '#913155'
  *
  * Passes when every corner is within ±3 per RGB channel OR ΔE (CIE76) < 3.
  * Exits non-zero on mismatch so it is usable as a pre-commit / CI gate.
@@ -97,7 +97,7 @@ function toHex([r, g, b]: RGB): string {
 
 function main() {
   const clip = process.argv[2]
-  const target = process.argv[3] ?? '#892f53'
+  const target = process.argv[3] ?? '#913155'
   if (!clip) {
     console.error('Usage: bun lib/scripts/verify-clip-bg.ts <clip> [#hex]')
     process.exit(2)

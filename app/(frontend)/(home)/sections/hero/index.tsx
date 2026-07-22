@@ -6,18 +6,36 @@ import { useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { hero, socials } from '@/lib/content/home'
-import { useRotator } from '@/lib/hooks/use-rotator'
 import { breakpoints } from '@/styles/config'
 import { HeroFrames } from './frame-sequence'
 import s from './hero.module.css'
+import { useHeroScrubTarget } from './track'
+
+/* Scrub-progress (0..1) upper edges of the first four rotator words, derived
+   from the hero clip's outfit cuts (between frames 15/16, 29/30, 42/43 and
+   48/49 of the 60-frame sequence). The five looks aren't evenly spaced, so the
+   words flip on these boundaries rather than a flat 1/5 grid; the fifth word
+   holds through the profile + admiring settle. */
+const WORD_BOUNDS = [0.246, 0.483, 0.703, 0.805] as const
+function wordIndexForProgress(p: number): number {
+  for (let i = 0; i < WORD_BOUNDS.length; i++) {
+    const bound = WORD_BOUNDS[i]
+    if (bound !== undefined && p < bound) return i
+  }
+  return WORD_BOUNDS.length
+}
 
 export function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null)
-  // Rotates the first headline word through the offer. Static under reduced
-  // motion (shows the first word only); paused while the hero is off screen.
-  const { ref: rotatorRef, rotation } = useRotator<HTMLElement>(
-    hero.headline.rotator.length
-  )
+  // The headline word is scroll-driven: as the hero scrubs, the active word
+  // advances in lockstep with the llama's outfit, flipping at the clip's
+  // outfit-transition points. Static (word 0) under reduced motion / mobile
+  // poster, where there is no scrub runway.
+  const scrubRef = useHeroScrubTarget()
+  const wordIndexRef = useRef(0)
+  // prev: -1 so the initial active word isn't also tagged "leaving" (which would
+  // park it in the out-of-mask position).
+  const [rotation, setRotation] = useState({ index: 0, prev: -1 })
   // 'poster' until mount so SSR and hydration render the same static shell;
   // then desktop gets its scrubbed head-turn clip. Mobile stays static — a
   // poster image, no video (user decision 2026-07-14: simpler and immune to
@@ -37,6 +55,24 @@ export function Hero() {
     ).matches
     if (!(mobile || touchOnly)) setMedia('desktop')
   }, [])
+
+  // Drive the active word from the scrub target. A rAF loop reads the scrub ref
+  // (updated per scroll event, never via state) and setState only when the word
+  // index crosses a boundary — at most four re-renders across the whole runway.
+  useEffect(() => {
+    if (media !== 'desktop' || !scrubRef) return
+    let raf = 0
+    const tick = () => {
+      const idx = wordIndexForProgress(scrubRef.current ?? 0)
+      if (idx !== wordIndexRef.current) {
+        setRotation({ index: idx, prev: wordIndexRef.current })
+        wordIndexRef.current = idx
+      }
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [media, scrubRef])
 
   // Stagger the three headline lines in on first paint (design D4). Runs once
   // and never re-triggers; reduced motion leaves the final state untouched.
@@ -71,9 +107,9 @@ export function Hero() {
   }, [])
 
   return (
-    <section ref={rotatorRef} className={s.hero}>
+    <section className={s.hero}>
       {/* Desktop media: transparent head-turn frames (rembg matte) composited
-          live onto the #892f53 chapter via a <canvas>. No baked plum, so
+          live onto the brand-plum (#913155) chapter via a <canvas>. No baked plum, so
           Safari has no video colour pipeline to mis-manage — the reason we
           moved off the clip. Absolute against the section; hidden on mobile. */}
       {media === 'desktop' ? (
@@ -161,8 +197,8 @@ export function Hero() {
             the box on desktop, so SSR and reduced motion get it for free. */}
         <div className={s.media}>
           {/* unoptimized: the poster's plum is graded to the --color-plum-hero
-              token (#853253) so it composites seamlessly onto the section
-              ground. Next's image optimizer re-encodes the WebP and shifts
+              token (#913155, the brand plum) so it composites seamlessly onto
+              the section ground. Next's image optimizer re-encodes the WebP and shifts
               this plum ~+5 on green (and differently per width — the known
               width-specific color corruption), which would push it back off
               the token. Serving the graded file as-is keeps render == source. */}

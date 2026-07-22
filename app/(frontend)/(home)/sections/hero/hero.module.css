@@ -71,8 +71,9 @@
 }
 
 /* Desktop clip/poster: bare, right-anchored against the section (reference
-   geometry) — the clip's background is graded to exactly #892f53 and gated
-   (verify-clip-bg.ts), so its edges are invisible against the chapter. Top
+   geometry) — the frames are transparent and the posters are graded to the
+   brand plum #913155 (verify-clip-bg.ts gates baked clips), so edges are
+   invisible against the chapter. Top
    inset keeps the llama's ears clear of the fixed header band (the header's
    CTA/menu sit top-right, exactly where the llama is). */
 .video {

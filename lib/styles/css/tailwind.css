@@ -9,13 +9,13 @@
 	--breakpoint-dt: 800px;
 
   --color-*: initial;
-	--color-primary: #853253;
+	--color-primary: #913155;
 	--color-secondary: #faf9f5;
 	--color-contrast: #f09b39;
   --color-black: #000000;
 	--color-white: #ffffff;
 	--color-plum: #913155;
-	--color-plum-hero: #853253;
+	--color-plum-hero: #913155;
 	--color-plum-dark: #722341;
 	--color-orange: #f09b39;
 	--color-ink: #2b1f24;
@@ -36,7 +36,7 @@
 
 /** Custom theme overwrites **/
 [data-theme=plum] {
-  --color-primary: #853253;
+  --color-primary: #913155;
 	--color-secondary: #faf9f5;
 	--color-contrast: #f09b39;
 }

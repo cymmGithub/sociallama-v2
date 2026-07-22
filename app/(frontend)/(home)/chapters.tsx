@@ -9,8 +9,8 @@
  * `#main-content`'s background but below content, and its `background-color`
  * transitions (~0.9s) between chapter theme backgrounds as scroll crosses the
  * viewport center (IntersectionObserver with a center band). Chapters are
- * transparent so the layer shows through; the hero video therefore composites
- * directly onto `#892f53` during chapter 1. The layer is bounded to the
+ * transparent so the layer shows through; the hero frames therefore composite
+ * directly onto the brand plum (`#913155`) during chapter 1. The layer is bounded to the
  * chapters (not `position:fixed`) so it doesn't blanket the sticky footer far
  * below and break the footer reveal.
  *

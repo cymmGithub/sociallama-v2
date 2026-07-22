@@ -233,7 +233,11 @@ export const hero = {
        ("THAT WORKS" renders in the accent color). */
     /* Short single words so the longest rotator token doesn't cap the headline
        size; the full "Kreacje & Wideo" name lives in the menu and services. */
-    rotator: ['STRATEGY', 'CONTENT', 'SPRZEDAŻ', 'KREACJE', 'WIDEO'],
+    /* Order matches the hero clip's outfit sequence so each word lands on its
+       look as the scroll scrubs: streetwear→KREACJE, all-black film look→WIDEO,
+       cream overshirt→CONTENT, blazer→SPRZEDAŻ, navy suit + admiring
+       profile→STRATEGY (hero-service-wardrobe-scrub). */
+    rotator: ['KREACJE', 'WIDEO', 'CONTENT', 'SPRZEDAŻ', 'STRATEGY'],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
   },
   llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
