@@ -18,7 +18,7 @@
 
 - [x] 4.1 `/en` homepage — composes the PL homepage's sections from EN content, minus `<NewsLama />`.
 - [x] 4.2 `/en/about-us`, `/en/contact` (form posts with `locale: 'en'`), `/en/become-a-lama` (inline EN copy mirroring the PL page's pattern).
-- [ ] 4.3 Static EN legal pages: `/en/privacy-policy` (translate the static PL page), `/en/terms` + `/en/cookies` (translate the two WP-imported CMS docs' content into static pages).
+- [~] 4.3 Static EN legal pages: `/en/privacy-policy` (translate the static PL page) — **done**. `/en/terms` + `/en/cookies` — **N/A / blocked upstream**: `regulamin`/`cookies` turned out to be reserved-but-**unbuilt** planned pages (reserved-slugs.ts), not WP-imported CMS docs — they 404 in Polish too (live site + prod DB both empty), so there is no source to translate. Interim redirect stubs (`/en/terms`→`/regulamin`, `/en/cookies`→`/cookies`) are in place and will auto-resolve once the Polish pages are built; real EN translations follow then.
 - [x] 4.4 Contact server action: `locale` param selecting validation/toast strings + lead-email labels (per design D7).
 
 ## 5. Case-studies localization (Payload)
