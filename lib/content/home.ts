@@ -178,6 +178,8 @@ export const menu = {
   ] satisfies MenuColumn[],
   utility: [
     { label: 'O NAS', href: '/o-nas' },
+    { label: 'BLOG', href: '/blog' },
+    { label: 'CASE STUDIES', href: '/case-studies' },
     { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
   ] satisfies MenuItem[],
 } as const
@@ -740,6 +742,7 @@ export const footer = {
         { label: 'USŁUGI', href: '/uslugi' },
         { label: 'SZKOLENIA I KURSY', href: '/szkolenia' },
         { label: 'BLOG', href: '/blog' },
+        { label: 'CASE STUDIES', href: '/case-studies' },
         { label: 'KONTAKT', href: '/kontakt' },
       ],
     },
