@@ -2,7 +2,7 @@
 
 import cn from 'clsx'
 import { ImageIcon } from 'lucide-react'
-import { oNasProjects } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasProjects } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './projects.module.css'
 
@@ -17,7 +17,11 @@ import s from './projects.module.css'
  * each slot so a PNG can be dropped in later. Heading + cards rise in on scroll
  * via useReveal (each is a `data-reveal-item`, staggered).
  */
-export function Projects() {
+export function Projects({
+  content = oNasProjects,
+}: {
+  content?: LocalizedONas['oNasProjects']
+}) {
   const revealRef = useReveal<HTMLDivElement>()
 
   return (
@@ -28,12 +32,12 @@ export function Projects() {
     >
       <div ref={revealRef} data-reveal-style="wipe" className={s.inner}>
         <h2 data-reveal-item className={cn('h2', s.heading)}>
-          <span className={s.headingLead}>{oNasProjects.headingLead}</span>{' '}
-          <span className={s.headingRest}>{oNasProjects.headingRest}</span>
+          <span className={s.headingLead}>{content.headingLead}</span>{' '}
+          <span className={s.headingRest}>{content.headingRest}</span>
         </h2>
 
         <ul className={s.grid}>
-          {oNasProjects.items.map((item, index) => (
+          {content.items.map((item, index) => (
             <li
               // biome-ignore lint/suspicious/noArrayIndexKey: static placeholder list; items carry no unique field until real project data lands
               key={index}

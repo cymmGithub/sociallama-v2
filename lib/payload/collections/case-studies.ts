@@ -48,6 +48,7 @@ export const caseStudies: CollectionConfig = {
       label: 'Tytuł',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -98,6 +99,7 @@ export const caseStudies: CollectionConfig = {
           name: 'about',
           label: 'O kliencie',
           type: 'richText',
+          localized: true,
           admin: {
             description: 'Sekcja „Nasz klient” — kim jest marka.',
           },
@@ -109,6 +111,7 @@ export const caseStudies: CollectionConfig = {
       label: 'Tagi',
       type: 'text',
       hasMany: true,
+      localized: true,
       admin: {
         description: 'Słowa kluczowe pokazywane w nagłówku, np. „Rekrutacja”.',
       },
@@ -117,6 +120,7 @@ export const caseStudies: CollectionConfig = {
       name: 'period',
       label: 'Okres współpracy',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Np. „Marzec 2024 – obecnie”.',
       },
@@ -125,6 +129,7 @@ export const caseStudies: CollectionConfig = {
       name: 'excerpt',
       label: 'Zajawka',
       type: 'textarea',
+      localized: true,
       admin: {
         description:
           'Krótki opis pokazywany na kartach i w wynikach wyszukiwania.',
@@ -140,6 +145,7 @@ export const caseStudies: CollectionConfig = {
       name: 'challenge',
       label: 'Wyzwanie',
       type: 'richText',
+      localized: true,
     },
     {
       // The decks structure the work as content pillars (hashtag + heading +
@@ -148,6 +154,9 @@ export const caseStudies: CollectionConfig = {
       name: 'approach',
       label: 'Podejście (filary treści)',
       type: 'array',
+      // Whole-array localization (not per-subfield): each locale carries its own
+      // pillars; the EN seed pass references the same media so creatives are shared.
+      localized: true,
       labels: {
         singular: 'Filar',
         plural: 'Filary',
@@ -187,6 +196,7 @@ export const caseStudies: CollectionConfig = {
       name: 'results',
       label: 'Wyniki',
       type: 'array',
+      localized: true,
       labels: {
         singular: 'Wynik',
         plural: 'Wyniki',
@@ -241,6 +251,7 @@ export const caseStudies: CollectionConfig = {
           name: 'metaTitle',
           label: 'Meta tytuł',
           type: 'text',
+          localized: true,
           admin: {
             description: 'Domyślnie: tytuł case study.',
           },
@@ -249,6 +260,7 @@ export const caseStudies: CollectionConfig = {
           name: 'metaDescription',
           label: 'Meta opis',
           type: 'textarea',
+          localized: true,
           admin: {
             description: 'Domyślnie: zajawka case study.',
           },

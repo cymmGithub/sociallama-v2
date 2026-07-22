@@ -11,6 +11,8 @@
  * with 9 lorem placeholders (each flagged with a TODO — launch blocker).
  */
 
+import type { Localized } from '@/lib/i18n/parity'
+
 export interface MenuItem {
   label: string
   href: string
@@ -127,6 +129,12 @@ export const nav = {
     href: '/kontakt',
   },
   menuLabel: 'Menu',
+  // a11y strings for the overlay menu (kept in the module so EN chrome gets
+  // English screen-reader labels, not Polish ones).
+  menuOpenLabel: 'Otwórz menu',
+  menuCloseLabel: 'Zamknij menu',
+  menuDialogLabel: 'Menu',
+  navLabel: 'Główna nawigacja',
 } as const
 
 // Overlay menu. Industry routes are provisional `/branze/<slug>` (D9) —
@@ -422,6 +430,12 @@ export const whyThatWorks = {
       'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
   link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/o-nas' },
+  teamLabel: 'Zespół Social Lama',
+  certsLabel: 'Certyfikaty',
+  certAlt: {
+    dimaq: 'Certyfikat DIMAQ professional',
+    meta: 'Certyfikat Meta Small Business Academy',
+  },
 } as const
 
 // —— Services ————————————————————————————————————————————————————————————————
@@ -430,6 +444,8 @@ export const services = {
   eyebrow: 'CZYM SIĘ ZAJMUJE SOCIAL LAMA?',
   heading: 'Usługi',
   linkLabel: 'DOWIEDZ SIĘ WIĘCEJ',
+  // Tag shown inside a service's placeholder frame until its clip is delivered.
+  soonLabel: 'Wkrótce',
   items: [
     {
       id: 'content',
@@ -563,6 +579,7 @@ export const services = {
 export const howItWorks = {
   heading: ['HOW', 'IT WORKS'],
   subhead: 'JAK WYGLĄDA WSPÓŁPRACA Z SOCIAL LAMĄ?',
+  ariaLabel: 'Jak to działa',
   steps: [
     {
       number: '01',
@@ -679,6 +696,13 @@ export const testimonials: Testimonial[] = [
   },
 ]
 
+// sr-only labels for the testimonial slider (section heading + rail controls).
+export const testimonialLabels = {
+  sectionTitle: 'Opinie klientów',
+  railLabel: 'Wybierz opinię',
+  itemLabel: 'Opinia',
+} as const
+
 // —— CTA ————————————————————————————————————————————————————————————————————
 
 export const joinCta = {
@@ -711,6 +735,7 @@ export const joinCta = {
     metaNote: 'i tak to polubisz',
     likes: '1 024 polubienia',
     caption: 'Kiedy klient pyta, czy ogarniemy wszystko 🦙💪',
+    onInstagram: 'na Instagramie',
   },
   llamaAlt:
     'Wieloręka lama w tweedowej kamizelce trzyma laptop, telefon, pędzel, klaps filmowy, kubek i paczkę — maskotka Social Lama',
@@ -767,6 +792,7 @@ export const footer = {
       ],
     },
   ],
+  contactTitle: 'KONTAKT',
   contact: {
     phone: '+48 796 996 118',
     email: 'halohalo@sociallama.pl',
@@ -782,3 +808,31 @@ export const footer = {
     { label: 'Cookies', href: '/cookies' },
   ],
 } as const
+
+/**
+ * The shape of every homepage/chrome content export. `home.en.ts` supplies the
+ * English equivalent, each block `satisfies LocalizedHome['<key>']` — the
+ * translation-parity gate (design D2).
+ */
+export type HomeContent = {
+  nav: typeof nav
+  menu: typeof menu
+  footer: typeof footer
+  hero: typeof hero
+  clientsHeading: typeof clientsHeading
+  clientCardCta: typeof clientCardCta
+  clients: typeof clients
+  whyThatWorks: typeof whyThatWorks
+  services: typeof services
+  howItWorks: typeof howItWorks
+  marquee: typeof marquee
+  testimonials: typeof testimonials
+  testimonialLabels: typeof testimonialLabels
+  joinCta: typeof joinCta
+}
+
+/** Same shape, string/number literals widened so translations compile. */
+export type LocalizedHome = Localized<HomeContent>
+
+/** Chrome subset consumed by <Header>/<Footer> through the ChromeProvider. */
+export type ChromeContent = Pick<LocalizedHome, 'nav' | 'menu' | 'footer'>

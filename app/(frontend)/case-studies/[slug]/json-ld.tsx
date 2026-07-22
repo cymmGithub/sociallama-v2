@@ -1,5 +1,6 @@
 import { APP_NAME } from '@/lib/content/site'
 import { APP_BASE_URL } from '@/lib/env'
+import type { Locale } from '@/lib/i18n/slug-map'
 import type { CaseStudy } from '@/payload-types'
 
 /** Absolute-ify a Payload media URL (local dev uploads are relative). */
@@ -18,11 +19,15 @@ function absolute(url: string | null | undefined): string | undefined {
 export function CaseStudyJsonLd({
   study,
   coverUrl,
+  basePath = '/case-studies',
+  locale = 'pl',
 }: {
   study: CaseStudy
   coverUrl: string | null | undefined
+  basePath?: string
+  locale?: Locale
 }) {
-  const pageUrl = `${APP_BASE_URL}/case-studies/${study.slug}`
+  const pageUrl = `${APP_BASE_URL}${basePath}/${study.slug}`
   const image = absolute(coverUrl)
   const description = study.seo?.metaDescription || study.excerpt || undefined
 
@@ -39,6 +44,7 @@ export function CaseStudyJsonLd({
   const article = {
     '@context': 'https://schema.org',
     '@type': 'Article',
+    inLanguage: locale,
     headline: study.title,
     ...(description ? { description } : {}),
     ...(image ? { image: [image] } : {}),
@@ -64,7 +70,7 @@ export function CaseStudyJsonLd({
         '@type': 'ListItem',
         position: 1,
         name: 'Case studies',
-        item: `${APP_BASE_URL}/case-studies`,
+        item: `${APP_BASE_URL}${basePath}`,
       },
       {
         // Matches the visible breadcrumb leaf (client name), per Google's

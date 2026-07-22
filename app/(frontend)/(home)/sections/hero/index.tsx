@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import { useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { hero, socials } from '@/lib/content/home'
+import { hero, type LocalizedHome, socials } from '@/lib/content/home'
 import { breakpoints } from '@/styles/config'
 import { HeroFrames } from './frame-sequence'
 import s from './hero.module.css'
@@ -25,7 +25,7 @@ function wordIndexForProgress(p: number): number {
   return WORD_BOUNDS.length
 }
 
-export function Hero() {
+export function Hero({ content = hero }: { content?: LocalizedHome['hero'] }) {
   const headlineRef = useRef<HTMLHeadingElement>(null)
   // The headline word is scroll-driven: as the hero scrubs, the active word
   // advances in lockstep with the llama's outfit, flipping at the clip's
@@ -113,7 +113,7 @@ export function Hero() {
           Safari has no video colour pipeline to mis-manage — the reason we
           moved off the clip. Absolute against the section; hidden on mobile. */}
       {media === 'desktop' ? (
-        <HeroFrames alt={hero.llamaAlt} />
+        <HeroFrames alt={content.llamaAlt} />
       ) : (
         media === 'poster' && (
           /* SSR / pre-mount / reduced motion: the first matte frame, composited
@@ -124,7 +124,7 @@ export function Hero() {
              off the canvas match — serve the matte as-is. */
           <Image
             src="/clips/hero-frames/001.webp"
-            alt={hero.llamaAlt}
+            alt={content.llamaAlt}
             width={1370}
             height={1080}
             desktopSize="46vw"
@@ -140,11 +140,11 @@ export function Hero() {
           <h1
             ref={headlineRef}
             className={s.headline}
-            aria-label={`${hero.headline.rotator[0]} ${hero.headline.lines.join(' ')}`}
+            aria-label={`${content.headline.rotator[0]} ${content.headline.lines.join(' ')}`}
           >
             <span aria-hidden="true" className={s.lineMask}>
               <span data-line className={cn(s.line, s.lineSmall, s.rotator)}>
-                {hero.headline.rotator.map((word, index) => (
+                {content.headline.rotator.map((word, index) => (
                   <span
                     key={word}
                     className={cn(
@@ -158,7 +158,7 @@ export function Hero() {
                 ))}
               </span>
             </span>
-            {hero.headline.lines.map((line, index) => (
+            {content.headline.lines.map((line, index) => (
               <span aria-hidden="true" key={line} className={s.lineMask}>
                 <span
                   data-line
@@ -203,8 +203,8 @@ export function Hero() {
               width-specific color corruption), which would push it back off
               the token. Serving the graded file as-is keeps render == source. */}
           <Image
-            src={hero.video.posterMobile}
-            alt={hero.llamaAlt}
+            src={content.video.posterMobile}
+            alt={content.llamaAlt}
             fill
             objectFit="cover"
             className={s.mobileImage}

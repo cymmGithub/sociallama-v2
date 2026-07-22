@@ -6,7 +6,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
-import { clientCardCta, clients, clientsHeading } from '@/lib/content/home'
+import {
+  clientCardCta as clientCardCtaDefault,
+  clients as clientsDefault,
+  clientsHeading as clientsHeadingDefault,
+  type LocalizedHome,
+} from '@/lib/content/home'
 import s from './client-logos.module.css'
 
 /* Keep the hover card on screen: cards are centred on their logo, so near the
@@ -40,7 +45,15 @@ function keepCardOnScreen(e: React.MouseEvent<HTMLLIElement>) {
   li.style.setProperty('--shift', `${shift}px`)
 }
 
-export function ClientLogos() {
+export function ClientLogos({
+  clients = clientsDefault,
+  heading = clientsHeadingDefault,
+  cardCta = clientCardCtaDefault,
+}: {
+  clients?: LocalizedHome['clients']
+  heading?: LocalizedHome['clientsHeading']
+  cardCta?: LocalizedHome['clientCardCta']
+}) {
   // Marquee's pauseOnHover reacts to mouseenter, which touch taps emulate —
   // gate it to mouse-like pointers so touch keeps the plain scrolling belt
   // (the spotlight/card CSS is gated by the same media query).
@@ -72,7 +85,7 @@ export function ClientLogos() {
     <section className={s.section} data-blur-edge-gate>
       {/* The visible heading names the section — no aria-label, so AT
           announces "Zaufali nam" exactly once. */}
-      <h2 className={s.heading}>{clientsHeading}</h2>
+      <h2 className={s.heading}>{heading}</h2>
       <Marquee
         className={s.marquee}
         repeat={2}
@@ -130,7 +143,7 @@ export function ClientLogos() {
                           href={`/case-studies/${client.caseStudySlug}`}
                           className={s.cta}
                         >
-                          {clientCardCta.label}
+                          {cardCta.label}
                           <ArrowRight
                             className={s.ctaIcon}
                             aria-hidden="true"
@@ -144,14 +157,14 @@ export function ClientLogos() {
                             data-show={tipFor === client.name}
                             role="status"
                           >
-                            {clientCardCta.tip}
+                            {cardCta.tip}
                           </span>
                           <button
                             type="button"
                             className={s.cta}
                             onClick={() => showTip(client.name)}
                           >
-                            {clientCardCta.label}
+                            {cardCta.label}
                             <ArrowRight
                               className={s.ctaIcon}
                               aria-hidden="true"

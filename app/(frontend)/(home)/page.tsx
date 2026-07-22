@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getLatestPost,
   resolveCategory,
@@ -22,6 +23,7 @@ import { WhyThatWorks } from './sections/why-that-works'
 export const metadata: Metadata = {
   title: 'Strategy that works',
   description: APP_DESCRIPTION,
+  alternates: alternatesForPath('/'),
   openGraph: {
     title: 'Strategy that works',
     description:

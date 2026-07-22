@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { cacheLife, cacheTag } from 'next/cache'
 import { getPayload } from 'payload'
 import { cache } from 'react'
+import type { Locale } from '@/lib/i18n/slug-map'
 import type {
   CaseStudy,
   Category,
@@ -210,7 +211,10 @@ async function findPostsForLlms(): Promise<
  * - `case-study:{slug}`    — a single case-study page
  */
 
-async function findCaseStudyBySlug(slug: string): Promise<CaseStudy | null> {
+async function findCaseStudyBySlug(
+  slug: string,
+  locale: Locale = 'pl'
+): Promise<CaseStudy | null> {
   'use cache'
   cacheTag('case-studies', `case-study:${slug}`)
   cacheLife('days')
@@ -221,13 +225,15 @@ async function findCaseStudyBySlug(slug: string): Promise<CaseStudy | null> {
     where: { and: [{ slug: { equals: slug } }, PUBLISHED] },
     limit: 1,
     depth: 2,
+    locale,
   })
   return result.docs[0] ?? null
 }
 
 /** Latest draft version of a case study, for authenticated preview only. */
 async function findDraftCaseStudyBySlug(
-  slug: string
+  slug: string,
+  locale: Locale = 'pl'
 ): Promise<CaseStudy | null> {
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -236,6 +242,7 @@ async function findDraftCaseStudyBySlug(
     limit: 1,
     depth: 2,
     draft: true,
+    locale,
   })
   return result.docs[0] ?? null
 }
@@ -257,7 +264,7 @@ async function findPublishedCaseStudySlugs(): Promise<string[]> {
 }
 
 /** Published case studies, newest first, for the /case-studies listing. */
-async function findCaseStudies(): Promise<CaseStudy[]> {
+async function findCaseStudies(locale: Locale = 'pl'): Promise<CaseStudy[]> {
   'use cache'
   cacheTag('case-studies')
   cacheLife('days')
@@ -270,6 +277,7 @@ async function findCaseStudies(): Promise<CaseStudy[]> {
     limit: 0,
     pagination: false,
     depth: 2,
+    locale,
   })
   return result.docs
 }

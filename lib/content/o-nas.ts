@@ -11,6 +11,8 @@
  * assets are pulled in.
  */
 
+import type { Localized } from '@/lib/i18n/parity'
+
 const LOREM =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.'
 
@@ -27,6 +29,7 @@ export const oNasMeta = {
 export const oNasHero = {
   kicker: 'SOCIAL LAMA',
   heading: 'O AGENCJI',
+  llamaAlt: 'Lama Social Lamy w beżowym płaszczu, machająca do kamery',
 } as const
 
 // —— About intro ("COŚ O LAMIE") — cream band ——————————————————————————————————
@@ -36,6 +39,7 @@ export const oNasAbout = {
   headingRest: 'O LAMIE',
   body: 'Social Lama to agencja social media zajmująca się kompleksową obsługą komunikacji marki w mediach społecznościowych oraz prowadzeniem efektywnej reklamy na Facebooku, Instagramie i pozostałych mediach społecznościowych. Przygotujemy skuteczną strategię, opracujemy kreatywną komunikację, zajmiemy się Twoją społecznością i stworzymy efektywną kampanię reklamową.',
   cta: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '#zespol' },
+  imageAlt: 'Ilustracja stadka lam Social Lamy w drewnianej ramce',
 } as const
 
 // —— Values grid ("THAT WORKS WITH SOCIAL LAMA") — orange band ——————————————————
@@ -111,6 +115,8 @@ export const oNasGoodOne = {
   headingAccent: 'GOOD ONE',
   body: 'Agencja Social Lama jest częścią grupy marketingowej Good One, dzięki czemu zapewnia kompleksowość usług poprzez dostęp do specjalistów z pozostałych obszarów komunikacji, takich jak: digital, social media, design, SEO i SEM, influencer marketing.',
   center: 'GOOD ONE',
+  wheelAlt:
+    'Grupa Good One: Good One PR, SEOFLY, Folks, TymKor media, Diea i Social Lama',
   // Ordered clockwise from 12 o'clock — index drives the spoke angle (i * 60°)
   // in the desktop orbit. `logo` crops (mark only, transparent) live under
   // /public/o-nas/good-one/; `w`/`h` are their intrinsic px (for the aspect box).
@@ -175,6 +181,8 @@ export const oNasTeam = {
   kickerLead: 'NASZE',
   kickerRest: 'LAMY',
   heading: 'ZESPÓŁ SOCIAL LAMA',
+  prevLabel: 'Poprzednia osoba',
+  nextLabel: 'Następna osoba',
   members: [
     {
       given: 'ANIA',
@@ -199,3 +207,20 @@ export const oNasTeam = {
     },
   ],
 } as const
+
+/**
+ * The shape of every `/o-nas` content export. `o-nas.en.ts` supplies the
+ * English equivalent, each block `satisfies LocalizedONas['<key>']` (design D2).
+ */
+export type ONasContent = {
+  oNasMeta: typeof oNasMeta
+  oNasHero: typeof oNasHero
+  oNasAbout: typeof oNasAbout
+  oNasValues: typeof oNasValues
+  oNasProjects: typeof oNasProjects
+  oNasGoodOne: typeof oNasGoodOne
+  oNasTeam: typeof oNasTeam
+}
+
+/** Same shape, literals widened so translations compile. */
+export type LocalizedONas = Localized<ONasContent>

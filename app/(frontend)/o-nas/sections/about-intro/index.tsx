@@ -4,7 +4,7 @@ import cn from 'clsx'
 import { ArrowUpRight } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { oNasAbout } from '@/lib/content/o-nas'
+import { type LocalizedONas, oNasAbout } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './about-intro.module.css'
 
@@ -23,7 +23,11 @@ import s from './about-intro.module.css'
  * Entrance uses the shared reveal primitive: the ref goes on the section, and
  * the figure/heading/body/CTA carry data-reveal-item to stagger in.
  */
-export function AboutIntro() {
+export function AboutIntro({
+  content = oNasAbout,
+}: {
+  content?: LocalizedONas['oNasAbout']
+}) {
   const revealRef = useReveal<HTMLElement>()
 
   return (
@@ -39,7 +43,7 @@ export function AboutIntro() {
           <Image
             className={s.illustration}
             src="/o-nas/cos-o-lamie.png"
-            alt="Ilustracja stadka lam Social Lamy w drewnianej ramce"
+            alt={content.imageAlt}
             aspectRatio={749 / 802}
             block
             desktopSize="40vw"
@@ -49,17 +53,17 @@ export function AboutIntro() {
 
         <div className={s.copy}>
           <h2 data-reveal-item className={s.heading}>
-            <span className={s.lead}>{oNasAbout.headingLead}</span>
-            <span className={cn('h2', s.rest)}>{oNasAbout.headingRest}</span>
+            <span className={s.lead}>{content.headingLead}</span>
+            <span className={cn('h2', s.rest)}>{content.headingRest}</span>
           </h2>
 
           <p data-reveal-item className={s.body}>
-            {oNasAbout.body}
+            {content.body}
           </p>
 
           <div data-reveal-item className={s.ctaRow}>
-            <Link className={s.cta} href={oNasAbout.cta.href}>
-              <span className={s.ctaLabel}>{oNasAbout.cta.label}</span>
+            <Link className={s.cta} href={content.cta.href}>
+              <span className={s.ctaLabel}>{content.cta.label}</span>
               <ArrowUpRight className={s.ctaIcon} aria-hidden="true" />
             </Link>
           </div>

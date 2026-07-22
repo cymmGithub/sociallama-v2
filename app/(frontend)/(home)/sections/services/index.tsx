@@ -27,16 +27,24 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
-import { type Service, services } from '@/lib/content/home'
+import { type LocalizedHome, services } from '@/lib/content/home'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './services.module.css'
 
-function stageId(service: Service) {
+// The localized (widened) item type — `content` may be the PL const or its EN
+// twin, so helpers can't use the narrow `Service` type.
+type ServiceItem = LocalizedHome['services']['items'][number]
+
+function stageId(service: ServiceItem) {
   return `uslugi-stage-${service.id}`
 }
 
-export function Services() {
+export function Services({
+  content = services,
+}: {
+  content?: LocalizedHome['services']
+}) {
   const sectionRef = useRef<HTMLElement | null>(null)
   const revealRef = useReveal<HTMLDivElement>()
   const stackRevealRef = useReveal<HTMLUListElement>()
@@ -74,7 +82,7 @@ export function Services() {
   }
 
   function advance() {
-    setActive((index) => (index + 1) % services.items.length)
+    setActive((index) => (index + 1) % content.items.length)
     setCycle((count) => count + 1)
   }
 
@@ -86,8 +94,8 @@ export function Services() {
       data-paused={autoplay && !inView ? '' : undefined}
     >
       <header className={s.head}>
-        <p className={s.eyebrow}>{services.eyebrow}</p>
-        <h2 className={s.heading}>{services.heading}</h2>
+        <p className={s.eyebrow}>{content.eyebrow}</p>
+        <h2 className={s.heading}>{content.heading}</h2>
       </header>
 
       {/* Desktop: shared stage + tab columns. Both variants stay mounted only
@@ -98,21 +106,25 @@ export function Services() {
         <div ref={revealRef} className={s.tabs}>
           <div data-reveal-item className={s.stage}>
             <Backdrop />
-            {services.items.map((service, index) => (
+            {content.items.map((service, index) => (
               <div
                 key={service.id}
                 id={stageId(service)}
                 className={cn(s.layer, index === active && s.isActive)}
                 aria-hidden={index !== active}
               >
-                <StageMedia service={service} active={index === active} />
+                <StageMedia
+                  service={service}
+                  active={index === active}
+                  soonLabel={content.soonLabel}
+                />
               </div>
             ))}
             <Grain />
           </div>
 
           <ul className={s.columns}>
-            {services.items.map((service, index) => {
+            {content.items.map((service, index) => {
               const isActive = index === active
               return (
                 <li
@@ -162,11 +174,15 @@ export function Services() {
       {/* Mobile: stacked blocks, no tab machinery */}
       {isDesktop !== true && (
         <ul ref={stackRevealRef} className={s.stack}>
-          {services.items.map((service) => (
+          {content.items.map((service) => (
             <li key={service.id} data-reveal-item className={s.stackItem}>
               <div className={s.stackStage}>
                 <Backdrop />
-                <StageMedia service={service} active />
+                <StageMedia
+                  service={service}
+                  active
+                  soonLabel={content.soonLabel}
+                />
                 <Grain />
               </div>
               <h3 className={s.title}>{service.title}</h3>
@@ -229,13 +245,17 @@ function Grain() {
 function StageMedia({
   service,
   active,
+  soonLabel,
 }: {
-  service: Service
+  service: ServiceItem
   active: boolean
+  soonLabel: string
 }) {
   const { stage } = service
 
-  if (stage.kind === 'panels') {
+  // `in`-narrowing, not `stage.kind === 'panels'`: Localized widens the `kind`
+  // discriminant to `string`, so the property check is what narrows the union.
+  if ('panels' in stage) {
     return (
       <div className={s.panels} data-stage={service.id}>
         {stage.panels.map((panel) => (
@@ -276,7 +296,7 @@ function StageMedia({
                 height={203}
                 className={s.placeholderLogo}
               />
-              <span className={s.placeholderTag}>Wkrótce</span>
+              <span className={s.placeholderTag}>{soonLabel}</span>
             </div>
           </div>
         ) : (

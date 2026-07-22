@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { oNasMeta } from '@/lib/content/o-nas'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getLatestPost,
   resolveCategory,
@@ -33,7 +34,7 @@ import { ValuesGrid } from './sections/values-grid'
 export const metadata: Metadata = {
   title: oNasMeta.title,
   description: oNasMeta.description,
-  alternates: { canonical: '/o-nas' },
+  alternates: alternatesForPath('/o-nas'),
 }
 
 // Latest-post view-model for the reused NewsLama section (mirrors the homepage

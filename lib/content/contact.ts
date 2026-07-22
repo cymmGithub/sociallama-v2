@@ -5,8 +5,10 @@
  * metric on the page reads from this module (repo rule; mirrors home.ts).
  * The Zod schema in `lib/integrations/email/action.ts` also sources its
  * field-error and status messages from here so the Polish copy stays in one
- * place.
+ * place. `contact.en.ts` supplies the English twin.
  */
+
+import type { Localized } from '@/lib/i18n/parity'
 
 // —— Page metadata ———————————————————————————————————————————————————————————
 
@@ -92,6 +94,17 @@ export const contactForm = {
     linkLabel: 'Polityka prywatności',
     linkHref: '/polityka-prywatnosci',
   },
+  // Lead-email labels (server action) — localized so EN submissions arrive with
+  // English field labels (design D7). `subjectPrefix` gets `— <name>` appended.
+  email: {
+    subjectPrefix: 'Nowa wiadomość z formularza',
+    name: 'Imię',
+    email: 'E-mail',
+    phone: 'Telefon',
+    services: 'Zainteresowania',
+    message: 'Wiadomość',
+    none: '—',
+  },
   // FormState.message returned by the server action (surfaced by <Messages/>).
   messages: {
     success: 'Dzięki! Odezwiemy się najszybciej, jak to możliwe.',
@@ -122,3 +135,22 @@ export const contactMetrics = [
   { value: '80', caption: 'zadowolonych klientów' },
   { value: '7 000 000', caption: 'zasięgu na Facebooku' },
 ] as const
+
+/**
+ * The shape of every `/kontakt` content export. `contact.en.ts` supplies the
+ * English equivalent, each block `satisfies LocalizedContact['<key>']`.
+ */
+export type ContactContent = {
+  contactMeta: typeof contactMeta
+  contactMarquee: typeof contactMarquee
+  contactLede: typeof contactLede
+  contactStepsHead: typeof contactStepsHead
+  contactSteps: typeof contactSteps
+  contactServices: typeof contactServices
+  contactForm: typeof contactForm
+  contactMetricsHead: typeof contactMetricsHead
+  contactMetrics: typeof contactMetrics
+}
+
+/** Same shape, literals widened so translations compile. */
+export type LocalizedContact = Localized<ContactContent>

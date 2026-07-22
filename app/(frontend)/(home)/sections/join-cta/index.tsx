@@ -11,15 +11,19 @@ import {
 } from 'lucide-react'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
-import { joinCta } from '@/lib/content/home'
+import { joinCta, type LocalizedHome } from '@/lib/content/home'
 import { useRotator } from '@/lib/hooks/use-rotator'
 import s from './join-cta.module.css'
 
-export function JoinCta() {
+export function JoinCta({
+  content = joinCta,
+}: {
+  content?: LocalizedHome['joinCta']
+}) {
   // Rotates the locative token through the offer. Static under reduced
   // motion (shows the first entry only); paused while off screen.
   const { ref: rotatorRef, rotation } = useRotator<HTMLElement>(
-    joinCta.rotator.length
+    content.rotator.length
   )
 
   return (
@@ -28,12 +32,12 @@ export function JoinCta() {
         {/* The visual token rotates; expose a stable accessible name. */}
         <h2
           className={s.heading}
-          aria-label={`${joinCta.headingLead} ${joinCta.rotator[0].token}`}
+          aria-label={`${content.headingLead} ${content.rotator[0]?.token ?? ''}`}
         >
-          <span aria-hidden="true">{joinCta.headingLead}</span>
+          <span aria-hidden="true">{content.headingLead}</span>
           <span aria-hidden="true" className={s.tokenMask}>
             <span className={s.rotator}>
-              {joinCta.rotator.map((entry, index) => (
+              {content.rotator.map((entry, index) => (
                 <span
                   key={entry.token}
                   className={cn(
@@ -48,8 +52,8 @@ export function JoinCta() {
             </span>
           </span>
         </h2>
-        <Link className={s.button} href={joinCta.button.href}>
-          {joinCta.button.label}
+        <Link className={s.button} href={content.button.href}>
+          {content.button.label}
         </Link>
       </div>
       {/* Looping clip on its own clock — no sync with the heading rotator —
@@ -61,29 +65,29 @@ export function JoinCta() {
           <div className={s.cardHeader}>
             <Link
               className={s.cardProfile}
-              href={joinCta.post.href}
-              aria-label={`${joinCta.post.handle} na Instagramie`}
+              href={content.post.href}
+              aria-label={`${content.post.handle} ${content.post.onInstagram}`}
             >
               <span className={s.avatar} aria-hidden="true" />
               <span className={s.cardIdentity}>
-                <b>{joinCta.post.handle}</b>
+                <b>{content.post.handle}</b>
                 <span>
-                  {joinCta.post.meta}
+                  {content.post.meta}
                   <CircleSmall
                     className={s.metaSep}
                     fill="currentColor"
                     aria-hidden="true"
                   />
-                  {joinCta.post.metaNote}
+                  {content.post.metaNote}
                 </span>
               </span>
             </Link>
             <MoreHorizontal className={s.cardMore} aria-hidden="true" />
           </div>
           <Video
-            src={joinCta.clip}
-            poster={joinCta.poster}
-            alt={joinCta.llamaAlt}
+            src={content.clip}
+            poster={content.poster}
+            alt={content.llamaAlt}
             aspectRatio={1}
           />
           <div className={s.cardFooter}>
@@ -93,9 +97,9 @@ export function JoinCta() {
               <Send />
               <Bookmark className={s.cardSave} />
             </div>
-            <b className={s.cardLikes}>{joinCta.post.likes}</b>
+            <b className={s.cardLikes}>{content.post.likes}</b>
             <p className={s.cardCaption}>
-              <b>{joinCta.post.handle}</b> {joinCta.post.caption}
+              <b>{content.post.handle}</b> {content.post.caption}
             </p>
           </div>
         </div>

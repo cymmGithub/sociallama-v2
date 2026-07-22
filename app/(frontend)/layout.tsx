@@ -4,8 +4,10 @@ import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
+import { ChromeProvider } from '@/components/layout/chrome-provider'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
+import { footer, menu, nav } from '@/lib/content/home'
 import {
   APP_DEFAULT_TITLE,
   APP_DESCRIPTION,
@@ -105,7 +107,9 @@ export default async function Layout({ children }: PropsWithChildren) {
               They are included in the <Wrapper> component used by each page.
               See: components/layout/wrapper/index.tsx
             */}
-            {children}
+            <ChromeProvider locale="pl" chrome={{ nav, menu, footer }}>
+              {children}
+            </ChromeProvider>
           </TransformProvider>
         </RealViewport>
         {/* Optional features - conditionally loaded based on configuration */}

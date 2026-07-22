@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import s from '../[slug]/post.module.css'
 
 /*
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: 'Zostań lamą',
   description:
     'Dołącz do stada Social Lama — aktualne oferty pracy w social media i performance marketingu. Aplikuj śmiało i kreatywnie.',
-  alternates: { canonical: '/zostan-lama' },
+  alternates: alternatesForPath('/zostan-lama'),
 }
 
 export default function JoinPage() {

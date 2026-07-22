@@ -1,11 +1,16 @@
 import type { MetadataRoute } from 'next'
 import { APP_BASE_URL } from '@/lib/env'
+import { pathPairs } from '@/lib/i18n/slug-map'
 import {
   getCaseStudiesForSitemap,
   getCategories,
   getPostsForSitemap,
 } from '@/lib/payload/queries'
 import { STATIC_ROUTES } from '@/lib/static-routes'
+
+// EN routes whose page is only a redirect stub (no unique content yet) — kept
+// out of the sitemap until they have real translations.
+const EN_STUB_PATHS = new Set(['/en/terms', '/en/cookies'])
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseRoutes: MetadataRoute.Sitemap = STATIC_ROUTES.map(
@@ -45,5 +50,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...baseRoutes, ...postRoutes, ...caseStudyRoutes, ...categoryRoutes]
+  // English marketing/legal pages (translated-slug URLs from the slug map) plus
+  // the EN case-study details (same slugs + updatedAt as the Polish docs).
+  const enStaticRoutes: MetadataRoute.Sitemap = pathPairs
+    .map(([, en]) => en)
+    .filter((en) => !EN_STUB_PATHS.has(en))
+    .map((en) => ({
+      url: `${APP_BASE_URL}${en}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: en === '/en' ? 0.9 : 0.6,
+    }))
+
+  const enCaseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map((study) => ({
+    url: `${APP_BASE_URL}/en/case-studies/${study.slug}`,
+    lastModified: new Date(study.updatedAt),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
+
+  return [
+    ...baseRoutes,
+    ...postRoutes,
+    ...caseStudyRoutes,
+    ...categoryRoutes,
+    ...enStaticRoutes,
+    ...enCaseStudyRoutes,
+  ]
 }
