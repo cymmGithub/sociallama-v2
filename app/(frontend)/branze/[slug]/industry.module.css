@@ -31,91 +31,12 @@
   color: var(--color-plum);
 }
 
-/* —— Shared: brief section (under hero, both variants) —————————————————————————
-   Industry copy over a faint Lucide icon watermark (design 2026-07-23). */
+/* —— Shared: brief section (under hero, both variants) ————————————————————————— */
 
 .brief {
-  position: relative;
-  overflow: hidden;
   padding: calc(var(--safe) * 3.5) var(--safe);
   background: var(--color-cream);
   color: var(--color-ink);
-}
-
-/* Decorative icon watermark behind the copy — plum at low opacity. */
-/* One cell per motif. The band's height is content-driven (356–442px depending
-   on the industry's copy), so absolute percentage offsets collide — a grid makes
-   overlap structurally impossible: an icon smaller than its cell can never reach
-   a neighbour, whatever the band height. `align-self` shifts within the cell for
-   the scattered feel without ever leaving it. */
-.briefIcons {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  place-items: center;
-  pointer-events: none;
-  color: var(--color-plum);
-  opacity: 0.07;
-
-  @media (--desktop) {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-/* Sized to stay inside its cell once rotated (a square rotated 10° grows ~12%). */
-.briefIcon {
-  width: 6.5rem;
-  height: 6.5rem;
-}
-
-.briefIcon:nth-child(1) {
-  transform: rotate(-8deg);
-
-  @media (--desktop) {
-    align-self: start;
-    width: 9rem;
-    height: 9rem;
-  }
-}
-
-.briefIcon:nth-child(2) {
-  transform: rotate(6deg);
-
-  @media (--desktop) {
-    align-self: end;
-    width: 11rem;
-    height: 11rem;
-  }
-}
-
-.briefIcon:nth-child(3) {
-  transform: rotate(10deg);
-
-  @media (--desktop) {
-    align-self: start;
-    width: 8rem;
-    height: 8rem;
-  }
-}
-
-.briefIcon:nth-child(4) {
-  transform: rotate(-5deg);
-
-  @media (--desktop) {
-    width: 11rem;
-    height: 11rem;
-  }
-}
-
-.briefIcon:nth-child(5) {
-  transform: rotate(4deg);
-
-  @media (--desktop) {
-    align-self: end;
-    width: 9.5rem;
-    height: 9.5rem;
-  }
 }
 
 .briefInner {
@@ -661,9 +582,8 @@
   aspect-ratio: 16 / 10;
   overflow: hidden;
   border-radius: 1rem;
-  /* Light plum wash rather than full plum — the multiply below tints against
-     THIS, so lightening it is what actually softens the duotone. */
-  background: color-mix(in srgb, var(--color-plum) 38%, #fff);
+  /* Only visible while the image decodes — matches the band so there's no flash. */
+  background: color-mix(in srgb, var(--color-ink) 7%, var(--color-cream));
   box-shadow: 0 24px 48px -28px rgb(0 0 0 / 30%);
 
   @media (--desktop) {
@@ -671,12 +591,10 @@
   }
 }
 
-/* Duotone equalizer for heterogeneous stock (design D4) — kept deliberately
-   light: mostly desaturated and brightened, so photos stay legible and airy. */
+/* Photos run untreated (user decision) — the duotone that unified them was
+   dropped once the hero clips took over carrying the pages visually. */
 .collageImg {
   object-fit: cover;
-  mix-blend-mode: multiply;
-  filter: grayscale(0.85) brightness(1.18) contrast(0.94);
 }
 
 .collageItem:nth-child(even) {

@@ -1,70 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import {
-  Activity,
-  ArrowRight,
-  BedDouble,
-  Beer,
-  Bone,
-  Building2,
-  Cake,
-  Car,
-  Cat,
-  ChefHat,
-  Coffee,
-  Cpu,
-  CreditCard,
-  Crown,
-  Dog,
-  Droplet,
-  Fish,
-  Flower2,
-  Fuel,
-  Gauge,
-  Gem,
-  Glasses,
-  GlassWater,
-  Grape,
-  Headphones,
-  Heart,
-  HeartPulse,
-  House,
-  KeyRound,
-  Landmark,
-  Leaf,
-  type LucideIcon,
-  Luggage,
-  MapPin,
-  Martini,
-  Mic,
-  Music,
-  PartyPopper,
-  PawPrint,
-  PiggyBank,
-  Pill,
-  Plug,
-  Ruler,
-  Scissors,
-  Shirt,
-  ShoppingBag,
-  Smartphone,
-  Soup,
-  Sparkles,
-  Stethoscope,
-  Sun,
-  Ticket,
-  TreePalm,
-  TrendingUp,
-  Tv,
-  UtensilsCrossed,
-  Wallet,
-  WashingMachine,
-  Waves,
-  Wine,
-  Wrench,
-  Zap,
-} from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -90,24 +27,6 @@ export interface IndustryPageProps {
   chrome: Chrome
   /** Locale-correct case-study base (`/case-studies` or `/en/case-studies`). */
   caseStudyBase: string
-}
-
-// Industry-themed background motifs for the brief section — a cohesive set
-// (Lucide, the repo's only icon system), ~5 per industry, keyed by industry id.
-// Decorative watermark only; the section wraps them `aria-hidden`.
-const BRIEF_ICONS: Record<string, readonly LucideIcon[]> = {
-  automotive: [Car, Gauge, Zap, Wrench, Fuel],
-  'elektronika-i-agd': [Smartphone, Cpu, WashingMachine, Plug, Tv],
-  beauty: [Sparkles, Droplet, Flower2, Heart, Gem],
-  health: [HeartPulse, Stethoscope, Pill, Activity, Leaf],
-  finanse: [Wallet, CreditCard, TrendingUp, PiggyBank, Landmark],
-  petcare: [PawPrint, Bone, Dog, Cat, Fish],
-  alkohole: [Wine, Beer, Martini, Grape, GlassWater],
-  fashion: [Shirt, ShoppingBag, Scissors, Glasses, Crown],
-  horeca: [UtensilsCrossed, Coffee, ChefHat, Soup, Cake],
-  'hotele-i-miejsca-wypoczynkowe': [BedDouble, TreePalm, Sun, Luggage, Waves],
-  'nieruchomosci-i-deweloperzy': [Building2, House, KeyRound, MapPin, Ruler],
-  rozrywka: [Music, Ticket, PartyPopper, Mic, Headphones],
 }
 
 // —— Shared pieces ————————————————————————————————————————————————————————————
@@ -313,7 +232,7 @@ function renderParagraph({
   )
 }
 
-/** Under-hero brief: pillars + paragraphs over an industry icon watermark. */
+/** Under-hero brief: pillars + the industry's copy. */
 function IndustryBrief({
   industry,
   chrome,
@@ -322,19 +241,9 @@ function IndustryBrief({
   chrome: Chrome
 }) {
   const ref = useReveal<HTMLDivElement>()
-  const icons = BRIEF_ICONS[industry.id] ?? []
 
   return (
     <section className={s.brief} data-theme="cream">
-      <div className={s.briefIcons} aria-hidden="true">
-        {icons.map((Icon) => (
-          <Icon
-            key={Icon.displayName}
-            className={s.briefIcon}
-            strokeWidth={1.25}
-          />
-        ))}
-      </div>
       <div ref={ref} className={s.briefInner}>
         <div className={s.briefHead}>
           <p className={s.kicker}>{chrome.briefKicker}</p>
