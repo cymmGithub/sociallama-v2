@@ -136,6 +136,19 @@ function CtaBand({ headline, chrome }: { headline: string; chrome: Chrome }) {
   )
 }
 
+function Chips({ chips }: { chips: NonNullable<Industry['chips']> }) {
+  return (
+    <ul className={s.chips}>
+      {chips.map((chip) => (
+        <li key={chip.label} data-reveal-item className={s.chip}>
+          <span className={s.chipValue}>{chip.value}</span>
+          <span className={s.chipLabel}>{chip.label}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 /** Render a brief paragraph, bolding its `strong` run if present. */
 function renderParagraph({
   text,
@@ -330,6 +343,7 @@ function ProofLayout({
 
 function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
   const heroRef = useReveal<HTMLDivElement>()
+  const manifestoRef = useReveal<HTMLDivElement>()
   const hasCollage = (industry.collage?.length ?? 0) > 0
   // Long multi-word labels (e.g. "Hotele i Miejsca Wypoczynkowe") need the full
   // hero width for the outline wordmark — the collage then stacks below rather
@@ -418,6 +432,26 @@ function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
               ))}
             </span>
           </Marquee>
+        </section>
+      )}
+
+      {/* Manifesto + value chips (our punchy take, distinct from the brief) */}
+      {industry.manifesto && industry.chips && (
+        <section className={s.manifesto} data-theme="cream">
+          <div ref={manifestoRef} className={s.manifestoInner}>
+            <div className={s.manifestoCopy}>
+              <p className={s.kicker}>{chrome.editorial.manifestoKicker}</p>
+              <h2 data-reveal-item className={s.manifestoHeading}>
+                <span className={s.manifestoLead}>
+                  {industry.manifesto.lead}
+                </span>{' '}
+                <span className={s.manifestoRest}>
+                  {industry.manifesto.rest}
+                </span>
+              </h2>
+            </div>
+            <Chips chips={industry.chips} />
+          </div>
         </section>
       )}
 

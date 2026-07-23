@@ -53,7 +53,9 @@ export default async function BranzaPage({ params }: PageProps) {
   const index = INDUSTRIES.findIndex((entry) => entry.slug === slug) + 1
 
   return (
-    <Wrapper theme={industry.caseStudy ? 'plum' : 'cream'}>
+    // Plum chrome on both variants — the header/logo match the brand (the cream
+    // theme rendered a sand-gray header bar); sections paint their own bands.
+    <Wrapper theme="plum">
       <IndustryPage
         industry={industry}
         chrome={chrome}

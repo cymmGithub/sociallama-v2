@@ -11,13 +11,14 @@
  *   - `caseStudy` present  → proof layout (mock C): plum hero → brief → creatives
  *     wall → numbers band (`chips`) → pull-quote + case-study card → CTA.
  *   - `caseStudy` absent    → editorial layout (mock B): cream hero + `collage` →
- *     brief → `marquee` → CTA.
+ *     brief → `marquee` → `manifesto` + `chips` → CTA.
  * Today Automotive (Volvo) and Elektronika i AGD (iRobot) are the proof pages.
  *
  * The `brief` (3 strategic pillars + market-report-backed paragraphs) is
  * verbatim from "BRANŻE - TEKSTY NA STRONĘ SOCIAL LAMA" and sits directly under
- * the hero on every page (see 2026-07-23 design). `chips` are proof-only now
- * (the numbers band) — editorial pages carry their strategy in the `brief`.
+ * the hero on every page (see 2026-07-23 design). It sits ALONGSIDE our own
+ * `manifesto` + value `chips` on editorial pages — both are wanted, they are not
+ * alternatives. On proof pages `chips` are the case-study numbers band instead.
  *
  * Imagery status: proof `chips` are verbatim from the Volvo/iRobot case studies;
  * editorial `collage` is O1 (free-license Pexels + duotone, IDs recorded inline);
@@ -42,6 +43,7 @@ export const chrome = {
     ctaHeadline: 'CHCESZ TAKICH WYNIKÓW W SWOJEJ BRANŻY?',
   },
   editorial: {
+    manifestoKicker: 'NASZE PODEJŚCIE',
     logosKicker: 'ZAUFALI NAM',
     ctaHeadline: 'POROZMAWIAJMY O TWOJEJ MARCE.',
   },
@@ -104,6 +106,8 @@ export interface Industry {
   // —— editorial-only ——
   /** Keyword marquee band. */
   marquee?: readonly string[]
+  /** Punchy two-tone statement (`lead` inked, `rest` muted) + value chips. */
+  manifesto?: { lead: string; rest: string }
   /** Duotone hero collage — omitted until O1 sourcing resolves. */
   collage?: readonly IndustryImage[]
   /** Client-logo strip — omitted until O2 attribution is confirmed. */
@@ -280,6 +284,18 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Estetyka', label: 'spójny feed, który buduje pożądanie' },
+      { value: 'UGC', label: 'realne twarze, realne zaufanie' },
+      {
+        value: 'Rytuały',
+        label: 'content, który wchodzi w codzienność klientek',
+      },
+    ],
+    manifesto: {
+      lead: 'Piękno sprzedaje się w feedzie.',
+      rest: 'Ale to spójny, estetyczny content i realne twarze społeczności decydują, po którą markę klientka sięgnie przy półce.',
+    },
     marquee: [
       'Skincare',
       'Makijaż',
@@ -337,6 +353,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Ekspert', label: 'content konsultowany merytorycznie' },
+      { value: 'Edukacja', label: 'trudne tematy prostym językiem' },
+      { value: 'Profilaktyka', label: 'komunikacja, która realnie pomaga' },
+    ],
+    manifesto: {
+      lead: 'Zdrowia nie sprzedaje się obietnicą.',
+      rest: 'Sprzedaje się je rzetelną edukacją, autorytetem ekspertów i komunikacją, której odbiorca ufa w najważniejszych decyzjach.',
+    },
     marquee: [
       'Wellbeing',
       'Suplementy',
@@ -392,6 +417,15 @@ export const INDUSTRIES = [
           text: 'Jak wynika z raportu Edelman Trust Barometer 2025, aż 64% respondentów deklaruje, że zaufanie do marki ma kluczowy wpływ na ich decyzje zakupowe. W przypadku branży finansowej oznacza to, że komunikacja powinna nie tylko informować o ofercie, ale również konsekwentnie budować pozycję eksperta i wzmacniać reputację marki.',
         },
       ],
+    },
+    chips: [
+      { value: 'B2B & B2C', label: 'komunikacja dopasowana do odbiorcy' },
+      { value: 'Edukacja', label: 'finanse bez żargonu' },
+      { value: 'Zaufanie', label: 'fundament każdej decyzji' },
+    ],
+    manifesto: {
+      lead: 'Finansów nie powierza się przypadkowi.',
+      rest: 'Powierza się je marce, która tłumaczy trudne tematy prostym językiem i buduje zaufanie każdego dnia.',
     },
     marquee: [
       'Fintech',
@@ -449,6 +483,18 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      {
+        value: 'Community',
+        label: 'najbardziej lojalni odbiorcy w social mediach',
+      },
+      { value: 'Poradniki', label: 'content, po który wracają' },
+      { value: 'Emocje', label: 'zwierzę = członek rodziny' },
+    ],
+    manifesto: {
+      lead: 'Dla właściciela to nie „zwierzę”. To rodzina.',
+      rest: 'Marki, które to rozumieją, budują najbardziej lojalne społeczności w całym social mediach.',
+    },
     marquee: [
       'Zoologia',
       'Karma',
@@ -505,6 +551,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Regulacje', label: 'komunikacja zgodna z prawem' },
+      { value: 'Rytuał', label: 'marka wpisana w moment' },
+      { value: 'Aspiracja', label: 'wizerunek premium' },
+    ],
+    manifesto: {
+      lead: 'Alkohole rządzą się własnymi prawami.',
+      rest: 'Regulacje, moment i rytuał — trzeba je wszystkie wyczuć, żeby zbudować aspiracyjną markę.',
+    },
     marquee: [
       'Wino',
       'Piwo craft',
@@ -558,6 +613,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Trendy', label: 'marka zawsze na czasie' },
+      { value: 'Drop', label: 'napięcie, które sprzedaje' },
+      { value: 'UGC', label: 'styl w wykonaniu społeczności' },
+    ],
+    manifesto: {
+      lead: 'Moda żyje szybciej niż feed.',
+      rest: 'Wygrywają marki, które nadają tempo — budują pożądanie wokół dropów i zamieniają obserwujących w klientów.',
+    },
     marquee: ['Moda', 'Trendy', 'Lookbook', 'Drop', 'UGC', 'Kolekcje', 'Styl'],
     // Imagery: Pexels (free license) — photo IDs 17016524, 30892135, 36845202.
     collage: [
@@ -605,6 +669,15 @@ export const INDUSTRIES = [
           text: 'Według raportu PMR „Rynek HoReCa w Polsce 2025” aż 58% przedstawicieli pokolenia Z sprawdza opinie dostępne w internecie przed pierwszą wizytą w lokalu gastronomicznym. To pokazuje, jak dużą rolę odgrywają dziś media społecznościowe, rekomendacje i autentyczne doświadczenia klientów. Dlatego tworzymy komunikację, która łączy atrakcyjny content wizualny, sezonowe trendy i angażujące formaty, wspierając marki w budowaniu rozpoznawalności i lojalnej społeczności.',
         },
       ],
+    },
+    chips: [
+      { value: 'Food content', label: 'zdjęcia, po których słychać głód' },
+      { value: 'Atmosfera', label: 'miejsce, do którego chce się wrócić' },
+      { value: 'Rezerwacje', label: 'feed, który zapełnia stoliki' },
+    ],
+    manifesto: {
+      lead: 'Głód zaczyna się w feedzie.',
+      rest: 'Zanim gość przekroczy próg, apetyczny content i atmosfera miejsca już zapełniają stoliki.',
     },
     marquee: [
       'Restauracje',
@@ -662,6 +735,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Aspiracja', label: 'miejsce, o którym się marzy' },
+      { value: 'Booking', label: 'content, który napędza rezerwacje' },
+      { value: 'Sezony', label: 'komunikacja przez cały rok' },
+    ],
+    manifesto: {
+      lead: 'Wakacje kupuje się marzeniem.',
+      rest: 'Aspiracyjny travel content sprzedaje miejsce, zanim gość w ogóle spakuje walizkę.',
+    },
     marquee: [
       'Hotele',
       'Resorty',
@@ -718,6 +800,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Leady', label: 'komunikacja nastawiona na kontakt' },
+      { value: 'Wizualizacje', label: 'inwestycja, którą widać' },
+      { value: 'Zaufanie', label: 'fundament decyzji życia' },
+    ],
+    manifesto: {
+      lead: 'Zakup nieruchomości to decyzja życia.',
+      rest: 'Poprzedza ją zaufanie — budujemy je prezentacją inwestycji i komunikacją, która generuje realne leady.',
+    },
     marquee: [
       'Deweloperzy',
       'Inwestycje',
@@ -773,6 +864,15 @@ export const INDUSTRIES = [
             'marki z tej kategorii powinny być obecne tam, gdzie toczą się rozmowy odbiorców, reagować na bieżące trendy i konsekwentnie budować społeczność wokół swoich działań.',
         },
       ],
+    },
+    chips: [
+      { value: 'Hype', label: 'napięcie przed premierą' },
+      { value: 'Community', label: 'społeczność, która współtworzy' },
+      { value: 'Zaangażowanie', label: 'treść, którą się udostępnia' },
+    ],
+    manifesto: {
+      lead: 'Uwaga to waluta rozrywki.',
+      rest: 'Budujemy hype wokół premier, aktywujemy społeczność i tworzymy treści, które żyją w komentarzach.',
     },
     marquee: [
       'Eventy',

@@ -23,6 +23,7 @@ export const chrome = {
     ctaHeadline: 'WANT RESULTS LIKE THESE IN YOUR INDUSTRY?',
   },
   editorial: {
+    manifestoKicker: 'OUR APPROACH',
     logosKicker: 'THEY TRUSTED US',
     ctaHeadline: "LET'S TALK ABOUT YOUR BRAND.",
   },
@@ -202,6 +203,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Aesthetic', label: 'a consistent feed that builds desire' },
+      { value: 'UGC', label: 'real faces, real trust' },
+      { value: 'Rituals', label: 'content that slips into daily routines' },
+    ],
+    manifesto: {
+      lead: 'Beauty sells in the feed.',
+      rest: 'But consistent, aesthetic content and real community faces decide which brand she reaches for at the shelf.',
+    },
     marquee: [
       'Skincare',
       'Makeup',
@@ -256,6 +266,15 @@ export const INDUSTRIES = [
           text: 'Per the Edelman Trust Barometer 2025, 72% of respondents worry about false information and disinformation. So communication for health and wellbeing brands should rest on credible sources, transparency, and building long-term relationships with the audience.',
         },
       ],
+    },
+    chips: [
+      { value: 'Expert', label: 'content vetted for accuracy' },
+      { value: 'Education', label: 'tough topics in plain language' },
+      { value: 'Prevention', label: 'communication that genuinely helps' },
+    ],
+    manifesto: {
+      lead: "Health isn't sold on a promise.",
+      rest: "It's sold with solid education, expert authority, and communication people trust in the decisions that matter most.",
     },
     marquee: [
       'Wellbeing',
@@ -312,6 +331,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'B2B & B2C', label: 'communication tuned to the audience' },
+      { value: 'Education', label: 'finance without the jargon' },
+      { value: 'Trust', label: 'the foundation of every decision' },
+    ],
+    manifesto: {
+      lead: "Money isn't handed to chance.",
+      rest: "It's handed to a brand that explains hard topics in plain language and earns trust every day.",
+    },
     marquee: [
       'Fintech',
       'Payments',
@@ -367,6 +395,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Community', label: 'the most loyal audiences on social' },
+      { value: 'How-tos', label: 'content they come back for' },
+      { value: 'Emotion', label: 'a pet is family' },
+    ],
+    manifesto: {
+      lead: 'To an owner, it\'s not "a pet." It\'s family.',
+      rest: 'Brands that get this build the most loyal communities in all of social.',
+    },
     marquee: [
       'Petcare',
       'Food',
@@ -418,6 +455,15 @@ export const INDUSTRIES = [
           text: 'We know consumers choose specific brands not only for taste but also for the story, tradition, values, and special occasions that come with them. So we build communication grounded in engaging stories, positive associations, and natural moments of contact with the brand — strengthening its recognition and building long-term relationships with the audience.',
         },
       ],
+    },
+    chips: [
+      { value: 'Regulations', label: 'communication that stays compliant' },
+      { value: 'Ritual', label: 'a brand woven into the moment' },
+      { value: 'Aspiration', label: 'a premium image' },
+    ],
+    manifesto: {
+      lead: 'Alcohol plays by its own rules.',
+      rest: 'Regulations, timing, and ritual — you have to feel all three to build an aspirational brand.',
     },
     marquee: [
       'Wine',
@@ -474,6 +520,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Trends', label: 'a brand always on time' },
+      { value: 'Drop', label: 'the tension that sells' },
+      { value: 'UGC', label: 'style, styled by the community' },
+    ],
+    manifesto: {
+      lead: 'Fashion moves faster than the feed.',
+      rest: 'The winners set the pace — building desire around drops and turning followers into customers.',
+    },
     marquee: [
       'Fashion',
       'Trends',
@@ -528,6 +583,15 @@ export const INDUSTRIES = [
           text: 'Per the PMR “HoReCa market in Poland 2025” report, 58% of Gen Z check online reviews before a first visit to a restaurant. That shows how big a role social media, recommendations, and authentic customer experiences play today. So we build communication that blends compelling visual content, seasonal trends, and engaging formats — helping brands build recognition and a loyal community.',
         },
       ],
+    },
+    chips: [
+      { value: 'Food content', label: 'photos you can practically taste' },
+      { value: 'Atmosphere', label: 'a place worth coming back to' },
+      { value: 'Reservations', label: 'a feed that fills tables' },
+    ],
+    manifesto: {
+      lead: 'Hunger starts in the feed.',
+      rest: 'Before a guest crosses the threshold, appetizing content and a sense of place are already filling tables.',
     },
     marquee: [
       'Restaurants',
@@ -584,6 +648,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Aspiration', label: 'a place worth dreaming about' },
+      { value: 'Booking', label: 'content that drives reservations' },
+      { value: 'Seasons', label: 'communication all year round' },
+    ],
+    manifesto: {
+      lead: 'A vacation is bought on a dream.',
+      rest: 'Aspirational travel content sells the place before a guest even packs a bag.',
+    },
     marquee: [
       'Hotels',
       'Resorts',
@@ -639,6 +712,15 @@ export const INDUSTRIES = [
         },
       ],
     },
+    chips: [
+      { value: 'Leads', label: 'communication built for contact' },
+      { value: 'Renderings', label: 'an investment you can see' },
+      { value: 'Trust', label: 'the foundation of a life decision' },
+    ],
+    manifesto: {
+      lead: 'Buying property is a life decision.',
+      rest: "It's preceded by trust — we build it by presenting investments and communication that generates real leads.",
+    },
     marquee: [
       'Developers',
       'Investments',
@@ -693,6 +775,15 @@ export const INDUSTRIES = [
             'brands in this category should show up where their audience’s conversations happen, react to live trends, and consistently build a community around what they do.',
         },
       ],
+    },
+    chips: [
+      { value: 'Hype', label: 'the buzz before a premiere' },
+      { value: 'Community', label: 'an audience that co-creates' },
+      { value: 'Engagement', label: 'content people share' },
+    ],
+    manifesto: {
+      lead: 'Attention is the currency of entertainment.',
+      rest: 'We build hype around premieres, activate the community, and create content that lives in the comments.',
     },
     marquee: [
       'Events',
