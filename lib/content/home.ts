@@ -426,7 +426,9 @@ export const whyThatWorks = {
     muted:
       'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
-  link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/o-nas' },
+  link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/case-studies' },
+  // CTA card filling the last grid slot — jumps to the "NASZE LAMY" team slider.
+  teamCta: { label: 'Dowiedz się więcej', href: '/o-nas#zespol' },
   teamLabel: 'Zespół Social Lama',
   certsLabel: 'Certyfikaty',
   certAlt: {

@@ -125,267 +125,207 @@
   }
 }
 
-/* Uniform team grid: six columns of small square medallions on desktop (12
-   faces = 6×2 in the left cell), three on mobile. Certs occupy the row below
-   the faces (see .cert / .certLabel). */
-.mosaic {
-  --tile-gap: clamp(6px, 1.2cqw, 12px);
-
+/* Team grid: portrait tiles, each filling its gradient container with the
+   member's head+torso cutout. Four across on desktop, two on mobile; an
+   incomplete final row left-aligns. */
+.faces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: var(--tile-gap);
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 1.2cqw, 12px);
 
   @media (--mobile) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Faces flow as a centered flex row-wrap so an incomplete final row (11 faces
-   = 6 + 5) centers under the full row instead of left-aligning — and stays
-   centered for any roster count. Spans the full mosaic width; the cert label
-   and cards stay on the grid below. */
-.faces {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--tile-gap);
-}
-
-/* Square portrait medallion. Rest state saturates gently; on pointer devices
-   the hovered tile pops forward (spotlight block below). */
+/* Gradient container filled by the member's head+torso cutout; the label
+   stands at the bottom. A warm top glow sits behind the head. */
 .tile {
   position: relative;
-  /* Six across desktop, three on mobile (see override); aspect-ratio derives
-     the height so tiles stay square as flex items. */
-  flex: 0 0 calc((100% - 5 * var(--tile-gap)) / 6);
-  aspect-ratio: 1;
-  /* Reset <button> chrome: the tile is a portrait that reveals its caption on
-     hover (pointer) or tap (touch). */
-  appearance: none;
-  border: 0;
-  padding: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-  border-radius: 14px;
+  aspect-ratio: 4 / 5;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-cream) 22%, transparent);
-  /* Origin steers the pop-out inward at the grid edges so the enlarged tile
-     stays inside the stage. Defaults to center; overridden per position.
-     --pop-scale is the enlarge factor (gentler on mobile — see override). */
-  --pop-scale: 1.75;
-  --ox: center;
-  --oy: center;
-  transform-origin: var(--ox) var(--oy);
+  background: radial-gradient(
+    115% 90% at 50% 0%,
+    color-mix(in srgb, var(--color-orange) 24%, var(--color-plum)),
+    var(--color-plum) 52%,
+    var(--color-plum-dark)
+  );
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-cream) 20%, transparent);
   transition:
     transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-    opacity 0.4s ease,
-    box-shadow 0.4s ease;
+    box-shadow 0.3s ease;
 
+  /* Cutout sits head-up so the face reads; torso runs off the bottom edge. */
   & img {
-    filter: saturate(0.94);
+    object-position: top center;
     transition: filter 0.4s ease;
   }
 }
 
-/* Edge anchoring for the six-column desktop grid — the first 11 children are
-   faces (two rows of 6 + 5); the cert label and cards follow and are not
-   .tile, so these indices only ever touch portraits. */
-.tile:nth-child(-n + 6) {
-  --oy: top;
-}
-.tile:nth-child(n + 7) {
-  --oy: bottom;
-}
-.tile:nth-child(6n + 1) {
-  --ox: left;
-}
-.tile:nth-child(6n) {
-  --ox: right;
+/* Gentle lift on hover (pointer devices only). */
+@media (hover: hover) {
+  .tile:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 2px var(--color-orange),
+      0 16px 32px rgb(0 0 0 / 0.32);
+  }
+
+  .tile:hover img {
+    filter: saturate(1.06) brightness(1.03);
+  }
 }
 
-/* Three across on mobile, with a gentler pop (the tiles are already large) and
-   edge anchoring re-derived for the 3-column layout (11 faces = 3+3+3+2). The
-   nth-child(n) resets match the desktop rules' specificity so they win here. */
-@media (--mobile) {
+@media (--reduced-motion) {
   .tile {
-    flex-basis: calc((100% - 2 * var(--tile-gap)) / 3);
-    --pop-scale: 1.35;
-  }
-  .tile:nth-child(n) {
-    --oy: center;
-  }
-  .tile:nth-child(-n + 3) {
-    --oy: top;
-  }
-  .tile:nth-child(n + 10) {
-    --oy: bottom;
-  }
-  .tile:nth-child(3n + 2) {
-    --ox: center;
-  }
-  .tile:nth-child(3n + 1) {
-    --ox: left;
-  }
-  .tile:nth-child(3n) {
-    --ox: right;
+    transition: none;
   }
 }
 
-/* Name + role, revealed inside the enlarged tile on hover. Kept in the DOM
-   (opacity, not display); the text rides the tile's transform, so sizes are
-   tuned for the scaled-up state. */
+/* Name + role, always visible, standing at the bottom over a dark scrim. */
 .caption {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 1px;
-  padding: 8px 8px 7px;
+  gap: 2px;
+  padding: 10px 10px 9px;
   background: linear-gradient(
     to top,
-    rgb(0 0 0 / 0.82) 0%,
-    rgb(0 0 0 / 0.48) 32%,
-    transparent 66%
+    rgb(0 0 0 / 0.78) 0%,
+    rgb(0 0 0 / 0.34) 34%,
+    transparent 62%
   );
-  opacity: 0;
-  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
 .captionName {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 0.5rem;
-  line-height: 1.05;
+  font-size: clamp(0.74rem, 1.75cqw, 1.05rem);
+  line-height: 1.06;
   letter-spacing: -0.01em;
   color: var(--color-cream);
 }
 
 .captionRole {
   font-weight: 600;
-  font-size: 0.42rem;
-  line-height: 1.12;
-  color: color-mix(in srgb, var(--color-cream) 76%, transparent);
+  font-size: clamp(0.58rem, 1.3cqw, 0.8rem);
+  line-height: 1.16;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
 }
 
-/* Spotlight, pointer devices only (touch fires a sticky :hover on tap, so
-   gate the whole effect on real hover capability). Hovering the grid dims the
-   field; the hovered tile stays lit, pops to ~1.75x floating above its
-   neighbors (anchored inside the stage), gains an orange ring, and reveals its
-   caption. Cert cards are not .tile, so the dim skips them. */
+/* CTA card filling the final grid slot: an orange accent tile linking to the
+   /o-nas team slider. Matches the portrait tiles' shape; stands out by colour. */
+.ctaTile {
+  aspect-ratio: 4 / 5;
+}
+
+.ctaLink {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5em;
+  height: 100%;
+  padding: clamp(12px, 1.7cqw, 22px);
+  border-radius: 12px;
+  background: linear-gradient(
+    150deg,
+    var(--color-orange),
+    color-mix(in srgb, var(--color-orange) 68%, var(--color-plum))
+  );
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.3s ease;
+}
+
+.ctaText {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(0.82rem, 1.9cqw, 1.15rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+
+.ctaIcon {
+  width: clamp(20px, 2.4cqw, 30px);
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
 @media (hover: hover) {
-  .mosaic:hover .tile {
-    opacity: 0.5;
+  .ctaLink:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgb(0 0 0 / 0.28);
   }
 
-  .mosaic .tile:hover,
-  .mosaic .tile:focus-visible {
-    opacity: 1;
-    transform: scale(var(--pop-scale));
-    z-index: 2;
-    box-shadow:
-      0 0 0 2px var(--color-orange),
-      0 20px 40px rgb(0 0 0 / 0.4);
-
-    & img {
-      filter: saturate(1.08) brightness(1.04);
-    }
-  }
-
-  .mosaic .tile:hover .caption,
-  .mosaic .tile:focus-visible .caption {
-    opacity: 1;
+  .ctaLink:hover .ctaIcon {
+    transform: translateX(3px);
   }
 }
 
-/* Touch (no hover): a tap toggles .isActive on one tile; tapping another
-   switches, tapping the active one again closes it. data-active on .faces dims
-   the field while a tile is open. Same look as the hover pop, gentler scale. */
-@media (hover: none) {
-  /* :not(.isActive) so the dim never outranks the lit tile (the dim selector
-     is more specific than .tile.isActive). */
-  .faces[data-active] .tile:not(.isActive) {
-    opacity: 0.5;
-  }
-
-  .tile.isActive {
-    opacity: 1;
-    transform: scale(var(--pop-scale));
-    z-index: 2;
-    box-shadow:
-      0 0 0 2px var(--color-orange),
-      0 20px 40px rgb(0 0 0 / 0.4);
-
-    & img {
-      filter: saturate(1.08) brightness(1.04);
-    }
-  }
-
-  .tile.isActive .caption {
-    opacity: 1;
-  }
-}
-
-/* Reduced motion: keep the pop-out (so the caption stays legible) but snap to
-   it with no animated transition. */
 @media (--reduced-motion) {
-  .tile,
-  .caption {
+  .ctaLink,
+  .ctaIcon {
     transition: none;
   }
 }
 
-/* "Certyfikaty" eyebrow opening the cert row (full width above the cards). */
-.certLabel {
-  grid-column: 1 / -1;
+/* —— Credentials, popped out below the grid ————————————————————————————————
+   Full-width row on the sand ground: eyebrow over two white chips holding the
+   cert marks unmodified (trademark hygiene: objectFit contain, no recolor or
+   crop — the mark sits in the .certMedia box). */
+/* Certs live in the copy column, directly under the CTA link. */
+.certs {
   display: flex;
-  align-items: center;
-  margin-top: calc(var(--gap) * 0.5);
-  font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.72rem;
-  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
-}
-
-/* Cream card presenting a credential mark unmodified (trademark hygiene: no
-   recolor, no crop — objectFit contain inside the inner media box). Two cards
-   share the cert row (each half); full width, stacked, on mobile. */
-.cert {
-  grid-column: span 3;
-  /* Snug pure-white chip (not the warm cream card): sized to the logo and
-     centered in its half, minimal padding, small radius, soft lift. The white
-     backing keeps the logos' dark text legible on the plum stage. */
-  justify-self: center;
-  /* Shared width so both chips match (fit-content would size each to its own
-     logo); wide enough for the larger DIMAQ mark, others centered inside. */
-  width: clamp(240px, 42cqw, 320px);
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(8px, 1.4cqw, 12px) clamp(22px, 4cqw, 40px);
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 6px 18px rgb(0 0 0 / 0.16);
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.75);
 
   @media (--mobile) {
-    grid-column: 1 / -1;
+    align-items: center;
   }
 }
 
+.certCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.5vw, 20px);
+  width: 100%;
+
+  @media (--mobile) {
+    justify-content: center;
+  }
+}
+
+/* White chip presenting a credential mark unmodified; each takes an equal
+   share of the row so the two sit side by side under the grid (stacks on
+   mobile). */
+.cert {
+  flex: 1 1 0;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 1.4vw, 14px) clamp(20px, 2.5vw, 32px);
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.14);
+}
+
 /* Inner box carrying the cert image; its aspect ratio comes from the mark's
-   intrinsic ratio so the cream padding frames it evenly. */
+   intrinsic ratio so the white padding frames it evenly. */
 .certMedia {
   position: relative;
   /* Source marks are high-res (Meta 627x345, DIMAQ 347x143), so render them at
      a legible size rather than shrinking to a thumbnail. */
-  height: clamp(52px, 11cqw, 82px);
+  height: clamp(46px, 6vw, 72px);
   aspect-ratio: var(--ar);
 }
 

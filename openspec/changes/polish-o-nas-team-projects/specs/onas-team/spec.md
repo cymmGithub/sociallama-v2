@@ -4,12 +4,12 @@
 
 The `/o-nas` "NASZE LAMY" team slider SHALL present the Social Lama roster in the same order as the homepage `why-that-works` `TEAM` grid. The order is normative and MUST NOT diverge from the homepage grid.
 
-> **Note (post-review, applied during implementation):** During review the client directed a **position-priority** ordering (leadership → managers → senior specialists → experts → specialist → creator), so the homepage `TEAM` grid was reordered accordingly — it is no longer read-only, but it remains the single source of truth the slider mirrors. Two members (**Paulina Hildebrand**, **Katarzyna Kaptur**) are **temporarily excluded from the slider** (commented out in both locales) because their only source photos are low-resolution square crops that cannot be cut out to match the front-facing head+torso set. They remain in the homepage medallion grid (decorative WebP, unaffected) and are re-enabled once proper photos are supplied.
+> **Note (post-review, applied during implementation):** The client directed the final order during review — **Ania first, then the two Senior Social Media Specialists, then the rest** (Project Manager → Managers → Experts → Specialist → Creator). The homepage `why-that-works` `TEAM` grid was reordered accordingly (it is no longer read-only) and remains the single source of truth the slider mirrors. Two members (**Paulina Hildebrand**, **Katarzyna Kaptur**) are **temporarily excluded from the slider** (commented out in both locales) because their only source photos are low-resolution square crops that cannot be cut out to match the front-facing head+torso set; they still appear in the homepage grid, and are re-enabled once proper photos are supplied. The homepage grid itself was also **redesigned** (see the `homepage-team-grid` note in this change's proposal): the circular medallions were replaced by full-bleed portrait tiles filled with the same head+torso cutouts.
 
-#### Scenario: Order is position-priority and matches the homepage grid
+#### Scenario: Order matches the homepage grid
 
 - **WHEN** the `/o-nas` page renders the team slider
-- **THEN** the members appear in this order — Ania Ozga, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Martyna Borowik, Agnieszka Klajbert, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska — with Paulina Hildebrand and Katarzyna Kaptur omitted while their photos are pending (9 shown)
+- **THEN** the members appear in this order — Ania Ozga, Martyna Borowik, Agnieszka Klajbert, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska — with Paulina Hildebrand and Katarzyna Kaptur omitted from the slider while their photos are pending (9 shown), and the sequence is identical to the homepage grid
 
 #### Scenario: Order matches the homepage grid
 

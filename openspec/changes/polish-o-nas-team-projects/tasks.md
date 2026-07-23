@@ -42,3 +42,12 @@
 
 - [x] 7.1 Reorder the homepage `why-that-works` `TEAM` grid to position-priority (leadership → managers → senior specialists → experts → specialist → creator); re-sync the slider to match. Homepage grid is no longer read-only but stays the ordering source of truth.
 - [x] 7.2 Temporarily exclude Paulina Hildebrand + Katarzyna Kaptur from the slider (commented out in both locales, parity preserved, 9 shown) — their only source photos are low-res square crops that can't match the front-facing head+torso set. Re-enable when proper photos arrive. Rationale + re-enable steps recorded in the content files and proposal.md.
+- [x] 7.3 Final client-directed order: Ania → Seniors (Martyna, Agnieszka) → Piotrek → Managers → Experts → Oliwia → Karolina. Applied to the homepage grid + mirrored into the slider (both locales); Playwright-verified.
+
+## 8. Homepage team-grid redesign (client-directed)
+
+- [x] 8.1 Replace the circular medallions with full-bleed portrait tiles — each a plum→orange gradient container filled by the member's head+torso cutout (`/o-nas/slider/*.png`), 4-across desktop / 2-across mobile; names + roles always visible at the bottom (removed the hover/tap-reveal + pop-out machinery and the unused `useState`/`useEffect`/`useRef`).
+- [x] 8.2 Add a `Dowiedz się więcej` CTA card in the 12th slot linking to `/o-nas#zespol`; new `whyThatWorks.teamCta` content (PL + EN).
+- [x] 8.3 Repoint the "POZNAJ NASZE DOŚWIADCZENIE" link from `/o-nas` to `/case-studies` (PL) / `/en/case-studies` (EN).
+- [x] 8.4 Move the credential chips out from inside the plum stage to under the CTA link in the copy column; drop the "Certyfikaty" label.
+- [x] 8.5 Fix `ScrollReset` so cross-page hash navigation scrolls to the anchor (the CTA card landed at the top otherwise); same-page anchors unaffected. → Playwright-verified the CTA lands on the slider; Biome + TypeScript green.

@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { useEffect, useRef, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -21,54 +21,63 @@ function fill(node: HTMLSpanElement, active: boolean) {
   node.style.opacity = active ? '1' : '0.2'
 }
 
-// Team roster as a grid of medallion portraits, in presentation order
-// (leadership first). Each portrait reveals its name + role on hover (see
-// .caption in the stylesheet); adding or removing a member is a one-line edit.
+// Team roster as a grid of full-bleed portrait tiles, in presentation order
+// (leadership first). Each tile fills its gradient container with the member's
+// transparent head+torso cutout (shared with the /o-nas slider) and carries a
+// standing name + role label. Adding or removing a member is a one-line edit.
 const TEAM = [
-  { file: 'anna-ozga.webp', name: 'Ania Ozga', role: 'Head of Social Media' },
-  { file: 'piotrek-zach.webp', name: 'Piotrek Zach', role: 'Project Manager' },
   {
-    file: 'emilia-metryka.webp',
-    name: 'Emilia Metryka',
-    role: 'Social Media Manager',
+    cut: 'anna-ozga.png',
+    name: 'Ania Ozga',
+    role: 'Head of Social Media',
   },
   {
-    file: 'paulina-hildebrand.webp',
-    name: 'Paulina Hildebrand',
-    role: 'Social Media Manager',
-  },
-  {
-    file: 'magda-rokicka.webp',
-    name: 'Magda Rokicka',
-    role: 'Social Media Manager',
-  },
-  {
-    file: 'martyna-borowik.webp',
+    cut: 'martyna-borowik.png',
     name: 'Martyna Borowik',
     role: 'Senior Social Media Specialist',
   },
   {
-    file: 'agnieszka-klajbert.webp',
+    cut: 'agnieszka-klajbert.png',
     name: 'Agnieszka Klajbert',
     role: 'Senior Social Media Specialist',
   },
   {
-    file: 'kornelia-orlik.webp',
+    cut: 'piotr-zach.png',
+    name: 'Piotrek Zach',
+    role: 'Project Manager',
+  },
+  {
+    cut: 'emilia-metryka.png',
+    name: 'Emilia Metryka',
+    role: 'Social Media Manager',
+  },
+  {
+    cut: 'paulina-hildebrand.png',
+    name: 'Paulina Hildebrand',
+    role: 'Social Media Manager',
+  },
+  {
+    cut: 'magda-rokicka.png',
+    name: 'Magda Rokicka',
+    role: 'Social Media Manager',
+  },
+  {
+    cut: 'kornelia-orlik.png',
     name: 'Kornelia Orlik',
     role: 'Social Media Expert',
   },
   {
-    file: 'katarzyna-kaptur.webp',
+    cut: 'katarzyna-kaptur.png',
     name: 'Katarzyna Kaptur',
     role: 'Social Media Expert',
   },
   {
-    file: 'oliwia-witewska.webp',
+    cut: 'oliwia-witewska.png',
     name: 'Oliwia Witewska',
     role: 'Social Media Specialist',
   },
   {
-    file: 'karolina-marcinowska.webp',
+    cut: 'karolina-marcinowska.png',
     name: 'Karolina Marcinowska',
     role: 'Wideo Content Creator',
   },
@@ -88,23 +97,6 @@ export function WhyThatWorks({
   content?: LocalizedHome['whyThatWorks']
 }) {
   const bottomRef = useReveal<HTMLDivElement>()
-  // Touch has no hover, so a tap toggles which portrait shows its caption
-  // (pointer devices use :hover and ignore this). null = none open.
-  const [active, setActive] = useState<string | null>(null)
-  const facesRef = useRef<HTMLDivElement>(null)
-
-  // Touch has no blur, so close the open portrait when a tap lands outside the
-  // grid (tapping another face is handled by its own button).
-  useEffect(() => {
-    if (!active) return
-    function handlePointerDown(event: PointerEvent) {
-      if (!facesRef.current?.contains(event.target as Node)) {
-        setActive(null)
-      }
-    }
-    document.addEventListener('pointerdown', handlePointerDown)
-    return () => document.removeEventListener('pointerdown', handlePointerDown)
-  }, [active])
 
   return (
     <section className={s.section} id="o-nas">
@@ -137,71 +129,41 @@ export function WhyThatWorks({
       {/* Claim → evidence → invitation: the manifesto states it, the team
           grid on the plum stage proves it, the closing copy + CTA invite. */}
       <div ref={bottomRef} className={s.bottom}>
-        {/* Team grid mosaic on the shared plum grain stage (same recipe as the
-            services and how-it-works panels). Twelve medallion portraits, then
-            the two credentials as inline cream cards. Portraits are decorative
-            (no name→photo mapping); the group label carries the meaning. */}
+        {/* Team grid on the shared plum grain stage. Each tile fills its
+            gradient container with the member's transparent head+torso cutout
+            (shared with the /o-nas slider) and a standing name + role label. */}
         <div
           data-reveal-item
           className={s.stage}
           role="group"
           aria-label={content.teamLabel}
         >
-          <div className={s.mosaic}>
-            <div
-              ref={facesRef}
-              className={s.faces}
-              data-active={active ? '' : undefined}
-            >
-              {TEAM.map((member) => {
-                const isActive = active === member.file
-                return (
-                  <button
-                    key={member.file}
-                    type="button"
-                    className={cn(s.tile, isActive && s.isActive)}
-                    aria-pressed={isActive}
-                    aria-label={`${member.name}, ${member.role}`}
-                    onClick={() =>
-                      setActive((cur) =>
-                        cur === member.file ? null : member.file
-                      )
-                    }
-                  >
-                    <Image
-                      src={`/assets/team/${member.file}`}
-                      alt=""
-                      fill
-                      mobileSize="30vw"
-                      desktopSize="16vw"
-                    />
-                    {/* Name + role, shown on hover (pointer) or when tapped
-                        active (touch). aria-hidden: the button's aria-label
-                        already carries the identity. */}
-                    <div className={s.caption} aria-hidden="true">
-                      <span className={s.captionName}>{member.name}</span>
-                      <span className={s.captionRole}>{member.role}</span>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
-            <span className={s.certLabel}>{content.certsLabel}</span>
-            {CERTS.map((c) => (
-              <div key={c.src} className={s.cert}>
-                <div className={s.certMedia} style={{ '--ar': c.ar }}>
-                  <Image
-                    src={c.src}
-                    alt={content.certAlt[c.id]}
-                    fill
-                    objectFit="contain"
-                    mobileSize="45vw"
-                    desktopSize="18vw"
-                  />
+          <ul className={s.faces}>
+            {TEAM.map((member) => (
+              <li key={member.cut} className={s.tile}>
+                <Image
+                  src={`/o-nas/slider/${member.cut}`}
+                  alt=""
+                  fill
+                  objectFit="cover"
+                  mobileSize="46vw"
+                  desktopSize="22vw"
+                />
+                <div className={s.caption}>
+                  <span className={s.captionName}>{member.name}</span>
+                  <span className={s.captionRole}>{member.role}</span>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+            {/* CTA card fills the last grid slot; jumps to the /o-nas team
+                slider ("NASZE LAMY"). */}
+            <li className={s.ctaTile}>
+              <Link className={s.ctaLink} href={content.teamCta.href}>
+                <span className={s.ctaText}>{content.teamCta.label}</span>
+                <ArrowRight className={s.ctaIcon} aria-hidden="true" />
+              </Link>
+            </li>
+          </ul>
         </div>
         <div className={s.copy}>
           <p className={s.para}>
@@ -225,6 +187,27 @@ export function WhyThatWorks({
               {content.link.label}
             </Link>
           </span>
+
+          {/* Credentials sit under the CTA in the copy column — unmodified cert
+              marks (trademark hygiene: objectFit contain, no recolor/crop). */}
+          <div data-reveal-item className={s.certs}>
+            <div className={s.certCards}>
+              {CERTS.map((c) => (
+                <div key={c.src} className={s.cert}>
+                  <div className={s.certMedia} style={{ '--ar': c.ar }}>
+                    <Image
+                      src={c.src}
+                      alt={content.certAlt[c.id]}
+                      fill
+                      objectFit="contain"
+                      mobileSize="45vw"
+                      desktopSize="18vw"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

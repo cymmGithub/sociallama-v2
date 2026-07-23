@@ -162,6 +162,20 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
+      photo: '/o-nas/slider/martyna-borowik.png',
+    },
+    {
+      given: 'AGNIESZKA',
+      surname: 'KLAJBERT',
+      role: 'Senior Social Media Specialist',
+      bio: 'Five years in marketing and social media. She pairs a passion for photography with a background in management and advertising graphics, knowing that good social is a mix of aesthetics, psychology, humor, and a touch of madness.',
+      photo: '/o-nas/slider/agnieszka-klajbert.png',
+    },
+    {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
@@ -190,20 +204,6 @@ export const oNasTeam = {
       role: 'Social Media Manager',
       bio: 'Over 12 years in marketing, specializing in communication strategy, social media, content marketing, and podcasts. After hours she educates the industry — running trainings and her own podcast. DIMAQ Professional certified.',
       photo: '/o-nas/slider/magda-rokicka.png',
-    },
-    {
-      given: 'MARTYNA',
-      surname: 'BOROWIK',
-      role: 'Senior Social Media Specialist',
-      bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
-      photo: '/o-nas/slider/martyna-borowik.png',
-    },
-    {
-      given: 'AGNIESZKA',
-      surname: 'KLAJBERT',
-      role: 'Senior Social Media Specialist',
-      bio: 'Five years in marketing and social media. She pairs a passion for photography with a background in management and advertising graphics, knowing that good social is a mix of aesthetics, psychology, humor, and a touch of madness.',
-      photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'KORNELIA',

@@ -195,6 +195,20 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
+      photo: '/o-nas/slider/martyna-borowik.png',
+    },
+    {
+      given: 'AGNIESZKA',
+      surname: 'KLAJBERT',
+      role: 'Senior Social Media Specialist',
+      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej, wiedząc, że dobre social media to estetyka, psychologia, humor i odrobina szaleństwa.',
+      photo: '/o-nas/slider/agnieszka-klajbert.png',
+    },
+    {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
@@ -225,20 +239,6 @@ export const oNasTeam = {
       role: 'Social Media Manager',
       bio: 'Od ponad 12 lat w branży marketingowej — specjalizuje się w strategii komunikacji, social mediach, content marketingu i podcastach. Po godzinach edukuje branżę: prowadzi szkolenia i autorski podcast. Posiadaczka certyfikatu DIMAQ Professional.',
       photo: '/o-nas/slider/magda-rokicka.png',
-    },
-    {
-      given: 'MARTYNA',
-      surname: 'BOROWIK',
-      role: 'Senior Social Media Specialist',
-      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
-      photo: '/o-nas/slider/martyna-borowik.png',
-    },
-    {
-      given: 'AGNIESZKA',
-      surname: 'KLAJBERT',
-      role: 'Senior Social Media Specialist',
-      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej, wiedząc, że dobre social media to estetyka, psychologia, humor i odrobina szaleństwa.',
-      photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'KORNELIA',

@@ -248,7 +248,9 @@ export const whyThatWorks = {
     muted:
       'We look after your brand at every stage — from the first audit, through content creation, to the final reports on the wins we rack up together.',
   },
-  link: { label: 'DISCOVER OUR EXPERIENCE', href: '/en/about-us' },
+  link: { label: 'DISCOVER OUR EXPERIENCE', href: '/en/case-studies' },
+  // CTA card filling the last grid slot — jumps to the "OUR LAMAS" team slider.
+  teamCta: { label: 'Learn more', href: '/en/about-us#zespol' },
   teamLabel: 'Social Lama team',
   certsLabel: 'Certificates',
   certAlt: {
