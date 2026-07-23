@@ -40,14 +40,18 @@ export const chrome = {
     portfolioHeading: 'TAK TO WYGLĄDA W FEEDZIE',
     realBadge: '100% REALNE KREACJE',
     caseStudyCta: 'ZOBACZ CASE STUDY',
-    ctaHeadline: 'CHCESZ TAKICH WYNIKÓW W SWOJEJ BRANŻY?',
+    ctaHeadline: 'Chcesz takich wyników w swojej branży?',
   },
   editorial: {
     manifestoKicker: 'NASZE PODEJŚCIE',
     logosKicker: 'ZAUFALI NAM',
-    ctaHeadline: 'POROZMAWIAJMY O TWOJEJ MARCE.',
+    ctaHeadline: 'Porozmawiajmy o Twojej marce',
   },
-  ctaButton: 'BEZPŁATNA KONSULTACJA',
+  // CTA card mirrors the case-study one (minus its secondary action), so the
+  // eyebrow/lead copy and sentence casing match `case-studies.ts` chrome.
+  ctaEyebrow: 'Twój ruch',
+  ctaText: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
+  ctaButton: 'Bezpłatna konsultacja',
   ctaHref: '/kontakt',
 } as const
 

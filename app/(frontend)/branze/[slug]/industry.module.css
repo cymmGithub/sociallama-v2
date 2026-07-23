@@ -203,49 +203,98 @@
 
 /* —— Shared: CTA band ———————————————————————————————————————————————————————— */
 
+/* Mirrors the case-study CTA card (`case-study.module.css` `.cta`), minus the
+   secondary action — a centred card on a cream band rather than a flat
+   full-bleed strip with the button stranded off to one side. */
+.ctaBand {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+}
+
 .cta {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--safe) * 1.5);
-  align-items: flex-start;
-  padding: calc(var(--safe) * 4) var(--safe);
-  background: var(--color-plum);
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: calc(var(--safe) * 4.5) var(--safe);
+  border-radius: 28px;
+  background: var(--color-plum-dark);
   color: var(--color-cream);
-
-  @media (--desktop) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: calc(var(--safe) * 2);
-  }
+  text-align: center;
 }
 
-.ctaHeadline {
-  max-width: 18ch;
+/* Warm orange glow bleeding up from the lower edge. */
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 90%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-orange) 34%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.cta > * {
+  position: relative;
+}
+
+.ctaEyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.ctaTitle {
+  max-width: 20ch;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
   font-weight: 800;
-  line-height: 1.02;
-  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
-.ctaButton {
-  flex-shrink: 0;
-  padding: 1rem 2rem;
+.ctaText {
+  max-width: 46ch;
+  margin: 0;
+  font-family: var(--font-mono);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(var(--gap) / 2);
+  margin-top: var(--gap);
+}
+
+.ctaPrimary {
+  padding: 0.9em 2em;
   background: var(--color-orange);
   color: var(--color-ink);
   border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.9375rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: transform 0.2s ease;
+  letter-spacing: 0.04em;
+  transition: opacity var(--duration-fast);
 
   &:hover {
-    transform: translateY(-2px);
+    opacity: 0.9;
   }
 }
 

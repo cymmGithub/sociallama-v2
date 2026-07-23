@@ -20,14 +20,16 @@ export const chrome = {
     portfolioHeading: "HERE'S HOW IT LOOKS IN THE FEED",
     realBadge: '100% REAL CREATIVE',
     caseStudyCta: 'VIEW CASE STUDY',
-    ctaHeadline: 'WANT RESULTS LIKE THESE IN YOUR INDUSTRY?',
+    ctaHeadline: 'Want results like these in your industry?',
   },
   editorial: {
     manifestoKicker: 'OUR APPROACH',
     logosKicker: 'THEY TRUSTED US',
-    ctaHeadline: "LET'S TALK ABOUT YOUR BRAND.",
+    ctaHeadline: "Let's talk about your brand",
   },
-  ctaButton: 'FREE CONSULTATION',
+  ctaEyebrow: 'Your move',
+  ctaText: "Tell us about your challenge — we'll show you how we can help.",
+  ctaButton: 'Free consultation',
   ctaHref: '/en/contact',
 } satisfies LocalizedBranze['chrome']
 

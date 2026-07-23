@@ -125,13 +125,20 @@ function Breadcrumb({ chrome, label }: { chrome: Chrome; label: string }) {
   )
 }
 
+/** Closing CTA — the case-study CTA card, minus its secondary action. */
 function CtaBand({ headline, chrome }: { headline: string; chrome: Chrome }) {
   return (
-    <section className={s.cta} data-theme="plum">
-      <h2 className={s.ctaHeadline}>{headline}</h2>
-      <Link className={s.ctaButton} href={chrome.ctaHref}>
-        {chrome.ctaButton}
-      </Link>
+    <section className={s.ctaBand} data-theme="cream">
+      <div className={s.cta}>
+        <p className={s.ctaEyebrow}>{chrome.ctaEyebrow}</p>
+        <h2 className={s.ctaTitle}>{headline}</h2>
+        <p className={s.ctaText}>{chrome.ctaText}</p>
+        <div className={s.ctaActions}>
+          <Link className={s.ctaPrimary} href={chrome.ctaHref}>
+            {chrome.ctaButton}
+          </Link>
+        </div>
+      </div>
     </section>
   )
 }
