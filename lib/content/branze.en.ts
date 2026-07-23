@@ -78,22 +78,32 @@ export const INDUSTRIES = [
         {
           src: '/case-studies/volvo/volvo-vcw-post.jpg',
           alt: 'Volvo Car Warszawa Instagram post featuring a Volvo car',
+          width: 351,
+          height: 760,
         },
         {
           src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
           alt: 'Volvo "Hot season?" creative about prepping the car for summer',
+          width: 351,
+          height: 760,
         },
         {
           src: '/case-studies/volvo/volvo-event-ex30.jpg',
           alt: 'The electric Volvo EX30 shown at an outdoor event',
+          width: 406,
+          height: 720,
         },
         {
           src: '/case-studies/volvo/volvo-event-noc.jpg',
           alt: 'Museum Night coverage at the Volvo showroom — a concert in moody lighting',
+          width: 406,
+          height: 720,
         },
         {
           src: '/case-studies/volvo/volvo-dom-savedate.jpg',
           alt: '"Save the date" creative — open days at Dom Volvo',
+          width: 585,
+          height: 1266,
         },
       ],
       quote: {
@@ -145,25 +155,31 @@ export const INDUSTRIES = [
       cardTitle:
         'iRobot — humor and education that build a brand on YouTube and TikTok',
       creatives: [
+        // Phone mockups only — galleries 4 and 5 are laptop/YouTube frames whose
+        // landscape shape doesn't belong on a feed wall. Alts match the case study.
         {
           src: '/case-studies/irobot/irobot-gallery-1.jpg',
-          alt: 'iRobot social media campaign creative',
+          alt: 'iRobot TikTok post — “Want to come home to a clean house?”',
+          width: 437,
+          height: 900,
         },
         {
           src: '/case-studies/irobot/irobot-gallery-2.jpg',
-          alt: 'iRobot social media campaign creative',
+          alt: 'iRobot TikTok post showing a Roomba at work on the floor',
+          width: 350,
+          height: 720,
         },
         {
           src: '/case-studies/irobot/irobot-gallery-3.jpg',
-          alt: 'iRobot social media campaign creative',
+          alt: 'Humorous creator video with a Roomba from the iRobot TikTok campaign',
+          width: 524,
+          height: 1080,
         },
         {
-          src: '/case-studies/irobot/irobot-gallery-4.jpg',
-          alt: 'iRobot social media campaign creative',
-        },
-        {
-          src: '/case-studies/irobot/irobot-gallery-5.jpg',
-          alt: 'iRobot social media campaign creative',
+          src: '/case-studies/irobot/irobot-gallery-6.jpg',
+          alt: 'Creator video with a Roomba from the iRobot TikTok campaign',
+          width: 437,
+          height: 900,
         },
       ],
       quote: {

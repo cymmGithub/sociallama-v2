@@ -277,10 +277,10 @@ function ProofLayout({
                 className={s.wallImg}
                 src={creative.src}
                 alt={creative.alt}
-                fill
-                objectFit="cover"
-                desktopSize="20vw"
-                mobileSize="60vw"
+                width={creative.width}
+                height={creative.height}
+                desktopSize="16vw"
+                mobileSize="45vw"
               />
             </div>
           ))}

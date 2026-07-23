@@ -64,6 +64,16 @@ interface IndustryImage {
   alt: string
 }
 
+/**
+ * A feed creative for the proof wall. Unlike the collage (which crops to fill),
+ * these are device mockups, so they render at their intrinsic aspect — the same
+ * treatment the case study gives them. Hence the required pixel dimensions.
+ */
+interface IndustryCreative extends IndustryImage {
+  width: number
+  height: number
+}
+
 /** A brief paragraph; `strong` (if set) is an exact substring rendered bold. */
 interface IndustryParagraph {
   text: string
@@ -77,7 +87,7 @@ interface IndustryCaseStudy {
   cardKicker: string
   cardTitle: string
   /** Real feed creatives for the proof wall (existing case-study assets). */
-  creatives: readonly IndustryImage[]
+  creatives: readonly IndustryCreative[]
   /** O3: paraphrase pending verbatim/testimonial confirmation. */
   quote: { text: string; attribution: string }
 }
@@ -160,22 +170,32 @@ export const INDUSTRIES = [
         {
           src: '/case-studies/volvo/volvo-vcw-post.jpg',
           alt: 'Post Volvo Car Warszawa na Instagramie prezentujący samochód Volvo',
+          width: 351,
+          height: 760,
         },
         {
           src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
           alt: 'Kreacja Volvo „Gorący okres?” o przygotowaniu auta na lato',
+          width: 351,
+          height: 760,
         },
         {
           src: '/case-studies/volvo/volvo-event-ex30.jpg',
           alt: 'Elektryczne Volvo EX30 prezentowane na wydarzeniu plenerowym',
+          width: 406,
+          height: 720,
         },
         {
           src: '/case-studies/volvo/volvo-event-noc.jpg',
           alt: 'Relacja z Nocy Muzeów w salonie Volvo — koncert w nastrojowym oświetleniu',
+          width: 406,
+          height: 720,
         },
         {
           src: '/case-studies/volvo/volvo-dom-savedate.jpg',
           alt: 'Kreacja „Save the date” — dni otwarte w Domu Volvo',
+          width: 585,
+          height: 1266,
         },
       ],
       quote: {
@@ -226,25 +246,31 @@ export const INDUSTRIES = [
       cardTitle:
         'iRobot — humor i edukacja, które budują markę na YouTube i TikToku',
       creatives: [
+        // Phone mockups only — galleries 4 and 5 are laptop/YouTube frames whose
+        // landscape shape doesn't belong on a feed wall. Alts match the case study.
         {
           src: '/case-studies/irobot/irobot-gallery-1.jpg',
-          alt: 'Kreacja iRobot z kampanii w social mediach',
+          alt: 'Post TikTok iRobot z hasłem „Chcesz wracać do czystego domu?”',
+          width: 437,
+          height: 900,
         },
         {
           src: '/case-studies/irobot/irobot-gallery-2.jpg',
-          alt: 'Kreacja iRobot z kampanii w social mediach',
+          alt: 'Post TikTok iRobot pokazujący robota Roomba w akcji na podłodze',
+          width: 350,
+          height: 720,
         },
         {
           src: '/case-studies/irobot/irobot-gallery-3.jpg',
-          alt: 'Kreacja iRobot z kampanii w social mediach',
+          alt: 'Humorystyczny film twórczyni z robotem Roomba w kampanii iRobot na TikToku',
+          width: 524,
+          height: 1080,
         },
         {
-          src: '/case-studies/irobot/irobot-gallery-4.jpg',
-          alt: 'Kreacja iRobot z kampanii w social mediach',
-        },
-        {
-          src: '/case-studies/irobot/irobot-gallery-5.jpg',
-          alt: 'Kreacja iRobot z kampanii w social mediach',
+          src: '/case-studies/irobot/irobot-gallery-6.jpg',
+          alt: 'Film twórczyni w kampanii TikTok iRobot z robotem Roomba',
+          width: 437,
+          height: 900,
         },
       ],
       quote: {
