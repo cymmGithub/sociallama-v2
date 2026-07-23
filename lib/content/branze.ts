@@ -92,7 +92,11 @@ interface IndustryCaseStudy {
   cardTitle: string
   /** Real feed creatives for the proof wall (existing case-study assets). */
   creatives: readonly IndustryCreative[]
-  /** O3: paraphrase pending verbatim/testimonial confirmation. */
+  /**
+   * Client testimonial, rendered as an attributed blockquote — so it must be
+   * something the client actually said. iRobot's is verbatim; Volvo's is still
+   * an unconfirmed paraphrase (O3).
+   */
   quote: { text: string; attribution: string }
 }
 
@@ -277,8 +281,9 @@ export const INDUSTRIES = [
           height: 900,
         },
       ],
+      // Verbatim client testimonial (supplied by the user 2026-07-24).
       quote: {
-        text: 'Odważny, edukacyjny content sprawił, że marka iRobot zaczęła realnie żyć w social mediach — bez sztucznego podbijania zasięgów.',
+        text: 'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić. Zespół wyróżnia się dużą wiedzą i kompetencjami, a także partnerskim podejściem do współpracy — zawsze możemy liczyć na zaangażowanie, sprawną komunikację i realne wsparcie w realizacji celów.',
         attribution: 'iRobot',
       },
     },

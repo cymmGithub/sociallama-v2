@@ -524,13 +524,14 @@
   color: var(--color-orange);
 }
 
+/* Not uppercased — the attribution is a brand name, and `iRobot` carries a
+   deliberate lowercase i that `text-transform` would destroy. */
 .quoteAttr {
   margin-top: calc(var(--safe) * 1.2);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--color-plum);
 }
 

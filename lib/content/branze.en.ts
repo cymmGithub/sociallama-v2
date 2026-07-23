@@ -184,8 +184,9 @@ export const INDUSTRIES = [
           height: 900,
         },
       ],
+      // Translation of the verbatim PL testimonial in `branze.ts`.
       quote: {
-        text: 'Bold, educational content made the iRobot brand genuinely come alive on social — without artificially inflating reach.',
+        text: 'We have worked with Social Lama on TikTok and YouTube for close to two years, and we recommend them without reservation. The team stands out for its knowledge and expertise, and for treating us as true partners — we can always count on their commitment, responsive communication, and real support in reaching our goals.',
         attribution: 'iRobot',
       },
     },
