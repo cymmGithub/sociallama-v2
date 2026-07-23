@@ -1,0 +1,620 @@
+/*
+ * Industry-page template styles — two variants sharing one module.
+ * Proof (mock C): plum hero → creatives wall → numbers → quote + card → CTA.
+ * Editorial (mock B): cream hero + collage → marquee → manifesto + chips → CTA.
+ * Brand tokens (not theme tokens) paint the bands, exactly like /o-nas sections.
+ *
+ * Fonts: raw elements don't inherit the brand faces (only the `.h1/.h2`
+ * utilities and explicit CSS do), so display type sets `--font-display` (Exo 2)
+ * and body/label type sets `--font-mono` (Manrope) explicitly.
+ */
+
+/* —— Shared chrome ——————————————————————————————————————————————————————————— */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.breadcrumbDot {
+  color: var(--color-orange);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-orange);
+}
+
+.heroIndex {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.kicker {
+  margin: 0 0 var(--gap);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+/* —— Shared: stat chips (editorial) ——————————————————————————————————————————— */
+
+.chips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: calc(var(--safe) * 0.9);
+  background: var(--color-cream);
+  border-radius: 1rem;
+}
+
+.chipValue {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-plum);
+}
+
+.chipLabel {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+
+/* —— Shared: CTA band ———————————————————————————————————————————————————————— */
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+  align-items: flex-start;
+  padding: calc(var(--safe) * 4) var(--safe);
+  background: var(--color-plum);
+  color: var(--color-cream);
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: calc(var(--safe) * 2);
+  }
+}
+
+.ctaHeadline {
+  max-width: 18ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
+.ctaButton {
+  flex-shrink: 0;
+  padding: 1rem 2rem;
+  background: var(--color-orange);
+  color: var(--color-ink);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* —— Proof hero ——————————————————————————————————————————————————————————————— */
+
+.proofHero {
+  padding: calc(var(--safe) * 2.5) var(--safe) calc(var(--safe) * 3.5);
+  background: var(--color-plum);
+  color: var(--color-cream);
+}
+
+.proofHeroInner {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.proofHeroHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.proofHeroBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.2);
+  margin-top: calc(var(--safe) * 2);
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: calc(var(--gap) * 4);
+  }
+}
+
+.proofWordmark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 11vw, 8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.dot {
+  color: var(--color-orange);
+}
+
+.proofLead {
+  max-width: 42ch;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.5;
+
+  @media (--desktop) {
+    padding-bottom: 0.6rem;
+  }
+}
+
+/* —— Proof portfolio (creatives wall) —————————————————————————————————————————— */
+
+.portfolio {
+  padding: calc(var(--safe) * 3.5) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.portfolioHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--safe);
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto calc(var(--safe) * 2.5);
+}
+
+.portfolioHeading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.realBadge {
+  padding: 0.55rem 1.1rem;
+  background: var(--color-orange);
+  color: var(--color-ink);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wall {
+  --reveal-stagger: 90ms;
+  --reveal-transform: translateY(28px);
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    grid-template-columns: repeat(5, 1fr);
+    align-items: start;
+  }
+}
+
+.wallItem {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  background: var(--color-sand);
+  box-shadow: 0 20px 40px -24px rgb(0 0 0 / 35%);
+}
+
+/* Stagger the heights for the tossed-stack feel of the mock. */
+.wallItem:nth-child(2),
+.wallItem:nth-child(4) {
+  @media (--desktop) {
+    margin-top: calc(var(--safe) * 1.4);
+  }
+}
+
+.wallImg {
+  object-fit: cover;
+}
+
+/* —— Proof numbers band ———————————————————————————————————————————————————————— */
+
+.numbers {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-sand);
+  color: var(--color-ink);
+}
+
+.numbersInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+  max-width: 1100px;
+  margin-inline: auto;
+  text-align: center;
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.number {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.numberValue {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-plum);
+}
+
+.numberLabel {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+/* —— Proof quote + case-study card ————————————————————————————————————————————— */
+
+.proofClose {
+  display: grid;
+  gap: calc(var(--safe) * 2);
+  padding: calc(var(--safe) * 3.5) var(--safe);
+  max-width: 1240px;
+  margin-inline: auto;
+  background: var(--color-cream);
+  color: var(--color-ink);
+
+  @media (--desktop) {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    gap: calc(var(--gap) * 4);
+  }
+}
+
+.quote {
+  margin: 0;
+}
+
+.quoteText {
+  position: relative;
+  margin: 0;
+  padding-left: 2.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.28;
+}
+
+.quoteMark {
+  position: absolute;
+  left: 0;
+  top: -0.2em;
+  font-size: 2.6em;
+  line-height: 1;
+  color: var(--color-orange);
+}
+
+.quoteAttr {
+  margin-top: calc(var(--safe) * 1.2);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.caseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: calc(var(--safe) * 1.6);
+  background: var(--color-plum);
+  color: var(--color-cream);
+  border-radius: 1.4rem;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.caseCardKicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.caseCardTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.caseCardLogo {
+  display: block;
+  margin-top: 0.4rem;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.caseCardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* —— Editorial hero ———————————————————————————————————————————————————————————— */
+
+.edHero {
+  padding: calc(var(--safe) * 2.5) var(--safe) calc(var(--safe) * 3);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.edHeroHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.edHeroGrid {
+  --reveal-stagger: 130ms;
+  --reveal-transform: translateY(30px);
+
+  display: grid;
+  gap: calc(var(--safe) * 2);
+  max-width: 1240px;
+  margin: calc(var(--safe) * 2) auto 0;
+
+  @media (--desktop) {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+.edHeroGridSolo {
+  --reveal-stagger: 130ms;
+  --reveal-transform: translateY(30px);
+
+  max-width: 1240px;
+  margin: calc(var(--safe) * 2) auto 0;
+}
+
+.edHeroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+}
+
+.edWordmark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 13vw, 9rem);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-plum);
+}
+
+.edLead {
+  max-width: 46ch;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  line-height: 1.5;
+}
+
+/* First sentence of the lead reads bolder, per the mock. */
+.edLead::first-line {
+  font-weight: 600;
+}
+
+.collage {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+  min-height: 22rem;
+}
+
+.collageItem {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--color-plum);
+  box-shadow: 0 24px 48px -28px rgb(0 0 0 / 40%);
+}
+
+/* Duotone equalizer for heterogeneous stock (design D4). */
+.collageImg {
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.collageItem:nth-child(odd) {
+  transform: rotate(-2deg);
+}
+
+.collageItem:nth-child(even) {
+  transform: rotate(2deg) translateY(1.2rem);
+}
+
+/* —— Editorial marquee ————————————————————————————————————————————————————————— */
+
+.marquee {
+  padding-block: calc(var(--safe) * 1.1);
+  background: var(--color-plum);
+  color: var(--color-cream);
+  overflow: hidden;
+}
+
+.marqueeRow {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.marqueeFill {
+  display: inline-flex;
+  align-items: center;
+}
+
+.marqueeSep {
+  margin-inline: 1.2rem;
+  color: var(--color-orange);
+}
+
+/* —— Editorial manifesto + chips ——————————————————————————————————————————————— */
+
+.manifesto {
+  padding: calc(var(--safe) * 3.5) var(--safe);
+  background: var(--color-sand);
+  color: var(--color-ink);
+}
+
+.manifestoInner {
+  --reveal-stagger: 140ms;
+  --reveal-transform: translateY(28px);
+
+  display: grid;
+  gap: calc(var(--safe) * 2);
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: calc(var(--gap) * 4);
+  }
+}
+
+.manifestoHeading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.manifestoLead {
+  color: var(--color-ink);
+}
+
+.manifestoRest {
+  color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+
+/* —— Editorial client logos ————————————————————————————————————————————————————— */
+
+.logos {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  text-align: center;
+}
+
+.logosKicker {
+  margin: 0 0 calc(var(--safe) * 1.5);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.logosRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--safe) * 2.5);
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logo {
+  filter: grayscale(1);
+  opacity: 0.7;
+}

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { INDUSTRIES } from '@/lib/content/branze'
 import { APP_BASE_URL } from '@/lib/env'
 import { pathPairs } from '@/lib/i18n/slug-map'
 import {
@@ -69,6 +70,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
+  // All 24 industry URLs (12 PL + 12 EN) from the canonical list (design D6).
+  // Each PL entry carries its EN counterpart slug (`pairSlug`).
+  const industryRoutes: MetadataRoute.Sitemap = INDUSTRIES.flatMap(
+    (industry) => [
+      {
+        url: `${APP_BASE_URL}/branze/${industry.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      },
+      {
+        url: `${APP_BASE_URL}/en/industries/${industry.pairSlug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      },
+    ]
+  )
+
   return [
     ...baseRoutes,
     ...postRoutes,
@@ -76,5 +96,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryRoutes,
     ...enStaticRoutes,
     ...enCaseStudyRoutes,
+    ...industryRoutes,
   ]
 }

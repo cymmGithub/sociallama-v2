@@ -11,6 +11,7 @@
  * with 9 lorem placeholders (each flagged with a TODO — launch blocker).
  */
 
+import { industryNav } from '@/lib/content/branze'
 import type { Localized } from '@/lib/i18n/parity'
 
 export interface MenuItem {
@@ -137,33 +138,13 @@ export const nav = {
   navLabel: 'Główna nawigacja',
 } as const
 
-// Overlay menu. Industry routes are provisional `/branze/<slug>` (D9) —
-// subpages arrive in a near-future change; until then links resolve to the
-// themed not-found page (accepted interim state).
+// Overlay menu. The BRANŻE items derive from the canonical industry module
+// (design D3) — one list drives menu, footer, routes, and sitemap.
 export const menu = {
   columns: [
     {
       label: 'BRANŻE',
-      items: [
-        { label: 'Alkohole', href: '/branze/alkohole' },
-        { label: 'Beauty', href: '/branze/beauty' },
-        { label: 'Horeca', href: '/branze/horeca' },
-        { label: 'Automotiv', href: '/branze/automotiv' },
-        { label: 'Branża Zoologiczna', href: '/branze/branza-zoologiczna' },
-        { label: 'Health', href: '/branze/health' },
-        {
-          label: 'Nieruchomości i Developerzy',
-          href: '/branze/nieruchomosci-i-developerzy',
-        },
-        {
-          label: 'Hotele i Miejsca Wypoczynkowe',
-          href: '/branze/hotele-i-miejsca-wypoczynkowe',
-        },
-        { label: 'Branża Rozrywkowa', href: '/branze/branza-rozrywkowa' },
-        { label: 'Fashion', href: '/branze/fashion' },
-        { label: 'Elektronika i AGD', href: '/branze/elektronika-i-agd' },
-        { label: 'Finanse', href: '/branze/finanse' },
-      ],
+      items: industryNav,
     },
     {
       // Strategia, Audyt i konsultacje, Influencer marketing route to
@@ -803,24 +784,9 @@ export const footer = {
       ],
     },
     {
-      // Industry pages don't exist yet — links point home for now. Swap to the
-      // provisional /branze/<slug> routes (see menu.columns BRANŻE) once they
-      // ship.
+      // Same canonical industry list as the overlay menu (design D3).
       title: 'OFERTA',
-      links: [
-        { label: 'Alkohole', href: '/' },
-        { label: 'Beauty', href: '/' },
-        { label: 'Horeca', href: '/' },
-        { label: 'Automotiv', href: '/' },
-        { label: 'Branża Zoologiczna', href: '/' },
-        { label: 'Health', href: '/' },
-        { label: 'Nieruchomości i Developerzy', href: '/' },
-        { label: 'Hotele i Miejsca Wypoczynkowe', href: '/' },
-        { label: 'Branża Rozrywkowa', href: '/' },
-        { label: 'Fashion', href: '/' },
-        { label: 'Elektronika i AGD', href: '/' },
-        { label: 'Finanse', href: '/' },
-      ],
+      links: industryNav,
     },
   ],
   contactTitle: 'KONTAKT',

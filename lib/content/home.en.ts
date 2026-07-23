@@ -8,6 +8,7 @@
  *
  * Voice: playful but clean, American spelling (user-approved 2026-07-22).
  */
+import { industryNav } from '@/lib/content/branze.en'
 import type { LocalizedHome } from '@/lib/content/home'
 
 // —— Chrome: top bar ————————————————————————————————————————————————————————
@@ -35,27 +36,9 @@ export const nav = {
 export const menu = {
   columns: [
     {
+      // Derived from the canonical industry module (design D3).
       label: 'INDUSTRIES',
-      items: [
-        { label: 'Alcohol', href: '/en/industries/alcohol' },
-        { label: 'Beauty', href: '/en/industries/beauty' },
-        { label: 'Horeca', href: '/en/industries/horeca' },
-        { label: 'Automotive', href: '/en/industries/automotive' },
-        { label: 'Pet Industry', href: '/en/industries/pet' },
-        { label: 'Health', href: '/en/industries/health' },
-        {
-          label: 'Real Estate & Developers',
-          href: '/en/industries/real-estate',
-        },
-        { label: 'Hotels & Resorts', href: '/en/industries/hospitality' },
-        { label: 'Entertainment', href: '/en/industries/entertainment' },
-        { label: 'Fashion', href: '/en/industries/fashion' },
-        {
-          label: 'Electronics & Appliances',
-          href: '/en/industries/electronics',
-        },
-        { label: 'Finance', href: '/en/industries/finance' },
-      ],
+      items: industryNav,
     },
     {
       label: 'SERVICES',
@@ -591,23 +574,9 @@ export const footer = {
       ],
     },
     {
-      // Industry pages don't exist yet — links point to /en for now (mirrors PL,
-      // where they point home). Swap to /en/industries/<slug> once they ship.
+      // Same canonical industry list as the overlay menu (design D3).
       title: 'OFFER',
-      links: [
-        { label: 'Alcohol', href: '/en' },
-        { label: 'Beauty', href: '/en' },
-        { label: 'Horeca', href: '/en' },
-        { label: 'Automotive', href: '/en' },
-        { label: 'Pet Industry', href: '/en' },
-        { label: 'Health', href: '/en' },
-        { label: 'Real Estate & Developers', href: '/en' },
-        { label: 'Hotels & Resorts', href: '/en' },
-        { label: 'Entertainment', href: '/en' },
-        { label: 'Fashion', href: '/en' },
-        { label: 'Electronics & Appliances', href: '/en' },
-        { label: 'Finance', href: '/en' },
-      ],
+      links: industryNav,
     },
   ],
   contactTitle: 'CONTACT',
