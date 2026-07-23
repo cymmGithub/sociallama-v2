@@ -122,19 +122,24 @@
   }
 }
 
-/* PL/EN switch sitting in the top bar, right of the Menu button — matches the
-   bar's display-type treatment (the toggle's own module handles active state). */
-.localeBarLink {
+/* PL/EN switch living at the bottom-center of the menu overlay (design D3).
+   Centered in its own grid column on desktop; centered in the stack on mobile.
+   The toggle's own module handles active/inactive emphasis. */
+.overlayLocale {
+  align-self: center;
+
+  @media (--desktop) {
+    justify-self: center;
+  }
+}
+
+.overlayLocaleLink {
   font-family: var(--font-display);
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  font-size: 0.72rem;
+  font-size: 1.05rem;
   color: var(--color-secondary);
-
-  @media (--desktop) {
-    font-size: 1rem;
-  }
 }
 
 .toggleIcon {
@@ -281,10 +286,13 @@
   padding-top: var(--gap);
   border-top: 1px solid var(--line);
 
+  /* Three-column grid so the language switch sits dead-center between the
+     utility links (left) and the socials (right). */
   @media (--desktop) {
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
+    gap: var(--gap);
   }
 }
 
@@ -310,6 +318,11 @@
 .socials {
   display: flex;
   gap: var(--gap);
+
+  /* Pinned to the end of the utility grid's right column on desktop. */
+  @media (--desktop) {
+    justify-self: end;
+  }
 }
 
 .social {

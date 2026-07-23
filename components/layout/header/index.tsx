@@ -159,8 +159,6 @@ export function Header() {
               {menuOpen ? <X /> : <Menu />}
             </span>
           </button>
-
-          <LocaleToggle linkClassName={s.localeBarLink} />
         </div>
       </header>
 
@@ -226,6 +224,12 @@ export function Header() {
                 </li>
               ))}
             </ul>
+
+            {/* Language switch, centered at the bottom of the menu. */}
+            <LocaleToggle
+              className={s.overlayLocale}
+              linkClassName={s.overlayLocaleLink}
+            />
 
             <ul className={s.socials}>
               {socials.map((social) => (
