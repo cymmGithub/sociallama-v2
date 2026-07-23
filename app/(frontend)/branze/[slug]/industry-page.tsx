@@ -117,8 +117,27 @@ const BRIEF_ICONS: Record<string, readonly LucideIcon[]> = {
  * locale-independent, so they're derived from the id rather than duplicated
  * across both content modules: `/branze/<id>/hero.mp4` + `/branze/<id>/hero.jpg`.
  * An id absent here falls back to the flat plum band.
+ *
+ * Footage: Pexels (free licence, no attribution required), user-selected
+ * 2026-07-24. Each is a 7s seamless loop (the closing half-second crossfades
+ * into the opening one), 1600x900, bt709. Video ids, in list order:
+ * 6872095, 35999384, 7720885, 12866100, 11494044, 7802452,
+ * 7592800, 7667424, 8626681, 32947362, 38630675, 13082773.
  */
-const HERO_MEDIA = new Set<string>([])
+const HERO_MEDIA = new Set<string>([
+  'automotive',
+  'elektronika-i-agd',
+  'beauty',
+  'health',
+  'finanse',
+  'petcare',
+  'alkohole',
+  'fashion',
+  'horeca',
+  'hotele-i-miejsca-wypoczynkowe',
+  'nieruchomosci-i-deweloperzy',
+  'rozrywka',
+])
 
 /**
  * Hero background: an optimized poster carries the LCP, and the clip fades in
