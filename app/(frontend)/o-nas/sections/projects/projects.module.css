@@ -61,6 +61,15 @@
   }
 }
 
+/* The whole card is a link to the case study; inherit the column layout so the
+   media + caption bars stack exactly as before (the hover lift stays on .card). */
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
 /* —— Image (drop the real 4:3 PNG onto data-onas-img="project") ————————— */
 
 .media {
@@ -74,12 +83,6 @@
     color-mix(in srgb, var(--color-sand) 55%, var(--color-cream)),
     color-mix(in srgb, var(--color-ink) 12%, var(--color-sand))
   );
-}
-
-.mediaIcon {
-  width: 22%;
-  height: auto;
-  color: color-mix(in srgb, var(--color-ink) 30%, transparent);
 }
 
 /* —— Plum caption bar ——————————————————————————————————————————————————— */

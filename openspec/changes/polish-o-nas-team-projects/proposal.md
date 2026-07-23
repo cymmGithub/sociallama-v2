@@ -27,3 +27,10 @@ The `/o-nas` page ships with placeholder content: the "NASZE LAMY" team slider c
 - **Ordering source of truth**: `app/(frontend)/(home)/sections/why-that-works/index.tsx` `TEAM` array (read-only reference).
 - **Ops**: new git worktree `sl-onas-polish` on port `:3001`, Docker Postgres `:5434` (Payload boot only — no case-study seed needed since projects are static content).
 - **CI**: Biome + TypeScript must stay green; the `LocalizedONas` parity types enforce PL/EN shape equality.
+
+## Post-review adjustments (applied during implementation)
+
+Two deviations from the original scope were directed by the client during visual review:
+
+- **Homepage grid reordered to position-priority.** The `why-that-works` `TEAM` grid was originally treated as read-only. The client asked for a seniority/position order (leadership → managers → senior specialists → experts → specialist → creator), so the grid was reordered — Ania, Piotrek, Emilia, Paulina, Magda, Martyna, Agnieszka, Kornelia, Katarzyna, Oliwia, Karolina — and the slider was re-synced to match. It stays the single ordering source of truth.
+- **Two members temporarily excluded from the slider.** **Paulina Hildebrand** and **Katarzyna Kaptur** are commented out of `oNasTeam.members` in both locales (parity preserved, 9 shown). Reason: their only source photos are low-resolution square crops that can't be cut out to match the front-facing head+torso set (an outpaint-based torso extension for Katarzyna was tried and rejected on quality). They remain in the homepage medallion grid and are re-enabled once proper photos arrive. Their slider PNGs stay committed under `public/o-nas/slider/`, referenced by the commented entries.

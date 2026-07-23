@@ -1,18 +1,20 @@
 ## ADDED Requirements
 
-### Requirement: Team slider carries the full roster in leadership order
+### Requirement: Team slider carries the roster in position-priority order
 
-The `/o-nas` "NASZE LAMY" team slider SHALL present every member of the Social Lama roster, in the same order as the homepage `why-that-works` `TEAM` grid (leadership-first). The order is normative and MUST NOT diverge from the homepage grid.
+The `/o-nas` "NASZE LAMY" team slider SHALL present the Social Lama roster in the same order as the homepage `why-that-works` `TEAM` grid. The order is normative and MUST NOT diverge from the homepage grid.
 
-#### Scenario: Roster is complete and ordered
+> **Note (post-review, applied during implementation):** During review the client directed a **position-priority** ordering (leadership → managers → senior specialists → experts → specialist → creator), so the homepage `TEAM` grid was reordered accordingly — it is no longer read-only, but it remains the single source of truth the slider mirrors. Two members (**Paulina Hildebrand**, **Katarzyna Kaptur**) are **temporarily excluded from the slider** (commented out in both locales) because their only source photos are low-resolution square crops that cannot be cut out to match the front-facing head+torso set. They remain in the homepage medallion grid (decorative WebP, unaffected) and are re-enabled once proper photos are supplied.
+
+#### Scenario: Order is position-priority and matches the homepage grid
 
 - **WHEN** the `/o-nas` page renders the team slider
-- **THEN** it shows all 11 members in this order: Ania Ozga, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Karolina Marcinowska, Oliwia Witewska, Martyna Borowik, Kornelia Orlik, Katarzyna Kaptur, Agnieszka Klajbert
+- **THEN** the members appear in this order — Ania Ozga, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Martyna Borowik, Agnieszka Klajbert, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska — with Paulina Hildebrand and Katarzyna Kaptur omitted while their photos are pending (9 shown)
 
 #### Scenario: Order matches the homepage grid
 
 - **WHEN** the homepage `why-that-works` `TEAM` array order is compared to `oNasTeam.members`
-- **THEN** the two sequences of members are identical
+- **THEN** the active members appear in the same relative order (the homepage grid additionally carries the two photo-pending members)
 
 ### Requirement: Every member carries real bio, role, and photo content
 

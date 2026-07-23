@@ -43,18 +43,13 @@ const TEAM = [
     role: 'Social Media Manager',
   },
   {
-    file: 'karolina-marcinowska.webp',
-    name: 'Karolina Marcinowska',
-    role: 'Wideo Content Creator',
-  },
-  {
-    file: 'oliwia-witewska.webp',
-    name: 'Oliwia Witewska',
-    role: 'Social Media Specialist',
-  },
-  {
     file: 'martyna-borowik.webp',
     name: 'Martyna Borowik',
+    role: 'Senior Social Media Specialist',
+  },
+  {
+    file: 'agnieszka-klajbert.webp',
+    name: 'Agnieszka Klajbert',
     role: 'Senior Social Media Specialist',
   },
   {
@@ -68,9 +63,14 @@ const TEAM = [
     role: 'Social Media Expert',
   },
   {
-    file: 'agnieszka-klajbert.webp',
-    name: 'Agnieszka Klajbert',
-    role: 'Senior Social Media Specialist',
+    file: 'oliwia-witewska.webp',
+    name: 'Oliwia Witewska',
+    role: 'Social Media Specialist',
+  },
+  {
+    file: 'karolina-marcinowska.webp',
+    name: 'Karolina Marcinowska',
+    role: 'Wideo Content Creator',
   },
 ] as const
 

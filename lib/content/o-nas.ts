@@ -6,15 +6,11 @@
  * BigMarquee, JoinCta, NewsLama) keep their own copy from `home.ts`; only the
  * /o-nas-specific sections live in this module.
  *
- * Placeholders (2026-07-20): value bodies, team bios (lorem), and project meta
- * are placeholder pending final copy; images are empty strings until the Figma
- * assets are pulled in.
+ * Team bios/roles and the featured projects carry real content (client bio doc
+ * + live case studies); the team-slider order mirrors the homepage grid.
  */
 
 import type { Localized } from '@/lib/i18n/parity'
-
-const LOREM =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.'
 
 // —— Page metadata ————————————————————————————————————————————————————————————
 
@@ -80,29 +76,34 @@ export const oNasValues = {
   ],
 } as const
 
-// —— Projects ("Zrealizowane projekty") — cream band — PLACEHOLDER ——————————————
+// —— Projects ("Zrealizowane projekty") — cream band ———————————————————————————
+// Three featured case studies (curated, static — not a Payload query; design D1).
+// Each card renders `image` and links to its `/case-studies/<slug>` detail page.
 
 export const oNasProjects = {
   headingLead: 'Zrealizowane',
   headingRest: 'projekty',
   items: [
     {
-      name: 'NAZWA PROJEKTU',
-      year: '2025',
-      client: 'NAZWA MARKI KLIENTA',
-      image: '',
+      name: 'Humor i edukacja',
+      year: '2024',
+      client: 'iRobot',
+      image: '/case-studies/irobot/irobot-cover.jpg',
+      href: '/case-studies/irobot',
     },
     {
-      name: 'NAZWA PROJEKTU',
-      year: '2025',
-      client: 'NAZWA MARKI KLIENTA',
-      image: '',
+      name: 'Społeczność na TikToku',
+      year: '2022',
+      client: 'Pracuj.pl',
+      image: '/case-studies/pracuj-pl/pracuj-pl-cover.jpg',
+      href: '/case-studies/pracuj-pl',
     },
     {
-      name: 'NAZWA PROJEKTU',
+      name: 'Budowa marek w social media',
       year: '2025',
-      client: 'NAZWA MARKI KLIENTA',
-      image: '',
+      client: 'Volvo Car Warszawa',
+      image: '/case-studies/volvo/volvo-cover.jpg',
+      href: '/case-studies/volvo',
     },
   ],
 } as const
@@ -174,8 +175,10 @@ export const oNasGoodOne = {
 // Slider: one featured member (cutout portrait + name/role/bio), prev/next
 // arrows, teammates peeking behind. `surname` is the small label over the big
 // orange `given` name (mock treatment). Slider photos are transparent portrait
-// cutouts in /public/o-nas/slider (kept apart from the webp team grid). Three
-// members for now; bios are lorem placeholder.
+// cutouts in /public/o-nas/slider (kept apart from the webp team grid). Order
+// mirrors the homepage `why-that-works` TEAM grid (leadership first); roles
+// follow the site wording where the bio doc disagrees (design D4). Bios are the
+// client doc's, trimmed to a consistent slider length.
 
 export const oNasTeam = {
   kickerLead: 'NASZE',
@@ -188,21 +191,84 @@ export const oNasTeam = {
       given: 'ANIA',
       surname: 'OZGA',
       role: 'Head of Social Media',
-      bio: LOREM,
+      bio: 'Od 2017 roku związana z Social Lamą, gdzie łączy strategiczne myślenie z codzienną pracą z klientami i zespołem. Tworzy strategie komunikacyjne dla polskich i międzynarodowych marek, które realnie wpływają na wyniki biznesowe.',
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
-      bio: LOREM,
+      bio: 'W Social Lamie od 2019 roku odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i treści tekstowych. Łączy wykształcenie marketingowe i filologiczne, stawiając na słowo, które realnie buduje komunikację.',
       photo: '/o-nas/slider/piotr-zach.png',
+    },
+    {
+      given: 'EMILIA',
+      surname: 'METRYKA',
+      role: 'Social Media Manager',
+      bio: 'Zaczynała w Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w Social Lamie prowadzi zespół, koordynuje komórkę wideo i odpowiada za strategie oraz kampanie dla marek z wielu branż.',
+      photo: '/o-nas/slider/emilia-metryka.png',
+    },
+    // TEMP: excluded pending a better source photo — the only shot we have is a
+    // low-res square crop that can't be cut out to match the front-facing
+    // head+torso set. Re-enable (here and in o-nas.en.ts) once a proper photo
+    // arrives. Keep this in sync with the EN twin so PL/EN parity holds.
+    // {
+    //   given: 'PAULINA',
+    //   surname: 'HILDEBRAND',
+    //   role: 'Social Media Manager',
+    //   bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, tworząc komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii po relacje z klientami.',
+    //   photo: '/o-nas/slider/paulina-hildebrand.png',
+    // },
+    {
+      given: 'MAGDA',
+      surname: 'ROKICKA',
+      role: 'Social Media Manager',
+      bio: 'Od ponad 12 lat w branży marketingowej — specjalizuje się w strategii komunikacji, social mediach, content marketingu i podcastach. Po godzinach edukuje branżę: prowadzi szkolenia i autorski podcast. Posiadaczka certyfikatu DIMAQ Professional.',
+      photo: '/o-nas/slider/magda-rokicka.png',
+    },
+    {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
+      photo: '/o-nas/slider/martyna-borowik.png',
+    },
+    {
+      given: 'AGNIESZKA',
+      surname: 'KLAJBERT',
+      role: 'Senior Social Media Specialist',
+      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej, wiedząc, że dobre social media to estetyka, psychologia, humor i odrobina szaleństwa.',
+      photo: '/o-nas/slider/agnieszka-klajbert.png',
+    },
+    {
+      given: 'KORNELIA',
+      surname: 'ORLIK',
+      role: 'Social Media Expert',
+      bio: 'Specjalizuje się w komunikacji marek z obszaru B2B oraz branży medycznej, łącząc podejście strategiczne z kompetencjami z zakresu zarządzania. Tworzy również materiały wizualne — grafiki, wideo i treści UGC.',
+      photo: '/o-nas/slider/kornelia-orlik.png',
+    },
+    // TEMP: excluded pending a better source photo (see the Paulina note above) —
+    // low-res square crop, tilted 3/4 pose that can't be matched to the set.
+    // Re-enable here and in o-nas.en.ts together.
+    // {
+    //   given: 'KATARZYNA',
+    //   surname: 'KAPTUR',
+    //   role: 'Social Media Expert',
+    //   bio: 'Od ponad 4 lat działa w marketingu — w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu.',
+    //   photo: '/o-nas/slider/katarzyna-kaptur.png',
+    // },
+    {
+      given: 'OLIWIA',
+      surname: 'WITEWSKA',
+      role: 'Social Media Specialist',
+      bio: 'Od ponad 10 lat odpowiada za komunikację marek w social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z beauty, FMCG, AGD i lifestyle. Stawia na autentyczność, emocje i trwałe relacje między marką a odbiorcami.',
+      photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
       given: 'KAROLINA',
       surname: 'MARCINOWSKA',
       role: 'Wideo Content Creator',
-      bio: LOREM,
+      bio: 'W Social Lamie odpowiada za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i dopasowanie do strategii marki. Łączy wyczucie trendów i estetyki, tworząc materiały, które przyciągają uwagę i budują zaangażowanie.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
   ],

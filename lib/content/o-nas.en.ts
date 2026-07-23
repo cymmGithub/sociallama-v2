@@ -10,9 +10,6 @@
  */
 import type { LocalizedONas } from '@/lib/content/o-nas'
 
-const LOREM =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.'
-
 export const oNasMeta = {
   title: 'About us',
   description:
@@ -72,22 +69,25 @@ export const oNasProjects = {
   headingRest: 'projects',
   items: [
     {
-      name: 'PROJECT NAME',
-      year: '2025',
-      client: 'CLIENT BRAND NAME',
-      image: '',
+      name: 'Humor & education',
+      year: '2024',
+      client: 'iRobot',
+      image: '/case-studies/irobot/irobot-cover.jpg',
+      href: '/en/case-studies/irobot',
     },
     {
-      name: 'PROJECT NAME',
-      year: '2025',
-      client: 'CLIENT BRAND NAME',
-      image: '',
+      name: 'A TikTok community',
+      year: '2022',
+      client: 'Pracuj.pl',
+      image: '/case-studies/pracuj-pl/pracuj-pl-cover.jpg',
+      href: '/en/case-studies/pracuj-pl',
     },
     {
-      name: 'PROJECT NAME',
+      name: 'Building the brands on social',
       year: '2025',
-      client: 'CLIENT BRAND NAME',
-      image: '',
+      client: 'Volvo Car Warszawa',
+      image: '/case-studies/volvo/volvo-cover.jpg',
+      href: '/en/case-studies/volvo',
     },
   ],
 } satisfies LocalizedONas['oNasProjects']
@@ -158,21 +158,81 @@ export const oNasTeam = {
       given: 'ANIA',
       surname: 'OZGA',
       role: 'Head of Social Media',
-      bio: LOREM,
+      bio: 'With Social Lama since 2017, pairing strategic thinking with the day-to-day of client and team work. She builds communication strategies for Polish and international brands — the kind that actually move the business numbers.',
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
-      bio: LOREM,
+      bio: 'At Social Lama since 2019, running full-service client work and shaping creative concepts and copy for the whole team. He blends a marketing and linguistics background, betting on words that genuinely build communication.',
       photo: '/o-nas/slider/piotr-zach.png',
+    },
+    {
+      given: 'EMILIA',
+      surname: 'METRYKA',
+      role: 'Social Media Manager',
+      bio: 'She started at Warner Bros. Discovery, building communication for brands like player.pl, TVN, and HBO Max. Today at Social Lama she leads a team, coordinates the video unit, and owns strategy and campaigns for brands across many industries.',
+      photo: '/o-nas/slider/emilia-metryka.png',
+    },
+    // TEMP: excluded pending a better source photo (mirrors o-nas.ts) — low-res
+    // square crop that can't match the front-facing set. Re-enable in both files.
+    // {
+    //   given: 'PAULINA',
+    //   surname: 'HILDEBRAND',
+    //   role: 'Social Media Manager',
+    //   bio: "She pairs a humanist's feel for words with an analytical take on data, making communication that actually works on social. She specializes in running brand profiles end to end — from strategy to client relationships.",
+    //   photo: '/o-nas/slider/paulina-hildebrand.png',
+    // },
+    {
+      given: 'MAGDA',
+      surname: 'ROKICKA',
+      role: 'Social Media Manager',
+      bio: 'Over 12 years in marketing, specializing in communication strategy, social media, content marketing, and podcasts. After hours she educates the industry — running trainings and her own podcast. DIMAQ Professional certified.',
+      photo: '/o-nas/slider/magda-rokicka.png',
+    },
+    {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
+      photo: '/o-nas/slider/martyna-borowik.png',
+    },
+    {
+      given: 'AGNIESZKA',
+      surname: 'KLAJBERT',
+      role: 'Senior Social Media Specialist',
+      bio: 'Five years in marketing and social media. She pairs a passion for photography with a background in management and advertising graphics, knowing that good social is a mix of aesthetics, psychology, humor, and a touch of madness.',
+      photo: '/o-nas/slider/agnieszka-klajbert.png',
+    },
+    {
+      given: 'KORNELIA',
+      surname: 'ORLIK',
+      role: 'Social Media Expert',
+      bio: 'She specializes in B2B and medical-sector brand communication, pairing a strategic approach with management know-how. She also creates the visuals — graphics, video, and UGC.',
+      photo: '/o-nas/slider/kornelia-orlik.png',
+    },
+    // TEMP: excluded pending a better source photo (mirrors o-nas.ts) — low-res
+    // square crop, tilted pose. Re-enable in both files together.
+    // {
+    //   given: 'KATARZYNA',
+    //   surname: 'KAPTUR',
+    //   role: 'Social Media Expert',
+    //   bio: 'Over 4 years in marketing — at Social Lama she creates engaging content and helps brands build a coherent, strong presence online. She blends a Communication Management background with a creative take on content.',
+    //   photo: '/o-nas/slider/katarzyna-kaptur.png',
+    // },
+    {
+      given: 'OLIWIA',
+      surname: 'WITEWSKA',
+      role: 'Social Media Specialist',
+      bio: "For over 10 years she's run brand communication on social, building experience on projects for global brands in beauty, FMCG, home appliances, and lifestyle. She bets on authenticity, emotion, and lasting brand–audience relationships.",
+      photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
       given: 'KAROLINA',
       surname: 'MARCINOWSKA',
       role: 'Video Content Creator',
-      bio: LOREM,
+      bio: 'At Social Lama she owns video content — from concept, through filming, to editing and fitting the brand strategy. She brings a feel for trends and aesthetics, making material that grabs attention and builds engagement.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
   ],
