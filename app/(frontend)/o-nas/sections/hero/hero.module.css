@@ -6,11 +6,25 @@
  * the copy in a single centered column.
  */
 
+/* —— Chapter-1 column ————————————————————————————————————————————————————
+   Hero + "ZAUFALI NAM" belt compose the first viewport as a plain flex column
+   in normal document flow — mirrors the homepage (heroStyles.column). The hero
+   flexes to fill the space above the belt; on short viewports the hero's floor
+   grows the column past 100svh and the belt drops below the fold. */
+.column {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  min-height: 90svh;
+  /* Fill the column above the belt; the floor keeps the headline readable on
+     short viewports (belt overflows below the fold instead of crushing it). */
+  flex: 1;
+  min-height: 620px;
   /* Clear the fixed header; a little breathing room at the bottom. */
   padding-block: calc(var(--header-height) + var(--safe) * 2) var(--safe);
   padding-inline: var(--safe);

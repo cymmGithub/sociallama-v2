@@ -65,27 +65,37 @@ export const oNasValues = {
 } satisfies LocalizedONas['oNasValues']
 
 export const oNasProjects = {
-  headingLead: 'Completed',
+  headingLead: 'Recently completed',
   headingRest: 'projects',
+  cta: 'View',
   items: [
     {
-      name: 'Humor & education',
+      name: 'How to blend humor with education on social media?',
       year: '2024',
       client: 'iRobot',
+      logo: '/case-studies/irobot/irobot-logo.png',
+      logoW: 808,
+      logoH: 160,
       image: '/case-studies/irobot/irobot-cover.jpg',
       href: '/en/case-studies/irobot',
     },
     {
-      name: 'A TikTok community',
+      name: 'How to build a community on TikTok?',
       year: '2022',
       client: 'Pracuj.pl',
+      logo: '/assets/clients/pracuj.png',
+      logoW: 176,
+      logoH: 45,
       image: '/case-studies/pracuj-pl/pracuj-pl-cover.jpg',
       href: '/en/case-studies/pracuj-pl',
     },
     {
-      name: 'Building the brands on social',
+      name: 'How to build brands on social media?',
       year: '2025',
       client: 'Volvo Car Warszawa',
+      logo: '/case-studies/volvo/volvo-logo.png',
+      logoW: 509,
+      logoH: 69,
       image: '/case-studies/volvo/volvo-cover.jpg',
       href: '/en/case-studies/volvo',
     },

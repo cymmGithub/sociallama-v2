@@ -15,6 +15,7 @@ import { NewsLama, type NewsLamaPost } from '../(home)/sections/news-lama'
 import { AboutIntro } from './sections/about-intro'
 import { GoodOne } from './sections/good-one'
 import { OnasHero } from './sections/hero'
+import heroStyles from './sections/hero/hero.module.css'
 import { Projects } from './sections/projects'
 import { Team } from './sections/team'
 import { ValuesGrid } from './sections/values-grid'
@@ -27,7 +28,8 @@ import { ValuesGrid } from './sections/values-grid'
  *
  * New sections (hero, about-intro, values-grid, projects, good-one, team) are
  * colocated. ClientLogos / BigMarquee / JoinCta / NewsLama are REUSED verbatim
- * from the homepage; each is wrapped in the data-theme context that makes it
+ * from the homepage. ClientLogos composes the hero's plum column (like the
+ * homepage); the others are wrapped in the data-theme context that makes them
  * resolve the right brand tokens.
  */
 
@@ -58,13 +60,16 @@ export default async function ONasPage() {
 
   return (
     <Wrapper theme="plum">
-      <OnasHero />
-      <AboutIntro />
-      <ValuesGrid />
-      {/* reused — cream token context */}
-      <div data-theme="cream">
+      {/* Hero + "ZAUFALI NAM" belt compose the first viewport as one plum
+          column — exactly as on the homepage (heroStyles.column). The belt is
+          its own sand band inside the plum ground; no data-theme wrapper, so it
+          resolves the plum tokens like the homepage. */}
+      <div className={heroStyles.column}>
+        <OnasHero />
         <ClientLogos />
       </div>
+      <AboutIntro />
+      <ValuesGrid />
       <Projects />
       {/* reused — on the sand light ground with cream tokens (ink outline),
           exactly as on the homepage's cream chapter: no distinct plum band,
@@ -74,8 +79,8 @@ export default async function ONasPage() {
       </div>
       <GoodOne />
       <Team />
-      {/* reused — JoinCta sits on the same sand ground as the ClientLogos
-          ("ZAUFALI NAM") band above, per request; NewsLama keeps the native
+      {/* reused — JoinCta sits on the same sand ground as the BigMarquee /
+          GOOD ONE sand sections above, per request; NewsLama keeps the native
           plum-deep look. */}
       <div
         data-theme="cream"

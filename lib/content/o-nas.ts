@@ -76,32 +76,45 @@ export const oNasValues = {
   ],
 } as const
 
-// —— Projects ("Zrealizowane projekty") — cream band ———————————————————————————
+// —— Projects ("Zrealizowane projekty") — image-led tiles on the sand band ————
 // Three featured case studies (curated, static — not a Payload query; design D1).
-// Each card renders `image` and links to its `/case-studies/<slug>` detail page.
+// Each card is a full-bleed cover with a plum scrim carrying the client `logo`
+// (on a white chip) and an SEO-friendly question `name`, linking to the
+// `/case-studies/<slug>` detail page. `logoW`/`logoH` are the logo's intrinsic
+// px so the whitened <img> keeps its real aspect on the fixed-height chip.
 
 export const oNasProjects = {
-  headingLead: 'Zrealizowane',
+  headingLead: 'Ostatnio zrealizowane',
   headingRest: 'projekty',
+  cta: 'Zobacz',
   items: [
     {
-      name: 'Humor i edukacja',
+      name: 'Jak połączyć humor z edukacją w social mediach?',
       year: '2024',
       client: 'iRobot',
+      logo: '/case-studies/irobot/irobot-logo.png',
+      logoW: 808,
+      logoH: 160,
       image: '/case-studies/irobot/irobot-cover.jpg',
       href: '/case-studies/irobot',
     },
     {
-      name: 'Społeczność na TikToku',
+      name: 'Jak stworzyć społeczność na TikToku?',
       year: '2022',
       client: 'Pracuj.pl',
+      logo: '/assets/clients/pracuj.png',
+      logoW: 176,
+      logoH: 45,
       image: '/case-studies/pracuj-pl/pracuj-pl-cover.jpg',
       href: '/case-studies/pracuj-pl',
     },
     {
-      name: 'Budowa marek w social media',
+      name: 'Jak budować marki w social mediach?',
       year: '2025',
       client: 'Volvo Car Warszawa',
+      logo: '/case-studies/volvo/volvo-logo.png',
+      logoW: 509,
+      logoH: 69,
       image: '/case-studies/volvo/volvo-cover.jpg',
       href: '/case-studies/volvo',
     },
