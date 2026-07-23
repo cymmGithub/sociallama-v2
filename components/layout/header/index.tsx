@@ -25,6 +25,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [overFooter, setOverFooter] = useState(false)
+  const [overMedia, setOverMedia] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const lenis = useLenis()
 
@@ -39,11 +40,24 @@ export function Header() {
   // Distance-from-bottom (px) below which the bar enters the footer zone.
   const footerZoneRef = useRef(0)
 
+  // Scroll offset up to which the bar overlaps a page-declared media hero and
+  // should drop its background. 0 on pages without one, so they never go
+  // transparent. Same DOM-marker approach as the footer/hero-track lookups —
+  // no prop plumbing through the layout.
+  const mediaZoneRef = useRef(0)
+
   useEffect(() => {
     const measure = () => {
       const footer = document.querySelector<HTMLElement>('[data-site-footer]')
       footerZoneRef.current = footer
         ? footer.offsetHeight * FOOTER_ZONE_FRACTION
+        : 0
+
+      const media = document.querySelector<HTMLElement>(
+        '[data-transparent-header]'
+      )
+      mediaZoneRef.current = media
+        ? media.offsetTop + media.offsetHeight - REVEAL_AT_TOP
         : 0
 
       const track = document.querySelector<HTMLElement>('[data-hero-track]')
@@ -73,6 +87,7 @@ export function Header() {
     const inFooterZone =
       instance.limit - instance.scroll <= footerZoneRef.current
     setOverFooter(inFooterZone)
+    setOverMedia(instance.scroll < mediaZoneRef.current)
 
     if (inFooterZone || instance.scroll <= revealUntilRef.current) {
       setHidden(false)
@@ -121,6 +136,9 @@ export function Header() {
       <header
         className={cn(s.header, hidden && !menuOpen && s.headerHidden)}
         {...(overFooter && !menuOpen && { 'data-over-footer': '' })}
+        {...(overMedia &&
+          !overFooter &&
+          !menuOpen && { 'data-transparent': '' })}
         {...(menuOpen && { 'data-theme': 'cream' })}
       >
         <Link

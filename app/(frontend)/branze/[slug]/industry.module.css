@@ -13,32 +13,12 @@
 /* —— Shared chrome ——————————————————————————————————————————————————————————— */
 
 .breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.6em;
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.breadcrumbDot {
-  color: var(--color-orange);
-}
-
-.breadcrumbCurrent {
-  color: var(--color-orange);
-}
-
-.heroIndex {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-orange);
 }
 
 .kicker {
@@ -314,16 +294,60 @@
   color: var(--color-cream);
 }
 
+/* Background media. The poster is the LCP element; the clip fades in over it
+   once it plays, so it degrades to a still on slow links, refused autoplay, or
+   reduced-motion. Plum stays behind everything as the base. */
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.heroPoster,
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroVideo {
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.heroVideoReady {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVideo {
+    display: none;
+  }
+}
+
+/* Darkening + a gradient behind the wordmark, so legibility doesn't depend on
+   how bright a given clip happens to be. No colour cast (user decision). */
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      rgb(0 0 0 / 68%) 0%,
+      rgb(0 0 0 / 52%) 55%,
+      rgb(0 0 0 / 48%) 100%
+    ),
+    linear-gradient(to top, rgb(0 0 0 / 38%), transparent 60%),
+    /* Keeps the now-transparent header's logo and pills legible over a bright
+       clip. */
+    linear-gradient(to bottom, rgb(0 0 0 / 40%), transparent 22%);
+}
+
 .heroInner {
   position: relative;
   max-width: 1240px;
   margin-inline: auto;
-}
-
-.heroHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .heroBody {

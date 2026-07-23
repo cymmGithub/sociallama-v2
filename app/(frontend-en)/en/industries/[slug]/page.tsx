@@ -50,7 +50,6 @@ export default async function EnIndustryPage({ params }: PageProps) {
   if (!industry) {
     notFound()
   }
-  const index = INDUSTRIES.findIndex((entry) => entry.slug === slug) + 1
 
   return (
     // Plum chrome on both variants — the header/logo match the brand (the cream
@@ -59,7 +58,6 @@ export default async function EnIndustryPage({ params }: PageProps) {
       <IndustryPage
         industry={industry}
         chrome={chrome}
-        index={index}
         caseStudyBase="/en/case-studies"
       />
     </Wrapper>

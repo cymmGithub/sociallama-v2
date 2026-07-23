@@ -35,6 +35,13 @@
   --color-secondary: var(--color-cream);
 }
 
+/* Media hero: the bar drops its ground so a background clip runs full-bleed to
+   the top. Set only while the bar overlaps a section marked
+   `data-transparent-header`, so it re-solidifies before the next band. */
+.header[data-transparent] {
+  background-color: transparent;
+}
+
 .logo {
   flex: 0 0 auto;
 }

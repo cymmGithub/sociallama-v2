@@ -1,5 +1,6 @@
 'use client'
 
+import cn from 'clsx'
 import {
   Activity,
   ArrowRight,
@@ -64,6 +65,7 @@ import {
   Wrench,
   Zap,
 } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
@@ -86,8 +88,6 @@ type Chrome = LocalizedBranze['chrome']
 export interface IndustryPageProps {
   industry: Industry
   chrome: Chrome
-  /** 1-based position in the canonical list — the "· 01" hero index. */
-  index: number
   /** Locale-correct case-study base (`/case-studies` or `/en/case-studies`). */
   caseStudyBase: string
 }
@@ -112,6 +112,69 @@ const BRIEF_ICONS: Record<string, readonly LucideIcon[]> = {
 
 // —— Shared pieces ————————————————————————————————————————————————————————————
 
+/*
+ * Industries whose hero carries a background clip. The assets are
+ * locale-independent, so they're derived from the id rather than duplicated
+ * across both content modules: `/branze/<id>/hero.mp4` + `/branze/<id>/hero.jpg`.
+ * An id absent here falls back to the flat plum band.
+ */
+const HERO_MEDIA = new Set<string>([])
+
+/**
+ * Hero background: an optimized poster carries the LCP, and the clip fades in
+ * over it once it can actually play. The video is `preload="none"` and never
+ * blocks — a slow connection or a refused autoplay simply keeps the poster, and
+ * `prefers-reduced-motion` skips playback entirely.
+ */
+function HeroMedia({ id }: { id: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) {
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+    video.preload = 'auto'
+    video.play().catch(() => {
+      // Autoplay refused (e.g. Low Power Mode) — the poster is the fallback.
+    })
+  }, [])
+
+  const poster = `/branze/${id}/hero.jpg`
+
+  return (
+    <div className={s.heroMedia} aria-hidden="true">
+      <Image
+        className={s.heroPoster}
+        src={poster}
+        alt=""
+        fill
+        objectFit="cover"
+        preload
+        desktopSize="100vw"
+        mobileSize="100vw"
+      />
+      <video
+        ref={videoRef}
+        className={cn(s.heroVideo, playing && s.heroVideoReady)}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="none"
+        onPlaying={() => setPlaying(true)}
+      >
+        <source src={`/branze/${id}/hero.mp4`} type="video/mp4" />
+      </video>
+      <div className={s.heroScrim} />
+    </div>
+  )
+}
+
 /**
  * Hero band — one layout for both variants: plum ground, solid display
  * wordmark, lead. Long labels (e.g. "Hotele i Miejsca Wypoczynkowe") stack the
@@ -120,25 +183,26 @@ const BRIEF_ICONS: Record<string, readonly LucideIcon[]> = {
 function IndustryHero({
   industry,
   chrome,
-  index,
 }: {
   industry: Industry
   chrome: Chrome
-  index: number
 }) {
   const longLabel =
     industry.label.length > 16 ||
     industry.label.split(' ').some((word) => word.length > 10)
+  const hasMedia = HERO_MEDIA.has(industry.id)
 
   return (
-    <section className={s.hero} data-theme="plum">
+    // With a clip behind it the header drops its ground (see the Header's
+    // `[data-transparent-header]` lookup) so the video runs to the top edge.
+    <section
+      className={s.hero}
+      data-theme="plum"
+      {...(hasMedia && { 'data-transparent-header': '' })}
+    >
+      {hasMedia && <HeroMedia id={industry.id} />}
       <div className={s.heroInner}>
-        <div className={s.heroHead}>
-          <Breadcrumb chrome={chrome} label={industry.label} />
-          <span className={s.heroIndex}>
-            {chrome.sectionLabel} · {String(index).padStart(2, '0')}
-          </span>
-        </div>
+        <p className={s.breadcrumb}>{chrome.sectionLabel}</p>
         <div className={s.heroBody} data-long-label={longLabel || undefined}>
           <h1 className={s.heroWordmark}>
             {industry.label}
@@ -175,18 +239,6 @@ function Collage({ photos }: { photos: NonNullable<Industry['collage']> }) {
         ))}
       </div>
     </section>
-  )
-}
-
-function Breadcrumb({ chrome, label }: { chrome: Chrome; label: string }) {
-  return (
-    <p className={s.breadcrumb}>
-      <span>{chrome.sectionLabel}</span>
-      <span className={s.breadcrumbDot} aria-hidden="true">
-        •
-      </span>
-      <span className={s.breadcrumbCurrent}>{label}</span>
-    </p>
   )
 }
 
@@ -293,12 +345,7 @@ function IndustryBrief({
 
 // —— Proof variant (mock C) ————————————————————————————————————————————————————
 
-function ProofLayout({
-  industry,
-  chrome,
-  index,
-  caseStudyBase,
-}: IndustryPageProps) {
+function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
   const wallRef = useReveal<HTMLDivElement>()
   const numbersRef = useReveal<HTMLDivElement>()
   const study = industry.caseStudy
@@ -308,7 +355,7 @@ function ProofLayout({
 
   return (
     <>
-      <IndustryHero industry={industry} chrome={chrome} index={index} />
+      <IndustryHero industry={industry} chrome={chrome} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
@@ -394,12 +441,12 @@ function ProofLayout({
 
 // —— Editorial variant (mock B) ————————————————————————————————————————————————
 
-function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
+function EditorialLayout({ industry, chrome }: IndustryPageProps) {
   const manifestoRef = useReveal<HTMLDivElement>()
 
   return (
     <>
-      <IndustryHero industry={industry} chrome={chrome} index={index} />
+      <IndustryHero industry={industry} chrome={chrome} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
