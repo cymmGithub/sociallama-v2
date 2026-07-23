@@ -172,13 +172,6 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      given: 'MARTYNA',
-      surname: 'BOROWIK',
-      role: 'Senior Social Media Specialist',
-      bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
-      photo: '/o-nas/slider/martyna-borowik.png',
-    },
-    {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
@@ -244,6 +237,13 @@ export const oNasTeam = {
       role: 'Video Content Creator',
       bio: 'At Social Lama she owns video content — from concept, through filming, to editing and fitting the brand strategy. She brings a feel for trends and aesthetics, making material that grabs attention and builds engagement.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
+    },
+    {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
+      photo: '/o-nas/slider/martyna-borowik.png',
     },
   ],
 } satisfies LocalizedONas['oNasTeam']

@@ -208,13 +208,6 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      given: 'MARTYNA',
-      surname: 'BOROWIK',
-      role: 'Senior Social Media Specialist',
-      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
-      photo: '/o-nas/slider/martyna-borowik.png',
-    },
-    {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
@@ -283,6 +276,13 @@ export const oNasTeam = {
       role: 'Wideo Content Creator',
       bio: 'W Social Lamie odpowiada za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i dopasowanie do strategii marki. Łączy wyczucie trendów i estetyki, tworząc materiały, które przyciągają uwagę i budują zaangażowanie.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
+    },
+    {
+      given: 'MARTYNA',
+      surname: 'BOROWIK',
+      role: 'Senior Social Media Specialist',
+      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
+      photo: '/o-nas/slider/martyna-borowik.png',
     },
   ],
 } as const
