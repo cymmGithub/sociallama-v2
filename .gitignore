@@ -75,6 +75,10 @@ README.original.md
 media/
 .env*
 
+# Per-worktree runtime state written by lib/scripts/worktree.ts
+.worktree-meta.json
+.worktree-dev.log
+
 # Local working screenshots / scratch notes (not repo assets)
 /*.jpeg
 /*.jpg

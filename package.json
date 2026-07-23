@@ -43,6 +43,8 @@
     "generate:manifest": "bun ./lib/scripts/generate-manifest.ts",
     "manifest:check": "bun ./lib/scripts/generate-manifest.ts --check",
     "handoff": "bun ./lib/scripts/prepare-handoff.ts",
+    "worktree:new": "bun ./lib/scripts/worktree.ts new",
+    "worktree:rm": "bun ./lib/scripts/worktree.ts rm",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
