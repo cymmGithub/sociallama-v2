@@ -205,9 +205,18 @@
    behind the copy without escaping the band. */
 
 /* Top padding clears the fixed header — without it the breadcrumb row renders
-   underneath it and is never visible. */
+   underneath it and is never visible.
+
+   Fixed band height: it used to be content-driven, so a stacked long label
+   ("Nieruchomości i Deweloperzy", 487px) stood 42% taller than a short one
+   ("Rozrywka", 343px) — invisible on flat plum, obvious once every band carries
+   a clip. The copy is bottom-aligned so the wordmark sits on a common baseline
+   whatever its length. */
 .hero {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(24rem, 56vh, 34rem);
   overflow: hidden;
   padding: calc(var(--header-height) + var(--safe) * 1.5) var(--safe)
     calc(var(--safe) * 3.5);
@@ -267,6 +276,10 @@
 
 .heroInner {
   position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
   max-width: 1240px;
   margin-inline: auto;
 }
@@ -275,7 +288,8 @@
   display: flex;
   flex-direction: column;
   gap: calc(var(--safe) * 1.2);
-  margin-top: calc(var(--safe) * 2);
+  /* Bottom-aligned, so every hero's wordmark shares a baseline. */
+  margin-top: auto;
 
   @media (--desktop) {
     flex-direction: row;
