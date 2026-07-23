@@ -215,9 +215,12 @@
 
 /* —— Member details ————————————————————————————————————————————————————— */
 
+/* No reading measure here: the `h2` given name scales with the viewport, so a
+   ch-based cap on the column clipped the longest names (PRZEMYSŁAW) above
+   ~1700px while the grid cell still had room. `.bio` carries its own 44ch
+   measure, so body text stays readable without constraining the display type. */
 .text {
   position: relative;
-  max-width: 46ch;
 }
 
 .surname {
@@ -279,10 +282,6 @@
 
   .peer {
     display: none;
-  }
-
-  .text {
-    max-width: none;
   }
 }
 
