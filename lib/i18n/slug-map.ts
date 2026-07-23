@@ -20,8 +20,6 @@ export const pathPairs = [
   ['/zostan-lama', '/en/become-a-lama'],
   ['/case-studies', '/en/case-studies'],
   ['/polityka-prywatnosci', '/en/privacy-policy'],
-  ['/regulamin', '/en/terms'],
-  ['/cookies', '/en/cookies'],
 ] as const
 
 const PL_TO_EN = new Map<string, string>(pathPairs.map(([pl, en]) => [pl, en]))

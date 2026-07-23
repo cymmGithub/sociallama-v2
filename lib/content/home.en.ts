@@ -588,10 +588,6 @@ export const footer = {
       'ul. Januszowicka 5/121, 53-135 Wrocław',
     ],
   },
-  copyright: 'Copyright 2025 sociallama. All rights reserved.',
-  legal: [
-    { label: 'Privacy Policy', href: '/en/privacy-policy' },
-    { label: 'Terms', href: '/en/terms' },
-    { label: 'Cookies', href: '/en/cookies' },
-  ],
+  copyright: 'Copyright 2026 sociallama. All rights reserved.',
+  legal: [{ label: 'Privacy Policy', href: '/en/privacy-policy' }],
 } satisfies LocalizedHome['footer']

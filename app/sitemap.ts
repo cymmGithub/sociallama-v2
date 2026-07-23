@@ -9,10 +9,6 @@ import {
 } from '@/lib/payload/queries'
 import { STATIC_ROUTES } from '@/lib/static-routes'
 
-// EN routes whose page is only a redirect stub (no unique content yet) — kept
-// out of the sitemap until they have real translations.
-const EN_STUB_PATHS = new Set(['/en/terms', '/en/cookies'])
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseRoutes: MetadataRoute.Sitemap = STATIC_ROUTES.map(
     ({ path, changeFrequency, priority }) => ({
@@ -55,7 +51,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // the EN case-study details (same slugs + updatedAt as the Polish docs).
   const enStaticRoutes: MetadataRoute.Sitemap = pathPairs
     .map(([, en]) => en)
-    .filter((en) => !EN_STUB_PATHS.has(en))
     .map((en) => ({
       url: `${APP_BASE_URL}${en}`,
       lastModified: new Date(),
