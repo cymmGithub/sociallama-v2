@@ -88,11 +88,7 @@ export function JoinCta({
             </Link>
             <MoreHorizontal className={s.cardMore} aria-hidden="true" />
           </div>
-          <Image
-            src={content.poster}
-            alt={content.llamaAlt}
-            aspectRatio={1}
-          />
+          <Image src={content.poster} alt={content.llamaAlt} aspectRatio={1} />
           <div className={s.cardFooter}>
             <div className={s.cardActions} aria-hidden="true">
               <Heart />
