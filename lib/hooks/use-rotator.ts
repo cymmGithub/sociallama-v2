@@ -3,7 +3,7 @@
 import { type RefObject, useEffect, useRef, useState } from 'react'
 import { usePreferredReducedMotion } from './use-sync-external'
 
-const ROTATOR_INTERVAL = 2600
+const ROTATOR_INTERVAL = 1700
 
 export interface RotationState {
   index: number

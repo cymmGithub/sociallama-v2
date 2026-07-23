@@ -84,8 +84,9 @@ export const menu = {
 
 export const hero = {
   headline: {
-    // Order matches the hero clip's outfit scrub (same as PL), just Englished.
-    rotator: ['CREATIVE', 'VIDEO', 'CONTENT', 'SALES', 'STRATEGY'],
+    // Four tokens: CREATIVE + VIDEO merged, parity with PL "Kreacje & Wideo".
+    // Independent timer rotator (hero-intro-montage).
+    rotator: ['CREATIVE & VIDEO', 'CONTENT', 'SALES', 'STRATEGY'],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
   },
   llamaAlt: 'A llama in sunglasses — the Social Lama mascot',

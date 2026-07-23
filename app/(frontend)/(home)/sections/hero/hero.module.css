@@ -1,37 +1,8 @@
-/* —— Scroll-scrub track (track.tsx) ——————————————————————————————————————
-   The sticky column (hero + logo belt) pins while scroll through the runway
-   scrubs the clip: 80% scrub, 20% hold. */
+/* —— Chapter-1 column ————————————————————————————————————————————————————
+   Hero + logo belt compose the first viewport as a plain flex column in
+   normal document flow — no scroll runway, no pin (hero-intro-montage). */
 
-.track {
-  /* Runway length is a tuned constant (design: 280vh initial) — it sets how
-     much scrolling the head-turn spans. */
-  height: 280vh;
-
-  /* Mobile is a static poster — no scroll-driven scrub (user decision
-     2026-07-19). Collapse the runway to the column's own height so there's no
-     dead pinned scroll before the page moves on, same as reduced motion. */
-  @media (--mobile) {
-    height: auto;
-  }
-
-  /* Touch-only devices above the dt breakpoint (tablets) also keep the static
-     poster (user decision 2026-07-20) — same collapse, and the same query the
-     hero's media gate checks, so runway and media never disagree. */
-  @media (any-pointer: coarse) and (hover: none) {
-    height: auto;
-  }
-
-  /* No scrub → no runway: reduced motion keeps the static poster. Collapse to
-     the column's own height so nobody is trapped in a multi-viewport scroll
-     with no visible change. (Declared after the mobile rule so it wins.) */
-  @media (--reduced-motion) {
-    height: auto;
-  }
-}
-
-.sticky {
-  position: sticky;
-  top: 0;
+.column {
   /* min-height (not height) so short viewports keep today's behavior: the
      hero's 620px floor grows the column past the viewport and the belt drops
      below the fold. */
@@ -41,8 +12,8 @@
 }
 
 .hero {
-  /* The sticky column (track.tsx) owns 100svh; the hero fills the space left
-     above the logo belt. The floor keeps the clamp()-sized headline readable
+  /* The chapter-1 column owns 100svh; the hero fills the space left above
+     the logo belt. The floor keeps the clamp()-sized headline readable
      on short viewports (~660px) — the belt overflows below the fold instead
      of crushing the hero. */
   position: relative;
@@ -53,12 +24,11 @@
   padding-block: calc(var(--safe) * 4) var(--safe);
   padding-inline: var(--safe);
 
-  /* Own opaque plum ground — NOT the shared morph layer. The hero video is
-     grade-matched to this plum, and the sticky pin keeps the hero on screen
-     past the point where the chapter observer flips the shared background to
-     cream. Compositing the video onto a static local plum (instead of the
-     transitioning layer beneath) stops the video's backdrop reading as a
-     detached plum rectangle over the cream chapter as the pin releases.
+  /* Own opaque plum ground — NOT the shared morph layer. The hero media is
+     grade-matched to this plum; compositing it onto a static local plum
+     (instead of the transitioning layer beneath) keeps its backdrop from
+     reading as a detached plum rectangle if the chapter observer flips the
+     shared background while the hero is still partially on screen.
      Matches the chapter-1 plum exactly, so the first viewport is unchanged. */
   background-color: var(--color-plum-hero);
 

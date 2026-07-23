@@ -3,7 +3,7 @@ import { Chapters } from '@/app/(frontend)/(home)/chapters'
 import { BigMarquee } from '@/app/(frontend)/(home)/sections/big-marquee'
 import { ClientLogos } from '@/app/(frontend)/(home)/sections/client-logos'
 import { Hero } from '@/app/(frontend)/(home)/sections/hero'
-import { HeroTrack } from '@/app/(frontend)/(home)/sections/hero/track'
+import heroStyles from '@/app/(frontend)/(home)/sections/hero/hero.module.css'
 import { HowItWorks } from '@/app/(frontend)/(home)/sections/how-it-works'
 import { JoinCta } from '@/app/(frontend)/(home)/sections/join-cta'
 import { Services } from '@/app/(frontend)/(home)/sections/services'
@@ -33,14 +33,14 @@ export default function EnHomePage() {
   return (
     <Wrapper theme="plum">
       <Chapters>
-        <HeroTrack>
+        <div className={heroStyles.column}>
           <Hero content={en.hero} />
           <ClientLogos
             clients={en.clients}
             heading={en.clientsHeading}
             cardCta={en.clientCardCta}
           />
-        </HeroTrack>
+        </div>
         {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
         <>
           <WhyThatWorks content={en.whyThatWorks} />
