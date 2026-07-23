@@ -6,6 +6,7 @@ import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy, SocialPlatform } from '@/payload-types'
+import { BrandIcon, hasBrandIcon } from './brand-icons'
 import s from './case-study.module.css'
 import { CountUp } from './count-up'
 import { CaseStudyJsonLd } from './json-ld'
@@ -152,6 +153,53 @@ export function CaseStudyArticle({
           </section>
         )}
 
+        {resultGroups.length > 0 && (
+          <section className={s.section} aria-labelledby="wyniki">
+            <h2 className={s.sectionTitle} id="wyniki">
+              {chrome.sections.results}
+            </h2>
+            <div className={s.results}>
+              {resultGroups.map((group) => {
+                const platformKey = normalizePlatform(group.platform)
+                const platformLogo = platformLogos.get(platformKey)
+                return (
+                  <div key={group.platform} className={s.resultGroup}>
+                    <h3 className={s.resultGroupTitle}>
+                      {/* Prefer the full-color brand mark; fall back to the CMS
+                          logo only for platforms we don't ship an icon for. */}
+                      <BrandIcon
+                        platform={platformKey}
+                        className={s.platformLogo}
+                      />
+                      {!hasBrandIcon(platformKey) && platformLogo?.url && (
+                        <Image
+                          className={s.platformLogo}
+                          src={platformLogo.url}
+                          alt=""
+                          width={platformLogo.width ?? 24}
+                          height={platformLogo.height ?? 24}
+                        />
+                      )}
+                      {group.platform}
+                    </h3>
+                    <div className={s.tiles}>
+                      {group.items.map((item) => (
+                        <div
+                          key={`${item.metric}-${item.value}`}
+                          className={s.tile}
+                        >
+                          <CountUp className={s.tileValue} value={item.value} />
+                          <span className={s.tileMetric}>{item.metric}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        )}
+
         {study.approach && study.approach.length > 0 && (
           <section className={s.section} aria-labelledby="podejscie">
             <h2 className={s.sectionTitle} id="podejscie">
@@ -207,48 +255,6 @@ export function CaseStudyArticle({
                         ))}
                       </div>
                     )}
-                  </div>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {resultGroups.length > 0 && (
-          <section className={s.section} aria-labelledby="wyniki">
-            <h2 className={s.sectionTitle} id="wyniki">
-              {chrome.sections.results}
-            </h2>
-            <div className={s.results}>
-              {resultGroups.map((group) => {
-                const platformLogo = platformLogos.get(
-                  normalizePlatform(group.platform)
-                )
-                return (
-                  <div key={group.platform} className={s.resultGroup}>
-                    <h3 className={s.resultGroupTitle}>
-                      {platformLogo?.url && (
-                        <Image
-                          className={s.platformLogo}
-                          src={platformLogo.url}
-                          alt=""
-                          width={platformLogo.width ?? 24}
-                          height={platformLogo.height ?? 24}
-                        />
-                      )}
-                      {group.platform}
-                    </h3>
-                    <div className={s.tiles}>
-                      {group.items.map((item) => (
-                        <div
-                          key={`${item.metric}-${item.value}`}
-                          className={s.tile}
-                        >
-                          <CountUp className={s.tileValue} value={item.value} />
-                          <span className={s.tileMetric}>{item.metric}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 )
               })}

@@ -678,23 +678,23 @@ const STUDIES: StudySeed[] = [
     ],
     results: [
       {
-        platform: 'Volvo Car Warszawa',
-        metric: 'Nowi obserwatorzy — Facebook',
+        platform: 'Facebook',
+        metric: 'Volvo Car Warszawa — nowi obserwatorzy',
         value: '+1000',
       },
       {
-        platform: 'Volvo Car Warszawa',
-        metric: 'Nowi obserwatorzy — Instagram',
+        platform: 'Facebook',
+        metric: 'Dom Volvo — nowi obserwatorzy',
+        value: '+1000',
+      },
+      {
+        platform: 'Instagram',
+        metric: 'Volvo Car Warszawa — nowi obserwatorzy',
         value: '+184',
       },
       {
-        platform: 'Dom Volvo',
-        metric: 'Nowi obserwatorzy — Facebook',
-        value: '+1000',
-      },
-      {
-        platform: 'Dom Volvo',
-        metric: 'Nowi obserwatorzy — Instagram',
+        platform: 'Instagram',
+        metric: 'Dom Volvo — nowi obserwatorzy',
         value: '+97',
       },
     ],
@@ -781,23 +781,23 @@ const STUDIES: StudySeed[] = [
       ],
       results: [
         {
-          platform: 'Volvo Car Warszawa',
-          metric: 'New followers — Facebook',
+          platform: 'Facebook',
+          metric: 'Volvo Car Warszawa — new followers',
           value: '+1000',
         },
         {
-          platform: 'Volvo Car Warszawa',
-          metric: 'New followers — Instagram',
+          platform: 'Facebook',
+          metric: 'Dom Volvo — new followers',
+          value: '+1000',
+        },
+        {
+          platform: 'Instagram',
+          metric: 'Volvo Car Warszawa — new followers',
           value: '+184',
         },
         {
-          platform: 'Dom Volvo',
-          metric: 'New followers — Facebook',
-          value: '+1000',
-        },
-        {
-          platform: 'Dom Volvo',
-          metric: 'New followers — Instagram',
+          platform: 'Instagram',
+          metric: 'Dom Volvo — new followers',
           value: '+97',
         },
       ],
