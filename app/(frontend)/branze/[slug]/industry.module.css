@@ -1,7 +1,8 @@
 /*
  * Industry-page template styles — two variants sharing one module.
- * Proof (mock C): plum hero → brief → creatives wall → numbers → quote → CTA.
- * Editorial (mock B): cream hero + collage → brief → marquee → CTA.
+ * Both open with the same plum hero, then the brief.
+ * Proof (mock C): … → creatives wall → numbers → quote → CTA.
+ * Editorial (mock B): … → collage → marquee → manifesto → CTA.
  * Brand tokens (not theme tokens) paint the bands, exactly like /o-nas sections.
  *
  * Fonts: raw elements don't inherit the brand faces (only the `.h1/.h2`
@@ -298,26 +299,34 @@
   }
 }
 
-/* —— Proof hero ——————————————————————————————————————————————————————————————— */
+/* —— Hero (shared by both variants) ———————————————————————————————————————————
+   `position: relative` + `overflow: hidden` so a future media layer can sit
+   behind the copy without escaping the band. */
 
-.proofHero {
-  padding: calc(var(--safe) * 2.5) var(--safe) calc(var(--safe) * 3.5);
+/* Top padding clears the fixed header — without it the breadcrumb row renders
+   underneath it and is never visible. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: calc(var(--header-height) + var(--safe) * 1.5) var(--safe)
+    calc(var(--safe) * 3.5);
   background: var(--color-plum);
   color: var(--color-cream);
 }
 
-.proofHeroInner {
+.heroInner {
+  position: relative;
   max-width: 1240px;
   margin-inline: auto;
 }
 
-.proofHeroHead {
+.heroHead {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.proofHeroBody {
+.heroBody {
   display: flex;
   flex-direction: column;
   gap: calc(var(--safe) * 1.2);
@@ -331,7 +340,17 @@
   }
 }
 
-.proofWordmark {
+/* A 26-character label can't share the row with the lead at full size — stack
+   them and drop a size step instead of wrapping into three huge lines. */
+.heroBody[data-long-label] {
+  @media (--desktop) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--safe) * 1.4);
+  }
+}
+
+.heroWordmark {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(3rem, 11vw, 8rem);
@@ -341,11 +360,15 @@
   text-transform: uppercase;
 }
 
+.heroBody[data-long-label] .heroWordmark {
+  font-size: clamp(2.2rem, 7vw, 5rem);
+}
+
 .dot {
   color: var(--color-orange);
 }
 
-.proofLead {
+.heroLead {
   max-width: 42ch;
   margin: 0;
   font-family: var(--font-mono);
@@ -587,119 +610,41 @@
 
 /* —— Editorial hero ———————————————————————————————————————————————————————————— */
 
-.edHero {
-  padding: calc(var(--safe) * 2.5) var(--safe) calc(var(--safe) * 3);
+/* Duotone photo strip under the brief — continues that cream band (hence no
+   top padding) rather than opening a new one. */
+.collageBand {
+  padding: 0 var(--safe) calc(var(--safe) * 3.5);
   background: var(--color-cream);
-  color: var(--color-ink);
 }
 
-.edHeroHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1240px;
-  margin-inline: auto;
-}
-
-.edHeroGrid {
-  --reveal-stagger: 130ms;
-  --reveal-transform: translateY(30px);
+.collage {
+  --reveal-stagger: 110ms;
+  --reveal-transform: translateY(26px);
 
   display: grid;
-  gap: calc(var(--safe) * 2);
+  grid-template-columns: 1fr;
+  gap: var(--gap);
   max-width: 1240px;
-  margin: calc(var(--safe) * 2) auto 0;
-
-  @media (--desktop) {
-    grid-template-columns: 1.1fr 0.9fr;
-    align-items: center;
-    gap: calc(var(--gap) * 3);
-  }
-}
-
-/* Long labels take the full width; the collage stacks below as a 3-across
-   strip instead of a side column. */
-.edHeroGrid[data-long-label] {
-  @media (--desktop) {
-    grid-template-columns: 1fr;
-    gap: calc(var(--safe) * 2.5);
-  }
-}
-
-.edHeroGrid[data-long-label] .collage {
-  min-height: 0;
+  margin-inline: auto;
 
   @media (--desktop) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.edHeroGrid[data-long-label] .collageItem {
-  aspect-ratio: 4 / 3;
-}
-
-.edHeroGridSolo {
-  --reveal-stagger: 130ms;
-  --reveal-transform: translateY(30px);
-
-  max-width: 1240px;
-  margin: calc(var(--safe) * 2) auto 0;
-}
-
-.edHeroCopy {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--safe) * 1.5);
-}
-
-.edWordmark {
-  margin: 0;
-}
-
-/* Merged-union outline (skia-pathops via gen-wordmark.py). A single stroked
-   path — no crossing/doubled strokes on A/K/H/E, matching the homepage marquee.
-   `non-scaling-stroke` keeps the outline a constant weight as the SVG scales. */
-.edWordmarkSvg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-  fill: none;
-  stroke: var(--color-plum);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.edLead {
-  max-width: 46ch;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
-  line-height: 1.5;
-}
-
-/* First sentence of the lead reads bolder, per the mock. */
-.edLead::first-line {
-  font-weight: 600;
-}
-
-.collage {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap);
-  min-height: 22rem;
-}
-
 .collageItem {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   border-radius: 1rem;
   /* Light plum wash rather than full plum — the multiply below tints against
      THIS, so lightening it is what actually softens the duotone. */
   background: color-mix(in srgb, var(--color-plum) 38%, #fff);
   box-shadow: 0 24px 48px -28px rgb(0 0 0 / 30%);
+
+  @media (--desktop) {
+    aspect-ratio: 3 / 4;
+  }
 }
 
 /* Duotone equalizer for heterogeneous stock (design D4) — kept deliberately
@@ -710,12 +655,10 @@
   filter: grayscale(0.85) brightness(1.18) contrast(0.94);
 }
 
-.collageItem:nth-child(odd) {
-  transform: rotate(-2deg);
-}
-
 .collageItem:nth-child(even) {
-  transform: rotate(2deg) translateY(1.2rem);
+  @media (--desktop) {
+    transform: translateY(1.6rem);
+  }
 }
 
 /* —— Editorial marquee ————————————————————————————————————————————————————————— */

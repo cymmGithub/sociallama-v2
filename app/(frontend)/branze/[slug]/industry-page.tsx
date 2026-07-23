@@ -69,7 +69,6 @@ import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
 import type { Industry, LocalizedBranze } from '@/lib/content/branze'
 import { useReveal } from '@/lib/hooks/use-reveal'
-import { industryWordmarkPaths } from '@/lib/wordmark-paths'
 import s from './industry.module.css'
 
 /*
@@ -112,6 +111,72 @@ const BRIEF_ICONS: Record<string, readonly LucideIcon[]> = {
 }
 
 // —— Shared pieces ————————————————————————————————————————————————————————————
+
+/**
+ * Hero band — one layout for both variants: plum ground, solid display
+ * wordmark, lead. Long labels (e.g. "Hotele i Miejsca Wypoczynkowe") stack the
+ * lead below and drop a size step, since they can't sit beside it at full size.
+ */
+function IndustryHero({
+  industry,
+  chrome,
+  index,
+}: {
+  industry: Industry
+  chrome: Chrome
+  index: number
+}) {
+  const longLabel =
+    industry.label.length > 16 ||
+    industry.label.split(' ').some((word) => word.length > 10)
+
+  return (
+    <section className={s.hero} data-theme="plum">
+      <div className={s.heroInner}>
+        <div className={s.heroHead}>
+          <Breadcrumb chrome={chrome} label={industry.label} />
+          <span className={s.heroIndex}>
+            {chrome.sectionLabel} · {String(index).padStart(2, '0')}
+          </span>
+        </div>
+        <div className={s.heroBody} data-long-label={longLabel || undefined}>
+          <h1 className={s.heroWordmark}>
+            {industry.label}
+            <span className={s.dot} aria-hidden="true">
+              .
+            </span>
+          </h1>
+          <p className={s.heroLead}>{industry.tagline}</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Duotone photo strip — sits directly under the brief, sharing its cream band. */
+function Collage({ photos }: { photos: NonNullable<Industry['collage']> }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.collageBand} data-theme="cream">
+      <div ref={ref} className={s.collage}>
+        {photos.map((photo) => (
+          <div key={photo.src} data-reveal-item className={s.collageItem}>
+            <Image
+              className={s.collageImg}
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              objectFit="cover"
+              desktopSize="30vw"
+              mobileSize="90vw"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 function Breadcrumb({ chrome, label }: { chrome: Chrome; label: string }) {
   return (
@@ -243,26 +308,7 @@ function ProofLayout({
 
   return (
     <>
-      {/* Hero band */}
-      <section className={s.proofHero} data-theme="plum">
-        <div className={s.proofHeroInner}>
-          <div className={s.proofHeroHead}>
-            <Breadcrumb chrome={chrome} label={industry.label} />
-            <span className={s.heroIndex}>
-              {chrome.sectionLabel} · {String(index).padStart(2, '0')}
-            </span>
-          </div>
-          <div className={s.proofHeroBody}>
-            <h1 className={s.proofWordmark}>
-              {industry.label}
-              <span className={s.dot} aria-hidden="true">
-                .
-              </span>
-            </h1>
-            <p className={s.proofLead}>{industry.tagline}</p>
-          </div>
-        </div>
-      </section>
+      <IndustryHero industry={industry} chrome={chrome} index={index} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
@@ -349,82 +395,17 @@ function ProofLayout({
 // —— Editorial variant (mock B) ————————————————————————————————————————————————
 
 function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
-  const heroRef = useReveal<HTMLDivElement>()
   const manifestoRef = useReveal<HTMLDivElement>()
-  const hasCollage = (industry.collage?.length ?? 0) > 0
-  // Long multi-word labels (e.g. "Hotele i Miejsca Wypoczynkowe") need the full
-  // hero width for the outline wordmark — the collage then stacks below rather
-  // than sitting beside it (side-by-side only fits short labels like the mocks).
-  const longLabel =
-    industry.label.length > 16 ||
-    industry.label.split(' ').some((word) => word.length > 10)
-  // Merged-union outline path (dissolves the crossing strokes plain outlined
-  // text shows on A/K/H/E); falls back to text if a label has no generated path.
-  const wordmark = industryWordmarkPaths[industry.id]
 
   return (
     <>
-      {/* Hero band */}
-      <section className={s.edHero} data-theme="cream">
-        <div className={s.edHeroHead}>
-          <Breadcrumb chrome={chrome} label={industry.label} />
-          <span className={s.heroIndex}>
-            {chrome.sectionLabel} · {String(index).padStart(2, '0')}
-          </span>
-        </div>
-        <div
-          ref={heroRef}
-          className={hasCollage ? s.edHeroGrid : s.edHeroGridSolo}
-          data-long-label={longLabel || undefined}
-        >
-          <div className={s.edHeroCopy}>
-            <h1
-              data-reveal-item
-              className={s.edWordmark}
-              aria-label={industry.label}
-            >
-              {wordmark ? (
-                <svg
-                  className={s.edWordmarkSvg}
-                  viewBox={wordmark.viewBox}
-                  preserveAspectRatio="xMinYMid meet"
-                  aria-hidden="true"
-                >
-                  <path d={wordmark.d} vectorEffect="non-scaling-stroke" />
-                </svg>
-              ) : (
-                industry.label
-              )}
-            </h1>
-            <p data-reveal-item className={s.edLead}>
-              {industry.tagline}
-            </p>
-          </div>
-          {hasCollage && (
-            <div data-reveal-item className={s.collage}>
-              {industry.collage?.map((photo, i) => (
-                <div
-                  key={photo.src}
-                  className={s.collageItem}
-                  data-collage-index={i}
-                >
-                  <Image
-                    className={s.collageImg}
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    objectFit="cover"
-                    desktopSize="30vw"
-                    mobileSize="80vw"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <IndustryHero industry={industry} chrome={chrome} index={index} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
+
+      {industry.collage && industry.collage.length > 0 && (
+        <Collage photos={industry.collage} />
+      )}
 
       {/* Keyword marquee */}
       {industry.marquee && industry.marquee.length > 0 && (
