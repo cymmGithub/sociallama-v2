@@ -67,7 +67,7 @@
     "nodemailer": "^9.0.3",
     "payload": "^3.86.0",
     "postprocessing": "^6.39.1",
-    "react": "19.2.7",
+    "react": "19.2.8",
     "react-dom": "19.2.7",
     "sharp": "^0.35.3",
     "tempus": "1.0.0-dev.18",
