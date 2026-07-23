@@ -146,12 +146,15 @@
   list-style: none;
 }
 
+/* Solid white chips (same treatment as the manifesto value chips). Pure white
+   + a soft lift so they still read on the cream band. */
 .pillar {
-  padding: 0.5rem 1rem;
-  border: 1.5px solid var(--color-plum);
+  padding: 0.65rem 1.2rem;
+  background: #fff;
   border-radius: 999px;
+  box-shadow: 0 6px 18px -10px rgb(43 31 36 / 35%);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-plum);
 }
@@ -614,16 +617,18 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 1rem;
-  background: var(--color-plum);
-  box-shadow: 0 24px 48px -28px rgb(0 0 0 / 40%);
+  /* Light plum wash rather than full plum — the multiply below tints against
+     THIS, so lightening it is what actually softens the duotone. */
+  background: color-mix(in srgb, var(--color-plum) 38%, #fff);
+  box-shadow: 0 24px 48px -28px rgb(0 0 0 / 30%);
 }
 
-/* Duotone equalizer for heterogeneous stock (design D4). Brightened source so
-   the plum multiply reads lighter, not muddy. */
+/* Duotone equalizer for heterogeneous stock (design D4) — kept deliberately
+   light: mostly desaturated and brightened, so photos stay legible and airy. */
 .collageImg {
   object-fit: cover;
   mix-blend-mode: multiply;
-  filter: grayscale(1) brightness(1.5) contrast(0.85);
+  filter: grayscale(0.85) brightness(1.18) contrast(0.94);
 }
 
 .collageItem:nth-child(odd) {
