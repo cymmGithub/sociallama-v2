@@ -1,23 +1,36 @@
 # onas-team Specification
 
 ## Purpose
-TBD - created by archiving change polish-o-nas-team-projects. Update Purpose after archive.
+The `/o-nas` "NASZE LAMY" team slider and its relationship to the homepage `why-that-works` team grid: who appears, in what order, with what bio, role, and portrait cutout, in both locales.
+
 ## Requirements
-### Requirement: Team slider carries the roster in position-priority order
+### Requirement: Both surfaces carry the same roster
 
-The `/o-nas` "NASZE LAMY" team slider SHALL present the Social Lama roster in the same order as the homepage `why-that-works` `TEAM` grid. The order is normative and MUST NOT diverge from the homepage grid.
+The `/o-nas` team slider and the homepage `why-that-works` `TEAM` grid SHALL present the same 12 people, with no member appearing on one surface and not the other. Membership parity is normative; presentation order is not identical between the two (see the order requirement).
 
-> **Note (post-review, applied during implementation):** The client directed the final order during review — **Ania first, then the two Senior Social Media Specialists, then the rest** (Project Manager → Managers → Experts → Specialist → Creator). The homepage `why-that-works` `TEAM` grid was reordered accordingly (it is no longer read-only) and remains the single source of truth the slider mirrors. Two members (**Paulina Hildebrand**, **Katarzyna Kaptur**) are **temporarily excluded from the slider** (commented out in both locales) because their only source photos are low-resolution square crops that cannot be cut out to match the front-facing head+torso set; they still appear in the homepage grid, and are re-enabled once proper photos are supplied. The homepage grid itself was also **redesigned** (see the `homepage-team-grid` note in this change's proposal): the circular medallions were replaced by full-bleed portrait tiles filled with the same head+torso cutouts.
+#### Scenario: Roster parity across surfaces
 
-#### Scenario: Order matches the homepage grid
+- **WHEN** `oNasTeam.members` is compared to the homepage `TEAM` array
+- **THEN** both contain the same 12 people — Ania Ozga, Martyna Borowik, Agnieszka Klajbert, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Przemysław Świercz — with none omitted from either
+
+### Requirement: Position-priority order with a curated slider deviation
+
+The homepage grid SHALL order the roster by position seniority — Head of Social Media, then the Senior Social Media Specialists, then Project Manager, Social Media Managers, Social Media Experts, Social Media Specialist, Wideo Content Creator, Fullstack Developer. The slider SHALL follow that same order, except where a placement is deliberately curated for the slider's featured-member presentation. The current curated deviation is **Martyna Borowik moved to second-to-last in the slider** while remaining second in the grid.
+
+#### Scenario: Homepage grid order
+
+- **WHEN** the homepage `why-that-works` grid renders
+- **THEN** members appear in this order — Ania Ozga, Martyna Borowik, Agnieszka Klajbert, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Przemysław Świercz
+
+#### Scenario: Slider order
 
 - **WHEN** the `/o-nas` page renders the team slider
-- **THEN** the members appear in this order — Ania Ozga, Martyna Borowik, Agnieszka Klajbert, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska — with Paulina Hildebrand and Katarzyna Kaptur omitted from the slider while their photos are pending (9 shown), and the sequence is identical to the homepage grid
+- **THEN** members appear in this order — Ania Ozga, Agnieszka Klajbert, Piotrek Zach, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Kornelia Orlik, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Martyna Borowik, Przemysław Świercz — i.e. the grid order with Martyna Borowik moved down to second-to-last, ahead of Przemysław Świercz
 
-#### Scenario: Order matches the homepage grid
+#### Scenario: Deviations are deliberate, not drift
 
-- **WHEN** the homepage `why-that-works` `TEAM` array order is compared to `oNasTeam.members`
-- **THEN** the active members appear in the same relative order (the homepage grid additionally carries the two photo-pending members)
+- **WHEN** the slider order differs from the grid order
+- **THEN** the difference is limited to curated placements recorded in this spec, and every other member holds the same relative position on both surfaces
 
 ### Requirement: Every member carries real bio, role, and photo content
 
@@ -33,25 +46,30 @@ Each member entry SHALL provide a non-placeholder `bio`, a `role`, a `given`/`su
 - **WHEN** a bio doc role differs from the homepage grid role for the same person
 - **THEN** the slider uses the homepage grid's role label
 
-### Requirement: New members have transparent, crop-matched portrait cutouts
+### Requirement: Every member has a transparent, crop-matched portrait cutout
 
-The 8 newly added members SHALL each have a transparent-background PNG cutout under `/public/o-nas/slider/`, visually consistent with the 3 pre-existing cutouts in framing (head+torso crop, orientation) and comparable in file weight (~300 KB target, optimized).
+All 12 members SHALL have a transparent-background PNG cutout under `/public/o-nas/slider/`, consistent in framing (head+torso crop, orientation) and comparable in file weight (~300 KB target, optimized). The same cutouts fill the homepage grid's full-bleed portrait tiles, so a framing defect is visible on both surfaces.
 
 #### Scenario: Cutouts exist and are transparent PNGs
 
-- **WHEN** the slider references a new member's `photo`
-- **THEN** the file exists at `/public/o-nas/slider/<name>.png`, is a PNG with an alpha channel, and its background is removed
+- **WHEN** the slider or the homepage grid references a member's cutout
+- **THEN** the file exists under `/public/o-nas/slider/`, is a PNG with an alpha channel, and its background is removed
 
 #### Scenario: Framing is consistent across the roster
 
-- **WHEN** all 11 cutouts are viewed together in the slider on `:3001`
-- **THEN** crop, scale, and orientation read as one consistent set (no member visibly mis-scaled or differently framed)
+- **WHEN** all 12 cutouts are viewed together
+- **THEN** crop, scale, and orientation read as one consistent set, with no member visibly mis-scaled or differently framed
+
+#### Scenario: No member is excluded for missing artwork
+
+- **WHEN** the slider renders
+- **THEN** all 12 members are present — no member is commented out or skipped pending a usable photo
 
 ### Requirement: EN locale mirrors the team content
 
-`o-nas.en.ts` SHALL carry the same 11 members in the same order with English bios, satisfying the `LocalizedONas` shape so PL and EN stay structurally identical.
+`o-nas.en.ts` SHALL carry the same 12 members in the same slider order with English bios, satisfying the `LocalizedONas` shape so PL and EN stay structurally identical.
 
 #### Scenario: EN roster parity
 
 - **WHEN** `o-nas.en.ts` `oNasTeam.members` is compared to the PL version
-- **THEN** it has the same members in the same order, each with a translated (non-`LOREM`) bio, and TypeScript compiles under `satisfies LocalizedONas`
+- **THEN** it has the same 12 members in the same order, each with a translated (non-`LOREM`) bio, and TypeScript compiles under `satisfies LocalizedONas`
