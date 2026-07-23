@@ -284,6 +284,18 @@ export const oNasTeam = {
       bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
+    // TEMP: excluded from the slider — the source is a tight head+shoulders
+    // crop, so the full-height slider frame shows a hard "cardboard" torso edge
+    // with empty space below. Kept in the homepage team grid (why-that-works),
+    // where the 4:5 cover crop hides it. Re-enable here and in o-nas.en.ts once
+    // a head-to-waist photo (or an outpainted torso) is available.
+    // {
+    //   given: 'PRZEMYSŁAW',
+    //   surname: 'ŚWIERCZ',
+    //   role: 'Fullstack Developer',
+    //   bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Dba, żeby całość działała szybko i niezawodnie.',
+    //   photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    // },
   ],
 } as const
 

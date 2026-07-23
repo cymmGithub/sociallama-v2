@@ -1,7 +1,6 @@
 'use client'
 
 import cn from 'clsx'
-import { ArrowRight } from 'lucide-react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -81,6 +80,11 @@ const TEAM = [
     name: 'Karolina Marcinowska',
     role: 'Wideo Content Creator',
   },
+  {
+    cut: 'przemyslaw-swiercz.png',
+    name: 'Przemysław Świercz',
+    role: 'Fullstack Developer',
+  },
 ] as const
 
 // Credential cards sitting inline in the mosaic. Aspect ratios are the marks'
@@ -155,14 +159,6 @@ export function WhyThatWorks({
                 </div>
               </li>
             ))}
-            {/* CTA card fills the last grid slot; jumps to the /o-nas team
-                slider ("NASZE LAMY"). */}
-            <li className={s.ctaTile}>
-              <Link className={s.ctaLink} href={content.teamCta.href}>
-                <span className={s.ctaText}>{content.teamCta.label}</span>
-                <ArrowRight className={s.ctaIcon} aria-hidden="true" />
-              </Link>
-            </li>
           </ul>
         </div>
         <div className={s.copy}>

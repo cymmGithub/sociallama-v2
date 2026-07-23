@@ -245,5 +245,15 @@ export const oNasTeam = {
       bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
+    // TEMP: excluded from the slider (see the o-nas.ts note) — tight head+
+    // shoulders crop floats in the full-height frame. Kept in the homepage
+    // team grid. Re-enable here in sync with o-nas.ts.
+    // {
+    //   given: 'PRZEMYSŁAW',
+    //   surname: 'ŚWIERCZ',
+    //   role: 'Fullstack Developer',
+    //   bio: 'Owns the build and upkeep of the Social Lama site — front end, back end, performance and deploys — keeping the whole thing fast and reliable.',
+    //   photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    // },
   ],
 } satisfies LocalizedONas['oNasTeam']
