@@ -81,11 +81,13 @@
 }
 
 /* Outline row is a single merged-union SVG (see lib/wordmark-paths.ts): glyphs
-   boolean-unioned so tight tracking has no crossing/doubled strokes. Sized to
-   the fill row's cap height (0.72em against the shared display size). */
+   boolean-unioned so tight tracking has no crossing/doubled strokes. The
+   viewBox includes the round-letter overshoot below the baseline (so it isn't
+   clipped by the hero's overflow); 0.775em (= 0.72em × viewBox/cap-height ratio)
+   restores the caps to the fill row's height. */
 .outline {
   display: block;
-  height: 0.72em;
+  height: 0.775em;
   width: auto;
   overflow: visible;
 }

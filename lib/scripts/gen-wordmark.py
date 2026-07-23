@@ -116,7 +116,13 @@ CONTACT_MARQUEE = {
 contact_rows = []
 for _loc, _text in CONTACT_MARQUEE.items():
     _m = merged(_text)
-    _vb = f'0 {n(-_m["yMax"])} {n(_m["advance"])} {n(_m["yMax"])}'
+    # Vertical extent = full ink (cap top .. round-letter overshoot below the
+    # baseline) + a small pad for the non-scaling stroke, so nothing clips.
+    # Width stays exactly the advance so the tile still repeats seamlessly.
+    _padV = 0.02 * _m["upm"]
+    _top = _m["yMax"] + _padV
+    _h = (_m["yMax"] - _m["yMin"]) + 2 * _padV
+    _vb = f'0 {n(-_top)} {n(_m["advance"])} {n(_h)}'
     contact_rows.append(
         f"  {_loc}: {{\n    viewBox: '{_vb}',\n    d: '{_m['d']}',\n  }},"
     )
