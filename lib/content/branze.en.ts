@@ -14,6 +14,7 @@ import type { Industry, LocalizedBranze } from '@/lib/content/branze'
 
 export const chrome = {
   sectionLabel: 'INDUSTRIES',
+  briefKicker: 'WHY IT WORKS',
   proof: {
     portfolioKicker: 'PORTFOLIO',
     portfolioHeading: "HERE'S HOW IT LOOKS IN THE FEED",
@@ -22,7 +23,6 @@ export const chrome = {
     ctaHeadline: 'WANT RESULTS LIKE THESE IN YOUR INDUSTRY?',
   },
   editorial: {
-    manifestoKicker: 'WHY IT WORKS',
     logosKicker: 'THEY TRUSTED US',
     ctaHeadline: "LET'S TALK ABOUT YOUR BRAND.",
   },
@@ -46,6 +46,23 @@ export const INDUSTRIES = [
     },
     tagline:
       "We don't tell you how we do social media for automotive. We show you — everything below is real material from our own profiles.",
+    brief: {
+      pillars: [
+        'Expert communication',
+        'Technology & innovation',
+        'Expert personal branding',
+      ],
+      paragraphs: [
+        {
+          text: 'Automotive is a category where buying decisions follow a long process of researching and comparing the options. On social, what matters most is expertise, credibility, and the ability to explain advanced technology in plain terms.',
+          strong:
+            'what matters most is expertise, credibility, and the ability to explain advanced technology in plain terms.',
+        },
+        {
+          text: 'Per Deloitte’s “2025 Global Automotive Consumer Study,” 69% of Polish consumers planning a car purchase say they actively research online before deciding. So we build communication that combines expert knowledge, engaging storytelling, and compelling video formats — helping brands build trust and long-term relationships with their audience.',
+        },
+      ],
+    },
     chips: [
       { value: '3+', label: 'years of continuous work with the Volvo brand' },
       { value: '2', label: 'brands run in parallel — VCW & Dom Volvo' },
@@ -99,6 +116,23 @@ export const INDUSTRIES = [
     },
     tagline:
       "We don't tell you how we do social media for electronics and appliances. We show you — everything below is real creative from our campaigns.",
+    brief: {
+      pillars: [
+        'Product education',
+        'Video content',
+        'Turning tech into real benefits',
+      ],
+      paragraphs: [
+        {
+          text: 'Electronics and appliances is a category where consumers want more than inspiration — they want concrete information that makes the buying decision easier. On social, the key roles are education, showing off functionality, and demonstrating real everyday uses of the product.',
+          strong:
+            'the key roles are education, showing off functionality, and demonstrating real everyday uses of the product.',
+        },
+        {
+          text: 'Per the Gemius “E-commerce in Poland 2025” report, 75% of Polish internet users shop online, and electronics and appliances are among the most-purchased categories. That means brands here should lean into accessible communication, compelling video formats, and content that helps people understand the tech and choose the right product with confidence.',
+        },
+      ],
+    },
     chips: [
       { value: '11M', label: 'views on TikTok' },
       { value: '742k', label: 'views on YouTube' },
@@ -151,11 +185,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Beauty is a first-impression business. We build it where your customer forms it — in the feed. Aesthetic content and campaigns for beauty brands.',
-    chips: [
-      { value: 'Aesthetic', label: 'a consistent feed that builds desire' },
-      { value: 'UGC', label: 'real faces, real trust' },
-      { value: 'Rituals', label: 'content that slips into daily routines' },
-    ],
+    brief: {
+      pillars: [
+        'Education & expertise',
+        'UGC & influencer marketing',
+        'Engaged communities',
+      ],
+      paragraphs: [
+        {
+          text: 'Beauty is one of the most competitive categories on social. Pretty content alone no longer cuts it — consumers expect authenticity, expert knowledge, and recommendations they can trust.',
+        },
+        {
+          text: 'Per Mintel’s 2025 report, consumers increasingly base buying decisions on ingredient transparency and proven product efficacy. For beauty brands, that means a growing role for educational, expert-led communication. So we build strategies that blend education, inspiration, and engaging storytelling — helping brands earn trust and build long-term relationships with their audience.',
+          strong:
+            'we build strategies that blend education, inspiration, and engaging storytelling — helping brands earn trust and build long-term relationships with their audience.',
+        },
+      ],
+    },
     marquee: [
       'Skincare',
       'Makeup',
@@ -165,10 +211,6 @@ export const INDUSTRIES = [
       'Rituals',
       'New drops',
     ],
-    manifesto: {
-      lead: 'Beauty sells in the feed.',
-      rest: 'But consistent, aesthetic content and real community faces decide which brand she reaches for at the shelf.',
-    },
     collage: [
       {
         src: '/branze/beauty/beauty-1.jpg',
@@ -198,11 +240,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Health is a trust business. We build it where people look for answers — in the feed. Educational content and campaigns for health brands.',
-    chips: [
-      { value: 'Expert', label: 'content vetted for accuracy' },
-      { value: 'Education', label: 'tough topics in plain language' },
-      { value: 'Prevention', label: 'communication that genuinely helps' },
-    ],
+    brief: {
+      pillars: [
+        'Knowledge-based education',
+        'Building trust',
+        'Brand reputation management',
+      ],
+      paragraphs: [
+        {
+          text: 'Health takes a special approach to communication. Audiences expect solid information, expert knowledge, and fact-based content. In a world full of misinformation, trust becomes one of a brand’s most valuable assets.',
+          strong:
+            'Audiences expect solid information, expert knowledge, and fact-based content.',
+        },
+        {
+          text: 'Per the Edelman Trust Barometer 2025, 72% of respondents worry about false information and disinformation. So communication for health and wellbeing brands should rest on credible sources, transparency, and building long-term relationships with the audience.',
+        },
+      ],
+    },
     marquee: [
       'Wellbeing',
       'Supplements',
@@ -212,10 +266,6 @@ export const INDUSTRIES = [
       'Trust',
       'Support',
     ],
-    manifesto: {
-      lead: "Health isn't sold on a promise.",
-      rest: "It's sold with solid education, expert authority, and communication people trust in the decisions that matter most.",
-    },
     collage: [
       {
         src: '/branze/health/health-1.jpg',
@@ -232,7 +282,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 5 — editorial · draft copy pending review (batch 2)
+  // 5 — editorial
   {
     id: 'finanse',
     slug: 'finance',
@@ -245,11 +295,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Finance is trust in its purest form. We build it with clear, everyday communication for finance and fintech brands.',
-    chips: [
-      { value: 'B2B & B2C', label: 'communication tuned to the audience' },
-      { value: 'Education', label: 'finance without the jargon' },
-      { value: 'Trust', label: 'the foundation of every decision' },
-    ],
+    brief: {
+      pillars: [
+        'Building credibility',
+        'Expert communication',
+        'Thought leadership',
+      ],
+      paragraphs: [
+        {
+          text: 'Finance rests above all on trust. Audiences expect transparent communication, expert knowledge, and plain explanations of even the most complex topics. On social, the priority becomes building credibility and long-term relationships with clients.',
+          strong:
+            'On social, the priority becomes building credibility and long-term relationships with clients.',
+        },
+        {
+          text: 'Per the Edelman Trust Barometer 2025, 64% of respondents say trust in a brand strongly influences their buying decisions. For finance, that means communication should not only inform about the offer but also consistently build an expert position and strengthen the brand’s reputation.',
+        },
+      ],
+    },
     marquee: [
       'Fintech',
       'Payments',
@@ -259,10 +321,6 @@ export const INDUSTRIES = [
       'Investing',
       'Trust',
     ],
-    manifesto: {
-      lead: "Money isn't handed to chance.",
-      rest: "It's handed to a brand that explains hard topics in plain language and earns trust every day.",
-    },
     collage: [
       {
         src: '/branze/finanse/finanse-1.jpg',
@@ -279,7 +337,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 6 — editorial · draft copy pending review (batch 2)
+  // 6 — editorial
   {
     id: 'petcare',
     slug: 'pet',
@@ -292,11 +350,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'The pet industry runs on emotion and loyalty. We build owner communities where a pet is family — and treat the brands the same way.',
-    chips: [
-      { value: 'Community', label: 'the most loyal audiences on social' },
-      { value: 'How-tos', label: 'content they come back for' },
-      { value: 'Emotion', label: 'a pet is family' },
-    ],
+    brief: {
+      pillars: [
+        'Education & expertise',
+        'Engaged communities',
+        'Passion-driven content',
+      ],
+      paragraphs: [
+        {
+          text: 'The pet industry is a category driven by emotion, trust, and expert knowledge. Owners increasingly treat their pets as full members of the family, so they expect brands to deliver not just high-quality products but also valuable content and reliable advice.',
+          strong:
+            'Owners increasingly treat their pets as full members of the family, so they expect brands to deliver not just high-quality products but also valuable content and reliable advice.',
+        },
+        {
+          text: 'Per the PMR “Pet market in Poland 2025” report, pet owners are increasingly investing in specialist products and actively seeking information on their pets’ health, nutrition, and care. So effective social communication should blend education, inspiration, and building an engaged community around a shared passion.',
+        },
+      ],
+    },
     marquee: [
       'Petcare',
       'Food',
@@ -306,10 +376,6 @@ export const INDUSTRIES = [
       'Adoptions',
       'Animal love',
     ],
-    manifesto: {
-      lead: 'To an owner, it\'s not "a pet." It\'s family.',
-      rest: 'Brands that get this build the most loyal communities in all of social.',
-    },
     collage: [
       {
         src: '/branze/petcare/petcare-1.jpg',
@@ -323,7 +389,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 7 — editorial · draft copy pending review (batch 2)
+  // 7 — editorial
   {
     id: 'alkohole',
     slug: 'alcohol',
@@ -336,11 +402,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Alcohol is a business of ritual and occasion. We build brands an aspirational image — with a feel for regulations and responsible drinking.',
-    chips: [
-      { value: 'Regulations', label: 'communication that stays compliant' },
-      { value: 'Ritual', label: 'a brand woven into the moment' },
-      { value: 'Aspiration', label: 'a premium image' },
-    ],
+    brief: {
+      pillars: [
+        'Brand storytelling',
+        'Consumption occasions',
+        'Engaged community',
+      ],
+      paragraphs: [
+        {
+          text: 'Alcohol is one of the most demanding categories on social. Legal restrictions mean brands can’t build communication on product or sales alone. The key roles go to emotion, storytelling, and building a strong world of values around the brand.',
+          strong:
+            'The key roles go to emotion, storytelling, and building a strong world of values around the brand.',
+        },
+        {
+          text: 'We know consumers choose specific brands not only for taste but also for the story, tradition, values, and special occasions that come with them. So we build communication grounded in engaging stories, positive associations, and natural moments of contact with the brand — strengthening its recognition and building long-term relationships with the audience.',
+        },
+      ],
+    },
     marquee: [
       'Wine',
       'Craft beer',
@@ -350,10 +428,6 @@ export const INDUSTRIES = [
       'Tastings',
       'Responsible drinking',
     ],
-    manifesto: {
-      lead: 'Alcohol plays by its own rules.',
-      rest: 'Regulations, timing, and ritual — you have to feel all three to build an aspirational brand.',
-    },
     collage: [
       {
         src: '/branze/alkohole/alkohole-1.jpg',
@@ -370,7 +444,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 8 — editorial · draft copy pending review (batch 2)
+  // 8 — editorial
   {
     id: 'fashion',
     slug: 'fashion',
@@ -383,11 +457,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Fashion is a business of pace. We give brands the rhythm of the feed — building desire around drops and collections, season after season.',
-    chips: [
-      { value: 'Trends', label: 'a brand always on time' },
-      { value: 'Drop', label: 'the tension that sells' },
-      { value: 'UGC', label: 'style, styled by the community' },
-    ],
+    brief: {
+      pillars: [
+        'Trend-driven content',
+        'Influencer marketing',
+        'Social commerce',
+      ],
+      paragraphs: [
+        {
+          text: 'Fashion is one of the most dynamic categories on social. Consumers expect brands to deliver not just product shots but also inspiration, authenticity, and a coherent world of values.',
+        },
+        {
+          text: 'Per Euromonitor’s “Top Global Consumer Trends 2025,” consumers increasingly choose brands that reflect their lifestyle and let them express their own identity. That makes social a space for fashion brands to build desire, inspire audiences, and create engaged communities.',
+          strong:
+            'a space for fashion brands to build desire, inspire audiences, and create engaged communities.',
+        },
+      ],
+    },
     marquee: [
       'Fashion',
       'Trends',
@@ -397,10 +483,6 @@ export const INDUSTRIES = [
       'Collections',
       'Style',
     ],
-    manifesto: {
-      lead: 'Fashion moves faster than the feed.',
-      rest: 'The winners set the pace — building desire around drops and turning followers into customers.',
-    },
     collage: [
       {
         src: '/branze/fashion/fashion-1.jpg',
@@ -417,7 +499,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 9 — editorial · draft copy pending review (batch 3)
+  // 9 — editorial
   {
     id: 'horeca',
     slug: 'horeca',
@@ -430,11 +512,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'HoReCa is an appetite business. We spark it where hunger starts — in the feed. Food content and communication that fills tables.',
-    chips: [
-      { value: 'Food content', label: 'photos you can practically taste' },
-      { value: 'Atmosphere', label: 'a place worth coming back to' },
-      { value: 'Reservations', label: 'a feed that fills tables' },
-    ],
+    brief: {
+      pillars: [
+        'Appetizing content',
+        'Seasonality & trends',
+        'Engaged community',
+      ],
+      paragraphs: [
+        {
+          text: 'HoReCa is a category where consumers buy not just a product but, above all, an experience. On social, what counts is emotion, aesthetics, and the craft of telling stories that make people want to visit the venue or reach for the product.',
+          strong:
+            'what counts is emotion, aesthetics, and the craft of telling stories that make people want to visit the venue or reach for the product.',
+        },
+        {
+          text: 'Per the PMR “HoReCa market in Poland 2025” report, 58% of Gen Z check online reviews before a first visit to a restaurant. That shows how big a role social media, recommendations, and authentic customer experiences play today. So we build communication that blends compelling visual content, seasonal trends, and engaging formats — helping brands build recognition and a loyal community.',
+        },
+      ],
+    },
     marquee: [
       'Restaurants',
       'Cafés',
@@ -444,10 +538,6 @@ export const INDUSTRIES = [
       'Atmosphere',
       'Occasions',
     ],
-    manifesto: {
-      lead: 'Hunger starts in the feed.',
-      rest: 'Before a guest crosses the threshold, appetizing content and a sense of place are already filling tables.',
-    },
     collage: [
       {
         src: '/branze/horeca/horeca-1.jpg',
@@ -464,7 +554,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 10 — editorial · draft copy pending review (batch 3)
+  // 10 — editorial
   {
     id: 'hotele-i-miejsca-wypoczynkowe',
     slug: 'hospitality',
@@ -477,11 +567,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Leisure is a business of dreams. We sell them before a guest packs a bag — aspirational travel content for hotels and resorts.',
-    chips: [
-      { value: 'Aspiration', label: 'a place worth dreaming about' },
-      { value: 'Booking', label: 'content that drives reservations' },
-      { value: 'Seasons', label: 'communication all year round' },
-    ],
+    brief: {
+      pillars: [
+        'Experience storytelling',
+        'Inspiring visual content',
+        'Building guest loyalty',
+      ],
+      paragraphs: [
+        {
+          text: 'In hospitality and travel, guests don’t buy a night’s stay — they buy emotion, memories, and exceptional experiences. That’s exactly why social plays such a big role in inspiring trips and shaping a place’s image.',
+        },
+        {
+          text: 'Per the Polish Tourism Organisation’s “Tourism in times of change 2025” study, 77% of Poles look for inspiration and information online before a trip. That means compelling visual content, authentic stories, and a consistently built brand image have a real impact on where people choose to vacation.',
+          strong:
+            '77% of Poles look for inspiration and information online before a trip.',
+        },
+      ],
+    },
     marquee: [
       'Hotels',
       'Resorts',
@@ -491,10 +593,6 @@ export const INDUSTRIES = [
       'Reservations',
       'Experience',
     ],
-    manifesto: {
-      lead: 'A vacation is bought on a dream.',
-      rest: 'Aspirational travel content sells the place before a guest even packs a bag.',
-    },
     collage: [
       {
         src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-1.jpg',
@@ -511,7 +609,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 11 — editorial · draft copy pending review (batch 3)
+  // 11 — editorial
   {
     id: 'nieruchomosci-i-deweloperzy',
     slug: 'real-estate',
@@ -524,11 +622,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Real estate is a business of the biggest purchase there is. We build the trust that comes before it — and communication that generates leads.',
-    chips: [
-      { value: 'Leads', label: 'communication built for contact' },
-      { value: 'Renderings', label: 'an investment you can see' },
-      { value: 'Trust', label: 'the foundation of a life decision' },
-    ],
+    brief: {
+      pillars: [
+        'Investment storytelling',
+        'Expert personal branding',
+        'Building trust',
+      ],
+      paragraphs: [
+        {
+          text: 'Buying property is one of the biggest financial decisions in a consumer’s life. In real estate, social plays a far bigger role than just a sales channel — it helps build brand credibility, educate clients, and present the lifestyle tied to an investment.',
+        },
+        {
+          text: 'Per Otodom’s “Happy Home. Poles’ housing expectations 2025” report, 80% of Poles say they use the internet when searching for property. That means a brand’s digital presence is often the first point of contact with a prospective client, and transparent, expert communication can genuinely shape buying decisions.',
+          strong:
+            'a brand’s digital presence is often the first point of contact with a prospective client, and transparent, expert communication can genuinely shape buying decisions.',
+        },
+      ],
+    },
     marquee: [
       'Developers',
       'Investments',
@@ -538,10 +648,6 @@ export const INDUSTRIES = [
       'Leads',
       'Trust',
     ],
-    manifesto: {
-      lead: 'Buying property is a life decision.',
-      rest: "It's preceded by trust — we build it by presenting investments and communication that generates real leads.",
-    },
     collage: [
       {
         src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-1.jpg',
@@ -558,7 +664,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 12 — editorial · draft copy pending review (batch 3)
+  // 12 — editorial
   {
     id: 'rozrywka',
     slug: 'entertainment',
@@ -571,11 +677,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Entertainment is a business of fighting for attention. We win it with content — building hype around premieres and events, and activating the community.',
-    chips: [
-      { value: 'Hype', label: 'the buzz before a premiere' },
-      { value: 'Community', label: 'an audience that co-creates' },
-      { value: 'Engagement', label: 'content people share' },
-    ],
+    brief: {
+      pillars: [
+        'Community marketing',
+        'Seasonal campaigns',
+        'Real-time marketing',
+      ],
+      paragraphs: [
+        {
+          text: 'Entertainment is built on emotion, experiences, and time spent together. On social, what matters most is creating engaging content that doesn’t just inform about the offer but, above all, invites audiences to take part and share their own experiences.',
+        },
+        {
+          text: 'Per Deloitte’s “Digital Consumer Trends 2025,” consumers increasingly seek entertainment that lets them build relationships and create shared memories. So brands in this category should show up where their audience’s conversations happen, react to live trends, and consistently build a community around what they do.',
+          strong:
+            'brands in this category should show up where their audience’s conversations happen, react to live trends, and consistently build a community around what they do.',
+        },
+      ],
+    },
     marquee: [
       'Events',
       'Culture',
@@ -585,10 +703,6 @@ export const INDUSTRIES = [
       'Emotion',
       'Live',
     ],
-    manifesto: {
-      lead: 'Attention is the currency of entertainment.',
-      rest: 'We build hype around premieres, activate the community, and create content that lives in the comments.',
-    },
     collage: [
       {
         src: '/branze/rozrywka/rozrywka-1.jpg',

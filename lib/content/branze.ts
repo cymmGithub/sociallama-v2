@@ -8,19 +8,21 @@
  * — the translation-parity gate (design D2), mirroring `home.ts` / `o-nas.ts`.
  *
  * Variant is data-driven (D2), per the reviewed mocks:
- *   - `caseStudy` present  → proof layout (mock C): plum hero → creatives wall →
- *     numbers band (`chips`) → pull-quote + case-study card → CTA.
+ *   - `caseStudy` present  → proof layout (mock C): plum hero → brief → creatives
+ *     wall → numbers band (`chips`) → pull-quote + case-study card → CTA.
  *   - `caseStudy` absent    → editorial layout (mock B): cream hero + `collage` →
- *     `marquee` → `manifesto` + `chips` → `logos` strip → CTA.
+ *     brief → `marquee` → CTA.
  * Today Automotive (Volvo) and Elektronika i AGD (iRobot) are the proof pages.
  *
- * Copy status (2026-07-23): batch 1 (Automotive, Elektronika i AGD, Beauty,
- * Health) drafted for user review (task 3.1); batches 2–3 (Finanse … Rozrywka)
- * carry draft copy pending review (tasks 3.2/3.3). Proof `chips` are verbatim
- * from the published Volvo/iRobot case studies (seed-case-studies.ts). Editorial
- * `collage` imagery is O1 (resolved 2026-07-23: free-license stock + duotone;
- * awaiting per-industry picks) and `logos` is O2 (attribution pending). Proof
- * `quote` is a brand-attributed paraphrase (O3 resolved: keep paraphrase).
+ * The `brief` (3 strategic pillars + market-report-backed paragraphs) is
+ * verbatim from "BRANŻE - TEKSTY NA STRONĘ SOCIAL LAMA" and sits directly under
+ * the hero on every page (see 2026-07-23 design). `chips` are proof-only now
+ * (the numbers band) — editorial pages carry their strategy in the `brief`.
+ *
+ * Imagery status: proof `chips` are verbatim from the Volvo/iRobot case studies;
+ * editorial `collage` is O1 (free-license Pexels + duotone, IDs recorded inline);
+ * `logos` is O2 (attribution pending); proof `quote` is a brand-attributed
+ * paraphrase (O3: keep).
  */
 
 import type { Localized } from '@/lib/i18n/parity'
@@ -30,6 +32,8 @@ import type { Localized } from '@/lib/i18n/parity'
 export const chrome = {
   /** Breadcrumb prefix shown top-left and top-right on every industry page. */
   sectionLabel: 'BRANŻE',
+  /** Kicker above the brief section (both variants). */
+  briefKicker: 'DLACZEGO TO DZIAŁA',
   proof: {
     portfolioKicker: 'PORTFOLIO',
     portfolioHeading: 'TAK TO WYGLĄDA W FEEDZIE',
@@ -38,7 +42,6 @@ export const chrome = {
     ctaHeadline: 'CHCESZ TAKICH WYNIKÓW W SWOJEJ BRANŻY?',
   },
   editorial: {
-    manifestoKicker: 'DLACZEGO TO DZIAŁA',
     logosKicker: 'ZAUFALI NAM',
     ctaHeadline: 'POROZMAWIAJMY O TWOJEJ MARCE.',
   },
@@ -57,6 +60,12 @@ interface IndustryStat {
 interface IndustryImage {
   src: string
   alt: string
+}
+
+/** A brief paragraph; `strong` (if set) is an exact substring rendered bold. */
+interface IndustryParagraph {
+  text: string
+  strong?: string
 }
 
 /** Presence of this block on an industry selects the proof layout (D2). */
@@ -83,19 +92,22 @@ export interface Industry {
   meta: { title: string; description: string }
   /** Hero lead paragraph (both variants). */
   tagline: string
-  /** Three stat/value chips — numbers band (proof) or chips row (editorial). */
-  chips: readonly IndustryStat[]
+  /** The under-hero brief (both variants): 3 pillars + body paragraphs. */
+  brief: {
+    pillars: readonly string[]
+    paragraphs: readonly IndustryParagraph[]
+  }
+  // —— proof-only ——
+  /** Numbers-band stats — verbatim from the case study. */
+  chips?: readonly IndustryStat[]
+  caseStudy?: IndustryCaseStudy
   // —— editorial-only ——
   /** Keyword marquee band. */
   marquee?: readonly string[]
-  /** Two-tone "DLACZEGO TO DZIAŁA" statement (`lead` inked, `rest` muted). */
-  manifesto?: { lead: string; rest: string }
   /** Duotone hero collage — omitted until O1 sourcing resolves. */
   collage?: readonly IndustryImage[]
   /** Client-logo strip — omitted until O2 attribution is confirmed. */
   logos?: readonly IndustryImage[]
-  // —— proof-only ——
-  caseStudy?: IndustryCaseStudy
 }
 
 // —— Canonical list (design D1, proof-first order) —————————————————————————————
@@ -114,6 +126,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Nie opowiadamy, jak robimy social media dla motoryzacji. Pokazujemy — wszystko poniżej to realne materiały z naszych profili.',
+    brief: {
+      pillars: [
+        'Ekspercka komunikacja',
+        'Technologie i innowacje',
+        'Personal branding ekspertów',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża automotive to kategoria, w której decyzje zakupowe są poprzedzone długim procesem poszukiwania informacji i porównywania dostępnych rozwiązań. W social mediach kluczową rolę odgrywają eksperckość, wiarygodność oraz umiejętność tłumaczenia zaawansowanych technologii w przystępny sposób.',
+          strong:
+            'W social mediach kluczową rolę odgrywają eksperckość, wiarygodność oraz umiejętność tłumaczenia zaawansowanych technologii w przystępny sposób.',
+        },
+        {
+          text: 'Jak wynika z raportu Deloitte „2025 Global Automotive Consumer Study”, aż 69% polskich konsumentów planujących zakup samochodu deklaruje, że przed podjęciem decyzji aktywnie poszukuje informacji online. Dlatego tworzymy komunikację, która łączy ekspercką wiedzę, angażujący storytelling i atrakcyjne formaty wideo, wspierając marki w budowaniu zaufania oraz długofalowych relacji z odbiorcami.',
+        },
+      ],
+    },
     chips: [
       { value: '3+', label: 'lata ciągłej współpracy z marką Volvo' },
       { value: '2', label: 'marki prowadzone równolegle — VCW & Dom Volvo' },
@@ -165,6 +194,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Nie opowiadamy, jak robimy social media dla elektroniki i AGD. Pokazujemy — wszystko poniżej to realne kreacje z naszych kampanii.',
+    brief: {
+      pillars: [
+        'Edukacja produktowa',
+        'Content wideo',
+        'Przekładanie technologii na język korzyści',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża elektroniki i AGD to kategoria, w której konsumenci oczekują nie tylko inspiracji, ale przede wszystkim konkretnych informacji ułatwiających podjęcie decyzji zakupowej. W social mediach kluczową rolę odgrywają edukacja, prezentacja funkcjonalności oraz pokazywanie realnych zastosowań produktów w codziennym życiu.',
+          strong:
+            'W social mediach kluczową rolę odgrywają edukacja, prezentacja funkcjonalności oraz pokazywanie realnych zastosowań produktów w codziennym życiu.',
+        },
+        {
+          text: 'Jak wynika z raportu Gemius „E-commerce w Polsce 2025”, aż 75% polskich internautów kupuje online, a do najczęściej kupowanych kategorii należą m.in. elektronika i AGD. To sprawia, że marki z tej branży powinny stawiać na przystępną komunikację, atrakcyjne formaty wideo oraz content, który pomaga użytkownikom lepiej zrozumieć technologię i świadomie wybrać odpowiedni produkt.',
+        },
+      ],
+    },
     chips: [
       { value: '11 mln', label: 'wyświetleń na TikToku' },
       { value: '742 tys.', label: 'wyświetleń na YouTube' },
@@ -217,14 +263,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Beauty to branża pierwszego wrażenia. Budujemy je tam, gdzie klientka je wyrabia — w feedzie. Estetyczny content i kampanie dla marek kosmetycznych.',
-    chips: [
-      { value: 'Estetyka', label: 'spójny feed, który buduje pożądanie' },
-      { value: 'UGC', label: 'realne twarze, realne zaufanie' },
-      {
-        value: 'Rytuały',
-        label: 'content, który wchodzi w codzienność klientek',
-      },
-    ],
+    brief: {
+      pillars: [
+        'Edukacja i eksperckość',
+        'UGC i influencer marketing',
+        'Zaangażowane społeczności',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża beauty to jedna z najbardziej konkurencyjnych kategorii w social mediach. Estetyczny content to dziś za mało — konsumenci oczekują autentyczności, eksperckiej wiedzy i rekomendacji, którym mogą zaufać.',
+        },
+        {
+          text: 'Według raportu Mintel z 2025 roku konsumenci coraz częściej podejmują decyzje zakupowe w oparciu o transparentność składu oraz potwierdzoną skuteczność produktu. Dla marek beauty oznacza to rosnącą rolę komunikacji edukacyjnej i eksperckiej. Dlatego tworzymy strategie, które łączą edukację, inspirację i angażujący storytelling, wspierając marki w budowaniu zaufania oraz długofalowych relacji z odbiorcami.',
+          strong:
+            'tworzymy strategie, które łączą edukację, inspirację i angażujący storytelling, wspierając marki w budowaniu zaufania oraz długofalowych relacji z odbiorcami.',
+        },
+      ],
+    },
     marquee: [
       'Skincare',
       'Makijaż',
@@ -234,10 +289,6 @@ export const INDUSTRIES = [
       'Rytuały',
       'Nowości',
     ],
-    manifesto: {
-      lead: 'Piękno sprzedaje się w feedzie.',
-      rest: 'Ale to spójny, estetyczny content i realne twarze społeczności decydują, po którą markę klientka sięgnie przy półce.',
-    },
     // Imagery: Pexels (free license, no attribution required) — photo IDs
     // 16008945, 7670737, 16233812. Duotone applied in CSS (design D4).
     collage: [
@@ -269,11 +320,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Zdrowie to branża zaufania. Budujemy je tam, gdzie odbiorca szuka odpowiedzi — w feedzie. Edukacyjny content i kampanie dla marek health.',
-    chips: [
-      { value: 'Ekspert', label: 'content konsultowany merytorycznie' },
-      { value: 'Edukacja', label: 'trudne tematy prostym językiem' },
-      { value: 'Profilaktyka', label: 'komunikacja, która realnie pomaga' },
-    ],
+    brief: {
+      pillars: [
+        'Edukacja oparta na wiedzy',
+        'Budowanie zaufania',
+        'Zarządzanie reputacją marki',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża health wymaga szczególnego podejścia do komunikacji. Odbiorcy oczekują rzetelnych informacji, eksperckiej wiedzy oraz treści opartych na faktach. W świecie pełnym dezinformacji zaufanie staje się jednym z najcenniejszych zasobów marki.',
+          strong:
+            'Odbiorcy oczekują rzetelnych informacji, eksperckiej wiedzy oraz treści opartych na faktach.',
+        },
+        {
+          text: 'Jak wynika z raportu Edelman Trust Barometer 2025, aż 72% respondentów obawia się fałszywych informacji i dezinformacji. Dlatego skuteczna komunikacja marek z obszaru zdrowia i wellbeingu powinna opierać się na wiarygodnych źródłach, transparentności i budowaniu długofalowych relacji z odbiorcami.',
+        },
+      ],
+    },
     marquee: [
       'Wellbeing',
       'Suplementy',
@@ -283,10 +346,6 @@ export const INDUSTRIES = [
       'Zaufanie',
       'Wsparcie',
     ],
-    manifesto: {
-      lead: 'Zdrowia nie sprzedaje się obietnicą.',
-      rest: 'Sprzedaje się je rzetelną edukacją, autorytetem ekspertów i komunikacją, której odbiorca ufa w najważniejszych decyzjach.',
-    },
     // Imagery: Pexels (free license) — photo IDs 7526027, 7615467, 7615558.
     collage: [
       {
@@ -304,7 +363,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 5 — editorial · draft copy pending review (batch 2)
+  // 5 — editorial
   {
     id: 'finanse',
     slug: 'finanse',
@@ -317,11 +376,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Finanse to branża zaufania w czystej postaci. Budujemy je codzienną, zrozumiałą komunikacją dla marek finansowych i fintech.',
-    chips: [
-      { value: 'B2B & B2C', label: 'komunikacja dopasowana do odbiorcy' },
-      { value: 'Edukacja', label: 'finanse bez żargonu' },
-      { value: 'Zaufanie', label: 'fundament każdej decyzji' },
-    ],
+    brief: {
+      pillars: [
+        'Budowanie wiarygodności',
+        'Ekspercka komunikacja',
+        'Thought leadership',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża finansowa opiera się przede wszystkim na zaufaniu. Odbiorcy oczekują transparentnej komunikacji, eksperckiej wiedzy oraz prostego wyjaśniania nawet najbardziej złożonych zagadnień. W social mediach kluczowe staje się budowanie wiarygodności i długofalowych relacji z klientami.',
+          strong:
+            'W social mediach kluczowe staje się budowanie wiarygodności i długofalowych relacji z klientami.',
+        },
+        {
+          text: 'Jak wynika z raportu Edelman Trust Barometer 2025, aż 64% respondentów deklaruje, że zaufanie do marki ma kluczowy wpływ na ich decyzje zakupowe. W przypadku branży finansowej oznacza to, że komunikacja powinna nie tylko informować o ofercie, ale również konsekwentnie budować pozycję eksperta i wzmacniać reputację marki.',
+        },
+      ],
+    },
     marquee: [
       'Fintech',
       'Płatności',
@@ -331,10 +402,6 @@ export const INDUSTRIES = [
       'Inwestycje',
       'Zaufanie',
     ],
-    manifesto: {
-      lead: 'Finansów nie powierza się przypadkowi.',
-      rest: 'Powierza się je marce, która tłumaczy trudne tematy prostym językiem i buduje zaufanie każdego dnia.',
-    },
     // Imagery: Pexels (free license) — photo IDs 6214369, 2988232, 4691474.
     collage: [
       {
@@ -352,7 +419,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 6 — editorial · draft copy pending review (batch 2)
+  // 6 — editorial
   {
     id: 'petcare',
     slug: 'petcare',
@@ -365,14 +432,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Petcare to branża emocji i lojalności. Budujemy społeczności właścicieli, dla których zwierzę to członek rodziny — i tak samo traktujemy marki.',
-    chips: [
-      {
-        value: 'Community',
-        label: 'najbardziej lojalni odbiorcy w social mediach',
-      },
-      { value: 'Poradniki', label: 'content, po który wracają' },
-      { value: 'Emocje', label: 'zwierzę = członek rodziny' },
-    ],
+    brief: {
+      pillars: [
+        'Edukacja i eksperckość',
+        'Zaangażowane społeczności',
+        'Content oparty na pasji',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża zoologiczna to kategoria, w której kluczową rolę odgrywają emocje, zaufanie i ekspercka wiedza. Opiekunowie zwierząt coraz częściej traktują swoich pupili jak pełnoprawnych członków rodziny, dlatego oczekują od marek nie tylko wysokiej jakości produktów, ale również wartościowych treści i rzetelnych porad.',
+          strong:
+            'Opiekunowie zwierząt coraz częściej traktują swoich pupili jak pełnoprawnych członków rodziny, dlatego oczekują od marek nie tylko wysokiej jakości produktów, ale również wartościowych treści i rzetelnych porad.',
+        },
+        {
+          text: 'Według raportu PMR „Rynek zoologiczny w Polsce 2025” właściciele zwierząt coraz chętniej inwestują w specjalistyczne produkty i aktywnie poszukują informacji dotyczących zdrowia, żywienia i pielęgnacji swoich pupili. Dlatego skuteczna komunikacja w social mediach powinna łączyć edukację, inspirację i budowanie zaangażowanej społeczności skupionej wokół wspólnej pasji.',
+        },
+      ],
+    },
     marquee: [
       'Zoologia',
       'Karma',
@@ -382,10 +458,6 @@ export const INDUSTRIES = [
       'Adopcje',
       'Miłość do zwierząt',
     ],
-    manifesto: {
-      lead: 'Dla właściciela to nie „zwierzę”. To rodzina.',
-      rest: 'Marki, które to rozumieją, budują najbardziej lojalne społeczności w całym social mediach.',
-    },
     // Imagery: Pexels (free license) — photo IDs 7527370, 10160237, 46024.
     collage: [
       {
@@ -403,7 +475,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 7 — editorial · draft copy pending review (batch 2)
+  // 7 — editorial
   {
     id: 'alkohole',
     slug: 'alkohole',
@@ -416,11 +488,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Alkohole to branża rytuału i okazji. Budujemy aspiracyjny wizerunek marek — z wyczuciem regulacji i odpowiedzialnej konsumpcji.',
-    chips: [
-      { value: 'Regulacje', label: 'komunikacja zgodna z prawem' },
-      { value: 'Rytuał', label: 'marka wpisana w moment' },
-      { value: 'Aspiracja', label: 'wizerunek premium' },
-    ],
+    brief: {
+      pillars: [
+        'Storytelling marki',
+        'Okazje konsumpcyjne',
+        'Zaangażowana społeczność',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża alkoholowa to jedna z najbardziej wymagających kategorii w social mediach. Ograniczenia prawne sprawiają, że marki nie mogą opierać swojej komunikacji wyłącznie na produkcie czy sprzedaży. Kluczową rolę odgrywają emocje, storytelling oraz budowanie silnego świata wartości wokół marki.',
+          strong:
+            'Kluczową rolę odgrywają emocje, storytelling oraz budowanie silnego świata wartości wokół marki.',
+        },
+        {
+          text: 'Wiemy, że konsumenci wybierają konkretne marki nie tylko ze względu na smak, ale również historię, tradycję, wartości czy wyjątkowe okazje, którym towarzyszą. Dlatego tworzymy komunikację opartą na angażujących historiach, budowaniu pozytywnych skojarzeń i kreowaniu naturalnych momentów kontaktu z marką, które wzmacniają jej rozpoznawalność i budują długofalowe relacje z odbiorcami.',
+        },
+      ],
+    },
     marquee: [
       'Wino',
       'Piwo craft',
@@ -430,10 +514,6 @@ export const INDUSTRIES = [
       'Degustacje',
       'Odpowiedzialna konsumpcja',
     ],
-    manifesto: {
-      lead: 'Alkohole rządzą się własnymi prawami.',
-      rest: 'Regulacje, moment i rytuał — trzeba je wszystkie wyczuć, żeby zbudować aspiracyjną markę.',
-    },
     // Imagery: Pexels (free license) — photo IDs 17541188, 4485353, 3937673.
     collage: [
       {
@@ -448,7 +528,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 8 — editorial · draft copy pending review (batch 2)
+  // 8 — editorial
   {
     id: 'fashion',
     slug: 'fashion',
@@ -461,16 +541,24 @@ export const INDUSTRIES = [
     },
     tagline:
       'Fashion to branża tempa. Nadajemy markom rytm feedu — budujemy pożądanie wokół dropów i kolekcji, sezon po sezonie.',
-    chips: [
-      { value: 'Trendy', label: 'marka zawsze na czasie' },
-      { value: 'Drop', label: 'napięcie, które sprzedaje' },
-      { value: 'UGC', label: 'styl w wykonaniu społeczności' },
-    ],
-    marquee: ['Moda', 'Trendy', 'Lookbook', 'Drop', 'UGC', 'Kolekcje', 'Styl'],
-    manifesto: {
-      lead: 'Moda żyje szybciej niż feed.',
-      rest: 'Wygrywają marki, które nadają tempo — budują pożądanie wokół dropów i zamieniają obserwujących w klientów.',
+    brief: {
+      pillars: [
+        'Trend-driven content',
+        'Influencer marketing',
+        'Social commerce',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża fashion to jedna z najbardziej dynamicznych kategorii w social mediach. Konsumenci oczekują od marek nie tylko prezentacji produktów, ale również inspiracji, autentyczności i spójnego świata wartości.',
+        },
+        {
+          text: 'Według raportu Euromonitor „Top Global Consumer Trends 2025” konsumenci coraz częściej wybierają marki, które odzwierciedlają ich styl życia i pozwalają wyrażać własną tożsamość. To sprawia, że social media stają się dla marek modowych przestrzenią do budowania pożądania, inspirowania odbiorców i tworzenia zaangażowanych społeczności.',
+          strong:
+            'social media stają się dla marek modowych przestrzenią do budowania pożądania, inspirowania odbiorców i tworzenia zaangażowanych społeczności.',
+        },
+      ],
     },
+    marquee: ['Moda', 'Trendy', 'Lookbook', 'Drop', 'UGC', 'Kolekcje', 'Styl'],
     // Imagery: Pexels (free license) — photo IDs 17016524, 30892135, 36845202.
     collage: [
       {
@@ -488,7 +576,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 9 — editorial · draft copy pending review (batch 3)
+  // 9 — editorial
   {
     id: 'horeca',
     slug: 'horeca',
@@ -501,11 +589,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'HoReCa to branża apetytu. Budzimy go tam, gdzie zaczyna się głód — w feedzie. Food content i komunikacja, która zapełnia stoliki.',
-    chips: [
-      { value: 'Food content', label: 'zdjęcia, po których słychać głód' },
-      { value: 'Atmosfera', label: 'miejsce, do którego chce się wrócić' },
-      { value: 'Rezerwacje', label: 'feed, który zapełnia stoliki' },
-    ],
+    brief: {
+      pillars: [
+        'Apetyczny content',
+        'Sezonowość i trendy',
+        'Zaangażowana społeczność',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża HoReCa to kategoria, w której konsumenci kupują nie tylko produkt, ale przede wszystkim doświadczenie. W social mediach liczą się emocje, estetyka i umiejętność opowiadania historii, które zachęcają odbiorców do odwiedzenia lokalu lub sięgnięcia po produkt.',
+          strong:
+            'W social mediach liczą się emocje, estetyka i umiejętność opowiadania historii, które zachęcają odbiorców do odwiedzenia lokalu lub sięgnięcia po produkt.',
+        },
+        {
+          text: 'Według raportu PMR „Rynek HoReCa w Polsce 2025” aż 58% przedstawicieli pokolenia Z sprawdza opinie dostępne w internecie przed pierwszą wizytą w lokalu gastronomicznym. To pokazuje, jak dużą rolę odgrywają dziś media społecznościowe, rekomendacje i autentyczne doświadczenia klientów. Dlatego tworzymy komunikację, która łączy atrakcyjny content wizualny, sezonowe trendy i angażujące formaty, wspierając marki w budowaniu rozpoznawalności i lojalnej społeczności.',
+        },
+      ],
+    },
     marquee: [
       'Restauracje',
       'Kawiarnie',
@@ -515,10 +615,6 @@ export const INDUSTRIES = [
       'Atmosfera',
       'Okazje',
     ],
-    manifesto: {
-      lead: 'Głód zaczyna się w feedzie.',
-      rest: 'Zanim gość przekroczy próg, apetyczny content i atmosfera miejsca już zapełniają stoliki.',
-    },
     // Imagery: Pexels (free license) — photo IDs 6327536, 1327393, 36430157.
     collage: [
       {
@@ -536,7 +632,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 10 — editorial · draft copy pending review (batch 3)
+  // 10 — editorial
   {
     id: 'hotele-i-miejsca-wypoczynkowe',
     slug: 'hotele-i-miejsca-wypoczynkowe',
@@ -549,11 +645,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Wypoczynek to branża marzeń. Sprzedajemy je, zanim gość spakuje walizkę — aspiracyjny travel content dla hoteli i miejsc wypoczynkowych.',
-    chips: [
-      { value: 'Aspiracja', label: 'miejsce, o którym się marzy' },
-      { value: 'Booking', label: 'content, który napędza rezerwacje' },
-      { value: 'Sezony', label: 'komunikacja przez cały rok' },
-    ],
+    brief: {
+      pillars: [
+        'Storytelling doświadczeń',
+        'Inspirujący content wizualny',
+        'Budowanie lojalności gości',
+      ],
+      paragraphs: [
+        {
+          text: 'W branży hotelarskiej i turystycznej klienci nie kupują noclegu czy pobytu — kupują emocje, wspomnienia i wyjątkowe doświadczenia. To właśnie dlatego social media odgrywają tak ważną rolę w inspirowaniu do podróży i budowaniu wizerunku miejsca.',
+        },
+        {
+          text: 'Jak wynika z badania Polskiej Organizacji Turystycznej „Turystyka w czasach zmian 2025”, aż 77% Polaków przed wyjazdem poszukuje inspiracji i informacji w internecie. Oznacza to, że atrakcyjny content wizualny, autentyczne historie i konsekwentnie budowany wizerunek marki mają realny wpływ na wybór miejsca wypoczynku.',
+          strong:
+            'aż 77% Polaków przed wyjazdem poszukuje inspiracji i informacji w internecie.',
+        },
+      ],
+    },
     marquee: [
       'Hotele',
       'Resorty',
@@ -563,10 +671,6 @@ export const INDUSTRIES = [
       'Rezerwacje',
       'Doświadczenie',
     ],
-    manifesto: {
-      lead: 'Wakacje kupuje się marzeniem.',
-      rest: 'Aspiracyjny travel content sprzedaje miejsce, zanim gość w ogóle spakuje walizkę.',
-    },
     // Imagery: Pexels (free license) — photo IDs 15490065, 2259226, 38406370.
     collage: [
       {
@@ -584,7 +688,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 11 — editorial · draft copy pending review (batch 3)
+  // 11 — editorial
   {
     id: 'nieruchomosci-i-deweloperzy',
     slug: 'nieruchomosci-i-deweloperzy',
@@ -597,11 +701,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Nieruchomości to branża największej decyzji zakupowej. Budujemy zaufanie, które ją poprzedza — i komunikację, która generuje leady.',
-    chips: [
-      { value: 'Leady', label: 'komunikacja nastawiona na kontakt' },
-      { value: 'Wizualizacje', label: 'inwestycja, którą widać' },
-      { value: 'Zaufanie', label: 'fundament decyzji życia' },
-    ],
+    brief: {
+      pillars: [
+        'Storytelling inwestycji',
+        'Personal branding ekspertów',
+        'Budowanie zaufania',
+      ],
+      paragraphs: [
+        {
+          text: 'Zakup nieruchomości to jedna z najważniejszych decyzji finansowych w życiu konsumentów. W branży deweloperskiej social media pełnią znacznie większą rolę niż tylko kanał sprzedażowy — pomagają budować wiarygodność marki, edukować klientów i prezentować styl życia związany z inwestycją.',
+        },
+        {
+          text: 'Według raportu Otodom „Szczęśliwy Dom. Mieszkaniowe oczekiwania Polaków 2025” aż 80% Polaków deklaruje, że poszukując nieruchomości korzysta z internetu. Oznacza to, że obecność marki w digitalu często stanowi pierwszy punkt kontaktu z potencjalnym klientem, a transparentna i ekspercka komunikacja może realnie wpływać na decyzje zakupowe.',
+          strong:
+            'obecność marki w digitalu często stanowi pierwszy punkt kontaktu z potencjalnym klientem, a transparentna i ekspercka komunikacja może realnie wpływać na decyzje zakupowe.',
+        },
+      ],
+    },
     marquee: [
       'Deweloperzy',
       'Inwestycje',
@@ -611,10 +727,6 @@ export const INDUSTRIES = [
       'Leady',
       'Zaufanie',
     ],
-    manifesto: {
-      lead: 'Zakup nieruchomości to decyzja życia.',
-      rest: 'Poprzedza ją zaufanie — budujemy je prezentacją inwestycji i komunikacją, która generuje realne leady.',
-    },
     // Imagery: Pexels (free license) — photo IDs 8089172, 7614605, 16916525.
     collage: [
       {
@@ -632,7 +744,7 @@ export const INDUSTRIES = [
     ],
   },
 
-  // 12 — editorial · draft copy pending review (batch 3)
+  // 12 — editorial
   {
     id: 'rozrywka',
     slug: 'rozrywka',
@@ -645,11 +757,23 @@ export const INDUSTRIES = [
     },
     tagline:
       'Rozrywka to branża walki o uwagę. Wygrywamy ją treścią — budujemy hype wokół premier i wydarzeń, i aktywujemy społeczność.',
-    chips: [
-      { value: 'Hype', label: 'napięcie przed premierą' },
-      { value: 'Community', label: 'społeczność, która współtworzy' },
-      { value: 'Zaangażowanie', label: 'treść, którą się udostępnia' },
-    ],
+    brief: {
+      pillars: [
+        'Community marketing',
+        'Sezonowe kampanie',
+        'Real-time marketing',
+      ],
+      paragraphs: [
+        {
+          text: 'Branża rozrywkowa opiera się na emocjach, doświadczeniach i wspólnie spędzanym czasie. W świecie social mediów kluczowe znaczenie ma tworzenie angażujących treści, które nie tylko informują o ofercie, ale przede wszystkim zachęcają odbiorców do aktywnego uczestnictwa i dzielenia się swoimi doświadczeniami.',
+        },
+        {
+          text: 'Jak wynika z raportu Deloitte „Digital Consumer Trends 2025”, konsumenci coraz częściej poszukują rozrywki, która pozwala im budować relacje i tworzyć wspólne wspomnienia. Dlatego marki z tej kategorii powinny być obecne tam, gdzie toczą się rozmowy odbiorców, reagować na bieżące trendy i konsekwentnie budować społeczność wokół swoich działań.',
+          strong:
+            'marki z tej kategorii powinny być obecne tam, gdzie toczą się rozmowy odbiorców, reagować na bieżące trendy i konsekwentnie budować społeczność wokół swoich działań.',
+        },
+      ],
+    },
     marquee: [
       'Eventy',
       'Kultura',
@@ -659,10 +783,6 @@ export const INDUSTRIES = [
       'Emocje',
       'Live',
     ],
-    manifesto: {
-      lead: 'Uwaga to waluta rozrywki.',
-      rest: 'Budujemy hype wokół premier, aktywujemy społeczność i tworzymy treści, które żyją w komentarzach.',
-    },
     // Imagery: Pexels (free license) — photo IDs 13230484, 167605, 6398745.
     collage: [
       {

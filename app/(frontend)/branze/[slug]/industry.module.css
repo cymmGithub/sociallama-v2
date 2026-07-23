@@ -1,7 +1,7 @@
 /*
  * Industry-page template styles — two variants sharing one module.
- * Proof (mock C): plum hero → creatives wall → numbers → quote + card → CTA.
- * Editorial (mock B): cream hero + collage → marquee → manifesto + chips → CTA.
+ * Proof (mock C): plum hero → brief → creatives wall → numbers → quote → CTA.
+ * Editorial (mock B): cream hero + collage → brief → marquee → CTA.
  * Brand tokens (not theme tokens) paint the bands, exactly like /o-nas sections.
  *
  * Fonts: raw elements don't inherit the brand faces (only the `.h1/.h2`
@@ -50,40 +50,129 @@
   color: var(--color-plum);
 }
 
-/* —— Shared: stat chips (editorial) ——————————————————————————————————————————— */
+/* —— Shared: brief section (under hero, both variants) —————————————————————————
+   Industry copy over a faint Lucide icon watermark (design 2026-07-23). */
 
-.chips {
+.brief {
+  position: relative;
+  overflow: hidden;
+  padding: calc(var(--safe) * 3.5) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+/* Decorative icon watermark behind the copy — plum at low opacity. */
+.briefIcons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--color-plum);
+  opacity: 0.07;
+}
+
+.briefIcon {
+  position: absolute;
+}
+
+.briefIcon:nth-child(1) {
+  top: 6%;
+  left: 3%;
+  width: 7rem;
+  height: 7rem;
+  transform: rotate(-8deg);
+}
+
+.briefIcon:nth-child(2) {
+  top: 50%;
+  left: 12%;
+  width: 9rem;
+  height: 9rem;
+  transform: rotate(6deg);
+}
+
+.briefIcon:nth-child(3) {
+  top: 12%;
+  right: 26%;
+  width: 6rem;
+  height: 6rem;
+  transform: rotate(10deg);
+}
+
+.briefIcon:nth-child(4) {
+  right: 6%;
+  bottom: 8%;
+  width: 10rem;
+  height: 10rem;
+  transform: rotate(-5deg);
+}
+
+.briefIcon:nth-child(5) {
+  top: 38%;
+  right: 2%;
+  width: 6.5rem;
+  height: 6.5rem;
+  transform: rotate(4deg);
+}
+
+.briefInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  position: relative;
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: calc(var(--gap) * 4);
+    align-items: start;
+  }
+}
+
+.briefHead {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: var(--safe);
+}
+
+.pillars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.chip {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding: calc(var(--safe) * 0.9);
-  background: var(--color-cream);
-  border-radius: 1rem;
-}
-
-.chipValue {
-  flex-shrink: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 800;
-  line-height: 1;
+.pillar {
+  padding: 0.5rem 1rem;
+  border: 1.5px solid var(--color-plum);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--color-plum);
 }
 
-.chipLabel {
+.briefBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--safe);
+}
+
+.briefP {
+  margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.95rem;
-  line-height: 1.35;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
   color: var(--color-ink);
+}
+
+.briefStrong {
+  font-weight: 700;
+  color: var(--color-plum);
 }
 
 /* —— Shared: CTA band ———————————————————————————————————————————————————————— */
@@ -569,46 +658,6 @@
 .marqueeSep {
   margin-inline: 1.2rem;
   color: var(--color-orange);
-}
-
-/* —— Editorial manifesto + chips ——————————————————————————————————————————————— */
-
-.manifesto {
-  padding: calc(var(--safe) * 3.5) var(--safe);
-  background: var(--color-sand);
-  color: var(--color-ink);
-}
-
-.manifestoInner {
-  --reveal-stagger: 140ms;
-  --reveal-transform: translateY(28px);
-
-  display: grid;
-  gap: calc(var(--safe) * 2);
-  max-width: 1240px;
-  margin-inline: auto;
-
-  @media (--desktop) {
-    grid-template-columns: 1.15fr 0.85fr;
-    align-items: center;
-    gap: calc(var(--gap) * 4);
-  }
-}
-
-.manifestoHeading {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  font-weight: 800;
-  line-height: 1.05;
-}
-
-.manifestoLead {
-  color: var(--color-ink);
-}
-
-.manifestoRest {
-  color: color-mix(in srgb, var(--color-ink) 45%, transparent);
 }
 
 /* —— Editorial client logos ————————————————————————————————————————————————————— */
