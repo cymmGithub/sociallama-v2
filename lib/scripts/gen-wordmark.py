@@ -73,6 +73,56 @@ def n(v):
     return f"{v:.1f}"
 
 
+def ink_vb(m):
+    """Tight ink-bounds viewBox (+3% pad), like the footer wordmark."""
+    pad = 0.03 * m["upm"]
+    return (f'{n(m["xMin"] - pad)} {n(-m["yMax"] - pad)} '
+            f'{n((m["xMax"] - m["xMin"]) + 2 * pad)} '
+            f'{n((m["yMax"] - m["yMin"]) + 2 * pad)}')
+
+
+# Industry hero wordmarks (editorial /branze pages) — one merged-union path per
+# label, keyed by industry id (matches lib/content/branze.ts). Labels are the
+# uppercase display forms (CSS uppercases them). Proof pages use solid text, so
+# only the 10 editorial labels need outline paths.
+INDUSTRY_LABELS = {
+    "beauty": "BEAUTY",
+    "health": "HEALTH",
+    "finanse": "FINANSE",
+    "petcare": "PETCARE",
+    "alkohole": "ALKOHOLE",
+    "fashion": "FASHION",
+    "horeca": "HORECA",
+    "hotele-i-miejsca-wypoczynkowe": "HOTELE I MIEJSCA WYPOCZYNKOWE",
+    "nieruchomosci-i-deweloperzy": "NIERUCHOMOŚCI I DEWELOPERZY",
+    "rozrywka": "ROZRYWKA",
+}
+industry_rows = []
+for _iid, _label in INDUSTRY_LABELS.items():
+    _m = merged(_label)
+    industry_rows.append(
+        f"  '{_iid}': {{\n    viewBox: '{ink_vb(_m)}',\n    d: '{_m['d']}',\n  }},"
+    )
+industry_ts = "\n".join(industry_rows)
+
+
+# Contact hero marquee outline rows (localized). Uppercase display forms + the
+# trailing "  ·  " separator so the scrolling tile repeats seamlessly, same as
+# the homepage marquee — viewBox width is the full advance.
+CONTACT_MARQUEE = {
+    "pl": "O TWOIM BIZNESIE  ·  ",
+    "en": "ABOUT YOUR BUSINESS  ·  ",
+}
+contact_rows = []
+for _loc, _text in CONTACT_MARQUEE.items():
+    _m = merged(_text)
+    _vb = f'0 {n(-_m["yMax"])} {n(_m["advance"])} {n(_m["yMax"])}'
+    contact_rows.append(
+        f"  {_loc}: {{\n    viewBox: '{_vb}',\n    d: '{_m['d']}',\n  }},"
+    )
+contact_ts = "\n".join(contact_rows)
+
+
 # Footer: centered static wordmark -> ink-bounds viewBox + small pad.
 fw = merged("SOCIAL LAMA")
 padF = 0.03 * fw["upm"]
@@ -104,6 +154,25 @@ export const marqueeOutlinePath = {{
   viewBox: '{mvb}',
   d: '{mw["d"]}',
 }} as const
+
+// Industry hero wordmarks (editorial /branze pages), keyed by industry id.
+// Rendered as a single stroked <path> — the merged union dissolves the crossing
+// strokes plain outlined <text> shows on chars like A/K/H/E.
+export const industryWordmarkPaths: Record<
+  string,
+  {{ viewBox: string; d: string }}
+> = {{
+{industry_ts}
+}}
+
+// Contact hero marquee outline row, per locale — replaces -webkit-text-stroke
+// (which crossed/doubled strokes on chars like E/M/B) with the merged union.
+export const contactMarqueeOutlinePaths: Record<
+  'pl' | 'en',
+  {{ viewBox: string; d: string }}
+> = {{
+{contact_ts}
+}}
 '''
 with open(OUT, "w") as fh:
     fh.write(ts)

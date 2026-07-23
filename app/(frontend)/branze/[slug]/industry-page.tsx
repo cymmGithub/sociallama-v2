@@ -6,6 +6,7 @@ import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
 import type { Industry, LocalizedBranze } from '@/lib/content/branze'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import { industryWordmarkPaths } from '@/lib/wordmark-paths'
 import s from './industry.module.css'
 
 /*
@@ -194,6 +195,9 @@ function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
   const longLabel =
     industry.label.length > 16 ||
     industry.label.split(' ').some((word) => word.length > 10)
+  // Merged-union outline path (dissolves the crossing strokes plain outlined
+  // text shows on A/K/H/E); falls back to text if a label has no generated path.
+  const wordmark = industryWordmarkPaths[industry.id]
 
   return (
     <>
@@ -211,8 +215,23 @@ function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
           data-long-label={longLabel || undefined}
         >
           <div className={s.edHeroCopy}>
-            <h1 data-reveal-item className={s.edWordmark}>
-              {industry.label}
+            <h1
+              data-reveal-item
+              className={s.edWordmark}
+              aria-label={industry.label}
+            >
+              {wordmark ? (
+                <svg
+                  className={s.edWordmarkSvg}
+                  viewBox={wordmark.viewBox}
+                  preserveAspectRatio="xMinYMid meet"
+                  aria-hidden="true"
+                >
+                  <path d={wordmark.d} vectorEffect="non-scaling-stroke" />
+                </svg>
+              ) : (
+                industry.label
+              )}
             </h1>
             <p data-reveal-item className={s.edLead}>
               {industry.tagline}

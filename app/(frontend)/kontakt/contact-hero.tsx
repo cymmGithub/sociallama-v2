@@ -6,6 +6,7 @@ import {
   contactMeta as contactMetaDefault,
   type LocalizedContact,
 } from '@/lib/content/contact'
+import { contactMarqueeOutlinePaths } from '@/lib/wordmark-paths'
 import s from './kontakt.module.css'
 
 /**
@@ -17,10 +18,13 @@ export function ContactHero({
   meta = contactMetaDefault,
   marquee = contactMarqueeDefault,
   lede = contactLedeDefault,
+  outlinePath = contactMarqueeOutlinePaths.pl,
 }: {
   meta?: LocalizedContact['contactMeta']
   marquee?: LocalizedContact['contactMarquee']
   lede?: LocalizedContact['contactLede']
+  /** Locale-correct merged-union path for the outline row (default PL). */
+  outlinePath?: { viewBox: string; d: string }
 }) {
   return (
     <>
@@ -33,10 +37,19 @@ export function ContactHero({
             {marquee.fill}&nbsp;&nbsp;·&nbsp;&nbsp;
           </span>
         </Marquee>
+        {/* Outline row is a single merged-union SVG (lib/wordmark-paths.ts) — the
+            glyphs are boolean-unioned so tight tracking has no crossing/doubled
+            strokes, matching the homepage marquee. The path bakes in the
+            trailing "  ·  " separator so the tile repeats seamlessly. */}
         <Marquee className={s.row} repeat={3} speed={1.2} reversed>
-          <span className={s.outline}>
-            {marquee.outline}&nbsp;&nbsp;·&nbsp;&nbsp;
-          </span>
+          <svg
+            className={s.outline}
+            viewBox={outlinePath.viewBox}
+            preserveAspectRatio="xMinYMid meet"
+            aria-hidden="true"
+          >
+            <path d={outlinePath.d} vectorEffect="non-scaling-stroke" />
+          </svg>
         </Marquee>
       </section>
       <div className={s.lede}>

@@ -483,14 +483,20 @@
 
 .edWordmark {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(3.2rem, 13vw, 9rem);
-  font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-plum);
+}
+
+/* Merged-union outline (skia-pathops via gen-wordmark.py). A single stroked
+   path — no crossing/doubled strokes on A/K/H/E, matching the homepage marquee.
+   `non-scaling-stroke` keeps the outline a constant weight as the SVG scales. */
+.edWordmarkSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--color-plum);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
 }
 
 .edLead {

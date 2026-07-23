@@ -10,6 +10,7 @@ import { BrandBelt } from '@/components/ui/brand-belt'
 import * as en from '@/lib/content/contact.en'
 import { clients } from '@/lib/content/home.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { contactMarqueeOutlinePaths } from '@/lib/wordmark-paths'
 
 export const metadata: Metadata = {
   title: en.contactMeta.title,
@@ -29,6 +30,7 @@ export default function EnContactPage() {
           meta={en.contactMeta}
           marquee={en.contactMarquee}
           lede={en.contactLede}
+          outlinePath={contactMarqueeOutlinePaths.en}
         />
         <div className={s.formSection}>
           <ContactForm

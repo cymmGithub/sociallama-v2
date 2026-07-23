@@ -80,9 +80,20 @@
   color: var(--color-orange);
 }
 
+/* Outline row is a single merged-union SVG (see lib/wordmark-paths.ts): glyphs
+   boolean-unioned so tight tracking has no crossing/doubled strokes. Sized to
+   the fill row's cap height (0.72em against the shared display size). */
 .outline {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--color-cream);
+  display: block;
+  height: 0.72em;
+  width: auto;
+  overflow: visible;
+}
+
+.outline path {
+  fill: none;
+  stroke: var(--color-cream);
+  stroke-width: 2px;
 }
 
 /* —— Lede ————————————————————————————————————————————————————————————————— */
