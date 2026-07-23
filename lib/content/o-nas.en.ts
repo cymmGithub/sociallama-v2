@@ -192,15 +192,13 @@ export const oNasTeam = {
       bio: 'She started at Warner Bros. Discovery, building communication for brands like player.pl, TVN, and HBO Max. Today at Social Lama she leads a team, coordinates the video unit, and owns strategy and campaigns for brands across many industries.',
       photo: '/o-nas/slider/emilia-metryka.png',
     },
-    // TEMP: excluded pending a better source photo (mirrors o-nas.ts) — low-res
-    // square crop that can't match the front-facing set. Re-enable in both files.
-    // {
-    //   given: 'PAULINA',
-    //   surname: 'HILDEBRAND',
-    //   role: 'Social Media Manager',
-    //   bio: "She pairs a humanist's feel for words with an analytical take on data, making communication that actually works on social. She specializes in running brand profiles end to end — from strategy to client relationships.",
-    //   photo: '/o-nas/slider/paulina-hildebrand.png',
-    // },
+    {
+      given: 'PAULINA',
+      surname: 'HILDEBRAND',
+      role: 'Social Media Manager',
+      bio: "She pairs a humanist's feel for words with an analytical take on data, making communication that actually works on social. She specializes in running brand profiles end to end — from strategy to client relationships.",
+      photo: '/o-nas/slider/paulina-hildebrand.png',
+    },
     {
       given: 'MAGDA',
       surname: 'ROKICKA',
@@ -215,15 +213,13 @@ export const oNasTeam = {
       bio: 'She specializes in B2B and medical-sector brand communication, pairing a strategic approach with management know-how. She also creates the visuals — graphics, video, and UGC.',
       photo: '/o-nas/slider/kornelia-orlik.png',
     },
-    // TEMP: excluded pending a better source photo (mirrors o-nas.ts) — low-res
-    // square crop, tilted pose. Re-enable in both files together.
-    // {
-    //   given: 'KATARZYNA',
-    //   surname: 'KAPTUR',
-    //   role: 'Social Media Expert',
-    //   bio: 'Over 4 years in marketing — at Social Lama she creates engaging content and helps brands build a coherent, strong presence online. She blends a Communication Management background with a creative take on content.',
-    //   photo: '/o-nas/slider/katarzyna-kaptur.png',
-    // },
+    {
+      given: 'KATARZYNA',
+      surname: 'KAPTUR',
+      role: 'Social Media Expert',
+      bio: 'Over 4 years in marketing — at Social Lama she creates engaging content and helps brands build a coherent, strong presence online. She blends a Communication Management background with a creative take on content.',
+      photo: '/o-nas/slider/katarzyna-kaptur.png',
+    },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
@@ -245,15 +241,12 @@ export const oNasTeam = {
       bio: 'She pairs a strategic view with communication instinct, helping brands find their own, coherent direction. Over 10 years in marketing and digital — from strategy, through engaging content, to reading the results.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
-    // TEMP: excluded from the slider (see the o-nas.ts note) — tight head+
-    // shoulders crop floats in the full-height frame. Kept in the homepage
-    // team grid. Re-enable here in sync with o-nas.ts.
-    // {
-    //   given: 'PRZEMYSŁAW',
-    //   surname: 'ŚWIERCZ',
-    //   role: 'Fullstack Developer',
-    //   bio: 'Owns the build and upkeep of the Social Lama site — front end, back end, performance and deploys — keeping the whole thing fast and reliable.',
-    //   photo: '/o-nas/slider/przemyslaw-swiercz.png',
-    // },
+    {
+      given: 'PRZEMYSŁAW',
+      surname: 'ŚWIERCZ',
+      role: 'Fullstack Developer',
+      bio: 'Owns the build and upkeep of the Social Lama site — front end, back end, performance and deploys — keeping the whole thing fast and reliable.',
+      photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    },
   ],
 } satisfies LocalizedONas['oNasTeam']

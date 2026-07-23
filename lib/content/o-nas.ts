@@ -228,17 +228,13 @@ export const oNasTeam = {
       bio: 'Zaczynała w Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w Social Lamie prowadzi zespół, koordynuje komórkę wideo i odpowiada za strategie oraz kampanie dla marek z wielu branż.',
       photo: '/o-nas/slider/emilia-metryka.png',
     },
-    // TEMP: excluded pending a better source photo — the only shot we have is a
-    // low-res square crop that can't be cut out to match the front-facing
-    // head+torso set. Re-enable (here and in o-nas.en.ts) once a proper photo
-    // arrives. Keep this in sync with the EN twin so PL/EN parity holds.
-    // {
-    //   given: 'PAULINA',
-    //   surname: 'HILDEBRAND',
-    //   role: 'Social Media Manager',
-    //   bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, tworząc komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii po relacje z klientami.',
-    //   photo: '/o-nas/slider/paulina-hildebrand.png',
-    // },
+    {
+      given: 'PAULINA',
+      surname: 'HILDEBRAND',
+      role: 'Social Media Manager',
+      bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, tworząc komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii po relacje z klientami.',
+      photo: '/o-nas/slider/paulina-hildebrand.png',
+    },
     {
       given: 'MAGDA',
       surname: 'ROKICKA',
@@ -253,16 +249,13 @@ export const oNasTeam = {
       bio: 'Specjalizuje się w komunikacji marek z obszaru B2B oraz branży medycznej, łącząc podejście strategiczne z kompetencjami z zakresu zarządzania. Tworzy również materiały wizualne — grafiki, wideo i treści UGC.',
       photo: '/o-nas/slider/kornelia-orlik.png',
     },
-    // TEMP: excluded pending a better source photo (see the Paulina note above) —
-    // low-res square crop, tilted 3/4 pose that can't be matched to the set.
-    // Re-enable here and in o-nas.en.ts together.
-    // {
-    //   given: 'KATARZYNA',
-    //   surname: 'KAPTUR',
-    //   role: 'Social Media Expert',
-    //   bio: 'Od ponad 4 lat działa w marketingu — w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu.',
-    //   photo: '/o-nas/slider/katarzyna-kaptur.png',
-    // },
+    {
+      given: 'KATARZYNA',
+      surname: 'KAPTUR',
+      role: 'Social Media Expert',
+      bio: 'Od ponad 4 lat działa w marketingu — w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu.',
+      photo: '/o-nas/slider/katarzyna-kaptur.png',
+    },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
@@ -284,18 +277,13 @@ export const oNasTeam = {
       bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
-    // TEMP: excluded from the slider — the source is a tight head+shoulders
-    // crop, so the full-height slider frame shows a hard "cardboard" torso edge
-    // with empty space below. Kept in the homepage team grid (why-that-works),
-    // where the 4:5 cover crop hides it. Re-enable here and in o-nas.en.ts once
-    // a head-to-waist photo (or an outpainted torso) is available.
-    // {
-    //   given: 'PRZEMYSŁAW',
-    //   surname: 'ŚWIERCZ',
-    //   role: 'Fullstack Developer',
-    //   bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Dba, żeby całość działała szybko i niezawodnie.',
-    //   photo: '/o-nas/slider/przemyslaw-swiercz.png',
-    // },
+    {
+      given: 'PRZEMYSŁAW',
+      surname: 'ŚWIERCZ',
+      role: 'Fullstack Developer',
+      bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Dba, żeby całość działała szybko i niezawodnie.',
+      photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    },
   ],
 } as const
 
