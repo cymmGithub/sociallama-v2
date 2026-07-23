@@ -36,7 +36,7 @@
 - [x] 6.1 `bun run` Biome + TypeScript checks → both green (filter Biome module_resolver panics with `--diagnostic-level=error`)
 - [x] 6.2 Playwright on `:3001`: team slider shows all 11, cycles correctly, no bio overflow (desktop + mobile); cutouts read as one consistent set
 - [x] 6.3 Playwright: project cards show real images and navigate to the correct `/case-studies/<slug>` (PL) and `/en/case-studies/<slug>` (EN)
-- [~] 6.4 Visual sign-off in progress — projects + reordered team approved; further visual tweaks pending from the user
+- [x] 6.4 Visual sign-off given — team + projects + homepage grid redesign approved by the user, merged to main and pushed
 
 ## 7. Post-review adjustments (client-directed during sign-off)
 
