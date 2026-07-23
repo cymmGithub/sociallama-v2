@@ -6,9 +6,10 @@ import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 /*
  * English privacy policy — EN twin of `/polityka-prywatnosci`, a faithful
- * translation of the static Polish page. The source quirks are preserved
- * (restarting list numbering, the osiedle-rozalin.pl reference in Article 7 — an
- * error carried over from the WP original, flagged for legal review).
+ * translation of the static Polish page. The WP original's restarting list
+ * numbering is preserved; its osiedle-rozalin.pl reference in Article 7 was a
+ * copy-paste error and has been corrected. Controller details follow the group
+ * template (see the PL page). Keep the two pages in sync.
  */
 
 export const metadata: Metadata = {
@@ -34,9 +35,9 @@ export default function EnPrivacyPolicyPage() {
           <h2>Article 1. Controller</h2>
           <ol>
             <li>
-              The controller of personal data is Good One PR sp. z o.o., with
-              its registered office in Warsaw, ul. Edwarda Jelinka 38, 01-646
-              Warsaw, NIP: 525-28953-06; KRS: 0000952410
+              The controller of personal data is Good One sp. z o.o., with its
+              registered office in Wrocław, ul. Januszowicka 5/121, 53-135
+              Wrocław, NIP: 525-287-21-79; KRS: 0000914751; REGON: 389646858
             </li>
             <li>
               (hereinafter the “<strong>Controller</strong>”), who attaches
@@ -285,11 +286,11 @@ export default function EnPrivacyPolicyPage() {
           <h2>Article 7. Cookies</h2>
           <ol>
             <li>
-              The website www.osiedle-rozalin.pl (the “Website”) uses IT data
-              stored on the end devices of Website users, i.e. in particular
-              text files containing, among other things, the name of the website
-              they come from, their storage time on the end device, and a unique
-              number (“Cookies”).
+              The website www.sociallama.pl (the “Website”) uses IT data stored
+              on the end devices of Website users, i.e. in particular text files
+              containing, among other things, the name of the website they come
+              from, their storage time on the end device, and a unique number
+              (“Cookies”).
             </li>
             <li>
               Pursuant to Art. 173(1) of the Telecommunications Law Act of 16

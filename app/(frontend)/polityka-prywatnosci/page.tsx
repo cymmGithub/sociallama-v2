@@ -5,14 +5,15 @@ import { alternatesForPath } from '@/lib/i18n/slug-map'
 import s from '../[slug]/post.module.css'
 
 /*
- * Privacy policy — static page migrated verbatim from the WordPress page
+ * Privacy policy — static page migrated from the WordPress page
  * `/polityka-prywatnosci/` (migrate-wp-content, page disposition: keep).
  * Reuses the post template's CSS module: same long-form article surface.
  *
- * Content preserved faithfully from the WP original (modified 2024-06-25),
- * including its quirks (restarting list numbering, the osiedle-rozalin.pl
- * reference in Artykuł 7 — an error carried over from the source document,
- * flagged for legal review during migration).
+ * Content follows the group template (matching diea.pl/polityka-prywatnosci):
+ * Good One sp. z o.o. is the controller, and Artykuł 7 names this site. The
+ * WP original's restarting list numbering is preserved; its osiedle-rozalin.pl
+ * reference in Artykuł 7 was a copy-paste error and has been corrected.
+ * Keep in sync with the EN twin at `/en/privacy-policy`.
  */
 
 export const metadata: Metadata = {
@@ -38,9 +39,9 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 1. Administrator</h2>
           <ol>
             <li>
-              Administratorem danych osobowych jest Good One PR sp. z o.o. z
-              siedzibą w Warszawie, ul. Edwarda Jelinka 38; 01-646 Warszawa nip:
-              525-28953-06; KRS: 0000952410
+              Administratorem danych osobowych jest Good One sp. z o.o. z
+              siedzibą we Wrocławiu, ul. Januszowicka 5/121; 53-135 Wrocław,
+              NIP: 525-287-21-79; KRS: 0000914751; REGON: 389646858
             </li>
             <li>
               (dalej „<strong>Administrator</strong>”), który przykłada dużą
@@ -299,8 +300,8 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 7. Pliki Cookies</h2>
           <ol>
             <li>
-              W serwisie internetowym www.osiedle-rozalin.pl („Serwis”) stosuje
-              się dane informatyczne przechowywane w urządzeniach końcowych
+              W serwisie internetowym www.sociallama.pl („Serwis”) stosuje się
+              dane informatyczne przechowywane w urządzeniach końcowych
               użytkowników Serwisu, tj. w szczególności pliki tekstowe,
               zawierające m.in. nazwę strony internetowej, z której pochodzą,
               czas przechowywania ich na urządzeniu końcowym oraz unikalny numer
