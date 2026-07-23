@@ -155,34 +155,41 @@
     var(--color-plum-dark)
   );
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-cream) 20%, transparent);
-  transition:
-    transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.3s ease;
+  transition: box-shadow 0.35s ease;
 
-  /* Cutout sits head-up so the face reads; torso runs off the bottom edge. */
+  /* Cutout sits head-up so the face reads; torso runs off the bottom edge.
+     Anchored top so the hover zoom grows downward and keeps the face put. */
   & img {
     object-position: top center;
-    transition: filter 0.4s ease;
+    transform-origin: center top;
+    transition:
+      transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+      filter 0.4s ease;
   }
 }
 
-/* Gentle lift on hover (pointer devices only). */
+/* Hover (pointer devices only): a subtle orange glow around the border and a
+   small photo zoom-in — no lift or popup. */
 @media (hover: hover) {
   .tile:hover {
-    transform: translateY(-4px);
     box-shadow:
-      0 0 0 2px var(--color-orange),
-      0 16px 32px rgb(0 0 0 / 0.32);
+      0 0 0 1px color-mix(in srgb, var(--color-orange) 60%, transparent),
+      0 0 22px 1px color-mix(in srgb, var(--color-orange) 34%, transparent);
   }
 
   .tile:hover img {
-    filter: saturate(1.06) brightness(1.03);
+    transform: scale(1.05);
+    filter: saturate(1.03) brightness(1.02);
   }
 }
 
 @media (--reduced-motion) {
   .tile {
     transition: none;
+  }
+
+  .tile:hover img {
+    transform: none;
   }
 }
 
@@ -295,21 +302,21 @@
 
 .certCards {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: clamp(12px, 1.5vw, 20px);
   width: 100%;
 
   @media (--mobile) {
-    justify-content: center;
+    align-items: center;
   }
 }
 
-/* White chip presenting a credential mark unmodified; each takes an equal
-   share of the row so the two sit side by side under the grid (stacks on
-   mobile). */
+/* White chip presenting a credential mark unmodified; the two stack in a column
+   under the grid (centered on mobile). */
 .cert {
-  flex: 1 1 0;
-  min-width: 180px;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 340px;
   display: flex;
   align-items: center;
   justify-content: center;
