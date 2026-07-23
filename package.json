@@ -100,7 +100,7 @@
     "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.184.1",
+    "@types/three": "^0.185.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "deslop-cli": "0.7.3",
     "happy-dom": "^20.10.6",
