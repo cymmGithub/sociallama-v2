@@ -169,6 +169,20 @@ export const INDUSTRIES = [
       lead: 'Beauty sells in the feed.',
       rest: 'But consistent, aesthetic content and real community faces decide which brand she reaches for at the shelf.',
     },
+    collage: [
+      {
+        src: '/branze/beauty/beauty-1.jpg',
+        alt: 'Skincare products in a minimalist arrangement',
+      },
+      {
+        src: '/branze/beauty/beauty-2.jpg',
+        alt: 'Serum and face cream on a neutral backdrop',
+      },
+      {
+        src: '/branze/beauty/beauty-3.jpg',
+        alt: 'Face serum in glass dropper bottles',
+      },
+    ],
   },
 
   // 4 — editorial
@@ -202,6 +216,20 @@ export const INDUSTRIES = [
       lead: "Health isn't sold on a promise.",
       rest: "It's sold with solid education, expert authority, and communication people trust in the decisions that matter most.",
     },
+    collage: [
+      {
+        src: '/branze/health/health-1.jpg',
+        alt: 'Supplement capsules with natural ingredients',
+      },
+      {
+        src: '/branze/health/health-2.jpg',
+        alt: 'Lemon, ginger, and supplements on marble',
+      },
+      {
+        src: '/branze/health/health-3.jpg',
+        alt: 'Supplements in ceramic bowls',
+      },
+    ],
   },
 
   // 5 — editorial · draft copy pending review (batch 2)
@@ -235,6 +263,20 @@ export const INDUSTRIES = [
       lead: "Money isn't handed to chance.",
       rest: "It's handed to a brand that explains hard topics in plain language and earns trust every day.",
     },
+    collage: [
+      {
+        src: '/branze/finanse/finanse-1.jpg',
+        alt: 'Mobile payment on a smartphone',
+      },
+      {
+        src: '/branze/finanse/finanse-2.jpg',
+        alt: 'Contactless card payment at a terminal',
+      },
+      {
+        src: '/branze/finanse/finanse-3.jpg',
+        alt: 'A fan of payment cards in hand',
+      },
+    ],
   },
 
   // 6 — editorial · draft copy pending review (batch 2)
@@ -268,6 +310,17 @@ export const INDUSTRIES = [
       lead: 'To an owner, it\'s not "a pet." It\'s family.',
       rest: 'Brands that get this build the most loyal communities in all of social.',
     },
+    collage: [
+      {
+        src: '/branze/petcare/petcare-1.jpg',
+        alt: 'A dog and kitten meeting at home',
+      },
+      { src: '/branze/petcare/petcare-2.jpg', alt: 'An owner hugging a puppy' },
+      {
+        src: '/branze/petcare/petcare-3.jpg',
+        alt: 'A cat and dog cuddling in the grass',
+      },
+    ],
   },
 
   // 7 — editorial · draft copy pending review (batch 2)
@@ -301,6 +354,20 @@ export const INDUSTRIES = [
       lead: 'Alcohol plays by its own rules.',
       rest: 'Regulations, timing, and ritual — you have to feel all three to build an aspirational brand.',
     },
+    collage: [
+      {
+        src: '/branze/alkohole/alkohole-1.jpg',
+        alt: 'Liquor bottles on bar shelves',
+      },
+      {
+        src: '/branze/alkohole/alkohole-2.jpg',
+        alt: 'A bartender pouring wine',
+      },
+      {
+        src: '/branze/alkohole/alkohole-3.jpg',
+        alt: 'A glass of red wine at a table setting',
+      },
+    ],
   },
 
   // 8 — editorial · draft copy pending review (batch 2)
@@ -334,6 +401,20 @@ export const INDUSTRIES = [
       lead: 'Fashion moves faster than the feed.',
       rest: 'The winners set the pace — building desire around drops and turning followers into customers.',
     },
+    collage: [
+      {
+        src: '/branze/fashion/fashion-1.jpg',
+        alt: 'A model in a white outfit on the runway',
+      },
+      {
+        src: '/branze/fashion/fashion-2.jpg',
+        alt: 'A model in a green top in an urban setting',
+      },
+      {
+        src: '/branze/fashion/fashion-3.jpg',
+        alt: 'A model in a maroon coat in a modern interior',
+      },
+    ],
   },
 
   // 9 — editorial · draft copy pending review (batch 3)
@@ -367,6 +448,20 @@ export const INDUSTRIES = [
       lead: 'Hunger starts in the feed.',
       rest: 'Before a guest crosses the threshold, appetizing content and a sense of place are already filling tables.',
     },
+    collage: [
+      {
+        src: '/branze/horeca/horeca-1.jpg',
+        alt: 'A dessert plated on a marble restaurant table',
+      },
+      {
+        src: '/branze/horeca/horeca-2.jpg',
+        alt: 'A main course with vegetables on an elegant plate',
+      },
+      {
+        src: '/branze/horeca/horeca-3.jpg',
+        alt: 'A chef composing a dish on the plate',
+      },
+    ],
   },
 
   // 10 — editorial · draft copy pending review (batch 3)
@@ -400,6 +495,20 @@ export const INDUSTRIES = [
       lead: 'A vacation is bought on a dream.',
       rest: 'Aspirational travel content sells the place before a guest even packs a bag.',
     },
+    collage: [
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-1.jpg',
+        alt: 'An elegant hotel pool with a rotunda',
+      },
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-2.jpg',
+        alt: 'A tropical resort pool among palms',
+      },
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-3.jpg',
+        alt: 'A resort with a pool at dusk',
+      },
+    ],
   },
 
   // 11 — editorial · draft copy pending review (batch 3)
@@ -433,6 +542,20 @@ export const INDUSTRIES = [
       lead: 'Buying property is a life decision.',
       rest: "It's preceded by trust — we build it by presenting investments and communication that generates real leads.",
     },
+    collage: [
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-1.jpg',
+        alt: 'A modern living room with an open kitchen',
+      },
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-2.jpg',
+        alt: 'A bright hallway in a new apartment',
+      },
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-3.jpg',
+        alt: 'An apartment with a balcony view',
+      },
+    ],
   },
 
   // 12 — editorial · draft copy pending review (batch 3)
@@ -466,6 +589,17 @@ export const INDUSTRIES = [
       lead: 'Attention is the currency of entertainment.',
       rest: 'We build hype around premieres, activate the community, and create content that lives in the comments.',
     },
+    collage: [
+      {
+        src: '/branze/rozrywka/rozrywka-1.jpg',
+        alt: 'A concert stage in blue lights',
+      },
+      { src: '/branze/rozrywka/rozrywka-2.jpg', alt: 'A crowd at a concert' },
+      {
+        src: '/branze/rozrywka/rozrywka-3.jpg',
+        alt: 'An audience before a lit stage',
+      },
+    ],
   },
 ] satisfies LocalizedBranze['industries']
 

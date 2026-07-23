@@ -238,6 +238,22 @@ export const INDUSTRIES = [
       lead: 'Piękno sprzedaje się w feedzie.',
       rest: 'Ale to spójny, estetyczny content i realne twarze społeczności decydują, po którą markę klientka sięgnie przy półce.',
     },
+    // Imagery: Pexels (free license, no attribution required) — photo IDs
+    // 16008945, 7670737, 16233812. Duotone applied in CSS (design D4).
+    collage: [
+      {
+        src: '/branze/beauty/beauty-1.jpg',
+        alt: 'Kosmetyki pielęgnacyjne w minimalistycznej aranżacji',
+      },
+      {
+        src: '/branze/beauty/beauty-2.jpg',
+        alt: 'Serum i krem do twarzy na neutralnym tle',
+      },
+      {
+        src: '/branze/beauty/beauty-3.jpg',
+        alt: 'Serum do twarzy w szklanych buteleczkach',
+      },
+    ],
   },
 
   // 4 — editorial
@@ -271,6 +287,21 @@ export const INDUSTRIES = [
       lead: 'Zdrowia nie sprzedaje się obietnicą.',
       rest: 'Sprzedaje się je rzetelną edukacją, autorytetem ekspertów i komunikacją, której odbiorca ufa w najważniejszych decyzjach.',
     },
+    // Imagery: Pexels (free license) — photo IDs 7526027, 7615467, 7615558.
+    collage: [
+      {
+        src: '/branze/health/health-1.jpg',
+        alt: 'Kapsułki suplementów i naturalne składniki',
+      },
+      {
+        src: '/branze/health/health-2.jpg',
+        alt: 'Cytryna, imbir i suplementy na marmurze',
+      },
+      {
+        src: '/branze/health/health-3.jpg',
+        alt: 'Suplementy w ceramicznych miseczkach',
+      },
+    ],
   },
 
   // 5 — editorial · draft copy pending review (batch 2)
@@ -304,6 +335,21 @@ export const INDUSTRIES = [
       lead: 'Finansów nie powierza się przypadkowi.',
       rest: 'Powierza się je marce, która tłumaczy trudne tematy prostym językiem i buduje zaufanie każdego dnia.',
     },
+    // Imagery: Pexels (free license) — photo IDs 6214369, 2988232, 4691474.
+    collage: [
+      {
+        src: '/branze/finanse/finanse-1.jpg',
+        alt: 'Płatność mobilna na smartfonie',
+      },
+      {
+        src: '/branze/finanse/finanse-2.jpg',
+        alt: 'Płatność zbliżeniowa kartą w terminalu',
+      },
+      {
+        src: '/branze/finanse/finanse-3.jpg',
+        alt: 'Wachlarz kart płatniczych w dłoni',
+      },
+    ],
   },
 
   // 6 — editorial · draft copy pending review (batch 2)
@@ -340,6 +386,21 @@ export const INDUSTRIES = [
       lead: 'Dla właściciela to nie „zwierzę”. To rodzina.',
       rest: 'Marki, które to rozumieją, budują najbardziej lojalne społeczności w całym social mediach.',
     },
+    // Imagery: Pexels (free license) — photo IDs 7527370, 10160237, 46024.
+    collage: [
+      {
+        src: '/branze/petcare/petcare-1.jpg',
+        alt: 'Pies i kotek poznają się w domu',
+      },
+      {
+        src: '/branze/petcare/petcare-2.jpg',
+        alt: 'Właścicielka przytula szczeniaka',
+      },
+      {
+        src: '/branze/petcare/petcare-3.jpg',
+        alt: 'Kot i pies przytulają się w trawie',
+      },
+    ],
   },
 
   // 7 — editorial · draft copy pending review (batch 2)
@@ -373,6 +434,18 @@ export const INDUSTRIES = [
       lead: 'Alkohole rządzą się własnymi prawami.',
       rest: 'Regulacje, moment i rytuał — trzeba je wszystkie wyczuć, żeby zbudować aspiracyjną markę.',
     },
+    // Imagery: Pexels (free license) — photo IDs 17541188, 4485353, 3937673.
+    collage: [
+      {
+        src: '/branze/alkohole/alkohole-1.jpg',
+        alt: 'Butelki alkoholi na barowych półkach',
+      },
+      { src: '/branze/alkohole/alkohole-2.jpg', alt: 'Barman nalewa wino' },
+      {
+        src: '/branze/alkohole/alkohole-3.jpg',
+        alt: 'Kieliszek czerwonego wina przy nakryciu stołu',
+      },
+    ],
   },
 
   // 8 — editorial · draft copy pending review (batch 2)
@@ -398,6 +471,21 @@ export const INDUSTRIES = [
       lead: 'Moda żyje szybciej niż feed.',
       rest: 'Wygrywają marki, które nadają tempo — budują pożądanie wokół dropów i zamieniają obserwujących w klientów.',
     },
+    // Imagery: Pexels (free license) — photo IDs 17016524, 30892135, 36845202.
+    collage: [
+      {
+        src: '/branze/fashion/fashion-1.jpg',
+        alt: 'Modelka w białej stylizacji na wybiegu',
+      },
+      {
+        src: '/branze/fashion/fashion-2.jpg',
+        alt: 'Modelka w zielonym topie w miejskiej scenerii',
+      },
+      {
+        src: '/branze/fashion/fashion-3.jpg',
+        alt: 'Modelka w bordowym płaszczu w nowoczesnym wnętrzu',
+      },
+    ],
   },
 
   // 9 — editorial · draft copy pending review (batch 3)
@@ -431,6 +519,21 @@ export const INDUSTRIES = [
       lead: 'Głód zaczyna się w feedzie.',
       rest: 'Zanim gość przekroczy próg, apetyczny content i atmosfera miejsca już zapełniają stoliki.',
     },
+    // Imagery: Pexels (free license) — photo IDs 6327536, 1327393, 36430157.
+    collage: [
+      {
+        src: '/branze/horeca/horeca-1.jpg',
+        alt: 'Deser podany na marmurowym stole w restauracji',
+      },
+      {
+        src: '/branze/horeca/horeca-2.jpg',
+        alt: 'Danie główne z warzywami na eleganckim talerzu',
+      },
+      {
+        src: '/branze/horeca/horeca-3.jpg',
+        alt: 'Szef kuchni komponuje danie na talerzu',
+      },
+    ],
   },
 
   // 10 — editorial · draft copy pending review (batch 3)
@@ -464,6 +567,21 @@ export const INDUSTRIES = [
       lead: 'Wakacje kupuje się marzeniem.',
       rest: 'Aspiracyjny travel content sprzedaje miejsce, zanim gość w ogóle spakuje walizkę.',
     },
+    // Imagery: Pexels (free license) — photo IDs 15490065, 2259226, 38406370.
+    collage: [
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-1.jpg',
+        alt: 'Elegancki basen hotelowy z rotundą',
+      },
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-2.jpg',
+        alt: 'Tropikalny basen resortu wśród palm',
+      },
+      {
+        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-3.jpg',
+        alt: 'Resort z basenem o zmierzchu',
+      },
+    ],
   },
 
   // 11 — editorial · draft copy pending review (batch 3)
@@ -497,6 +615,21 @@ export const INDUSTRIES = [
       lead: 'Zakup nieruchomości to decyzja życia.',
       rest: 'Poprzedza ją zaufanie — budujemy je prezentacją inwestycji i komunikacją, która generuje realne leady.',
     },
+    // Imagery: Pexels (free license) — photo IDs 8089172, 7614605, 16916525.
+    collage: [
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-1.jpg',
+        alt: 'Nowoczesny salon z otwartą kuchnią',
+      },
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-2.jpg',
+        alt: 'Jasny korytarz w nowym mieszkaniu',
+      },
+      {
+        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-3.jpg',
+        alt: 'Mieszkanie z widokiem z balkonu',
+      },
+    ],
   },
 
   // 12 — editorial · draft copy pending review (batch 3)
@@ -530,6 +663,21 @@ export const INDUSTRIES = [
       lead: 'Uwaga to waluta rozrywki.',
       rest: 'Budujemy hype wokół premier, aktywujemy społeczność i tworzymy treści, które żyją w komentarzach.',
     },
+    // Imagery: Pexels (free license) — photo IDs 13230484, 167605, 6398745.
+    collage: [
+      {
+        src: '/branze/rozrywka/rozrywka-1.jpg',
+        alt: 'Scena koncertowa w niebieskich światłach',
+      },
+      {
+        src: '/branze/rozrywka/rozrywka-2.jpg',
+        alt: 'Tłum publiczności na koncercie',
+      },
+      {
+        src: '/branze/rozrywka/rozrywka-3.jpg',
+        alt: 'Publiczność przed rozświetloną sceną',
+      },
+    ],
   },
 ] as const satisfies readonly Industry[]
 

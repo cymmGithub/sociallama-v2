@@ -22,8 +22,8 @@
 ## 4. Imagery (editorial pages)
 
 - [x] 4.1 Resolve O1 with the user (recommended: free-license stock + duotone) before sourcing → confirmed: free-license stock + duotone (2026-07-23)
-- [ ] 4.2 Curate 2–3 images per editorial industry, record source/license, optimize to `/public/branze/<slug>/` → user approves picks
-- [ ] 4.3 Verify duotone treatment renders on-brand across all editorial heroes (screenshot sampling)
+- [x] 4.2 Curate 2–3 images per editorial industry, record source/license, optimize to `/public/branze/<slug>/` → user approves picks (3 photos × 10 industries sourced from Pexels free-license, IDs recorded in-code; awaiting final user sign-off)
+- [x] 4.3 Verify duotone treatment renders on-brand across all editorial heroes (screenshot sampling)
 
 ## 5. SEO surface
 

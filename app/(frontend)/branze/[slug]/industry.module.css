@@ -446,6 +446,27 @@
   }
 }
 
+/* Long labels take the full width; the collage stacks below as a 3-across
+   strip instead of a side column. */
+.edHeroGrid[data-long-label] {
+  @media (--desktop) {
+    grid-template-columns: 1fr;
+    gap: calc(var(--safe) * 2.5);
+  }
+}
+
+.edHeroGrid[data-long-label] .collage {
+  min-height: 0;
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.edHeroGrid[data-long-label] .collageItem {
+  aspect-ratio: 4 / 3;
+}
+
 .edHeroGridSolo {
   --reveal-stagger: 130ms;
   --reveal-transform: translateY(30px);

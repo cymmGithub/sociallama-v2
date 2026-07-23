@@ -188,6 +188,12 @@ function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
   const heroRef = useReveal<HTMLDivElement>()
   const manifestoRef = useReveal<HTMLDivElement>()
   const hasCollage = (industry.collage?.length ?? 0) > 0
+  // Long multi-word labels (e.g. "Hotele i Miejsca Wypoczynkowe") need the full
+  // hero width for the outline wordmark — the collage then stacks below rather
+  // than sitting beside it (side-by-side only fits short labels like the mocks).
+  const longLabel =
+    industry.label.length > 16 ||
+    industry.label.split(' ').some((word) => word.length > 10)
 
   return (
     <>
@@ -202,6 +208,7 @@ function EditorialLayout({ industry, chrome, index }: IndustryPageProps) {
         <div
           ref={heroRef}
           className={hasCollage ? s.edHeroGrid : s.edHeroGridSolo}
+          data-long-label={longLabel || undefined}
         >
           <div className={s.edHeroCopy}>
             <h1 data-reveal-item className={s.edWordmark}>
