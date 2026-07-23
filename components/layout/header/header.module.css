@@ -264,8 +264,11 @@
   font-family: var(--font-display);
   font-weight: 400;
   /* Sized so the twelve BRANŻE items + the utility row clear the viewport
-     without scrolling, down to ~768px-tall laptops. */
-  font-size: clamp(1rem, 1.85vw, 1.5rem);
+     without scrolling, down to ~768px-tall laptops. The vh term is what keeps
+     that promise: short-but-wide laptops are governed by height, so raising the
+     ceiling enlarges the list on tall screens without pushing the utility row
+     off a 768px one. */
+  font-size: clamp(1rem, min(1.85vw, 3.1vh), 1.65rem);
   line-height: 1.2;
   transition:
     color var(--duration-fast) var(--ease-out-expo),
