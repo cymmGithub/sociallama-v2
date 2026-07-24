@@ -9,7 +9,9 @@
   --ground: var(--color-ink-deep);
   --ink: var(--color-cream);
   --accent: var(--color-orange);
-  --muted: #8f838b;
+  /* Lightened from #8f838b so 12px legal/toggle text clears 4.5:1 on both
+     footer grounds (plum #722341 and ink-deep #161216) — a11y contrast. */
+  --muted: #bfacb6;
   --line: rgba(244, 239, 233, 0.14);
   --line-strong: rgba(244, 239, 233, 0.3);
 

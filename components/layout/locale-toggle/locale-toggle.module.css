@@ -10,16 +10,17 @@
   gap: 0.5em;
 }
 
-/* The passed-in link class sets colour/size to match the surrounding chrome;
-   these rules only handle the active/inactive emphasis. */
+/* The passed-in link class sets colour/size to match the surrounding chrome
+   (and must meet contrast on its own). The active locale is emphasised by
+   weight rather than by dimming the inactive one — an opacity dim on the dark
+   footer ground drops the inactive link below the 4.5:1 contrast floor (a11y).
+   Context-independent: font-weight works in both the footer and the menu. */
 .toggle a {
-  opacity: 0.55;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.toggle a:hover,
 .toggle a[aria-current] {
-  opacity: 1;
+  font-weight: 700;
 }
 
 .sep {
