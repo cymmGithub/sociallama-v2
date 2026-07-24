@@ -14,10 +14,10 @@
 
 ## 3. Copy (PL + EN, batched review)
 
-- [ ] 3.1 Draft batch 1 (Automotive, Elektronika i AGD, Beauty, Health) — proof stats verbatim from case studies → user review
-- [ ] 3.2 Draft batch 2 (Finanse, Petcare, Alkohole, Fashion) → user review
-- [ ] 3.3 Draft batch 3 (Horeca, Hotele, Nieruchomości, Rozrywka) → user review
-- [ ] 3.4 Resolve O2 (client-logo attributions) and O3 (proof-page quote wording) with the user during batch reviews
+- [x] 3.1 Draft batch 1 (Automotive, Elektronika i AGD, Beauty, Health) — proof stats verbatim from case studies → user review (approved 2026-07-24)
+- [x] 3.2 Draft batch 2 (Finanse, Petcare, Alkohole, Fashion) → user review (approved 2026-07-24)
+- [x] 3.3 Draft batch 3 (Horeca, Hotele, Nieruchomości, Rozrywka) → user review (approved 2026-07-24)
+- [ ] 3.4 Resolve O2 (client-logo attributions) and O3 (proof-page quote wording) — O2 resolved: client logos dropped from industry pages entirely (2026-07-24). O3: iRobot now carries the client's verbatim testimonial; Volvo quote deferred by the user ("leave for now") — this task stays open until it's replaced or its attribution is dropped.
 
 ## 4. Imagery (editorial pages)
 
@@ -35,4 +35,4 @@
 
 - [x] 6.1 Biome + typecheck green (`--diagnostic-level=error` for the known panics)
 - [x] 6.2 Playwright sweep: all 24 routes 200, menu/footer navigation works, both variants render correctly, mobile + desktop
-- [ ] 6.3 Visual sign-off from the user on one proof page and two editorial pages before ship
+- [x] 6.3 Visual sign-off from the user on one proof page and two editorial pages before ship (approved 2026-07-24, post-redesign: video heroes, uniform band height, no motifs/duotone)

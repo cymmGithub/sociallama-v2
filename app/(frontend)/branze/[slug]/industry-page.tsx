@@ -418,26 +418,6 @@ function EditorialLayout({ industry, chrome }: IndustryPageProps) {
         </section>
       )}
 
-      {/* Client-logo strip — rendered only when logos are assigned (O2). */}
-      {industry.logos && industry.logos.length > 0 && (
-        <section className={s.logos} data-theme="cream">
-          <p className={s.logosKicker}>{chrome.editorial.logosKicker}</p>
-          <ul className={s.logosRow}>
-            {industry.logos.map((logo) => (
-              <li key={logo.src} className={s.logo}>
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={150}
-                  height={48}
-                  objectFit="contain"
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
       <CtaBand headline={chrome.editorial.ctaHeadline} chrome={chrome} />
     </>
   )

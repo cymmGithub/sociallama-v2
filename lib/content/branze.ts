@@ -21,9 +21,9 @@
  * alternatives. On proof pages `chips` are the case-study numbers band instead.
  *
  * Imagery status: proof `chips` are verbatim from the Volvo/iRobot case studies;
- * editorial `collage` is O1 (free-license Pexels + duotone, IDs recorded inline);
- * `logos` is O2 (attribution pending); proof `quote` is a brand-attributed
- * paraphrase (O3: keep).
+ * editorial `collage` is O1 (free-license Pexels, IDs recorded inline). The
+ * proof `quote` is a brand-attributed paraphrase (O3): iRobot's is now the
+ * client's verbatim testimonial; Volvo's paraphrase still stands.
  */
 
 import type { Localized } from '@/lib/i18n/parity'
@@ -44,7 +44,6 @@ export const chrome = {
   },
   editorial: {
     manifestoKicker: 'NASZE PODEJŚCIE',
-    logosKicker: 'ZAUFALI NAM',
     ctaHeadline: 'Porozmawiajmy o Twojej marce',
   },
   // CTA card mirrors the case-study one (minus its secondary action), so the
@@ -128,8 +127,6 @@ export interface Industry {
   manifesto?: { lead: string; rest: string }
   /** Duotone hero collage — omitted until O1 sourcing resolves. */
   collage?: readonly IndustryImage[]
-  /** Client-logo strip — omitted until O2 attribution is confirmed. */
-  logos?: readonly IndustryImage[]
 }
 
 // —— Canonical list (design D1, proof-first order) —————————————————————————————

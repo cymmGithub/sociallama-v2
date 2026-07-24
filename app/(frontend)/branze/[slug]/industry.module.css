@@ -717,38 +717,3 @@
   line-height: 1.35;
   color: var(--color-ink);
 }
-
-/* —— Editorial client logos ————————————————————————————————————————————————————— */
-
-.logos {
-  padding: calc(var(--safe) * 3) var(--safe);
-  background: var(--color-cream);
-  color: var(--color-ink);
-  text-align: center;
-}
-
-.logosKicker {
-  margin: 0 0 calc(var(--safe) * 1.5);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-plum);
-}
-
-.logosRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--safe) * 2.5);
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.logo {
-  filter: grayscale(1);
-  opacity: 0.7;
-}

@@ -24,7 +24,6 @@ export const chrome = {
   },
   editorial: {
     manifestoKicker: 'OUR APPROACH',
-    logosKicker: 'THEY TRUSTED US',
     ctaHeadline: "Let's talk about your brand",
   },
   ctaEyebrow: 'Your move',
