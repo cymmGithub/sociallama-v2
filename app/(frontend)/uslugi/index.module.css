@@ -1,0 +1,119 @@
+/*
+ * `/uslugi` index styles — plum hero + a cream six-card grid (design D2 / O3).
+ */
+
+.breadcrumb {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* —— Hero ————————————————————————————————————————————————————————————————————— */
+
+.hero {
+  background: var(--color-plum);
+  color: var(--color-cream);
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.2);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: calc(var(--safe) * 3) var(--safe) calc(var(--safe) * 3.5);
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  text-transform: uppercase;
+}
+
+.dot {
+  color: var(--color-orange);
+}
+
+.heroLead {
+  margin: 0;
+  max-width: 46rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+/* —— Card grid ————————————————————————————————————————————————————————————————— */
+
+.grid {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.gridInner {
+  --reveal-stagger: 90ms;
+  --reveal-transform: translateY(24px);
+
+  display: grid;
+  gap: var(--safe);
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--gap) * 2);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: calc(var(--safe) * 1.6);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 40px -24px rgb(43 31 36 / 45%);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 50px -22px rgb(43 31 36 / 55%);
+  }
+}
+
+.cardLabel {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.cardSummary {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-plum);
+}

@@ -301,6 +301,29 @@ async function findCaseStudiesForSitemap(): Promise<
   return result.docs
 }
 
+/**
+ * Up to three published posts whose title matches a platform term, for the
+ * CONTENT page's related-posts blocks (design D5). The blog taxonomy is topical
+ * (SEO / Marketing / Reklama / Social media), so platform relevance lives only
+ * in titles — hence the case-insensitive title `like`. Returns `[]` when nothing
+ * matches, so the caller omits the whole block rather than showing empty slots.
+ */
+async function findPostsForPlatform(term: string): Promise<Post[]> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: { and: [{ title: { like: term } }, PUBLISHED] },
+    sort: '-publishedAt',
+    limit: 3,
+    depth: 2,
+  })
+  return result.docs
+}
+
 /** Social-platform logos, for matching a result's platform to its mark. */
 async function findSocialPlatforms(): Promise<SocialPlatform[]> {
   'use cache'
@@ -333,6 +356,7 @@ export const getCategories = cache(findCategories)
 export const getCategoryBySlug = cache(findCategoryBySlug)
 export const getPostsForSitemap = cache(findPostsForSitemap)
 export const getPostsForLlms = cache(findPostsForLlms)
+export const getPostsForPlatform = cache(findPostsForPlatform)
 export const getCaseStudyBySlug = cache(findCaseStudyBySlug)
 export const getDraftCaseStudyBySlug = cache(findDraftCaseStudyBySlug)
 export const getPublishedCaseStudySlugs = cache(findPublishedCaseStudySlugs)

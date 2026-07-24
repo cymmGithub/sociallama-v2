@@ -340,7 +340,7 @@ const STUDIES: StudySeed[] = [
     title:
       'Pracuj.pl — budowa społeczności na TikToku od zera i autorski filtr AR',
     clientName: 'Pracuj.pl',
-    logoPath: 'public/assets/clients/pracuj.png',
+    logoPath: 'public/case-studies/pracuj-pl/pracuj-pl-logo.png',
     logoAlt: 'Logo serwisu Pracuj.pl',
     tags: ['Rekrutacja', 'Rynek pracy', 'Filtr AR'],
     period: 'Kwiecień 2022 – maj 2026',

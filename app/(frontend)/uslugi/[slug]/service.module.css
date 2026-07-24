@@ -1,0 +1,708 @@
+/*
+ * Service-page renderer styles — one module for all six pages (design D1).
+ * Sections compose in declared order; brand tokens (not theme tokens) paint the
+ * bands, exactly like /o-nas and /branze sections.
+ *
+ * Fonts: raw elements don't inherit the brand faces, so display type sets
+ * `--font-display` (Exo 2) and body/label type sets `--font-mono` (Manrope).
+ */
+
+/* —— Shared chrome ——————————————————————————————————————————————————————————— */
+
+.breadcrumb {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  margin: 0 0 var(--gap);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+/* —— Hero (flat plum, shared llama render — design D3) ————————————————————————— */
+
+.hero {
+  background: var(--color-plum);
+  color: var(--color-cream);
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.5);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: calc(var(--safe) * 3) var(--safe) calc(var(--safe) * 3.5);
+}
+
+.heroBody {
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+  align-items: center;
+
+  &[data-has-llama] {
+    @media (--desktop) {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: calc(var(--gap) * 3);
+    }
+  }
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.1);
+  max-width: 46rem;
+}
+
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  text-transform: uppercase;
+}
+
+.dot {
+  color: var(--color-orange);
+}
+
+.heroLead {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+.heroLlama {
+  position: relative;
+  justify-self: center;
+}
+
+/* —— Platforms (cubes on CONTENT, dashboards on Sprzedaż) —————————————————————— */
+
+.platforms {
+  padding: calc(var(--safe) * 2) var(--safe) calc(var(--safe) * 3);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.platformsInner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 3);
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.platform {
+  --reveal-stagger: 100ms;
+  --reveal-transform: translateY(24px);
+
+  display: grid;
+  gap: calc(var(--safe) * 1.2);
+  align-items: center;
+
+  @media (--desktop) {
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--gap) * 3);
+
+    /* Alternating media side: even rows media-right, odd rows media-left. */
+    &[data-flip] .platformCopy {
+      order: 2;
+    }
+    &[data-flip] .platformMedia {
+      order: 1;
+    }
+  }
+}
+
+.platformCopyOnly {
+  @media (--desktop) {
+    grid-template-columns: minmax(0, 46rem);
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.platformCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--safe);
+}
+
+.platformName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.platformText {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+}
+
+/* —— Related posts (per platform; omitted when empty — design D5) ——————————————— */
+
+.related {
+  margin-top: var(--safe);
+  padding-top: var(--safe);
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+
+.relatedKicker {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.relatedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.relatedItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.relatedItem:hover .relatedTitle {
+  color: var(--color-plum);
+}
+
+.relatedCategory {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+}
+
+.relatedTitle {
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: color 0.2s ease;
+}
+
+.platformMedia {
+  display: flex;
+  justify-content: center;
+}
+
+.platformCube {
+  width: min(100%, 25rem);
+  filter: drop-shadow(0 40px 60px rgb(43 31 36 / 22%));
+}
+
+/* The TikTok art is portrait (564×720) where the others are landscape, so at a
+   uniform width its cube body reads oversized. Cap it narrower to match. */
+.platformCube[data-cube$="cube-tiktok.png"] {
+  width: min(100%, 21rem);
+}
+
+.platformDashboard {
+  width: min(100%, 40rem);
+  filter: drop-shadow(0 30px 50px rgb(43 31 36 / 20%));
+}
+
+/* —— Triptych (numbered brand-native cards — design D4) ———————————————————————— */
+
+.triptych {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.triptychInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.cards {
+  display: grid;
+  gap: var(--safe);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--gap) * 2);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: calc(var(--safe) * 1.4);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 40px -24px rgb(43 31 36 / 45%);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardNum {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: color-mix(in srgb, var(--color-plum) 40%, transparent);
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-orange) 18%, transparent);
+  color: var(--color-plum);
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--color-plum);
+}
+
+.cardBody {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+/* —— Partner (Good One siblings) ——————————————————————————————————————————————— */
+
+.partner {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-plum-dark);
+  color: var(--color-cream);
+}
+
+.partnerInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+  align-items: center;
+  max-width: 1240px;
+  margin-inline: auto;
+
+  @media (--desktop) {
+    grid-template-columns: 1fr 1fr;
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+.partnerCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--safe);
+  align-items: flex-start;
+}
+
+.partnerKicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.partnerName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.partnerText {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+.partnerCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background: var(--color-orange);
+  color: var(--color-plum-dark);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.partnerMedia {
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+/* —— Partner cover (full-bleed video — DIEA / Folks) ——————————————————————————— */
+
+.partnerCover {
+  /* Per-partner brand accent (DIEA gold by default; overridden below). */
+  --accent: #f4c430;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(86vh, 700px);
+  background: #0b0b0e;
+  color: var(--color-cream);
+}
+
+/* Folks coral (echoes folks.pl). */
+.partnerCover[data-partner="folks"] {
+  --accent: #f2695b;
+}
+
+.partnerCoverMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.partnerCoverVideo {
+  width: 100%;
+  height: 100%;
+}
+
+.partnerCoverScrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to top,
+      rgb(8 8 12 / 92%) 0%,
+      rgb(8 8 12 / 55%) 42%,
+      rgb(8 8 12 / 18%) 100%
+    ),
+    linear-gradient(to right, rgb(8 8 12 / 60%), transparent 58%);
+}
+
+.partnerCoverInner {
+  --reveal-stagger: 100ms;
+  --reveal-transform: translateY(24px);
+
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: calc(var(--safe) * 3) var(--safe) calc(var(--safe) * 2.5);
+}
+
+.partnerCoverInner .partnerKicker {
+  color: var(--accent);
+}
+
+.partnerWordmark {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+}
+
+.partnerTagline {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+}
+
+.partnerCoverText {
+  margin: 0;
+  max-width: 46rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 85%, transparent);
+}
+
+.partnerLogo {
+  display: block;
+  width: clamp(150px, 24vw, 240px);
+  margin-bottom: 0.2rem;
+}
+
+.partnerLogo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* —— Showreel (Video primitive grid) —————————————————————————————————————————— */
+
+.showreel {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.showreelInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.showreelGrid {
+  display: grid;
+  gap: var(--safe);
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: calc(var(--gap) * 2);
+  }
+}
+
+.showreelClip {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 18px 40px -24px rgb(43 31 36 / 45%);
+}
+
+.showreelVideo {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+}
+
+/* —— Proof (case-study cards) —————————————————————————————————————————————————— */
+
+.proof {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.proofInner {
+  --reveal-stagger: 120ms;
+  --reveal-transform: translateY(24px);
+
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.proofHead {
+  margin-bottom: calc(var(--safe) * 1.5);
+}
+
+.proofHeading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--color-ink);
+}
+
+.proofCards {
+  display: grid;
+  gap: var(--safe);
+
+  @media (--desktop) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--gap) * 2);
+  }
+}
+
+.caseCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: calc(var(--safe) * 1.4);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 40px -24px rgb(43 31 36 / 45%);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 50px -22px rgb(43 31 36 / 55%);
+  }
+}
+
+.caseCardKicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+.caseCardTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+.caseCardLogo {
+  display: flex;
+  height: 44px;
+  margin-top: auto;
+}
+
+.caseCardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-plum);
+}
+
+/* —— Closing CTA (mirrors the branze CTA card) ————————————————————————————————— */
+
+.ctaBand {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+}
+
+.cta {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--gap) / 2);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: calc(var(--safe) * 4.5) var(--safe);
+  border-radius: 28px;
+  background: var(--color-plum-dark);
+  color: var(--color-cream);
+  text-align: center;
+}
+
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -60% -10%;
+  height: 90%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--color-orange) 34%, transparent),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.cta > * {
+  position: relative;
+}
+
+.ctaEyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.ctaTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.ctaText {
+  margin: 0;
+  max-width: 42rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 85%, transparent);
+}
+
+.ctaActions {
+  margin-top: var(--safe);
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.95rem 2rem;
+  border-radius: 999px;
+  background: var(--color-orange);
+  color: var(--color-plum-dark);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+}

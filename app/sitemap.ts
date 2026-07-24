@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { INDUSTRIES } from '@/lib/content/branze'
+import { SERVICES } from '@/lib/content/uslugi'
 import { APP_BASE_URL } from '@/lib/env'
 import { pathPairs } from '@/lib/i18n/slug-map'
 import {
@@ -84,6 +85,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]
   )
 
+  // Service pages — the index + six services in both locales. Each PL entry
+  // carries its EN counterpart slug (`pairSlug`), mirroring the industry block.
+  const serviceRoutes: MetadataRoute.Sitemap = [
+    { path: '/uslugi', priority: 0.8 },
+    { path: '/en/services', priority: 0.8 },
+    ...SERVICES.flatMap((service) => [
+      { path: `/uslugi/${service.slug}`, priority: 0.7 },
+      { path: `/en/services/${service.pairSlug}`, priority: 0.7 },
+    ]),
+  ].map(({ path, priority }) => ({
+    url: `${APP_BASE_URL}${path}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority,
+  }))
+
   return [
     ...baseRoutes,
     ...postRoutes,
@@ -92,5 +109,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...enStaticRoutes,
     ...enCaseStudyRoutes,
     ...industryRoutes,
+    ...serviceRoutes,
   ]
 }
