@@ -168,18 +168,23 @@
  */
 .overlay {
   position: fixed;
-  inset: 0;
+  /* Top-anchored with an explicit dynamic-viewport height instead of inset:0.
+     inset:0 resolves to the LARGE viewport on mobile (URL bar hidden), so the
+     panel ran past the visible area and its bottom rows were unreachable. 100dvh
+     tracks the currently visible height; the overlay locks scroll while open, so
+     the bar can't change mid-view and the height stays stable. */
+  inset: 0 0 auto 0;
+  height: 100dvh;
   z-index: 90;
   background-color: var(--color-primary);
   color: var(--color-secondary);
-  /* --line/--line-strong are declared at :root, so their var(--color-secondary)
-     bakes in the CHAPTER theme stamped on <html> as you scroll. Under the
-     overlay's forced cream theme that leaves the hairlines tinted for the
-     chapter (near-white over hero/plum) and they vanish on the cream panel.
-     Re-derive them here from the overlay's own --color-secondary so the menu
-     underlines and social borders read at every scroll position. */
+  /* --line is declared at :root, so its var(--color-secondary) bakes in the
+     CHAPTER theme stamped on <html> as you scroll. Under the overlay's forced
+     cream theme that leaves the hairline tinted for the chapter (near-white over
+     hero/plum) and it vanishes on the cream panel. Re-derive it here from the
+     overlay's own --color-secondary so the menu underlines read at every scroll
+     position. */
   --line: color-mix(in srgb, var(--color-secondary) 14%, transparent);
-  --line-strong: color-mix(in srgb, var(--color-secondary) 28%, transparent);
   overflow-y: auto;
   visibility: hidden;
   transform: translateY(-100%);
@@ -230,8 +235,10 @@
   flex-direction: column;
   justify-content: space-between;
   gap: calc(var(--safe) * 2);
-  /* Top padding clears the fixed bar. */
-  padding: calc(var(--safe) * 5) var(--safe) calc(var(--safe) * 1.5);
+  /* Top padding clears the fixed bar; the bottom adds the home-indicator inset
+     so the last row (utility links / PL-EN) never sits under the gesture bar. */
+  padding: calc(var(--safe) * 5) var(--safe)
+    calc(var(--safe) * 1.5 + env(safe-area-inset-bottom));
 }
 
 .columns {
@@ -289,6 +296,45 @@
   }
 }
 
+/* Mobile trim (design 2026-07-24): each column collapses to its core items plus
+   a "more" link. Desktop shows the full list and hides the "more" link. */
+.moreItem {
+  display: none;
+}
+
+@media (--mobile) {
+  .columnItems li[data-mobile-hidden] {
+    display: none;
+  }
+
+  .moreItem {
+    display: block;
+  }
+}
+
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding-block: 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--color-contrast);
+  transition: gap var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      gap: 0.7em;
+    }
+  }
+}
+
+.moreIcon {
+  width: 1em;
+  height: 1em;
+}
+
 .utility {
   display: flex;
   flex-direction: column;
@@ -296,8 +342,8 @@
   padding-top: var(--gap);
   border-top: 1px solid var(--line);
 
-  /* Three-column grid so the language switch sits dead-center between the
-     utility links (left) and the socials (right). */
+  /* Three-column grid so the language switch sits dead-center of the row, with
+     the utility links in the left column (the right column is left empty). */
   @media (--desktop) {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -323,43 +369,4 @@
       color: var(--color-contrast);
     }
   }
-}
-
-.socials {
-  display: flex;
-  gap: var(--gap);
-
-  /* Pinned to the end of the utility grid's right column on desktop. */
-  @media (--desktop) {
-    justify-self: end;
-  }
-}
-
-.social {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  transition: border-color var(--duration-fast) var(--ease-out-expo);
-
-  @media (--hover) {
-    &:hover {
-      border-color: var(--color-contrast);
-    }
-  }
-}
-
-.socialIcon {
-  width: 18px;
-  height: 18px;
-  background-color: var(--color-secondary);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
 }

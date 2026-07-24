@@ -2,12 +2,11 @@
 
 import cn from 'clsx'
 import { useLenis } from 'lenis/react'
-import { Menu, X } from 'lucide-react'
+import { ArrowRight, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
-import { socials } from '@/lib/content/home'
 import s from './header.module.css'
 
 // Keep the bar revealed within this many pixels of the top so a fresh load or
@@ -125,7 +124,7 @@ export function Header() {
   let staggerCursor = 0
   for (const column of menu.columns) {
     columnOffsets.push(staggerCursor)
-    staggerCursor += 1 + column.items.length
+    staggerCursor += 1 + column.items.length + (column.more ? 1 : 0)
   }
   const utilityStaggerIndex = staggerCursor
 
@@ -210,6 +209,7 @@ export function Header() {
                         '--i':
                           (columnOffsets[columnIndex] ?? 0) + 1 + itemIndex,
                       }}
+                      {...(item.mobileHidden && { 'data-mobile-hidden': '' })}
                     >
                       <Link
                         className={s.menuLink}
@@ -220,6 +220,26 @@ export function Header() {
                       </Link>
                     </li>
                   ))}
+                  {column.more && (
+                    <li
+                      className={cn(s.stagger, s.moreItem)}
+                      style={{
+                        '--i':
+                          (columnOffsets[columnIndex] ?? 0) +
+                          1 +
+                          column.items.length,
+                      }}
+                    >
+                      <Link
+                        className={s.moreLink}
+                        href={column.more.href}
+                        onClick={close}
+                      >
+                        {column.more.label}
+                        <ArrowRight aria-hidden="true" className={s.moreIcon} />
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             ))}
@@ -248,28 +268,6 @@ export function Header() {
               className={s.overlayLocale}
               linkClassName={s.overlayLocaleLink}
             />
-
-            <ul className={s.socials}>
-              {socials.map((social) => (
-                <li key={social.label}>
-                  <Link
-                    className={s.social}
-                    href={social.href}
-                    aria-label={social.label}
-                    onClick={close}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={s.socialIcon}
-                      style={{
-                        maskImage: `url(${social.icon})`,
-                        WebkitMaskImage: `url(${social.icon})`,
-                      }}
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>

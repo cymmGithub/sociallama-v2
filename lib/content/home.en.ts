@@ -33,27 +33,48 @@ export const nav = {
 // point at their eventual translated-slug URLs (user decision: translated slugs
 // under /en). BLOG is omitted from EN chrome.
 
+// EN counterpart of MOBILE_BRANZE_SLUGS (home.ts) — EN industry slugs differ
+// from PL, so the core set is declared per locale.
+const MOBILE_INDUSTRY_SLUGS = new Set([
+  'automotive',
+  'electronics',
+  'beauty',
+  'fashion',
+  'health',
+])
+
 export const menu = {
   columns: [
     {
       // Derived from the canonical industry module (design D3).
       label: 'INDUSTRIES',
-      items: industryNav,
+      items: industryNav.map((item) =>
+        MOBILE_INDUSTRY_SLUGS.has(item.href.split('/').pop() ?? '')
+          ? item
+          : { ...item, mobileHidden: true }
+      ),
+      more: { label: 'All industries', href: '/en/industries' },
     },
     {
       label: 'SERVICES',
       items: [
-        { label: 'Strategy', href: '/en/services/strategy' },
+        { label: 'Strategy', href: '/en/services/strategy', mobileHidden: true },
         { label: 'Content', href: '/en/services/content' },
         { label: 'Sales', href: '/en/services/sales' },
         { label: 'Creative & Video', href: '/en/services/creative-video' },
-        { label: 'Audit & Consulting', href: '/en/services/audit-consulting' },
+        {
+          label: 'Audit & Consulting',
+          href: '/en/services/audit-consulting',
+          mobileHidden: true,
+        },
         {
           label: 'Influencer Marketing',
           href: '/en/services/influencer-marketing',
+          mobileHidden: true,
         },
-        { label: 'Training & Courses', href: '/en/training' },
+        { label: 'Training & Courses', href: '/en/training', mobileHidden: true },
       ],
+      more: { label: 'All services', href: '/en/services' },
     },
   ],
   utility: [

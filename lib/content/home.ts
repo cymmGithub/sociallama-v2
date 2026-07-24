@@ -17,11 +17,15 @@ import type { Localized } from '@/lib/i18n/parity'
 export interface MenuItem {
   label: string
   href: string
+  /** Hidden in the overlay menu on mobile (≤799.98px); still shown on desktop. */
+  mobileHidden?: boolean
 }
 
 export interface MenuColumn {
   label: string
   items: MenuItem[]
+  /** Mobile-only link appended after the trimmed list (e.g. "all industries"). */
+  more?: MenuItem
 }
 
 export interface SocialLink {
@@ -138,31 +142,56 @@ export const nav = {
   navLabel: 'Główna nawigacja',
 } as const
 
+// Industries kept in the trimmed mobile overlay (design 2026-07-24); the rest
+// collapse behind the "Wszystkie branże" link. Matched by PL slug — EN uses its
+// own slugs, so home.en.ts declares an equivalent set.
+const MOBILE_BRANZE_SLUGS = new Set([
+  'automotive',
+  'elektronika-i-agd',
+  'beauty',
+  'fashion',
+  'health',
+])
+
 // Overlay menu. The BRANŻE items derive from the canonical industry module
-// (design D3) — one list drives menu, footer, routes, and sitemap.
+// (design D3) — one list drives menu, footer, routes, and sitemap. On mobile the
+// menu is trimmed to a few core items per column + a "more" link (mobileHidden /
+// more); desktop shows the full lists.
 export const menu = {
   columns: [
     {
       label: 'BRANŻE',
-      items: industryNav,
+      items: industryNav.map((item) =>
+        MOBILE_BRANZE_SLUGS.has(item.href.split('/').pop() ?? '')
+          ? item
+          : { ...item, mobileHidden: true }
+      ),
+      more: { label: 'Wszystkie branże', href: '/branze' },
     },
     {
       // Strategia, Audyt i konsultacje, Influencer marketing route to
       // /uslugi/<slug> pages that don't exist yet — accepted interim 404s;
-      // the slugs are final so the pages drop in without a menu change.
+      // the slugs are final so the pages drop in without a menu change. The
+      // mobile "more" link points at /uslugi on the same interim-404 basis.
       label: 'USŁUGI',
       items: [
-        { label: 'Strategia', href: '/uslugi/strategia' },
+        { label: 'Strategia', href: '/uslugi/strategia', mobileHidden: true },
         { label: 'Content', href: '/uslugi/content' },
         { label: 'Sprzedaż', href: '/uslugi/sprzedaz' },
         { label: 'Kreacje & Wideo', href: '/uslugi/kreacje-wideo' },
-        { label: 'Audyt i konsultacje', href: '/uslugi/audyt-i-konsultacje' },
+        {
+          label: 'Audyt i konsultacje',
+          href: '/uslugi/audyt-i-konsultacje',
+          mobileHidden: true,
+        },
         {
           label: 'Influencer marketing',
           href: '/uslugi/influencer-marketing',
+          mobileHidden: true,
         },
-        { label: 'Szkolenia i kursy', href: '/szkolenia' },
+        { label: 'Szkolenia i kursy', href: '/szkolenia', mobileHidden: true },
       ],
+      more: { label: 'Wszystkie usługi', href: '/uslugi' },
     },
   ] satisfies MenuColumn[],
   utility: [
