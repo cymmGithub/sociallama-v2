@@ -112,6 +112,24 @@
   }
 }
 
+/* Fading group holding the three cutouts. inset:0 makes it the photos'
+   containing block — the same rect as .stage — so their bottom/left placements
+   are unchanged from when they anchored to .stage directly. The arrows live
+   outside this box, so they hold still while the trio crossfades. --fade-dur is
+   mirrored by FADE_MS in index.tsx (that times the src swap to the dip). */
+.figures {
+  position: absolute;
+  inset: 0;
+  --fade-dur: 180ms;
+  transition: opacity var(--fade-dur) var(--ease-out-expo);
+}
+
+/* Dimmed for one beat while the active member swaps — the swap lands here, out
+   of sight, so it reads as a soft fade-through instead of a hard cut. */
+.figures[data-fading] {
+  opacity: 0;
+}
+
 /* Each figure is a bottom-anchored box whose aspect-ratio matches the cutout,
    so `contain` fills it edge-to-edge (no letterbox). All three share one ground
    line and are placed by centre (left %); the hero is full-height, the peers
@@ -213,6 +231,19 @@
   outline-offset: 3px;
 }
 
+/* Off-screen warmer layer (see index.tsx): a 1px, zero-opacity box holding an
+   eager <Image> per member so the browser fetches every cutout once, up front.
+   Positioned so the fill images have a containing block; kept out of the flow
+   and out of the a11y tree. */
+.preload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* —— Member details ————————————————————————————————————————————————————— */
 
 /* No reading measure here: the `h2` given name scales with the viewport, so a
@@ -221,6 +252,12 @@
    measure, so body text stays readable without constraining the display type. */
 .text {
   position: relative;
+  /* Crossfades in step with the cutout group (same --fade-dur). */
+  transition: opacity 180ms var(--ease-out-expo);
+}
+
+.text[data-fading] {
+  opacity: 0;
 }
 
 .surname {
