@@ -67,11 +67,13 @@
 }
 
 /* Outfit stack: all five look stills share the .video box; only the active
-   one is visible. The fade is quick — a costume snap, not a dissolve — so
-   the swap reads together with the word flip it mirrors. */
+   one is visible. A soft cross-dissolve (not a snap) that leans toward the
+   650ms word-flip rhythm, so the swap reads together with the word it mirrors.
+   All five poses share the same body, so the fade stays clean — the outgoing
+   and incoming llamas register on top of each other, no ghosted double image. */
 .look {
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.5s var(--ease-in-out-quad);
 }
 
 .lookActive {
