@@ -67,17 +67,18 @@ export const menu = {
 
 export const hero = {
   headline: {
-    // Four tokens: CREATIVE + VIDEO merged, parity with PL "Kreacje & Wideo".
-    // Independent timer rotator (hero-intro-montage).
-    rotator: ['CREATIVE & VIDEO', 'CONTENT', 'SALES', 'STRATEGY'],
+    // Five tokens: CREATIVE + VIDEO merged, parity with PL "Kreacje & Wideo".
+    // Order mirrors the outfit stack (hero-outfit-swap), same as PL.
+    rotator: [
+      'CREATIVE & VIDEO',
+      'SOCIAL MEDIA',
+      'CONTENT',
+      'SALES',
+      'STRATEGY',
+    ],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
   },
   llamaAlt: 'A llama in sunglasses — the Social Lama mascot',
-  video: {
-    src: '/clips/hero.mp4',
-    poster: '/clips/hero-poster.jpg',
-    posterMobile: '/clips/hero-mobile-poster.jpg',
-  },
 } satisfies LocalizedHome['hero']
 
 // —— Clients ————————————————————————————————————————————————————————————————
