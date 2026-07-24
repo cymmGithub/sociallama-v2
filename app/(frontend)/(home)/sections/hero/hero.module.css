@@ -253,15 +253,44 @@
   object-position: 50% 12%;
 }
 
-/* Tablet portrait (mobile layout, but a wide box): cover would zoom in and
-   crop the figure off (user feedback 2026-07-20). Switch to contain so the
-   whole llama shows, bottom-anchored so the shirt still meets the client-logos
-   band — the stills are transparent, so the side space is just the section
-   plum, seamless. `!important` beats the inline object-fit the Image component
-   always emits. */
-@media (min-width: 600px) and (max-width: 799.98px) {
+/* Portrait tablets (≥600px, any of them): the stacked media box is wide, and
+   on shorter viewports it's also short — cover would then crop the whole head
+   off (a wide+short box forces cover to scale up and clip vertically). Switch
+   to contain so the entire llama always fits: it fills the box height, sits
+   flush on the client-logos band, and the transparent sides are just the
+   section plum (seamless). `!important` beats the inline object-fit the Image
+   component always emits (which is why plain contain silently lost). Phones
+   (<600px) keep the punchy cover head-crop — their box is narrow enough. */
+@media (min-width: 600px) and (orientation: portrait) {
   .mobileLook {
     object-fit: contain;
     object-position: 50% 100%;
+  }
+}
+
+/* Portrait tablets (and narrow, tall windows) at ≥800px land in the desktop
+   breakpoint, but the side-by-side hero needs landscape width: a height-driven
+   llama on a tall, narrow viewport blows up and overlaps the headline. Re-stack
+   them exactly like the mobile hero — headline on top, centered llama below,
+   flush with the client-logos band. Landscape tablets and real desktops keep
+   the side-by-side layout because they have the width for it. */
+@media (min-width: 800px) and (orientation: portrait) {
+  .hero {
+    align-items: stretch;
+    padding-block: calc(var(--safe) * 4) 0;
+  }
+  .inner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .copy {
+    flex: 0 1 auto;
+  }
+  .video {
+    display: none;
+  }
+  .media {
+    display: block;
   }
 }
