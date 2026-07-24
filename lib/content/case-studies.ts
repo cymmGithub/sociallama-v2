@@ -11,7 +11,7 @@ import type { Localized } from '@/lib/i18n/parity'
 export const caseStudiesListing = {
   metaTitle: 'Case studies',
   metaDescription:
-    'Case studies Social Lama — realne efekty naszej pracy w social mediach. Strategie, kampanie i liczby dla marek takich jak iRobot, Pracuj.pl i Volvo.',
+    'Case studies Social Lama — realne efekty naszej pracy w social mediach: strategie, kampanie i twarde liczby dla marek z handlu, nieruchomości, FMCG, rozrywki i e-commerce.',
   heading: 'Case studies',
   subhead:
     'Jak pracujemy i co z tego wynika — wybrane projekty Social Lama wraz z liczbami, które je opisują.',

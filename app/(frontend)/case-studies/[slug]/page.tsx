@@ -58,7 +58,13 @@ export async function generateMetadata({
       title,
       ...(description ? { description } : {}),
       url: `/case-studies/${study.slug}`,
-      ...(ogUrl ? { images: [{ url: ogUrl, width: 1200, height: 630 }] } : {}),
+      ...(ogUrl
+        ? {
+            images: [
+              { url: ogUrl, width: 1200, height: 630, alt: ogMedia?.alt },
+            ],
+          }
+        : {}),
       ...(study.publishedAt ? { publishedTime: study.publishedAt } : {}),
     },
     twitter: {

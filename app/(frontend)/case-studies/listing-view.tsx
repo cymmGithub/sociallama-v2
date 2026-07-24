@@ -3,6 +3,7 @@ import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
 import type { CaseStudy } from '@/payload-types'
 import s from './case-studies.module.css'
 import { CaseStudyCard } from './case-study-card'
+import { CaseStudiesListingJsonLd } from './listing-json-ld'
 
 /**
  * Shared `/case-studies` listing, used by both the Polish and English pages.
@@ -20,6 +21,13 @@ export function CaseStudiesListingView({
 }) {
   return (
     <Wrapper theme="cream">
+      <CaseStudiesListingJsonLd
+        studies={studies}
+        basePath={basePath}
+        locale={basePath.startsWith('/en') ? 'en' : 'pl'}
+        name={content.metaTitle}
+        description={content.metaDescription}
+      />
       <section className={s.listing}>
         <header className={s.header}>
           <h1 className={s.heading}>{content.heading}</h1>

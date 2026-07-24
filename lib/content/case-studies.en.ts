@@ -7,7 +7,7 @@ import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
 export const caseStudiesListing = {
   metaTitle: 'Case studies',
   metaDescription:
-    'Social Lama case studies — the real results of our social media work. Strategies, campaigns, and numbers for brands like iRobot, Pracuj.pl, and Volvo.',
+    'Social Lama case studies — the real results of our social media work: strategies, campaigns, and hard numbers for brands across retail, real estate, FMCG, and entertainment.',
   heading: 'Case studies',
   subhead:
     'How we work and what comes of it — selected Social Lama projects, with the numbers that describe them.',
