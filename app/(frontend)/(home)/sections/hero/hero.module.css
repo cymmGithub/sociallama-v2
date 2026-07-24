@@ -278,7 +278,11 @@
 @media (min-width: 800px) and (orientation: portrait) {
   .hero {
     align-items: stretch;
-    padding-block: calc(var(--safe) * 4) 0;
+    /* Clear the DESKTOP header chrome (logo + CTA occupy ~var(--safe) + 53px,
+       the same inset the side-by-side .video uses) plus a gap — at these
+       widths --safe is small (~9px), so the mobile hero's safe*4 top padding
+       left the first headline line tucked under the header. */
+    padding-block: calc(var(--safe) * 2 + 53px + var(--gap)) 0;
   }
   .inner {
     flex-direction: column;
