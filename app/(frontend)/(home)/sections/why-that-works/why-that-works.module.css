@@ -221,6 +221,10 @@
 }
 
 .captionRole {
+  /* Manrope, like every other role/label in the app; without it this inherited
+     the UA serif (Times) because of the all:unset reset. Sibling .captionName
+     declares --font-display, so this declares its face too. */
+  font-family: var(--font-mono);
   font-weight: 600;
   font-size: clamp(0.58rem, 1.3cqw, 0.8rem);
   line-height: 1.16;

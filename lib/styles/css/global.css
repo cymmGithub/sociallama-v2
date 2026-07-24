@@ -57,6 +57,11 @@ body {
   overscroll-behavior: none;
   background-color: var(--color-primary);
   color: var(--color-secondary);
+  /* Base body font (Manrope). The all:unset reset strips font-family off every
+     element, so anything that doesn't set its own inherits from here — without
+     this, a forgotten declaration silently falls back to the UA serif (Times).
+     Display type opts into --font-display (Exo 2) per component. */
+  font-family: var(--font-mono);
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
