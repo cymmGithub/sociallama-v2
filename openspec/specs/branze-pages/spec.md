@@ -1,4 +1,10 @@
-## ADDED Requirements
+# branze-pages
+
+## Purpose
+
+Define the per-industry (`/branze/*` and `/en/industries/*`) marketing pages: the canonical industry list that drives every surface, live routing in both locales, proof-vs-editorial variant selection, industry-specific approved copy, and the localized SEO surface for these pages.
+
+## Requirements
 
 ### Requirement: Canonical industry list drives every surface
 
@@ -30,7 +36,9 @@ Each of the 12 industries SHALL have a statically generated page at `/branze/<pl
 
 ### Requirement: Variant is selected by proof data
 
-An industry whose content entry carries a `caseStudy` block SHALL render the proof layout: hero band, wall of real feed creatives, numbers band, quote with case-study card linking to `/case-studies/<slug>` (locale-appropriate), CTA. An industry without one SHALL render the editorial layout: outline-wordmark hero with duotone photo collage, keyword marquee, manifesto with stat chips, client-logo strip when logos are assigned, CTA. At ship time exactly Automotive (Volvo) and Elektronika i AGD (iRobot) are proof pages.
+Both variants SHALL open with the shared industry hero (a per-industry background clip over a plum band, with a poster fallback; solid display wordmark; lead) followed by the under-hero brief. An industry whose content entry carries a `caseStudy` block SHALL then render the proof layout: wall of real feed creatives, numbers band, quote with case-study card linking to `/case-studies/<slug>` (locale-appropriate), CTA. An industry without one SHALL render the editorial layout: a photo collage strip beneath the brief, keyword marquee, manifesto with stat chips, CTA. At ship time exactly Automotive (Volvo) and Elektronika i AGD (iRobot) are proof pages.
+
+Note (2026-07-24): the design evolved after the proposal — a shared video hero replaced the two divergent heroes (the editorial outline-wordmark and the plain proof band), the collage moved beneath the brief and dropped its duotone, the brief's icon motifs were removed, and the client-logo strip was cut entirely (no client logos on industry pages).
 
 #### Scenario: Proof page renders evidence
 

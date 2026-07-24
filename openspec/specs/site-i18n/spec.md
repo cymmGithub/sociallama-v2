@@ -44,15 +44,19 @@ The English menu, footer, and homepage SHALL contain no links to the blog or cat
 - **THEN** no BLOG link is present, and `/en` contains no latest-post section
 
 ### Requirement: Localized SEO surface
-Every English page SHALL emit its own English metadata (title, description, OG). Every mapped page in BOTH locales SHALL emit `hreflang` alternate links to its counterpart (with `x-default` pointing at the Polish version), and English URLs SHALL be included in the sitemap. The URL-parity gate for legacy Polish URLs SHALL remain green.
+Every English page SHALL emit its own English metadata (title, description, OG). Every mapped page in BOTH locales — including the 12 industry pages (`/branze/*` ↔ `/en/industries/*`) — SHALL emit `hreflang` alternate links to its counterpart (with `x-default` pointing at the Polish version), and English URLs SHALL be included in the sitemap. The URL-parity gate for legacy Polish URLs SHALL remain green.
 
 #### Scenario: Hreflang pairs on both sides
 - **WHEN** `/kontakt` or `/en/contact` renders
 - **THEN** each emits alternates referencing the other and `x-default` referencing the Polish page
 
+#### Scenario: Industry hreflang pairs
+- **WHEN** any industry page renders in either locale
+- **THEN** it emits alternates referencing its counterpart per the canonical slug mapping and `x-default` referencing the Polish URL
+
 #### Scenario: Sitemap covers English
 - **WHEN** the sitemap is generated
-- **THEN** it lists the English marketing, legal, and case-study URLs alongside the Polish ones
+- **THEN** it lists the English marketing, legal, case-study, and industry URLs alongside the Polish ones
 
 ### Requirement: Static English legal pages
 `/en/privacy-policy`, `/en/terms`, and `/en/cookies` SHALL serve English translations of the corresponding Polish legal content as static routes (the Polish `regulamin` and `cookies` CMS documents are translated into static pages; the posts collection is not localized).
