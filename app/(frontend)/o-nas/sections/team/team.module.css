@@ -82,6 +82,10 @@
 .slider {
   --reveal-stagger: 140ms;
   --reveal-transform: translateY(28px);
+  /* Step-to-step crossfade duration, shared by the cutout + copy layers.
+     FADE_MS in index.tsx runs a touch longer so the outgoing layer is fully
+     faded before it unmounts. */
+  --fade-dur: 300ms;
 
   display: flex;
   flex-direction: column;
@@ -97,9 +101,11 @@
 
 /* —— Figure stack ————————————————————————————————————————————————————————— */
 
-.stage {
+/* Sizing + positioning wrapper. Owns the box (and the nav arrows) so the wipe
+   reveal's settled clip-path — which lives on the inner .stage — can't slice an
+   arrow that straddles the portrait edge on mobile. */
+.stageWrap {
   position: relative;
-  isolation: isolate;
   width: 100%;
   max-width: 960px;
   margin-inline: auto;
@@ -112,22 +118,56 @@
   }
 }
 
-/* Fading group holding the three cutouts. inset:0 makes it the photos'
+/* Fills the wrapper and carries the reveal clip; holds only the cutouts. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+}
+
+/* Crossfading layer holding one coverflow trio. inset:0 makes it the photos'
    containing block — the same rect as .stage — so their bottom/left placements
-   are unchanged from when they anchored to .stage directly. The arrows live
-   outside this box, so they hold still while the trio crossfades. --fade-dur is
-   mirrored by FADE_MS in index.tsx (that times the src swap to the dip). */
+   are unchanged from when they anchored to .stage directly. Two of these stack
+   during a step (outgoing under, incoming over) and dissolve past each other.
+   The arrows live outside this box, so they hold still through the fade. */
 .figures {
   position: absolute;
   inset: 0;
-  --fade-dur: 180ms;
-  transition: opacity var(--fade-dur) var(--ease-out-expo);
 }
 
-/* Dimmed for one beat while the active member swaps — the swap lands here, out
-   of sight, so it reads as a soft fade-through instead of a hard cut. */
-.figures[data-fading] {
-  opacity: 0;
+/* Incoming trio dissolves in with a hair of zoom. No vertical drift: the wipe
+   reveal keeps a border-box clip that would slice a portrait moving past the
+   ground line, so the cutouts get scale + opacity only (the copy carries the
+   rise instead). Outgoing dissolves out, easing very slightly larger. */
+.figures.enter {
+  animation: trioIn var(--fade-dur) ease-in-out both;
+}
+
+.figures.exit {
+  animation: trioOut var(--fade-dur) ease-in-out both;
+}
+
+@keyframes trioIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes trioOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.012);
+  }
 }
 
 /* Each figure is a bottom-anchored box whose aspect-ratio matches the cutout,
@@ -252,12 +292,44 @@
    measure, so body text stays readable without constraining the display type. */
 .text {
   position: relative;
-  /* Crossfades in step with the cutout group (same --fade-dur). */
-  transition: opacity 180ms var(--ease-out-expo);
 }
 
-.text[data-fading] {
-  opacity: 0;
+/* The incoming copy stays in flow so it sizes the column; the outgoing copy is
+   an absolute overlay (top-anchored, natural height so a longer bio isn't
+   clipped) fading out on top. */
+.details.exit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  animation: txtOut var(--fade-dur) ease-in-out both;
+}
+
+.details.enter {
+  animation: txtIn var(--fade-dur) ease-in-out both;
+}
+
+@keyframes txtIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes txtOut {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 .surname {
@@ -311,14 +383,25 @@
     text-align: left;
   }
 
-  /* Too narrow for the trio — show the hero alone, cycled by the arrows. */
-  .stage {
+  /* Too narrow for the trio — show the hero alone, cycled by the arrows or a
+     finger-swipe (see index.tsx). */
+  .stageWrap {
     max-width: 300px;
     aspect-ratio: 422 / 600;
   }
 
   .peer {
     display: none;
+  }
+
+  /* Spread the arrows out to straddle the figure's edges — tucked inside the
+     narrow mobile stage they crowded the portrait. */
+  .navPrev {
+    transform: translate(-50%, -50%);
+  }
+
+  .navNext {
+    transform: translate(50%, -50%);
   }
 }
 
@@ -327,5 +410,14 @@
 @media (--reduced-motion) {
   .nav {
     transition: none;
+  }
+
+  /* Belt-and-braces: go() already skips the second layer under reduced motion,
+     but ensure no crossfade animation can run regardless. */
+  .figures.enter,
+  .figures.exit,
+  .details.enter,
+  .details.exit {
+    animation: none;
   }
 }
