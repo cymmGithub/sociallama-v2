@@ -263,7 +263,8 @@
    (<600px) keep the punchy cover head-crop — their box is narrow enough. */
 @media (min-width: 600px) and (orientation: portrait) {
   .mobileLook {
-    object-fit: contain;
+    /* biome-ignore lint/complexity/noImportantStyles: must beat next/image's inline object-fit:cover — inline styles yield only to !important */
+    object-fit: contain !important;
     object-position: 50% 100%;
   }
 }
