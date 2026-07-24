@@ -178,32 +178,18 @@ test.describe('Kontakt page', () => {
   })
 
   test('hero headline survives kontakt → home navigation', async ({ page }) => {
-    // NO reduced-motion emulation: the regression lives in the gsap.from
-    // intro tween, which reduced motion skips entirely. Cleanup with kill()
-    // instead of revert() left the headline lines stuck at their pre-reveal
-    // offset (yPercent 120) whenever the effect re-ran — StrictMode double
-    // effects and Next 16 Activity reactivation both do that.
+    // Guards client-nav reactivation (Next 16 Activity cache): the hero
+    // headline must render visibly after navigating back home, not sit hidden.
+    // The gsap.from intro tween this used to guard (kill() vs revert() left the
+    // lines stuck at yPercent 120) was removed with the scroll-unlink rework —
+    // the headline now renders statically, so this asserts the live behaviour
+    // instead of the retired [data-line] transform-settle.
     await gotoHydrated(page, '/kontakt')
     await page.locator('header a[href="/"]').click()
     await expect(page).toHaveURL('/', HYDRATED)
 
-    // Every headline line must settle at rest (intro finishes ~1.8s in),
-    // not sit translated below its clip mask.
-    await page.waitForFunction(
-      () => {
-        const lines = document.querySelectorAll('[data-line]')
-        return (
-          lines.length > 0 &&
-          [...lines].every((el) => {
-            const t = getComputedStyle(el).transform
-            if (t === 'none') return true
-            return Math.abs(new DOMMatrixReadOnly(t).m42) < 1
-          })
-        )
-      },
-      undefined,
-      { timeout: 30_000 }
-    )
+    const headline = page.locator('h1', { hasText: 'WORKS' })
+    await expect(headline).toBeVisible()
   })
 
   test('testimonial rail survives browser back from kontakt', async ({
