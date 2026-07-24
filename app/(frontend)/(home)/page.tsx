@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import { WebSiteJsonLd } from '@/components/seo/structured-data'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
@@ -53,32 +54,35 @@ export default async function HomePage() {
   const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
 
   return (
-    <Wrapper theme="plum">
-      <Chapters>
-        {/* Chapter 1 — plum. Hero + logo belt compose the first viewport as
+    <>
+      <WebSiteJsonLd />
+      <Wrapper theme="plum">
+        <Chapters>
+          {/* Chapter 1 — plum. Hero + logo belt compose the first viewport as
             a plain flex column in normal document flow (hero-intro-montage).
             On short viewports the column grows past 100svh (hero keeps its
             min-height floor) and the belt drops below the fold. */}
-        <div className={heroStyles.column}>
-          <Hero />
-          <ClientLogos />
-        </div>
-        {/* Chapter 2 — cream */}
-        {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
-        <>
-          <WhyThatWorks />
-          <Services />
-          <HowItWorks />
-          <BigMarquee />
-        </>
-        {/* Chapter 3 — plum-deep */}
-        {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
-        <>
-          <Testimonial />
-          <JoinCta />
-          {newsPost && <NewsLama post={newsPost} />}
-        </>
-      </Chapters>
-    </Wrapper>
+          <div className={heroStyles.column}>
+            <Hero />
+            <ClientLogos />
+          </div>
+          {/* Chapter 2 — cream */}
+          {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
+          <>
+            <WhyThatWorks />
+            <Services />
+            <HowItWorks />
+            <BigMarquee />
+          </>
+          {/* Chapter 3 — plum-deep */}
+          {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
+          <>
+            <Testimonial />
+            <JoinCta />
+            {newsPost && <NewsLama post={newsPost} />}
+          </>
+        </Chapters>
+      </Wrapper>
+    </>
   )
 }

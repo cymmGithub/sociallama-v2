@@ -5,6 +5,7 @@ import { draftMode } from 'next/headers'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
 import { ChromeProvider } from '@/components/layout/chrome-provider'
+import { OrganizationJsonLd } from '@/components/seo/structured-data'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
 import { footer, menu, nav } from '@/lib/content/home'
@@ -90,6 +91,7 @@ export default async function Layout({ children }: PropsWithChildren) {
       suppressHydrationWarning
     >
       <body>
+        <OrganizationJsonLd description={APP_DESCRIPTION} />
         {/* Skip link for keyboard navigation accessibility */}
         <Suspense fallback={null}>
           <Link
