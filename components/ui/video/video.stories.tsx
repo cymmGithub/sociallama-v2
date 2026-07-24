@@ -16,7 +16,7 @@ const meta = {
   ],
   args: {
     src: '/clips/hero.mp4',
-    poster: '/clips/hero-poster.jpg',
+    poster: '/clips/cta-llama-work-poster.jpg',
     alt: 'Social Lama hero llama',
     aspectRatio: 1370 / 1080,
   },
@@ -33,7 +33,7 @@ export const Default: Story = {}
 export const ResponsiveSource: Story = {
   args: {
     mobileSrc: '/clips/hero-mobile.mp4',
-    posterMobile: '/clips/hero-mobile-poster.jpg',
+    posterMobile: '/clips/kreacje-dpd-poster.jpg',
   },
 }
 

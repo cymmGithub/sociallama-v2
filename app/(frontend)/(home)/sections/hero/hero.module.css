@@ -66,6 +66,18 @@
   }
 }
 
+/* Outfit stack: all five look stills share the .video box; only the active
+   one is visible. The fade is quick — a costume snap, not a dissolve — so
+   the swap reads together with the word flip it mirrors. */
+.look {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lookActive {
+  opacity: 1;
+}
+
 .inner {
   width: 100%;
   display: flex;
@@ -228,23 +240,27 @@
   }
 }
 
-/* Mobile poster (static image): the full llama (ears → shirt) lives in the
-   780x820 source. On a phone the box is tall+narrow, so cover frames the head
-   and lets the shirt fall below the fold (user decision 2026-07-19). Anchored
-   high (12% from top) so a URL-bar-shrunk viewport eats the shirt, not the
-   ears. */
-.mobileImage {
+/* Mobile llama: the same transparent outfit stills, filling the mobile media
+   box. The stills are cropped tight to the llama (820x1080), so cover + a
+   centered object-position frames the head dead-centre and lets the shirt fall
+   below the fold. Anchored high (12% from top) so a URL-bar-shrunk viewport
+   eats the shirt, not the ears. */
+.mobileLook {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-position: 50% 12%;
 }
 
-/* Tablet portrait (mobile layout, but a wide box): cover would zoom to fill
-   the width and crop the whole body off (user feedback 2026-07-20). Switch to
-   contain so the entire figure shows, bottom-anchored so the shirt still meets
-   the client-logos band — the source's plum background matches the section, so
-   the side letterboxing is seamless. `!important` beats the inline object-fit
-   the Image component always emits. */
+/* Tablet portrait (mobile layout, but a wide box): cover would zoom in and
+   crop the figure off (user feedback 2026-07-20). Switch to contain so the
+   whole llama shows, bottom-anchored so the shirt still meets the client-logos
+   band — the stills are transparent, so the side space is just the section
+   plum, seamless. `!important` beats the inline object-fit the Image component
+   always emits. */
 @media (min-width: 600px) and (max-width: 799.98px) {
-  .mobileImage {
+  .mobileLook {
     object-fit: contain;
     object-position: 50% 100%;
   }
