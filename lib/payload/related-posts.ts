@@ -40,13 +40,21 @@ export async function buildRelatedByPlatform(
     .filter((item) => !item.dashboard)
     .map((item) => item.platform)
 
+  // Queried SEQUENTIALLY, not via Promise.all: this runs during static
+  // generation at build time, and a concurrent burst of connections to the
+  // (unpooled) prod Neon DB — on top of ~79 blog pages prerendering in parallel
+  // — exhausts connection headroom and times out the whole build (ETIMEDOUT).
+  // One-at-a-time keeps our build-time DB footprint flat. Each query is also
+  // wrapped so a transient timeout degrades to "no related posts" (the D5
+  // graceful-omission contract) instead of failing the page build.
+  const result: Record<string, readonly RelatedPost[]> = {}
   const unique = [...new Set(platforms)]
-  const entries = await Promise.all(
-    unique.map(async (platform) => {
-      const term = PLATFORM_SEARCH[platform]
-      if (!term) {
-        return [platform, [] as RelatedPost[]] as const
-      }
+  for (const platform of unique) {
+    const term = PLATFORM_SEARCH[platform]
+    if (!term) {
+      continue
+    }
+    try {
       const posts = await getPostsForPlatform(term)
       const cards: RelatedPost[] = posts.map((post) => {
         const category = resolveCategory(post.category)
@@ -58,9 +66,13 @@ export async function buildRelatedByPlatform(
           ...(category ? { category: category.title } : {}),
         }
       })
-      return [platform, cards] as const
-    })
-  )
+      if (cards.length > 0) {
+        result[platform] = cards
+      }
+    } catch {
+      // Transient DB/connection error at build — omit this platform's block.
+    }
+  }
 
-  return Object.fromEntries(entries.filter(([, cards]) => cards.length > 0))
+  return result
 }
