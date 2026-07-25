@@ -32,6 +32,61 @@ export interface IndustryPageProps {
 // —— Shared pieces ————————————————————————————————————————————————————————————
 
 /*
+ * Related-studies row. ADDITIVE and rendered by BOTH variants — unlike the
+ * `caseStudy` block it never selects the layout, so an editorial industry keeps
+ * its collage/marquee/manifesto while still linking out. Needs no client quote,
+ * which is why it can ship ahead of testimonial collection. Renders nothing when
+ * an industry has no mapping (e.g. Finanse, Fashion) so there's no empty shell.
+ */
+function RelatedCaseStudies({
+  industry,
+  chrome,
+  caseStudyBase,
+}: IndustryPageProps) {
+  const ref = useReveal<HTMLDivElement>()
+  const studies = industry.relatedCaseStudies
+  if (!studies || studies.length === 0) {
+    return null
+  }
+
+  return (
+    <section className={s.related} data-theme="cream">
+      <div className={s.relatedHead}>
+        <p className={s.kicker}>{chrome.related.kicker}</p>
+        <h2 className={s.relatedHeading}>{chrome.related.heading}</h2>
+      </div>
+      <div className={s.relatedGrid} ref={ref}>
+        {studies.map((study) => (
+          <Link
+            key={study.slug}
+            className={s.relatedCard}
+            href={`${caseStudyBase}/${study.slug}`}
+          >
+            {study.logo !== false && (
+              <span className={s.relatedCardLogo}>
+                {/* Logos are locale-independent public assets, not prefixed. */}
+                <Image
+                  src={`/case-studies/${study.slug}/${study.slug}-logo.png`}
+                  alt=""
+                  width={120}
+                  height={38}
+                  objectFit="contain"
+                />
+              </span>
+            )}
+            <span className={s.relatedCardTitle}>{study.title}</span>
+            <span className={s.relatedCardCta}>
+              {chrome.related.cta}
+              <ArrowRight size={16} aria-hidden="true" />
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/*
  * Industries whose hero carries a background clip. The assets are
  * locale-independent, so they're derived from the id rather than duplicated
  * across both content modules: `/branze/<id>/hero.mp4` + `/branze/<id>/hero.jpg`.
@@ -362,6 +417,12 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
         </Link>
       </section>
 
+      <RelatedCaseStudies
+        industry={industry}
+        chrome={chrome}
+        caseStudyBase={caseStudyBase}
+      />
+
       <CtaBand headline={chrome.proof.ctaHeadline} chrome={chrome} />
     </>
   )
@@ -369,7 +430,11 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
 
 // —— Editorial variant (mock B) ————————————————————————————————————————————————
 
-function EditorialLayout({ industry, chrome }: IndustryPageProps) {
+function EditorialLayout({
+  industry,
+  chrome,
+  caseStudyBase,
+}: IndustryPageProps) {
   const manifestoRef = useReveal<HTMLDivElement>()
 
   return (
@@ -417,6 +482,12 @@ function EditorialLayout({ industry, chrome }: IndustryPageProps) {
           </div>
         </section>
       )}
+
+      <RelatedCaseStudies
+        industry={industry}
+        chrome={chrome}
+        caseStudyBase={caseStudyBase}
+      />
 
       <CtaBand headline={chrome.editorial.ctaHeadline} chrome={chrome} />
     </>

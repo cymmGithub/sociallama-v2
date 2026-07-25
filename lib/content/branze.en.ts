@@ -26,6 +26,11 @@ export const chrome = {
     manifestoKicker: 'OUR APPROACH',
     ctaHeadline: "Let's talk about your brand",
   },
+  related: {
+    kicker: 'MORE PROOF',
+    heading: 'CASE STUDIES FROM THIS INDUSTRY',
+    cta: 'VIEW CASE STUDY',
+  },
   ctaEyebrow: 'Your move',
   ctaText: "Tell us about your challenge — we'll show you how we can help.",
   ctaButton: 'Free consultation',
@@ -41,6 +46,20 @@ export const INDUSTRIES = [
     slug: 'automotive',
     pairSlug: 'automotive',
     label: 'Automotive',
+    relatedCaseStudies: [
+      {
+        slug: 'motointegrator',
+        title: 'Automotive e-commerce expanding into new markets',
+      },
+      {
+        slug: 'ozgasl',
+        title: 'A family automotive business on TikTok',
+      },
+      {
+        slug: 'a1-karting',
+        title: 'Karting and motorsport on social media',
+      },
+    ],
     meta: {
       title: 'Social media for the automotive industry | Social Lama',
       description:
@@ -120,6 +139,36 @@ export const INDUSTRIES = [
     slug: 'electronics',
     pairSlug: 'elektronika-i-agd',
     label: 'Electronics & Appliances',
+    relatedCaseStudies: [
+      {
+        slug: 'vobis',
+        title: 'Real-time marketing for a consumer electronics brand',
+      },
+      {
+        slug: 'asus',
+        title: 'An educational campaign about ASUS AI',
+      },
+      {
+        slug: 'breville',
+        title: 'Content marketing for small appliances',
+      },
+      {
+        slug: 'kohersen',
+        title: 'Cookware for everyday cooking',
+      },
+      {
+        slug: 'stadler-form',
+        title: 'Clean air, TikTok style',
+      },
+      {
+        slug: 'laurastar',
+        title: 'Premium appliances and educational content',
+      },
+      {
+        slug: 'foodsaver',
+        title: 'Zero waste with vacuum sealers',
+      },
+    ],
     meta: {
       title:
         'Social media for the electronics & appliances industry | Social Lama',
@@ -197,6 +246,16 @@ export const INDUSTRIES = [
     slug: 'beauty',
     pairSlug: 'beauty',
     label: 'Beauty',
+    relatedCaseStudies: [
+      {
+        slug: 'kontigo',
+        title: '#KontigoCLUB — a community of brand ambassadors',
+      },
+      {
+        slug: 'luisse',
+        title: 'Personal branding in the hairdressing industry',
+      },
+    ],
     meta: {
       title: 'Social media for the beauty industry | Social Lama',
       description:
@@ -261,6 +320,32 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Health',
+    relatedCaseStudies: [
+      {
+        slug: 'adamed',
+        title: 'Communication for a pharmaceutical brand',
+      },
+      {
+        slug: 'imid-cmv',
+        title: 'Educating patients about a CMV clinical trial',
+      },
+      {
+        slug: 'fundacja-saventic',
+        title: 'Rare diseases and health education',
+      },
+      {
+        slug: 'mercator',
+        title: 'Medical devices in B2B communication',
+      },
+      {
+        slug: 'power-elements',
+        title: 'Launching a dietary supplements brand',
+      },
+      {
+        slug: 'mmhygienic',
+        title: 'A new brand in the disinfection category',
+      },
+    ],
     meta: {
       title: 'Social media for the health industry | Social Lama',
       description:
@@ -389,6 +474,12 @@ export const INDUSTRIES = [
     slug: 'pet',
     pairSlug: 'petcare',
     label: 'Pet Industry',
+    relatedCaseStudies: [
+      {
+        slug: 'aquael',
+        title: 'Expert aquascaping content',
+      },
+    ],
     meta: {
       title: 'Social media for the pet industry | Social Lama',
       description:
@@ -450,6 +541,16 @@ export const INDUSTRIES = [
     slug: 'alcohol',
     pairSlug: 'alkohole',
     label: 'Alcohol',
+    relatedCaseStudies: [
+      {
+        slug: 'faktoria-win',
+        title: 'Communication for a wine brand',
+      },
+      {
+        slug: 'mazurska-manufaktura-alkoholi',
+        title: 'Crowdfunding with a brand ambassador',
+      },
+    ],
     meta: {
       title: 'Social media for the alcohol industry | Social Lama',
       description:
@@ -578,6 +679,16 @@ export const INDUSTRIES = [
     slug: 'horeca',
     pairSlug: 'horeca',
     label: 'Horeca',
+    relatedCaseStudies: [
+      {
+        slug: 'julius-meinl',
+        title: 'Premium coffee and industry events',
+      },
+      {
+        slug: 'belvedere',
+        title: 'A premium restaurant in Łazienki Park',
+      },
+    ],
     meta: {
       title: 'Social media for the HoReCa industry | Social Lama',
       description:
@@ -642,6 +753,22 @@ export const INDUSTRIES = [
     slug: 'hospitality',
     pairSlug: 'hotele-i-miejsca-wypoczynkowe',
     label: 'Hotels & Resorts',
+    relatedCaseStudies: [
+      {
+        slug: 'dolina-charlotty',
+        title: 'A resort & SPA as a year-round destination',
+      },
+      {
+        slug: 'skibooking',
+        title: 'Online ski booking',
+        // Its deck shipped no usable logo — render title-only, not a 404 image.
+        logo: false,
+      },
+      {
+        slug: 'getaway',
+        title: 'A travel creator on social media',
+      },
+    ],
     meta: {
       title: 'Social media for hotels and resorts | Social Lama',
       description:
@@ -706,6 +833,20 @@ export const INDUSTRIES = [
     slug: 'real-estate',
     pairSlug: 'nieruchomosci-i-deweloperzy',
     label: 'Real Estate & Developers',
+    relatedCaseStudies: [
+      {
+        slug: 'ed-invest',
+        title: 'A developer on Facebook, Instagram and LinkedIn',
+      },
+      {
+        slug: 'jw-construction',
+        title: 'Prefabricated construction and investments',
+      },
+      {
+        slug: 'dynamic-development',
+        title: 'Developer communication on social media',
+      },
+    ],
     meta: {
       title: 'Social media for the real estate industry | Social Lama',
       description:
@@ -770,6 +911,16 @@ export const INDUSTRIES = [
     slug: 'entertainment',
     pairSlug: 'rozrywka',
     label: 'Entertainment',
+    relatedCaseStudies: [
+      {
+        slug: 'skrzat',
+        title: 'A film premiere and 35M views',
+      },
+      {
+        slug: 'rabkoland',
+        title: 'An amusement park for the whole family',
+      },
+    ],
     meta: {
       title: 'Social media for the entertainment industry | Social Lama',
       description:

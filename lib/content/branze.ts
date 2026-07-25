@@ -46,6 +46,12 @@ export const chrome = {
     manifestoKicker: 'NASZE PODEJŚCIE',
     ctaHeadline: 'Porozmawiajmy o Twojej marce',
   },
+  /** Related-studies row — rendered in BOTH variants (see `relatedCaseStudies`). */
+  related: {
+    kicker: 'WIĘCEJ DOWODÓW',
+    heading: 'CASE STUDIES Z TEJ BRANŻY',
+    cta: 'ZOBACZ CASE STUDY',
+  },
   // CTA card mirrors the case-study one (minus its secondary action), so the
   // eyebrow/lead copy and sentence casing match `case-studies.ts` chrome.
   ctaEyebrow: 'Twój ruch',
@@ -99,6 +105,24 @@ interface IndustryCaseStudy {
   quote: { text: string; attribution: string }
 }
 
+/**
+ * A case study linked from an industry page's related-studies row. Deliberately
+ * lighter than `IndustryCaseStudy`: no creatives, no stats and no quote, because
+ * this is a navigational card rather than a second proof block.
+ */
+export interface IndustryRelatedStudy {
+  /** Case-study slug — not localized, so it is shared by both locales. */
+  slug: string
+  /** Short locale-authored card title. */
+  title: string
+  /**
+   * Set `false` when the study has no `public/case-studies/<slug>/<slug>-logo.png`
+   * asset (its deck shipped no usable logo) — the card then renders title-only
+   * instead of a broken image. Defaults to true.
+   */
+  logo?: boolean
+}
+
 export interface Industry {
   /** Stable, locale-neutral key (equals the PL slug) — pairs PL↔EN for hreflang. */
   id: string
@@ -120,6 +144,13 @@ export interface Industry {
   /** Numbers-band stats — verbatim from the case study. */
   chips?: readonly IndustryStat[]
   caseStudy?: IndustryCaseStudy
+  /**
+   * Case studies linked from a compact card row. ADDITIVE and rendered in BOTH
+   * variants — unlike `caseStudy`, this does NOT select the layout, so an
+   * editorial industry keeps its collage/marquee/manifesto while gaining links.
+   * On proof industries it carries only the studies *beyond* the featured one.
+   */
+  relatedCaseStudies?: readonly IndustryRelatedStudy[]
   // —— editorial-only ——
   /** Keyword marquee band. */
   marquee?: readonly string[]
@@ -138,6 +169,20 @@ export const INDUSTRIES = [
     slug: 'automotive',
     pairSlug: 'automotive',
     label: 'Automotive',
+    relatedCaseStudies: [
+      {
+        slug: 'motointegrator',
+        title: 'Ekspansja e-commerce motoryzacyjnego na nowe rynki',
+      },
+      {
+        slug: 'ozgasl',
+        title: 'Rodzinny biznes motoryzacyjny na TikToku',
+      },
+      {
+        slug: 'a1-karting',
+        title: 'Karting i motorsport w social mediach',
+      },
+    ],
     meta: {
       title: 'Social media dla branży automotive | Social Lama',
       description:
@@ -216,6 +261,36 @@ export const INDUSTRIES = [
     slug: 'elektronika-i-agd',
     pairSlug: 'electronics',
     label: 'Elektronika i AGD',
+    relatedCaseStudies: [
+      {
+        slug: 'vobis',
+        title: 'Real-time marketing marki RTV/AGD',
+      },
+      {
+        slug: 'asus',
+        title: 'Kampania edukacyjna o sztucznej inteligencji ASUS',
+      },
+      {
+        slug: 'breville',
+        title: 'Content marketing małego AGD',
+      },
+      {
+        slug: 'kohersen',
+        title: 'Garnki i patelnie w codziennym gotowaniu',
+      },
+      {
+        slug: 'stadler-form',
+        title: 'Czyste powietrze w wydaniu TikToka',
+      },
+      {
+        slug: 'laurastar',
+        title: 'AGD premium i content edukacyjny',
+      },
+      {
+        slug: 'foodsaver',
+        title: 'Zero waste ze zgrzewarkami próżniowymi',
+      },
+    ],
     meta: {
       title: 'Social media dla branży elektronika i AGD | Social Lama',
       description:
@@ -292,6 +367,16 @@ export const INDUSTRIES = [
     slug: 'beauty',
     pairSlug: 'beauty',
     label: 'Beauty',
+    relatedCaseStudies: [
+      {
+        slug: 'kontigo',
+        title: '#KontigoCLUB — społeczność ambasadorek marki',
+      },
+      {
+        slug: 'luisse',
+        title: 'Personal branding w branży fryzjerskiej',
+      },
+    ],
     meta: {
       title: 'Social media dla branży beauty | Social Lama',
       description:
@@ -361,6 +446,32 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Health',
+    relatedCaseStudies: [
+      {
+        slug: 'adamed',
+        title: 'Komunikacja marki farmaceutycznej',
+      },
+      {
+        slug: 'imid-cmv',
+        title: 'Edukacja o badaniu klinicznym CMV',
+      },
+      {
+        slug: 'fundacja-saventic',
+        title: 'Choroby rzadkie i edukacja zdrowotna',
+      },
+      {
+        slug: 'mercator',
+        title: 'Wyroby medyczne w komunikacji B2B',
+      },
+      {
+        slug: 'power-elements',
+        title: 'Premiera marki suplementów diety',
+      },
+      {
+        slug: 'mmhygienic',
+        title: 'Nowa marka w kategorii dezynfekcji',
+      },
+    ],
     meta: {
       title: 'Social media dla branży health | Social Lama',
       description:
@@ -491,6 +602,12 @@ export const INDUSTRIES = [
     slug: 'petcare',
     pairSlug: 'pet',
     label: 'Petcare',
+    relatedCaseStudies: [
+      {
+        slug: 'aquael',
+        title: 'Ekspercki content akwarystyczny',
+      },
+    ],
     meta: {
       title: 'Social media dla branży petcare | Social Lama',
       description:
@@ -559,6 +676,16 @@ export const INDUSTRIES = [
     slug: 'alkohole',
     pairSlug: 'alcohol',
     label: 'Alkohole',
+    relatedCaseStudies: [
+      {
+        slug: 'faktoria-win',
+        title: 'Komunikacja marki winiarskiej',
+      },
+      {
+        slug: 'mazurska-manufaktura-alkoholi',
+        title: 'Crowdfunding z ambasadorką marki',
+      },
+    ],
     meta: {
       title: 'Social media dla branży alkoholowej | Social Lama',
       description:
@@ -678,6 +805,16 @@ export const INDUSTRIES = [
     slug: 'horeca',
     pairSlug: 'horeca',
     label: 'Horeca',
+    relatedCaseStudies: [
+      {
+        slug: 'julius-meinl',
+        title: 'Kawa premium i eventy branżowe',
+      },
+      {
+        slug: 'belvedere',
+        title: 'Restauracja premium w Łazienkach Królewskich',
+      },
+    ],
     meta: {
       title: 'Social media dla branży HoReCa | Social Lama',
       description:
@@ -743,6 +880,22 @@ export const INDUSTRIES = [
     slug: 'hotele-i-miejsca-wypoczynkowe',
     pairSlug: 'hospitality',
     label: 'Hotele i Miejsca Wypoczynkowe',
+    relatedCaseStudies: [
+      {
+        slug: 'dolina-charlotty',
+        title: 'Resort & SPA jako całoroczny kierunek',
+      },
+      {
+        slug: 'skibooking',
+        title: 'Rezerwacje narciarskie online',
+        // Its deck shipped no usable logo — render title-only, not a 404 image.
+        logo: false,
+      },
+      {
+        slug: 'getaway',
+        title: 'Kreator podróży w social mediach',
+      },
+    ],
     meta: {
       title: 'Social media dla hoteli i miejsc wypoczynkowych | Social Lama',
       description:
@@ -808,6 +961,20 @@ export const INDUSTRIES = [
     slug: 'nieruchomosci-i-deweloperzy',
     pairSlug: 'real-estate',
     label: 'Nieruchomości i Deweloperzy',
+    relatedCaseStudies: [
+      {
+        slug: 'ed-invest',
+        title: 'Deweloper na Facebooku, Instagramie i LinkedInie',
+      },
+      {
+        slug: 'jw-construction',
+        title: 'Budownictwo prefabrykowane i inwestycje',
+      },
+      {
+        slug: 'dynamic-development',
+        title: 'Komunikacja dewelopera w social mediach',
+      },
+    ],
     meta: {
       title: 'Social media dla branży nieruchomości | Social Lama',
       description:
@@ -873,6 +1040,16 @@ export const INDUSTRIES = [
     slug: 'rozrywka',
     pairSlug: 'entertainment',
     label: 'Rozrywka',
+    relatedCaseStudies: [
+      {
+        slug: 'skrzat',
+        title: 'Premiera filmu i 35 mln wyświetleń',
+      },
+      {
+        slug: 'rabkoland',
+        title: 'Park rozrywki dla całej rodziny',
+      },
+    ],
     meta: {
       title: 'Social media dla branży rozrywkowej | Social Lama',
       description:
