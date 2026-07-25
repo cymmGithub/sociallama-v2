@@ -16,11 +16,17 @@
  * kind with a `dashboard` panel instead of a `cube` (O1), so no new kind is
  * introduced there.
  *
- * Copy status: Strategia, Audyt i konsultacje, and Influencer marketing carry
- * client-supplied copy (documents delivered 2026-07-25), compressed to the
- * client's own SZKIELET wireframe rather than imported verbatim (design D1).
- * Content, Sprzedaż, and Kreacje & Wideo keep their shipped drafts — no source
- * document exists for them.
+ * Copy status: Strategia, Audyt i konsultacje, Influencer marketing, and
+ * Kampanie reklamowe carry client-supplied copy (documents delivered
+ * 2026-07-25), compressed to the client's own SZKIELET wireframe rather than
+ * imported verbatim (design D1). Content, Sprzedaż, and Kreacje & Wideo keep
+ * their shipped drafts — no source document exists for them.
+ *
+ * One deliberate deviation from the client copy: their Kampanie reklamowe
+ * document lists Google Ads, Meta Ads, and TikTok Ads under SEOFly's ADS tile.
+ * Meta and TikTok stay on Sprzedaż, which already proves them with dashboard
+ * panels; shipping the document as written would put two menu-adjacent pages in
+ * competition for one enquiry. Pending client sign-off.
  *
  * Asset status: all seven platform cubes exist and are web-optimized (the three
  * new ones — YouTube/Instagram/TikTok — were generated to match the original
@@ -89,7 +95,7 @@ interface PlatformItem {
   dashboard?: Panel
 }
 
-/** A numbered triptych card. `icon` is a lucide icon name (repo rule: no glyphs). */
+/** A triptych card. `icon` is a lucide icon name (repo rule: no glyphs). */
 interface TriptychItem {
   icon: string
   title: string
@@ -130,6 +136,15 @@ interface StripLogo {
   icon: string
 }
 
+/** A muted ambient loop painted behind a section, under a scrim. Decorative:
+ *  the section reads identically from its copy alone. */
+interface BackdropVideo {
+  src: string
+  mobileSrc?: string
+  poster: string
+  alt: string
+}
+
 /**
  * Ordered section descriptors (design D1). `Localized` widens the `kind`
  * literal to `string`, so TypeScript cannot narrow this union downstream — the
@@ -140,10 +155,17 @@ interface StripLogo {
 export type ServiceSection =
   | { kind: 'hero'; title: string; intro: string; cta?: SectionCta }
   | { kind: 'platforms'; items: readonly PlatformItem[] }
-  | { kind: 'triptych'; kicker: string; items: readonly TriptychItem[] }
+  /** `unnumbered` drops the `01/02/…` ordinal: a numbered list asserts a
+   *  sequence, which is wrong for parallel capabilities (design D2). */
+  | {
+      kind: 'triptych'
+      kicker: string
+      unnumbered?: boolean
+      items: readonly TriptychItem[]
+    }
   | {
       kind: 'partner'
-      partner: 'diea' | 'folks' | 'tymkor'
+      partner: 'diea' | 'folks' | 'seofly' | 'tymkor'
       name: string
       /** Partner logo (light-on-dark). Rendered in the cover in place of the
        *  text wordmark; `name` remains the alt text. */
@@ -169,9 +191,11 @@ export type ServiceSection =
       cases: readonly ProofCase[]
     }
   /**
-   * A ticked list of deliverables. `media` is optional — the block renders the
-   * list full-width rather than reserving an empty frame when it is absent
-   * (Strategia's "Co zawiera strategia?" graphic is still unsourced).
+   * A ticked list of deliverables. Both visuals are optional and mutually
+   * exclusive in practice: `media` puts a graphic in a second column, while
+   * `backdrop` replaces the sand band with an ambient loop and inverts the copy
+   * to cream. With neither, the list simply runs full-width on sand — no empty
+   * frame, no placeholder.
    */
   | {
       kind: 'checklist'
@@ -180,6 +204,7 @@ export type ServiceSection =
       intro?: string
       items: readonly string[]
       media?: Panel
+      backdrop?: BackdropVideo
     }
   /** An ordered process. A timeline, not cards — the client asked for the
    *  sequencing specifically, "bo pokazuje next stepy". */
@@ -293,8 +318,15 @@ export const SERVICES = [
           'Klimat, styl komunikacji i filary contentowe',
           'Rekomendowane działania komunikacyjne',
         ],
-        // media: the client asks for a graphic here; nothing supplied yet, so
-        // the list runs full-width rather than reserving an empty frame.
+        // The client asked for a visual here. No graphic was supplied, so the
+        // section runs as a backdrop band instead of a copy+image split.
+        // Ambient workshop footage (Pexels, free licence).
+        backdrop: {
+          src: '/clips/strategia-zakres.mp4',
+          mobileSrc: '/clips/strategia-zakres-mobile.mp4',
+          poster: '/clips/strategia-zakres-poster.jpg',
+          alt: 'Zespół pracujący nad materiałami strategicznymi przy stole',
+        },
       },
       {
         kind: 'timeline',
@@ -409,7 +441,8 @@ export const SERVICES = [
     ],
   },
 
-  // 3 — Sprzedaż · hero · triptych · platforms-as-dashboards(6) · proof
+  // 3 — Sprzedaż · hero · triptych · platforms-as-dashboards(6) · proof ·
+  //     banner(cross-link)
   {
     id: 'sprzedaz',
     slug: 'sprzedaz',
@@ -420,8 +453,10 @@ export const SERVICES = [
       description:
         'Prowadzimy social media nastawione na sprzedaż. Skuteczność mierzymy nie lajkami, a wynikami Twojego biznesu — z twardymi danymi z kampanii.',
     },
+    // Names the social platforms, to contrast with Kampanie reklamowe's search
+    // on the /uslugi index — the only surface where the two are seen together.
     summary:
-      'Komunikacja rozliczana z najważniejszej roli — sprzedaży produktów i usług.',
+      'Sprzedaż w social mediach — kampanie na Facebooku, Instagramie i TikToku, rozliczane z wyniku.',
     sections: [
       {
         kind: 'hero',
@@ -537,10 +572,124 @@ export const SERVICES = [
           },
         ],
       },
+      {
+        // D3, reciprocal: search lives with SEOFly on /uslugi/kampanie-reklamowe.
+        // Named rather than implied, so a visitor who landed here hunting for
+        // Google Ads is routed instead of bouncing.
+        kind: 'banner',
+        heading: 'Szukasz SEO i kampanii w Google?',
+        body: 'Wyszukiwarką zajmuje się SEOFly — siostrzana agencja z Grupy Good One. Tutaj prowadzimy sprzedaż w social mediach, tam — widoczność i kampanie w Google.',
+        cta: {
+          label: 'Zobacz kampanie reklamowe',
+          href: '/uslugi/kampanie-reklamowe',
+        },
+      },
     ],
   },
 
-  // 4 — Kreacje & Wideo · hero · triptych · partner(diea) · showreel  [DESIGNED]
+  // 4 — Kampanie reklamowe · hero · triptych(6 kafli, bez numeracji) ·
+  //     partner(seofly) · banner(cross-link) — the client's SZKIELET, minus the
+  //     SEOFly case studies (none supplied; `proof` links only into our own
+  //     collection).
+  {
+    id: 'kampanie-reklamowe',
+    slug: 'kampanie-reklamowe',
+    pairSlug: 'ad-campaigns',
+    label: 'Kampanie reklamowe',
+    meta: {
+      // D5: the label carries no term anyone searches this offer with, so the
+      // title names SEO and Google Ads instead.
+      title: 'SEO i Google Ads — kampanie reklamowe | Social Lama',
+      description:
+        'Pozycjonowanie, kampanie Google Ads, audyty SEO, strony WWW oraz analityka i raportowanie. Obszar search i performance prowadzimy z SEOFly — agencją z Grupy Good One.',
+    },
+    // Names search, to contrast with Sprzedaż's social platforms on the index.
+    summary:
+      'Widoczność w wyszukiwarce — SEO, Google Ads i strony WWW, razem z SEOFly.',
+    sections: [
+      {
+        kind: 'hero',
+        title: 'Kampanie reklamowe',
+        intro:
+          'Widoczność w wyszukiwarce, kampanie w Google i strony, które realizują cele biznesowe. Obszar SEO i performance rozwijamy razem z SEOFly — siostrzaną agencją z Grupy Good One. Od pozycjonowania i audytów, przez treści pod SEO, po analitykę i raportowanie.',
+      },
+      {
+        kind: 'triptych',
+        kicker: 'CO ROBIMY',
+        // Six parallel capabilities, not a process — hence no ordinals (D2).
+        // The default three-column grid gives the client's two rows of three.
+        unnumbered: true,
+        items: [
+          {
+            icon: 'Search',
+            title: 'SEO',
+            body: 'Zwiększamy widoczność marek w wyszukiwarce Google, docierając do użytkowników dokładnie wtedy, gdy szukają produktów lub usług. Stawiamy na działania, które przekładają się na realny ruch i wyniki biznesowe.',
+          },
+          {
+            icon: 'MousePointerClick',
+            title: 'ADS',
+            // D1: Google only. Meta Ads and TikTok Ads stay on /uslugi/sprzedaz,
+            // which already proves them with dashboard panels.
+            body: 'Prowadzimy kampanie Google Ads, które wspierają sprzedaż, generują leady i budują świadomość marki. Dobieramy działania do celów biznesowych i stale optymalizujemy ich efektywność.',
+          },
+          {
+            icon: 'PenTool',
+            title: 'Content marketing',
+            // "pod pozycjonowanie" is the client's own qualifier — it is what
+            // separates this tile from /uslugi/content. Do not drop it.
+            body: 'Tworzymy wartościowe treści pod pozycjonowanie, które budują eksperckość marki i odpowiadają na potrzeby odbiorców na każdym etapie ścieżki zakupowej.',
+          },
+          {
+            icon: 'ClipboardCheck',
+            title: 'Audyty SEO',
+            // "strony internetowe" likewise separates this from
+            // /uslugi/audyt-i-konsultacje, which audits social media profiles.
+            body: 'Analizujemy strony internetowe, identyfikujemy obszary wymagające poprawy i przygotowujemy konkretne rekomendacje, które zwiększają widoczność oraz skuteczność działań.',
+          },
+          {
+            icon: 'Globe',
+            title: 'Strony WWW',
+            body: 'Projektujemy i wdrażamy nowoczesne strony internetowe, które nie tylko dobrze wyglądają, ale przede wszystkim realizują cele biznesowe i wspierają pozyskiwanie klientów.',
+          },
+          {
+            icon: 'BarChart3',
+            title: 'Analityka i raportowanie',
+            body: 'Mierzymy efekty działań i analizujemy dane, aby podejmować trafne decyzje marketingowe. Regularne raportowanie pozwala stale rozwijać i optymalizować prowadzone działania.',
+          },
+        ],
+      },
+      {
+        kind: 'partner',
+        partner: 'seofly',
+        name: 'SEOFly',
+        // Reversed lockup: SEOFly ship no light-on-dark variant, so their
+        // horizontal SVG has its #333333 wordmark recoloured to cream. Brand
+        // green and the mark itself are untouched.
+        logo: '/assets/seofly-logo-light.png',
+        // No tagline — SEOFly publish none, and inventing one is the mistake
+        // the Folks block already carries.
+        copy: 'Skuteczny marketing nie kończy się na jednym kanale — dlatego połączyliśmy siły z SEOFly, agencją specjalizującą się w SEO i performance marketingu. Social Lama odpowiada za strategię, content i social media, a SEOFly rozwija widoczność marek w wyszukiwarce i realizuje kampanie performance. Obie należą do Grupy Good One, więc kompetencje — od social mediów, przez SEO i performance, po PR, influencer marketing i employer branding — spotykają się w jednym miejscu. Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        href: '/kontakt',
+        // Ambient search/performance footage (Pexels, free licence).
+        video: {
+          src: '/clips/seofly-cover.mp4',
+          mobileSrc: '/clips/seofly-cover-mobile.mp4',
+          poster: '/clips/seofly-cover-poster.jpg',
+          alt: 'Praca na laptopie nad wynikami w wyszukiwarce',
+        },
+      },
+      {
+        // D3: the mega-menu shows labels only, so the paid-social boundary has
+        // to be carried here rather than left to the visitor to infer.
+        kind: 'banner',
+        heading: 'A płatny social?',
+        body: 'Kampanie na Facebooku, Instagramie i TikToku prowadzimy u siebie — z twardymi danymi z kampanii jako dowodem.',
+        cta: { label: 'Zobacz Sprzedaż', href: '/uslugi/sprzedaz' },
+      },
+    ],
+  },
+
+  // 5 — Kreacje & Wideo · hero · triptych · partner(diea) · showreel  [DESIGNED]
   {
     id: 'kreacje-wideo',
     slug: 'kreacje-wideo',
@@ -599,7 +748,7 @@ export const SERVICES = [
     ],
   },
 
-  // 5 — Audyt i konsultacje · hero(+CTA) · checklist · logoStrip · banner ·
+  // 6 — Audyt i konsultacje · hero(+CTA) · checklist · logoStrip · banner ·
   //     proof — reshaped from the client doc as a productized service.
   {
     id: 'audyt-i-konsultacje',
@@ -680,7 +829,7 @@ export const SERVICES = [
     ],
   },
 
-  // 6 — Influencer marketing · hero · triptych · partner(folks) · proof
+  // 7 — Influencer marketing · hero · triptych · partner(folks) · proof
   {
     id: 'influencer-marketing',
     slug: 'influencer-marketing',

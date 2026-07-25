@@ -98,6 +98,12 @@ export const SERVICES = [
           'Tone of voice and content pillars',
           'Recommended communication activity',
         ],
+        backdrop: {
+          src: '/clips/strategia-zakres.mp4',
+          mobileSrc: '/clips/strategia-zakres-mobile.mp4',
+          poster: '/clips/strategia-zakres-poster.jpg',
+          alt: 'A team working through strategy materials at a table',
+        },
       },
       {
         kind: 'timeline',
@@ -215,7 +221,7 @@ export const SERVICES = [
         'We run social media built for sales. We measure success not in likes but in your business results — backed by hard campaign data.',
     },
     summary:
-      'Communication held to account for what matters most — selling products and services.',
+      'Selling on social — campaigns on Facebook, Instagram, and TikTok, judged on results.',
     sections: [
       {
         kind: 'hero',
@@ -329,10 +335,99 @@ export const SERVICES = [
           },
         ],
       },
+      {
+        kind: 'banner',
+        heading: 'Looking for SEO and Google campaigns?',
+        body: 'Search is SEOFly territory — our sibling agency in the Good One Group. Social selling lives here; visibility and campaigns in Google live there.',
+        cta: {
+          label: 'See ad campaigns',
+          href: '/en/services/ad-campaigns',
+        },
+      },
     ],
   },
 
-  // 4 — Creative & Video
+  // 4 — Ad campaigns
+  {
+    id: 'kampanie-reklamowe',
+    slug: 'ad-campaigns',
+    pairSlug: 'kampanie-reklamowe',
+    label: 'Ad campaigns',
+    meta: {
+      title: 'SEO and Google Ads — ad campaigns | Social Lama',
+      description:
+        'SEO, Google Ads campaigns, SEO audits, websites, and analytics & reporting. We run search and performance with SEOFly — an agency in the Good One Group.',
+    },
+    summary:
+      'Visibility in search — SEO, Google Ads, and websites, together with SEOFly.',
+    sections: [
+      {
+        kind: 'hero',
+        title: 'Ad campaigns',
+        intro:
+          'Visibility in search, campaigns in Google, and websites built to hit business goals. We grow the SEO and performance side together with SEOFly — our sibling agency in the Good One Group. From rankings and audits, through content written for search, to analytics and reporting.',
+      },
+      {
+        kind: 'triptych',
+        kicker: 'WHAT WE DO',
+        unnumbered: true,
+        items: [
+          {
+            icon: 'Search',
+            title: 'SEO',
+            body: 'We grow brand visibility in Google, reaching people at the exact moment they go looking for a product or service. We back the work that turns into real traffic and real business results.',
+          },
+          {
+            icon: 'MousePointerClick',
+            title: 'Ads',
+            body: 'We run Google Ads campaigns that support sales, generate leads, and build brand awareness. We match the work to your business goals and keep optimizing as it runs.',
+          },
+          {
+            icon: 'PenTool',
+            title: 'Content marketing',
+            body: "We create content written for search — the kind that builds a brand's authority and answers what people actually need at every stage of the buying journey.",
+          },
+          {
+            icon: 'ClipboardCheck',
+            title: 'SEO audits',
+            body: 'We analyze websites, pinpoint what needs fixing, and hand over concrete recommendations that lift visibility and make the work more effective.',
+          },
+          {
+            icon: 'Globe',
+            title: 'Websites',
+            body: 'We design and build modern websites that not only look the part, but above all hit business goals and help bring in customers.',
+          },
+          {
+            icon: 'BarChart3',
+            title: 'Analytics & reporting',
+            body: 'We measure the results and read the data, so marketing decisions land. Regular reporting is what lets us keep developing and optimizing the work.',
+          },
+        ],
+      },
+      {
+        kind: 'partner',
+        partner: 'seofly',
+        name: 'SEOFly',
+        logo: '/assets/seofly-logo-light.png',
+        copy: 'Good marketing does not stop at one channel — which is why we joined forces with SEOFly, an agency built around SEO and performance marketing. Social Lama handles strategy, content, and social media; SEOFly grows brand visibility in search and runs performance campaigns. Both belong to the Good One Group, so the competencies — social, SEO and performance, PR, influencer marketing, employer branding — all sit in one place. One partner. Many competencies. BETTER WORKS.',
+        href: '/en/contact',
+        video: {
+          src: '/clips/seofly-cover.mp4',
+          mobileSrc: '/clips/seofly-cover-mobile.mp4',
+          poster: '/clips/seofly-cover-poster.jpg',
+          alt: 'Working at a laptop on search results',
+        },
+      },
+      {
+        kind: 'banner',
+        heading: 'And paid social?',
+        body: 'Facebook, Instagram, and TikTok campaigns we run in-house — with hard campaign data as the proof.',
+        cta: { label: 'See Sales', href: '/en/services/sales' },
+      },
+    ],
+  },
+
+  // 5 — Creative & Video
   {
     id: 'kreacje-wideo',
     slug: 'creative-video',
@@ -391,7 +486,7 @@ export const SERVICES = [
     ],
   },
 
-  // 5 — Audit & consulting
+  // 6 — Audit & consulting
   {
     id: 'audyt-i-konsultacje',
     slug: 'audit-consulting',
@@ -462,7 +557,7 @@ export const SERVICES = [
     ],
   },
 
-  // 6 — Influencer marketing
+  // 7 — Influencer marketing
   {
     id: 'influencer-marketing',
     slug: 'influencer-marketing',

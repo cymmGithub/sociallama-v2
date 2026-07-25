@@ -7,11 +7,13 @@ import {
   Check,
   ClipboardCheck,
   Compass,
+  Globe,
   HeartHandshake,
   Lightbulb,
   type LucideIcon,
   Megaphone,
   MessageSquare,
+  MousePointerClick,
   PenTool,
   Rocket,
   Search,
@@ -102,6 +104,7 @@ interface PlatformData {
 }
 interface TriptychData {
   kicker: string
+  unnumbered?: boolean
   items: readonly { icon: string; title: string; body: string }[]
 }
 interface PartnerData {
@@ -134,6 +137,7 @@ interface ChecklistData {
   intro?: string
   items: readonly string[]
   media?: { src: string; alt: string; width: number; height: number }
+  backdrop?: { src: string; mobileSrc?: string; poster: string; alt: string }
 }
 interface TimelineData {
   kicker: string
@@ -173,6 +177,8 @@ const ICONS: Record<string, LucideIcon> = {
   Megaphone,
   HeartHandshake,
   Wallet,
+  Globe,
+  MousePointerClick,
 }
 
 // —— Hero ——————————————————————————————————————————————————————————————————————
@@ -355,7 +361,7 @@ function Platforms({
   )
 }
 
-// —— Triptych (numbered brand-native cards, o-nas card language — design D4) ——
+// —— Triptych (brand-native cards, o-nas card language — design D4) ————————————
 
 function Triptych({ data }: { data: TriptychData }) {
   const ref = useReveal<HTMLDivElement>()
@@ -372,9 +378,14 @@ function Triptych({ data }: { data: TriptychData }) {
             return (
               <li key={item.title} data-reveal-item className={s.card}>
                 <div className={s.cardHead}>
-                  <span className={s.cardNum}>
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                  {/* Ordinals imply sequence. Parallel capabilities (the
+                      ad-campaigns tiles) opt out; the icon then sits alone at
+                      the head's start, which `space-between` already gives. */}
+                  {!data.unnumbered && (
+                    <span className={s.cardNum}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  )}
                   <span className={s.cardIcon}>
                     <Icon size={24} strokeWidth={1.75} aria-hidden="true" />
                   </span>
@@ -390,7 +401,7 @@ function Triptych({ data }: { data: TriptychData }) {
   )
 }
 
-// —— Partner (Good One siblings: DIEA / Folks / TymKor) ————————————————————————
+// —— Partner (Good One siblings: DIEA / Folks / SEOFly / TymKor) ——————————————
 
 /**
  * Full-bleed cinematic cover — the partner's showreel plays as an ambient muted
@@ -579,9 +590,28 @@ function Proof({
 
 function Checklist({ data }: { data: ChecklistData }) {
   const ref = useReveal<HTMLDivElement>()
+  const { backdrop } = data
 
   return (
-    <section className={s.checklist} data-theme="cream">
+    <section
+      className={s.checklist}
+      /* The backdrop variant runs dark, so it opts out of the cream palette
+         the same way the partner cover does — by carrying no theme at all. */
+      data-theme={backdrop ? undefined : 'cream'}
+      data-backdrop={backdrop ? '' : undefined}
+    >
+      {backdrop && (
+        <div className={s.checklistBackdrop} aria-hidden="true">
+          <Video
+            src={backdrop.src}
+            {...(backdrop.mobileSrc ? { mobileSrc: backdrop.mobileSrc } : {})}
+            poster={backdrop.poster}
+            alt={backdrop.alt}
+            className={s.checklistBackdropVideo}
+          />
+          <div className={s.checklistScrim} />
+        </div>
+      )}
       <div
         ref={ref}
         className={s.checklistInner}

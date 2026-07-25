@@ -38,6 +38,25 @@ Each page SHALL emit locale-correct metadata, hreflang alternates to its counter
 - **WHEN** `/uslugi/kampanie-reklamowe` renders
 - **THEN** its metadata title names SEO and Google Ads, which its navigation label does not
 
+### Requirement: Optional sections degrade rather than render empty
+
+Sections whose assets or data are unavailable — showreel clips, partner imagery, proof case studies — SHALL be omitted from the page rather than rendered as empty frames or placeholder boxes. Where a section's *media* is optional but its copy is not, the section SHALL render copy-only rather than reserving an empty media frame. A checklist MAY instead carry a decorative backdrop loop in place of a graphic; when it does, its copy SHALL invert to stay legible against the darkened ground, and the section SHALL remain fully readable from its copy alone.
+
+#### Scenario: Showreel without clips
+
+- **WHEN** the showreel section has no clips available
+- **THEN** the section is omitted entirely and no empty band renders
+
+#### Scenario: Checklist without its graphic
+
+- **WHEN** a checklist section has no accompanying graphic
+- **THEN** its items render full-width and no empty image frame or placeholder box appears
+
+#### Scenario: Checklist with a backdrop
+
+- **WHEN** a checklist section declares a backdrop loop
+- **THEN** the loop plays muted behind a scrim, is exposed to assistive technology as decorative rather than as content, and the heading, intro, and ticked items render in the inverted palette
+
 ## ADDED Requirements
 
 ### Requirement: The ad-campaigns page presents the group's search offer
@@ -59,10 +78,10 @@ Each page SHALL emit locale-correct metadata, hreflang alternates to its counter
 - **WHEN** the ad-campaigns page renders
 - **THEN** its partner section identifies SEOFly as part of Grupa Good One and closes with the group line "Jeden partner. Wiele kompetencji. BETTER WORKS."
 
-#### Scenario: Partner section without a supplied logo
+#### Scenario: Partner section carries the SEOFly mark
 
-- **WHEN** no SEOFly logo asset is available
-- **THEN** the partner section renders its wordmark instead, with no empty logo frame
+- **WHEN** the ad-campaigns page's partner section renders
+- **THEN** it shows the SEOFly logo in a light-on-dark lockup, and where no logo asset is available it renders the wordmark instead, with no empty logo frame
 
 ### Requirement: Paid social and search are separated and cross-linked
 

@@ -31,7 +31,7 @@ None. This extends the existing services section rather than introducing a capab
 
 - **Content**: `lib/content/uslugi.ts` + `uslugi.en.ts` — one new service entry with its sections, plus a sharpened `summary` on Sprzedaż. `lib/content/home.ts` + `home.en.ts` — one menu entry each; also clears a now-false comment there claiming Strategia, Audyt, and Influencer "don't exist yet — accepted interim 404s".
 - **Components**: `app/(frontend)/uslugi/[slug]/service-page.tsx` — an unnumbered tile variant; `service.module.css` for its grid.
-- **Assets**: a SEOFly logo for the partner block. The `partner` primitive's `logo` is optional and falls back to a wordmark, so the page ships without it.
+- **Assets**: a reversed SEOFly lockup (their horizontal SVG with the `#333333` wordmark recoloured to cream — they publish no light-on-dark variant, so this needs their confirmation), plus an ambient Pexels loop for the partner cover. During implementation the block was upgraded from the copy-only layout to the full-bleed cinematic cover DIEA and Folks already use, so the three Good One siblings read alike.
 - **Derived automatically**: `/uslugi` index card, `generateStaticParams`, sitemap entries, hreflang alternates — all read the canonical list.
 - **Specs**: deltas to `services-pages` and `site-i18n`.
 - **Ops**: runs **after** `align-existing-services` in the same worktree. Both edit `uslugi.ts`, `uslugi.en.ts`, `service-page.tsx`, and `service.module.css`; parallel worktrees would conflict on the core of each.

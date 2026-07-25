@@ -169,15 +169,21 @@ export const menu = {
       more: { label: 'Wszystkie branże', href: '/branze' },
     },
     {
-      // Strategia, Audyt i konsultacje, Influencer marketing route to
-      // /uslugi/<slug> pages that don't exist yet — accepted interim 404s;
-      // the slugs are final so the pages drop in without a menu change. The
-      // mobile "more" link points at /uslugi on the same interim-404 basis.
+      // Hand-maintained rather than derived from SERVICES: this column also
+      // carries /szkolenia, which is not a service page.
       label: 'USŁUGI',
       items: [
         { label: 'Strategia', href: '/uslugi/strategia', mobileHidden: true },
         { label: 'Content', href: '/uslugi/content' },
         { label: 'Sprzedaż', href: '/uslugi/sprzedaz' },
+        // Directly after Sprzedaż (design D4): the two split advertising by
+        // channel, and adjacency at least presents the choice — labels alone
+        // cannot distinguish them, so the pages cross-link.
+        {
+          label: 'Kampanie reklamowe',
+          href: '/uslugi/kampanie-reklamowe',
+          mobileHidden: true,
+        },
         { label: 'Kreacje & Wideo', href: '/uslugi/kreacje-wideo' },
         {
           label: 'Audyt i konsultacje',

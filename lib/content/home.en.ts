@@ -61,6 +61,11 @@ export const menu = {
         { label: 'Strategy', href: '/en/services/strategy', mobileHidden: true },
         { label: 'Content', href: '/en/services/content' },
         { label: 'Sales', href: '/en/services/sales' },
+        {
+          label: 'Ad Campaigns',
+          href: '/en/services/ad-campaigns',
+          mobileHidden: true,
+        },
         { label: 'Creative & Video', href: '/en/services/creative-video' },
         {
           label: 'Audit & Consulting',

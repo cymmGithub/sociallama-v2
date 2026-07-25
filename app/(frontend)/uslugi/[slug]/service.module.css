@@ -445,6 +445,11 @@
   --accent: #f2695b;
 }
 
+/* SEOFly green, taken from their own mark (echoes seofly.pl). */
+.partnerCover[data-partner="seofly"] {
+  --accent: #41ad49;
+}
+
 .partnerCoverMedia {
   position: absolute;
   inset: 0;
@@ -752,6 +757,73 @@
 .checklistMedia {
   display: flex;
   justify-content: center;
+}
+
+/*
+ * Backdrop variant: the sand band gives way to an ambient loop under a scrim,
+ * and the copy inverts to cream (Strategia's ZAKRES). The scrim is flat rather
+ * than bottom-weighted like the partner cover's — a whole section of body copy
+ * sits on it, not just a headline in one corner.
+ */
+.checklist[data-backdrop] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0b0b0e;
+  color: var(--color-cream);
+}
+
+.checklistBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.checklistBackdropVideo {
+  width: 100%;
+  height: 100%;
+}
+
+.checklistScrim {
+  position: absolute;
+  inset: 0;
+
+  /* Mobile runs the copy edge to edge, so the ground has to be flat-dark —
+     a left-weighted gradient would leave the line ends on bare footage. */
+  background: rgb(8 8 12 / 88%);
+
+  @media (--desktop) {
+    background: linear-gradient(
+      to right,
+      rgb(8 8 12 / 90%) 0%,
+      rgb(8 8 12 / 76%) 55%,
+      rgb(8 8 12 / 62%) 100%
+    );
+  }
+}
+
+.checklist[data-backdrop] .checklistInner {
+  position: relative;
+  z-index: 1;
+}
+
+.checklist[data-backdrop] .kicker {
+  color: var(--color-orange);
+}
+
+.checklist[data-backdrop] .sectionHeading {
+  color: var(--color-cream);
+}
+
+.checklist[data-backdrop] .checklistIntro {
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+/* Solid orange on the dark ground: the 32%-alpha wash used on sand all but
+   disappears here, taking the tick with it. */
+.checklist[data-backdrop] .checkMark {
+  background: var(--color-orange);
+  color: #0b0b0e;
 }
 
 /* —— Timeline (ordered process — task 3.2) ————————————————————————————————————— */

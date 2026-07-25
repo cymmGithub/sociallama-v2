@@ -42,7 +42,7 @@ Rejected: shipping the document verbatim (two pages competing for one enquiry), 
 - **The client's copy is being edited** → Raised with them as an explicit task before ship, not folded in silently. If they insist on the document as written, D1 reverses and the overlap becomes theirs to own — but that should be their decision made knowingly.
 - **The label/scope mismatch persists regardless** → Mitigated by D3, which is why those three surfaces are specified rather than left to taste. If the cross-links are dropped later as clutter, the mismatch returns.
 - **An eight-item desktop menu column is unverified** → Checked visually rather than assumed; the column is a simple list, so the expected outcome is that nothing happens.
-- **A SEOFly logo has not been sourced** → `partner` already falls back to a wordmark when `logo` is absent, the same graceful path the Folks block used before its imagery landed.
+- **A SEOFly logo has not been sourced** → Resolved during implementation: their horizontal SVG was reversed for dark ground (`#333333` wordmark → cream, brand green untouched), and the block ships as a full-bleed cover matching DIEA and Folks. SEOFly publish no official light-on-dark variant, so the reversed lockup needs their sign-off; the wordmark fallback remains the graceful path if they decline.
 - **Running second in a shared worktree means rebasing on `align-existing-services`** → Accepted deliberately: both changes edit the same four files, and D2 depends on that change's N-column grid already existing.
 
 ## Migration Plan
