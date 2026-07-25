@@ -53,6 +53,12 @@
   position: relative;
   width: auto;
   height: 2.25rem;
+  /* 11 of the imported client logos are dark or coloured brand tiles whose
+     light text can't be keyed out — rounding the tile makes them read as a
+     deliberate lockup rather than an unremoved background. Transparent logos
+     are unaffected. */
+  border-radius: 0.35rem;
+  overflow: hidden;
 }
 
 .clientLogo img {
