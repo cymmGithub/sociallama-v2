@@ -12,6 +12,13 @@
  * `--prod` needs BLOB_READ_WRITE_TOKEN — see scripts/case-studies/reseed-prod.sh
  * for why (without it the bytes land on local disk while prod rows point at
  * files that don't exist).
+ *
+ * RUN IT TWICE. Payload's `getSafeFileName` bumps a name while
+ * `docWithFilenameExists` is true, and that check does NOT exclude the document
+ * being updated — so re-uploading `x.png` onto the doc that already owns
+ * `x.png` always yields `x-1.png`. The second pass finds the clean name free
+ * (the doc now owns `x-1.png`) and restores it. Verify with:
+ *   filenames matching /-\d+\.png$/ should be 0.
  */
 
 import fs from 'node:fs'
@@ -85,8 +92,8 @@ let updated = 0
 let missing = 0
 for (const filePath of logos) {
   const filename = path.basename(filePath)
-  // A previous run may have collided and stored `<base>-1.png`, so match the
-  // stem rather than the exact name.
+  // A previous pass may have stored `<base>-1.png` (see the note above), so
+  // match the stem rather than the exact name.
   const stem = filename.replace(/\.png$/, '')
   const found = await payload.find({
     collection: 'media',
