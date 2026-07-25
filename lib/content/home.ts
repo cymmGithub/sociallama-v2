@@ -298,6 +298,7 @@ export const clients: Client[] = [
   {
     name: 'Aquael',
     logo: '/assets/clients/aquael.png',
+    caseStudySlug: 'aquael',
     testimonial: {
       quote:
         'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
