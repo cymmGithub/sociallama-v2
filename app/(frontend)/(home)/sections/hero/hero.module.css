@@ -67,13 +67,15 @@
 }
 
 /* Outfit stack: all five look stills share the .video box; only the active
-   one is visible. A soft cross-dissolve (not a snap) that leans toward the
-   650ms word-flip rhythm, so the swap reads together with the word it mirrors.
+   one is visible. The dissolve is deliberately unhurried and starts 270ms
+   AFTER the word — the word leads, the wardrobe answers, so the two read as
+   one action instead of two scripts firing on the same tick. Out-easing (not
+   the old symmetric ease-in-out-quad) so it leaves fast and arrives slow.
    All five poses share the same body, so the fade stays clean — the outgoing
    and incoming llamas register on top of each other, no ghosted double image. */
 .look {
   opacity: 0;
-  transition: opacity 0.5s var(--ease-in-out-quad);
+  transition: opacity 1.26s var(--ease-out-quart) 270ms;
 }
 
 .lookActive {
@@ -168,14 +170,19 @@
   transform: translateY(120%);
 }
 
+/* 1.95s, not the 650ms JoinCta still uses: the hero's word moves at the same
+   unhurried tempo as the wardrobe it leads. Note this leaves only ~650ms of
+   rest inside the 2600ms interval — if a long main-thread task ever lets a
+   tick land mid-slide, the waiting words (no transition of their own) will
+   snap rather than blend. */
 .rotatorWordActive {
   transform: none;
-  transition: transform 650ms var(--ease-out-expo);
+  transition: transform 1.95s var(--ease-out-expo);
 }
 
 .rotatorWordLeaving {
   transform: translateY(-120%);
-  transition: transform 650ms var(--ease-out-expo);
+  transition: transform 1.95s var(--ease-out-expo);
 }
 
 .socials {
@@ -242,33 +249,25 @@
   }
 }
 
-/* Mobile llama: the same transparent outfit stills, filling the mobile media
-   box. The stills are cropped tight to the llama (820x1080), so cover + a
-   centered object-position frames the head dead-centre and lets the shirt fall
-   below the fold. Anchored high (12% from top) so a URL-bar-shrunk viewport
-   eats the shirt, not the ears. */
+/* Mobile llama: the same transparent outfit stills, fitted whole into the
+   mobile media box. This used to be a cover head-crop anchored at 12% — punchy,
+   but it let the shirt fall below the fold: on a 360px phone only ~34% of the
+   wardrobe cleared it, hiding the one thing the look swap exists to show.
+   `contain` scales the llama down a little and fits it entirely, bottom-flush
+   on the client-logos band; the transparent sides are just section plum, so the
+   box still reads seamless.
+
+   `!important` beats the inline object-fit the Image component always emits
+   (inline styles yield only to !important) — which is why plain contain
+   silently lost when this rule was scoped to portrait tablets. */
 .mobileLook {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-position: 50% 12%;
-}
-
-/* Portrait tablets (≥600px, any of them): the stacked media box is wide, and
-   on shorter viewports it's also short — cover would then crop the whole head
-   off (a wide+short box forces cover to scale up and clip vertically). Switch
-   to contain so the entire llama always fits: it fills the box height, sits
-   flush on the client-logos band, and the transparent sides are just the
-   section plum (seamless). `!important` beats the inline object-fit the Image
-   component always emits (which is why plain contain silently lost). Phones
-   (<600px) keep the punchy cover head-crop — their box is narrow enough. */
-@media (min-width: 600px) and (orientation: portrait) {
-  .mobileLook {
-    /* biome-ignore lint/complexity/noImportantStyles: must beat next/image's inline object-fit:cover — inline styles yield only to !important */
-    object-fit: contain !important;
-    object-position: 50% 100%;
-  }
+  /* biome-ignore lint/complexity/noImportantStyles: must beat next/image's inline object-fit:cover — inline styles yield only to !important */
+  object-fit: contain !important;
+  object-position: 50% 100%;
 }
 
 /* Portrait tablets (and narrow, tall windows) at ≥800px land in the desktop
