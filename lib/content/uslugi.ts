@@ -11,13 +11,16 @@
  * Composition over template (design D1): each service declares an ordered
  * `sections` array of discriminated-union descriptors and the page renders them
  * in order. The allowed kinds are fixed by the spec: `hero`, `platforms`,
- * `triptych`, `partner`, `showreel`, `proof`. Sprzedaż's dashboards reuse the
- * `platforms` kind with a `dashboard` panel instead of a `cube` (O1), so no new
- * kind is introduced.
+ * `triptych`, `partner`, `showreel`, `proof`, `checklist`, `timeline`,
+ * `banner`, `logoStrip`, `posts`. Sprzedaż's dashboards reuse the `platforms`
+ * kind with a `dashboard` panel instead of a `cube` (O1), so no new kind is
+ * introduced there.
  *
- * Copy status: DRAFT, pending user review (tasks 6.1–6.3). The content/sprzedaż/
- * kreacje intros are adapted from the homepage `services[].bodyLong`, which was
- * written for these very pages; strategia/audyt/influencer are fresh drafts.
+ * Copy status: Strategia, Audyt i konsultacje, and Influencer marketing carry
+ * client-supplied copy (documents delivered 2026-07-25), compressed to the
+ * client's own SZKIELET wireframe rather than imported verbatim (design D1).
+ * Content, Sprzedaż, and Kreacje & Wideo keep their shipped drafts — no source
+ * document exists for them.
  *
  * Asset status: all seven platform cubes exist and are web-optimized (the three
  * new ones — YouTube/Instagram/TikTok — were generated to match the original
@@ -108,13 +111,34 @@ interface ProofCase {
   logo?: string
 }
 
+/** A single button. Shared by `hero` and `banner`. */
+interface SectionCta {
+  label: string
+  href: string
+}
+
+/** One numbered step of a `timeline`. */
+interface TimelineStep {
+  title: string
+  body: string
+}
+
+/** A platform mark in a `logoStrip`. `icon` is an existing monochrome SVG under
+ *  `public/assets/icon-*.svg`, painted via `mask-image` like the footer set. */
+interface StripLogo {
+  name: string
+  icon: string
+}
+
 /**
  * Ordered section descriptors (design D1). `Localized` widens the `kind`
- * literal to `string`, so the renderer narrows by property presence, not by
- * `kind` — see `service-page.tsx`.
+ * literal to `string`, so TypeScript cannot narrow this union downstream — the
+ * renderer dispatches on `kind` at runtime and casts per branch (design D8).
+ * Note `items` is deliberately carried by three different kinds; that is safe
+ * precisely because dispatch no longer looks at property presence.
  */
 export type ServiceSection =
-  | { kind: 'hero'; title: string; intro: string }
+  | { kind: 'hero'; title: string; intro: string; cta?: SectionCta }
   | { kind: 'platforms'; items: readonly PlatformItem[] }
   | { kind: 'triptych'; kicker: string; items: readonly TriptychItem[] }
   | {
@@ -144,6 +168,51 @@ export type ServiceSection =
       heading: string
       cases: readonly ProofCase[]
     }
+  /**
+   * A ticked list of deliverables. `media` is optional — the block renders the
+   * list full-width rather than reserving an empty frame when it is absent
+   * (Strategia's "Co zawiera strategia?" graphic is still unsourced).
+   */
+  | {
+      kind: 'checklist'
+      kicker: string
+      heading: string
+      intro?: string
+      items: readonly string[]
+      media?: Panel
+    }
+  /** An ordered process. A timeline, not cards — the client asked for the
+   *  sequencing specifically, "bo pokazuje next stepy". */
+  | {
+      kind: 'timeline'
+      kicker: string
+      heading: string
+      steps: readonly TimelineStep[]
+    }
+  /** A highlighted offer band with one CTA. Used by Strategia (strategy as a
+   *  standalone service) and Audyt (book a consultation) — design D3. */
+  | {
+      kind: 'banner'
+      heading: string
+      body: string
+      cta: SectionCta
+    }
+  | {
+      kind: 'logoStrip'
+      heading: string
+      logos: readonly StripLogo[]
+    }
+  /**
+   * Topical blog links, matched by category slug (design D5). The posts
+   * themselves are server-fetched and handed to the renderer; zero matches
+   * omits the whole section, heading included. PL only — the blog has no EN.
+   */
+  | {
+      kind: 'posts'
+      kicker: string
+      heading: string
+      categories: readonly string[]
+    }
 
 export interface Service {
   /** Stable, locale-neutral key (equals the PL slug) — pairs PL↔EN for hreflang. */
@@ -164,7 +233,8 @@ export interface Service {
 // —— Canonical list (design D2, menu order) ———————————————————————————————————
 
 export const SERVICES = [
-  // 1 — Strategia · hero · triptych(Audyt→Strategia→Wdrożenie) · proof
+  // 1 — Strategia · hero · triptych(4 korzyści) · checklist · timeline(4) ·
+  //     banner · posts — the client's SZKIELET, in their order.
   {
     id: 'strategia',
     slug: 'strategia',
@@ -182,43 +252,90 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Strategia',
         intro:
-          'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i możliwości, grupę docelową oraz wartości i charakter marki, by zbudować skuteczną komunikację w mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia i konsekwentnie realizujemy plan.',
+          'Skuteczna komunikacja w social mediach nie zaczyna się od publikacji posta, kampanii reklamowej czy wyboru influencera — zaczyna się od strategii. To ona określa, do kogo marka mówi, jakie cele chce osiągnąć i czym wyróżnia się na tle konkurencji. Tworzymy strategie social media i digital dla marek, które chcą działać świadomie, konsekwentnie i długofalowo.',
       },
       {
         kind: 'triptych',
-        kicker: 'JAK PRACUJEMY',
+        kicker: 'CO ZYSKUJESZ',
         items: [
           {
-            icon: 'Search',
-            title: 'Audyt',
-            body: 'Analizujemy Waszą obecność w social mediach, konkurencję i grupę docelową. Zaczynamy od twardych danych, nie od założeń.',
-          },
-          {
             icon: 'Compass',
-            title: 'Strategia',
-            body: 'Wyznaczamy mierzalne cele, dobieramy platformy, formaty i ton komunikacji. Powstaje plan, który wiadomo jak rozliczyć.',
+            title: 'Jasny kierunek',
+            body: 'Strategia porządkuje komunikację i wyznacza priorytety. Zespół wie, które działania wspierają cele marki — a które tylko wypełniają kalendarz.',
           },
           {
-            icon: 'Rocket',
-            title: 'Wdrożenie',
-            body: 'Realizujemy plan, monitorujemy działania na bieżąco i regularnie raportujemy wyniki. Strategia żyje i reaguje na dane.',
+            icon: 'MessageSquare',
+            title: 'Spójna komunikacja',
+            body: 'Odbiorcy oczekują od marek konsekwencji. Wypracowujemy jednolity sposób mówienia we wszystkich kanałach, niezależnie od formatu i platformy.',
+          },
+          {
+            icon: 'Wallet',
+            title: 'Lepszy budżet',
+            body: 'Zaplanowane działania to mniejsze ryzyko nietrafionych inwestycji. Wskazujemy kanały i formaty, które przyniosą największą wartość biznesową.',
+          },
+          {
+            icon: 'BarChart3',
+            title: 'Mierzalne efekty',
+            body: 'Każda strategia zawiera konkretne cele i wskaźniki efektywności, dzięki którym da się ocenić rezultaty, a nie tylko o nich dyskutować.',
           },
         ],
       },
       {
-        kind: 'proof',
-        kicker: 'DOWÓD',
-        heading: 'Strategia, która zadziałała',
-        // O2 (confirm during review): Volvo = długofalowa strategia marki.
-        cases: [
+        kind: 'checklist',
+        kicker: 'ZAKRES',
+        heading: 'Co zawiera strategia?',
+        intro:
+          'Każdą strategię przygotowujemy indywidualnie — pod specyfikę marki, jej cele biznesowe i potrzeby komunikacyjne. W zależności od projektu dokument obejmuje m.in.:',
+        items: [
+          'Analizę marki, rynku i konkurencji',
+          'Charakterystykę grupy docelowej',
+          'Cele komunikacyjne',
+          'Klimat, styl komunikacji i filary contentowe',
+          'Rekomendowane działania komunikacyjne',
+        ],
+        // media: the client asks for a graphic here; nothing supplied yet, so
+        // the list runs full-width rather than reserving an empty frame.
+      },
+      {
+        kind: 'timeline',
+        kicker: 'PROCES',
+        heading: 'Jak wygląda proces?',
+        steps: [
           {
-            slug: 'volvo',
-            logo: '/case-studies/volvo/volvo-logo.png',
-            kicker: 'CASE STUDY',
-            title: 'Budowa marek Volvo na LinkedInie, Facebooku i Instagramie',
+            title: 'Warsztat',
+            body: 'Każdy projekt zaczynamy od rozmowy. Poznajemy markę, jej cele, wyzwania i oczekiwania wobec działań marketingowych.',
+          },
+          {
+            title: 'Analiza',
+            body: 'Badamy rynek, konkurencję, dotychczasową komunikację i zachowania odbiorców. Zbieramy dane i wyciągamy z nich wnioski.',
+          },
+          {
+            title: 'Rekomendacje',
+            body: 'Na tej podstawie przygotowujemy rekomendacje strategiczne — komunikacja, content, kanały i działania reklamowe.',
+          },
+          {
+            title: 'Prezentacja',
+            body: 'Gotową strategię omawiamy na spotkaniu. Wyjaśniamy rekomendacje, odpowiadamy na pytania i ustalamy kolejne kroki.',
           },
         ],
       },
+      {
+        kind: 'banner',
+        heading: 'Potrzebujesz samej strategii? To możliwe.',
+        body: 'Najczęściej realizujemy strategię razem z wdrożeniem, ale przygotujemy też sam dokument — dla firm z własnym zespołem marketingowym albo marek, które chcą zweryfikować obecny kierunek działań. Wycenę dopasujemy do zakresu projektu.',
+        cta: { label: 'Zapytaj o wycenę strategii', href: '/kontakt' },
+      },
+      {
+        kind: 'posts',
+        kicker: 'Z BLOGA',
+        heading: 'Poczytaj o strategii i marketingu',
+        // Verified against the prod DB (task 4.1): these two categories hold 63
+        // of the 79 published posts, so the section always fills.
+        categories: ['marketing', 'social-media'],
+      },
+      // No `proof` section: the client's wireframe omits case studies here, and
+      // cutting it resolves O2 — Volvo was the proof case on both this page and
+      // Audyt i konsultacje, verbatim. It now appears on Audyt only.
     ],
   },
 
@@ -482,7 +599,8 @@ export const SERVICES = [
     ],
   },
 
-  // 5 — Audyt i konsultacje · hero · triptych(co dostajesz) · proof
+  // 5 — Audyt i konsultacje · hero(+CTA) · checklist · logoStrip · banner ·
+  //     proof — reshaped from the client doc as a productized service.
   {
     id: 'audyt-i-konsultacje',
     slug: 'audyt-i-konsultacje',
@@ -500,34 +618,56 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Audyt i konsultacje',
         intro:
-          'Czasem nie potrzebujecie pełnej obsługi, tylko świeżego, eksperckiego spojrzenia. Analizujemy Waszą obecność w social mediach i dostarczamy konkretne wnioski oraz rekomendacje — gotowe do wdrożenia, niezależnie od tego, kto prowadzi Wasze kanały.',
+          'Potrzebujesz zweryfikować skuteczność swoich działań w social mediach albo skonsultować pomysł z ekspertem? Przeanalizujemy Twój profil, wskażemy mocne strony i obszary do poprawy, a podczas indywidualnej konsultacji omówimy konkretne rekomendacje oraz kolejne kroki.',
+        cta: { label: 'Umów konsultację', href: '/kontakt' },
+      },
+      // The invented Audyt/Rekomendacje/Konsultacje triptych is gone (D7): the
+      // client's six-item checklist below covers the same ground concretely, and
+      // keeping both would state the offer twice on one page.
+      {
+        kind: 'checklist',
+        kicker: 'ZAKRES',
+        heading: 'Co obejmuje usługa?',
+        intro:
+          'Nie zawsze potrzeba nowej strategii — czasem wystarczy świeże spojrzenie eksperta. Analizujemy profile marki w social mediach, sprawdzamy komunikację, content, wyniki i działania reklamowe, a wnioski omawiamy podczas indywidualnej konsultacji.',
+        items: [
+          'Analiza profili w social mediach',
+          'Ocena strategii komunikacji i contentu',
+          'Analiza działań reklamowych',
+          'Wskazanie mocnych stron i obszarów do poprawy',
+          'Praktyczne rekomendacje do wdrożenia',
+          '45-minutowa konsultacja online ze specjalistą Social Lamy',
+        ],
       },
       {
-        kind: 'triptych',
-        kicker: 'CO DOSTAJESZ',
-        items: [
-          {
-            icon: 'ClipboardCheck',
-            title: 'Audyt',
-            body: 'Pełna analiza Waszych profili, treści i wyników na tle konkurencji. Bez upiększania — pokazujemy, co działa, a co nie.',
-          },
-          {
-            icon: 'Lightbulb',
-            title: 'Rekomendacje',
-            body: 'Konkretna lista rekomendacji uszeregowanych według wpływu. Wiecie dokładnie, co zmienić i dlaczego.',
-          },
-          {
-            icon: 'MessageSquare',
-            title: 'Konsultacje',
-            body: 'Warsztat lub sesja konsultacyjna z zespołem — omawiamy wnioski i pomagamy zaplanować kolejne kroki.',
-          },
+        kind: 'logoStrip',
+        heading: 'Przeprowadzamy audyty profili na:',
+        // Existing monochrome marks only — no new artwork, and no separator
+        // dots between them (explicit client direction).
+        logos: [
+          { name: 'Facebook', icon: '/assets/icon-facebook.svg' },
+          { name: 'Instagram', icon: '/assets/icon-instagram.svg' },
+          { name: 'LinkedIn', icon: '/assets/icon-linkedin.svg' },
+          { name: 'TikTok', icon: '/assets/icon-tiktok.svg' },
+          { name: 'Pinterest', icon: '/assets/icon-pinterest.svg' },
+          { name: 'YouTube', icon: '/assets/icon-youtube.svg' },
         ],
+      },
+      {
+        kind: 'banner',
+        heading: 'Umów konsultację online',
+        body: 'Masz pytanie, potrzebujesz drugiej opinii albo chcesz omówić wyzwania swojej marki? Umów 45-minutową konsultację online ze specjalistą Social Lamy — wspólnie przeanalizujemy Twoją sytuację, odpowiemy na pytania i wskażemy najlepsze kierunki działań.',
+        // The client wrote "Wybierz termin w kalendarzu", but this routes to the
+        // contact form, not a scheduler (D4) — so it asks about a slot rather
+        // than promising a calendar we don't show.
+        cta: { label: 'Zapytaj o termin', href: '/kontakt' },
       },
       {
         kind: 'proof',
         kicker: 'DOWÓD',
         heading: 'Wiemy, na co patrzeć',
-        // O2 (confirm during review): Volvo = długofalowa, dojrzała obecność.
+        // O2 resolved: Volvo is now the proof case here only — Strategia's
+        // duplicate copy of this exact card was cut (see that service).
         cases: [
           {
             slug: 'volvo',
@@ -558,7 +698,7 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Influencer marketing',
         intro:
-          'Dobrze dobrany twórca mówi do swojej społeczności jej językiem — i buduje zaufanie, którego marka sama nie kupi. Prowadzimy kampanie influencer marketingowe od strategii i doboru twórców po realizację i rozliczenie efektów.',
+          'Influencer marketing pozwala markom budować wiarygodność, angażować odbiorców i skutecznie docierać do nowych grup docelowych. Tworzymy kampanie dopasowane do celów biznesowych marki — od budowania świadomości, przez edukację, aż po wsparcie sprzedaży. Kompleksowo realizujemy działania z twórcami internetowymi: od strategii i doboru influencerów po koordynację kampanii i analizę efektów.',
       },
       {
         kind: 'triptych',
@@ -587,7 +727,7 @@ export const SERVICES = [
         name: 'Folks',
         logo: '/assets/folks-logo-light.png',
         tagline: 'from creators to results',
-        copy: 'W kampaniach influencerskich współpracujemy z Folks — agencją influencer marketingu z grupy Good One. Dostęp do sieci twórców i doświadczenie w kampaniach każdej skali.',
+        copy: 'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z twórcą — dlatego połączyliśmy siły z Folks, agencją specjalizującą się w budowaniu autentycznych relacji między markami a odbiorcami. Obie należymy do Grupy Good One, więc kompetencje z obszaru social mediów, strategii, contentu i influencer marketingu spotykają się w jednym miejscu: szeroka sieć twórców, doświadczeni eksperci i kompleksowa obsługa kampanii — od pomysłu po raportowanie efektów. Jeden partner. Wiele kompetencji. BETTER WORKS.',
         href: '/kontakt',
         // Ambient creator footage (Pexels, free licence) — full-bleed cover.
         video: {

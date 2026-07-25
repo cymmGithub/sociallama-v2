@@ -7,7 +7,11 @@
  * `slug` holds the clean English form under `/en/services/*`, `pairSlug` the
  * Polish slug, and `id` the stable locale-neutral key (= the Polish slug).
  * Voice: playful but clean, American spelling (established EN locale voice).
- * Copy status: DRAFT, pending user review — mirrors `uslugi.ts`.
+ *
+ * Section sequences mirror `uslugi.ts` with one deliberate exception: Strategia
+ * omits the `posts` section, because the blog is Polish-only and there is
+ * nothing for it to link to. The client's copy documents are Polish-only too,
+ * so the English text follows the locale voice rather than a source translation.
  */
 
 import type { LocalizedUslugi } from '@/lib/content/uslugi'
@@ -53,43 +57,79 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Strategy',
         intro:
-          'Strategy is our starting point: we get to know your needs and possibilities, your target audience, and your brand values and character in order to build effective communication on social media. On that basis we set measurable goals, pick the right tools, and follow the plan through.',
+          "Effective social media communication doesn't begin with a post, an ad campaign, or picking an influencer — it begins with strategy. Strategy is what settles who the brand is talking to, what it wants to achieve, and what sets it apart from the competition. We build social and digital strategy for brands that want to work deliberately, consistently, and for the long haul.",
       },
       {
         kind: 'triptych',
-        kicker: 'HOW WE WORK',
+        kicker: 'WHAT YOU GET',
         items: [
           {
-            icon: 'Search',
-            title: 'Audit',
-            body: 'We analyze your social presence, your competitors, and your audience. We start from hard data, not assumptions.',
-          },
-          {
             icon: 'Compass',
-            title: 'Strategy',
-            body: 'We set measurable goals and choose the platforms, formats, and tone of voice. The result is a plan you can actually hold to account.',
+            title: 'A clear direction',
+            body: 'Strategy puts communication in order and sets the priorities. The team knows which work supports the brand goals — and which merely fills the calendar.',
           },
           {
-            icon: 'Rocket',
-            title: 'Rollout',
-            body: 'We execute the plan, monitor as we go, and report regularly. The strategy stays alive and responds to the data.',
+            icon: 'MessageSquare',
+            title: 'Consistent communication',
+            body: 'Audiences expect brands to be consistent. We settle one way of speaking across every channel, whatever the format or the platform.',
+          },
+          {
+            icon: 'Wallet',
+            title: 'A budget that works harder',
+            body: 'Planned work means fewer bets that miss. We point to the channels and formats that will return the most business value.',
+          },
+          {
+            icon: 'BarChart3',
+            title: 'Measurable results',
+            body: 'Every strategy carries concrete goals and performance indicators, so results can be assessed rather than merely debated.',
           },
         ],
       },
       {
-        kind: 'proof',
-        kicker: 'PROOF',
-        heading: 'Strategy that worked',
-        cases: [
+        kind: 'checklist',
+        kicker: 'SCOPE',
+        heading: "What's in a strategy?",
+        intro:
+          'Every strategy is built from scratch — around the brand, its business goals, and what it needs to say. Depending on the project, the document covers things like:',
+        items: [
+          'Brand, market, and competitor analysis',
+          'A profile of the target audience',
+          'Communication goals',
+          'Tone of voice and content pillars',
+          'Recommended communication activity',
+        ],
+      },
+      {
+        kind: 'timeline',
+        kicker: 'PROCESS',
+        heading: 'How it works',
+        steps: [
           {
-            slug: 'volvo',
-            logo: '/case-studies/volvo/volvo-logo.png',
-            kicker: 'CASE STUDY',
-            title:
-              'Building the Volvo brands on LinkedIn, Facebook, and Instagram',
+            title: 'Workshop',
+            body: 'Every project starts with a conversation. We get to know the brand, its goals, its challenges, and what it expects from marketing.',
+          },
+          {
+            title: 'Analysis',
+            body: 'We study the market, the competition, the communication so far, and how audiences behave. We gather the data and draw conclusions from it.',
+          },
+          {
+            title: 'Recommendations',
+            body: 'On that basis we prepare strategic recommendations — communication, content, channels, and advertising.',
+          },
+          {
+            title: 'Presentation',
+            body: 'We walk you through the finished strategy in a meeting, explain the recommendations, answer questions, and agree the next steps.',
           },
         ],
       },
+      {
+        kind: 'banner',
+        heading: 'Just the strategy? That works too.',
+        body: "Most often we deliver strategy alongside the rollout, but we'll happily prepare the document on its own — for companies with an in-house marketing team, or brands that want a second opinion on their current direction. We'll quote to the scope of the project.",
+        cta: { label: 'Ask for a strategy quote', href: '/en/contact' },
+      },
+      // No `posts` section: the blog is Polish-only, so there is nothing to
+      // link to here. No `proof` section either — see the note in uslugi.ts.
     ],
   },
 
@@ -369,28 +409,41 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Audit & consulting',
         intro:
-          "Sometimes you don't need full management, just a fresh, expert set of eyes. We analyze your social media presence and deliver concrete findings and recommendations — ready to put to work, no matter who runs your channels.",
+          'Need to check whether your social media work is actually paying off, or run an idea past an expert? We analyze your profile, point out the strengths and the places that need work, and walk you through concrete recommendations and next steps in a one-on-one consultation.',
+        cta: { label: 'Book a consultation', href: '/en/contact' },
       },
       {
-        kind: 'triptych',
-        kicker: 'WHAT YOU GET',
+        kind: 'checklist',
+        kicker: 'SCOPE',
+        heading: "What's included?",
+        intro:
+          "You don't always need a new strategy — sometimes a fresh expert perspective is enough. We analyze the brand's social profiles, review the communication, content, results, and advertising, then talk the findings through with you one to one.",
         items: [
-          {
-            icon: 'ClipboardCheck',
-            title: 'Audit',
-            body: "A full analysis of your profiles, content, and results against the competition. No sugar-coating — we show what's working and what isn't.",
-          },
-          {
-            icon: 'Lightbulb',
-            title: 'Recommendations',
-            body: 'A concrete list of recommendations ranked by impact. You know exactly what to change and why.',
-          },
-          {
-            icon: 'MessageSquare',
-            title: 'Consulting',
-            body: 'A workshop or consulting session with your team — we walk through the findings and help you plan the next steps.',
-          },
+          'Analysis of your social media profiles',
+          'An assessment of communication strategy and content',
+          'Analysis of advertising activity',
+          'The strengths and the areas that need work, named',
+          'Practical recommendations you can act on',
+          'A 45-minute online consultation with a Social Lama specialist',
         ],
+      },
+      {
+        kind: 'logoStrip',
+        heading: 'We audit profiles on:',
+        logos: [
+          { name: 'Facebook', icon: '/assets/icon-facebook.svg' },
+          { name: 'Instagram', icon: '/assets/icon-instagram.svg' },
+          { name: 'LinkedIn', icon: '/assets/icon-linkedin.svg' },
+          { name: 'TikTok', icon: '/assets/icon-tiktok.svg' },
+          { name: 'Pinterest', icon: '/assets/icon-pinterest.svg' },
+          { name: 'YouTube', icon: '/assets/icon-youtube.svg' },
+        ],
+      },
+      {
+        kind: 'banner',
+        heading: 'Book an online consultation',
+        body: "Got a question, need a second opinion, or want to talk through the challenges facing your brand? Book a 45-minute online consultation with a Social Lama specialist — we'll look at your situation together, answer your questions, and point to the best way forward.",
+        cta: { label: 'Ask about a slot', href: '/en/contact' },
       },
       {
         kind: 'proof',
@@ -427,7 +480,7 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Influencer marketing',
         intro:
-          "A well-chosen creator speaks to their community in its own language — and builds trust a brand can't buy on its own. We run influencer marketing campaigns from strategy and creator selection through to delivery and measuring results.",
+          'Influencer marketing lets brands build credibility, engage audiences, and reach new target groups that ads alone rarely touch. We shape campaigns around your business goals — from awareness through education to sales support — and run the whole thing with creators end to end: strategy, influencer selection, campaign coordination, and analysis of the results.',
       },
       {
         kind: 'triptych',
@@ -456,7 +509,7 @@ export const SERVICES = [
         name: 'Folks',
         logo: '/assets/folks-logo-light.png',
         tagline: 'from creators to results',
-        copy: 'On influencer campaigns we work with Folks — an influencer marketing agency from the Good One group. Access to a creator network and experience with campaigns of any scale.',
+        copy: 'Effective influencer marketing is a great deal more than a one-off post from a creator — which is why we joined forces with Folks, an agency built around authentic relationships between brands and the people who follow them. Both of us belong to the Good One Group, so social media, strategy, content, and influencer marketing all sit under one roof: a wide creator network, seasoned specialists, and full campaign management — from the first idea to the final report. One partner. Many capabilities. BETTER WORKS.',
         href: '/en/contact',
         video: {
           src: '/clips/folks-cover.mp4',

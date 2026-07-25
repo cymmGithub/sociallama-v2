@@ -3,7 +3,10 @@ import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
 import { OG_BASE } from '@/lib/content/site'
 import { chrome, findService, SERVICES } from '@/lib/content/uslugi'
-import { buildRelatedByPlatform } from '@/lib/payload/related-posts'
+import {
+  buildRelatedByPlatform,
+  buildTopicalPosts,
+} from '@/lib/payload/related-posts'
 import { ServicePage } from './service-page'
 
 interface PageProps {
@@ -52,9 +55,11 @@ export default async function UslugaPage({ params }: PageProps) {
     notFound()
   }
 
-  // Related posts for CONTENT-style platform sections (D5); {} for services
-  // without them. Blog is PL-only, so only the PL route fetches these.
+  // Blog links (D5); empty for services without the relevant section. The blog
+  // is PL-only, so only the PL route fetches these. Awaited one after the other,
+  // never in parallel — see the note in related-posts.ts.
   const relatedByPlatform = await buildRelatedByPlatform(service.sections)
+  const topicalPosts = await buildTopicalPosts(service.sections)
 
   return (
     // Plum chrome — the hero paints plum; sections paint their own bands.
@@ -64,6 +69,7 @@ export default async function UslugaPage({ params }: PageProps) {
         chrome={chrome}
         caseStudyBase="/case-studies"
         relatedByPlatform={relatedByPlatform}
+        topicalPosts={topicalPosts}
       />
     </Wrapper>
   )

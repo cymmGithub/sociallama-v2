@@ -4,6 +4,7 @@ import cn from 'clsx'
 import {
   ArrowRight,
   BarChart3,
+  Check,
   ClipboardCheck,
   Compass,
   HeartHandshake,
@@ -19,6 +20,7 @@ import {
   Target,
   Users,
   Video as VideoIcon,
+  Wallet,
 } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -35,8 +37,10 @@ import s from './service.module.css'
  * (`/en/services/[slug]`) routes, which supply the locale-correct service,
  * chrome, and case-study base path.
  *
- * `Localized` widens each section's `kind` literal to `string`, so sections are
- * narrowed by property presence, not by `kind`.
+ * `Localized` widens each section's `kind` literal to `string`, so TypeScript
+ * can't narrow the union. Sections are therefore dispatched on `kind` at
+ * runtime and cast per branch (design D8) — never by property presence, which
+ * would be order-dependent and silently breakable as kinds are added.
  */
 
 // Chrome shape is structurally identical across locales (uslugi.ts / uslugi.en.ts).
@@ -70,13 +74,24 @@ export interface ServicePageProps {
    * for platforms with no matches — the block then simply doesn't render.
    */
   relatedByPlatform?: Record<string, readonly RelatedPost[]>
+  /**
+   * Posts for a `posts` section, server-fetched by category (design D5).
+   * Omitted on locales without a blog (EN), which is the second guard on top of
+   * the EN data simply not declaring the section — either way it can't render.
+   */
+  topicalPosts?: readonly RelatedPost[]
 }
 
 // —— Section-primitive view shapes (widened; the renderer narrows structurally) ——
 
+interface CtaData {
+  label: string
+  href: string
+}
 interface HeroData {
   title: string
   intro: string
+  cta?: CtaData
 }
 interface PlatformData {
   platform: string
@@ -113,6 +128,31 @@ interface ProofData {
     logo?: string
   }[]
 }
+interface ChecklistData {
+  kicker: string
+  heading: string
+  intro?: string
+  items: readonly string[]
+  media?: { src: string; alt: string; width: number; height: number }
+}
+interface TimelineData {
+  kicker: string
+  heading: string
+  steps: readonly { title: string; body: string }[]
+}
+interface BannerData {
+  heading: string
+  body: string
+  cta: CtaData
+}
+interface LogoStripData {
+  heading: string
+  logos: readonly { name: string; icon: string }[]
+}
+interface PostsData {
+  kicker: string
+  heading: string
+}
 
 // —— Lucide icon registry (repo rule: lucide only, never raw glyphs) ———————————
 
@@ -132,6 +172,7 @@ const ICONS: Record<string, LucideIcon> = {
   Users,
   Megaphone,
   HeartHandshake,
+  Wallet,
 }
 
 // —— Hero ——————————————————————————————————————————————————————————————————————
@@ -161,6 +202,13 @@ function Hero({ data, chrome }: { data: HeroData; chrome: Chrome }) {
               </span>
             </h1>
             <p className={s.heroLead}>{data.intro}</p>
+            {/* Optional — heroes declared without a CTA render exactly as before. */}
+            {data.cta && (
+              <Link className={s.heroCta} href={data.cta.href}>
+                {data.cta.label}
+                <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            )}
           </div>
           {HERO_LLAMA && (
             <div className={s.heroLlama} aria-hidden="true">
@@ -316,7 +364,9 @@ function Triptych({ data }: { data: TriptychData }) {
     <section className={s.triptych} data-theme="cream">
       <div ref={ref} className={s.triptychInner}>
         <p className={s.kicker}>{data.kicker}</p>
-        <ol className={s.cards}>
+        {/* The column count is data-driven: three stays three, four lays out
+            2×2 until there's room for a single row of four (task 3.6). */}
+        <ol className={s.cards} data-count={data.items.length}>
           {data.items.map((item, index) => {
             const Icon = ICONS[item.icon] ?? Sparkles
             return (
@@ -525,6 +575,175 @@ function Proof({
   )
 }
 
+// —— Checklist (ticked deliverables; graphic optional — task 3.1) ——————————————
+
+function Checklist({ data }: { data: ChecklistData }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.checklist} data-theme="cream">
+      <div
+        ref={ref}
+        className={s.checklistInner}
+        data-has-media={data.media ? '' : undefined}
+      >
+        <div className={s.checklistCopy} data-reveal-item>
+          <p className={s.kicker}>{data.kicker}</p>
+          <h2 className={s.sectionHeading}>{data.heading}</h2>
+          {data.intro && <p className={s.checklistIntro}>{data.intro}</p>}
+          <ul className={s.checks}>
+            {data.items.map((item) => (
+              <li key={item} className={s.check}>
+                <span className={s.checkMark} aria-hidden="true">
+                  <Check size={15} strokeWidth={3} />
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Media is optional and currently unsourced on Strategia. Absent, the
+            grid collapses to a single column — no empty frame, no placeholder. */}
+        {data.media && (
+          <div className={s.checklistMedia} data-reveal-item>
+            <Image
+              src={data.media.src}
+              alt={data.media.alt}
+              width={data.media.width}
+              height={data.media.height}
+              objectFit="contain"
+              desktopSize="42vw"
+              mobileSize="90vw"
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+// —— Timeline (ordered process; the sequencing is the point — task 3.2) ————————
+
+function Timeline({ data }: { data: TimelineData }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.timeline} data-theme="cream">
+      <div ref={ref} className={s.timelineInner}>
+        <p className={s.kicker}>{data.kicker}</p>
+        <h2 className={s.sectionHeading}>{data.heading}</h2>
+        <ol className={s.steps}>
+          {data.steps.map((step, index) => (
+            <li key={step.title} data-reveal-item className={s.step}>
+              <span className={s.stepMarker} aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 className={s.stepTitle}>{step.title}</h3>
+              <p className={s.stepBody}>{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+// —— Banner (highlighted offer band; Strategia + Audyt — design D3) ————————————
+
+function Banner({ data }: { data: BannerData }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.banner} data-theme="plum">
+      <div ref={ref} className={s.bannerInner}>
+        <div className={s.bannerCopy} data-reveal-item>
+          <h2 className={s.bannerHeading}>{data.heading}</h2>
+          <p className={s.bannerText}>{data.body}</p>
+        </div>
+        <div className={s.bannerAction} data-reveal-item>
+          <Link className={s.bannerCta} href={data.cta.href}>
+            {data.cta.label}
+            <ArrowRight size={18} aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// —— Logo strip (audited platforms; existing marks only — task 3.4) ————————————
+
+function LogoStrip({ data }: { data: LogoStripData }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.logoStrip} data-theme="cream">
+      <div ref={ref} className={s.logoStripInner}>
+        <h2 className={s.logoStripHeading}>{data.heading}</h2>
+        <ul className={s.logos}>
+          {data.logos.map((logo) => (
+            <li key={logo.name} data-reveal-item>
+              {/* Marks only, no names and no separators (client direction).
+                  Painted through mask-image so they take the band's ink colour,
+                  exactly like the footer social set. */}
+              <span
+                className={s.logoMark}
+                role="img"
+                aria-label={logo.name}
+                style={{
+                  maskImage: `url(${logo.icon})`,
+                  WebkitMaskImage: `url(${logo.icon})`,
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+// —— Topical posts (blog links by category; omits when empty — design D5) ——————
+
+function TopicalPosts({
+  data,
+  posts,
+}: {
+  data: PostsData
+  posts: readonly RelatedPost[]
+}) {
+  const ref = useReveal<HTMLDivElement>()
+  // Graceful omission: no matches means no heading either (D5). This also makes
+  // the section a no-op in EN, which never passes posts.
+  if (posts.length === 0) {
+    return null
+  }
+
+  return (
+    <section className={s.posts} data-theme="cream">
+      <div ref={ref} className={s.postsInner}>
+        <p className={s.kicker}>{data.kicker}</p>
+        <h2 className={s.sectionHeading}>{data.heading}</h2>
+        <ul className={s.postCards}>
+          {posts.map((post) => (
+            <li key={post.slug} data-reveal-item>
+              <Link className={s.postCard} href={`/${post.slug}`}>
+                {post.category && (
+                  <span className={s.postCategory}>{post.category}</span>
+                )}
+                <span className={s.postTitle}>{post.title}</span>
+                <span className={s.postCta} aria-hidden="true">
+                  <ArrowRight size={18} />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
 // —— Closing CTA (mirrors the branze CTA card) ————————————————————————————————
 
 function CtaBand({ chrome }: { chrome: Chrome }) {
@@ -551,46 +770,67 @@ export function ServicePage({
   chrome,
   caseStudyBase,
   relatedByPlatform,
+  topicalPosts,
 }: ServicePageProps) {
   return (
     <>
       {sections.map((section, index) => {
         const key = `${index}`
-        if ('intro' in section) {
-          return <Hero key={key} data={section as HeroData} chrome={chrome} />
+        // Dispatch on the declared kind, not on property presence (design D8).
+        // `Localized` widens `kind` to `string`, so TypeScript can't narrow the
+        // union for us — hence the per-branch casts, unchanged from before.
+        switch (section.kind) {
+          case 'hero':
+            return <Hero key={key} data={section as HeroData} chrome={chrome} />
+          case 'platforms':
+            return (
+              <Platforms
+                key={key}
+                items={(section as { items: readonly PlatformData[] }).items}
+                relatedByPlatform={relatedByPlatform}
+                relatedKicker={chrome.relatedKicker}
+              />
+            )
+          case 'triptych':
+            return <Triptych key={key} data={section as TriptychData} />
+          case 'partner':
+            return (
+              <Partner
+                key={key}
+                data={section as PartnerData}
+                chrome={chrome}
+              />
+            )
+          case 'showreel':
+            return <Showreel key={key} data={section as ShowreelData} />
+          case 'proof':
+            return (
+              <Proof
+                key={key}
+                data={section as ProofData}
+                chrome={chrome}
+                caseStudyBase={caseStudyBase}
+              />
+            )
+          case 'checklist':
+            return <Checklist key={key} data={section as ChecklistData} />
+          case 'timeline':
+            return <Timeline key={key} data={section as TimelineData} />
+          case 'banner':
+            return <Banner key={key} data={section as BannerData} />
+          case 'logoStrip':
+            return <LogoStrip key={key} data={section as LogoStripData} />
+          case 'posts':
+            return (
+              <TopicalPosts
+                key={key}
+                data={section as PostsData}
+                posts={topicalPosts ?? []}
+              />
+            )
+          default:
+            return null
         }
-        if ('cases' in section) {
-          return (
-            <Proof
-              key={key}
-              data={section as ProofData}
-              chrome={chrome}
-              caseStudyBase={caseStudyBase}
-            />
-          )
-        }
-        if ('clips' in section) {
-          return <Showreel key={key} data={section as ShowreelData} />
-        }
-        if ('partner' in section) {
-          return (
-            <Partner key={key} data={section as PartnerData} chrome={chrome} />
-          )
-        }
-        if ('items' in section && 'kicker' in section) {
-          return <Triptych key={key} data={section as TriptychData} />
-        }
-        if ('items' in section) {
-          return (
-            <Platforms
-              key={key}
-              items={(section as { items: readonly PlatformData[] }).items}
-              relatedByPlatform={relatedByPlatform}
-              relatedKicker={chrome.relatedKicker}
-            />
-          )
-        }
-        return null
       })}
       <CtaBand chrome={chrome} />
     </>

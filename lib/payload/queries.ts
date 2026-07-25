@@ -324,6 +324,34 @@ async function findPostsForPlatform(term: string): Promise<Post[]> {
   return result.docs
 }
 
+/**
+ * Up to three published posts drawn from the given categories, for a service
+ * page's `posts` section (design D5). Unlike the platform blocks — which have
+ * to match on title because platform relevance isn't in the taxonomy — the blog
+ * categories are already topical, so this matches on the relation directly.
+ *
+ * Takes comma-joined category IDs rather than an array because the React
+ * `cache()` wrapper keys on argument identity: a fresh array literal per call
+ * would never hit, defeating the dedup the wrapper exists for.
+ */
+async function findPostsForCategories(ids: string): Promise<Post[]> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: {
+      and: [{ category: { in: ids.split(',').map(Number) } }, PUBLISHED],
+    },
+    sort: '-publishedAt',
+    limit: 3,
+    depth: 2,
+  })
+  return result.docs
+}
+
 /** Social-platform logos, for matching a result's platform to its mark. */
 async function findSocialPlatforms(): Promise<SocialPlatform[]> {
   'use cache'
@@ -357,6 +385,7 @@ export const getCategoryBySlug = cache(findCategoryBySlug)
 export const getPostsForSitemap = cache(findPostsForSitemap)
 export const getPostsForLlms = cache(findPostsForLlms)
 export const getPostsForPlatform = cache(findPostsForPlatform)
+export const getPostsForCategories = cache(findPostsForCategories)
 export const getCaseStudyBySlug = cache(findCaseStudyBySlug)
 export const getDraftCaseStudyBySlug = cache(findDraftCaseStudyBySlug)
 export const getPublishedCaseStudySlugs = cache(findPublishedCaseStudySlugs)
