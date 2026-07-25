@@ -14,6 +14,24 @@ The obvious move — adding a `caseStudy` block to the other industries — is w
 - **PL/EN parity**: the field is populated in both `lib/content/branze.ts` and `lib/content/branze.en.ts`, enforced by the existing `LocalizedBranze` contract; links resolve through the existing `caseStudyBase` prop so `/en/...` routes stay correct.
 - **No change to** the `caseStudy` block, variant selection, routes, or the case-studies collection.
 
+## Scope revision (2026-07-25, mid-implementation)
+
+The additive row shipped, then the split it left behind — two proof pages and eight
+editorial ones — read as arbitrary. Rather than keep that, the layouts converged:
+**every industry with a matching study now features its strongest one as a proof
+page** (ten of twelve). Two changes made that safe:
+
+- **Blocks render from data, not from variant.** `collage`, `marquee` and
+  `manifesto` now render on proof pages too, so promotion never drops editorial
+  copy — the objection that motivated the additive approach in the first place.
+- **`caseStudy.quote` became optional.** Only Aquael has a collected testimonial;
+  a proof page without one shows creatives, numbers and the case card rather than
+  an invented quote.
+
+`numbers` (case-study metrics) was split from `chips` (manifesto value words),
+which previously shared one field and would have collided on a converged page.
+Finanse and Fashion stay editorial — still no honest match.
+
 ## Capabilities
 
 ### New Capabilities

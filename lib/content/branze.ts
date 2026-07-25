@@ -99,10 +99,12 @@ interface IndustryCaseStudy {
   creatives: readonly IndustryCreative[]
   /**
    * Client testimonial, rendered as an attributed blockquote — so it must be
-   * something the client actually said. iRobot's is verbatim; Volvo's is still
-   * an unconfirmed paraphrase (O3).
+   * something the client actually said. OPTIONAL: most imported studies have no
+   * collected testimonial yet, and a proof page is honest without one (it still
+   * carries creatives, numbers and the case card) — better than inventing a
+   * quote. iRobot's is verbatim; Volvo's is an unconfirmed paraphrase (O3).
    */
-  quote: { text: string; attribution: string }
+  quote?: { text: string; attribution: string }
 }
 
 /**
@@ -140,8 +142,13 @@ export interface Industry {
     pillars: readonly string[]
     paragraphs: readonly IndustryParagraph[]
   }
-  // —— proof-only ——
-  /** Numbers-band stats — verbatim from the case study. */
+  /**
+   * Numbers band — verbatim metrics from the featured case study. Distinct from
+   * `chips` (the manifesto's value words); a page carrying both renders the
+   * numbers band AND the manifesto, so they must not share one field.
+   */
+  numbers?: readonly IndustryStat[]
+  /** Manifesto value chips (editorial voice, not metrics). */
   chips?: readonly IndustryStat[]
   caseStudy?: IndustryCaseStudy
   /**
@@ -151,7 +158,6 @@ export interface Industry {
    * On proof industries it carries only the studies *beyond* the featured one.
    */
   relatedCaseStudies?: readonly IndustryRelatedStudy[]
-  // —— editorial-only ——
   /** Keyword marquee band. */
   marquee?: readonly string[]
   /** Punchy two-tone statement (`lead` inked, `rest` muted) + value chips. */
@@ -169,6 +175,23 @@ export const INDUSTRIES = [
     slug: 'automotive',
     pairSlug: 'automotive',
     label: 'Automotive',
+    // Imagery: Pexels (free license, no attribution required) — photo IDs
+    // 5864155, 10800215, 8349487. Brand-neutral by design: no competitor
+    // marques visible on a Volvo page.
+    collage: [
+      {
+        src: '/branze/automotive/automotive-1.jpg',
+        alt: 'Rozświetlony salon samochodowy nocą',
+      },
+      {
+        src: '/branze/automotive/automotive-2.jpg',
+        alt: 'Ładowanie samochodu elektrycznego w zimowej scenerii',
+      },
+      {
+        src: '/branze/automotive/automotive-3.jpg',
+        alt: 'Zbliżenie na gniazdo ładowania samochodu elektrycznego',
+      },
+    ],
     relatedCaseStudies: [
       {
         slug: 'motointegrator',
@@ -207,7 +230,7 @@ export const INDUSTRIES = [
         },
       ],
     },
-    chips: [
+    numbers: [
       { value: '3+', label: 'lata ciągłej współpracy z marką Volvo' },
       { value: '2', label: 'marki prowadzone równolegle — VCW & Dom Volvo' },
       { value: '3', label: 'platformy: LinkedIn, Facebook, Instagram' },
@@ -261,6 +284,22 @@ export const INDUSTRIES = [
     slug: 'elektronika-i-agd',
     pairSlug: 'electronics',
     label: 'Elektronika i AGD',
+    // Imagery: Pexels (free license, no attribution required) — photo IDs
+    // 844874, 7533923, 29292011.
+    collage: [
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-1.jpg',
+        alt: 'Robot sprzątający na drewnianej podłodze',
+      },
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-2.jpg',
+        alt: 'Nowoczesna kuchnia ze sprzętem AGD w zabudowie',
+      },
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-3.jpg',
+        alt: 'Urządzenia smart home na jasnym tle',
+      },
+    ],
     relatedCaseStudies: [
       {
         slug: 'vobis',
@@ -315,7 +354,7 @@ export const INDUSTRIES = [
         },
       ],
     },
-    chips: [
+    numbers: [
       { value: '11 mln', label: 'wyświetleń na TikToku' },
       { value: '742 tys.', label: 'wyświetleń na YouTube' },
       { value: '+7,9 tys.', label: 'nowych subskrypcji na YouTube' },
@@ -367,11 +406,53 @@ export const INDUSTRIES = [
     slug: 'beauty',
     pairSlug: 'beauty',
     label: 'Beauty',
-    relatedCaseStudies: [
+    // Numbers verbatim from the Kontigo case study.
+    numbers: [
+      { value: '1 100', label: 'Zgromadzone ambasadorki' },
+      { value: '79', label: 'Średnia miesięczna liczba postów od ambasadorek' },
       {
-        slug: 'kontigo',
-        title: '#KontigoCLUB — społeczność ambasadorek marki',
+        value: '1 500',
+        label: 'Średnia miesięczna liczba polubień postów w grupie',
       },
+    ],
+    caseStudy: {
+      slug: 'kontigo',
+      cardKicker: 'CASE STUDY',
+      cardTitle: '#KontigoCLUB — społeczność ambasadorek marki',
+      creatives: [
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-1.jpg',
+          alt: 'Kreacja #KontigoCLUB z hasłem „Uzyskaj kod na -20% na wszystkie marki!”',
+          width: 1080,
+          height: 1080,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-2.jpg',
+          alt: 'Zrzut ekranu wiadomości powitalnej grupy #KontigoCLUB z zasadami dodawania hashtagów i regulaminem konkursu Top 3 Ambasadorek',
+          width: 345,
+          height: 713,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-3.jpg',
+          alt: 'Grafika #KontigoCLUB z napisem „Zasady grupy”, w otoczeniu tropikalnych liści i kwiatów hibiskusa',
+          width: 1080,
+          height: 1080,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-4.jpg',
+          alt: 'Lista minionych wydarzeń grupy KontigoCLUB na Facebooku — transmisje Live z Harrym o makijażu na lato i Live o zdrowej opaleniźnie',
+          width: 670,
+          height: 532,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-5.jpg',
+          alt: 'Grafika „Odkryj Ulubieńca Maja KontigoCLUB!” z prezentacją szamponu enzymatycznego Anwen Wake It Up',
+          width: 597,
+          height: 1400,
+        },
+      ],
+    },
+    relatedCaseStudies: [
       {
         slug: 'luisse',
         title: 'Personal branding w branży fryzjerskiej',
@@ -446,11 +527,51 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Health',
+    // Numbers verbatim from the Adamed case study.
+    numbers: [
+      { value: '+242%', label: 'Wzrost obserwujących' },
+      { value: '+269%', label: 'Interakcje z zawartością' },
+      { value: '+719%', label: 'Kliknięcia w link' },
+      { value: '+100%', label: 'Wzrost wyświetleń' },
+    ],
+    caseStudy: {
+      slug: 'adamed',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Głęboki Oddech Adamed — edukacja zdrowotna w social mediach',
+      creatives: [
+        {
+          src: '/case-studies/adamed/adamed-gallery-1.jpg',
+          alt: 'Kadr z rolki na profilu Głęboki Oddech Adamed — dr n. med. Kamil Janeczek w niebieskim uniformie medycznym mówi do kamery, napis „Leczenie astmy opiera się na dwóch filarach”',
+          width: 648,
+          height: 1152,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-2.jpg',
+          alt: 'Kadr z rolki ze specjalistą na profilu Głęboki Oddech Adamed — lekarz w ciemnym uniformie tłumaczy, jak palenie wpływa na organizm',
+          width: 540,
+          height: 960,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-3.jpg',
+          alt: 'Post edukacyjny Głęboki Oddech Adamed z pytaniem „Czy chciałbyś poznać różnice między astmą alergiczną a niealergiczną?” i dłonią trzymającą inhalator',
+          width: 648,
+          height: 1152,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-4.jpg',
+          alt: 'Post Głęboki Oddech Adamed z pytaniem „Jak radzicie sobie z atakami astmy?” — mężczyzna trzymający się za klatkę piersiową',
+          width: 540,
+          height: 960,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-5.jpg',
+          alt: 'Kreacja Głęboki Oddech Adamed z hasłem „Przestań błądzić w dymie, znajdź zdrową ścieżkę na czas” — tłum ludzi we mgle dymu',
+          width: 648,
+          height: 1152,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'adamed',
-        title: 'Komunikacja marki farmaceutycznej',
-      },
       {
         slug: 'imid-cmv',
         title: 'Edukacja o badaniu klinicznym CMV',
@@ -602,12 +723,55 @@ export const INDUSTRIES = [
     slug: 'petcare',
     pairSlug: 'pet',
     label: 'Petcare',
-    relatedCaseStudies: [
-      {
-        slug: 'aquael',
-        title: 'Ekspercki content akwarystyczny',
-      },
+    // Numbers verbatim from the Aquael case study.
+    numbers: [
+      { value: '388 717', label: 'Wyświetlenia (średnia miesięczna)' },
+      { value: '184 799', label: 'Zasięg (średnia miesięczna)' },
+      { value: '9 033', label: 'Zaangażowanie (średnia miesięczna)' },
+      { value: '+660', label: 'Przyrost fanów (średnia miesięczna)' },
     ],
+    caseStudy: {
+      slug: 'aquael',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Ekspercka komunikacja marki akwarystycznej',
+      creatives: [
+        {
+          src: '/case-studies/aquael/aquael-gallery-1.jpg',
+          alt: 'Post Aquael z cyklu #ZostańEkspertemAquael o krabie brzegowym — ekspert Mirosław Karpiński i zdjęcie kraba trzymanego w dłoni',
+          width: 464,
+          height: 701,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-2.jpg',
+          alt: 'Wykres wyników postów Aquael według typu treści — film osiąga najwyższy średni zasięg i zaangażowanie na tle linków, zdjęć i filmów udostępnionych',
+          width: 925,
+          height: 470,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-3.jpg',
+          alt: 'Post Aquael „Akwarium jako nawilżacz powietrza” — podświetlone akwarium z roślinami w domowym wnętrzu',
+          width: 463,
+          height: 720,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-4.jpg',
+          alt: 'Post Aquael o zestawie startowym LEDDY SEED — wyprawka dla początkującego akwarysty z kompletem sprzętu',
+          width: 465,
+          height: 680,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-5.jpg',
+          alt: 'Aranżacja akwarium Aquael w szafce z drewnianym frontem, w przytulnym salonie z roślinami',
+          width: 1080,
+          height: 1080,
+        },
+      ],
+      quote: {
+        text: 'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
+        attribution: 'Beata Nartowska, Aquael',
+      },
+    },
+    relatedCaseStudies: [],
     meta: {
       title: 'Social media dla branży petcare | Social Lama',
       description:
@@ -676,11 +840,51 @@ export const INDUSTRIES = [
     slug: 'alkohole',
     pairSlug: 'alcohol',
     label: 'Alkohole',
+    // Numbers verbatim from the Faktoria Win case study.
+    numbers: [
+      { value: '417 tys.', label: 'Zasięg (średnia miesięczna)' },
+      { value: '827 tys.', label: 'Wyświetlenia (średnia miesięczna)' },
+      { value: '17 tys.', label: 'Odwiedziny profilu (średnia miesięczna)' },
+      { value: '25 tys.', label: 'Kliknięcia linku (średnia miesięczna)' },
+    ],
+    caseStudy: {
+      slug: 'faktoria-win',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Komunikacja marki winiarskiej',
+      creatives: [
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-1.jpg',
+          alt: 'Ania i Tomek — para doradców Faktorii Win w dżinsowych koszulach na białym tle',
+          width: 1400,
+          height: 934,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-2.jpg',
+          alt: 'Grupa znajomych wznosząca toast kieliszkami wina na świeżym powietrzu przy beczce',
+          width: 934,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-3.jpg',
+          alt: 'Kolaż przykładowych kreacji Faktorii Win — grafiki cykli Zgrana Para, przepisów i lifestyle’owe',
+          width: 1400,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-4.jpg',
+          alt: 'Widok siatki profilu Faktorii Win na Instagramie ze spójnymi kreacjami graficznymi',
+          width: 493,
+          height: 726,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-5.jpg',
+          alt: 'Kreacja Faktorii Win „Jakie wino na weekend?” z parą w sklepie i rekomendacjami butelek win',
+          width: 601,
+          height: 511,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'faktoria-win',
-        title: 'Komunikacja marki winiarskiej',
-      },
       {
         slug: 'mazurska-manufaktura-alkoholi',
         title: 'Crowdfunding z ambasadorką marki',
@@ -805,11 +1009,51 @@ export const INDUSTRIES = [
     slug: 'horeca',
     pairSlug: 'horeca',
     label: 'Horeca',
+    // Numbers verbatim from the Julius Meinl case study.
+    numbers: [
+      { value: '4 806 (+956,3%)', label: 'Interakcje' },
+      { value: '432 616 (+1 380%)', label: 'Wyświetlenia' },
+      { value: '147 040', label: 'Widzowie' },
+      { value: '4 430 (+24 511%)', label: 'Kliknięcia' },
+    ],
+    caseStudy: {
+      slug: 'julius-meinl',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Kawa premium i eventy branżowe',
+      creatives: [
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-1.jpg',
+          alt: 'Grafika szkoleniowa „ABC social mediów” z Olgą Rydzewską, Social Media Expert Social Lamy',
+          width: 404,
+          height: 504,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-2.jpg',
+          alt: 'Grafika szkoleniowa „Wykorzystanie programu Canva” z Kornelią Orlik, Social Media Expert Social Lamy',
+          width: 404,
+          height: 504,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
+          alt: 'Kreacja Instagram „3 błędy w latte art” z czerwoną filiżanką kawy Julius Meinl',
+          width: 320,
+          height: 524,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-4.jpg',
+          alt: 'Kreacja Instagram „Fakt czy mit” z filiżanką kawy Julius Meinl',
+          width: 419,
+          height: 581,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-5.jpg',
+          alt: 'Dwoje pracowników przy czerwonym ekspresie kawowym Julius Meinl podczas eventu branżowego',
+          width: 428,
+          height: 524,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'julius-meinl',
-        title: 'Kawa premium i eventy branżowe',
-      },
       {
         slug: 'belvedere',
         title: 'Restauracja premium w Łazienkach Królewskich',
@@ -880,11 +1124,51 @@ export const INDUSTRIES = [
     slug: 'hotele-i-miejsca-wypoczynkowe',
     pairSlug: 'hospitality',
     label: 'Hotele i Miejsca Wypoczynkowe',
+    // Numbers verbatim from the Dolina Charlotty case study.
+    numbers: [
+      { value: '15,5 mln (+44,7%)', label: 'Wyświetlenia' },
+      { value: '285 593 (+87,7%)', label: 'Zasięg' },
+      { value: '51 278 (+168,8%)', label: 'Interakcje z zawartością' },
+      { value: '99 509 (+67,4%)', label: 'Kliknięcia linku' },
+    ],
+    caseStudy: {
+      slug: 'dolina-charlotty',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Resort & SPA jako całoroczny kierunek',
+      creatives: [
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-1.jpg',
+          alt: 'Profil Dolina Charlotty Resort & Spa na Instagramie w telefonie — zdjęcie profilowe z logo i wyróżnione relacje z atrakcjami obiektu',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-2.jpg',
+          alt: 'Post Dolina Charlotty na Instagramie w telefonie — grupa dzieci bawiąca się kolorową chustą animacyjną podczas zajęć w obiekcie',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-3.jpg',
+          alt: 'Relacja na Instagramie Doliny Charlotty w telefonie — lama z Zoo Charlotta i ankieta „Będziecie?” z wynikiem 71% głosów na „Tak!”',
+          width: 457,
+          height: 938,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-4.jpg',
+          alt: 'Reklamowy post Dolina Charlotty na Facebooku w telefonie — kreacja „Bilety do ZOO za pół ceny!” z dwoma lemurami',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-5.jpg',
+          alt: 'Reels Dolina Charlotty na Instagramie w telefonie — kadr nad wodą z hasłem „Odwiedź Dolinę Charlotty”',
+          width: 437,
+          height: 900,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'dolina-charlotty',
-        title: 'Resort & SPA jako całoroczny kierunek',
-      },
       {
         slug: 'skibooking',
         title: 'Rezerwacje narciarskie online',
@@ -961,11 +1245,51 @@ export const INDUSTRIES = [
     slug: 'nieruchomosci-i-deweloperzy',
     pairSlug: 'real-estate',
     label: 'Nieruchomości i Deweloperzy',
+    // Numbers verbatim from the ED Invest case study.
+    numbers: [
+      { value: '2,6 mln (+180%)', label: 'Wyświetlenia' },
+      { value: '1,9 tys. (+181,5%)', label: 'Interakcje z zawartością' },
+      { value: '270 (+260%)', label: 'Nowi obserwujący' },
+      { value: '7 tys. (+3,4%)', label: 'Odwiedziny profilu' },
+    ],
+    caseStudy: {
+      slug: 'ed-invest',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Deweloper na Facebooku, Instagramie i LinkedInie',
+      creatives: [
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-1.jpg',
+          alt: 'Kadr z nagrania wideo ED Invest — widok z lotu ptaka na realizowaną inwestycję mieszkaniową na tle panoramy miasta',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-2.jpg',
+          alt: 'Kadr z nagrania wideo ED Invest — pracownica biura sprzedaży przy biurku podczas rozmowy z klientem',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-3.jpg',
+          alt: 'Relacja wideo z eventu branżowego Orange Ball — scena z logo ED Invest podczas wydarzenia',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-4.jpg',
+          alt: 'Zdjęcie grupowe przedstawicieli ED Invest z wyróżnieniem podczas branżowej gali',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-5.jpg',
+          alt: 'Dedykowana kreacja graficzna inwestycji Gocławia ED Invest — wizualizacja kameralnego budynku z hasłem o najwyższych standardach',
+          width: 1080,
+          height: 1350,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'ed-invest',
-        title: 'Deweloper na Facebooku, Instagramie i LinkedInie',
-      },
       {
         slug: 'jw-construction',
         title: 'Budownictwo prefabrykowane i inwestycje',
@@ -1040,11 +1364,51 @@ export const INDUSTRIES = [
     slug: 'rozrywka',
     pairSlug: 'entertainment',
     label: 'Rozrywka',
+    // Numbers verbatim from the Skrzat. Nowy początek case study.
+    numbers: [
+      { value: '35 mln', label: 'Wyświetlenia' },
+      { value: '100 tys.', label: 'Polubienia' },
+      { value: '4,38 mln', label: 'Wyświetlenia' },
+      { value: '1,14 mln', label: 'Zasięg' },
+    ],
+    caseStudy: {
+      slug: 'skrzat',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Premiera filmu i 35 mln wyświetleń',
+      creatives: [
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-1.jpg',
+          alt: 'Grafika promocyjna „Ile skrzatów kryje się w lesie?” — sylwetki skrzatów ukryte w słonecznym lesie',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-2.jpg',
+          alt: 'Kreatywna grafika „Jak powiedzieć »skrzat« w różnych językach?” z bohaterami filmu na fioletowym tle',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-3.jpg',
+          alt: 'Grafika „3 oznaki bycia skrzaciarą” z kadrem zza kulis i dopiskiem WOW',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-4.jpg',
+          alt: 'Post konkursowy #Kamyczki „Wygraj bilet na film” z plakatem „Skrzat. Nowy początek” w grupie na Facebooku',
+          width: 437,
+          height: 900,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-5.jpg',
+          alt: 'Ekipa i twórcy machają do kamery na planie zdjęciowym filmu „Skrzat. Nowy początek” w lesie',
+          width: 644,
+          height: 1400,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'skrzat',
-        title: 'Premiera filmu i 35 mln wyświetleń',
-      },
       {
         slug: 'rabkoland',
         title: 'Park rozrywki dla całej rodziny',

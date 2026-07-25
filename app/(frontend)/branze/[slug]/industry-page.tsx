@@ -29,6 +29,56 @@ export interface IndustryPageProps {
   caseStudyBase: string
 }
 
+/* Keyword marquee — shared by both layouts (a proof page can carry one too). */
+function IndustryMarquee({ industry }: { industry: Industry }) {
+  if (!industry.marquee || industry.marquee.length === 0) {
+    return null
+  }
+  return (
+    <section className={s.marquee} data-theme="plum" aria-hidden="true">
+      <Marquee className={s.marqueeRow} repeat={3} speed={1.1}>
+        <span className={s.marqueeFill}>
+          {industry.marquee.map((word) => (
+            <span key={word}>
+              {word}
+              <span className={s.marqueeSep}>·</span>
+            </span>
+          ))}
+        </span>
+      </Marquee>
+    </section>
+  )
+}
+
+/* Manifesto + value chips — shared. `chips` are the editorial value words; the
+   proof numbers band reads `numbers`, so a page can show both without clashing. */
+function IndustryManifesto({
+  industry,
+  chrome,
+}: {
+  industry: Industry
+  chrome: Chrome
+}) {
+  const ref = useReveal<HTMLDivElement>()
+  if (!(industry.manifesto && industry.chips)) {
+    return null
+  }
+  return (
+    <section className={s.manifesto} data-theme="cream">
+      <div ref={ref} className={s.manifestoInner}>
+        <div className={s.manifestoCopy}>
+          <p className={s.kicker}>{chrome.editorial.manifestoKicker}</p>
+          <h2 data-reveal-item className={s.manifestoHeading}>
+            <span className={s.manifestoLead}>{industry.manifesto.lead}</span>{' '}
+            <span className={s.manifestoRest}>{industry.manifesto.rest}</span>
+          </h2>
+        </div>
+        <Chips chips={industry.chips} />
+      </div>
+    </section>
+  )
+}
+
 // —— Shared pieces ————————————————————————————————————————————————————————————
 
 /*
@@ -342,6 +392,11 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
+      {/* Collage is no longer editorial-only — proof pages carry one too. */}
+      {industry.collage && industry.collage.length > 0 && (
+        <Collage photos={industry.collage} />
+      )}
+
       {/* Portfolio — real creatives wall */}
       <section className={s.portfolio} data-theme="cream">
         <div className={s.portfolioHead}>
@@ -370,11 +425,11 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
         </div>
       </section>
 
-      {/* Numbers band */}
-      {industry.chips && (
+      {/* Numbers band — case-study metrics (`numbers`), not manifesto chips. */}
+      {industry.numbers && (
         <section className={s.numbers} data-theme="cream">
           <div ref={numbersRef} className={s.numbersInner}>
-            {industry.chips.map((chip) => (
+            {industry.numbers.map((chip) => (
               <div key={chip.label} data-reveal-item className={s.number}>
                 <span className={s.numberValue}>{chip.value}</span>
                 <span className={s.numberLabel}>{chip.label}</span>
@@ -384,19 +439,24 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
         </section>
       )}
 
-      {/* Quote + case-study card */}
+      <IndustryMarquee industry={industry} />
+      <IndustryManifesto industry={industry} chrome={chrome} />
+
+      {/* Quote (only when a real testimonial exists) + case-study card */}
       <section className={s.proofClose} data-theme="cream">
-        <figure className={s.quote}>
-          <blockquote className={s.quoteText}>
-            <span className={s.quoteMark} aria-hidden="true">
-              “
-            </span>
-            {study.quote.text}
-          </blockquote>
-          <figcaption className={s.quoteAttr}>
-            {study.quote.attribution}
-          </figcaption>
-        </figure>
+        {study.quote && (
+          <figure className={s.quote}>
+            <blockquote className={s.quoteText}>
+              <span className={s.quoteMark} aria-hidden="true">
+                “
+              </span>
+              {study.quote.text}
+            </blockquote>
+            <figcaption className={s.quoteAttr}>
+              {study.quote.attribution}
+            </figcaption>
+          </figure>
+        )}
         <Link className={s.caseCard} href={`${caseStudyBase}/${study.slug}`}>
           <span className={s.caseCardKicker}>{study.cardKicker}</span>
           <span className={s.caseCardTitle}>{study.cardTitle}</span>
@@ -435,8 +495,6 @@ function EditorialLayout({
   chrome,
   caseStudyBase,
 }: IndustryPageProps) {
-  const manifestoRef = useReveal<HTMLDivElement>()
-
   return (
     <>
       <IndustryHero industry={industry} chrome={chrome} />
@@ -447,41 +505,8 @@ function EditorialLayout({
         <Collage photos={industry.collage} />
       )}
 
-      {/* Keyword marquee */}
-      {industry.marquee && industry.marquee.length > 0 && (
-        <section className={s.marquee} data-theme="plum" aria-hidden="true">
-          <Marquee className={s.marqueeRow} repeat={3} speed={1.1}>
-            <span className={s.marqueeFill}>
-              {industry.marquee.map((word) => (
-                <span key={word}>
-                  {word}
-                  <span className={s.marqueeSep}>·</span>
-                </span>
-              ))}
-            </span>
-          </Marquee>
-        </section>
-      )}
-
-      {/* Manifesto + value chips (our punchy take, distinct from the brief) */}
-      {industry.manifesto && industry.chips && (
-        <section className={s.manifesto} data-theme="cream">
-          <div ref={manifestoRef} className={s.manifestoInner}>
-            <div className={s.manifestoCopy}>
-              <p className={s.kicker}>{chrome.editorial.manifestoKicker}</p>
-              <h2 data-reveal-item className={s.manifestoHeading}>
-                <span className={s.manifestoLead}>
-                  {industry.manifesto.lead}
-                </span>{' '}
-                <span className={s.manifestoRest}>
-                  {industry.manifesto.rest}
-                </span>
-              </h2>
-            </div>
-            <Chips chips={industry.chips} />
-          </div>
-        </section>
-      )}
+      <IndustryMarquee industry={industry} />
+      <IndustryManifesto industry={industry} chrome={chrome} />
 
       <RelatedCaseStudies
         industry={industry}

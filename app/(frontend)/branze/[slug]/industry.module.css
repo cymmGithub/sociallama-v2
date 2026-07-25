@@ -718,6 +718,16 @@
   color: var(--color-ink);
 }
 
+/* Standalone client quote on an editorial page (see `Industry.quote`). Mirrors
+   the proof layout's `.proofClose` band, minus its case-study card column. */
+.editorialQuote {
+  padding: calc(var(--safe) * 3) var(--safe);
+  max-width: 1240px;
+  margin-inline: auto;
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
 /* —— Related case studies (both variants) —————————————————————————————————————— */
 
 /* Additive row rendered by proof AND editorial pages. Deliberately lighter than

@@ -46,6 +46,21 @@ export const INDUSTRIES = [
     slug: 'automotive',
     pairSlug: 'automotive',
     label: 'Automotive',
+    // Imagery: Pexels (free license) — photo IDs 5864155, 10800215, 8349487.
+    collage: [
+      {
+        src: '/branze/automotive/automotive-1.jpg',
+        alt: 'An illuminated car showroom at night',
+      },
+      {
+        src: '/branze/automotive/automotive-2.jpg',
+        alt: 'An electric car charging in a winter landscape',
+      },
+      {
+        src: '/branze/automotive/automotive-3.jpg',
+        alt: 'Close-up of an electric car charging port',
+      },
+    ],
     relatedCaseStudies: [
       {
         slug: 'motointegrator',
@@ -84,7 +99,7 @@ export const INDUSTRIES = [
         },
       ],
     },
-    chips: [
+    numbers: [
       { value: '3+', label: 'years of continuous work with the Volvo brand' },
       { value: '2', label: 'brands run in parallel — VCW & Dom Volvo' },
       { value: '3', label: 'platforms: LinkedIn, Facebook, Instagram' },
@@ -139,6 +154,21 @@ export const INDUSTRIES = [
     slug: 'electronics',
     pairSlug: 'elektronika-i-agd',
     label: 'Electronics & Appliances',
+    // Imagery: Pexels (free license) — photo IDs 844874, 7533923, 29292011.
+    collage: [
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-1.jpg',
+        alt: 'A robot vacuum on a wooden floor',
+      },
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-2.jpg',
+        alt: 'A modern kitchen with built-in appliances',
+      },
+      {
+        src: '/branze/elektronika-i-agd/elektronika-i-agd-3.jpg',
+        alt: 'Smart home devices on a light background',
+      },
+    ],
     relatedCaseStudies: [
       {
         slug: 'vobis',
@@ -194,7 +224,7 @@ export const INDUSTRIES = [
         },
       ],
     },
-    chips: [
+    numbers: [
       { value: '11M', label: 'views on TikTok' },
       { value: '742k', label: 'views on YouTube' },
       { value: '+7.9k', label: 'new subscribers on YouTube' },
@@ -246,11 +276,50 @@ export const INDUSTRIES = [
     slug: 'beauty',
     pairSlug: 'beauty',
     label: 'Beauty',
+    // Numbers verbatim from the Kontigo case study.
+    numbers: [
+      { value: '1 100', label: 'Ambassadors gathered' },
+      { value: '79', label: 'Avg. monthly posts from ambassadors' },
+      { value: '1 500', label: 'Avg. monthly likes on group posts' },
+    ],
+    caseStudy: {
+      slug: 'kontigo',
+      cardKicker: 'CASE STUDY',
+      cardTitle: '#KontigoCLUB — a community of brand ambassadors',
+      creatives: [
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-1.jpg',
+          alt: 'Kontigo campaign creative',
+          width: 1080,
+          height: 1080,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-2.jpg',
+          alt: 'Kontigo campaign creative',
+          width: 345,
+          height: 713,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-3.jpg',
+          alt: 'Kontigo campaign creative',
+          width: 1080,
+          height: 1080,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-4.jpg',
+          alt: 'Kontigo campaign creative',
+          width: 670,
+          height: 532,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-5.jpg',
+          alt: 'Kontigo campaign creative',
+          width: 597,
+          height: 1400,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'kontigo',
-        title: '#KontigoCLUB — a community of brand ambassadors',
-      },
       {
         slug: 'luisse',
         title: 'Personal branding in the hairdressing industry',
@@ -320,11 +389,51 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Health',
+    // Numbers verbatim from the Adamed case study.
+    numbers: [
+      { value: '+242%', label: 'Follower growth' },
+      { value: '+269%', label: 'Content interactions' },
+      { value: '+719%', label: 'Link clicks' },
+      { value: '+100%', label: 'View growth' },
+    ],
+    caseStudy: {
+      slug: 'adamed',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Deep Breath by Adamed — health education on social media',
+      creatives: [
+        {
+          src: '/case-studies/adamed/adamed-gallery-1.jpg',
+          alt: 'Adamed campaign creative',
+          width: 648,
+          height: 1152,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-2.jpg',
+          alt: 'Adamed campaign creative',
+          width: 540,
+          height: 960,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-3.jpg',
+          alt: 'Adamed campaign creative',
+          width: 648,
+          height: 1152,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-4.jpg',
+          alt: 'Adamed campaign creative',
+          width: 540,
+          height: 960,
+        },
+        {
+          src: '/case-studies/adamed/adamed-gallery-5.jpg',
+          alt: 'Adamed campaign creative',
+          width: 648,
+          height: 1152,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'adamed',
-        title: 'Communication for a pharmaceutical brand',
-      },
       {
         slug: 'imid-cmv',
         title: 'Educating patients about a CMV clinical trial',
@@ -474,12 +583,55 @@ export const INDUSTRIES = [
     slug: 'pet',
     pairSlug: 'petcare',
     label: 'Pet Industry',
-    relatedCaseStudies: [
-      {
-        slug: 'aquael',
-        title: 'Expert aquascaping content',
-      },
+    // Numbers verbatim from the Aquael case study.
+    numbers: [
+      { value: '388 717', label: 'Views (monthly avg.)' },
+      { value: '184 799', label: 'Reach (monthly avg.)' },
+      { value: '9 033', label: 'Engagement (monthly avg.)' },
+      { value: '+660', label: 'Fan growth (monthly avg.)' },
     ],
+    caseStudy: {
+      slug: 'aquael',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Expert communication for an aquascaping brand',
+      creatives: [
+        {
+          src: '/case-studies/aquael/aquael-gallery-1.jpg',
+          alt: 'Aquael campaign creative',
+          width: 464,
+          height: 701,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-2.jpg',
+          alt: 'Aquael campaign creative',
+          width: 925,
+          height: 470,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-3.jpg',
+          alt: 'Aquael campaign creative',
+          width: 463,
+          height: 720,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-4.jpg',
+          alt: 'Aquael campaign creative',
+          width: 465,
+          height: 680,
+        },
+        {
+          src: '/case-studies/aquael/aquael-gallery-5.jpg',
+          alt: 'Aquael campaign creative',
+          width: 1080,
+          height: 1080,
+        },
+      ],
+      quote: {
+        text: "Social Lama is an agency that fully meets our expectations. The team's work proved satisfying enough that we decided to expand the collaboration to further projects.",
+        attribution: 'Beata Nartowska, Aquael',
+      },
+    },
+    relatedCaseStudies: [],
     meta: {
       title: 'Social media for the pet industry | Social Lama',
       description:
@@ -541,11 +693,51 @@ export const INDUSTRIES = [
     slug: 'alcohol',
     pairSlug: 'alkohole',
     label: 'Alcohol',
+    // Numbers verbatim from the Faktoria Win case study.
+    numbers: [
+      { value: '417 tys.', label: 'Reach (monthly avg.)' },
+      { value: '827 tys.', label: 'Views (monthly avg.)' },
+      { value: '17 tys.', label: 'Profile visits (monthly avg.)' },
+      { value: '25 tys.', label: 'Link clicks (monthly avg.)' },
+    ],
+    caseStudy: {
+      slug: 'faktoria-win',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Communication for a wine brand',
+      creatives: [
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-1.jpg',
+          alt: 'Faktoria Win campaign creative',
+          width: 1400,
+          height: 934,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-2.jpg',
+          alt: 'Faktoria Win campaign creative',
+          width: 934,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-3.jpg',
+          alt: 'Faktoria Win campaign creative',
+          width: 1400,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-4.jpg',
+          alt: 'Faktoria Win campaign creative',
+          width: 493,
+          height: 726,
+        },
+        {
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-5.jpg',
+          alt: 'Faktoria Win campaign creative',
+          width: 601,
+          height: 511,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'faktoria-win',
-        title: 'Communication for a wine brand',
-      },
       {
         slug: 'mazurska-manufaktura-alkoholi',
         title: 'Crowdfunding with a brand ambassador',
@@ -679,11 +871,51 @@ export const INDUSTRIES = [
     slug: 'horeca',
     pairSlug: 'horeca',
     label: 'Horeca',
+    // Numbers verbatim from the Julius Meinl case study.
+    numbers: [
+      { value: '4 806 (+956,3%)', label: 'Interactions' },
+      { value: '432 616 (+1 380%)', label: 'Views' },
+      { value: '147 040', label: 'Viewers' },
+      { value: '4 430 (+24 511%)', label: 'Clicks' },
+    ],
+    caseStudy: {
+      slug: 'julius-meinl',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'Premium coffee and industry events',
+      creatives: [
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-1.jpg',
+          alt: 'Julius Meinl campaign creative',
+          width: 404,
+          height: 504,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-2.jpg',
+          alt: 'Julius Meinl campaign creative',
+          width: 404,
+          height: 504,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
+          alt: 'Julius Meinl campaign creative',
+          width: 320,
+          height: 524,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-4.jpg',
+          alt: 'Julius Meinl campaign creative',
+          width: 419,
+          height: 581,
+        },
+        {
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-5.jpg',
+          alt: 'Julius Meinl campaign creative',
+          width: 428,
+          height: 524,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'julius-meinl',
-        title: 'Premium coffee and industry events',
-      },
       {
         slug: 'belvedere',
         title: 'A premium restaurant in Łazienki Park',
@@ -753,11 +985,51 @@ export const INDUSTRIES = [
     slug: 'hospitality',
     pairSlug: 'hotele-i-miejsca-wypoczynkowe',
     label: 'Hotels & Resorts',
+    // Numbers verbatim from the Dolina Charlotty case study.
+    numbers: [
+      { value: '15,5 mln (+44,7%)', label: 'Views' },
+      { value: '285 593 (+87,7%)', label: 'Reach' },
+      { value: '51 278 (+168,8%)', label: 'Content interactions' },
+      { value: '99 509 (+67,4%)', label: 'Link clicks' },
+    ],
+    caseStudy: {
+      slug: 'dolina-charlotty',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'A resort & SPA as a year-round destination',
+      creatives: [
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-1.jpg',
+          alt: 'Dolina Charlotty campaign creative',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-2.jpg',
+          alt: 'Dolina Charlotty campaign creative',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-3.jpg',
+          alt: 'Dolina Charlotty campaign creative',
+          width: 457,
+          height: 938,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-4.jpg',
+          alt: 'Dolina Charlotty campaign creative',
+          width: 457,
+          height: 936,
+        },
+        {
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-5.jpg',
+          alt: 'Dolina Charlotty campaign creative',
+          width: 437,
+          height: 900,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'dolina-charlotty',
-        title: 'A resort & SPA as a year-round destination',
-      },
       {
         slug: 'skibooking',
         title: 'Online ski booking',
@@ -833,11 +1105,51 @@ export const INDUSTRIES = [
     slug: 'real-estate',
     pairSlug: 'nieruchomosci-i-deweloperzy',
     label: 'Real Estate & Developers',
+    // Numbers verbatim from the ED Invest case study.
+    numbers: [
+      { value: '2,6 mln (+180%)', label: 'Views' },
+      { value: '1,9 tys. (+181,5%)', label: 'Content interactions' },
+      { value: '270 (+260%)', label: 'New followers' },
+      { value: '7 tys. (+3,4%)', label: 'Profile visits' },
+    ],
+    caseStudy: {
+      slug: 'ed-invest',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'A developer on Facebook, Instagram and LinkedIn',
+      creatives: [
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-1.jpg',
+          alt: 'ED Invest campaign creative',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-2.jpg',
+          alt: 'ED Invest campaign creative',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-3.jpg',
+          alt: 'ED Invest campaign creative',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-4.jpg',
+          alt: 'ED Invest campaign creative',
+          width: 788,
+          height: 1400,
+        },
+        {
+          src: '/case-studies/ed-invest/ed-invest-gallery-5.jpg',
+          alt: 'ED Invest campaign creative',
+          width: 1080,
+          height: 1350,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'ed-invest',
-        title: 'A developer on Facebook, Instagram and LinkedIn',
-      },
       {
         slug: 'jw-construction',
         title: 'Prefabricated construction and investments',
@@ -911,11 +1223,51 @@ export const INDUSTRIES = [
     slug: 'entertainment',
     pairSlug: 'rozrywka',
     label: 'Entertainment',
+    // Numbers verbatim from the Skrzat. Nowy początek case study.
+    numbers: [
+      { value: '35 mln', label: 'Views' },
+      { value: '100 tys.', label: 'Likes' },
+      { value: '4,38 mln', label: 'Views' },
+      { value: '1,14 mln', label: 'Reach' },
+    ],
+    caseStudy: {
+      slug: 'skrzat',
+      cardKicker: 'CASE STUDY',
+      cardTitle: 'A film premiere and 35M views',
+      creatives: [
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-1.jpg',
+          alt: 'Skrzat. Nowy początek campaign creative',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-2.jpg',
+          alt: 'Skrzat. Nowy początek campaign creative',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-3.jpg',
+          alt: 'Skrzat. Nowy początek campaign creative',
+          width: 540,
+          height: 675,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-4.jpg',
+          alt: 'Skrzat. Nowy początek campaign creative',
+          width: 437,
+          height: 900,
+        },
+        {
+          src: '/case-studies/skrzat/skrzat-gallery-5.jpg',
+          alt: 'Skrzat. Nowy początek campaign creative',
+          width: 644,
+          height: 1400,
+        },
+      ],
+    },
     relatedCaseStudies: [
-      {
-        slug: 'skrzat',
-        title: 'A film premiere and 35M views',
-      },
       {
         slug: 'rabkoland',
         title: 'An amusement park for the whole family',

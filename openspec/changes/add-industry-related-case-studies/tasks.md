@@ -28,10 +28,20 @@
 - [~] 5.5 Locale check: the EN industry page links to `/en/case-studies/<slug>`.
 - [~] 5.6 Follow one link to a **published** study (e.g. `automotive` → any published slug) to prove the row's links resolve; note that links to still-draft studies 404 until the `import-case-study-decks` publish gate clears.
 
+## 6. Converge the layouts (scope revision — see proposal)
+- [x] 6.1 Make `caseStudy.quote` optional; guard the blockquote so a proof page without a testimonial omits it.
+- [x] 6.2 Split `numbers` (case-study metrics, numbers band) from `chips` (manifesto value words); migrate Volvo/iRobot `chips` → `numbers`.
+- [x] 6.3 Extract `IndustryMarquee` + `IndustryManifesto` and render them from BOTH layouts, so promotion never drops editorial copy.
+- [x] 6.4 Render `collage` in the proof layout; add Pexels collages for `automotive` (IDs 5864155, 10800215, 8349487 — brand-neutral, no competitor marques) and `elektronika-i-agd` (844874, 7533923, 29292011).
+- [x] 6.5 Promote 8 industries to proof pages with their strongest study: beauty→kontigo, health→adamed, petcare→aquael, alkohole→faktoria-win, horeca→julius-meinl, hotele→dolina-charlotty, nieruchomości→ed-invest, rozrywka→skrzat. Creatives + numbers sourced from each study; featured slug removed from its own related row.
+- [x] 6.6 Aquael carries its real client testimonial (Beata Nartowska), verbatim from the ZAUFALI NAM card — the only collected quote among the mapped studies.
+- [x] 6.7 EN parity for all of the above; `satisfies LocalizedBranze` passes.
+
 ## Out of scope (tracked, not done here)
 - [ ] Publishing the 45 imported studies (client-permission gate, `import-case-study-decks`).
 - [ ] A `retail/handel` industry for `polomarket`, `riviera`, `galeria-rondo-wiatraczna`, `vobis`.
 - [ ] Mapping the 14 studies that fit no current industry.
+- [ ] Collecting client testimonials for the 7 proof pages that currently render without a quote.
 
 
 _Note: 5.2–5.6 are visual/browser checks — verified statically (typecheck, PL/EN parity counts, both layouts wired, variant switch untouched, all 31 slugs resolve to a study + logo). Awaiting a running worktree dev server for the browser pass; the server was down during implementation._
