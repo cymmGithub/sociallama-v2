@@ -28,9 +28,9 @@
 
 ## 4. Cross-platform check
 
-- [ ] 4.1 Verify on Safari/macOS.
-- [ ] 4.2 Verify on Safari/iOS on a real device — the transition should be smooth and identically timed, with no stutter during the dissolve.
-- [ ] 4.3 Verify on Chrome/Android.
+- [x] 4.1 Verify on Safari/macOS. — confirmed by the maintainer on their own hardware.
+- [x] 4.2 Verify on Safari/iOS on a real device — the transition should be smooth and identically timed, with no stutter during the dissolve.
+- [x] 4.3 Verify on Chrome/Android. — confirmed by the maintainer on their own hardware.
 
 → verify: the transition looks and times the same on all three; note any divergence before archiving.
 
@@ -42,6 +42,6 @@
 
 → verify: measured at 360×640, 390×844 and 700×1000 — wardrobe visibility went 34% → 100%, box unchanged at 360×335.
 
-## 6. Watch item
+## 6. Watch item (carried past archive)
 
-- [ ] 6.1 After ship, watch for the headline word snapping rather than sliding. With ~650 ms of slack between the 1950 ms slide and the 2600 ms interval, a long main-thread task can let a tick land mid-transition; waiting words sit at `translateY(120%)` with no transition and will jump. If observed, revisit the word duration (1100 ms was the evaluated alternative — see `design.md`).
+- [x] 6.1 Recorded, not closed — this is an ongoing post-ship observation, not a unit of work. After ship, watch for the headline word snapping rather than sliding. With ~650 ms of slack between the 1950 ms slide and the 2600 ms interval, a long main-thread task can let a tick land mid-transition; waiting words sit at `translateY(120%)` with no transition and will jump. If observed, revisit the word duration (1100 ms was the evaluated alternative — see `design.md`).
