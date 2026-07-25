@@ -2,7 +2,7 @@
 
 import cn from 'clsx'
 import { ArrowRight } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { type CSSProperties, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
@@ -50,9 +50,15 @@ function IndustryMarquee({ industry }: { industry: Industry }) {
   )
 }
 
-/* Manifesto + value chips — shared. `chips` are the editorial value words; the
-   proof numbers band reads `numbers`, so a page can show both without clashing. */
-function IndustryManifesto({
+/*
+ * "NASZE PODEJŚCIE" plate — one composed band rather than a photo strip stacked
+ * above a copy block. The statement and its value chips sit on the sand ground;
+ * the industry photo bleeds off the section's outer edge, which is what makes
+ * the two halves read as a single object. Renders whatever the industry has:
+ * proof pages carry a photo but no manifesto, so the plate degrades to a
+ * photo-only band rather than disappearing.
+ */
+function IndustryApproach({
   industry,
   chrome,
 }: {
@@ -60,20 +66,45 @@ function IndustryManifesto({
   chrome: Chrome
 }) {
   const ref = useReveal<HTMLDivElement>()
-  if (!(industry.manifesto && industry.chips)) {
+  const photo = industry.collage?.[0]
+  const hasCopy = Boolean(industry.manifesto && industry.chips)
+  if (!(hasCopy || photo)) {
     return null
   }
+
   return (
-    <section className={s.manifesto} data-theme="cream">
-      <div ref={ref} className={s.manifestoInner}>
-        <div className={s.manifestoCopy}>
-          <p className={s.kicker}>{chrome.editorial.manifestoKicker}</p>
-          <h2 data-reveal-item className={s.manifestoHeading}>
-            <span className={s.manifestoLead}>{industry.manifesto.lead}</span>{' '}
-            <span className={s.manifestoRest}>{industry.manifesto.rest}</span>
-          </h2>
-        </div>
-        <Chips chips={industry.chips} />
+    <section className={s.approach} data-theme="cream">
+      <div
+        ref={ref}
+        className={s.approachInner}
+        data-photo-only={!hasCopy || undefined}
+      >
+        {industry.manifesto && industry.chips && (
+          <div className={s.approachCopy}>
+            <p data-reveal-item className={s.kicker}>
+              {chrome.editorial.manifestoKicker}
+            </p>
+            <h2 data-reveal-item className={s.manifestoHeading}>
+              <span className={s.manifestoLead}>{industry.manifesto.lead}</span>{' '}
+              <span className={s.manifestoRest}>{industry.manifesto.rest}</span>
+            </h2>
+            <Chips chips={industry.chips} />
+          </div>
+        )}
+
+        {photo && (
+          <figure data-reveal-item className={s.approachFigure}>
+            <Image
+              className={s.approachImg}
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              objectFit="cover"
+              desktopSize="46vw"
+              mobileSize="100vw"
+            />
+          </figure>
+        )}
       </div>
     </section>
   )
@@ -261,30 +292,6 @@ function IndustryHero({
 }
 
 /** Duotone photo strip — sits directly under the brief, sharing its cream band. */
-function Collage({ photos }: { photos: NonNullable<Industry['collage']> }) {
-  const ref = useReveal<HTMLDivElement>()
-
-  return (
-    <section className={s.collageBand} data-theme="cream">
-      <div ref={ref} className={s.collage}>
-        {photos.map((photo) => (
-          <div key={photo.src} data-reveal-item className={s.collageItem}>
-            <Image
-              className={s.collageImg}
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              objectFit="cover"
-              desktopSize="30vw"
-              mobileSize="90vw"
-            />
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
 /** Closing CTA — the case-study CTA card, minus its secondary action. */
 function CtaBand({ headline, chrome }: { headline: string; chrome: Chrome }) {
   return (
@@ -338,6 +345,13 @@ function renderParagraph({
 }
 
 /** Under-hero brief: pillars + the industry's copy. */
+/*
+ * Under-hero brief. On desktop the kicker + strategic pillars render as an
+ * orbit — kicker at the hub, pillars revolving on a dotted ring — mirroring the
+ * GOOD ONE wheel on /o-nas. Below --desktop the orbit is swapped for the plain
+ * chip list (positioned spokes crowd at phone width), so only one of the two is
+ * in the a11y tree per width.
+ */
 function IndustryBrief({
   industry,
   chrome,
@@ -346,14 +360,80 @@ function IndustryBrief({
   chrome: Chrome
 }) {
   const ref = useReveal<HTMLDivElement>()
+  const orbitRef = useRef<HTMLDivElement>(null)
+  const [spinning, setSpinning] = useState(false)
+
+  // Spin only while on screen, never under reduced motion (the CSS also
+  // disables it — this just avoids running a pointless observer).
+  useEffect(() => {
+    const el = orbitRef.current
+    if (!el) {
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => setSpinning(entries[0]?.isIntersecting ?? false),
+      { threshold: 0 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const pillars = industry.brief.pillars
+  const step = 360 / Math.max(pillars.length, 1)
 
   return (
     <section className={s.brief} data-theme="cream">
       <div ref={ref} className={s.briefInner}>
         <div className={s.briefHead}>
-          <p className={s.kicker}>{chrome.briefKicker}</p>
+          {/* Desktop orbit */}
+          <div
+            ref={orbitRef}
+            data-reveal-item
+            className={s.briefOrbit}
+            data-spinning={spinning}
+          >
+            <div className={s.orbitTrack}>
+              <svg
+                className={s.orbitSvg}
+                viewBox="0 0 100 100"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <circle className={s.orbitCircle} cx="50" cy="50" r="50" />
+              </svg>
+              {pillars.map((pillar, i) => (
+                <span
+                  key={pillar}
+                  className={s.orbitDot}
+                  style={{ '--base': `${i * step}deg` } as CSSProperties}
+                />
+              ))}
+            </div>
+
+            <ul className={s.orbitItems}>
+              {pillars.map((pillar, i) => (
+                <li
+                  key={pillar}
+                  className={s.orbitItem}
+                  style={{ '--base': `${i * step}deg` } as CSSProperties}
+                >
+                  {pillar}
+                </li>
+              ))}
+            </ul>
+
+            <p className={s.orbitHub}>{chrome.briefKicker}</p>
+          </div>
+
+          {/* Mobile fallback: the original kicker + chip list */}
+          <p className={`${s.kicker} ${s.briefKickerFlat}`}>
+            {chrome.briefKicker}
+          </p>
           <ul className={s.pillars}>
-            {industry.brief.pillars.map((pillar) => (
+            {pillars.map((pillar) => (
               <li key={pillar} data-reveal-item className={s.pillar}>
                 {pillar}
               </li>
@@ -392,11 +472,6 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
-      {/* Collage is no longer editorial-only — proof pages carry one too. */}
-      {industry.collage && industry.collage.length > 0 && (
-        <Collage photos={industry.collage} />
-      )}
-
       {/* Portfolio — real creatives wall */}
       <section className={s.portfolio} data-theme="cream">
         <div className={s.portfolioHead}>
@@ -430,8 +505,15 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
         <section className={s.numbers} data-theme="cream">
           <div ref={numbersRef} className={s.numbersInner}>
             {industry.numbers.map((chip) => (
-              <div key={chip.label} data-reveal-item className={s.number}>
+              <div
+                key={`${chip.label}-${chip.value}`}
+                data-reveal-item
+                className={s.number}
+              >
                 <span className={s.numberValue}>{chip.value}</span>
+                {chip.delta && (
+                  <span className={s.numberDelta}>{chip.delta}</span>
+                )}
                 <span className={s.numberLabel}>{chip.label}</span>
               </div>
             ))}
@@ -440,7 +522,7 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
       )}
 
       <IndustryMarquee industry={industry} />
-      <IndustryManifesto industry={industry} chrome={chrome} />
+      <IndustryApproach industry={industry} chrome={chrome} />
 
       {/* Quote (only when a real testimonial exists) + case-study card */}
       <section className={s.proofClose} data-theme="cream">
@@ -501,12 +583,8 @@ function EditorialLayout({
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
-      {industry.collage && industry.collage.length > 0 && (
-        <Collage photos={industry.collage} />
-      )}
-
       <IndustryMarquee industry={industry} />
-      <IndustryManifesto industry={industry} chrome={chrome} />
+      <IndustryApproach industry={industry} chrome={chrome} />
 
       <RelatedCaseStudies
         industry={industry}

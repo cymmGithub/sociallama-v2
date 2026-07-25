@@ -52,14 +52,6 @@ export const INDUSTRIES = [
         src: '/branze/automotive/automotive-1.jpg',
         alt: 'An illuminated car showroom at night',
       },
-      {
-        src: '/branze/automotive/automotive-2.jpg',
-        alt: 'An electric car charging in a winter landscape',
-      },
-      {
-        src: '/branze/automotive/automotive-3.jpg',
-        alt: 'Close-up of an electric car charging port',
-      },
     ],
     relatedCaseStudies: [
       {
@@ -159,14 +151,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/elektronika-i-agd/elektronika-i-agd-1.jpg',
         alt: 'A robot vacuum on a wooden floor',
-      },
-      {
-        src: '/branze/elektronika-i-agd/elektronika-i-agd-2.jpg',
-        alt: 'A modern kitchen with built-in appliances',
-      },
-      {
-        src: '/branze/elektronika-i-agd/elektronika-i-agd-3.jpg',
-        alt: 'Smart home devices on a light background',
       },
     ],
     relatedCaseStudies: [
@@ -372,14 +356,6 @@ export const INDUSTRIES = [
         src: '/branze/beauty/beauty-1.jpg',
         alt: 'Skincare products in a minimalist arrangement',
       },
-      {
-        src: '/branze/beauty/beauty-2.jpg',
-        alt: 'Serum and face cream on a neutral backdrop',
-      },
-      {
-        src: '/branze/beauty/beauty-3.jpg',
-        alt: 'Face serum in glass dropper bottles',
-      },
     ],
   },
 
@@ -502,14 +478,6 @@ export const INDUSTRIES = [
         src: '/branze/health/health-1.jpg',
         alt: 'Supplement capsules with natural ingredients',
       },
-      {
-        src: '/branze/health/health-2.jpg',
-        alt: 'Lemon, ginger, and supplements on marble',
-      },
-      {
-        src: '/branze/health/health-3.jpg',
-        alt: 'Supplements in ceramic bowls',
-      },
     ],
   },
 
@@ -565,14 +533,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/finanse/finanse-1.jpg',
         alt: 'Mobile payment on a smartphone',
-      },
-      {
-        src: '/branze/finanse/finanse-2.jpg',
-        alt: 'Contactless card payment at a terminal',
-      },
-      {
-        src: '/branze/finanse/finanse-3.jpg',
-        alt: 'A fan of payment cards in hand',
       },
     ],
   },
@@ -678,11 +638,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/petcare/petcare-1.jpg',
         alt: 'A dog and kitten meeting at home',
-      },
-      { src: '/branze/petcare/petcare-2.jpg', alt: 'An owner hugging a puppy' },
-      {
-        src: '/branze/petcare/petcare-3.jpg',
-        alt: 'A cat and dog cuddling in the grass',
       },
     ],
   },
@@ -790,14 +745,6 @@ export const INDUSTRIES = [
         src: '/branze/alkohole/alkohole-1.jpg',
         alt: 'Liquor bottles on bar shelves',
       },
-      {
-        src: '/branze/alkohole/alkohole-2.jpg',
-        alt: 'A bartender pouring wine',
-      },
-      {
-        src: '/branze/alkohole/alkohole-3.jpg',
-        alt: 'A glass of red wine at a table setting',
-      },
     ],
   },
 
@@ -854,14 +801,6 @@ export const INDUSTRIES = [
         src: '/branze/fashion/fashion-1.jpg',
         alt: 'A model in a white outfit on the runway',
       },
-      {
-        src: '/branze/fashion/fashion-2.jpg',
-        alt: 'A model in a green top in an urban setting',
-      },
-      {
-        src: '/branze/fashion/fashion-3.jpg',
-        alt: 'A model in a maroon coat in a modern interior',
-      },
     ],
   },
 
@@ -873,10 +812,10 @@ export const INDUSTRIES = [
     label: 'Horeca',
     // Numbers verbatim from the Julius Meinl case study.
     numbers: [
-      { value: '4 806 (+956,3%)', label: 'Interactions' },
-      { value: '432 616 (+1 380%)', label: 'Views' },
+      { value: '4 806', label: 'Interactions', delta: '+956,3%' },
+      { value: '432 616', label: 'Views', delta: '+1 380%' },
       { value: '147 040', label: 'Viewers' },
-      { value: '4 430 (+24 511%)', label: 'Clicks' },
+      { value: '4 430', label: 'Clicks', delta: '+24 511%' },
     ],
     caseStudy: {
       slug: 'julius-meinl',
@@ -968,14 +907,6 @@ export const INDUSTRIES = [
         src: '/branze/horeca/horeca-1.jpg',
         alt: 'A dessert plated on a marble restaurant table',
       },
-      {
-        src: '/branze/horeca/horeca-2.jpg',
-        alt: 'A main course with vegetables on an elegant plate',
-      },
-      {
-        src: '/branze/horeca/horeca-3.jpg',
-        alt: 'A chef composing a dish on the plate',
-      },
     ],
   },
 
@@ -987,10 +918,10 @@ export const INDUSTRIES = [
     label: 'Hotels & Resorts',
     // Numbers verbatim from the Dolina Charlotty case study.
     numbers: [
-      { value: '15,5 mln (+44,7%)', label: 'Views' },
-      { value: '285 593 (+87,7%)', label: 'Reach' },
-      { value: '51 278 (+168,8%)', label: 'Content interactions' },
-      { value: '99 509 (+67,4%)', label: 'Link clicks' },
+      { value: '15,5 mln', label: 'Views', delta: '+44,7%' },
+      { value: '285 593', label: 'Reach', delta: '+87,7%' },
+      { value: '51 278', label: 'Content interactions', delta: '+168,8%' },
+      { value: '99 509', label: 'Link clicks', delta: '+67,4%' },
     ],
     caseStudy: {
       slug: 'dolina-charlotty',
@@ -1088,14 +1019,6 @@ export const INDUSTRIES = [
         src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-1.jpg',
         alt: 'An elegant hotel pool with a rotunda',
       },
-      {
-        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-2.jpg',
-        alt: 'A tropical resort pool among palms',
-      },
-      {
-        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-3.jpg',
-        alt: 'A resort with a pool at dusk',
-      },
     ],
   },
 
@@ -1107,10 +1030,10 @@ export const INDUSTRIES = [
     label: 'Real Estate & Developers',
     // Numbers verbatim from the ED Invest case study.
     numbers: [
-      { value: '2,6 mln (+180%)', label: 'Views' },
-      { value: '1,9 tys. (+181,5%)', label: 'Content interactions' },
-      { value: '270 (+260%)', label: 'New followers' },
-      { value: '7 tys. (+3,4%)', label: 'Profile visits' },
+      { value: '2,6 mln', label: 'Views', delta: '+180%' },
+      { value: '1,9 tys.', label: 'Content interactions', delta: '+181,5%' },
+      { value: '270', label: 'New followers', delta: '+260%' },
+      { value: '7 tys.', label: 'Profile visits', delta: '+3,4%' },
     ],
     caseStudy: {
       slug: 'ed-invest',
@@ -1206,14 +1129,6 @@ export const INDUSTRIES = [
         src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-1.jpg',
         alt: 'A modern living room with an open kitchen',
       },
-      {
-        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-2.jpg',
-        alt: 'A bright hallway in a new apartment',
-      },
-      {
-        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-3.jpg',
-        alt: 'An apartment with a balcony view',
-      },
     ],
   },
 
@@ -1225,10 +1140,10 @@ export const INDUSTRIES = [
     label: 'Entertainment',
     // Numbers verbatim from the Skrzat. Nowy początek case study.
     numbers: [
-      { value: '35 mln', label: 'Views' },
-      { value: '100 tys.', label: 'Likes' },
-      { value: '4,38 mln', label: 'Views' },
-      { value: '1,14 mln', label: 'Reach' },
+      { value: '35 mln', label: 'Views (TikTok)' },
+      { value: '100 tys.', label: 'Likes (TikTok)' },
+      { value: '4,38 mln', label: 'Views (Instagram)' },
+      { value: '1,14 mln', label: 'Reach (Instagram)' },
     ],
     caseStudy: {
       slug: 'skrzat',
@@ -1319,11 +1234,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/rozrywka/rozrywka-1.jpg',
         alt: 'A concert stage in blue lights',
-      },
-      { src: '/branze/rozrywka/rozrywka-2.jpg', alt: 'A crowd at a concert' },
-      {
-        src: '/branze/rozrywka/rozrywka-3.jpg',
-        alt: 'An audience before a lit stage',
       },
     ],
   },

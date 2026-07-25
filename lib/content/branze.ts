@@ -66,6 +66,12 @@ export const chrome = {
 interface IndustryStat {
   value: string
   label: string
+  /**
+   * Growth figure shown as a small accent beneath `value`. Kept separate so the
+   * headline number stays on one line — several studies report "2,6 mln (+180%)"
+   * as a single string, which wrapped badly at display size.
+   */
+  delta?: string
 }
 
 interface IndustryImage {
@@ -183,14 +189,6 @@ export const INDUSTRIES = [
         src: '/branze/automotive/automotive-1.jpg',
         alt: 'Rozświetlony salon samochodowy nocą',
       },
-      {
-        src: '/branze/automotive/automotive-2.jpg',
-        alt: 'Ładowanie samochodu elektrycznego w zimowej scenerii',
-      },
-      {
-        src: '/branze/automotive/automotive-3.jpg',
-        alt: 'Zbliżenie na gniazdo ładowania samochodu elektrycznego',
-      },
     ],
     relatedCaseStudies: [
       {
@@ -290,14 +288,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/elektronika-i-agd/elektronika-i-agd-1.jpg',
         alt: 'Robot sprzątający na drewnianej podłodze',
-      },
-      {
-        src: '/branze/elektronika-i-agd/elektronika-i-agd-2.jpg',
-        alt: 'Nowoczesna kuchnia ze sprzętem AGD w zabudowie',
-      },
-      {
-        src: '/branze/elektronika-i-agd/elektronika-i-agd-3.jpg',
-        alt: 'Urządzenia smart home na jasnym tle',
       },
     ],
     relatedCaseStudies: [
@@ -510,14 +500,6 @@ export const INDUSTRIES = [
         src: '/branze/beauty/beauty-1.jpg',
         alt: 'Kosmetyki pielęgnacyjne w minimalistycznej aranżacji',
       },
-      {
-        src: '/branze/beauty/beauty-2.jpg',
-        alt: 'Serum i krem do twarzy na neutralnym tle',
-      },
-      {
-        src: '/branze/beauty/beauty-3.jpg',
-        alt: 'Serum do twarzy w szklanych buteleczkach',
-      },
     ],
   },
 
@@ -641,14 +623,6 @@ export const INDUSTRIES = [
         src: '/branze/health/health-1.jpg',
         alt: 'Kapsułki suplementów i naturalne składniki',
       },
-      {
-        src: '/branze/health/health-2.jpg',
-        alt: 'Cytryna, imbir i suplementy na marmurze',
-      },
-      {
-        src: '/branze/health/health-3.jpg',
-        alt: 'Suplementy w ceramicznych miseczkach',
-      },
     ],
   },
 
@@ -705,14 +679,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/finanse/finanse-1.jpg',
         alt: 'Płatność mobilna na smartfonie',
-      },
-      {
-        src: '/branze/finanse/finanse-2.jpg',
-        alt: 'Płatność zbliżeniowa kartą w terminalu',
-      },
-      {
-        src: '/branze/finanse/finanse-3.jpg',
-        alt: 'Wachlarz kart płatniczych w dłoni',
       },
     ],
   },
@@ -823,14 +789,6 @@ export const INDUSTRIES = [
         src: '/branze/petcare/petcare-1.jpg',
         alt: 'Pies i kotek poznają się w domu',
       },
-      {
-        src: '/branze/petcare/petcare-2.jpg',
-        alt: 'Właścicielka przytula szczeniaka',
-      },
-      {
-        src: '/branze/petcare/petcare-3.jpg',
-        alt: 'Kot i pies przytulają się w trawie',
-      },
     ],
   },
 
@@ -938,11 +896,6 @@ export const INDUSTRIES = [
         src: '/branze/alkohole/alkohole-1.jpg',
         alt: 'Butelki alkoholi na barowych półkach',
       },
-      { src: '/branze/alkohole/alkohole-2.jpg', alt: 'Barman nalewa wino' },
-      {
-        src: '/branze/alkohole/alkohole-3.jpg',
-        alt: 'Kieliszek czerwonego wina przy nakryciu stołu',
-      },
     ],
   },
 
@@ -992,14 +945,6 @@ export const INDUSTRIES = [
         src: '/branze/fashion/fashion-1.jpg',
         alt: 'Modelka w białej stylizacji na wybiegu',
       },
-      {
-        src: '/branze/fashion/fashion-2.jpg',
-        alt: 'Modelka w zielonym topie w miejskiej scenerii',
-      },
-      {
-        src: '/branze/fashion/fashion-3.jpg',
-        alt: 'Modelka w bordowym płaszczu w nowoczesnym wnętrzu',
-      },
     ],
   },
 
@@ -1011,10 +956,10 @@ export const INDUSTRIES = [
     label: 'Horeca',
     // Numbers verbatim from the Julius Meinl case study.
     numbers: [
-      { value: '4 806 (+956,3%)', label: 'Interakcje' },
-      { value: '432 616 (+1 380%)', label: 'Wyświetlenia' },
+      { value: '4 806', label: 'Interakcje', delta: '+956,3%' },
+      { value: '432 616', label: 'Wyświetlenia', delta: '+1 380%' },
       { value: '147 040', label: 'Widzowie' },
-      { value: '4 430 (+24 511%)', label: 'Kliknięcia' },
+      { value: '4 430', label: 'Kliknięcia', delta: '+24 511%' },
     ],
     caseStudy: {
       slug: 'julius-meinl',
@@ -1107,14 +1052,6 @@ export const INDUSTRIES = [
         src: '/branze/horeca/horeca-1.jpg',
         alt: 'Deser podany na marmurowym stole w restauracji',
       },
-      {
-        src: '/branze/horeca/horeca-2.jpg',
-        alt: 'Danie główne z warzywami na eleganckim talerzu',
-      },
-      {
-        src: '/branze/horeca/horeca-3.jpg',
-        alt: 'Szef kuchni komponuje danie na talerzu',
-      },
     ],
   },
 
@@ -1126,10 +1063,10 @@ export const INDUSTRIES = [
     label: 'Hotele i Miejsca Wypoczynkowe',
     // Numbers verbatim from the Dolina Charlotty case study.
     numbers: [
-      { value: '15,5 mln (+44,7%)', label: 'Wyświetlenia' },
-      { value: '285 593 (+87,7%)', label: 'Zasięg' },
-      { value: '51 278 (+168,8%)', label: 'Interakcje z zawartością' },
-      { value: '99 509 (+67,4%)', label: 'Kliknięcia linku' },
+      { value: '15,5 mln', label: 'Wyświetlenia', delta: '+44,7%' },
+      { value: '285 593', label: 'Zasięg', delta: '+87,7%' },
+      { value: '51 278', label: 'Interakcje z zawartością', delta: '+168,8%' },
+      { value: '99 509', label: 'Kliknięcia linku', delta: '+67,4%' },
     ],
     caseStudy: {
       slug: 'dolina-charlotty',
@@ -1228,14 +1165,6 @@ export const INDUSTRIES = [
         src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-1.jpg',
         alt: 'Elegancki basen hotelowy z rotundą',
       },
-      {
-        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-2.jpg',
-        alt: 'Tropikalny basen resortu wśród palm',
-      },
-      {
-        src: '/branze/hotele-i-miejsca-wypoczynkowe/hotele-i-miejsca-wypoczynkowe-3.jpg',
-        alt: 'Resort z basenem o zmierzchu',
-      },
     ],
   },
 
@@ -1247,10 +1176,14 @@ export const INDUSTRIES = [
     label: 'Nieruchomości i Deweloperzy',
     // Numbers verbatim from the ED Invest case study.
     numbers: [
-      { value: '2,6 mln (+180%)', label: 'Wyświetlenia' },
-      { value: '1,9 tys. (+181,5%)', label: 'Interakcje z zawartością' },
-      { value: '270 (+260%)', label: 'Nowi obserwujący' },
-      { value: '7 tys. (+3,4%)', label: 'Odwiedziny profilu' },
+      { value: '2,6 mln', label: 'Wyświetlenia', delta: '+180%' },
+      {
+        value: '1,9 tys.',
+        label: 'Interakcje z zawartością',
+        delta: '+181,5%',
+      },
+      { value: '270', label: 'Nowi obserwujący', delta: '+260%' },
+      { value: '7 tys.', label: 'Odwiedziny profilu', delta: '+3,4%' },
     ],
     caseStudy: {
       slug: 'ed-invest',
@@ -1347,14 +1280,6 @@ export const INDUSTRIES = [
         src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-1.jpg',
         alt: 'Nowoczesny salon z otwartą kuchnią',
       },
-      {
-        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-2.jpg',
-        alt: 'Jasny korytarz w nowym mieszkaniu',
-      },
-      {
-        src: '/branze/nieruchomosci-i-deweloperzy/nieruchomosci-i-deweloperzy-3.jpg',
-        alt: 'Mieszkanie z widokiem z balkonu',
-      },
     ],
   },
 
@@ -1366,10 +1291,10 @@ export const INDUSTRIES = [
     label: 'Rozrywka',
     // Numbers verbatim from the Skrzat. Nowy początek case study.
     numbers: [
-      { value: '35 mln', label: 'Wyświetlenia' },
-      { value: '100 tys.', label: 'Polubienia' },
-      { value: '4,38 mln', label: 'Wyświetlenia' },
-      { value: '1,14 mln', label: 'Zasięg' },
+      { value: '35 mln', label: 'Wyświetlenia (TikTok)' },
+      { value: '100 tys.', label: 'Polubienia (TikTok)' },
+      { value: '4,38 mln', label: 'Wyświetlenia (Instagram)' },
+      { value: '1,14 mln', label: 'Zasięg (Instagram)' },
     ],
     caseStudy: {
       slug: 'skrzat',
@@ -1461,14 +1386,6 @@ export const INDUSTRIES = [
       {
         src: '/branze/rozrywka/rozrywka-1.jpg',
         alt: 'Scena koncertowa w niebieskich światłach',
-      },
-      {
-        src: '/branze/rozrywka/rozrywka-2.jpg',
-        alt: 'Tłum publiczności na koncercie',
-      },
-      {
-        src: '/branze/rozrywka/rozrywka-3.jpg',
-        alt: 'Publiczność przed rozświetloną sceną',
       },
     ],
   },

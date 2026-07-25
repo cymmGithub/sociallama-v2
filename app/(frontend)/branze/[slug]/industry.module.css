@@ -50,7 +50,7 @@
   margin-inline: auto;
 
   @media (--desktop) {
-    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-columns: 1fr 1.1fr;
     gap: calc(var(--gap) * 4);
     align-items: start;
   }
@@ -69,6 +69,11 @@
   margin: 0;
   padding: 0;
   list-style: none;
+
+  /* Desktop shows the orbit instead. */
+  @media (--desktop) {
+    display: none;
+  }
 }
 
 /* Solid white chips (same treatment as the manifesto value chips). Pure white
@@ -439,8 +444,12 @@
   margin-inline: auto;
   text-align: center;
 
+  /* Sizes columns by metric count — studies carry 3 or 4, and a fixed
+     repeat(3, …) wrapped the 4th onto its own row. */
   @media (--desktop) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    grid-template-columns: none;
   }
 }
 
@@ -452,15 +461,34 @@
 
 .numberValue {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5rem);
+  /* Sized for four stats across (studies report 3–4) and for long figures like
+     "285 593" — the old 7vw ceiling overflowed its column. */
+  font-size: clamp(1.9rem, 3.4vw, 3.1rem);
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.05;
+  text-wrap: balance;
   color: var(--color-plum);
 }
 
-.numberLabel {
+/* Growth accent under the headline figure — small so the number stays the
+   focus, orange so the lift reads at a glance. */
+.numberDelta {
+  align-self: center;
+  margin-top: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  background: color-mix(in srgb, var(--color-orange) 18%, transparent);
+  border-radius: 999px;
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--color-orange) 78%, var(--color-ink));
+}
+
+.numberLabel {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
   line-height: 1.4;
   color: var(--color-ink);
 }
@@ -549,10 +577,25 @@
 }
 
 .caseCardLogo {
-  display: block;
+  /* Sit the logo on a white chip instead of knocking it out with
+     `brightness(0) invert(1)` — that only works for logos with an alpha
+     channel, and most imported case-study logos are opaque, so the filter
+     turned them into solid white rectangles on the plum card. */
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
   margin-top: 0.4rem;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  border-radius: 0.6rem;
+
+  & img {
+    width: auto;
+    height: auto;
+    max-width: 9rem;
+    max-height: 2.6rem;
+    object-fit: contain;
+  }
 }
 
 .caseCardCta {
@@ -565,56 +608,6 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-/* —— Editorial hero ———————————————————————————————————————————————————————————— */
-
-/* Duotone photo strip under the brief — continues that cream band (hence no
-   top padding) rather than opening a new one. */
-.collageBand {
-  padding: 0 var(--safe) calc(var(--safe) * 3.5);
-  background: var(--color-cream);
-}
-
-.collage {
-  --reveal-stagger: 110ms;
-  --reveal-transform: translateY(26px);
-
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap);
-  max-width: 1240px;
-  margin-inline: auto;
-
-  @media (--desktop) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.collageItem {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-radius: 1rem;
-  /* Only visible while the image decodes — matches the band so there's no flash. */
-  background: color-mix(in srgb, var(--color-ink) 7%, var(--color-cream));
-  box-shadow: 0 24px 48px -28px rgb(0 0 0 / 30%);
-
-  @media (--desktop) {
-    aspect-ratio: 3 / 4;
-  }
-}
-
-/* Photos run untreated (user decision) — the duotone that unified them was
-   dropped once the hero clips took over carrying the pages visually. */
-.collageImg {
-  object-fit: cover;
-}
-
-.collageItem:nth-child(even) {
-  @media (--desktop) {
-    transform: translateY(1.6rem);
-  }
 }
 
 /* —— Editorial marquee ————————————————————————————————————————————————————————— */
@@ -801,4 +794,235 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-orange);
+}
+
+/* —— Brief orbit (desktop) ————————————————————————————————————————————————————
+
+   Mirrors the GOOD ONE wheel on /o-nas: one registered <angle> `--spin` drives
+   the system, animated on EACH element whose own transform reads it (the ring
+   group and every pillar) — never on a shared parent, since with
+   `inherits: false` an animated custom property only reaches the transform on
+   the same element. The hub never rotates; each pillar counter-rotates by its
+   own angle so the text stays upright. */
+
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes brief-spin {
+  to {
+    --spin: 360deg;
+  }
+}
+
+.briefOrbit {
+  /* Chips swing a footprint ~1.14x the orbit box (each reaches --item-r + half
+     its own width from centre). The reveal keeps a border-box clip even when
+     settled, so that whole footprint must fit the column or the 3/9 o'clock
+     chips get sliced — hence the conservative size. */
+  --orbit: min(26rem, 30vw);
+  --period: 48s;
+  --ring-r: calc(var(--orbit) * 0.28);
+  --item-r: calc(var(--orbit) * 0.4);
+  --dot-size: calc(var(--orbit) * 0.03);
+
+  display: none;
+
+  @media (--desktop) {
+    position: relative;
+    display: block;
+    width: var(--orbit);
+    height: var(--orbit);
+    margin-inline: auto;
+  }
+}
+
+.orbitTrack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--ring-r) * 2);
+  height: calc(var(--ring-r) * 2);
+  margin: calc(var(--ring-r) * -1);
+  transform: rotate(var(--spin));
+  animation: brief-spin var(--period) linear infinite;
+  animation-play-state: paused;
+
+  .briefOrbit[data-spinning="true"] & {
+    animation-play-state: running;
+  }
+}
+
+.orbitSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.orbitCircle {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-plum) 40%, transparent);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 2.6;
+}
+
+.orbitDot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  background: var(--color-orange);
+  transform: translate(-50%, -50%) rotate(var(--base))
+    translateY(calc(-1 * var(--ring-r)));
+}
+
+/* `display: contents` so each <li> positions against .briefOrbit while the list
+   keeps its semantics. */
+.orbitItems {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orbitItem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--orbit) * 0.34);
+  padding: 0.6rem 0.9rem;
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 6px 18px -10px rgb(43 31 36 / 35%);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--color-plum);
+  transform: translate(-50%, -50%) rotate(calc(var(--base) + var(--spin)))
+    translateY(calc(-1 * var(--item-r)))
+    rotate(calc(-1 * (var(--base) + var(--spin))));
+  animation: brief-spin var(--period) linear infinite;
+  animation-play-state: paused;
+
+  .briefOrbit[data-spinning="true"] & {
+    animation-play-state: running;
+  }
+}
+
+/* Hub — the section kicker, held still at the centre. */
+.orbitHub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--orbit) * 0.44);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-plum);
+}
+
+/* Below --desktop the orbit is replaced by the flat kicker + chip list. */
+.briefKickerFlat {
+  @media (--desktop) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbitTrack,
+  .orbitItem {
+    animation: none;
+  }
+}
+
+/* —— "Nasze podejście" plate ——————————————————————————————————————————————————
+
+   One composed band: statement + value chips on the sand ground, the industry
+   photo bleeding off the section's outer edge. The bleed is the point — it
+   breaks the 1240px container so copy and image read as a single plate rather
+   than two stacked blocks. */
+
+.approach {
+  padding-block: calc(var(--safe) * 3.5);
+  background: var(--color-sand);
+  color: var(--color-ink);
+  overflow: hidden;
+}
+
+.approachInner {
+  --reveal-stagger: 140ms;
+  --reveal-transform: translateY(28px);
+
+  display: grid;
+  gap: calc(var(--safe) * 2);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--safe);
+
+  @media (--desktop) {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: stretch;
+    gap: calc(var(--gap) * 4);
+    /* Let the figure run past the container to the viewport edge. */
+    padding-right: 0;
+  }
+}
+
+.approachCopy {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.2);
+}
+
+.approachFigure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 1rem;
+  /* Visible only while the photo decodes — matches the band, so no flash. */
+  background: color-mix(in srgb, var(--color-ink) 7%, var(--color-sand));
+
+  @media (--desktop) {
+    /* Match the copy column's height instead of imposing a ratio — the photo
+       is the plate's other half, not a hero, so it shouldn't drive the band. */
+    aspect-ratio: auto;
+    align-self: stretch;
+    min-height: 26rem;
+    /* Bleed to the right viewport edge; square off that side so the photo
+       reads as part of the band rather than a floating card. */
+    margin-right: calc((100vw - min(1240px, 100vw)) / -2 - var(--safe));
+    border-radius: 1rem 0 0 1rem;
+  }
+}
+
+/* Photo-only band (proof industries carry a photo but no manifesto): the figure
+   spans the plate and sits lower, so it reads as a divider rather than a hero. */
+.approachInner[data-photo-only] {
+  @media (--desktop) {
+    grid-template-columns: 1fr;
+
+    & .approachFigure {
+      aspect-ratio: 21 / 8;
+      border-radius: 1rem;
+      margin-right: 0;
+    }
+  }
+}
+
+.approachImg {
+  object-fit: cover;
 }
