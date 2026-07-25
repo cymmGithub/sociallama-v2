@@ -50,3 +50,50 @@
 - [x] 7.2 Biome (`--diagnostic-level=error`) + `tsc --noEmit` green
 - [ ] 7.3 Playwright sweep: all 14 routes 200, menu/footer/homepage-CTA navigation works, related-posts blocks omit correctly, mobile + desktop
 - [ ] 7.4 Visual sign-off from the user on CONTENT, KREACJE, and one extrapolated page before ship
+
+## 8. Disposition at archive (2026-07-25)
+
+Ten unchecked tasks remain. The change is archived deliberately, not as complete —
+the six pages, the section-primitive model, and the SEO surface all shipped and are
+live on main (`sl-uslugi` merged, 0 commits ahead). What follows records where each
+unfinished task went, so nothing is lost silently.
+
+**Superseded by `align-existing-services`** — the client supplied source copy for
+Strategia, Influencer marketing, and Audyt i konsultacje (four PDFs, 2026-07-25),
+which replaces the "draft then review" loop these tasks described for those three
+services.
+
+- 6.2 (Strategia part) → rewritten from the client's STRATEGIA doc
+- 6.3 (Audyt + Influencer parts) → rewritten from their respective client docs
+- 6.4 Translate approved copy to EN → follows the approved PL copy, for those three pages
+- 6.5 Resolve O2 (case-study → service mapping) → **resolved during exploration**: Volvo was
+  duplicated verbatim on both Strategia and Audyt; `align-existing-services` cuts `proof`
+  from Strategia (the client wireframe omits case studies there) and keeps it on Audyt
+
+**Accepted as shipped — no source copy exists (user decision, 2026-07-25):** the client
+has no copy document for these surfaces, and the assistant-drafted text already live on
+them stands. No change tracks a review of it; if a document arrives later, that is a new
+change.
+
+- 6.1 CONTENT copy — confirmed by the user: no source copy, keep what ships
+- 6.2 (Kreacje & Wideo part) — same
+- 6.3 (Sprzedaż and `/uslugi` index parts) — same basis: no client document covers them
+  either. Recorded as accepted rather than reviewed.
+
+**Re-homed to `align-existing-services`** — verification that page-level work needs anyway:
+
+- 7.3 Playwright sweep → that change re-runs it across all services routes
+- 7.4 Visual sign-off → covers the pages it touches
+
+**Deferred — asset dependency, not a code gap:**
+
+- 2.1 / 2.2 Multi-armed llama hero render. The `Hero` primitive is built and shipping;
+  only the artwork is missing. `HERO_LLAMA = null` in `service-page.tsx` makes the hero
+  render llama-less by design, documented in place. Unblocks the moment the Figma export
+  is delivered — no change needed to take it.
+
+**Accepted as-is — user decision, 2026-07-25:**
+
+- 3.6 `/uslugi/content` was never compared against `figma-content-*.jpeg`. The page is
+  built and live; the comparison simply did not happen. No new change covers this page,
+  so any drift will surface at the next visual review rather than being tracked here.

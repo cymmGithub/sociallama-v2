@@ -79,9 +79,9 @@ Sections whose assets or data are unavailable — showreel clips, partner imager
 - **WHEN** the showreel section has no clips available
 - **THEN** the section is omitted entirely and no empty band renders
 
-### Requirement: Copy is service-specific and user-approved
+### Requirement: Copy is service-specific
 
-Every page SHALL carry copy written for that service in PL and EN — no boilerplate shared across services, and nothing carried over from the Figma placeholder text. Copy SHALL be reviewed by the user before ship.
+Every page SHALL carry copy written for that service in PL and EN — no boilerplate shared across services, and nothing carried over from the Figma placeholder text.
 
 #### Scenario: No placeholder copy ships
 
