@@ -75,12 +75,6 @@
   color: var(--color-contrast);
 }
 
-.period {
-  font-size: 0.8125rem;
-  letter-spacing: 0.04em;
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
-}
-
 .title {
   font-family: var(--font-display);
   font-weight: 800;

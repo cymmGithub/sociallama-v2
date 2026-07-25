@@ -100,7 +100,6 @@ export function CaseStudyArticle({
             ) : (
               <span className={s.clientName}>{study.client.name}</span>
             )}
-            {study.period && <span className={s.period}>{study.period}</span>}
           </div>
 
           <h1 className={s.title}>{caseStudyHeadline(study.title)}</h1>

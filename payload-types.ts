@@ -283,10 +283,6 @@ export interface CaseStudy {
    */
   tags?: string[] | null;
   /**
-   * Np. „Marzec 2024 – obecnie”.
-   */
-  period?: string | null;
-  /**
    * Krótki opis pokazywany na kartach i w wynikach wyszukiwania.
    */
   excerpt?: string | null;
@@ -550,7 +546,6 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         about?: T;
       };
   tags?: T;
-  period?: T;
   excerpt?: T;
   cover?: T;
   challenge?: T;

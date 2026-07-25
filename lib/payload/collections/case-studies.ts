@@ -117,15 +117,6 @@ export const caseStudies: CollectionConfig = {
       },
     },
     {
-      name: 'period',
-      label: 'Okres współpracy',
-      type: 'text',
-      localized: true,
-      admin: {
-        description: 'Np. „Marzec 2024 – obecnie”.',
-      },
-    },
-    {
       name: 'excerpt',
       label: 'Zajawka',
       type: 'textarea',

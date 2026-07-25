@@ -104,7 +104,6 @@ interface StudyEnSeed {
   title: string
   excerpt: string
   tags: string[]
-  period: string
   clientAbout: ReturnType<typeof richText>
   challenge: ReturnType<typeof richText>
   pillars: {
@@ -123,7 +122,6 @@ interface StudySeed {
   logoPath?: string
   logoAlt?: string
   tags: string[]
-  period: string
   excerpt: string
   coverAlt: string
   challenge: ReturnType<typeof richText>
@@ -144,7 +142,6 @@ const STUDIES: StudySeed[] = [
     logoPath: 'public/case-studies/irobot/irobot-logo.png',
     logoAlt: 'Logo marki iRobot',
     tags: ['Roboty sprzątające', 'Smart home', 'Czysty dom'],
-    period: 'Marzec 2024 – obecnie',
     excerpt:
       'Edukacyjno-humorystyczna komunikacja wideo dla iRobot na YouTube i TikToku — 11 mln wyświetleń i +7,9 tys. subskrypcji w kanale marki.',
     coverAlt:
@@ -261,7 +258,6 @@ const STUDIES: StudySeed[] = [
       excerpt:
         'Educational, humor-driven video for iRobot on YouTube and TikTok — 11M views and +7.9k subscribers on the brand channel.',
       tags: ['Robot vacuums', 'Smart home', 'Clean home'],
-      period: 'March 2024 – present',
       clientAbout: richText(
         para(
           'iRobot is a global leader in home robotics, pairing advanced technology with everyday usefulness. Through innovations like the Roomba® robot vacuum-and-mop, iRobot has helped people save time on cleaning for over 30 years.'
@@ -343,7 +339,6 @@ const STUDIES: StudySeed[] = [
     logoPath: 'public/case-studies/pracuj-pl/pracuj-pl-logo.png',
     logoAlt: 'Logo serwisu Pracuj.pl',
     tags: ['Rekrutacja', 'Rynek pracy', 'Filtr AR'],
-    period: 'Kwiecień 2022 – maj 2026',
     excerpt:
       'Budowa społeczności Pracuj.pl na TikToku od zera: autorski filtr AR, content trendowy i współprace z influencerami — 95,4 mln wyświetleń i 52,6 tys. obserwujących.',
     coverAlt: 'Aplikacja Pracuj.pl otwarta na smartfonie trzymanym w dłoniach',
@@ -477,7 +472,6 @@ const STUDIES: StudySeed[] = [
       excerpt:
         'Building the Pracuj.pl community on TikTok from zero: a custom AR filter, on-trend content, and influencer collaborations — 95.4M views and 52.6k followers.',
       tags: ['Recruitment', 'Job market', 'AR filter'],
-      period: 'April 2022 – May 2026',
       challenge: richText(
         para(
           'The goal was to build awareness, recognition, and trust in the brand among the younger generation (ages 17–26).'
@@ -567,7 +561,6 @@ const STUDIES: StudySeed[] = [
     logoPath: 'public/case-studies/volvo/volvo-logo.png',
     logoAlt: 'Logo marki Volvo',
     tags: ['Motoryzacja premium', 'Elektromobilność', 'Bezpieczeństwo'],
-    period: 'Maj – czerwiec 2025',
     excerpt:
       'Prowadzenie i pozycjonowanie profili Volvo Car Warszawa i Dom Volvo na Facebooku, Instagramie i LinkedInie — personal branding, relacje eventowe i treści eksperckie.',
     coverAlt: 'Wnętrze samochodu Volvo — kierownica i nowoczesny kokpit',
@@ -707,7 +700,6 @@ const STUDIES: StudySeed[] = [
       excerpt:
         'Running and positioning the Volvo Car Warszawa and Dom Volvo profiles on Facebook, Instagram, and LinkedIn — personal branding, event coverage, and expert content.',
       tags: ['Premium automotive', 'Electromobility', 'Safety'],
-      period: 'May – June 2025',
       challenge: richText(
         para(
           "The task was to build both brands' standing on LinkedIn, Facebook, and Instagram."
@@ -915,7 +907,6 @@ for (const study of STUDIES) {
         about: study.clientAbout as any,
       },
       tags: study.tags,
-      period: study.period,
       excerpt: study.excerpt,
       cover: cover.id,
       // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload on create
@@ -952,7 +943,6 @@ for (const study of STUDIES) {
         about: study.en.clientAbout as any,
       },
       tags: study.en.tags,
-      period: study.en.period,
       excerpt: study.en.excerpt,
       // biome-ignore lint/suspicious/noExplicitAny: hand-built Lexical JSON; validated by Payload
       challenge: study.en.challenge as any,

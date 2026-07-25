@@ -95,7 +95,6 @@ interface Draft {
   excerpt: string
   coverAlt: string
   tags: string[]
-  period: string
   logo?: MediaRef
   cover?: MediaRef
   clientAbout: string[] // paragraphs
@@ -127,7 +126,6 @@ const looksStub = (s?: string) => !s || s.trim() === '' || s.trim() === 'TODO'
 if (looksStub(draft.title)) stubs.push('title')
 if (looksStub(draft.excerpt)) stubs.push('excerpt')
 if (looksStub(draft.coverAlt)) stubs.push('coverAlt')
-if (looksStub(draft.period)) stubs.push('period')
 if (looksStub(draft.challenge?.intro)) stubs.push('challenge.intro')
 if (!draft.clientAbout?.some((p) => !looksStub(p))) stubs.push('clientAbout')
 if (looksStub(draft.cover?.file)) stubs.push('cover.file')
@@ -223,7 +221,6 @@ const data = {
     about: richText(...draft.clientAbout.map(para)),
   },
   tags: draft.tags,
-  period: draft.period,
   excerpt: draft.excerpt,
   cover: cover.id,
   challenge,
