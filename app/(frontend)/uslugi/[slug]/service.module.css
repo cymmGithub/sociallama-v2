@@ -774,7 +774,6 @@
 }
 
 .steps {
-  position: relative;
   display: grid;
   gap: calc(var(--safe) * 1.4);
   margin: var(--safe) 0 0;
@@ -785,30 +784,6 @@
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     gap: calc(var(--gap) * 2);
-  }
-}
-
-/*
- * The rail the markers sit on. This is the whole reason the client asked for a
- * timeline rather than cards — it has to read as a sequence with next steps,
- * so the connector runs down the list on mobile and across it on desktop.
- */
-.steps::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 21px;
-  width: 2px;
-  background: color-mix(in srgb, var(--color-plum) 20%, transparent);
-
-  @media (--desktop) {
-    top: 22px;
-    bottom: auto;
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 2px;
   }
 }
 
@@ -824,8 +799,36 @@
   }
 }
 
+/*
+ * The rail between the markers — the whole reason the client asked for a
+ * timeline rather than cards: it has to read as a sequence with next steps.
+ *
+ * Drawn per step rather than as one bar across the container, so it spans
+ * marker-centre to marker-centre and stops dead on the last one. A single
+ * container-wide bar would overshoot past the final marker to the edge of the
+ * grid. `100%` is one step's box, so `+ gap` reaches the next marker's centre;
+ * that holds for any number of steps.
+ */
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 21px;
+  left: 21px;
+  width: 2px;
+  height: calc(100% + var(--safe) * 1.4);
+  background: color-mix(in srgb, var(--color-plum) 20%, transparent);
+
+  @media (--desktop) {
+    left: 22px;
+    width: calc(100% + var(--gap) * 2);
+    height: 2px;
+  }
+}
+
 .stepMarker {
   position: absolute;
+  z-index: 1; /* above the connector, which the ::after paints after in DOM order */
   top: 0;
   left: 0;
   display: inline-flex;
