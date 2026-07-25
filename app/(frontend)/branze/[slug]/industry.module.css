@@ -743,6 +743,13 @@
   color: var(--color-plum);
 }
 
+/* Brand orange, not --color-contrast: this section runs data-theme="cream",
+   where --color-contrast resolves to plum (see tailwind.css theme table) —
+   the same value as the heading itself. --color-orange is the fixed token. */
+.headingAccent {
+  color: var(--color-orange);
+}
+
 .relatedGrid {
   --reveal-stagger: 90ms;
 

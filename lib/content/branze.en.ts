@@ -28,6 +28,7 @@ export const chrome = {
   },
   related: {
     kicker: 'MORE PROOF',
+    headingAccent: 'OTHER',
     heading: 'CASE STUDIES FROM THIS INDUSTRY',
     cta: 'VIEW CASE STUDY',
   },

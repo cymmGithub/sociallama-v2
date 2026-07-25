@@ -49,6 +49,8 @@ export const chrome = {
   /** Related-studies row — rendered in BOTH variants (see `relatedCaseStudies`). */
   related: {
     kicker: 'WIĘCEJ DOWODÓW',
+    /** Rendered in brand orange, ahead of `heading` — see `s.headingAccent`. */
+    headingAccent: 'INNE',
     heading: 'CASE STUDIES Z TEJ BRANŻY',
     cta: 'ZOBACZ CASE STUDY',
   },

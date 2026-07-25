@@ -134,7 +134,12 @@ function RelatedCaseStudies({
     <section className={s.related} data-theme="cream">
       <div className={s.relatedHead}>
         <p className={s.kicker}>{chrome.related.kicker}</p>
-        <h2 className={s.relatedHeading}>{chrome.related.heading}</h2>
+        <h2 className={s.relatedHeading}>
+          <span className={s.headingAccent}>
+            {chrome.related.headingAccent}
+          </span>{' '}
+          {chrome.related.heading}
+        </h2>
       </div>
       <div className={s.relatedGrid} ref={ref}>
         {studies.map((study) => (
