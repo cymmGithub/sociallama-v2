@@ -463,10 +463,16 @@ export const services = {
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
       stage: {
         kind: 'panels',
-        // Ten Volvo + Pracuj.pl case-study creatives. The stage renders the
-        // first seven on desktop; the last three are wide-screen-only extras
-        // (≥1440px) — see the `panel:nth-child(n + 8)` rules in the CSS. Mobile
-        // shows only the first three (existing rule), so 1–3 read as a trio.
+        // Twelve case-study creatives drawn from eight brands. The stage renders
+        // the first seven on desktop; 8–12 are wide-screen-only extras (≥1440px)
+        // — see the `panel:nth-child(n + 8)` rules in the CSS. Mobile shows only
+        // the first three (existing rule), so 1–3 read as a trio and keep the
+        // two flagship brands (Volvo, Pracuj.pl) there.
+        //
+        // Each slot's geometry is height-driven, so width follows the source
+        // aspect ratio: swaps stay near the ratio the slot was tuned for, and
+        // every source is a bare screenshot (no baked-in device bezel) so the
+        // panel's own border/radius/shadow reads as the only frame.
         panels: [
           {
             src: '/case-studies/volvo/volvo-vcw-post.jpg',
@@ -475,10 +481,10 @@ export const services = {
             height: 760,
           },
           {
-            src: '/case-studies/pracuj-pl/pracuj-pl-humor-cat.jpg',
-            alt: 'Humorystyczny film Pracuj.pl na TikToku z memem — „Memy wcielone w życie”',
-            width: 528,
-            height: 1148,
+            src: '/case-studies/mercator/mercator-gallery-2.jpg',
+            alt: 'Rolka Mercator Medical z neonowymi rękawicami ogrodniczymi „gogrip green”',
+            width: 471,
+            height: 1023,
           },
           {
             src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
@@ -487,46 +493,58 @@ export const services = {
             height: 760,
           },
           {
-            src: '/case-studies/pracuj-pl/pracuj-pl-ar-creator.jpg',
-            alt: 'Twórczyni nagrywająca film z filtrem AR „Wymarzona praca” Pracuj.pl',
-            width: 555,
-            height: 1200,
+            src: '/case-studies/skibooking/skibooking-gallery-2.jpg',
+            alt: 'Post SkiBooking.pl „O czym pamiętać przed wyjazdem na narty?” z narciarskim ekwipunkiem',
+            width: 468,
+            height: 1013,
           },
           {
-            src: '/case-studies/volvo/volvo-event-ex30.jpg',
-            alt: 'Elektryczne Volvo EX30 prezentowane na wydarzeniu plenerowym',
-            width: 406,
-            height: 720,
+            src: '/case-studies/kohersen/kohersen-gallery-4.jpg',
+            alt: 'Kadr z filmu Kohersen — burger przełamany na pół nad talerzem',
+            width: 788,
+            height: 1400,
           },
           {
-            src: '/case-studies/pracuj-pl/pracuj-pl-humor-pov.jpg',
-            alt: 'Humorystyczny film Pracuj.pl na TikToku w formacie POV o szukaniu pracy',
-            width: 528,
-            height: 1148,
+            src: '/case-studies/stadler-form/stadler-form-gallery-2.jpg',
+            alt: 'Kadr Stadler Form — nawilżacz powietrza wnoszony do mieszkania',
+            width: 677,
+            height: 1400,
           },
           {
-            src: '/case-studies/volvo/volvo-event-noc.jpg',
-            alt: 'Relacja z Nocy Muzeów w salonie Volvo — koncert w nastrojowym oświetleniu',
-            width: 406,
-            height: 720,
+            src: '/case-studies/ozgasl/ozgasl-gallery-2.jpg',
+            alt: 'Humorystyczna rolka O, ZGASŁ? — mechanik z filtrem AR i podpisem „Kiedy Klient mówi, że jednak sam naprawi auto”',
+            width: 760,
+            height: 1400,
           },
           {
-            src: '/case-studies/pracuj-pl/pracuj-pl-ar-grid.jpg',
-            alt: 'Strona filtra AR „Wymarzona praca – Pracuj.pl” na TikToku z siatką filmów użytkowników',
-            width: 362,
-            height: 776,
+            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
+            alt: 'Kreacja Julius Meinl „3 błędy w latte art” — czerwona filiżanka z latte',
+            width: 320,
+            height: 524,
           },
           {
-            src: '/case-studies/volvo/volvo-konkurs-podium.jpg',
-            alt: 'Podium zwycięzców dziecięcego konkursu rysunkowego Volvo na evencie plenerowym',
-            width: 406,
-            height: 720,
+            src: '/case-studies/ariadna/ariadna-gallery-4.jpg',
+            alt: 'Kadr z filmu dla panelu Ariadna — dziewczyna z telefonem i podpisem „Ja: rozwiązuję ankiety”',
+            width: 774,
+            height: 1400,
           },
           {
-            src: '/case-studies/pracuj-pl/pracuj-pl-edu.jpg',
-            alt: 'Edukacyjny film Pracuj.pl na TikToku — „Jak napisać list motywacyjny?”',
-            width: 328,
-            height: 701,
+            src: '/case-studies/riviera/riviera-gallery-3.jpg',
+            alt: 'Rolka Galerii Riviera o dwumetrowej pisance w centrum handlowym',
+            width: 824,
+            height: 1400,
+          },
+          {
+            src: '/case-studies/stadler-form/stadler-form-gallery-7.jpg',
+            alt: 'Kadr Stadler Form — dyfuzor z efektem płomienia obok notatnika',
+            width: 788,
+            height: 1400,
+          },
+          {
+            src: '/case-studies/julius-meinl/julius-meinl-gallery-7.jpg',
+            alt: 'Czerwona filiżanka Julius Meinl trzymana na tle drewnianych lameli',
+            width: 325,
+            height: 525,
           },
         ],
       },

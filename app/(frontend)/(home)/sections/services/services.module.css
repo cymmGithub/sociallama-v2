@@ -223,14 +223,21 @@
   transition-delay: 860ms;
 }
 
+.layer.isActive .panel:nth-child(11) {
+  transition-delay: 940ms;
+}
+
+.layer.isActive .panel:nth-child(12) {
+  transition-delay: 1020ms;
+}
+
 /* Desktop stage geometry is height-relative (the stage is a viewport-capped
    band, wider than 16:9) — width derives from each panel's aspect-ratio.
 
-   CONTENT: seven case-study creatives collaged around a centered hero. Slot
-   order follows the content data: volvo-vcw-post (hero), pracuj-humor-cat,
-   irobot-gallery-1, volvo-event-ex30, irobot-gallery-4 (landscape),
-   pracuj-ar-creator, volvo-vcw-goracy. Scoped to the content stage so the
-   sprzedaż device slots below don't inherit these positions. */
+   CONTENT: seven case-study creatives collaged around a centered hero, plus
+   five wide-screen-only extras. Slot order follows the content data, and each
+   slot comment below names the creative that lands in it. Scoped to the content
+   stage so the sprzedaż device slots don't inherit these positions. */
 
 /* Volvo VCW post — the hero panel, center, tallest. */
 .layer .panels[data-stage="content"] .panel:nth-child(1) {
@@ -241,7 +248,7 @@
   z-index: 4;
 }
 
-/* Pracuj humor cat — inner left, flanking the hero. */
+/* Mercator gogrip green — inner left, flanking the hero. */
 .layer .panels[data-stage="content"] .panel:nth-child(2) {
   height: 56%;
   left: 26%;
@@ -259,7 +266,7 @@
   z-index: 3;
 }
 
-/* Pracuj AR creator — far left, upper. */
+/* SkiBooking narty — far left, upper. */
 .layer .panels[data-stage="content"] .panel:nth-child(4) {
   height: 48%;
   left: 5%;
@@ -268,7 +275,7 @@
   z-index: 1;
 }
 
-/* Volvo EX30 event — far right, upper. */
+/* Kohersen burger — far right, upper. */
 .layer .panels[data-stage="content"] .panel:nth-child(5) {
   height: 48%;
   right: 4%;
@@ -277,7 +284,7 @@
   z-index: 1;
 }
 
-/* Pracuj humor POV — far left, lower. */
+/* Stadler Form nawilżacz — far left, lower. */
 .layer .panels[data-stage="content"] .panel:nth-child(6) {
   height: 48%;
   left: 6%;
@@ -286,7 +293,7 @@
   z-index: 2;
 }
 
-/* Volvo Noc Muzeów — far right, lower. */
+/* O, ZGASŁ? mechanik — far right, lower. */
 .layer .panels[data-stage="content"] .panel:nth-child(7) {
   height: 48%;
   right: 4%;
@@ -295,7 +302,7 @@
   z-index: 2;
 }
 
-/* Wide-screen-only extras (≥1440px): three more creatives tucked into the
+/* Wide-screen-only extras (≥1440px): five more creatives tucked into the
    collage gaps. Hidden below 1440px so the base seven don't crowd. */
 .layer .panels[data-stage="content"] .panel:nth-child(n + 8) {
   display: none;
@@ -306,7 +313,7 @@
     display: block;
   }
 
-  /* Pracuj AR grid — upper center-left gap. */
+  /* Julius Meinl latte art — upper center-left gap. */
   .layer .panels[data-stage="content"] .panel:nth-child(8) {
     height: 37%;
     left: 34%;
@@ -315,7 +322,7 @@
     z-index: 1;
   }
 
-  /* Volvo konkurs podium — upper center-right gap. */
+  /* Ariadna ankiety — upper center-right gap. */
   .layer .panels[data-stage="content"] .panel:nth-child(9) {
     height: 37%;
     right: 34%;
@@ -324,14 +331,35 @@
     z-index: 1;
   }
 
-  /* Pracuj edu — right-center channel between the inner-right and far-right
-     panels (fills the mid-right gap without occluding either). */
+  /* Riviera pisanka — right-center channel between the inner-right and
+     far-right panels (fills the mid-right gap without occluding either). */
   .layer .panels[data-stage="content"] .panel:nth-child(10) {
     height: 37%;
     right: 15%;
     top: 38%;
     rotate: -2deg;
     z-index: 2;
+  }
+
+  /* Stadler Form dyfuzor — left-center channel, the mirror of slot 10, so the
+     left half carries the same panel count as the right. */
+  .layer .panels[data-stage="content"] .panel:nth-child(11) {
+    height: 37%;
+    left: 15%;
+    top: 40%;
+    rotate: 2deg;
+    z-index: 2;
+  }
+
+  /* Julius Meinl filiżanka — the pocket between the inner-left panel and the
+     hero, below slot 8. Kept clear of the hero's left edge (50% − half its
+     width) so it reads as its own panel rather than a pile. */
+  .layer .panels[data-stage="content"] .panel:nth-child(12) {
+    height: 32%;
+    left: 35%;
+    top: 45%;
+    rotate: -3deg;
+    z-index: 1;
   }
 }
 
