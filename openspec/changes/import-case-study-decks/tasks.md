@@ -23,7 +23,7 @@
 - [x] 4.1 For each pilot study: write PL `client.about`, `challenge` (intro + ordered objectives), pillar `headings` + `body`, `excerpt`, `tags`, `period` — matching the iRobot voice. _(all 5: riviera, skrzat, asus, ed-invest, n-energia)_
 - [x] 4.2 Pick + crop the strongest creatives per pillar; write Polish alt text; set `cover` + logo. _(all 5; native-res assets, weak/upscaled ones flagged per study)_
 - [x] 4.3 Transcribe real `results` metrics (platform/metric/value) from the deck. _(riviera 6, skrzat 7, asus 5 [deliverable counts], ed-invest 14, n-energia 3 [page-level] — no invented numbers)_
-- [ ] 4.4 Preview each pilot detail page in the worktree dev app; verify it reads as strong as the existing three (layout, creatives at natural aspect, metric tiles). _(needs THIS worktree's dev server + admin preview — user step; :3000 is the main worktree and can't serve the fresh media)_
+- [x] 4.4 Preview each pilot detail page in the worktree dev app; verify it reads as strong as the existing three (layout, creatives at natural aspect, metric tiles). _(user ran this worktree's dev server on :3000, reviewed, then approved publishing all 45 studies — confirms detail pages read correctly)_
 - [x] 4.5 Fix any schema strain surfaced (e.g. a deck with no pillars or no metrics) — decide graceful-degradation handling, don't hack the schema. _(surfaced & handled without schema changes: n-energia no-hashtag pillars + page-as-platform metrics; ed-invest text-only #MODERACJA pillar (empty media allowed); asus carousel spans FB+IG (single platform field + note); skrzat 9→5 pillar consolidation. Recurring theme for the collection backlog: results.platform="entity not network", and no per-tile period/subtitle field.)_
 
 ## 5. Recipe writeup (gate before scaling)
