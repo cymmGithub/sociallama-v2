@@ -33,4 +33,4 @@
 - [x] 6.1 `bunx biome check --write` on changed files + `bunx tsc --noEmit`; both clean.
 - [x] 6.2 On a guest post: confirm `BlogPosting.author` is a `Person` with `sameAs`, the bottom card shows Łukasz + external link, and the old inline byline is gone.
 - [x] 6.3 On a default post: confirm `BlogPosting.author` references the Organization `@id`, and the card + card-byline show "Social Lama" + lama mark.
-- [ ] 6.4 Confirm the byline renders on `/blog` and a `/category/{slug}` listing, and validate one post's JSON-LD in the Rich Results Test.
+- [x] 6.4 Confirm the byline renders on `/blog` and a `/category/{slug}` listing, and validate one post's JSON-LD in the Rich Results Test.

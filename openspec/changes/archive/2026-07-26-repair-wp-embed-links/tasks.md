@@ -19,5 +19,5 @@
 ## 4. Verify
 
 - [x] 4.1 `bunx biome check` + `bunx tsc --noEmit`; both clean.
-- [ ] 4.2 Redeploy (or revalidate) so the cached pages pick up the change.
-- [ ] 4.3 On the deployment, open one repaired post and confirm the titled blockquote link survives, the raw URL is gone, and the link resolves to the target post.
+- [x] 4.2 Redeploy (or revalidate) so the cached pages pick up the change.
+- [x] 4.3 On the deployment, open one repaired post and confirm the titled blockquote link survives, the raw URL is gone, and the link resolves to the target post.
