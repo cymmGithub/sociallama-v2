@@ -3,7 +3,13 @@ import type {
   CollectionAfterChangeHook,
   CollectionAfterDeleteHook,
 } from 'payload'
-import type { CaseStudy, Category, Post, SocialPlatform } from '@/payload-types'
+import type {
+  Author,
+  CaseStudy,
+  Category,
+  Post,
+  SocialPlatform,
+} from '@/payload-types'
 
 /**
  * On-demand invalidation of the blog's cache tags (see
@@ -100,5 +106,22 @@ export const revalidateCategoryAfterDelete: CollectionAfterDeleteHook<
   Category
 > = ({ doc }) => {
   safeRevalidate('categories', 'posts')
+  return doc
+}
+
+// An author's name/avatar/bio is rendered inside post pages and listing cards,
+// so an edit has to expire the whole `posts` tag — there is no author route of
+// its own to invalidate.
+export const revalidateAuthorAfterChange: CollectionAfterChangeHook<Author> = ({
+  doc,
+}) => {
+  safeRevalidate('posts')
+  return doc
+}
+
+export const revalidateAuthorAfterDelete: CollectionAfterDeleteHook<Author> = ({
+  doc,
+}) => {
+  safeRevalidate('posts')
   return doc
 }

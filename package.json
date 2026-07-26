@@ -23,6 +23,8 @@
     "payload:import:case-study": "bun ./lib/payload/import-case-study.ts",
     "payload:publish:case-studies": "bun ./lib/payload/publish-case-studies.ts",
     "payload:seed:platforms": "bun ./lib/payload/seed-social-platforms.ts",
+    "payload:seed:authors": "bun ./lib/payload/seed-authors.ts",
+    "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",
     "clean": "rm -rf .next node_modules/.cache",
     "lint": "biome lint --max-diagnostics=200",
     "lint:fix": "biome lint --write --unsafe --max-diagnostics=200",

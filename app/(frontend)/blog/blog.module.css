@@ -124,6 +124,21 @@
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
 
+/* Compact byline sitting alongside the category pill and date. */
+.cardAuthor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 0;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+.cardAuthorAvatar {
+  --author-avatar-size: 1.5rem;
+  /* Card and avatar share --surface-2; step down so the disc stays readable */
+  --author-avatar-backing: var(--surface);
+}
+
 .cardTitle {
   font-family: var(--font-display);
   font-weight: 800;

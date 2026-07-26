@@ -70,6 +70,7 @@ export interface Config {
     posts: Post;
     'case-studies': CaseStudy;
     categories: Category;
+    authors: Author;
     'social-platforms': SocialPlatform;
     media: Media;
     users: User;
@@ -83,6 +84,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     'social-platforms': SocialPlatformsSelect<false> | SocialPlatformsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -138,6 +140,10 @@ export interface Post {
   slug: string;
   category: number | Category;
   /**
+   * Zostaw puste, jeśli wpis jest autorstwa Social Lamy.
+   */
+  author?: (number | null) | Author;
+  /**
    * Decyduje o kolejności na liście wpisów.
    */
   publishedAt?: string | null;
@@ -190,6 +196,28 @@ export interface Category {
    * Adres kategorii: /category/{slug}. Małe litery, cyfry i myślniki.
    */
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  /**
+   * Kwadratowe zdjęcie profilowe. Bez niego pokażemy inicjał.
+   */
+  avatar?: (number | null) | Media;
+  /**
+   * Dwa–trzy zdania pokazywane w wizytówce autora pod wpisem.
+   */
+  bio?: string | null;
+  /**
+   * Pełny adres profilu autora, np. https://seofly.pl/zespol/… Trafia też do danych strukturalnych (sameAs).
+   */
+  profileUrl?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -454,6 +482,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'authors';
+        value: number | Author;
+      } | null)
+    | ({
         relationTo: 'social-platforms';
         value: number | SocialPlatform;
       } | null)
@@ -515,6 +547,7 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   category?: T;
+  author?: T;
   publishedAt?: T;
   excerpt?: T;
   cover?: T;
@@ -585,6 +618,18 @@ export interface CaseStudiesSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  avatar?: T;
+  bio?: T;
+  profileUrl?: T;
   updatedAt?: T;
   createdAt?: T;
 }

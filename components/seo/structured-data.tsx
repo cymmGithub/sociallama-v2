@@ -15,9 +15,19 @@ import { APP_BASE_URL } from '@/lib/env'
  * Organization node the layout already emits.
  */
 
-const ORG_ID = `${APP_BASE_URL}/#organization`
+export const ORG_ID = `${APP_BASE_URL}/#organization`
 const WEBSITE_ID = `${APP_BASE_URL}/#website`
 const CONTACT_EMAIL = 'halohalo@sociallama.pl'
+
+/**
+ * Reference the Organization node emitted by the root layout instead of
+ * inlining a duplicate. Any page-level node that needs the brand entity
+ * (a post's `publisher`, or its `author` when Social Lama wrote it) points
+ * here, so there is exactly one Organization in the site's graph.
+ */
+export function organizationRef() {
+  return { '@id': ORG_ID }
+}
 
 // The YouTube entry points at the parent group (@GOODONEGROUP), not a Social
 // Lama channel — so it models the parent relationship instead of leaking into

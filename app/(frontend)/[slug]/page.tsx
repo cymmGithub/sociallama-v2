@@ -3,6 +3,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Image } from '@/components/ui/image'
+import { resolvePostAuthor } from '@/lib/blog/author'
 import { OG_BASE } from '@/lib/content/site'
 import {
   getDraftPostBySlug,
@@ -13,6 +14,8 @@ import {
 } from '@/lib/payload/queries'
 import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
+import { AuthorCard } from './author-card'
+import { BlogPostJsonLd } from './json-ld'
 import s from './post.module.css'
 import { PostRichText } from './rich-text'
 
@@ -86,13 +89,18 @@ export default async function PostPage({ params }: PageProps) {
   }
 
   const category = resolveCategory(post.category)
+  const author = resolvePostAuthor(post)
   const cover = resolveMedia(post.cover)
   const publishedDate = post.publishedAt
     ? formatPostDate(post.publishedAt)
     : null
+  // Same precedence as generateMetadata's og:image, so the two agree.
+  const schemaMedia = resolveMedia(post.seo?.ogImage) ?? cover
+  const schemaImage = schemaMedia?.sizes?.og?.url ?? schemaMedia?.url
 
   return (
     <Wrapper theme="cream">
+      <BlogPostJsonLd author={author} imageUrl={schemaImage} post={post} />
       <article className={s.article}>
         <header className={s.header}>
           <div className={s.meta}>
@@ -126,6 +134,8 @@ export default async function PostPage({ params }: PageProps) {
             <PostRichText data={post.content} />
           </div>
         )}
+
+        <AuthorCard author={author} />
       </article>
     </Wrapper>
   )

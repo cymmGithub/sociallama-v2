@@ -1,5 +1,7 @@
+import { AuthorAvatar } from '@/components/blog/author-avatar'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { resolvePostAuthor } from '@/lib/blog/author'
 import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
 import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
@@ -9,6 +11,7 @@ import s from './blog.module.css'
  *  root-level post URL. */
 export function PostCard({ post }: { post: Post }) {
   const category = resolveCategory(post.category)
+  const author = resolvePostAuthor(post)
   const cover = resolveMedia(post.cover)
   const coverUrl = cover?.sizes?.card?.url ?? cover?.url
 
@@ -34,6 +37,11 @@ export function PostCard({ post }: { post: Post }) {
               {formatPostDate(post.publishedAt)}
             </time>
           )}
+          {/* Non-interactive: the whole card is already one <a>. */}
+          <span className={s.cardAuthor}>
+            <AuthorAvatar author={author} className={s.cardAuthorAvatar} />
+            {author.name}
+          </span>
         </span>
         <span className={s.cardTitle}>{post.title}</span>
         {post.excerpt && <span className={s.cardExcerpt}>{post.excerpt}</span>}

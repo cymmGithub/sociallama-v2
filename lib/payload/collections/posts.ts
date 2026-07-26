@@ -74,6 +74,16 @@ export const posts: CollectionConfig = {
       },
     },
     {
+      name: 'author',
+      label: 'Autor',
+      type: 'relationship',
+      relationTo: 'authors',
+      admin: {
+        position: 'sidebar',
+        description: 'Zostaw puste, jeśli wpis jest autorstwa Social Lamy.',
+      },
+    },
+    {
       name: 'publishedAt',
       label: 'Data publikacji',
       type: 'date',

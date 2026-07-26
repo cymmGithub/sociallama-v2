@@ -1,0 +1,46 @@
+/*
+ * Shared by the bottom-of-post author card and the compact listing byline.
+ * Consumers tune it through two custom properties — `--author-avatar-size`
+ * (diameter) and `--author-avatar-backing` (the disc behind a cut-out photo).
+ * They are properties rather than plain overrides so a consumer's class can
+ * never win the cascade against `.monogram` and flatten its brand fill.
+ *
+ * Renders as a <span> so it stays valid phrasing content inside PostCard,
+ * whose entire body is wrapped in a single <a>.
+ */
+.avatar {
+  --author-avatar-size: 2.5rem;
+  --author-avatar-backing: var(--surface-2);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--author-avatar-size);
+  height: var(--author-avatar-size);
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--author-avatar-backing);
+  border: 1px solid var(--line);
+}
+
+/* Intrinsic 2x pixels are requested for a crisp circle; CSS shrinks the
+ * <img> back into the span rather than letting it define the box. */
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback when an author has no photo: initials on the brand accent.
+ * Compound selector so it outranks any single-class consumer override. */
+.avatar.monogram {
+  background-color: var(--color-contrast);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* Scales with the diameter so one rule serves both sizes */
+  font-size: calc(var(--author-avatar-size) * 0.4);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  border-color: transparent;
+}

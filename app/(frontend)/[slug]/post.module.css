@@ -159,6 +159,71 @@
   }
 }
 
+/*
+ * Author card closing the post. Shares the body's measure so it reads as the
+ * article's last block rather than a page-wide footer.
+ */
+.authorCard {
+  width: min(100%, var(--post-measure));
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  padding: var(--gap);
+  border-radius: 18px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.authorAvatar {
+  --author-avatar-size: 3.5rem;
+  /* One step lighter than the card, so a cut-out photo reads as a disc */
+  --author-avatar-backing: var(--surface);
+}
+
+.authorText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.authorLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-contrast);
+}
+
+.authorName {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.authorBio {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  text-wrap: pretty;
+}
+
+.authorLink {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--color-contrast);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.72;
+  }
+}
+
 .figure {
   display: block;
   margin-block: calc(var(--gap) / 2);
