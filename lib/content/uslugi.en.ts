@@ -418,12 +418,6 @@ export const SERVICES = [
           alt: 'Working at a laptop on search results',
         },
       },
-      {
-        kind: 'banner',
-        heading: 'And paid social?',
-        body: 'Facebook, Instagram, and TikTok campaigns we run in-house — with hard campaign data as the proof.',
-        cta: { label: 'See Sales', href: '/en/services/sales' },
-      },
     ],
   },
 

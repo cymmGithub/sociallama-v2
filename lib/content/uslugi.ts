@@ -678,14 +678,6 @@ export const SERVICES = [
           alt: 'Praca na laptopie nad wynikami w wyszukiwarce',
         },
       },
-      {
-        // D3: the mega-menu shows labels only, so the paid-social boundary has
-        // to be carried here rather than left to the visitor to infer.
-        kind: 'banner',
-        heading: 'A płatny social?',
-        body: 'Kampanie na Facebooku, Instagramie i TikToku prowadzimy u siebie — z twardymi danymi z kampanii jako dowodem.',
-        cta: { label: 'Zobacz Sprzedaż', href: '/uslugi/sprzedaz' },
-      },
     ],
   },
 
