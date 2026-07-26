@@ -53,16 +53,21 @@
     display: block;
     position: absolute;
     /* Reference scale: bottom flush with the hero, right edge at the viewport
-       (this take has no empty right margin), top clearance only for the header
-       band (~safe padding + 53px logo) so the ears stay under the CTA/menu.
+       (this take has no empty right margin), top pinned to the header's real
+       bottom edge so no look can ever slide under the solid bar. That edge is
+       safe padding + 53px logo + safe padding — the same figure the
+       portrait-tablet branch below uses. It used to count only one --safe,
+       leaving the box's top strip beneath the bar: harmless for the looks
+       whose alpha starts at y=45 in the 820x1080 canvas, but the Napoleon
+       bicorne (look-05) starts at y=19 and had its ear tips sliced off.
        Height is explicit (not top/bottom stretch): <img> posters resolve an
        auto height from their intrinsic ratio instead of the pins, which
        shrank the poster out of the clip's box. */
-    top: calc(var(--safe) + 53px);
+    top: calc(var(--safe) * 2 + 53px);
     bottom: 0;
     right: 0;
     width: auto;
-    height: calc(100% - var(--safe) - 53px);
+    height: calc(100% - var(--safe) * 2 - 53px);
   }
 }
 
