@@ -28,6 +28,29 @@ export function AuthorAvatar({
     )
   }
 
+  /*
+   * The organization default is a reversed brand mark, not a photo. `icon.png`
+   * is a plum lama on transparency, so drawing it as an image on the plum disc
+   * would be plum-on-plum and all but vanish. Using its alpha as a mask and
+   * filling with cream gives the reversed mark the brand state is meant to be —
+   * the same technique as the footer's social row. It also sidesteps the image
+   * optimizer, which has misbehaved on tiny brand icons in this project.
+   */
+  if (author.kind === 'org') {
+    return (
+      <span className={cn(s.avatar, s.isOrg, className)}>
+        <span
+          aria-hidden="true"
+          className={s.orgMark}
+          style={{
+            maskImage: `url(${author.avatarUrl})`,
+            WebkitMaskImage: `url(${author.avatarUrl})`,
+          }}
+        />
+      </span>
+    )
+  }
+
   return (
     <span className={cn(s.avatar, className)}>
       <Image
@@ -36,9 +59,6 @@ export function AuthorAvatar({
         alt=""
         className={s.image}
         height={AVATAR_PIXELS}
-        // The org default is the static /icon.png lama mark — already small,
-        // and the optimizer has bitten this project on tiny brand icons.
-        unoptimized={author.kind === 'org'}
         src={author.avatarUrl}
         width={AVATAR_PIXELS}
       />

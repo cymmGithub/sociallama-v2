@@ -33,6 +33,9 @@ import type {
 /** Posts per page on /blog and /category/{slug}. */
 export const POSTS_PER_PAGE = 9
 
+/** Posts in a post page's closing "Czytaj dalej" row. */
+export const RELATED_POSTS_COUNT = 3
+
 const PUBLISHED = { _status: { equals: 'published' as const } }
 
 async function findPostBySlug(slug: string): Promise<Post | null> {
@@ -352,6 +355,60 @@ async function findPostsForCategories(ids: string): Promise<Post[]> {
   return result.docs
 }
 
+/**
+ * The "Czytaj dalej" trio at the end of a post: same category first, topped up
+ * with the newest published posts when that category is sparse (design D9).
+ *
+ * The two reads are SEQUENTIAL, never `Promise.all`'d — this runs during static
+ * generation of ~80 post pages against the unpooled prod DB, and a concurrent
+ * burst there exhausts connection headroom and times out the build.
+ *
+ * Scalar arguments only: the React `cache()` wrapper keys on argument identity,
+ * so a fresh array literal per call would never hit.
+ */
+async function findRelatedPosts(
+  excludeId: number,
+  categoryId: number | null
+): Promise<Post[]> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const picked: Post[] = []
+
+  if (categoryId !== null) {
+    const sameCategory = await payload.find({
+      collection: 'posts',
+      where: {
+        and: [
+          { category: { equals: categoryId } },
+          { id: { not_equals: excludeId } },
+          PUBLISHED,
+        ],
+      },
+      sort: '-publishedAt',
+      limit: RELATED_POSTS_COUNT,
+      depth: 2,
+    })
+    picked.push(...sameCategory.docs)
+  }
+
+  if (picked.length < RELATED_POSTS_COUNT) {
+    const excluded = [excludeId, ...picked.map((post) => post.id)]
+    const newest = await payload.find({
+      collection: 'posts',
+      where: { and: [{ id: { not_in: excluded } }, PUBLISHED] },
+      sort: '-publishedAt',
+      limit: RELATED_POSTS_COUNT - picked.length,
+      depth: 2,
+    })
+    picked.push(...newest.docs)
+  }
+
+  return picked
+}
+
 /** Social-platform logos, for matching a result's platform to its mark. */
 async function findSocialPlatforms(): Promise<SocialPlatform[]> {
   'use cache'
@@ -386,6 +443,7 @@ export const getPostsForSitemap = cache(findPostsForSitemap)
 export const getPostsForLlms = cache(findPostsForLlms)
 export const getPostsForPlatform = cache(findPostsForPlatform)
 export const getPostsForCategories = cache(findPostsForCategories)
+export const getRelatedPosts = cache(findRelatedPosts)
 export const getCaseStudyBySlug = cache(findCaseStudyBySlug)
 export const getDraftCaseStudyBySlug = cache(findDraftCaseStudyBySlug)
 export const getPublishedCaseStudySlugs = cache(findPublishedCaseStudySlugs)

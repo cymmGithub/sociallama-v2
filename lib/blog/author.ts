@@ -17,6 +17,8 @@ export interface ResolvedAuthor {
   name: string
   /** Avatar to render; absent means the card falls back to a monogram. */
   avatarUrl?: string
+  /** One-line job title shown under the name in the rail and on the card. */
+  role?: string
   bio?: string
   /** External profile — the card's link and the `Person`'s `sameAs`. */
   url?: string
@@ -24,13 +26,18 @@ export interface ResolvedAuthor {
 
 /**
  * The default author. Avatar is the lama mark the Organization node already
- * uses as its `logo`; `bio`/`url` are presentation only — the JSON-LD builder
- * emits a bare `@id` reference for `kind: 'org'` and never reads them.
+ * uses as its `logo`; `role`/`bio`/`url` are presentation only — the JSON-LD
+ * builder emits a bare `@id` reference for `kind: 'org'` and never reads them.
+ *
+ * The role is a constant rather than editable copy because it labels the brand
+ * itself: with named bylines only going forward, this is the default view of
+ * the archive, so it has to read as a house byline (design D6).
  */
 const SOCIAL_LAMA: ResolvedAuthor = {
   kind: 'org',
   name: APP_NAME,
   avatarUrl: '/icon.png',
+  role: 'Zespół redakcyjny',
   bio: APP_DESCRIPTION,
   url: '/o-nas',
 }
@@ -55,6 +62,7 @@ export function resolvePostAuthor(post: Post): ResolvedAuthor {
     kind: 'person',
     name: author.name,
     ...(avatarUrl ? { avatarUrl } : {}),
+    ...(author.role ? { role: author.role } : {}),
     ...(author.bio ? { bio: author.bio } : {}),
     ...(author.profileUrl ? { url: author.profileUrl } : {}),
   }

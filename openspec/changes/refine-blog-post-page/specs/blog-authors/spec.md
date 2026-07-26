@@ -40,14 +40,16 @@ Each blog post detail page SHALL display an author card after the post body, sho
 
 ## ADDED Requirements
 
-### Requirement: Author identity presented before the read
+### Requirement: One attribution surface per post
 
-The resolved author SHALL be presented at the top of the post — avatar, name, and role when present — in addition to the existing card after the body, so that attribution is visible before the reader commits to the article.
+The author card after the body SHALL be the only place a post presents its author. The post page SHALL NOT repeat author identity elsewhere — not in the sticky rail, and not as a byline under the title.
 
-#### Scenario: Named author on a new post
+Rationale: an earlier revision of this change put the author above the table of contents as well. In practice that duplicated the same three fields twice on one page, and on the organization default it also duplicated a brand already carried by the site header (user decision 2026-07-26).
+
+#### Scenario: Named author on a post
 - **WHEN** a post with an assigned author is opened
-- **THEN** that author's avatar, name, and role are visible without scrolling past the article body
+- **THEN** the author's avatar, name, role, and bio appear once, in the card after the body
 
-#### Scenario: Archive post with no assigned author
-- **WHEN** a post with no assigned author is opened
-- **THEN** the organization identity is presented in the same position with the same shape, with no empty or broken avatar
+#### Scenario: No duplicate byline
+- **WHEN** a post page is rendered at any viewport
+- **THEN** the author's name appears in exactly one block on the page

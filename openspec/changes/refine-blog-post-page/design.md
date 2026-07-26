@@ -9,7 +9,7 @@ Direction was chosen from mocks: header treatment and CTA styling per `post-fina
 ## Goals / Non-Goals
 
 **Goals:**
-- A post page with a grain-stage header, a sticky author + TOC + share rail, and brand-consistent CTA and newsletter blocks.
+- A post page with a grain-stage header, a sticky TOC + share rail, and brand-consistent CTA and newsletter blocks.
 - A table of contents whose links can never point at anchors that don't exist.
 - Reading time with no new CMS field.
 - An organization-authored post that looks deliberate, since that is ~78 of 79 posts today.
@@ -40,7 +40,12 @@ Instead `buildToc(content)` walks the serialized Lexical state once and returns 
 The header, the mid-article CTA, and the newsletter slab all use the same recipe. Rather than adding a fourth cross-module copy of the gradient/blob/grain block, the recipe is written once inside `post.module.css` and applied to three elements. House convention (duplication across sections) is preserved at the module boundary; it is not duplicated *within* the module.
 
 **6. The organization fallback is designed, not defaulted.**
-With "named authors going forward only", the org state is the default view of the archive. The rail renders the lama mark contained (not cover-cropped) on a plum disc with the role line "Zespół redakcyjny", so it reads as a brand byline rather than a person whose photo failed to load. `resolvePostAuthor` gains a `role?` field; the org default supplies it as a constant.
+With "named authors going forward only", the org state is the default view of the archive. The author card renders the lama mark on a plum disc with the role line "Zespół redakcyjny", so it reads as a brand byline rather than a person whose photo failed to load. `resolvePostAuthor` gains a `role?` field; the org default supplies it as a constant.
+
+The mark is drawn as a CSS mask filled with cream, not as an image: `icon.png` is a *plum* lama on transparency, so painting it onto the plum disc would be plum-on-plum and all but vanish. Same reversed-logo technique as the footer's social row.
+
+**6a. One attribution surface (revised 2026-07-26).**
+An earlier revision of this design also put the author at the top of the rail, to make attribution a pre-read trust signal. Dropped at the user's direction: it printed the same three fields twice on one page, and on the organization default — ~78 of 79 posts — it duplicated a brand the site header already carries. The card after the body is the only place a post presents its author, so the rail is pure utility.
 
 **7. Reading time = words / 200, minimum 1 minute.**
 Walks Lexical text nodes, counts whitespace-delimited tokens. 200 wpm is a reasonable Polish prose rate. Computed at render — storing it would let it drift from edited content.
@@ -52,14 +57,14 @@ The page already loads the post; it now also needs related posts. Per the projec
 Three posts, current post excluded. If the category yields fewer than three, top up with the newest published posts. Mirrors the matching approach already used for service pages in `lib/payload/related-posts.ts`.
 
 **10. Mobile drops the rail rather than shrinking it.**
-Below the desktop breakpoint the layout is a single column: byline under the title, TOC as a collapsed `<details>` above the body, share links after the body. A 238px sticky rail has nowhere to live on a phone, and a horizontally-scrolling TOC is worse than a collapsed one.
+Below the desktop breakpoint the layout is a single column: TOC as a collapsed `<details>` above the body, share links after the body, author card at the end as everywhere else. A 238px sticky rail has nowhere to live on a phone, and a horizontally-scrolling TOC is worse than a collapsed one.
 
 ## Risks / Trade-offs
 
 - **Lenis vs. in-page anchors** → Anchor handling is explicit (decision 4) rather than relying on browser defaults; verify both click-through and a direct `/{slug}#heading` load.
 - **Sticky rail + fixed header** → `top` must be `header-height + gap`; verify the rail doesn't slide under the header and that a rail taller than the viewport still scrolls to its end.
 - **Three grain stages on one page could read as striped** → Reviewed in the mock and accepted (user decision): the CTA sits inside the text measure rather than full-bleed, and each stage's orange blob lands in a different position, so they read as rhythm. Re-check after real content lands.
-- **Posts with no headings** → TOC box is omitted; the rail then holds author + share only, which must not collapse into an awkward gap.
+- **Posts with no headings** → TOC box is omitted; the rail then holds the share links alone. With the byline gone (D6a) that column is thin, and the share row must still read as placed rather than stranded.
 - **`scroll-margin-top` and the reveal animations** → the site uses scroll-reveal wrappers; a heading revealed on scroll must still be an accurate observer target. Verify spy accuracy on a long post.
 
 ## Migration Plan
@@ -68,5 +73,5 @@ Additive only: one optional Payload field plus front-end work. Deploy order is (
 
 ## Open Questions
 
-- Role strings for the team members who will be assigned as authors — supplied by the user during implementation.
+- ~~Role strings for the team members who will be assigned as authors~~ — resolved: "Specjalista SEO, SEOFLY" for Łukasz Płociński. The seed fills a missing `role` on an existing record so the string reaches an already-seeded DB.
 - Whether the mid-article CTA is editable per post or a single site-wide block. The mock shows one fixed CTA; treating it as static is the smaller change and can be revisited if editors want per-post offers.

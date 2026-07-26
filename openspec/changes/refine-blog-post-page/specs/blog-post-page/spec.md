@@ -45,7 +45,9 @@ Rendered `h2` and `h3` headings SHALL additionally carry a stable, unique `id` a
 ## ADDED Requirements
 
 ### Requirement: Sticky post rail
-On desktop viewports the post page SHALL display a sticky rail beside the article body containing, in order: the resolved author (avatar, name, role), the table of contents, and share links. The rail SHALL remain visible while the body scrolls and SHALL be offset below the fixed site header.
+On desktop viewports the post page SHALL display a sticky rail beside the article body containing, in order: the table of contents and share links. The rail SHALL remain visible while the body scrolls and SHALL be offset below the fixed site header.
+
+The rail SHALL NOT carry author identity — that belongs to the author card after the body, which is the page's single attribution surface (see the `blog-authors` capability).
 
 #### Scenario: Rail persists while reading
 - **WHEN** a visitor scrolls through a long post on desktop
@@ -53,7 +55,11 @@ On desktop viewports the post page SHALL display a sticky rail beside the articl
 
 #### Scenario: Rail on mobile
 - **WHEN** a post is viewed below the desktop breakpoint
-- **THEN** no sticky rail is rendered; the byline appears under the title, the table of contents appears as a collapsed disclosure above the body, and share links appear after the body
+- **THEN** no sticky rail is rendered; the table of contents appears as a collapsed disclosure above the body, and share links appear after the body
+
+#### Scenario: Post with no table of contents
+- **WHEN** a post with fewer than three headings is viewed on desktop
+- **THEN** no rail is rendered at all and the share links appear after the body, so no empty gutter is left beside the article
 
 #### Scenario: Share links
 - **WHEN** the rail is displayed
@@ -76,7 +82,7 @@ Posts with three or more `h2`/`h3` headings SHALL display a table of contents li
 
 #### Scenario: Short post
 - **WHEN** a post has fewer than three `h2`/`h3` headings
-- **THEN** no table of contents is rendered, and the rail shows author and share links without an empty container
+- **THEN** no table of contents is rendered, and no rail is rendered either — the share links move below the body
 
 ### Requirement: Estimated reading time
 Each post page SHALL display an estimated reading time in minutes, derived from the post's own content at render time. No editor-entered field SHALL be required.

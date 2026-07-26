@@ -1,78 +1,451 @@
+/*
+ * Blog post template. Three regions: a plum grain stage carrying the header,
+ * a rail + body article column, and the closing blocks (newsletter, related).
+ *
+ * The stage recipe appears once here and is applied to three elements (header,
+ * in-article CTA, newsletter). House convention duplicates that recipe across
+ * section modules — services.module.css, why-that-works.module.css,
+ * how-it-works.module.css — and this module is the fourth copy. It is NOT
+ * duplicated a second time *within* the module (design D5). Keep the gradient,
+ * blob, and grain values in sync with those three by hand.
+ */
+
 .article {
-  --post-measure: 70ch;
+  --post-measure: 68ch;
+  /* Header bar + a breath, shared by the sticky rail and heading anchors so a
+     jump, a direct #anchor landing, and the rail all agree on one offset. */
+  --post-anchor-offset: calc(var(--header-height) + var(--gap));
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--gap) * 2);
-  /* Clear the solid fixed header bar */
-  padding-block: calc(var(--header-height) + var(--safe) * 3)
-    calc(var(--safe) * 6);
+  padding-block: calc(var(--header-height) + var(--safe)) calc(var(--safe) * 6);
   padding-inline: var(--safe);
   /* Body/utility face — headings opt into the display face below */
   font-family: var(--font-mono);
 }
 
+/* —— The plum grain stage ————————————————————————————————————————————— */
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  color: var(--color-cream);
+  /* Pure-noise film grain tile — same data-URI as the homepage stages. */
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  /* Orange glow blob. Each of the three stages on this page places it
+     differently (--blob-top/--blob-right) so they read as rhythm rather than
+     as one striped motif repeated down the page. */
+  &::before {
+    content: "";
+    position: absolute;
+    width: var(--blob-size, 45%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: var(--blob-top, -30%);
+    right: var(--blob-right, -8%);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    /* 1:1 with the SVG's own 700px canvas, matching the homepage stages so the
+       noise density reads identically across the site. */
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Lift contents above the ::after grain (tree order paints it over children). */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* —— Header stage ————————————————————————————————————————————————————— */
 .header {
-  width: min(100%, var(--post-measure));
+  width: min(100%, 85rem);
+  padding: clamp(20px, 3vw, 42px) clamp(20px, 3.4vw, 48px) 0;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-cream) 68%, transparent);
+
+  a {
+    transition: color var(--duration-fast);
+
+    &:hover {
+      color: var(--color-cream);
+    }
+  }
+}
+
+.crumbsIcon {
+  width: 0.85em;
+  height: 0.85em;
+  opacity: 0.6;
+}
+
+.headerGrid {
   display: flex;
   flex-direction: column;
-  gap: var(--gap);
+  gap: calc(var(--gap) * 1.5);
+  margin-top: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    /* Copy a hair wider than the cover, per the reviewed mock. */
+    grid-template-columns: 1.02fr 0.98fr;
+    gap: clamp(28px, 3.6vw, 52px);
+    /* Both columns settle on the stage's bottom edge: the cover bleeds into it,
+       the copy stands clear of it via .meta's bottom margin. */
+    align-items: end;
+  }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 4.4vw, 3.7rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  color: var(--color-cream);
+}
+
+.lead {
+  margin-top: calc(var(--gap) * 0.75);
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  line-height: 1.55;
+  max-width: 44ch;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+  text-wrap: pretty;
 }
 
 .meta {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: calc(var(--gap) / 2);
-  text-transform: uppercase;
+  gap: 0.7em;
+  margin-top: calc(var(--gap) * 1.25);
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
-  font-size: 0.8125rem;
+  text-transform: uppercase;
+  color: var(--color-orange);
+
+  @media (--desktop) {
+    /* Keeps the copy column off the stage's bottom edge while the cover
+       reaches it. */
+    margin-bottom: calc(var(--gap) * 2.5);
+  }
+}
+
+.metaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: currentcolor;
+  flex: none;
 }
 
 .category {
-  padding: 0.375em 0.875em;
+  padding: 0.4em 0.9em;
   border-radius: 999px;
-  background-color: var(--color-contrast);
-  color: var(--color-primary);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 32%, transparent);
+  color: var(--color-cream);
   font-weight: 700;
+  transition: background-color var(--duration-fast);
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--color-cream) 14%, transparent);
+  }
 }
 
-.date {
-  /* ≥4.5:1 on the cream surface (a11y small-text contrast) */
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+.readingTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
 }
 
-.title {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-
-.lead {
-  font-size: clamp(1.125rem, 2vw, 1.375rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
-  text-wrap: pretty;
-}
-
-.cover {
-  position: relative;
-  width: min(100%, 72rem);
-  aspect-ratio: 16 / 9;
-  border-radius: 18px;
-  overflow: hidden;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
+.readingTimeIcon {
+  width: 1em;
+  height: 1em;
+  stroke-width: 2.2;
 }
 
 /*
- * Rich-text body. Headings, lists, quotes, and inline elements come from
- * the default Lexical converters as plain tags — this module is their
- * single styling surface (design decision D5).
+ * Cover bleeds off the stage's bottom edge: square bottom corners and no bottom
+ * border, so the stage crops it and the image reads as coming out of the panel.
+ */
+.cover {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
+  border-bottom: none;
+}
+
+/* —— Article: rail + body ——————————————————————————————————————————— */
+.layout {
+  width: min(100%, 63rem);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+  padding-block: calc(var(--safe) * 2.5) 0;
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 238px minmax(0, 1fr);
+    gap: clamp(40px, 5.4vw, 76px);
+    align-items: start;
+  }
+}
+
+/*
+ * A post with fewer than three headings has no table of contents, so there is
+ * nothing worth keeping in a sticky column — the rail is dropped entirely and
+ * the share row takes its mobile position under the body. Three icons alone in
+ * a 238px gutter read as stranded, and with the byline gone (design D6a) that
+ * is all the rail would hold.
+ */
+.layoutNoRail {
+  @media (--desktop) {
+    grid-template-columns: minmax(0, 1fr);
+
+    /* Centre the measure now that nothing balances it on the left. */
+    .bodyColumn {
+      align-items: center;
+    }
+
+    .bodyShare {
+      display: flex;
+    }
+  }
+}
+
+.rail {
+  display: none;
+
+  /* Sticky only where there's a column for it to live in (design D10). */
+  @media (--desktop) {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--gap) * 1.6);
+    position: sticky;
+    top: var(--post-anchor-offset);
+    /* A rail taller than the viewport must still reach its end rather than
+       pinning its top and clipping the share row. */
+    max-height: calc(100dvh - var(--post-anchor-offset) - var(--gap));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.railBox {
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  padding: 1.125rem 1.125rem 1rem;
+  background-color: var(--surface);
+}
+
+.railLabel {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* 72% is the floor that still clears 4.5:1 on the cream surface. */
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+}
+
+/* —— Table of contents ————————————————————————————————————————————————— */
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 0.875rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tocLink,
+.tocLinkNested {
+  display: block;
+  padding: 0.4375rem 0 0.4375rem 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+  border-left: 2px solid var(--line);
+  transition:
+    color var(--duration-fast),
+    border-color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-secondary);
+    border-left-color: var(--line-strong);
+  }
+
+  /* Current section — set by the scroll spy, and by a table-of-contents click. */
+  &[aria-current] {
+    color: var(--color-contrast);
+    font-weight: 700;
+    border-left-color: var(--color-contrast);
+  }
+}
+
+/* h3 entries read as subordinate to the h2 above them. */
+.tocLinkNested {
+  padding-left: 1.625rem;
+  font-size: 0.78125rem;
+}
+
+/*
+ * Mobile disclosure holding the same table of contents. Collapsed by default:
+ * an expanded map would push the article's first paragraph off the screen
+ * (design D10).
+ */
+.tocDetails {
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  padding: 0.875rem 1.125rem;
+  background-color: var(--surface);
+
+  @media (--desktop) {
+    display: none;
+  }
+}
+
+.tocSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  cursor: pointer;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+
+  &::marker,
+  &::-webkit-details-marker {
+    display: none;
+    content: "";
+  }
+}
+
+.tocSummaryIcon {
+  width: 1.125em;
+  height: 1.125em;
+  flex: none;
+  transition: transform var(--duration-fast);
+
+  .tocDetails[open] & {
+    transform: rotate(180deg);
+  }
+}
+
+/* —— Share ————————————————————————————————————————————————————————————— */
+.railShare {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* After the body on mobile, where the rail doesn't exist. */
+.bodyShare {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: calc(var(--gap) * 2);
+
+  @media (--desktop) {
+    display: none;
+  }
+}
+
+.shareRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.shareButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast),
+    border-color var(--duration-fast),
+    color var(--duration-fast);
+
+  &:hover {
+    background-color: var(--color-contrast);
+    border-color: var(--color-contrast);
+    color: var(--color-cream);
+  }
+}
+
+.shareIcon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Brand mark as a mask so it takes the button's colour, inverting on hover
+   along with it (same technique as the footer's social row). */
+.shareBrandIcon {
+  width: 15px;
+  height: 15px;
+  background-color: currentcolor;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+/* —— Body ————————————————————————————————————————————————————————————— */
+.bodyColumn {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * Rich-text body. Headings, lists, quotes, and inline elements come from the
+ * Lexical converters as plain tags — this module is their single styling
+ * surface. Heading `id`s come from the server-side TOC walk (design D1).
  */
 .body {
   width: min(100%, var(--post-measure));
@@ -87,14 +460,18 @@
   h4 {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     line-height: 1.15;
     margin-top: calc(var(--gap) * 0.75);
     text-wrap: balance;
+    /* The one offset for in-page anchors. The Toc component reads this back
+       from computed style, so JS jumps and no-JS/direct-#anchor landings can't
+       disagree about where a heading should come to rest (design D4). */
+    scroll-margin-top: var(--post-anchor-offset);
   }
 
   h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
   }
 
   h3 {
@@ -138,14 +515,13 @@
 
   blockquote {
     margin-block: calc(var(--gap) / 2);
-    padding: calc(var(--gap) * 0.75) var(--gap);
+    padding: 0.25rem 0 0.25rem 1.375rem;
     border-left: 3px solid var(--color-contrast);
-    border-radius: 0 12px 12px 0;
-    background-color: var(--surface-2);
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.1875rem;
-    line-height: 1.4;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
   }
 
   strong {
@@ -159,68 +535,300 @@
   }
 }
 
-/*
- * Author card closing the post. Shares the body's measure so it reads as the
- * article's last block rather than a page-wide footer.
- */
+/* —— In-article CTA ————————————————————————————————————————————————————
+   On the stage treatment, but sized to the text measure rather than full-bleed,
+   so three stages down one page read as rhythm instead of stripes (design
+   risk, accepted by the user at mock review). */
+.inlineCta {
+  --blob-top: -55%;
+  --blob-right: 2%;
+  --blob-size: 38%;
+
+  width: min(100%, var(--post-measure));
+  margin-block: calc(var(--gap) * 2);
+  padding: 1.5rem 1.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.375rem;
+    align-items: center;
+  }
+}
+
+.inlineCtaIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  background-color: color-mix(in srgb, var(--color-cream) 14%, transparent);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.inlineCtaTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+
+.inlineCtaText {
+  margin-top: 0.3125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+/* Orange pill shared by the CTA and the newsletter submit. */
+.pillButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9em 1.6em;
+  background-color: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.86;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  svg {
+    width: 1.05em;
+    height: 1.05em;
+  }
+}
+
+/* —— Author card ————————————————————————————————————————————————————— */
 .authorCard {
   width: min(100%, var(--post-measure));
+  margin-top: calc(var(--safe) * 2);
   display: flex;
   align-items: flex-start;
   gap: var(--gap);
-  padding: var(--gap);
+  padding: 1.5rem;
   border-radius: 18px;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
+  background-color: var(--surface);
+  border: 1px solid var(--line-strong);
 }
 
 .authorAvatar {
-  --author-avatar-size: 3.5rem;
+  --author-avatar-size: 4.25rem;
   /* One step lighter than the card, so a cut-out photo reads as a disc */
-  --author-avatar-backing: var(--surface);
+  --author-avatar-backing: var(--surface-2);
 }
 
 .authorText {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
   min-width: 0;
-}
-
-.authorLabel {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-contrast);
 }
 
 .authorName {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.1875rem;
   line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.authorRole {
+  margin-top: 0.1875rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-contrast);
 }
 
 .authorBio {
-  font-size: 0.9375rem;
+  margin-top: 0.625rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
   text-wrap: pretty;
 }
 
 .authorLink {
   align-self: flex-start;
-  margin-top: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  margin-top: 0.75rem;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-contrast);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
   transition: opacity var(--duration-fast);
 
   &:hover {
     opacity: 0.72;
+  }
+
+  svg {
+    width: 0.95em;
+    height: 0.95em;
+  }
+}
+
+/* —— Newsletter ————————————————————————————————————————————————————— */
+.newsletter {
+  --blob-top: -40%;
+  --blob-right: 46%;
+
+  width: min(100%, 85rem);
+  margin-top: calc(var(--safe) * 4);
+  padding: clamp(28px, 3.6vw, 52px) clamp(24px, 3.8vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 3.4vw, 48px);
+    align-items: center;
+  }
+}
+
+.newsletterTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.newsletterText {
+  margin-top: 0.875rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 34ch;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+
+  @media (--desktop) {
+    flex-direction: row;
+  }
+}
+
+.newsletterInput {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 26%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 8%, transparent);
+  padding: 0.95em 1.35em;
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+  }
+}
+
+/* Note and result messages sit on plum, so they take a cream tint rather than
+   the ink-on-cream body colours. */
+.newsletterNote {
+  margin-top: 0.75rem;
+  /* 0.78rem at 88% cream, not the mock's 0.7rem at 62%: that combination sits
+     under 4.5:1 against the plum ground, and this is small legal-ish copy that
+     a reader may actually need. */
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+.newsletterMessage {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-cream);
+}
+
+.newsletterError {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-orange);
+}
+
+/* —— Related posts ————————————————————————————————————————————————————— */
+.related {
+  width: min(100%, 85rem);
+  margin-top: calc(var(--safe) * 4);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.25);
+}
+
+.relatedHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.relatedTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.4vw, 1.7rem);
+  letter-spacing: -0.02em;
+}
+
+.relatedAll {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+  white-space: nowrap;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.72;
+  }
+}
+
+.relatedGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+
+  @media (--desktop) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

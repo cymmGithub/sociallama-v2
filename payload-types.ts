@@ -211,6 +211,10 @@ export interface Author {
    */
   avatar?: (number | null) | Media;
   /**
+   * Jedna linijka, np. „Specjalista SEO, SEOFLY”. Pokazujemy ją w szynie obok wpisu i w wizytówce autora pod tekstem. Bez niej zostaje samo nazwisko.
+   */
+  role?: string | null;
+  /**
    * Dwa–trzy zdania pokazywane w wizytówce autora pod wpisem.
    */
   bio?: string | null;
@@ -628,6 +632,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface AuthorsSelect<T extends boolean = true> {
   name?: T;
   avatar?: T;
+  role?: T;
   bio?: T;
   profileUrl?: T;
   updatedAt?: T;

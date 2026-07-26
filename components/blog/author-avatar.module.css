@@ -31,6 +31,33 @@
   height: 100%;
 }
 
+/*
+ * The Social Lama default. This is the byline on nearly the whole archive, so
+ * it has to read as a deliberate house mark rather than a portrait that failed
+ * to load: the lama sits whole on a plum disc with breathing room, instead of
+ * being cropped to the disc's edge like a face. Compound selector so it beats a
+ * consumer's `--author-avatar-backing`.
+ */
+.avatar.isOrg {
+  background-color: var(--color-plum);
+  border-color: transparent;
+}
+
+/* Reversed lama mark: the PNG's alpha is the mask, cream is the fill. Sized to
+   62% of the disc so the mark has breathing room instead of filling the circle
+   edge to edge the way a cropped portrait does. */
+.orgMark {
+  width: 62%;
+  height: 62%;
+  background-color: var(--color-cream);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
 /* Fallback when an author has no photo: initials on the brand accent.
  * Compound selector so it outranks any single-class consumer override. */
 .avatar.monogram {

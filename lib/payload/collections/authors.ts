@@ -49,6 +49,15 @@ export const authors: CollectionConfig = {
       },
     },
     {
+      name: 'role',
+      label: 'Rola / stanowisko',
+      type: 'text',
+      admin: {
+        description:
+          'Jedna linijka, np. „Specjalista SEO, SEOFLY”. Pokazujemy ją w szynie obok wpisu i w wizytówce autora pod tekstem. Bez niej zostaje samo nazwisko.',
+      },
+    },
+    {
       name: 'bio',
       label: 'Bio',
       type: 'textarea',

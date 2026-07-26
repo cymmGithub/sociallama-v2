@@ -31,6 +31,7 @@ const AUTHORS = [
   {
     name: 'Łukasz Płociński',
     avatarPath: 'public/authors/lukasz-plocinski.png',
+    role: 'Specjalista SEO, SEOFLY',
     // Carries the SEOFLY partner credit that used to sit in the post bodies
     // as "Tekst powstał we współpracy z agencją SEOFLY…".
     bio: 'Specjalista SEO w SEOFLY, partnerskiej agencji z naszej grupy. Od ponad piętnastu lat pozycjonuje strony i sklepy internetowe — łączy analityczne podejście z kreatywnością i na bieżąco nadąża za zmianami w algorytmach Google.',
@@ -60,7 +61,19 @@ for (const author of AUTHORS) {
     limit: 1,
   })
   if (existing.docs[0]) {
-    console.log(`= author exists: ${author.name} (#${existing.docs[0].id})`)
+    const doc = existing.docs[0]
+    // `role` arrived after these records were first seeded, so fill it in when
+    // it's still empty. Only when empty — an editor's own wording wins.
+    if (author.role && !doc.role) {
+      await payload.update({
+        collection: 'authors',
+        id: doc.id,
+        data: { role: author.role },
+      })
+      console.log(`~ author role set: ${author.name} (#${doc.id})`)
+      continue
+    }
+    console.log(`= author exists: ${author.name} (#${doc.id})`)
     continue
   }
   const avatar = await findOrCreateMedia(
@@ -72,6 +85,7 @@ for (const author of AUTHORS) {
     data: {
       name: author.name,
       avatar: avatar.id,
+      role: author.role,
       bio: author.bio,
       profileUrl: author.profileUrl,
     },
