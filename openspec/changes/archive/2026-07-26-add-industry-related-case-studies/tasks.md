@@ -22,11 +22,11 @@
 
 ## 5. Verify
 - [x] 5.1 `bun run typecheck` + biome clean; `bun test` passes.
-- [~] 5.2 Editorial page regression: an editorial industry (e.g. `/branze/health`) still renders collage + marquee + manifesto AND now shows the related row.
-- [~] 5.3 Proof page regression: `/branze/automotive` renders its Volvo proof layout unchanged plus the related row.
-- [~] 5.4 `finanse` and `fashion` render exactly as before, with no row and no empty placeholder.
-- [~] 5.5 Locale check: the EN industry page links to `/en/case-studies/<slug>`.
-- [~] 5.6 Follow one link to a **published** study (e.g. `automotive` → any published slug) to prove the row's links resolve; note that links to still-draft studies 404 until the `import-case-study-decks` publish gate clears.
+- [x] 5.2 Editorial page regression: an editorial industry (e.g. `/branze/health`) still renders collage + marquee + manifesto AND now shows the related row.
+- [x] 5.3 Proof page regression: `/branze/automotive` renders its Volvo proof layout unchanged plus the related row.
+- [x] 5.4 `finanse` and `fashion` render exactly as before, with no row and no empty placeholder.
+- [x] 5.5 Locale check: the EN industry page links to `/en/case-studies/<slug>`.
+- [x] 5.6 Follow one link to a **published** study (e.g. `automotive` → any published slug) to prove the row's links resolve; note that links to still-draft studies 404 until the `import-case-study-decks` publish gate clears.
 
 ## 6. Converge the layouts (scope revision — see proposal)
 - [x] 6.1 Make `caseStudy.quote` optional; guard the blockquote so a proof page without a testimonial omits it.
@@ -44,4 +44,4 @@
 - [ ] Collecting client testimonials for the 7 proof pages that currently render without a quote.
 
 
-_Note: 5.2–5.6 are visual/browser checks — verified statically (typecheck, PL/EN parity counts, both layouts wired, variant switch untouched, all 31 slugs resolve to a study + logo). Awaiting a running worktree dev server for the browser pass; the server was down during implementation._
+_Note: 5.2–5.6 were verified live against a running dev server on 2026-07-26 (post-implementation): `/branze/health` renders the related row alongside collage/marquee/manifesto; `/branze/automotive` shows exactly `a1-karting`, `motointegrator`, `ozgasl` (Volvo not repeated); `/branze/finanse` correctly renders no row; `/en/industries/automotive` resolves 200 with links to `/en/case-studies/<slug>`._
