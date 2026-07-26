@@ -2,8 +2,8 @@
  * "Zrealizowane projekty" — sand band. Centered two-tone heading over three
  * image-led case-study tiles (design C): a full-bleed cover under a plum scrim
  * that carries the client logo (white chip) + an SEO question title, with the
- * year / "Zobacz" row revealing on hover. Colours read from brand tokens
- * directly so the band is correct even outside the cream data-theme.
+ * "Zobacz" row revealing on hover. Colours read from brand tokens directly so
+ * the band is correct even outside the cream data-theme.
  */
 
 .section {
@@ -138,11 +138,11 @@
 .meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
 
-  /* Hover devices: keep the year / CTA row tucked away until hover. Touch
-     devices (no hover) always show it, since there is no hover affordance. */
+  /* Hover devices: keep the CTA row tucked away until hover. Touch devices
+     (no hover) always show it, since there is no hover affordance. */
   @media (--hover) {
     max-height: 0;
     opacity: 0;
@@ -156,12 +156,6 @@
       opacity: 1;
     }
   }
-}
-
-.year {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: color-mix(in srgb, var(--color-cream) 75%, transparent);
 }
 
 .cta {

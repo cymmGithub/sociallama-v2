@@ -12,8 +12,8 @@ import s from './projects.module.css'
  * "Zrealizowane projekty" — sand band (data-theme="cream"). A centered two-tone
  * heading over three image-led case-study tiles (design C). Each tile is a
  * full-bleed cover under a plum scrim carrying the client logo (white chip),
- * an SEO-friendly question title, and a year / "Zobacz" row that reveals on
- * hover (always shown on touch). The whole tile links to the case study.
+ * an SEO-friendly question title, and a "Zobacz" row that reveals on hover
+ * (always shown on touch). The whole tile links to the case study.
  *
  * Heading + tiles rise in on scroll via useReveal (each is a `data-reveal-item`,
  * staggered).
@@ -68,7 +68,6 @@ export function Projects({
                   <p className={s.title}>{item.name}</p>
 
                   <p className={s.meta}>
-                    <span className={s.year}>{item.year}</span>
                     <span className={s.cta}>
                       {content.cta}
                       <ArrowRight className={s.ctaIcon} aria-hidden="true" />
