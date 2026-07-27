@@ -293,6 +293,19 @@ export const clients = {
       { label: 'Kliknięcia linku · Facebook', value: '34 373' },
     ],
   },
+  // A quote card rather than a numbers card: Aquael is one of the four brands
+  // with a real testimonial, and it outweighs anything its study reports. The
+  // first two sentences of the slider quote verbatim — the card cannot hold
+  // the third.
+  aquael: {
+    testimonial: {
+      quote:
+        'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
+      author: 'Beata Nartowska',
+      company: 'Aquael',
+      image: '/assets/testimonial-nartowska.jpg',
+    },
+  },
   // The rest of ASUS's study reports production volume, so the sentence leads
   // on the one audience-scale figure it carries and the rows keep the volume.
   asus: {

@@ -36,6 +36,15 @@ const ROSTER = [
     logo: '/assets/clients/a1-karting.png',
     caseStudySlug: 'a1-karting',
   },
+  // Added after the Drive set was approved (user decision 2026-07-27), taking
+  // Manufaktura Czekolady's place: Aquael is one of the few brands carrying
+  // both a real testimonial and a published case study.
+  {
+    key: 'aquael',
+    name: 'Aquael',
+    logo: '/assets/clients/aquael.png',
+    caseStudySlug: 'aquael',
+  },
   {
     key: 'asus',
     name: 'ASUS',
@@ -118,11 +127,6 @@ const ROSTER = [
     key: 'lg-electronics',
     name: 'LG Electronics',
     logo: '/assets/clients/lg-electronics.png',
-  },
-  {
-    key: 'manufaktura-czekolady',
-    name: 'Manufaktura Czekolady',
-    logo: '/assets/clients/manufaktura-czekolady.png',
   },
   {
     key: 'medicover',

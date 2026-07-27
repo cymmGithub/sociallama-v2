@@ -129,6 +129,17 @@ export const clients = {
       { label: 'Link clicks · Facebook', value: '34,373' },
     ],
   },
+  // Quote card — see the note in home.ts. The first two sentences of the
+  // slider quote verbatim; the card cannot hold the third.
+  aquael: {
+    testimonial: {
+      quote:
+        "Social Lama is an agency that fully meets our expectations. The team's work proved satisfying enough that we decided to expand the collaboration to further projects.",
+      author: 'Beata Nartowska',
+      company: 'Aquael',
+      image: '/assets/testimonial-nartowska.jpg',
+    },
+  },
   asus: {
     numbers:
       '26,000,000 Facebook likes and 44 pieces on ASUS AI features in six weeks.',

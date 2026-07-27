@@ -115,6 +115,9 @@ def gd(name):
 # only wins where the repository copy is a plate, too small, or absent.
 BRANDS = [
     ("a1-karting", "A1 Karting", gd("a1.jpg"), "a1-karting", {}),
+    # Not in the Drive set — added to the belt after it was approved, so the
+    # case-study asset is the only source. It is a clean 418x97 de-matted mark.
+    ("aquael", "Aquael", repo("aquael"), "aquael", {}),
     ("asus", "ASUS", repo("asus"), "asus", {}),
     ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {}),
     # Drops "Resort & SPA" — unreadable at belt height.
@@ -140,14 +143,6 @@ BRANDS = [
     # Drops "Krajowe Centrum Przeciwdziałania Uzależnieniom".
     ("kcpu", "KCPU", gd("kcpu-logo-cmyk.png.webp"), None, {"gap": 1}),
     ("lg-electronics", "LG Electronics", gd("LG_Electronics_logo.png"), None, {}),
-    # Script only: the cocoa-bean roundel above and the "manufaktura czekolady"
-    # strap line below are both dropped. This is the roster's one hairline mark —
-    # 5% ink coverage against a 26% median — and optical-mass normalisation
-    # cannot lift it, because scale-up is clamped at contain-fit. Keeping the
-    # roundel also made the lockup height-bound, so it filled half the box and
-    # read as a gap in the belt. Alone, the script is width-bound, fills the box
-    # and roughly doubles its stroke weight (user decision 2026-07-27).
-    ("manufaktura-czekolady", "Manufaktura Czekolady", gd("manufaktura-czekolady-logo.webp"), None, {"band": (1, 2)}),
     # gDrive over the existing public/assets copy: 514x98 against 136x84, and
     # it is the horizontal lockup with no "SPORT" line to crop.
     ("medicover", "Medicover", gd("medicover.png"), None, {}),
