@@ -31,6 +31,12 @@ const envSchema = z.object({
   SHOPIFY_STOREFRONT_ACCESS_TOKEN: z.string().optional(),
   SHOPIFY_REVALIDATION_SECRET: z.string().optional(),
 
+  // Manual cache revalidation (POST /api/revalidate?tag=…). Needed because
+  // Payload's afterChange hooks only reach the cache from inside the deployed
+  // app: a script writing straight to the database revalidates nothing. Absent
+  // → the endpoint refuses every request rather than running unauthenticated.
+  REVALIDATE_SECRET: z.string().optional(),
+
   // HubSpot
   HUBSPOT_ACCESS_TOKEN: z.string().optional(),
   NEXT_PUBLIC_HUBSPOT_PORTAL_ID: z.string().optional(),
