@@ -293,11 +293,11 @@ export const clients = {
       { label: 'Kliknięcia linku · Facebook', value: '34 373' },
     ],
   },
-  // ASUS's study reports production volume rather than reach — the campaign was
-  // an education push, and 44 pieces in six weeks is its honest headline.
+  // The rest of ASUS's study reports production volume, so the sentence leads
+  // on the one audience-scale figure it carries and the rows keep the volume.
   asus: {
     numbers:
-      '44 materiały o funkcjach ASUS AI w 6 tygodni — filmy na YouTubie i reelsy z @technokrata.',
+      '26 mln polubień na Facebooku i 44 materiały o funkcjach ASUS AI w 6 tygodni.',
     metrics: [
       { label: 'Filmy o AI · YouTube', value: '4' },
       { label: 'Reelsy z @technokrata', value: '5' },

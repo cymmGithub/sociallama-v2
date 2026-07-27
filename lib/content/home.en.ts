@@ -131,7 +131,7 @@ export const clients = {
   },
   asus: {
     numbers:
-      '44 pieces on ASUS AI features in six weeks — YouTube films and reels with @technokrata.',
+      '26M Facebook likes and 44 pieces on ASUS AI features in six weeks.',
     metrics: [
       { label: 'AI films · YouTube', value: '4' },
       { label: 'Reels with @technokrata', value: '5' },
