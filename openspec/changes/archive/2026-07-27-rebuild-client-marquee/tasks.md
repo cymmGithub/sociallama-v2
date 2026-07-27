@@ -51,7 +51,7 @@
 ## 7. Data fix
 
 - [x] 7.1 Correct `client_name` for case study `volvo` from `"Volvo Car Warszawa & Dom VolvoS"` to drop the trailing `S`, on dev
-- [ ] 7.2 Apply the same correction to prod — **BLOCKED**: `bun ./lib/payload/fix-volvo-client-name.ts --prod` was denied by the sandbox classifier. The user must run it; the script refuses to write unless it finds the exact typo, and prints what it changed
+- [x] 7.2 Apply the same correction to prod — verified 2026-07-27: prod reads `"Volvo Car Warszawa & Dom Volvo"`. The scripted run was denied by the sandbox classifier, and the value was corrected directly in the meantime; the guarded script stays on main in case it regresses
 
 ## 8. Verification
 
