@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { BlogNewsletter } from '@/components/blog/newsletter'
 import { Wrapper } from '@/components/layout/wrapper'
 import {
   getBlogHub,
@@ -9,7 +10,6 @@ import {
 import s from './blog.module.css'
 import { HubFeatured } from './hub-featured'
 import { HubHeader } from './hub-header'
-import { HubNewsletter } from './hub-newsletter'
 import { HubPopular } from './hub-popular'
 import { HubPromo } from './hub-promo'
 import { HubArchive, HubCurated, HubSearch } from './hub-search'
@@ -57,7 +57,7 @@ export default async function BlogPage() {
               <HubFeatured featured={hub.featured} picks={hub.picks} />
               <HubPromo />
               <HubPopular popular={hub.popular} shortList={hub.shortList} />
-              <HubNewsletter />
+              <BlogNewsletter />
               {/* Absent video = no section at all, not an empty frame. */}
               {hub.video && <HubVideo video={hub.video} />}
             </HubCurated>

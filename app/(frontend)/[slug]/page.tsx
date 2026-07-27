@@ -10,6 +10,7 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { PostCard } from '@/app/(frontend)/blog/post-card'
+import { BlogNewsletter } from '@/components/blog/newsletter'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -33,7 +34,6 @@ import type { Post } from '@/payload-types'
 import { AuthorCard } from './author-card'
 import { BlogPostJsonLd } from './json-ld'
 import s from './post.module.css'
-import { PostNewsletter } from './post-newsletter'
 import { PostRail } from './post-rail'
 import { PostShare } from './post-share'
 import { PostRichText } from './rich-text'
@@ -255,7 +255,7 @@ export default async function PostPage({ params }: PageProps) {
           </div>
         </div>
 
-        <PostNewsletter />
+        <BlogNewsletter className={s.newsletterLayout} />
 
         {related.length > 0 && (
           <section className={s.related}>

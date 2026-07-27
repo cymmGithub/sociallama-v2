@@ -1,0 +1,175 @@
+/*
+ * The NewsLAMA sign-up slab, shared by the post template and the /blog hub.
+ *
+ * The plum grain stage recipe is duplicated here per house convention — the
+ * other copies live in services.module.css, why-that-works.module.css,
+ * how-it-works.module.css, post.module.css, and blog.module.css. Keep the
+ * gradient, blob, and grain values in sync with those by hand.
+ *
+ * This module owns the slab itself. Outer placement (width, margin) belongs to
+ * the page, which passes it through the component's `className`.
+ */
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  color: var(--color-cream);
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: var(--blob-size, 45%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: var(--blob-top, -40%);
+    right: var(--blob-right, 46%);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Lift contents above the ::after grain (tree order paints it over children). */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.newsletter {
+  padding: clamp(28px, 3.6vw, 52px) clamp(24px, 3.8vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 3.4vw, 48px);
+    align-items: center;
+  }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.text {
+  margin-top: 0.875rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 34ch;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+
+  @media (--desktop) {
+    flex-direction: row;
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 26%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 8%, transparent);
+  padding: 0.95em 1.35em;
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9em 1.6em;
+  background-color: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.86;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  svg {
+    width: 1.05em;
+    height: 1.05em;
+  }
+}
+
+/* Note and result messages sit on plum, so they take a cream tint rather than
+   the ink-on-cream body colours. */
+.note {
+  margin-top: 0.75rem;
+  /* 0.78rem at 88% cream, not the mock's 0.7rem at 62%: that combination sits
+     under 4.5:1 against the plum ground, and this is small legal-ish copy that
+     a reader may actually need. */
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+.message {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-cream);
+}
+
+.error {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-orange);
+}
