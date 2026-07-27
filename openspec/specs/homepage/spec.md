@@ -39,7 +39,7 @@ The hero SHALL display the three-line headline ("STRATEGY / THAT WORKS / WITH SO
 - **THEN** no edge or rectangle of the video/poster is perceivable against the section background
 
 ### Requirement: Content sections from typed data
-All section copy (nav, hero, services, steps, client names, featured testimonial, blog card, footer, contact) SHALL come from `lib/content/home.ts`; components SHALL contain no hardcoded copy. Non-services copy SHALL match the verified content export verbatim; the three service bodies are instead trimmed to one short sentence each (~20 words) for the autoplay-tabs layout, with the original long-form texts preserved in the content module (commented or exported separately) for future `/uslugi/*` pages. FAQ and multi-post blog grid are excluded from v1.
+All section copy (nav, hero, services, steps, client names, featured testimonial, footer, contact) SHALL come from `lib/content/home.ts`; components SHALL contain no hardcoded copy. Non-services copy SHALL match the verified content export verbatim; the three service bodies are instead trimmed to one short sentence each (~20 words) for the autoplay-tabs layout, with the original long-form texts preserved in the content module (commented or exported separately) for future `/uslugi/*` pages. FAQ and multi-post blog grid are excluded from v1. The NewsLAMA section is the exception to static sourcing: it SHALL render the latest published post fetched server-side from Payload's Local API (cover, category, `pl-PL`-formatted date, title, excerpt, link to the root-level post URL), with only its static labels (heading, read label) sourced from `lib/content/home.ts`; the hardcoded post object is removed from the content module. When no published post exists, the NewsLAMA section SHALL render nothing rather than a broken or placeholder card.
 
 #### Scenario: Content fidelity
 - **WHEN** the homepage renders
@@ -51,7 +51,15 @@ All section copy (nav, hero, services, steps, client names, featured testimonial
 
 #### Scenario: Excluded sections
 - **WHEN** the homepage renders
-- **THEN** no FAQ section exists and NewsLAMA shows exactly one large post card ("LinkedIn Premium — czy warto?")
+- **THEN** no FAQ section exists and NewsLAMA shows exactly one large post card
+
+#### Scenario: NewsLAMA shows the latest post
+- **WHEN** the homepage renders with published posts in the CMS
+- **THEN** NewsLAMA shows the newest published post's cover, category, date, title, and excerpt, linking to `/{slug}`, and updates automatically when a newer post is published (via revalidation, no redeploy)
+
+#### Scenario: NewsLAMA with no published posts
+- **WHEN** the homepage renders with zero published posts
+- **THEN** the NewsLAMA section is omitted entirely and surrounding chapters render without layout breakage
 
 ### Requirement: Section motion behaviors
 The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / WITH SOCIAL LAMA" marquee via `<Marquee>`; the why-that-works heading scrubbed word-by-word by scroll progress with its lead and paragraphs scrubbing as manifesto text (words fill from faint to full via `ProgressText`); how-it-works pinned via `<Fold>` with the five steps highlighting sequentially by scroll progress; below-fold sections other than services revealing on first viewport entry via `useReveal` — the services section's motion is owned by the autoplay-tabs component (see `services-autoplay-tabs`). Every "THAT WORKS" occurrence on the homepage SHALL render bold in the orange accent, mirroring the hero headline (user decision, 2026-07-13) — except the why-that-works heading, where "THAT WORKS" fills with the static orange-dominant grain-gradient (gggrain variant: base `#f09b39`, `#892f53` falloff, `feTurbulence` 0.55, soft-light) clipped to the letters, and "WHY" fills to the ink text color (user decisions, 2026-07-13). The big marquee's filled row remains flat orange.
@@ -68,13 +76,17 @@ The homepage SHALL implement: client-logo marquee and full-bleed "THAT WORKS / W
 - **WHEN** the why-that-works manifesto (one sentence-case display-scale statement split mid-sentence: bold ink opening, muted gray closer — Azurio treatment, user decision 2026-07-13) and the supporting paragraphs (display font, bold, reading scale, same ink→muted split) pass through the viewport
 - **THEN** their words fill from faint (~0.33 opacity) to full opacity proportionally to scroll, each statement flows as a single paragraph across its strong/muted chunks, and the CTA link enters via reveal
 
-#### Scenario: Team stage beside supporting copy
-- **WHEN** the why-that-works bottom row renders
-- **THEN** the left media cell (aspect-ratio 4/3, radius 14px) renders a live CSS team stage — the plum grain-gradient stage recipe shared with the services and how-it-works panels (plum 160° gradient, orange glow blob, feTurbulence grain at soft-light 0.38) — with the 10 team avatar stickers scattered across its upper two-thirds (percentage-based positions, per-item rotations within ±6°, visible size variance, loose two-row cluster), each seated on a translucent glass bubble that leaves the sticker's own outline and head pop-out unclipped (user decision, 2026-07-16), and the DIMAQ professional and Meta Small Business Academy certificates as gently tilted (±3°) cream chips along the bottom; the supporting paragraphs and CTA sit at right; on mobile the row stacks (user decision, 2026-07-16)
+#### Scenario: Team grid mosaic on the plum stage
+- **WHEN** the why-that-works team block renders
+- **THEN** the plum grain-gradient stage — the recipe shared with the services and how-it-works panels (plum 160° gradient, orange glow blob, feTurbulence grain at soft-light 0.38) — replaces the former scattered-avatar image in the left cell of the two-column supporting row (stage left, supporting copy and CTA right), presenting the 12 team portraits as a uniform grid mosaic of small square medallion tiles (6 columns × 2 rows on desktop, 3 columns on mobile, consistent gap), and the DIMAQ professional and Meta Small Business Academy certificates as two cream cards placed inline in the grid on the row below the faces (a full-width "Certyfikaty" eyebrow, then two cards each taking half the cert row; on mobile the eyebrow and each card span the full row); on desktop the copy column stretches to the grid's height and the supporting paragraph is sized (display scale) to fill it top-aligned, so the copy occupies the grid's height rather than leaving empty space, and on mobile the row stacks (stage above copy)
 
-#### Scenario: Team stage assets stay light
+#### Scenario: Team tile spotlight hover
+- **WHEN** a pointer hovers one team tile (motion allowed)
+- **THEN** the hovered tile scales up with an orange ring while the sibling tiles dim, and the certificate cards are excluded from the dimming; under `prefers-reduced-motion: reduce` the scale is dropped and only the dim and ring convey focus; on touch devices with no hover the tiles render at full opacity
+
+#### Scenario: Team assets stay light and uniform
 - **WHEN** the team stage renders at any viewport
-- **THEN** avatars are served as optimized assets (≈400px WebP via the `Image` component, not the 810px source PNGs), certificate marks render unmodified (no recolor, distortion, or crop) on their chips, and the retired `why-team.jpg` is no longer shipped
+- **THEN** all 12 portraits are optimized WebP sources served through the `Image` component (the two newest portraits, previously ~0.5 MB source PNGs, are converted to WebP matching the existing ~12 KB medallions; no source PNGs remain), certificate marks render unmodified (no recolor, distortion, or crop) via `objectFit: contain`, and the retired `why-team.jpg` is not shipped
 
 #### Scenario: Big marquee accent
 - **WHEN** the full-bleed marquee renders in the light chapter
@@ -102,7 +114,6 @@ The site layout SHALL render a fixed progressive blur strip at the viewport's bo
 - **WHEN** the blur strip overlays interactive content near the viewport bottom
 - **THEN** it never intercepts pointer events
 
-
 ### Requirement: Resting-state text contrast
 Homepage text that is meant to be readable without scroll interaction — section eyebrows, subheads, card meta/identity lines — SHALL meet WCAG AA contrast (≥4.5:1 small text, ≥3:1 large text) in its resting (pre-scroll) state, measured against the chapter ground behind it when the element is in view. Scroll-scrubbed ghost/progress text whose unlit form is intentionally decorative MAY rest below AA only when it conveys no information exclusively in the dim state. Two documented exceptions MAY stay below AA: the orange "…THAT WORKS"/"…IT WORKS" display headlines (brand rule, user decision 2026-07-14; adjacent Polish subheads carry the information) and the testimonial queue's dimmed upcoming cards (full content reaches AA contrast when the card becomes active).
 
@@ -124,3 +135,4 @@ The homepage Playwright smoke SHALL assert zero serious or critical axe violatio
 #### Scenario: Gate catches a real regression
 - **WHEN** a change introduces a serious contrast violation in settled, non-excluded content
 - **THEN** the a11y assertion fails
+
