@@ -297,7 +297,7 @@ export const clients = {
   // on the one audience-scale figure it carries and the rows keep the volume.
   asus: {
     numbers:
-      '26 mln polubień na Facebooku i 44 materiały o funkcjach ASUS AI w 6 tygodni.',
+      '26 000 000 polubień na Facebooku i 44 materiały o funkcjach ASUS AI w 6 tygodni.',
     metrics: [
       { label: 'Filmy o AI · YouTube', value: '4' },
       { label: 'Reelsy z @technokrata', value: '5' },
