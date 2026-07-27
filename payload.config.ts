@@ -15,6 +15,7 @@ import { posts } from '@/lib/payload/collections/posts'
 import { socialPlatforms } from '@/lib/payload/collections/social-platforms'
 import { users } from '@/lib/payload/collections/users'
 import { requirePayloadEnv } from '@/lib/payload/env'
+import { blogHub } from '@/lib/payload/globals/blog-hub'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -36,6 +37,7 @@ export default buildConfig({
     media,
     users,
   ],
+  globals: [blogHub],
   editor: lexicalEditor(),
   admin: {
     user: users.slug,

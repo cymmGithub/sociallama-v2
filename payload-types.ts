@@ -97,8 +97,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('pl' | 'en') | ('pl' | 'en')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'blog-hub': BlogHub;
+  };
+  globalsSelect: {
+    'blog-hub': BlogHubSelect<false> | BlogHubSelect<true>;
+  };
   locale: 'pl' | 'en';
   widgets: {
     collections: CollectionsWidget;
@@ -763,6 +767,72 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Decyduje, co widać na górze /blog. Każde pole jest opcjonalne — puste sloty blog uzupełnia najnowszymi wpisami albo pomija daną sekcję.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-hub".
+ */
+export interface BlogHub {
+  id: number;
+  /**
+   * Duży wpis otwierający blog. Pusto = najnowszy opublikowany wpis.
+   */
+  featured?: (number | null) | Post;
+  /**
+   * Lista obok wyróżnionego wpisu, maksymalnie cztery pozycje — kolejność jak tutaj. Pusto = cztery kolejne najnowsze wpisy.
+   */
+  picks?: (number | Post)[] | null;
+  /**
+   * Jeden wpis w bloku „Najczęściej czytane”. To wybór redakcji, nie pomiar ruchu. Pusto = cały blok znika.
+   */
+  popular?: (number | null) | Post;
+  /**
+   * Jedno wideo z naszego kanału. Zostaw puste, żeby ukryć całą sekcję. Link otwiera się w nowej karcie — wideo nie jest osadzane na stronie.
+   */
+  video?: {
+    title?: string | null;
+    /**
+     * Pełny link do YouTube, np. https://youtu.be/...
+     */
+    url?: string | null;
+    /**
+     * Dwa–trzy zdania o tym, co jest w materiale.
+     */
+    description?: string | null;
+    /**
+     * Opcjonalnie, w formacie 8:42.
+     */
+    duration?: string | null;
+    /**
+     * Kadr 16:9 pokazywany zamiast odtwarzacza. Wgrywamy własny, żeby mieć kontrolę nad kompozycją.
+     */
+    poster?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-hub_select".
+ */
+export interface BlogHubSelect<T extends boolean = true> {
+  featured?: T;
+  picks?: T;
+  popular?: T;
+  video?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        description?: T;
+        duration?: T;
+        poster?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

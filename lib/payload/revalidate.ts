@@ -2,6 +2,7 @@ import { revalidateTag } from 'next/cache'
 import type {
   CollectionAfterChangeHook,
   CollectionAfterDeleteHook,
+  GlobalAfterChangeHook,
 } from 'payload'
 import type {
   Author,
@@ -123,5 +124,15 @@ export const revalidateAuthorAfterDelete: CollectionAfterDeleteHook<Author> = ({
   doc,
 }) => {
   safeRevalidate('posts')
+  return doc
+}
+
+// Curation only affects the /blog hub, so it gets its own tag rather than
+// expiring `posts` — reordering the editors' picks should not invalidate 79
+// post pages, the category listings, and the homepage along with it.
+export const revalidateBlogHubAfterChange: GlobalAfterChangeHook = ({
+  doc,
+}) => {
+  safeRevalidate('blog-hub')
   return doc
 }

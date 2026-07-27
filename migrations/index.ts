@@ -4,6 +4,7 @@ import * as migration_20260722_203953_add_case_study_localization from './202607
 import * as migration_20260725_190439_remove_case_study_period from './20260725_190439_remove_case_study_period';
 import * as migration_20260726_075219_add_authors from './20260726_075219_add_authors';
 import * as migration_20260726_212614_add_author_role from './20260726_212614_add_author_role';
+import * as migration_20260726_220833_add_blog_hub from './20260726_220833_add_blog_hub';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260726_212614_add_author_role.up,
     down: migration_20260726_212614_add_author_role.down,
-    name: '20260726_212614_add_author_role'
+    name: '20260726_212614_add_author_role',
+  },
+  {
+    up: migration_20260726_220833_add_blog_hub.up,
+    down: migration_20260726_220833_add_blog_hub.down,
+    name: '20260726_220833_add_blog_hub'
   },
 ];
