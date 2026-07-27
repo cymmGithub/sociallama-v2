@@ -186,8 +186,14 @@ export function applyRemoveJsxElement(
         // We do NOT stop at JsxElement boundaries here because the element being
         // removed may be a leaf inside a wrapper (e.g. `<Suspense><Foo/></Suspense>`)
         // that is itself inside the target JsxExpression.
+        //
+        // That reach is wrong when the element is an ordinary sibling rather
+        // than the point of the expression, so `keepEnclosingExpression` opts
+        // out of the walk entirely and removes the element alone.
         let enclosingJsxExpr: Node | undefined
-        let cursor: Node | undefined = node.getParent()
+        let cursor: Node | undefined = op.keepEnclosingExpression
+          ? undefined
+          : node.getParent()
         while (cursor) {
           if (cursor.getKind() === SyntaxKind.JsxExpression) {
             enclosingJsxExpr = cursor
@@ -234,8 +240,12 @@ export function applyRemoveJsxElement(
         } else {
           // Remove entirely — walk up to find the enclosing JsxExpression so
           // that `{cond && <Elem>…</Elem>}` is removed whole, not just the tags.
+          // This walk already stops at element boundaries;
+          // `keepEnclosingExpression` skips it altogether.
           let enclosingExpr: Node | undefined
-          let cur: Node | undefined = node.getParent()
+          let cur: Node | undefined = op.keepEnclosingExpression
+            ? undefined
+            : node.getParent()
           while (cur) {
             if (cur.getKind() === SyntaxKind.JsxExpression) {
               enclosingExpr = cur

@@ -189,14 +189,64 @@ export const INTEGRATION_BUNDLES = defineBundles({
     dependencies: [],
     devDependencies: [],
     folders: ['lib/integrations/mailchimp'],
-    files: [],
+    // The NewsLAMA sign-up slab is Mailchimp's only consumer: it calls
+    // `mailchimpSubscriptionAction` through `useActionState`, so without the
+    // integration there is no action to submit to and the form is furniture.
+    // `lib/blog/newsletter.ts` only translates that action's FormState, and
+    // nothing else imports either file.
+    files: [
+      'components/blog/newsletter.tsx',
+      'components/blog/newsletter.module.css',
+      'lib/blog/newsletter.ts',
+    ],
     envVars: [
       'MAILCHIMP_API_KEY',
       'MAILCHIMP_SERVER_PREFIX',
       'MAILCHIMP_AUDIENCE_ID',
     ],
     barrelExports: [],
-    codeTransforms: [],
+    // The two blog pages are SHARED core files that no other bundle touches;
+    // stripping Mailchimp must remove exactly its own import + mount.
+    codeTransforms: [
+      {
+        file: 'app/(frontend)/blog/page.tsx',
+        ops: [
+          { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
+          // Sibling, not the point of its expression: in the hub it sits inside
+          // `{hub.featured && (<HubCurated>…)}`, and the default walk would take
+          // that whole block.
+          {
+            kind: 'removeJsxElement',
+            tagName: 'BlogNewsletter',
+            keepEnclosingExpression: true,
+          },
+        ],
+      },
+      {
+        file: 'app/(frontend)/[slug]/page.tsx',
+        ops: [
+          { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
+          // Sibling, not the point of its expression: in the hub it sits inside
+          // `{hub.featured && (<HubCurated>…)}`, and the default walk would take
+          // that whole block.
+          {
+            kind: 'removeJsxElement',
+            tagName: 'BlogNewsletter',
+            keepEnclosingExpression: true,
+          },
+        ],
+      },
+    ],
+    // `<BlogNewsletter />` sits mid-list in both parents — before `<HubVideo>`
+    // in the hub, before the related-posts section in the post template — and
+    // `addJsxChild` only appends, so it would come back in the wrong place.
+    // Both files are restored wholesale instead, guarded by the lean-state
+    // comparison documented on `overwriteFiles` (same reasoning as Shopify's
+    // revalidate route).
+    overwriteFiles: [
+      'app/(frontend)/blog/page.tsx',
+      'app/(frontend)/[slug]/page.tsx',
+    ],
   },
 
   webgl: {

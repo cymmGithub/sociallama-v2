@@ -85,6 +85,57 @@ describe('removeCallArgument', () => {
 })
 
 // ---------------------------------------------------------------------------
+// removeJsxElement — keepEnclosingExpression
+// ---------------------------------------------------------------------------
+
+describe('removeJsxElement (keepEnclosingExpression)', () => {
+  // A self-closing element sitting as one sibling among several, inside a
+  // wrapper, inside a conditional expression — the shape the client belt's
+  // newsletter slab has in the blog hub.
+  const fixture = `export function Hub({ hub }: Props) {
+  return (
+    <>
+      {hub.featured && (
+        <Curated>
+          <Popular />
+          <Newsletter />
+          {hub.video && <Video video={hub.video} />}
+        </Curated>
+      )}
+    </>
+  )
+}
+`
+
+  it('takes the whole enclosing expression by default', () => {
+    const result = applyOpsToText(fixture, [
+      { kind: 'removeJsxElement', tagName: 'Newsletter' },
+    ])
+    // The walk does not stop at <Curated>, so the conditional goes with it.
+    expect(result).not.toContain('Newsletter')
+    expect(result).not.toContain('Curated')
+    expect(result).not.toContain('Popular')
+  })
+
+  it('removes only the element when keepEnclosingExpression is set', () => {
+    const op: AstOperation = {
+      kind: 'removeJsxElement',
+      tagName: 'Newsletter',
+      keepEnclosingExpression: true,
+    }
+    const result = applyOpsToText(fixture, [op])
+    expect(result).not.toContain('Newsletter')
+    // Every sibling and the conditional itself survive.
+    expect(result).toContain('hub.featured &&')
+    expect(result).toContain('<Curated>')
+    expect(result).toContain('<Popular />')
+    expect(result).toContain('<Video video={hub.video} />')
+    // Removing again is a no-op.
+    expect(applyOpsToText(result, [op])).toBe(result)
+  })
+})
+
+// ---------------------------------------------------------------------------
 // removeIfStatement
 // ---------------------------------------------------------------------------
 

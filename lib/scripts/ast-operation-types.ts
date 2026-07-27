@@ -50,6 +50,8 @@ export interface RemoveCallArgumentOp {
  *   elements sharing the same tag (e.g. OrchestraToggle with id="webgl").
  * - `unwrap` — when true, keep the element's children and remove only the
  *   opening / closing tags (e.g. strip <Canvas> but keep its content).
+ * - `keepEnclosingExpression` — when true, remove only the element, never the
+ *   `{…}` around it.
  */
 export interface RemoveJsxElementOp {
   kind: 'removeJsxElement'
@@ -59,6 +61,18 @@ export interface RemoveJsxElementOp {
   attribute?: { name: string; value: string }
   /** When true, keep children and remove only the tags */
   unwrap?: boolean
+  /**
+   * Remove only this element, never the JsxExpression enclosing it.
+   *
+   * By default a match is removed together with its enclosing expression, so
+   * `{cond && <Foo />}` does not leave `{cond && }` behind. For a self-closing
+   * element that walk deliberately does not stop at wrapper elements, so an
+   * element sitting as one child among several inside
+   * `{cond && (<Wrapper>…</Wrapper>)}` would otherwise take the whole block
+   * with it. Set this when the element is an ordinary sibling rather than the
+   * point of the expression.
+   */
+  keepEnclosingExpression?: boolean
 }
 
 /** Remove a property (with its leading JSDoc) from a named interface. */
