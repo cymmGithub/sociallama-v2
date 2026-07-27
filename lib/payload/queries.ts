@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import { cache } from 'react'
 import type { Locale } from '@/lib/i18n/slug-map'
 import type {
+  BlogHub,
   CaseStudy,
   Category,
   Media,
@@ -24,6 +25,7 @@ import type {
  * - `posts`        — any post list (hub, categories, sitemap, homepage)
  * - `post:{slug}`  — a single post page
  * - `categories`   — the category list
+ * - `blog-hub`     — the /blog hub's editorial curation
  *
  * IMPORTANT: the Local API runs with overrideAccess: true, so access
  * control does NOT filter drafts here — every public query must constrain
@@ -409,6 +411,172 @@ async function findRelatedPosts(
   return picked
 }
 
+/** One row of the client-side search index shipped to the hub. */
+export interface SearchEntry {
+  slug: string
+  title: string
+  excerpt: string
+  category: string
+}
+
+/**
+ * Every published post, reduced to the four fields the hub's client filter
+ * needs. At ~79 posts this is roughly 16KB — smaller than one cover thumbnail,
+ * which is why search is a shipped index rather than a route (design decision 4).
+ */
+async function findSearchIndex(): Promise<SearchEntry[]> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: PUBLISHED,
+    sort: '-publishedAt',
+    limit: 0,
+    pagination: false,
+    // depth 1 populates `category` enough to read its title, and nothing more.
+    depth: 1,
+    select: { slug: true, title: true, excerpt: true, category: true },
+  })
+
+  return result.docs.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt ?? '',
+    category: resolveCategory(post.category)?.title ?? '',
+  }))
+}
+
+/*
+ * Blog hub curation (blog-hub global). Tagged `blog-hub` for curation edits and
+ * `posts` because the resolved slots render post titles, covers, and bylines —
+ * editing a curated post has to refresh the hub too.
+ */
+
+/** A spotlight only reaches the front end with all three parts present. */
+export interface VideoSpotlight {
+  title: string
+  url: string
+  poster: Media
+  description?: string
+  duration?: string
+}
+
+export interface BlogHubData {
+  /** Never null when any post is published — falls back to the newest. */
+  featured: Post | null
+  picks: Post[]
+  /** Null omits the most-read block entirely (design decision 2). */
+  popular: Post | null
+  /** Compact rows beside the most-read block. */
+  shortList: Post[]
+  /** Null omits the whole spotlight section. */
+  video: VideoSpotlight | null
+}
+
+/** Editors' picks, plus the short list and the featured fallback, come from here. */
+const HUB_POOL_SIZE = 12
+
+/** Posts in the editors' picks list, and in the short list beside most-read. */
+const HUB_LIST_SIZE = 4
+
+/**
+ * A curation slot resolves only to a populated, published post.
+ *
+ * Both halves matter. The Local API runs with `overrideAccess: true`, so a slot
+ * pointing at an unpublished post populates the draft rather than filtering it
+ * — without the `_status` check the hub would link to a post the public cannot
+ * open. The `typeof` check covers the depth-dependent `number | Post` union.
+ */
+function publishedPost(value: number | Post | null | undefined): Post | null {
+  return typeof value === 'object' &&
+    value !== null &&
+    value._status === 'published'
+    ? value
+    : null
+}
+
+/** Drop already-used posts, then take the next `count`. */
+function fillFrom(pool: Post[], usedIds: Set<number>, count: number): Post[] {
+  return pool.filter((post) => !usedIds.has(post.id)).slice(0, count)
+}
+
+/**
+ * Normalize the video group: a spotlight missing its title, destination, or
+ * poster is treated as absent, so the section disappears rather than rendering
+ * a headless block or an empty frame. The admin already refuses to save that
+ * state (see the blog-hub global) — this is the render-side half of the rule,
+ * covering rows written before the validation existed.
+ */
+function resolveSpotlight(video: BlogHub['video']): VideoSpotlight | null {
+  const poster = resolveMedia(video?.poster)
+  if (!(video?.title && video.url && poster)) {
+    return null
+  }
+  return {
+    title: video.title,
+    url: video.url,
+    poster,
+    ...(video.description ? { description: video.description } : {}),
+    ...(video.duration ? { duration: video.duration } : {}),
+  }
+}
+
+/**
+ * The /blog hub's curated sections, with every slot's empty behaviour applied.
+ *
+ * Two reads, SEQUENTIAL rather than `Promise.all`'d, per the project's
+ * build-time DB concurrency constraint: this runs during static generation
+ * against the unpooled prod DB, where a concurrent burst times the build out.
+ */
+async function findBlogHub(): Promise<BlogHubData> {
+  'use cache'
+  cacheTag('blog-hub', 'posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+
+  const global = await payload.findGlobal({ slug: 'blog-hub', depth: 2 })
+
+  const pool = await payload.find({
+    collection: 'posts',
+    where: PUBLISHED,
+    sort: '-publishedAt',
+    limit: HUB_POOL_SIZE,
+    depth: 2,
+  })
+  const newest = pool.docs
+
+  const featured = publishedPost(global.featured) ?? newest[0] ?? null
+  const used = new Set<number>(featured ? [featured.id] : [])
+
+  const curatedPicks = (global.picks ?? [])
+    .map(publishedPost)
+    .filter((post): post is Post => post !== null)
+    .filter((post) => post.id !== featured?.id)
+  const picks = curatedPicks.length
+    ? curatedPicks
+    : fillFrom(newest, used, HUB_LIST_SIZE)
+  for (const post of picks) {
+    used.add(post.id)
+  }
+
+  const popular = publishedPost(global.popular)
+  if (popular) {
+    used.add(popular.id)
+  }
+
+  return {
+    featured,
+    picks,
+    popular,
+    shortList: fillFrom(newest, used, HUB_LIST_SIZE),
+    video: resolveSpotlight(global.video),
+  }
+}
+
 /** Social-platform logos, for matching a result's platform to its mark. */
 async function findSocialPlatforms(): Promise<SocialPlatform[]> {
   'use cache'
@@ -444,6 +612,8 @@ export const getPostsForLlms = cache(findPostsForLlms)
 export const getPostsForPlatform = cache(findPostsForPlatform)
 export const getPostsForCategories = cache(findPostsForCategories)
 export const getRelatedPosts = cache(findRelatedPosts)
+export const getBlogHub = cache(findBlogHub)
+export const getSearchIndex = cache(findSearchIndex)
 export const getCaseStudyBySlug = cache(findCaseStudyBySlug)
 export const getDraftCaseStudyBySlug = cache(findDraftCaseStudyBySlug)
 export const getPublishedCaseStudySlugs = cache(findPublishedCaseStudySlugs)

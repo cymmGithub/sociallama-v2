@@ -5,19 +5,18 @@ import { useActionState, useState } from 'react'
 import { NEWSLETTER_INITIAL, newsletterResult } from '@/lib/blog/newsletter'
 import { postNewsletter } from '@/lib/content/blog'
 import { mailchimpSubscriptionAction } from '@/lib/integrations/mailchimp/action'
-import s from './post.module.css'
+import s from './blog.module.css'
 
 /**
- * Newsletter slab closing the post, on the stage treatment. Submits through the
- * site's existing `mailchimpSubscriptionAction`.
+ * Newsletter slab on the hub, on the stage treatment. Same offer and same
+ * action as the post page's slab; the message mapping is shared so the two can
+ * never disagree about what a failure means.
  *
  * The address is a controlled value on purpose: React resets an uncontrolled
  * form after a successful action, which would also wipe the field on a failed
- * one. Holding it in state lets a failure keep what the reader typed and lets
- * success clear it deliberately.
+ * one. Holding it in state lets a failure keep what the reader typed.
  */
-
-export function PostNewsletter() {
+export function HubNewsletter() {
   const [state, formAction, isPending] = useActionState(
     mailchimpSubscriptionAction,
     NEWSLETTER_INITIAL
@@ -34,8 +33,7 @@ export function PostNewsletter() {
       </div>
       <div>
         {/* Success retires the form rather than clearing it: there's nothing
-            left to type, and it keeps the address off the screen. A failure
-            keeps the form mounted, so the controlled value survives. */}
+            left to type, and it keeps the address off the screen. */}
         {result?.ok ? (
           <p aria-live="polite" className={s.newsletterMessage}>
             {result.text}

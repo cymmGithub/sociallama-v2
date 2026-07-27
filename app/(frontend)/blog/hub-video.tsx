@@ -1,0 +1,61 @@
+import { ExternalLink, Play } from 'lucide-react'
+import { Image } from '@/components/ui/image'
+import { Link } from '@/components/ui/link'
+import { hubVideo } from '@/lib/content/blog'
+import type { VideoSpotlight } from '@/lib/payload/queries'
+import s from './blog.module.css'
+
+/**
+ * The video spotlight: a poster, a play badge, and a link out to YouTube.
+ *
+ * No iframe by design (decision 6). Nothing third-party loads, no cookies are
+ * set, and the consent question never arises — the cost is that this is the one
+ * block on the hub that sends the reader away, which is why leaving is marked
+ * explicitly rather than disguised as in-page playback.
+ *
+ * `Link` derives the new-tab behaviour from the href itself — an absolute
+ * http(s) URL gets `target="_blank" rel="noopener noreferrer"` automatically —
+ * which is why the global refuses to save a destination without a protocol.
+ */
+export function HubVideo({ video }: { video: VideoSpotlight }) {
+  return (
+    <section className={s.spotlight}>
+      <Link
+        aria-label={hubVideo.posterLabel(video.title)}
+        className={s.spotlightFrame}
+        href={video.url}
+      >
+        <Image
+          alt={video.poster.alt ?? ''}
+          desktopSize="55vw"
+          fill
+          mobileSize="100vw"
+          objectFit="cover"
+          src={video.poster.url ?? ''}
+        />
+        {/* Sits above the frame's scrim, which keeps it legible on any still. */}
+        <span className={s.play}>
+          <Play aria-hidden="true" />
+          {hubVideo.play}
+        </span>
+      </Link>
+
+      <div>
+        <span className={s.spotlightBadge}>{hubVideo.badge}</span>
+        <h2 className={s.spotlightTitle}>{video.title}</h2>
+        {video.description && (
+          <p className={s.spotlightText}>{video.description}</p>
+        )}
+        <div className={s.spotlightFoot}>
+          <Link className={s.outLink} href={video.url}>
+            {hubVideo.label}
+            <ExternalLink aria-hidden="true" />
+          </Link>
+          {video.duration && (
+            <span className={s.spotlightDuration}>{video.duration}</span>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

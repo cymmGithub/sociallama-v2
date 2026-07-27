@@ -236,3 +236,786 @@
 .emptyText {
   color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
 }
+
+/* ═══ /blog hub ═══════════════════════════════════════════════════════════
+   Everything below is the curated hub on /blog page 1. The plain grid above
+   still serves /category/{slug} and /blog/page/{n} unchanged. */
+
+/* —— The plum grain stage ——————————————————————————————————————————————
+   Fifth copy of the recipe, per house convention (services.module.css,
+   why-that-works, how-it-works, post.module.css are the others). Keep the
+   gradient, blob, and grain values in sync with those by hand. */
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  color: var(--color-cream);
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: var(--blob-size, 45%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: var(--blob-top, -30%);
+    right: var(--blob-right, -8%);
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Lift contents above the ::after grain (tree order paints it over children). */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* —— Statement header ——————————————————————————————————————————————————— */
+.hubHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.hubEyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+.hubTitle {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+.hubLead {
+  margin-top: 1.125rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 52ch;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+.hubFilters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  margin-top: calc(var(--gap) * 1.5);
+  padding-bottom: calc(var(--gap) * 1.25);
+  border-bottom: 1px solid var(--line-strong);
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+    gap: calc(var(--gap) * 1.5);
+  }
+}
+
+/* —— Search ————————————————————————————————————————————————————————————— */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.125rem;
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color var(--duration-fast);
+
+  &:focus-within {
+    border-color: var(--color-contrast);
+  }
+
+  @media (--desktop) {
+    /* Pushed to the far end of the filter row, opposite the pills. */
+    margin-left: auto;
+    min-width: 18.75rem;
+  }
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  width: 1.0625rem;
+  height: 1.0625rem;
+  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-secondary) 62%, transparent);
+  }
+
+  /* The clear affordance is our own button, which is labelled and keyboard
+     reachable — the WebKit decoration would be a second, unlabelled one. */
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
+
+.searchClear {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+  transition: color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-contrast);
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* —— Search results ————————————————————————————————————————————————————— */
+.results {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4375rem;
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: color var(--duration-fast);
+
+  &:hover .resultTitle {
+    color: var(--color-contrast);
+  }
+}
+
+.resultCategory {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+.resultTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  transition: color var(--duration-fast);
+}
+
+.resultExcerpt {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-secondary) 74%, transparent);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* —— Featured block + editors' picks ———————————————————————————————————— */
+.featured {
+  display: grid;
+  gap: calc(var(--gap) * 2);
+
+  @media (--desktop) {
+    grid-template-columns: 1.15fr 1fr;
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+.lead {
+  display: block;
+
+  &:hover .leadTitle {
+    color: var(--color-contrast);
+  }
+}
+
+.leadMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+}
+
+.leadCategory {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.375em 0.875em;
+  border-radius: 999px;
+  background-color: var(--color-contrast);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.leadTitle {
+  display: block;
+  margin-top: 0.875rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 2.9vw, 2.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  transition: color var(--duration-fast);
+}
+
+.leadExcerpt {
+  display: block;
+  margin-top: 0.875rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 52ch;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+/* Byline shared by the featured block and the most-read card. */
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+}
+
+.bylineAvatar {
+  --author-avatar-size: 2.25rem;
+  --author-avatar-backing: var(--surface-2);
+}
+
+.bylineName {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.bylineMeta {
+  display: block;
+  margin-top: 0.125rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-secondary) 74%, transparent);
+}
+
+.picksTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.pick {
+  display: block;
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--line);
+
+  &:hover .pickTitle {
+    color: var(--color-contrast);
+  }
+}
+
+.pickCategory {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+.pickTitle {
+  display: block;
+  margin-top: 0.4375rem;
+  font-size: 1.02rem;
+  line-height: 1.32;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color var(--duration-fast);
+}
+
+/* —— Promo strip ———————————————————————————————————————————————————————— */
+.promo {
+  --blob-top: -80%;
+  --blob-right: 4%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem 1.75rem;
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+}
+
+.promoTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.promoText {
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+
+  @media (--desktop) {
+    margin-right: auto;
+  }
+}
+
+.promoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.78;
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  @media (--desktop) {
+    margin-top: 0;
+  }
+}
+
+/* —— Short list + most read ————————————————————————————————————————————— */
+.twoUp {
+  display: grid;
+  gap: calc(var(--gap) * 2);
+
+  @media (--desktop) {
+    grid-template-columns: 1.32fr 1fr;
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+/* No most-read pick: the short list takes the full width rather than
+   leaving the right-hand column empty. */
+.twoUpWide {
+  @media (--desktop) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 6.75rem 1fr;
+  gap: 1.125rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+
+  &:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  &:hover .rowTitle {
+    color: var(--color-contrast);
+  }
+}
+
+.rowMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+}
+
+.rowCategory {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+.rowTitle {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color var(--duration-fast);
+}
+
+.popularTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 1.25rem;
+}
+
+.popularCard {
+  display: block;
+
+  &:hover .popularHeading {
+    color: var(--color-contrast);
+  }
+}
+
+.popularMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+}
+
+.popularHeading {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.35rem;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  transition: color var(--duration-fast);
+}
+
+.popularExcerpt {
+  display: block;
+  margin-top: 0.625rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+/* —— Newsletter ————————————————————————————————————————————————————————— */
+.newsletter {
+  --blob-top: -40%;
+  --blob-right: 46%;
+
+  padding: clamp(28px, 3.6vw, 52px) clamp(24px, 3.8vw, 56px);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 3.4vw, 48px);
+    align-items: center;
+  }
+}
+
+.newsletterTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.newsletterText {
+  margin-top: 0.875rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 34ch;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+
+  @media (--desktop) {
+    flex-direction: row;
+  }
+}
+
+.newsletterInput {
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 26%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 8%, transparent);
+  padding: 0.95em 1.35em;
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-cream) 55%, transparent);
+  }
+}
+
+/* Sits on plum, so cream tints rather than the ink-on-cream body colours. */
+.newsletterNote {
+  margin-top: 0.75rem;
+  /* 0.78rem at 88% cream keeps small print above 4.5:1 on the plum ground. */
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+}
+
+.newsletterMessage {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-cream);
+}
+
+.newsletterError {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-orange);
+}
+
+.pillButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  border: none;
+  border-radius: 999px;
+  padding: 0.9em 1.6em;
+  background-color: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.86;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  svg {
+    width: 1.05em;
+    height: 1.05em;
+  }
+}
+
+/* —— Video spotlight ———————————————————————————————————————————————————— */
+.spotlight {
+  display: grid;
+  gap: calc(var(--gap) * 2);
+  align-items: center;
+
+  @media (--desktop) {
+    grid-template-columns: 1.25fr 1fr;
+    gap: calc(var(--gap) * 3);
+  }
+}
+
+.spotlightFrame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background-color: var(--surface-2);
+
+  /* Scrim under the play badge: posters are editor-supplied stills, so the
+     badge has to stay legible over a bright one. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgb(22 18 22 / 0.34), transparent 46%);
+  }
+
+  &:hover .play {
+    background-color: var(--color-orange);
+  }
+}
+
+.play {
+  position: absolute;
+  z-index: 2;
+  left: 1.125rem;
+  bottom: 1.125rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.62em 1.1em 0.62em 0.9em;
+  border-radius: 999px;
+  background-color: var(--color-cream);
+  color: var(--color-ink-deep);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color var(--duration-fast);
+
+  svg {
+    width: 0.95em;
+    height: 0.95em;
+    fill: currentcolor;
+    stroke: none;
+  }
+}
+
+.spotlightBadge {
+  display: inline-block;
+  padding: 0.375em 0.875em;
+  border-radius: 999px;
+  background-color: var(--color-contrast);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spotlightTitle {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 2.8vw, 2.3rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.spotlightText {
+  margin-top: 0.875rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+.spotlightFoot {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.outLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.74;
+  }
+
+  svg {
+    width: 0.95em;
+    height: 0.95em;
+  }
+}
+
+.spotlightDuration {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-secondary) 74%, transparent);
+}
+
+/* —— Archive ———————————————————————————————————————————————————————————— */
+.archive {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+}
+
+.archiveHead {
+  padding-bottom: 1.375rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.archiveTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  letter-spacing: -0.025em;
+}
