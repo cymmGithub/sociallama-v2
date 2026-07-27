@@ -108,7 +108,6 @@ export function Footer() {
       </div>
 
       <div className={s.bottom}>
-        <p className={s.copyright}>{footer.copyright}</p>
         <ul className={s.legal}>
           {footer.legal.map((item) => (
             <li key={item.label}>
@@ -118,6 +117,7 @@ export function Footer() {
             </li>
           ))}
         </ul>
+        <p className={s.copyright}>{footer.copyright}</p>
         <LocaleToggle linkClassName={s.legalLink} />
       </div>
     </footer>
