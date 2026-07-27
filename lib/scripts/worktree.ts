@@ -12,7 +12,8 @@
  *   3. copy main's .env.local → worktree, overriding DATABASE_URL when isolated
  *   4. bun install  (real install — symlinked node_modules breaks Turbopack)
  *   5. --isolated: create a dedicated DB on :5434, then dev-push + seed it
- *   6. --change: relocate the untracked OpenSpec proposal + commit it on branch
+ *   6. relocate the untracked OpenSpec proposal + commit it on branch — defaults
+ *      to the change named after the worktree; --change <slug> when they differ
  *   7. boot `bun dev` detached on <port>, logging to the worktree
  *
  * State lands in <worktree>/.worktree-meta.json so `rm` can stop dev, drop the
@@ -114,7 +115,7 @@ const newWorktree = async (argv: string[]) => {
   const isolated = argv.includes('--isolated')
   // Ternary (not ||/??) so an empty --change value also collapses to undefined.
   const changeArg = getFlagValue(argv, '--change')
-  const change = changeArg ? changeArg : undefined
+  const explicitChange = changeArg ? changeArg : undefined
 
   assert(
     !!name && /^[a-z0-9-]+$/.test(name),
@@ -149,6 +150,15 @@ const newWorktree = async (argv: string[]) => {
     )
   }
   if (!(await portFree(port))) fail(`Port ${port} is already in use.`)
+
+  // House convention: a worktree is named after the change it implements, so
+  // default to that. The proposal is untracked in main, which is exactly why it
+  // needs moving — `git worktree add` only materialises committed files.
+  const change =
+    explicitChange ??
+    ((await pathExists(`${repoRoot}/openspec/changes/${name}`))
+      ? name
+      : undefined)
 
   // 1. shared DB container — idempotent, cheap if already up ("only if needed")
   step(1, `Ensuring the ${DB_CONTAINER} container is up`)
