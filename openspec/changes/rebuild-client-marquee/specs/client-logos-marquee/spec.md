@@ -35,15 +35,25 @@ Hovering a logo SHALL produce one of three outcomes, determined by what content 
 - **THEN** no entry carries a lorem-ipsum quote or a placeholder author name
 
 ### Requirement: Numbers card summarises the work in figures
-A numbers card SHALL present a single concise sentence built around the brand's most impressive metric from its case study, in the locale being viewed. The sentence SHALL be authored content, not assembled mechanically from raw metric rows, so that it reads naturally and the chosen figure is a deliberate editorial pick.
+A numbers card SHALL lead with a concise authored sentence built around the brand's most impressive metric from its case study, in the locale being viewed. The sentence SHALL be authored content, not assembled mechanically from raw metric rows, so that it reads naturally and the chosen figure is a deliberate editorial pick.
+
+Below the sentence the card SHALL present up to three supporting figures, each a value with a label naming its metric and channel, so the card carries substance rather than a single line. Supporting figures SHALL NOT repeat the figure the sentence already names. Where a case study reports too few metrics to fill three, the card SHALL show fewer rather than padding with weak ones.
 
 #### Scenario: Numbers card copy
 - **WHEN** a numbers card opens for a brand
-- **THEN** it shows one short sentence containing that brand's headline figure
+- **THEN** it shows one short sentence containing that brand's headline figure, followed by that brand's supporting figures
+
+#### Scenario: Supporting figures add to the sentence
+- **WHEN** the sentence names a brand's headline metric
+- **THEN** none of the supporting figures beneath it restates that same metric
+
+#### Scenario: Case study with few reported metrics
+- **WHEN** a brand's case study reports only one metric beyond its headline figure
+- **THEN** the card shows that single supporting figure rather than padding to three
 
 #### Scenario: Locale parity
 - **WHEN** the numbers card opens on the English homepage
-- **THEN** the sentence appears in English, matching the Polish entry one-for-one
+- **THEN** the sentence and every supporting figure appear in English, matching the Polish entry one-for-one
 
 ### Requirement: Case study CTA links to the published study
 A card SHALL show the "Case study" CTA only when its brand has a published case study. Activating the CTA SHALL navigate to that study's page in the current locale. Brands without a case study SHALL show no CTA at all rather than a disabled or decorative one.
@@ -59,7 +69,7 @@ A card SHALL show the "Case study" CTA only when its brand has a published case 
 ## MODIFIED Requirements
 
 ### Requirement: Testimonial card on logo hover
-Hovering a logo SHALL reveal a card positioned above that logo whenever that brand has card content (see the three card states requirement), with a caret pointing down at the logo. A quote card SHALL contain the quote, an author footer (photo or initials placeholder beside author name and company), and — when a case study exists — a "Case study →" CTA row. A numbers card SHALL contain the brand's figure sentence and a "Case study →" CTA row. The card SHALL appear/disappear with a short fade-and-rise transition. While open, the card SHALL be interactive: it SHALL accept pointer events, and moving the cursor from the logo across the gap into the card SHALL keep the card open so its CTA can be clicked (an invisible hover bridge spans the gap). The card SHALL NOT use `role="tooltip"` (it contains interactive content). Cards SHALL not intercept pointer events when hidden and SHALL render above adjacent hero content (never clipped behind it).
+Hovering a logo SHALL reveal a card positioned above that logo whenever that brand has card content (see the three card states requirement), with a caret pointing down at the logo. A quote card SHALL contain the quote, an author footer (photo or initials placeholder beside author name and company), and — when a case study exists — a "Case study →" CTA row. A numbers card SHALL contain the brand's figure sentence, its supporting figures, and a "Case study →" CTA row. The card SHALL appear/disappear with a short fade-and-rise transition. While open, the card SHALL be interactive: it SHALL accept pointer events, and moving the cursor from the logo across the gap into the card SHALL keep the card open so its CTA can be clicked (an invisible hover bridge spans the gap). The card SHALL NOT use `role="tooltip"` (it contains interactive content). Cards SHALL not intercept pointer events when hidden and SHALL render above adjacent hero content (never clipped behind it).
 
 #### Scenario: Hovering a logo with a testimonial
 - **WHEN** the user hovers a logo whose brand has a testimonial
@@ -86,7 +96,7 @@ Hovering a logo SHALL reveal a card positioned above that logo whenever that bra
 - **THEN** no card intercepts pointer events anywhere on the belt
 
 ### Requirement: Sand band with heading and muted logos
-The client-logos belt SHALL render as a distinct sand band (`sand` token from `brand-theme`) inside the plum chapter, with a centered "ZAUFALI NAM" heading in the display face above the marquee, matching the reference build's treatment. At rest, logos SHALL render grayscale at reduced opacity (`grayscale(1)` at ~0.75, raised from the previous ~0.55 so that optical-mass-normalized logos stay legible) — brand colors appear only on hover (no white-silhouette filter, no theme-dependent flip). The marquee's left and right ends SHALL dissolve via gradient overlays from the sand color to transparent, painted without clipping the cards. The heading text SHALL come from `lib/content/home.ts`, and the section SHALL expose exactly one accessible name (the heading and any `aria-label` MUST NOT duplicate each other for assistive technology).
+The client-logos belt SHALL render as a distinct sand band (`sand` token from `brand-theme`) inside the plum chapter, with a centered "ZAUFALI NAM" heading in the display face above the marquee, matching the reference build's treatment. At rest, logos SHALL render grayscale at reduced opacity and reduced brightness (`grayscale(1) brightness(0.8)` at ~0.75 opacity, raised from the previous ~0.55 so that optical-mass-normalized logos stay legible) — brand colors appear only on hover (no white-silhouette filter, no theme-dependent flip). Because the resting state is grayscaled, resting legibility is a luminance problem, so the belt's own resting brightness SHALL carry the contrast correction wherever it can; hovering SHALL clear the whole resting filter, not just its grayscale, so the revealed brand color is not left dimmed. The marquee's left and right ends SHALL dissolve via gradient overlays from the sand color to transparent, painted without clipping the cards. The heading text SHALL come from `lib/content/home.ts`, and the section SHALL expose exactly one accessible name (the heading and any `aria-label` MUST NOT duplicate each other for assistive technology).
 
 #### Scenario: Reference fold
 - **WHEN** the homepage's first viewport renders on desktop
@@ -103,6 +113,10 @@ The client-logos belt SHALL render as a distinct sand band (`sand` token from `b
 #### Scenario: Normalized logos read at rest
 - **WHEN** the belt renders at rest with the full roster
 - **THEN** every logo is legible against the sand band, with no logo washed out or reading as a solid block
+
+#### Scenario: Hover reveals undimmed brand color
+- **WHEN** the user hovers a logo whose ink the resting treatment darkened
+- **THEN** that logo shows its true brand color, not a dimmed version of it
 
 ### Requirement: Author photo with initials placeholder
 Quote cards SHALL show an author footer of a circular photo beside the author name and company text. Entries whose testimonial carries an `image` path SHALL render that portrait; entries without one SHALL render a plum-gradient circle with the author's initials derived from the author name. The card SHALL NOT contain the brand's logo (the card is anchored to the hovered logo). Numbers cards have no author and SHALL NOT render an author footer.

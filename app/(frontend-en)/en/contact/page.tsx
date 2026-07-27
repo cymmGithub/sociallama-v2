@@ -7,8 +7,8 @@ import { DarkChrome } from '@/app/(frontend)/kontakt/dark-chrome'
 import s from '@/app/(frontend)/kontakt/kontakt.module.css'
 import { Wrapper } from '@/components/layout/wrapper'
 import { BrandBelt } from '@/components/ui/brand-belt'
+import { CLIENT_ROSTER } from '@/lib/content/clients'
 import * as en from '@/lib/content/contact.en'
-import { clients } from '@/lib/content/home.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { contactMarqueeOutlinePaths } from '@/lib/wordmark-paths'
 
@@ -42,7 +42,7 @@ export default function EnContactPage() {
         <ContactSteps head={en.contactStepsHead} steps={en.contactSteps} />
         <div className={s.brands} data-blur-edge-gate>
           <BrandBelt
-            logos={clients.map((client) => ({
+            logos={CLIENT_ROSTER.map((client) => ({
               name: client.name,
               src: client.logo,
             }))}

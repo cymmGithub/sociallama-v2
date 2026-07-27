@@ -6,11 +6,11 @@
  * Components MUST NOT hardcode copy; import from here instead.
  *
  * Excluded from v1 (content-starved, per proposal): FAQ (0 real entries) and the
- * multi-post blog grid (1 real post → a single card). The featured testimonial
- * is real and attributed; the client-marquee hover cards mix 4 verified quotes
- * with 9 lorem placeholders (each flagged with a TODO — launch blocker).
+ * multi-post blog grid (1 real post → a single card). Every quote on the page is
+ * real and attributed.
  */
 
+import type { ClientCopy } from '@/lib/content/clients'
 import { industryNav } from '@/lib/content/branze'
 import type { Localized } from '@/lib/i18n/parity'
 
@@ -33,16 +33,6 @@ export interface SocialLink {
   href: string
   /** Path to the brand icon svg under /assets. */
   icon: string
-}
-
-export interface Client {
-  name: string
-  logo: string
-  /** Quote shown in the hover card above the logo in the client marquee. */
-  testimonial?: Testimonial
-  /** Slug of this client's published case study, if one exists. When set, the
-   *  hover-card CTA links to `/case-studies/<slug>` instead of the tooltip. */
-  caseStudySlug?: string
 }
 
 export interface StagePanel {
@@ -277,147 +267,214 @@ export const hero = {
 
 export const clientsHeading = 'ZAUFALI NAM'
 
-// Hover-card CTA. The button deliberately navigates nowhere — case-study pages
-// don't exist yet, so a click answers with a playful tooltip instead of a dead
-// link (user decision 2026-07-16; tip copy verbatim, English on purpose).
+// Hover-card CTA, rendered only for brands that have a published case study.
 export const clientCardCta = {
   label: 'Case study',
-  tip: 'waiting for case study :)',
 } as const
 
-// Shared body for the 9 unverified hover-card quotes (mirrors the reference
-// DB). Every entry using it is a launch blocker — see the TODOs below.
-const placeholderQuote =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-
-export const clients: Client[] = [
-  {
-    name: 'Aflofarm',
-    logo: '/assets/clients/aflofarm.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Aflofarm',
-    },
+// Per-locale belt copy, keyed by the roster in lib/content/clients.ts, which
+// holds the locale-invariant fields (logo path, case-study slug). Which card a
+// logo opens is derived from what its entry carries: a testimonial gives a quote
+// card, a `numbers` sentence gives a figure card, and a brand with neither is a
+// bare logo — so the 9 approved brands without a case study appear here not at
+// all. No entry may carry placeholder copy.
+//
+// Each `numbers` sentence is an editorial pick of the most striking figure from
+// that study's results, naming the platform it happened on (user decision
+// 2026-07-27) — a figure with a named channel reads as reporting rather than
+// rounding.
+export const clients = {
+  'a1-karting': {
+    numbers:
+      '3,7 mln wyświetleń na Facebooku i o 397% więcej interakcji z zawartością.',
+    metrics: [
+      { label: 'Wyświetlenia · TikTok', value: '767 tys.' },
+      { label: 'Wyświetlenia · Instagram', value: '552,1 tys.' },
+      { label: 'Kliknięcia linku · Facebook', value: '34 373' },
+    ],
   },
-  {
-    name: 'Aquael',
-    logo: '/assets/clients/aquael.png',
-    caseStudySlug: 'aquael',
-    testimonial: {
-      quote:
-        'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
-      author: 'Beata Nartowska',
-      company: 'Aquael',
-      image: '/assets/testimonial-nartowska.jpg',
-    },
+  // ASUS's study reports production volume rather than reach — the campaign was
+  // an education push, and 44 pieces in six weeks is its honest headline.
+  asus: {
+    numbers:
+      '44 materiały o funkcjach ASUS AI w 6 tygodni — filmy na YouTubie i reelsy z @technokrata.',
+    metrics: [
+      { label: 'Filmy o AI · YouTube', value: '4' },
+      { label: 'Reelsy z @technokrata', value: '5' },
+      { label: 'Posty i animacje · Facebook', value: '22' },
+    ],
   },
-  {
-    name: 'Funtronic',
-    logo: '/assets/clients/funtronic.png',
-    testimonial: {
-      quote:
-        'Szczerze rekomenduję współpracę z agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele.',
-      author: 'Piotr Treszczotko',
-      company: 'Funtronic',
-      image: '/assets/testimonial-treszczotko.jpg',
-    },
+  'dolina-charlotty': {
+    numbers:
+      '15,5 mln wyświetleń na Facebooku i wzrost wyświetleń na Instagramie o 1706%.',
+    metrics: [
+      { label: 'Kliknięcia linku · Facebook', value: '99 509' },
+      { label: 'Interakcje · Facebook', value: '51 278' },
+      { label: 'Nowi obserwujący · Facebook', value: '4 869' },
+    ],
   },
-  {
-    name: 'Intrum Justitia',
-    logo: '/assets/clients/intrum.png',
-    testimonial: {
-      quote:
-        'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Polecamy współpracę z zespołem Social Lama.',
-      author: 'Katarzyna Gosiewska',
-      company: 'Intrum Justitia',
-      image: '/assets/testimonial-gosiewska.jpg',
-    },
+  'dynamic-development': {
+    numbers: '3,4 mln zasięgu na Facebooku i 1,2 mln na Instagramie.',
+    metrics: [
+      { label: 'Kliknięcia linku · Facebook', value: '45 tys.' },
+      { label: 'Odwiedziny profilu · Facebook', value: '27 tys.' },
+      { label: 'Nowi obserwujący · Facebook', value: '6 050' },
+    ],
   },
-  {
-    name: 'Kontigo',
-    logo: '/assets/clients/kontigo.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Kontigo',
-    },
+  'ed-invest': {
+    numbers: '2,6 mln wyświetleń na Facebooku — o 180% więcej niż wcześniej.',
+    metrics: [
+      { label: 'Kliknięcia linku · Instagram', value: '+1073%' },
+      { label: 'Zasięg · Instagram', value: '94 tys.' },
+      { label: 'Odwiedziny profilu · Instagram', value: '1 466' },
+    ],
   },
-  {
-    name: 'Medicover Sport',
-    logo: '/assets/clients/medicover.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Medicover Sport',
-    },
+  engie: {
+    numbers:
+      '264 tys. wyświetleń publikacji na LinkedInie i 1 248 nowych obserwatorów.',
+    metrics: [
+      { label: 'Reakcje · LinkedIn', value: '5 375' },
+      { label: 'Wyświetlenia · Facebook', value: '69,1 tys.' },
+      { label: 'Interakcje · Facebook', value: '917' },
+    ],
   },
-  {
-    name: 'Oryginalny Sok',
-    logo: '/assets/clients/oryginalny-sok.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Oryginalny Sok',
-    },
+  'fm-logistics': {
+    numbers:
+      'Ponad 800 tys. wyświetleń postów na LinkedInie i 2 111 nowych obserwujących organicznie.',
+    metrics: [
+      { label: 'Społeczność · LinkedIn', value: '6 894 → 9 005' },
+      { label: 'Reakcje · LinkedIn', value: '+10,7 tys.' },
+      { label: 'Odtworzenia wideo · LinkedIn', value: '317 000' },
+    ],
   },
-  {
-    name: 'Press-Service',
-    logo: '/assets/clients/press-service.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Press-Service',
-    },
+  'galeria-rondo-wiatraczna': {
+    numbers:
+      'Po 2,5 mln wyświetleń na Facebooku i Instagramie oraz 2,14 mln w wyszukiwarce Google.',
+    metrics: [
+      { label: 'Widzów · Facebook', value: '750 tys.' },
+      { label: 'Widzów · Instagram', value: '280 tys.' },
+      { label: 'Kliknięcia · strona WWW', value: '26 559' },
+    ],
   },
-  {
-    name: 'Riviera',
-    logo: '/assets/clients/riviera.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Riviera',
-    },
+  imid: {
+    numbers:
+      '825 tys. wyświetleń na Facebooku i wzrost wyświetleń na Instagramie o 5845%.',
+    metrics: [
+      { label: 'Wzrost interakcji · Instagram', value: '+116 200%' },
+      { label: 'Wzrost interakcji · Facebook', value: '+159%' },
+      { label: 'Nowi członkowie grupy', value: '+273' },
+    ],
   },
-  {
-    name: 'Uniphar',
-    logo: '/assets/clients/uniphar.png',
+  // The one brand on the belt with a verified quote, so the only one that opens
+  // a quote card. Verbatim opening sentence of the full testimonial carried by
+  // the homepage slider below — shortened by excerpting, never by rephrasing.
+  irobot: {
     testimonial: {
       quote:
-        'Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
-      author: 'Marta Szwat',
-      company: 'Uniphar',
-      image: '/assets/testimonial-szwat.jpg',
+        'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić.',
+      author: 'Małgorzata Radomska',
+      company: 'iRobot Polska',
+      image: '/assets/testimonial-radomska.jpg',
     },
   },
-  {
-    name: 'Worldline',
-    logo: '/assets/clients/worldline.png',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'Worldline',
-    },
+  'julius-meinl': {
+    numbers: '433 tys. wyświetleń na Facebooku — wzrost o 1380%.',
+    metrics: [
+      { label: 'Wyświetlenia · LinkedIn', value: '413 408' },
+      { label: 'Interakcje · Facebook', value: '4 806' },
+      { label: 'Zasięg · Instagram', value: '24 179' },
+    ],
   },
-  {
-    name: 'pracuj.pl',
-    logo: '/assets/clients/pracuj.png',
-    caseStudySlug: 'pracuj-pl',
-    // TODO: placeholder — replace before launch
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Imię Nazwisko',
-      company: 'pracuj.pl',
-    },
+  'jw-construction': {
+    numbers: '27 tys. organicznych wyświetleń na LinkedInie i 819 reakcji.',
+    metrics: [
+      { label: 'Nowi obserwatorzy · LinkedIn', value: '186' },
+    ],
   },
-]
+  mercator: {
+    numbers:
+      '4 mln wyświetleń publikacji na Facebooku i 542 tys. na Instagramie.',
+    metrics: [
+      { label: 'Reakcje · Facebook', value: '2 968' },
+      { label: 'Reakcje · Instagram', value: '2 820' },
+      { label: 'Nowi obserwatorzy · Facebook', value: '113' },
+    ],
+  },
+  motointegrator: {
+    numbers:
+      '620% ROAS kampanii remarketingowej w Niemczech, przy 0,08 € za kliknięcie.',
+    metrics: [
+      { label: 'Zasięg / mies. · Facebook', value: '554 320' },
+      { label: 'Komentarze / mies. · Facebook', value: '1 305' },
+      { label: 'Wizyty / mies. · Instagram', value: '1 431' },
+    ],
+  },
+  polomarket: {
+    numbers:
+      '30 mln wyświetleń filmów w kampanii i 128 tys. polubień na TikToku.',
+    metrics: [
+      { label: 'Fani · Facebook', value: '158 706' },
+      { label: 'Reakcje · Facebook', value: '46 370' },
+      { label: 'Komentarze · TikTok', value: '2 709' },
+    ],
+  },
+  'pracuj-pl': {
+    numbers: '95,4 mln wyświetleń na TikToku i 52,6 tys. obserwujących.',
+    metrics: [
+      { label: 'Widzowie · TikTok', value: '94,8 mln' },
+      { label: 'Polubienia · TikTok', value: '104,8 tys.' },
+    ],
+  },
+  'produkty-cukiernicze-brzesc': {
+    numbers:
+      'Dziesięciokrotny wzrost eksportu i o 50% większy dzienny zasięg na Facebooku.',
+    metrics: [
+      { label: 'Zasięg organiczny · Facebook', value: '+52,8%' },
+      { label: 'Zasięg postów · Facebook', value: '368 → 549' },
+    ],
+  },
+  rabkoland: {
+    numbers:
+      'Prawie 3 mln wyświetleń na YouTubie odcinka nakręconego w Rabkolandzie.',
+    metrics: [
+      { label: 'Wzrost zasięgu · Instagram', value: '+38%' },
+    ],
+  },
+  riviera: {
+    numbers:
+      '306% rocznego KPI zasięgu na TikToku i ponad 3 mln osób, do których dotarliśmy.',
+    metrics: [
+      { label: 'Zasięg · Instagram', value: '163% KPI' },
+      { label: 'Nowi obserwujący · Facebook', value: '160% KPI' },
+      { label: 'Koszt fana · Facebook', value: '−400%' },
+    ],
+  },
+  skrzat: {
+    numbers: '35 mln wyświetleń na TikToku dla premiery filmu.',
+    metrics: [
+      { label: 'Polubienia · TikTok', value: '100 tys.' },
+      { label: 'Wyświetlenia · Instagram', value: '4,38 mln' },
+      { label: 'Wyświetlenia · Facebook', value: '3,46 mln' },
+    ],
+  },
+  vistula: {
+    numbers:
+      'Prawie 3,9 mln więcej wyświetleń profilu na Instagramie i 1 615 nowych obserwujących.',
+    metrics: [
+      { label: 'Nowi obserwujący · Facebook', value: '+794' },
+      { label: 'Wzrost wyświetleń · Facebook', value: '+142 534' },
+      { label: 'Wzrost wyświetleń · Instagram', value: '+93 937' },
+    ],
+  },
+  volvo: {
+    numbers:
+      'Ponad 2 000 nowych obserwatorów na Facebooku dla dwóch salonów Volvo.',
+    metrics: [
+      { label: 'Volvo Car Warszawa', value: '+184' },
+      { label: 'Dom Volvo', value: '+97' },
+    ],
+  },
+} satisfies ClientCopy
 
 // —— Why that works ————————————————————————————————————————————————————————
 

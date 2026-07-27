@@ -39,6 +39,7 @@ export default function EnHomePage() {
             clients={en.clients}
             heading={en.clientsHeading}
             cardCta={en.clientCardCta}
+            caseStudyBase="/en/case-studies"
           />
         </div>
         {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}

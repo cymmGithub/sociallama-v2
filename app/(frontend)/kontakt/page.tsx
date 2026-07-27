@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { BrandBelt } from '@/components/ui/brand-belt'
+import { CLIENT_ROSTER } from '@/lib/content/clients'
 import { contactMeta } from '@/lib/content/contact'
-import { clients } from '@/lib/content/home'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { ContactForm } from './contact-form'
 import { ContactHero } from './contact-hero'
@@ -41,7 +41,7 @@ export default function ContactPage() {
             while it's on screen (see components/layout/blur-edge). */}
         <div className={s.brands} data-blur-edge-gate>
           <BrandBelt
-            logos={clients.map((client) => ({
+            logos={CLIENT_ROSTER.map((client) => ({
               name: client.name,
               src: client.logo,
             }))}

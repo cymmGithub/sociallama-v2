@@ -114,134 +114,190 @@ export const clientsHeading =
 
 export const clientCardCta = {
   label: 'Case study',
-  tip: 'waiting for case study :)',
 } satisfies LocalizedHome['clientCardCta']
 
-// Same lorem placeholder as PL — these entries are launch blockers in both
-// locales (real quotes pending).
-const placeholderQuote =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-
-export const clients = [
-  {
-    name: 'Aflofarm',
-    logo: '/assets/clients/aflofarm.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Aflofarm',
-    },
+// English belt copy. Same keys as the Polish set — `LocalizedHome['clients']`
+// makes a missing brand a build error rather than a blank card. Figures are
+// authored for the English reader rather than translated line-for-line: compact
+// M/k forms and comma grouping, matching the numbers elsewhere in this locale.
+export const clients = {
+  'a1-karting': {
+    numbers: '3.7M Facebook impressions and content interactions up 397%.',
+    metrics: [
+      { label: 'Views · TikTok', value: '767k' },
+      { label: 'Views · Instagram', value: '552.1k' },
+      { label: 'Link clicks · Facebook', value: '34,373' },
+    ],
   },
-  {
-    name: 'Aquael',
-    logo: '/assets/clients/aquael.png',
-    caseStudySlug: 'aquael',
-    testimonial: {
-      quote:
-        "Social Lama is an agency that fully meets our expectations. The team's work proved satisfying enough that we decided to expand the collaboration to further projects.",
-      author: 'Beata Nartowska',
-      company: 'Aquael',
-      image: '/assets/testimonial-nartowska.jpg',
-    },
+  asus: {
+    numbers:
+      '44 pieces on ASUS AI features in six weeks — YouTube films and reels with @technokrata.',
+    metrics: [
+      { label: 'AI films · YouTube', value: '4' },
+      { label: 'Reels with @technokrata', value: '5' },
+      { label: 'Posts & animations · Facebook', value: '22' },
+    ],
   },
-  {
-    name: 'Funtronic',
-    logo: '/assets/clients/funtronic.png',
-    testimonial: {
-      quote:
-        'I honestly recommend working with Social Lama. The team understood our needs perfectly and built a fitting communication strategy that they consistently deliver against our goals.',
-      author: 'Piotr Treszczotko',
-      company: 'Funtronic',
-      image: '/assets/testimonial-treszczotko.jpg',
-    },
+  'dolina-charlotty': {
+    numbers: '15.5M Facebook impressions and Instagram views up 1,706%.',
+    metrics: [
+      { label: 'Link clicks · Facebook', value: '99,509' },
+      { label: 'Interactions · Facebook', value: '51,278' },
+      { label: 'New followers · Facebook', value: '4,869' },
+    ],
   },
-  {
-    name: 'Intrum Justitia',
-    logo: '/assets/clients/intrum.png',
-    testimonial: {
-      quote:
-        'Social Lama handled our communication strategy, subject-matter consulting, copywriting, moderation, and graphic design. We recommend working with the Social Lama team.',
-      author: 'Katarzyna Gosiewska',
-      company: 'Intrum Justitia',
-      image: '/assets/testimonial-gosiewska.jpg',
-    },
+  'dynamic-development': {
+    numbers: '3.4M reach on Facebook and 1.2M on Instagram.',
+    metrics: [
+      { label: 'Link clicks · Facebook', value: '45k' },
+      { label: 'Profile visits · Facebook', value: '27k' },
+      { label: 'New followers · Facebook', value: '6,050' },
+    ],
   },
-  {
-    name: 'Kontigo',
-    logo: '/assets/clients/kontigo.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Kontigo',
-    },
+  'ed-invest': {
+    numbers: '2.6M Facebook impressions — up 180% on where we started.',
+    metrics: [
+      { label: 'Link clicks · Instagram', value: '+1,073%' },
+      { label: 'Reach · Instagram', value: '94k' },
+      { label: 'Profile visits · Instagram', value: '1,466' },
+    ],
   },
-  {
-    name: 'Medicover Sport',
-    logo: '/assets/clients/medicover.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Medicover Sport',
-    },
+  engie: {
+    numbers: '264k LinkedIn post impressions and 1,248 new followers.',
+    metrics: [
+      { label: 'Reactions · LinkedIn', value: '5,375' },
+      { label: 'Impressions · Facebook', value: '69.1k' },
+      { label: 'Interactions · Facebook', value: '917' },
+    ],
   },
-  {
-    name: 'Oryginalny Sok',
-    logo: '/assets/clients/oryginalny-sok.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Oryginalny Sok',
-    },
+  'fm-logistics': {
+    numbers:
+      'Over 800k LinkedIn post impressions and 2,111 new followers, all organic.',
+    metrics: [
+      { label: 'Community · LinkedIn', value: '6,894 → 9,005' },
+      { label: 'Reactions · LinkedIn', value: '+10.7k' },
+      { label: 'Video plays · LinkedIn', value: '317,000' },
+    ],
   },
-  {
-    name: 'Press-Service',
-    logo: '/assets/clients/press-service.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Press-Service',
-    },
+  'galeria-rondo-wiatraczna': {
+    numbers:
+      '2.5M impressions each on Facebook and Instagram, plus 2.14M in Google Search.',
+    metrics: [
+      { label: 'Viewers · Facebook', value: '750k' },
+      { label: 'Viewers · Instagram', value: '280k' },
+      { label: 'Clicks · website', value: '26,559' },
+    ],
   },
-  {
-    name: 'Riviera',
-    logo: '/assets/clients/riviera.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Riviera',
-    },
+  imid: {
+    numbers: '825k Facebook impressions and Instagram views up 5,845%.',
+    metrics: [
+      { label: 'Interaction growth · Instagram', value: '+116,200%' },
+      { label: 'Interaction growth · Facebook', value: '+159%' },
+      { label: 'New group members', value: '+273' },
+    ],
   },
-  {
-    name: 'Uniphar',
-    logo: '/assets/clients/uniphar.png',
+  irobot: {
     testimonial: {
       quote:
-        'Creative ideas, striking visuals, interesting solutions tailored to the target audience — all with diligence and full professionalism. I highly recommend Social Lama for projects that need to break the mold.',
-      author: 'Marta Szwat',
-      company: 'Uniphar',
-      image: '/assets/testimonial-szwat.jpg',
+        "For nearly two years we've worked with Social Lama on TikTok and YouTube, and we can wholeheartedly recommend them.",
+      author: 'Małgorzata Radomska',
+      company: 'iRobot Polska',
+      image: '/assets/testimonial-radomska.jpg',
     },
   },
-  {
-    name: 'Worldline',
-    logo: '/assets/clients/worldline.png',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'Worldline',
-    },
+  'julius-meinl': {
+    numbers: '433k Facebook impressions — a 1,380% jump.',
+    metrics: [
+      { label: 'Impressions · LinkedIn', value: '413,408' },
+      { label: 'Interactions · Facebook', value: '4,806' },
+      { label: 'Reach · Instagram', value: '24,179' },
+    ],
   },
-  {
-    name: 'pracuj.pl',
-    logo: '/assets/clients/pracuj.png',
-    caseStudySlug: 'pracuj-pl',
-    testimonial: {
-      quote: placeholderQuote,
-      author: 'Name Surname',
-      company: 'pracuj.pl',
-    },
+  'jw-construction': {
+    numbers: '27k organic LinkedIn impressions and 819 reactions.',
+    metrics: [
+      { label: 'New followers · LinkedIn', value: '186' },
+    ],
   },
-] satisfies LocalizedHome['clients']
+  mercator: {
+    numbers: '4M Facebook post impressions and 542k on Instagram.',
+    metrics: [
+      { label: 'Reactions · Facebook', value: '2,968' },
+      { label: 'Reactions · Instagram', value: '2,820' },
+      { label: 'New followers · Facebook', value: '113' },
+    ],
+  },
+  motointegrator: {
+    numbers:
+      '620% ROAS on the German remarketing campaign, at €0.08 a link click.',
+    metrics: [
+      { label: 'Reach / mo · Facebook', value: '554,320' },
+      { label: 'Comments / mo · Facebook', value: '1,305' },
+      { label: 'Visits / mo · Instagram', value: '1,431' },
+    ],
+  },
+  polomarket: {
+    numbers: '30M video views across the campaign and 128k TikTok likes.',
+    metrics: [
+      { label: 'Fans · Facebook', value: '158,706' },
+      { label: 'Reactions · Facebook', value: '46,370' },
+      { label: 'Comments · TikTok', value: '2,709' },
+    ],
+  },
+  'pracuj-pl': {
+    numbers: '95.4M TikTok views and 52.6k followers.',
+    metrics: [
+      { label: 'Viewers · TikTok', value: '94.8M' },
+      { label: 'Likes · TikTok', value: '104.8k' },
+    ],
+  },
+  'produkty-cukiernicze-brzesc': {
+    numbers: 'Exports up tenfold and daily Facebook reach up 50%.',
+    metrics: [
+      { label: 'Organic reach · Facebook', value: '+52.8%' },
+      { label: 'Post reach · Facebook', value: '368 → 549' },
+    ],
+  },
+  rabkoland: {
+    numbers: 'Nearly 3M YouTube views for one episode filmed at Rabkoland.',
+    metrics: [
+      { label: 'Reach growth · Instagram', value: '+38%' },
+    ],
+  },
+  riviera: {
+    numbers:
+      '306% of the annual reach KPI on TikTok, and over 3M people reached.',
+    metrics: [
+      { label: 'Reach · Instagram', value: '163% of KPI' },
+      { label: 'New followers · Facebook', value: '160% of KPI' },
+      { label: 'Cost per fan · Facebook', value: '−400%' },
+    ],
+  },
+  skrzat: {
+    numbers: "35M TikTok views for the film's release.",
+    metrics: [
+      { label: 'Likes · TikTok', value: '100k' },
+      { label: 'Views · Instagram', value: '4.38M' },
+      { label: 'Views · Facebook', value: '3.46M' },
+    ],
+  },
+  vistula: {
+    numbers:
+      'Almost 3.9M more Instagram profile views and 1,615 new followers.',
+    metrics: [
+      { label: 'New followers · Facebook', value: '+794' },
+      { label: 'Impression growth · Facebook', value: '+142,534' },
+      { label: 'Impression growth · Instagram', value: '+93,937' },
+    ],
+  },
+  volvo: {
+    numbers: 'Over 2,000 new Facebook followers across both Volvo showrooms.',
+    metrics: [
+      { label: 'Volvo Car Warszawa', value: '+184' },
+      { label: 'Dom Volvo', value: '+97' },
+    ],
+  },
+} satisfies LocalizedHome['clients']
 
 // —— Why that works ————————————————————————————————————————————————————————
 

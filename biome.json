@@ -21,6 +21,7 @@
       "!**/.next",
       "!**/dist",
       "!**/public",
+      "!assets-src",
       "!.github",
       "!.vercel",
       "!pnpm-lock.yaml",

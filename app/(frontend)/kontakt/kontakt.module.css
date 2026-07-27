@@ -359,12 +359,19 @@
 /* —— Brand belt (dark variant) ———————————————————————————————————————————— */
 
 /* BrandBelt reads these on the ground: fade the edges into the near-black
-   canvas, and force the client logo PNGs (drawn for the sand band) to white
-   at rest — no heading, no hover cards (user decision 2026-07-17). */
+   canvas, and lift the client logo PNGs (drawn for the sand band) so they read
+   on it — no heading, no hover cards (user decision 2026-07-17).
+
+   Inverting a grayscale rather than a flat `brightness(0) invert(1)`: the latter
+   pushes every opaque pixel to white, which erases the inner text of any mark
+   whose knockout is painted rather than transparent — Burger King, pracuj.pl and
+   Rabkoland all collapsed into white blobs. Inverting the luminance keeps that
+   internal contrast, at the cost of a belt that is tonally varied rather than
+   uniformly white (user decision 2026-07-27). */
 .brands {
   padding-block: clamp(2.5rem, 5vw, 70px);
   --belt-edge: var(--ground);
-  --belt-logo-filter: brightness(0) invert(1);
+  --belt-logo-filter: grayscale(1) invert(1);
   --belt-logo-opacity: 0.85;
 }
 

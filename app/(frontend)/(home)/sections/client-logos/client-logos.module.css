@@ -66,9 +66,21 @@
   height: 44px;
   object-fit: contain;
   /* Reference treatment: muted grayscale at rest on the sand band; the brand
-     colors reveal only on hover (no chip — colors are legible on sand). */
-  filter: grayscale(1);
-  opacity: 0.55;
+     colors reveal only on hover (no chip — colors are legible on sand).
+
+     The brightness step is where the resting contrast floor lives. At rest the
+     logos are grayscaled, so legibility here is a luminance problem and colour
+     is discarded — which makes a uniform CSS filter the right place for it, and
+     it needs no per-logo hook precisely because grayscale already flattened
+     everything. Baking the same correction into the PNGs instead would pay for
+     a resting problem with a hover cost: the darkened ink is what hover reveals,
+     so Burger King's orange read as mud. Only ink too light for this filter to
+     reach (Mercator, POLOmarket, Rabkoland, all near-white) is still corrected
+     in the asset — see LIGHT_INK_LUM in scripts/client-logos/pipeline.py. */
+  filter: grayscale(1) brightness(0.8);
+  /* Raised from 0.55: the logos are now normalised by optical ink mass, so the
+     lighter marks need the extra opacity to read against the sand. */
+  opacity: 0.75;
   transition:
     opacity var(--duration) var(--ease-out-expo),
     filter var(--duration) var(--ease-out-expo);
@@ -84,8 +96,10 @@
     opacity: 0.2;
   }
 
+  /* `none`, not `grayscale(0)`: the resting brightness has to lift too, or the
+     revealed brand colour stays dimmed. */
   .item:hover .logo {
-    filter: grayscale(0);
+    filter: none;
     opacity: 1;
   }
 }
@@ -98,7 +112,9 @@
   /* --shift (set from JS on mouseenter) nudges edge cards back inside the
      viewport; the caret below counter-shifts to stay over the logo. */
   transform: translate(calc(-50% + var(--shift, 0px)), 10px);
-  width: min(400px, 82vw);
+  /* Widened from 400px for the numbers card's three metric columns — at 400 each
+     column got ~105px and every label wrapped to three lines. */
+  width: min(480px, 86vw);
   background-color: var(--color-cream);
   color: var(--color-ink);
   /* The marquee track sets `white-space: nowrap` (and this repo assigns fonts
@@ -159,6 +175,58 @@
 .quote {
   font-size: 0.9rem;
   line-height: 1.55;
+}
+
+/* Numbers card body: the figure sentence leads, the metric rows below carry the
+   supporting numbers. No author footer, so these two hold the card. */
+.numbers {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Supporting figures, as a strip of stat blocks rather than label/value rows:
+   the labels run 20-30 characters and a two-column row either wrapped them
+   mid-phrase or squeezed the value. Columns give each label its own width and
+   let it wrap under its own number. `auto-fit` handles the thin studies, where
+   only one or two metrics were reported. */
+.metrics {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.9rem;
+}
+
+/* `order` on the value rather than `column-reverse`: reversing packs each block
+   to the bottom, so a label that fits one line pushed its figure down out of
+   line with its neighbours. Ordering keeps the DOM's dt-before-dd while the
+   figures align along the top, which is what the eye scans. */
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.metric dd {
+  order: -1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric dt {
+  font-size: 0.68rem;
+  line-height: 1.3;
+  text-wrap: pretty;
+  color: color-mix(in srgb, var(--color-ink) 58%, transparent);
 }
 
 /* Author footer: portrait (or initials placeholder) beside the name. The
@@ -263,45 +331,4 @@
 .cta:focus-visible {
   outline: 2px solid var(--color-plum);
   outline-offset: 2px;
-}
-
-/* Click feedback: the CTA navigates nowhere yet — a small ink bubble answers
-   instead ("waiting for case study :)"), auto-hidden by the component. */
-.tip {
-  position: absolute;
-  bottom: calc(100% + 12px);
-  left: 50%;
-  translate: -50% 6px;
-  background: var(--color-ink);
-  color: var(--color-cream);
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  padding: 0.5em 1em;
-  border-radius: 8px;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition:
-    opacity 220ms var(--ease-out-expo),
-    translate 220ms var(--ease-out-expo),
-    visibility 220ms;
-}
-
-.tip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: var(--color-ink);
-}
-
-.tip[data-show="true"] {
-  opacity: 1;
-  visibility: visible;
-  translate: -50% 0;
 }

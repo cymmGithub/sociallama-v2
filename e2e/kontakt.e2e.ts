@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
+import { CLIENT_ROSTER } from '../lib/content/clients'
 import { contactForm, contactMetrics } from '../lib/content/contact'
-import { clients } from '../lib/content/home'
 import { colors, themes } from '../lib/styles/colors'
 import {
   collectPageErrors,
@@ -114,8 +114,8 @@ test.describe('Kontakt page', () => {
     await expect(page.locator('button[aria-pressed]')).toHaveCount(5)
     // Brand belt: plain scrolling logos, no heading. The aria-hidden marquee
     // clones drop out of the a11y tree, so this matches the one live logo.
-    const firstClient = clients[0]
-    if (!firstClient) throw new Error('clients fixture is empty')
+    const firstClient = CLIENT_ROSTER[0]
+    if (!firstClient) throw new Error('client roster is empty')
     await expect(page.getByRole('img', { name: firstClient.name })).toBeVisible(
       HYDRATED
     )

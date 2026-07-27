@@ -2,10 +2,10 @@
 
 import { useMediaQuery } from 'hamo'
 import { ArrowRight } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
+import { CLIENT_ROSTER, type ClientCopy } from '@/lib/content/clients'
 import {
   clientCardCta as clientCardCtaDefault,
   clients as clientsDefault,
@@ -17,9 +17,6 @@ import s from './client-logos.module.css'
 /* Keep the hover card on screen: cards are centred on their logo, so near the
    viewport edges we nudge them back inside (the caret stays on the logo). */
 const EDGE_PAD = 16
-
-/* How long the "waiting for case study" bubble stays up after a CTA click. */
-const TIP_MS = 2000
 
 /* Initials for the plum placeholder circle when a portrait hasn't been
    delivered — "Imię Nazwisko" → "IN". */
@@ -49,34 +46,19 @@ export function ClientLogos({
   clients = clientsDefault,
   heading = clientsHeadingDefault,
   cardCta = clientCardCtaDefault,
+  caseStudyBase = '/case-studies',
 }: {
-  clients?: LocalizedHome['clients']
+  /** Per-locale card copy, keyed by roster key. The roster itself is shared. */
+  clients?: ClientCopy
   heading?: LocalizedHome['clientsHeading']
   cardCta?: LocalizedHome['clientCardCta']
+  /** Case-study route prefix for the current locale. */
+  caseStudyBase?: string
 }) {
   // Marquee's pauseOnHover reacts to mouseenter, which touch taps emulate —
   // gate it to mouse-like pointers so touch keeps the plain scrolling belt
   // (the spotlight/card CSS is gated by the same media query).
   const finePointer = useMediaQuery('(hover: hover) and (pointer: fine)')
-
-  // Which client's "waiting for case study" bubble is up. Keyed by name, so
-  // the aria-hidden marquee clone mirrors the state — invisible in practice
-  // (the clone is a belt-width away) and cheaper than per-node state.
-  const [tipFor, setTipFor] = useState<string | null>(null)
-  const tipTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const showTip = useCallback((name: string) => {
-    setTipFor(name)
-    if (tipTimer.current) clearTimeout(tipTimer.current)
-    tipTimer.current = setTimeout(() => setTipFor(null), TIP_MS)
-  }, [])
-
-  useEffect(
-    () => () => {
-      if (tipTimer.current) clearTimeout(tipTimer.current)
-    },
-    []
-  )
 
   return (
     // data-blur-edge-gate: the viewport-bottom progressive blur stays hidden
@@ -93,91 +75,97 @@ export function ClientLogos({
         pauseOnHover={finePointer === true}
       >
         <ul className={s.track}>
-          {clients.map((client) => (
-            <li
-              key={client.name}
-              className={s.item}
-              onMouseEnter={keepCardOnScreen}
-            >
-              <Image
-                src={client.logo}
-                alt={client.name}
-                width={180}
-                height={56}
-                objectFit="contain"
-                className={s.logo}
-              />
-              {client.testimonial && (
-                // Interactive popover, not a tooltip (it holds a button): the
-                // ::before bridge in the CSS spans the logo↔card gap so the
-                // cursor can travel up to the CTA without the card closing.
-                <div className={s.card}>
-                  <p className={s.quote}>„{client.testimonial.quote}”</p>
-                  <div className={s.foot}>
-                    {client.testimonial.image ? (
-                      <Image
-                        src={client.testimonial.image}
-                        alt=""
-                        width={88}
-                        height={88}
-                        className={s.cardAvatar}
-                      />
+          {CLIENT_ROSTER.map((client) => {
+            const copy = clients[client.key]
+            // Three card states, derived from the copy rather than a flag: a
+            // testimonial opens a quote card, a figure sentence opens a numbers
+            // card, and a brand with neither is a bare logo with no card.
+            const testimonial = copy?.testimonial
+            const numbers = testimonial ? undefined : copy?.numbers
+            return (
+              <li
+                key={client.key}
+                className={s.item}
+                onMouseEnter={keepCardOnScreen}
+              >
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  width={180}
+                  height={56}
+                  objectFit="contain"
+                  className={s.logo}
+                />
+                {(testimonial || numbers) && (
+                  // Interactive popover, not a tooltip (it holds a link): the
+                  // ::before bridge in the CSS spans the logo↔card gap so the
+                  // cursor can travel up to the CTA without the card closing.
+                  <div className={s.card}>
+                    {testimonial ? (
+                      <>
+                        <p className={s.quote}>„{testimonial.quote}”</p>
+                        <div className={s.foot}>
+                          {testimonial.image ? (
+                            <Image
+                              src={testimonial.image}
+                              alt=""
+                              width={88}
+                              height={88}
+                              className={s.cardAvatar}
+                            />
+                          ) : (
+                            <span
+                              className={`${s.cardAvatar} ${s.cardAvatarPh}`}
+                              aria-hidden
+                            >
+                              {initialsOf(testimonial.author)}
+                            </span>
+                          )}
+                          <p className={s.author}>
+                            <strong>{testimonial.author}</strong>
+                            <span>{testimonial.company}</span>
+                          </p>
+                        </div>
+                      </>
                     ) : (
-                      <span
-                        className={`${s.cardAvatar} ${s.cardAvatarPh}`}
-                        aria-hidden
-                      >
-                        {initialsOf(client.testimonial.author)}
-                      </span>
+                      // Numbers card: the sentence leads with the headline
+                      // figure, the rows below add the supporting ones. No
+                      // author footer — there is nobody to attribute it to.
+                      <>
+                        <p className={s.numbers}>{numbers}</p>
+                        {copy?.metrics && copy.metrics.length > 0 && (
+                          <dl className={s.metrics}>
+                            {copy.metrics.map((metric) => (
+                              <div className={s.metric} key={metric.label}>
+                                <dt>{metric.label}</dt>
+                                <dd>{metric.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        )}
+                      </>
                     )}
-                    <p className={s.author}>
-                      <strong>{client.testimonial.author}</strong>
-                      <span>{client.testimonial.company}</span>
-                    </p>
-                  </div>
-                  <div className={s.ctaRow}>
-                    <span className={s.ctaWrap}>
-                      {client.caseStudySlug ? (
-                        // Real destination exists — link through to the study.
-                        <Link
-                          href={`/case-studies/${client.caseStudySlug}`}
-                          className={s.cta}
-                        >
-                          {cardCta.label}
-                          <ArrowRight
-                            className={s.ctaIcon}
-                            aria-hidden="true"
-                          />
-                        </Link>
-                      ) : (
-                        // No study yet — the button answers with a playful tip.
-                        <>
-                          <span
-                            className={s.tip}
-                            data-show={tipFor === client.name}
-                            role="status"
-                          >
-                            {cardCta.tip}
-                          </span>
-                          <button
-                            type="button"
+                    {client.caseStudySlug && (
+                      <div className={s.ctaRow}>
+                        <span className={s.ctaWrap}>
+                          <Link
+                            href={`${caseStudyBase}/${client.caseStudySlug}`}
                             className={s.cta}
-                            onClick={() => showTip(client.name)}
                           >
                             {cardCta.label}
                             <ArrowRight
                               className={s.ctaIcon}
                               aria-hidden="true"
                             />
-                          </button>
-                        </>
-                      )}
-                    </span>
+                          </Link>
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
-            </li>
-          ))}
+                )}
+              </li>
+            )
+          })}
         </ul>
       </Marquee>
     </section>
