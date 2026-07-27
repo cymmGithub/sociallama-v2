@@ -268,7 +268,7 @@ async function findPublishedCaseStudySlugs(): Promise<string[]> {
   return result.docs.map((doc) => doc.slug)
 }
 
-/** Published case studies, newest first, for the /case-studies listing. */
+/** Published case studies, in the manual admin order, for the listing. */
 async function findCaseStudies(locale: Locale = 'pl'): Promise<CaseStudy[]> {
   'use cache'
   cacheTag('case-studies')
@@ -278,7 +278,8 @@ async function findCaseStudies(locale: Locale = 'pl'): Promise<CaseStudy[]> {
   const result = await payload.find({
     collection: 'case-studies',
     where: PUBLISHED,
-    sort: '-publishedAt',
+    // `_order` is not localized, so PL and EN list the portfolio identically.
+    sort: '_order',
     limit: 0,
     pagination: false,
     depth: 2,

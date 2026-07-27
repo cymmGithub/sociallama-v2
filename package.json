@@ -22,6 +22,7 @@
     "payload:seed:case-studies": "bun ./lib/payload/seed-case-studies.ts",
     "payload:import:case-study": "bun ./lib/payload/import-case-study.ts",
     "payload:publish:case-studies": "bun ./lib/payload/publish-case-studies.ts",
+    "payload:order:case-studies": "bun ./lib/payload/order-case-studies.ts",
     "payload:seed:platforms": "bun ./lib/payload/seed-social-platforms.ts",
     "payload:seed:authors": "bun ./lib/payload/seed-authors.ts",
     "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",

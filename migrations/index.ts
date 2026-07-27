@@ -5,6 +5,7 @@ import * as migration_20260725_190439_remove_case_study_period from './20260725_
 import * as migration_20260726_075219_add_authors from './20260726_075219_add_authors';
 import * as migration_20260726_212614_add_author_role from './20260726_212614_add_author_role';
 import * as migration_20260726_220833_add_blog_hub from './20260726_220833_add_blog_hub';
+import * as migration_20260727_212116_add_case_study_order from './20260727_212116_add_case_study_order';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260726_220833_add_blog_hub.up,
     down: migration_20260726_220833_add_blog_hub.down,
-    name: '20260726_220833_add_blog_hub'
+    name: '20260726_220833_add_blog_hub',
+  },
+  {
+    up: migration_20260727_212116_add_case_study_order.up,
+    down: migration_20260727_212116_add_case_study_order.down,
+    name: '20260727_212116_add_case_study_order'
   },
 ];

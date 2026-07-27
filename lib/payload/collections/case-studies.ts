@@ -25,11 +25,31 @@ export const caseStudies: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'publishedAt', '_status'],
     group: 'Treść',
+    // Drag-and-drop reordering only works within one page of the list view, so
+    // the whole roster has to fit on it.
+    pagination: {
+      defaultLimit: 50,
+    },
     preview: (doc) =>
       typeof doc?.slug === 'string' && doc.slug.length > 0
         ? `/api/preview?path=${encodeURIComponent(`/case-studies/${doc.slug}`)}`
         : null,
   },
+  /**
+   * Manual running order, set by dragging rows in the admin list. The listing
+   * at /case-studies renders this order verbatim, so it is the editorial
+   * ranking of the portfolio — the strongest brands lead.
+   *
+   * It replaces a `-publishedAt` sort that never meant anything: the bulk
+   * import left every study stamped with the minute the script wrote it, so
+   * the page was ordered by import sequence. `publishedAt` still feeds
+   * `datePublished` in the JSON-LD and is otherwise unused.
+   *
+   * Payload stores this as a hidden `_order` fractional index, so a drag
+   * rewrites one row rather than renumbering the rest.
+   */
+  orderable: true,
+  defaultSort: '_order',
   versions: {
     drafts: {
       validate: true,

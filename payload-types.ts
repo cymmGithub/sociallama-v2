@@ -283,6 +283,7 @@ export interface Media {
  */
 export interface CaseStudy {
   id: number;
+  _order?: string | null;
   title: string;
   /**
    * Adres case study: sociallama.pl/case-studies/{slug}. Małe litery, cyfry i myślniki.
@@ -576,6 +577,7 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "case-studies_select".
  */
 export interface CaseStudiesSelect<T extends boolean = true> {
+  _order?: T;
   title?: T;
   slug?: T;
   publishedAt?: T;
