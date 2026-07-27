@@ -189,6 +189,13 @@ for (const { slug, filePath, stem } of logos) {
     continue
   }
   const client = (study as { client: { name: string } }).client
+  // The same clear-then-write the update branch does, for the same reason: the
+  // Blob adapter refuses to overwrite. It is needed on this path too because dev
+  // and prod share one store, so a dev run of this script has already written
+  // this exact key — the create fails even though no media ROW owns the name.
+  // The identical bytes go straight back to the same deterministic key, so a dev
+  // row pointing at it keeps resolving.
+  await deleteStaleBlobs(filename)
   const media = await payload.create({
     collection: 'media',
     filePath,
