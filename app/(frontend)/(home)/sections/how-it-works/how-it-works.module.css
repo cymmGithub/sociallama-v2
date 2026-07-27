@@ -73,6 +73,8 @@
 /* Plum stage panel (Mock B, user decision 2026-07-14): steps and progress sit
    on a rounded plum gradient with an orange glow and grain — the same backdrop
    language as the services stage above, so the chapter reads as one system.
+   Also duplicated by why-that-works.module.css (.stage) and, off the homepage,
+   case-studies.module.css (.cardMedia); keep the four in sync by hand.
    Absolute palette tokens (plum/orange/cream/ink) keep the island theme-proof. */
 .stage {
   position: relative;

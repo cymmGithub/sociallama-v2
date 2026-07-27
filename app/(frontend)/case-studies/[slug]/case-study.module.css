@@ -49,20 +49,19 @@
   flex-wrap: wrap;
 }
 
+/* Same fixed slot as the listing card — see .cardLogo in
+   case-studies.module.css for why the box must keep the emitted canvas's
+   280:72 aspect ratio. The corner-rounding that used to sit here is gone with
+   the backgrounds it disguised: the marks are transparent monochrome now, so
+   there is no tile left to pass off as a deliberate lockup. */
 .clientLogo {
-  position: relative;
-  width: auto;
-  height: 2.25rem;
-  /* 11 of the imported client logos are dark or coloured brand tiles whose
-     light text can't be keyed out — rounding the tile makes them read as a
-     deliberate lockup rather than an unremoved background. Transparent logos
-     are unaffected. */
-  border-radius: 0.35rem;
-  overflow: hidden;
+  display: block;
+  width: 140px;
+  height: 36px;
 }
 
 .clientLogo img {
-  width: auto;
+  width: 100%;
   height: 100%;
   object-fit: contain;
 }

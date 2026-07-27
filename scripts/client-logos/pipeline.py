@@ -1,18 +1,32 @@
 #!/usr/bin/env python3
-"""Build the homepage client-belt logos to a single visual contract.
+"""Build the client logos to their visual contracts.
 
-    python3 scripts/client-logos/pipeline.py
+    python3 scripts/client-logos/pipeline.py                # both passes
+    python3 scripts/client-logos/pipeline.py --belt         # homepage belt only
+    python3 scripts/client-logos/pipeline.py --case-studies # card logos only
 
-Reads the per-brand source chosen in BRANDS below (repository case-study assets
-where they are already clean, the staged gDrive set otherwise) and writes
-`public/assets/clients/<brand>.png` plus a review contact sheet.
+Two consumers, two contracts, one set of machinery:
+
+  belt         31 roster brands -> public/assets/clients/<brand>.png
+               Full colour, centred. Hover reveals the brand's own colour, so
+               ink is never darkened beyond the resting contrast floor.
+
+  case studies 48 published studies -> public/case-studies/<slug>/<slug>-logo-mono.png
+               Flat black, left-aligned, for the white listing card and the
+               detail page. Colour is deliberately discarded — the cards are a
+               scanning surface, not a hover surface, so the set reads as one
+               system rather than as confetti.
+
+Both passes share the de-matting, cropping, optical-mass normalisation and
+contact-sheet review below. What differs is the ink treatment and the placement,
+and those are the only two things either pass overrides.
 
 Why an offline script rather than runtime work: the belt is above the fold on
 every homepage render and the inputs only change when a client is added, so the
 de-matting/normalisation/contrast judgement is baked into committed PNGs and
 reviewed in the diff.
 
-Requires: pillow, numpy, scipy, and inkscape (for the one SVG source).
+Requires: pillow, numpy, scipy, and inkscape (for the SVG sources).
 """
 
 import os
@@ -337,7 +351,7 @@ def contact_sheet(marks, path):
     sheet.save(path)
 
 
-def main():
+def build_belt():
     os.makedirs(OUT, exist_ok=True)
     missing = [src for _, _, src, _, _ in BRANDS if not os.path.exists(src)]
     if missing:
@@ -392,6 +406,208 @@ def main():
             f"{'yes' if dark else '-':<10}{correction:<10.2f}{slug or '-'}"
         )
     print(f"\n{len(rows)} logos -> {OUT}\ncontact sheet -> {sheet_path}")
+
+
+# ── Case-study card logos ────────────────────────────────────────────────────
+#
+# The listing card and the detail page render the client's mark as flat black on
+# a white surface. That is an asset problem, not a CSS one: 19 of the 48 sources
+# carry a baked-in background, and `filter: grayscale(1) brightness(0)` over
+# those blackens the plate along with the mark, so they render as solid black
+# rectangles. `mix-blend-mode: multiply` on a white card rescues the 9
+# light-boxed ones for free and does nothing for the 8 dark ones — and those are
+# the worst offenders. No CSS substitutes for the re-cut.
+
+CS_SRC = os.path.join(ROOT, "public", "case-studies")
+
+# Canvas for the card slot, at 2x the rendered box like the belt. Same reason a
+# fixed canvas is required here as there: optical mass is baked into the file,
+# and a tightly trimmed export would undo it. The CSS box MUST carry this same
+# aspect ratio, or `object-fit: contain` re-fits the mark and the normalisation
+# is lost — see .cardLogo in case-studies.module.css.
+CS_BOX_W, CS_BOX_H = 280, 72
+CS_PAD = 4
+CS_INNER_W, CS_INNER_H = CS_BOX_W - 2 * CS_PAD, CS_BOX_H - 2 * CS_PAD
+
+# Ink normalisation, as a fraction of the maximum possible distance from the
+# background colour. FLOOR clips keying residue; CEIL_MIN stops a genuinely
+# low-contrast source from being stretched into noise.
+CS_INK_FLOOR, CS_INK_CEIL_MIN, CS_INK_CEIL_PCT = 0.10, 0.35, 99.5
+
+# Skibooking is the only study with no logo asset at all, so its card falls back
+# to the client name as text. The source is a vector and cannot be uploaded as
+# one — Payload's media collection sniffs SVG as `application/xml`, which is not
+# in its allowed mime list — so rasterising here is mandatory, not a preference.
+CS_EXTRA_SOURCES = {"skibooking": gd("skibooking.svg")}
+
+# Belt-only crop overrides that must NOT carry over. `gap`/`band`/`keep` drop
+# secondary lines that are unreadable at the belt's 44px logo height; the card
+# slot is taller and shows the full lockup. Source choice does carry over — that
+# is a judgement about which file is undamaged, which holds for any consumer.
+CS_INHERIT_OPTS = {"tol"}
+
+
+def cs_sources():
+    """slug -> (source path, opts), for every published case study.
+
+    Source precedence follows the belt's: BRANDS already records, per brand and
+    with the reasoning, which file is the undamaged one. Ten case studies gain a
+    better source that way — notably `imid-cmv`, whose repository asset is a crop
+    out of a larger layout carrying a watermark arc and the tops of a maroon
+    heading, and `galeria-rondo-wiatraczna`, whose lower arc is cut off in the
+    artwork itself. Neither is recoverable by de-matting.
+    """
+    chosen = {slug: (src, opts) for _, _, src, slug, opts in BRANDS if slug}
+    out = {}
+    for slug in sorted(os.listdir(CS_SRC)):
+        if not os.path.isdir(os.path.join(CS_SRC, slug)):
+            continue
+        if slug in CS_EXTRA_SOURCES:
+            out[slug] = (CS_EXTRA_SOURCES[slug], {})
+        elif slug in chosen:
+            src, opts = chosen[slug]
+            out[slug] = (src, {k: v for k, v in opts.items() if k in CS_INHERIT_OPTS})
+        elif os.path.exists(repo(slug)):
+            out[slug] = (repo(slug), {})
+    return out
+
+
+def mono_ink(im, plate):
+    """Flatten a de-matted mark to black, with ink weight = distance from the
+    background colour.
+
+    Alpha alone is the wrong shape. A logo with knocked-out interior detail —
+    ozgasl's car, mmhygienic's bottle, bioagris's leaf — draws that detail as
+    light *opaque* pixels inside a filled shape, not as transparency, so painting
+    the alpha channel black collapses all three into silhouettes.
+
+    Two more rules were tried and each fails while looking correct on a subset.
+    Keying on darkness ghosts every mid-tone brand colour (ENGIE blue, FoodSaver
+    green, Mazurska gold all render as faint grey). Keying on `max(darkness,
+    chroma)` fixes the mid-tones and then turns the red-tile logos into solid
+    black squares, because the *background* is itself saturated and chroma marks
+    the whole field as ink.
+
+    What works is one idea: ink is whatever is FAR from the background — not
+    dark, not saturated, far. `dematte` has already removed the plate and told us
+    its colour, so the same measure that cleared the border also clears the
+    knockouts inside the glyphs. Where no plate was found the source has real
+    transparency, and the background is then the white card it will sit on.
+
+    Distance is measured on the RAW rgb and scaled by alpha rather than on a
+    white-flattened image: flattening a soft-alpha mark washes it to mid-grey,
+    which keys out as half-ink. Alpha carries coverage, the stored rgb carries
+    colour, and keeping them apart is what brings ASUS back crisp while ozgasl's
+    knockout still falls away.
+    """
+    a = np.array(im).astype(np.float32)
+    rgb, alpha = a[..., :3] / 255.0, a[..., 3:4] / 255.0
+    bg = np.array(plate, dtype=np.float32) / 255.0 if plate else np.ones(3, np.float32)
+
+    dist = np.linalg.norm(rgb - bg, axis=-1, keepdims=True) / np.sqrt(3.0)
+    ink = dist * alpha
+    ceil = max(float(np.percentile(ink, CS_INK_CEIL_PCT)), CS_INK_CEIL_MIN)
+    ink = np.clip((ink - CS_INK_FLOOR) / (ceil - CS_INK_FLOOR), 0, 1)
+
+    out = np.zeros_like(a)  # black rgb, ink as alpha
+    out[..., 3] = (ink[..., 0] * 255).round()
+    return Image.fromarray(out.astype(np.uint8), "RGBA")
+
+
+def place_left(im, scale):
+    """Scale the mark and set it against the canvas's left edge, centred
+    vertically. The card aligns its logo to the body's text column, so the mark
+    has to start at a predictable x — a centred canvas would inset each mark by a
+    different amount and the column would visibly wander down the grid."""
+    w = max(1, round(im.width * scale))
+    h = max(1, round(im.height * scale))
+    canvas = Image.new("RGBA", (CS_BOX_W, CS_BOX_H), (0, 0, 0, 0))
+    canvas.alpha_composite(im.resize((w, h), Image.LANCZOS), (CS_PAD, (CS_BOX_H - h) // 2))
+    return canvas
+
+
+def cs_contact_sheet(marks, path):
+    """Every emitted mark on the card's actual white surface, at full opacity.
+
+    Reviewing all 48 is the point. This change's predecessor shipped a visual
+    regression precisely because a three-logo spot-check stood in for a full-set
+    check, and a mark that keys to a ghost or keeps a plate shows up here and
+    nowhere else.
+    """
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 13)
+    cols = 4
+    cw, ch = CS_BOX_W + 40, CS_BOX_H + 46
+    rows = -(-len(marks) // cols)
+    sheet = Image.new("RGB", (cols * cw, rows * ch + 36), "white")
+    draw = ImageDraw.Draw(sheet)
+    draw.text((20, 12), f"case-study cards — {len(marks)} logos, flat black on the white card surface", fill=(40, 36, 32), font=font)
+    for i, (slug, mark) in enumerate(marks):
+        x = (i % cols) * cw + 20
+        y = (i // cols) * ch + 44
+        draw.rectangle([x, y, x + CS_BOX_W, y + CS_BOX_H], outline=(224, 224, 224))
+        sheet.paste(mark, (x, y), mark)
+        draw.text((x, y + CS_BOX_H + 6), slug, fill=(70, 64, 58), font=font)
+    sheet.save(path)
+
+
+def build_case_studies():
+    sources = cs_sources()
+    missing = [s for s, (src, _) in sources.items() if not os.path.exists(src)]
+    if missing:
+        sys.exit("missing sources:\n  " + "\n  ".join(missing))
+
+    # Pass 1 — de-mat, blacken, trim, then measure.
+    prepared = []
+    for slug, (src, opts) in sources.items():
+        mark = load(src)
+        mark, cut, plate = dematte(mark, opts.get("tol", CONNECT_TOL))
+        mark = trim(mono_ink(mark, plate))
+        if mark.width < 2 or mark.height < 2:
+            sys.exit(f"{slug}: keyed to nothing — re-source it")
+        fit = min(CS_INNER_W / mark.width, CS_INNER_H / mark.height)
+        prepared.append((slug, src, mark, fit, cut))
+
+    # Pass 2 — normalise optical mass against this set's own median, exactly as
+    # the belt does. `object-fit: contain` equalises bounding boxes, not visual
+    # weight, and this set is the extreme case for that: aspect ratios run 0.69
+    # (las-vegans, a portrait crest) to 7.38 (volvo), a 10x spread.
+    masses = {slug: ink_area(mark) * fit**2 for slug, _, mark, fit, _ in prepared}
+    median = float(np.median(list(masses.values())))
+
+    marks, rows = [], []
+    for slug, src, mark, fit, cut in prepared:
+        correction = min(1.0, max(0.5, (median / masses[slug]) ** 0.5))
+        placed = place_left(mark, fit * correction)
+        placed.save(os.path.join(CS_SRC, slug, f"{slug}-logo-mono.png"))
+        marks.append((slug, placed))
+        rows.append((slug, src, mark.size, cut, correction))
+
+    os.makedirs(WORK, exist_ok=True)
+    sheet_path = os.path.join(WORK, "case-study-contact-sheet.png")
+    cs_contact_sheet(marks, sheet_path)
+
+    print(f"{'case study':<32}{'trimmed':<12}{'de-matted':<11}{'mass corr':<11}{'source'}")
+    print("-" * 100)
+    for slug, src, size, cut, correction in rows:
+        where = "drive" if src.startswith(RAW) else "repo"
+        print(
+            f"{slug:<32}{f'{size[0]}x{size[1]}':<12}{'yes' if cut else '-':<11}"
+            f"{correction:<11.2f}{where}"
+        )
+    print(f"\n{len(rows)} logos -> {CS_SRC}/<slug>/<slug>-logo-mono.png\ncontact sheet -> {sheet_path}")
+
+
+def main():
+    belt = "--belt" in sys.argv
+    studies = "--case-studies" in sys.argv
+    run_belt = belt or not studies
+    run_studies = studies or not belt
+    if run_belt:
+        build_belt()
+    if run_studies:
+        if run_belt:
+            print()
+        build_case_studies()
 
 
 if __name__ == "__main__":

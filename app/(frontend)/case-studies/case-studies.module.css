@@ -42,11 +42,28 @@
 
 /* Card — same language as the blog listing card */
 .card {
+  /* A light island inside the cream chapter. The client marks ship as flat
+     black (scripts/client-logos/pipeline.py --case-studies), so the card has to
+     be light enough for them to read — but a hardcoded #fff only fixes the
+     ground and leaves everything derived from the theme pointing at the old
+     one. Re-pointing the palette inside the card instead makes --surface,
+     --line and --line-strong recompute on their own, since all three are
+     color-mix expressions over these two.
+
+     All three are set, not just --color-primary: under a plum chapter
+     --color-secondary is cream and the body copy would go invisible on white,
+     and --color-contrast is orange, which is too weak on white for the tag and
+     hover accents. Same local-override trick as header.module.css and
+     kontakt.module.css — the house alternative to a new global token. */
+  --color-primary: var(--color-white);
+  --color-secondary: var(--color-ink);
+  --color-contrast: var(--color-plum);
+
   display: flex;
   flex-direction: column;
   border-radius: 18px;
   overflow: hidden;
-  background-color: var(--surface-2);
+  background-color: var(--color-primary);
   border: 1px solid var(--line);
   transition: border-color var(--duration-fast);
 
@@ -57,13 +74,124 @@
   &:hover .cardRead {
     color: var(--color-contrast);
   }
+
+  &:hover .cardReadIcon {
+    transform: translateX(3px);
+  }
 }
 
+/* —— Card stage ——————————————————————————————————————————————————————
+   Plum grain-gradient stage recipe, duplicated per house convention — the same
+   backdrop as services.module.css (.backdrop/.blobOrange/.grain),
+   how-it-works.module.css (.stage) and why-that-works.module.css (.stage).
+   Keep the four modules in sync by hand.
+
+   The covers are 48 unrelated photographs with no shared geometry or grade.
+   Rather than grade them into a family — a full-bleed plum duotone was mocked
+   and rejected, it throws away the client's own colour for something that reads
+   as a filter — the unifier is a repeated frame around authentic content, and
+   the frame is the site's own stage. Nothing here is generated. */
 .cardMedia {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) / 2);
+  padding: clamp(0.75rem, 4%, 1.25rem);
   aspect-ratio: 16 / 10;
-  background-color: var(--surface);
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  /* Pure-noise film grain tile — same data-URI as the sibling stages. */
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  /* Orange glow blob, top-right (services-stage recipe). */
+  &::before {
+    content: "";
+    position: absolute;
+    width: 45%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: -30%;
+    right: -8%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  /* Grain overlay over the whole panel. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    /* 1:1 with the SVG's own 700px canvas and the sibling stages' grain, so
+       every panel carries identical noise density and scale regardless of its
+       own size. `cover` would scale the tile with the card and silently break
+       the match with the homepage — this is fixed on purpose. */
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+
+  /* Lift stage contents above the ::after grain (tree order paints the
+     pseudo-element over the children otherwise). */
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* The client's real photograph, floating on the stage as a framed artefact.
+   Flexes to whatever the metric row leaves, so the composition holds at any
+   card width rather than depending on percentage offsets. */
+.cardArtefact {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--color-plum-dark);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
+  box-shadow: 0 14px 32px -12px rgb(0 0 0 / 0.55);
+}
+
+/* Headline metric — results[0], the editor's own ordering. The card sets
+   --color-secondary to ink for its white body, so the stage has to name its own
+   colours rather than inherit them. */
+.cardMetric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  color: var(--color-cream);
+}
+
+.cardMetricValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.cardMetricLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--color-cream) 68%, transparent);
+  /* One line, always: the labels run from "Reakcje" to "Dzienny zasięg postów",
+     and a wrapping label would take height out of the artefact on some cards
+     and not others. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardBody {
@@ -82,17 +210,25 @@
   color: var(--color-contrast);
 }
 
-/* Brand logo slot — fixed height, width auto so wide wordmarks and compact
-   badges share one left-aligned baseline (mirrors the detail page). */
+/* Brand logo slot — a fixed box the mark is contained inside, matching
+   components/ui/brand-belt rather than the old height-lock. Height-locking is
+   what made the grid read as sloppy: aspect ratios in this set run 0.69
+   (las-vegans, a portrait crest) to 7.38 (volvo), so one shared height put a
+   ~5x spread of optical weight across the cards.
+
+   The box MUST keep the emitted canvas's 280:72 aspect ratio. The mark is
+   already scaled to its optical ink mass and set against the canvas's left edge
+   by scripts/client-logos/pipeline.py --case-studies; at any other ratio
+   `object-fit: contain` re-fits the mark to the box and silently undoes that
+   normalisation. Keep this box and CS_BOX_W/CS_BOX_H in sync by hand. */
 .cardLogo {
   display: block;
-  position: relative;
-  width: auto;
-  height: 1.5rem;
+  width: 140px;
+  height: 36px;
 }
 
 .cardLogo img {
-  width: auto;
+  width: 100%;
   height: 100%;
   object-fit: contain;
 }
@@ -137,10 +273,19 @@
 .cardRead {
   margin-top: auto;
   padding-top: calc(var(--gap) / 2);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   font-weight: 700;
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
   transition: color var(--duration-fast);
+}
+
+/* Nudges on card hover, matching the related-study CTA on the industry pages. */
+.cardReadIcon {
+  flex: 0 0 auto;
+  transition: transform var(--duration-fast);
 }
 
 .empty {

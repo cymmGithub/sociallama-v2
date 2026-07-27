@@ -58,9 +58,12 @@ Both were resolved against interactive mocks built on all 48 real studies (see `
 ## Impact
 
 - **New code**:
-  - `assets-src/case-study-logos/monochrome.py` — the re-cut pipeline.
+  - `assets-src/client-logos/raw/skibooking.svg` — staged vector source.
   - `public/case-studies/*/<slug>-logo-mono.png` — 48 generated assets.
 - **Modified code**:
+  - `scripts/client-logos/pipeline.py` — a `--case-studies` pass alongside the
+    existing belt pass. Originally scoped as a new standalone script; see
+    `design.md` Decision 6 for why it extends the merged pipeline instead.
   - `app/(frontend)/case-studies/case-study-card.tsx` — header composition.
   - `app/(frontend)/case-studies/case-studies.module.css` — logo slot, white card token, stage backdrop.
   - `app/(frontend)/case-studies/[slug]/case-study-article.tsx` + `case-study.module.css` — same logo slot, drop the tile-rounding hack.
@@ -73,9 +76,10 @@ Both were resolved against interactive mocks built on all 48 real studies (see `
 
 | slug | defect | resolution |
 |---|---|---|
-| `adamed` | faint residual box edge | needs the client's vector |
-| `imid-cmv` | ghost of a pink circle below the mark | needs the client's vector |
+| `adamed` | residual plate edge — the source has soft alpha *over* a mid-tone plate, so `dematte` returns it untouched as "already transparent" | needs the client's vector |
+| ~~`imid-cmv`~~ | ~~ghost of a pink circle below the mark~~ | **fixed** — re-sourced from the gDrive file `BRANDS` already selected for the belt |
 | `vobis` | two-tone source: the V renders grey against a black OBIS | needs the client's vector |
+| `kbp` | whole mark reads mid-grey: the source is dark green on black, so its ink is genuinely close to its background | needs the client's vector |
 
 **Verification risk**: this change is entirely visual, and its predecessor shipped a visual regression precisely because a spot-check stood in for a full-set check. Sign-off requires all 48 cards inspected, not a sample — see `tasks.md` §4.
 

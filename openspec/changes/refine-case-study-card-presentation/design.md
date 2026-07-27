@@ -59,6 +59,49 @@ Three directions were mocked. The chosen one puts the real client photograph on 
 
 A full-bleed plum duotone was also mocked and rejected: it discards the client's own colour (Vobis pink, Power Elements green all collapse to plum) for a grade that reads as a filter. Note for anyone revisiting it — the naive implementation (`mix-blend-mode: luminosity` over a plum ground) drags every midtone to hot magenta and looks cheap; a real duotone needs desaturation first, then `multiply` with a warm-to-plum ramp.
 
+## Decision 6 — extend the merged client-logo pipeline, do not add a second one
+
+**Added during implementation.** This change was branched from `04efb81`, before
+`rebuild-client-marquee` merged at `5a727c4`. That change landed
+`scripts/client-logos/pipeline.py` and a `client-logo-assets` spec capability
+covering plate removal, crop-to-primary-mark, optical-mass normalisation and
+contact-sheet review — the same three sub-problems Decisions 2 and 3 above solve
+from scratch. There was **no textual git conflict** between the two branches,
+which is exactly why this nearly shipped as a silent duplicate.
+
+The two contracts genuinely differ and cannot share output files:
+
+| | belt | case-study cards |
+|---|---|---|
+| ink | full colour; hover reveals it | flat black |
+| placement | centred on 280×88 | left-aligned on 280×72 |
+| light ink | darkened to a contrast floor | irrelevant — everything is black |
+
+But the *machinery* is common, so the pipeline gained a `--case-studies` pass
+that reuses `dematte`, `trim`, `load` and `ink_area` untouched and overrides only
+`mono_ink` and `place_left`. Three consequences worth recording:
+
+- **The border-connected flood is better than the ring-uniformity gate** in
+  Decision 2. That gate has a precondition it cannot see: it asks "is there a
+  plate *behind* the mark", which is meaningless for an opaque source that fills
+  its frame. ENGIE and KBP are opaque dark tiles whose ink bleeds to the edge —
+  the gate answered "no background", the whole tile keyed as ink, and the logo
+  came out inverted. Flooding inward from the border has no such blind spot.
+  Decision 2's ink rule survives intact; only its background-existence test is
+  replaced. `FORCE_BAKED` disappears with it.
+- **Optical mass is baked into the asset, not applied in CSS.** Decision 3
+  proposed a per-logo scale factor the card would carry. The merged pipeline
+  already solves this against a fixed canvas, so the data dependency Decision 3
+  flagged as its cost simply does not arise. The constraint this transfers to
+  the CSS is that the slot's aspect ratio must equal the canvas's, or `contain`
+  re-fits the mark and undoes the normalisation.
+- **`BRANDS` already records which source file is undamaged, per brand and with
+  the reasoning.** Inheriting those choices fixes `imid-cmv`, one of the three
+  residual defects, because its repository asset is a crop out of a larger layout
+  carrying a watermark arc. Its belt-height crop overrides (`gap`/`band`/`keep`)
+  are deliberately *not* inherited — they drop secondary lines that are
+  unreadable at 44px, and the card slot is taller.
+
 ## Implementation constraints
 
 - **`background-size: 700px 700px` on the grain tile is load-bearing.** It is fixed so noise density stays identical across panels of different widths. Changing it to `cover` silently breaks the match with the homepage. The source module carries this comment; carry it across.

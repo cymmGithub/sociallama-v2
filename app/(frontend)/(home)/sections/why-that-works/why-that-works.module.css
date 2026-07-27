@@ -69,7 +69,8 @@
 /* —— Team stage ————————————————————————————————————————————————————
    Plum grain-gradient stage recipe, duplicated per house convention — the
    same backdrop as services.module.css (.backdrop/.blobOrange/.grain) and
-   how-it-works.module.css (.stage). Keep the three modules in sync by hand.
+   how-it-works.module.css (.stage) and case-studies.module.css (.cardMedia).
+   Keep the four modules in sync by hand.
    Full-width panel holding the team grid mosaic. */
 .stage {
   position: relative;
