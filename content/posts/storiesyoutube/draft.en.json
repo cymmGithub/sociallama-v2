@@ -1,0 +1,21 @@
+{
+  "source": "storiesyoutube",
+  "postId": 41,
+  "title": "Stories on… YouTube!",
+  "excerpt": "Stories have been taking over social media for a good while now! It started on Snapchat, then showed up in Facebook, Messenger and Instagram.",
+  "metaTitle": "Stories on… YouTube!",
+  "metaDescription": "",
+  "slug": "stories-on-youtube",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "And soon YouTube will get a feature much like it. Who is Reels for? The people who'll get the most out of it are a given creator's fans. Roy Livine, a representative for the service, said it's meant to be a new video format for expressing yourself in a natural, fast way and — most importantly — without having to put the material on your own profile. Worth stressing that the reach of these clips will be far smaller than that of standard videos. Why? They won't be shown on the service's homepage."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "What sets Reels apart from Stories on Instagram or Snapchat? The key difference is that the video won't disappear after a set time. It stays up for as long as the user wants. On top of that, you'll be able to share several stories at once. Will Reels find its fans? For now only a small group of users has the feature, and YouTube itself isn't saying when it will be available."
+    }
+  ]
+}

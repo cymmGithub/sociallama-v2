@@ -1,0 +1,16 @@
+{
+  "source": "zmiana-w-aktualnosciach-na-facebooku",
+  "postId": 35,
+  "title": "A change in Facebook's News Feed!",
+  "excerpt": "Facebook has announced changes to the way the News Feed is displayed.",
+  "metaTitle": "A change in Facebook's News Feed!",
+  "metaDescription": "Facebook has announced changes to the way the News Feed is displayed.",
+  "slug": "facebook-changes-the-news-feed",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Mark Zuckerberg announced a few days ago that a new algorithm will govern what gets picked for news feeds. According to the announcement, the platform intends to go back to the roots it was built on: the idea of connecting people online and letting them share the content they find interesting and absorbing. On that principle, posts from friends are the ones due to appear at the top of the News Feed. The consequence of the change is that content from particular brands or publishers drops into the background, which may come with falling reach. How strong that effect is will depend on a few factors, the kind of content you publish among them. The pages that will feel this change most are certainly the ones sharing content nobody reacts to."
+    }
+  ]
+}

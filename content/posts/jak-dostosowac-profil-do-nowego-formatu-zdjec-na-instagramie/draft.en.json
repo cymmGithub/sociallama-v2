@@ -1,0 +1,81 @@
+{
+  "source": "jak-dostosowac-profil-do-nowego-formatu-zdjec-na-instagramie",
+  "postId": 4,
+  "title": "How to adapt your profile to Instagram's new photo format",
+  "excerpt": "Until recently Instagram meant square photos. That format is what gave user and brand profiles their consistent, tidy look. Now the platform has rolled out a new one – the optimal size for feed posts is a 4:5 ratio (1080 x 1350 px). Why is it worth posting photos in 4:5? A bigger format means more room for content!",
+  "metaTitle": "How to adapt your profile to Instagram's new photo format",
+  "metaDescription": "",
+  "slug": "how-to-adapt-your-profile-to-instagrams-new-photo-format",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Now the platform has rolled out a new format – the optimal size for feed posts is a 4:5 ratio (1080 x 1350 px)."
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "Why is it worth posting photos in 4:5?"
+    },
+    {
+      "index": 2,
+      "parent": "listitem",
+      "text": "A bigger format means more room for content! Photos in a 4:5 ratio take up more of the screen, which pulls your audience's attention."
+    },
+    {
+      "index": 3,
+      "parent": "listitem",
+      "text": "Better visibility in the algorithm. Instagram favors content that fits current trends, so posts in this format can perform better."
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "But what if you care about keeping a consistent, square grid layout on your profile? There's a simple fix that lets you adjust how photos preview without changing their original dimensions."
+    },
+    {
+      "index": 5,
+      "parent": "heading",
+      "text": "Here's how to do it:"
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "1️⃣ Go to your profile feed on Instagram."
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "2️⃣ Tap the photo you want."
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "3️⃣ In the three-dot menu in the top right corner, choose “Adjust preview”."
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "4️⃣ Pick the “Fit” option and you're done!"
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "That way your feed shows square previews with a white or black background (your choice) at the top and bottom:"
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "There's also an option to recrop an existing photo to the new ratio, but if your graphics have been built element by element to fit a square, that route will most likely cut off details that matter."
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "So pick the method that works for you and make sure your content is optimized for both the look and the algorithm. If you care about better post visibility and more reach, publish at 1080 x 1350 px – right now that's the best standard on Instagram."
+    },
+    {
+      "index": 13,
+      "parent": "heading",
+      "text": "Maybe this is a good moment to refresh the content on your profile?"
+    }
+  ]
+}

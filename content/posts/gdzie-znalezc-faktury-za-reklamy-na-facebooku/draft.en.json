@@ -1,0 +1,111 @@
+{
+  "source": "gdzie-znalezc-faktury-za-reklamy-na-facebooku",
+  "postId": 68,
+  "title": "Where do you find your invoices for Facebook ads?",
+  "excerpt": "Some jobs that look simple on paper, and that anyone running Facebook Ads has to do, turn out to eat a lot of time in practice. The problem can be finding the data and the files you actually want. One thing business owners regularly get stuck on is how to download an invoice from Facebook. Where do you find it? See also: Running Facebook Ads campaigns. Before you pick a payment method, check your ad account settings first — add your company details.",
+  "metaTitle": "Where do you find your invoices for Facebook ads?",
+  "metaDescription": "Downloading an invoice from Facebook Ads trips up plenty of business owners. Here is where to find it, and how to get your company details onto it.",
+  "slug": "where-to-find-your-facebook-ads-invoices",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "See also: <a0>Running Facebook Ads campaigns</a0>"
+    },
+    {
+      "index": 1,
+      "parent": "listitem",
+      "text": "Before you pick a payment method, check your ad account settings first — add your company details. Facebook needs them to be able to issue an invoice."
+    },
+    {
+      "index": 2,
+      "parent": "listitem",
+      "text": "Facebook generally issues invoices automatically, once the payments land on the account."
+    },
+    {
+      "index": 3,
+      "parent": "listitem",
+      "text": "You can download the documents after logging in to the ad account — individual invoices are available for the whole life of that account."
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "<b><i>How do you download invoices from Facebook?</i></b>"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Luckily, the job is easier than you might think. Click here: <a0>https://www.facebook.com/ads/manager/billing/transactions/</a0> and log in to your account. You'll get a view much like the one below. As you can see, there are no invoices here at all, and that comes down to the date range set for the transactions on display."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "So change the range to the one you want. One of the options is “Lifetime.” That will show you every transaction made on the ad account since the day it was set up. The invoices for that period are in there."
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "On the right there is an “Action” column — that is where you can download individual invoices as PDFs. Your company details may not appear on them, as in the case below:"
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "Why is that? It means you have to enter your company details — clearly you did not do it earlier. So they never made it onto the document. To be able to count what you spent as a business expense, change your account settings. Click the gear icon, then “Open payment settings.” That is where you enter the company's billing details."
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "Scroll down the page that opens to edit the “Business info” option."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "Enter the correct company details and save them. From then on the invoices will be issued properly. So now you know what a Facebook invoice looks like — but when does it become available to download?"
+    },
+    {
+      "index": 11,
+      "parent": "heading",
+      "text": "<b><i>When does Facebook issue invoices?</i></b>"
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "This social platform issues its accounting documents fully automatically, of course. But Facebook generates an invoice once you have spent a set amount on ads, or on a date it picks itself — so by default these will not be invoices covering “the 1st to the 31st,” but some other time frame. It is worth looking into the payment settings, checking the billing summary and adjusting some of it to suit you."
+    },
+    {
+      "index": 13,
+      "parent": "heading",
+      "text": "Putting Facebook invoices through your books"
+    },
+    {
+      "index": 14,
+      "parent": "paragraph",
+      "text": "Since you used Facebook advertising to promote your business, you can add the document to your deductible business costs. Count the VAT invoice as a cost and you will pay less income tax. Is buying an advertising service like this easy to account for? Your accounting firm should of course be handling it, but if you do your own books, keep the rules for booking this document in mind."
+    },
+    {
+      "index": 15,
+      "parent": "paragraph",
+      "text": "Most often the document carries a Facebook address in Ireland. When you receive a document like that, for VAT purposes it counts as an import of services, and that is how it has to be settled."
+    },
+    {
+      "index": 16,
+      "parent": "paragraph",
+      "text": "Where the business owner is entitled to the VAT deduction, the transaction turns out to be tax-neutral — the output VAT and the input VAT come to the same amount, so in practice there is no need to transfer any VAT to the tax office on account of it."
+    },
+    {
+      "index": 17,
+      "parent": "paragraph",
+      "text": "A VAT invoice like this lowers the business owner's income tax — as long as they are taxed under Poland's progressive scale or the 19% flat tax. Remember that questions about accounting in a business, and not only there, are always worth talking through with an accountant. Bear in mind that the rules change."
+    },
+    {
+      "index": 18,
+      "parent": "paragraph",
+      "text": "We have years of experience running Facebook Ads campaigns. Drop us a line!"
+    },
+    {
+      "index": 19,
+      "parent": "paragraph",
+      "text": "<a0>GET IN TOUCH</a0>"
+    }
+  ]
+}

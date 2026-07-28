@@ -1,0 +1,96 @@
+{
+  "source": "jak-zainstalowac-piksel-facebooka-na-swojej-stronie",
+  "postId": 22,
+  "title": "How to install the Facebook pixel on your website?",
+  "excerpt": "A short step-by-step guide to adding that famous piece of code.",
+  "metaTitle": "How to install the Facebook pixel on your site",
+  "metaDescription": "A short step-by-step guide to adding that famous piece of code to your website, with or without a developer.",
+  "slug": "how-to-install-the-facebook-pixel",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "heading",
+      "text": "What do I need a pixel for?"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "The Facebook pixel is that famous “wizard” that lets us track what users do, target ads better and measure how they perform. With the pixel we can check not only how many people clicked a link, but also how many of them added a product to their cart, filled in a contact form or made a purchase. Sure, as customers we aren't necessarily keen on ads that follow us around, which is why a lot of Poles use an adblocker, but remarketing paired with the right ad creative can work wonders!"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "Examples? Here you go!"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "An ad for a cosmetics store I had browsed without buying anything called me back with the line “Don't you care about beautiful skin anymore? Come back to us and take care of yourself”. Perfectly aimed copy for a woman – after all, which of us doesn't care about looking good and staying healthy?"
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "Another effective way to win a customer's attention through remarketing is to give them a discount on the product they looked at but didn't buy – a discount convinces most people, whatever their gender 😉"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Unfortunately, while switching an ad on in Facebook is fairly intuitive, “poking around” in a site's code keeps a lot of business owners up at night. Completely unnecessarily. Most small and mid-sized company sites are built on one of the popular platforms: wordpress, joomla, wix, shopify and so on. You'll find the full list of Facebook partners in your Business Manager, by clicking Events Manager and then partner integrations."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "But let's start with the basics."
+    },
+    {
+      "index": 7,
+      "parent": "heading",
+      "text": "Where do you find your own pixel code?"
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "To install the Facebook pixel you need to set up a Business Manager and then an ad account. You'll find detailed step-by-step instructions <a0>here</a0> and <a1>here</a1>."
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "Once you have a Business Manager and an ad account, click the menu in the top left corner and a tab like the one below will open. Then click Pixels, and you'll get your own basic code, the so-called pageview, which tracks who visited and who landed on the site. Importantly, there is only one pixel per site; if you install it on several, the numbers won't be right."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "One more thing you'll find useful is <a0>the table of so-called event codes</a0>, which is identical for every account."
+    },
+    {
+      "index": 11,
+      "parent": "heading",
+      "text": "And… what next?"
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "There are two options – once you pick “Pixels” you'll see a chart, and in the top right corner the options: set up (use that one if you know your way around code) or share (if you want to send it to your developer)."
+    },
+    {
+      "index": 13,
+      "parent": "paragraph",
+      "text": "If your site runs on a popular platform that integrates with Facebook, you'll manage on your own. If not, you'll have to send the pixel code together with the events table to whoever looks after your site and can paste the code in for you. So let's take the simpler option, the one where we assume you'll manage on your own."
+    },
+    {
+      "index": 14,
+      "parent": "paragraph",
+      "text": "If you're not sure which platform your site is built on, you can use a dedicated extension, e.g. <a0>wapalyzer</a0> (chrome). Go to your site, click the wapalyzer icon in the top bar, and you immediately get the answer: wordpress, shopify or something else. That tells us whether we can hook the pixel up ourselves or whether we need a developer's help."
+    },
+    {
+      "index": 15,
+      "parent": "paragraph",
+      "text": "If your site is one of Facebook's partners, all you do is go into the admin panel, click plugins, add new, pick the Facebook one, and tick which events the code should track."
+    },
+    {
+      "index": 16,
+      "parent": "paragraph",
+      "text": "If you're still having trouble installing the code or you aren't sure how to do it, get in touch – we'll gladly help."
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "source": "dlaczego-moj-instagram-nie-jest-indeksowany-przez-google",
+  "postId": 47,
+  "title": "Why isn't my Instagram indexed by Google?",
+  "excerpt": "There can be several reasons why your Instagram posts don't show up in Google search results: You have a personal account rather than a professional one. Only business or creator accounts get indexed. Check in your account settings whether you have a professional profile switched on. Your account is set to private. It has to be public for Google to reach it.",
+  "metaTitle": "Why isn't my Instagram indexed by Google?",
+  "metaDescription": "There can be several reasons why your Instagram posts don't show up in Google results: a personal account, a private profile, indexing switched off.",
+  "slug": "why-is-my-instagram-not-indexed-by-google",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "heading",
+      "text": "You have a personal account, not a professional one."
+    },
+    {
+      "index": 1,
+      "parent": "listitem",
+      "text": "Only business or creator accounts get indexed. Check in your account settings whether you have a professional profile switched on."
+    },
+    {
+      "index": 2,
+      "parent": "heading",
+      "text": "Your account is set to private."
+    },
+    {
+      "index": 3,
+      "parent": "listitem",
+      "text": "The account has to be <b>public</b> for Google to reach it. In your privacy settings, make sure the “Account privacy” option is switched off."
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "You turned indexing off."
+    },
+    {
+      "index": 5,
+      "parent": "listitem",
+      "text": "Instagram's privacy settings include a toggle for letting search engines index your content. If you've switched it off, your content won't be visible in Google."
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "Your posts are older than January 1, 2020."
+    },
+    {
+      "index": 7,
+      "parent": "listitem",
+      "text": "Instagram only indexes content published after that date."
+    },
+    {
+      "index": 8,
+      "parent": "heading",
+      "text": "Google hasn't indexed your account yet."
+    },
+    {
+      "index": 9,
+      "parent": "listitem",
+      "text": "Indexing isn't instant. Google's bots may need time to reach your content. You can help the process along, by linking to your profile from other sites for instance."
+    },
+    {
+      "index": 10,
+      "parent": "heading",
+      "text": "<b>✅ </b>How do I check whether my profile has been indexed?"
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "You can do it yourself with a few search tricks. The simplest is to use the <b>site:</b> operator. Type into Google: site:instagram.com/yourProfileName – that limits the results to your profile. If Google has already indexed your posts, they should show up there (usually as username – a fragment of the caption). You can add a keyword that appeared in a post's caption to narrow the results down. Example: site:instagram.com/mycompany “dry skin cream” – if you ever used the phrase <i>dry skin cream</i> in a post and Google indexed it, that post will show up in the results."
+    },
+    {
+      "index": 12,
+      "parent": "heading",
+      "text": "<b>🔁 </b>Can I change my mind and turn indexing on or off later?"
+    },
+    {
+      "index": 13,
+      "parent": "paragraph",
+      "text": "Yes. You can <b>turn indexing on or off</b> at any time in Instagram's privacy settings. Changes may take a while before they are reflected in Google – the bots have to visit your profile again."
+    },
+    {
+      "index": 14,
+      "parent": "heading",
+      "text": "<b>🧼 </b>Can I remove specific posts from search results?"
+    },
+    {
+      "index": 15,
+      "parent": "paragraph",
+      "text": "There is no way to remove a single post from Google directly from inside Instagram. To do it:"
+    },
+    {
+      "index": 16,
+      "parent": "listitem",
+      "text": "Archive or delete the post on IG."
+    },
+    {
+      "index": 17,
+      "parent": "listitem",
+      "text": "Wait for Google to update its index and drop it from the results."
+    },
+    {
+      "index": 18,
+      "parent": "heading",
+      "text": "🔒Will a private account be visible in Google?"
+    },
+    {
+      "index": 19,
+      "parent": "paragraph",
+      "text": "No. If your profile is private, or you have an ordinary personal account, <b>Google will not index your content</b>. The search engine gets access only to <b>public professional accounts</b> (business or creator) belonging to users aged 18+. If being present in Google matters to you, consider switching your account type to professional and setting it to public. Otherwise your posts will stay visible only to logged-in followers on Instagram."
+    },
+    {
+      "index": 20,
+      "parent": "heading",
+      "text": "<b>⚙️</b> How do I turn off indexing of my Instagram posts in Google?"
+    },
+    {
+      "index": 21,
+      "parent": "paragraph",
+      "text": "If you run a public professional account but <b>don't want your photos and videos showing up in search results</b>, you can switch that off. Go to <b>Settings → Privacy</b> in the Instagram app. You'll find an option there about search engines (“Allow content indexing”). All you have to do is <b>flip that option to off</b>. From then on Google (and other search engines) will not index your new posts, and existing content will be removed from the index the next time the bots come round. Remember that you can turn the feature back on at any moment. If you're unsure, you can always leave it on and watch what happens – the decision is yours and depends on your priorities (visibility vs. privacy)."
+    },
+    {
+      "index": 22,
+      "parent": "paragraph",
+      "text": "If you have more questions, do read our articles “Can your Instagram posts show up in Google results?” and “How to set up your Instagram profile for Google indexing — A GUIDE”, linked below. And if you want to know more, and to find out how the Social Lama agency and SEOFLY can help your brand stand out, send us an email with your questions or meet us for a coffee, and we'll be glad to help."
+    },
+    {
+      "index": 23,
+      "parent": "paragraph",
+      "text": "<a0>Can your Instagram posts show up in Google results?</a0>"
+    },
+    {
+      "index": 24,
+      "parent": "paragraph",
+      "text": "<a0>How to set up your Instagram profile for Google indexing — A GUIDE</a0>"
+    }
+  ]
+}

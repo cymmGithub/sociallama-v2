@@ -1,0 +1,146 @@
+{
+  "source": "jak-skonfigurowac-profil-na-instagramie-do-indeksowania-w-google-poradnik",
+  "postId": 48,
+  "title": "How to set up your Instagram profile for Google indexing — A GUIDE",
+  "excerpt": "Want your Instagram content visible not just to your followers but to Google users too? What follows is a practical guide to getting your profile and posts ready for the new reality, in which Instagram is starting to be indexed by the search engine. You'll learn how to optimize your account, set the right privacy options, look after captions, hashtags and alt text, and how to monitor the results.",
+  "metaTitle": "How to set up your Instagram profile for Google indexing — A GUIDE",
+  "metaDescription": "Google now indexes public posts from Instagram professional accounts. A step-by-step guide to account setup, privacy, captions, hashtags and alt text for search.",
+  "slug": "how-to-set-up-instagram-for-google-indexing",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "See how to put indexing to work step by step and turn your Instagram into an effective promotion tool in Google!"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "In the previous article we went over what has changed since July and how indexing Instagram posts actually works. It laid out what that opens up. If you haven't read it yet, here's the link:"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "<a0>Can your Instagram posts show up in Google results?</a0>"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "In this article, though, I want to get down to specifics: <b>how do you look after your Instagram account so it gets the most out of Google indexing?</b> Here are the <b>steps and tips</b> worth putting in place:"
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "Check your account type and switch to professional if you need to."
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Indexing applies <i>only</i> to professional accounts, so if you run a business or creator profile, make sure it is correctly marked as a <b>professional account</b>. Otherwise, consider converting your personal account to a professional one (in the app: <b>Settings → Account → Switch account type</b>). That's a requirement for Google to reach your content. A professional account also gets you insights and other tools that come in handy in marketing."
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "Set your profile to public."
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "<b>Public posts</b> get indexed, private ones don't. Go to <b>Settings → Privacy</b> and make sure <i>“Private account”</i> is switched off (the account is public). Only then can Googlebot see your content. If for some reason you need a private account (limiting it to a particular audience, say), then unfortunately <b>make peace with not being indexed</b> — Google will not work around privacy settings."
+    },
+    {
+      "index": 8,
+      "parent": "heading",
+      "text": "Decide whether to turn indexing on or off in settings."
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "A search-related option has appeared under <b>Settings → Privacy</b> (<i>“Allow public photos and videos to appear in search engine results”</i>). By default it is <b>on</b>, which permits indexing. If you <b>want to take advantage</b> of showing up in Google, <b>leave it on</b>. If, on the other hand, you'd <b>rather not</b> be present in search results, you can switch that option off (opt out). Keep in mind that even with it off, the posts themselves stay public on IG — Google simply won't index them. The decision is yours, but given the opportunities described here, it's better <b>not to turn indexing off</b>."
+    },
+    {
+      "index": 10,
+      "parent": "heading",
+      "text": "Go through your old posts and your profile — clean house."
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "Since the content you already have might suddenly get a <b>second life in Google</b>, it's a good moment to run an audit:"
+    },
+    {
+      "index": 12,
+      "parent": "listitem",
+      "text": "<b>Delete or archive posts that are out of date, questionable in quality, or don't fit the image</b> of the brand. Ask yourself: <i>would I want someone to find this post in Google and associate it with my brand?</i> If not, hide it before Google indexes it."
+    },
+    {
+      "index": 13,
+      "parent": "listitem",
+      "text": "Check your <b>bio and profile picture</b> — these can show up in results too (Google may display your profile description, treating it much like a page's meta description). Make sure the bio says clearly who you are and what you offer (ideally work in <i>keywords</i> tied to what you do, plus a location if that matters). For example, instead of a generic “Best coffee in town ☕️”, this works better: <i>“Specialty coffee shop in Kraków — freshly roasted coffee and homemade cakes”</i>. A description like that works on followers and on the search engine alike."
+    },
+    {
+      "index": 14,
+      "parent": "heading",
+      "text": "Optimize your current posts — captions, hashtags, alt tags."
+    },
+    {
+      "index": 15,
+      "parent": "paragraph",
+      "text": "Get your existing (and future) posts into shape so they are <b>search-engine friendly</b>. That's the key to <b>Instagram SEO</b>, which the next chapter covers in more detail. In short:"
+    },
+    {
+      "index": 16,
+      "parent": "listitem",
+      "text": "<b>Add rich, descriptive </b><b><i>captions</i></b> (the text under the photo) containing the important <i>keywords</i>. The first sentence or two of a caption matter most — try to get the gist across there, because that's exactly what Google can pick out. For example, instead of “New product now available 🎉”, write: <i>“Natural shea butter lip balm — new in our lineup! See what 7 days of use does for hydration.”</i> A caption like that answers the questions someone might have (what the product is, what it does) and contains the key phrases (lip balm, shea butter, hydration)."
+    },
+    {
+      "index": 17,
+      "parent": "listitem",
+      "text": "<b>Use hashtags strategically.</b> Hashtags are no longer just for Instagram users — <b>Google reads them too</b> and treats them as part of the caption. So add 5–15 hashtags related to the post's topic, including <b>niche and longer phrases</b> (for example, instead of plain #hair, go with #curlyhaircare). Avoid hashtag spam — they should be relevant and useful. Think about the words someone interested in that content would search for."
+    },
+    {
+      "index": 18,
+      "parent": "listitem",
+      "text": "<b>Add alternative text (alt text) to your images.</b> Instagram lets you write your own description of a photo for blind users — take advantage of it, because <b>Google also relies on alt text to understand visual content</b>. Write one or two sentences summarizing what's in the image, with the key details. For instance, <i>“Scandinavian-style wooden children's bed with drawers, star-print bedding”</i> for a photo of furniture. Alt text like that means your image can show up in Google Images for the phrase <i>“wooden children's bed with drawers”</i>, because the search engine knows what's in it."
+    },
+    {
+      "index": 19,
+      "parent": "listitem",
+      "text": "<b>Geolocation and place tags</b> — if you run a local business, tag locations in your posts. Google can take publicly visible Instagram locations into account, which improves the odds of your posts turning up for local queries (someone searches <i>“vegan restaurant Gdańsk”</i>, say, and sees IG photos of dishes tagged in Gdańsk)."
+    },
+    {
+      "index": 20,
+      "parent": "listitem",
+      "text": "<b>Tag products and use the catalog (if you're in e-commerce).</b> Tagged products come with names and descriptions — extra text for Google. If you have a shop on IG, make sure product names are descriptive and include things like the brand and the model (instead of “Lola dress” -> “Lola floral maxi dress — brand X”)."
+    },
+    {
+      "index": 21,
+      "parent": "heading",
+      "text": "Plan a new content strategy with Google in mind."
+    },
+    {
+      "index": 22,
+      "parent": "paragraph",
+      "text": "Indexing has shifted the philosophy of publishing on IG a little. When you make content for Instagram now, think not only about your followers but also about the “accidental” reader arriving from search. Consider <b>which questions or phrases typed into Google your post could cover</b> — and try to aim it at those. If you run a beauty profile, for example, do a series of posts along the lines of <i>“How to choose a moisturizer for acne-prone skin — 5 tips”</i>, <i>“What do the symbols on cosmetics packaging mean?”</i> and so on. Guide-style content like that has a shot at appearing high in Google, because it <b>matches searcher intent</b> (how-to, what-is, why). Being present in Google strengthens your brand as an expert on the subject."
+    },
+    {
+      "index": 23,
+      "parent": "heading",
+      "text": "Monitor the results and the indexing of your content."
+    },
+    {
+      "index": 24,
+      "parent": "paragraph",
+      "text": "Once the changes are in, watch how your posts do in search. Since you can't add your IG profile to Google Search Console (you have no control over the instagram.com domain), you have to go about it differently. You can <b>check in Google yourself whether your content is indexed</b> — for example by typing: site:instagram.com/your.profile.name keyword. If links to your posts come back in the results, Google can see them. Try different words from your captions, Reels titles, unique hashtags. You can also monitor traffic to your site (if you link out to it from your profile or bio) — you may be seeing new visitors since July who arrived by clicking through to your IG profile from Google. That's a signal indexing is working. Be patient — getting all your content fully indexed can take a while (Google has to discover and analyze it)."
+    },
+    {
+      "index": 25,
+      "parent": "paragraph",
+      "text": "To speed the process up you can <i>link to your posts from outside</i> — publish a blog entry with an IG post embedded in it, say, or mention “see our Instagram post about X” in an article, with a link. Following a link like that, Google reaches your content sooner. It's worth doing carefully, though. As an experienced SEO specialist I have seen external linking more than once that did more harm than good, or was simply a client's budget going up in smoke. Before you start working in this area, I'd recommend picking up more knowledge first, or talking it through with us so it's done safely."
+    },
+    {
+      "index": 26,
+      "parent": "paragraph",
+      "text": "Follow the steps above and you'll have the groundwork laid for putting the new feature to good use. I'd also recommend reading our next article on <b>Instagram SEO</b> and the specifics of <b>visual content</b> in a search-engine context. And if you want to find out how the Social Lama agency and SEOFLY can help your brand stand out, email us your questions or book a coffee with us, and we'll gladly help."
+    }
+  ]
+}

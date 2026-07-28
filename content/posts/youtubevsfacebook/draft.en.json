@@ -1,0 +1,26 @@
+{
+  "source": "youtubevsfacebook",
+  "postId": 42,
+  "title": "YouTube vs Facebook – a war over… video?",
+  "excerpt": "For many years YouTube had no real competitor to speak of.",
+  "metaTitle": "YouTube vs Facebook – a war over… video?",
+  "metaDescription": "",
+  "slug": "youtube-vs-facebook-a-war-over-video",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "In September of this year the site was visited by 19.33 million Polish internet users, who racked up more than a billion page views. Each of them spent an average of 2 hours, 32 minutes and 50 seconds on it! No wonder Zuckerberg's platform also made it possible to publish videos directly on its own site. Even so, users who were used to YouTube kept sharing external links to videos instead of uploading them straight to Facebook. The company's management decided to make it harder for users to share videos published at a competitor, which is why for some time now there has been no way to watch one inside the platform. Click the thumbnail of a YouTube video and you're automatically redirected to a new browser tab. You'd think that was a shot in the foot – with this move Mark Zuckerberg is all but throwing his own users out of his own site and over to the competition."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "Mere mortals, though, don't matter to the site as much as advertisers do, meaning the companies running their own Pages – they care about keeping traffic and engagement inside their own channels, so they'll share media directly on Facebook more often."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "Want to stay on top of every change in social media and the trends being announced? Follow our <a0>blog</a0>, <a1>Facebook</a1>, <a2>Twitter</a2>, <a3>Instagram</a3> and <a4>LinkedIn</a4>!"
+    }
+  ]
+}

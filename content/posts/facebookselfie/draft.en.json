@@ -1,0 +1,21 @@
+{
+  "source": "facebookselfie",
+  "postId": 37,
+  "title": "Facebook will ask you for… a selfie!",
+  "excerpt": "Facebook never stops surprising us!",
+  "metaTitle": "Facebook will ask you for... a selfie!",
+  "metaDescription": "",
+  "slug": "facebook-will-ask-you-for-a-selfie",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Captcha is the mechanism that checks whether a given user is a real human or a bot. Until now the system has used all sorts of options to verify people – it asked you to retype a string of characters, to select the images containing a particular thing, or it read out a sequence of digits and asked you to type them back. But Facebook has a new idea for the captcha mechanism that handles human verification – the platform will ask you to send a selfie, and on that basis the user will be recognized as a human. Worth stressing that although the photos will be sent to the company's servers, they will be deleted automatically once the identification is done. So there's no need to worry about them being used any other way. So far the feature is being tested on a small group of users."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "And you — what do you make of this idea?"
+    }
+  ]
+}

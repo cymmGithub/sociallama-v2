@@ -1,0 +1,31 @@
+{
+  "source": "aplikacjavero",
+  "postId": 33,
+  "title": "Vero is taking over people's phones!",
+  "excerpt": "The Vero app is winning people over. There's even speculation that it will replace Facebook and Instagram.",
+  "metaTitle": "Vero is taking over people's phones!",
+  "metaDescription": "",
+  "slug": "vero-is-taking-over-phones",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "<b>There's even speculation that it will replace Facebook and Instagram. Vero – True Social launched five years ago, but the platform has only picked up popularity recently. Its creators announced that the first million registered users would get to use the service for free. Everyone who joins after that will most likely have to pay for access to the feed.</b>"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "Vero markets itself as a platform free of traditional ads and sponsored content – and that is its main advantage, one especially valued by social media users who are tired of that kind of post filling their Facebook and Instagram feeds."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "The app lets us add three types of people: close friends, friends and plain acquaintances. That tiering lets us decide which group a given post goes out to. Speaking of posts, publishing is split into several categories: photos/video, links, music, film/TV, books and places. The platform is tied into iTunes, iBooks and TheMovieDb, which makes it easy to look up and post about a favorite book, a film we've just watched or the music we're listening to right now. On top of that we can add a button saying whether we recommend the thing or firmly advise against it."
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "Plenty of users appreciate Vero's artful layout. The Lama gives the platform a big plus too, for the clean look of the news feed and how easy it is to choose what you post and which group it reaches."
+    }
+  ]
+}

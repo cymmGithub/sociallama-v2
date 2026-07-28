@@ -1,0 +1,66 @@
+{
+  "source": "nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu",
+  "postId": 30,
+  "title": "Facebook's new terms — censorship or progress?",
+  "excerpt": "New changes on Facebook.",
+  "metaTitle": "Facebook's new terms — censorship or progress?",
+  "metaDescription": "Facebook's new terms banned a list of words and promised the algorithm would start reading context. What actually changed, and why the panic was overblown.",
+  "slug": "facebooks-new-terms-censorship-or-progress",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "<br/><br/>The recent Cambridge Analytica affair, along with the new GDPR personal-data rules coming into force on May 25, has brought a string of changes to Facebook too. Among them a new and fairly controversial set of terms, running to 22 lengthy clauses. Plenty of outlets and groups reacted immediately, fixing on a handful of words the terms ban."
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "Which words made the list?"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "Words that did indeed make it include:<br/>• “deformed”, “underdeveloped”, “repulsive” or “ugly”<br/>• “developmentally delayed”, “cretin”, “low IQ”, “stupid” or “idiot”<br/>• “slut”, “fraud”, “miser”, “na krzywy ryj” (a Polish idiom for pulling something off brazenly, with no grounds)<br/>• “I hate…”<br/>• “I don't like…”<br/>• “X are the worst”<br/>• “Abomination”<br/>• “Filth”<br/>• “Revolting”"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "It's worth noting, though, that these words are listed in the section covering violence toward other people, and only there will Facebook be able to mute or ban an account for using them. Which means we certainly won't be blocked over a sentence like “I don't like jazz”, as some suggested in their articles on the subject. The panic is completely unjustified, and for most users the changes will go unnoticed."
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "What hasn't changed?"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Several of the important clauses stay as they were — it's still forbidden to use false details, to gate access to content behind liking or sharing a Page, to use hate speech, or to promote violence and nudity."
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "The algorithm is meant to read context"
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "The new terms do stress that the algorithm will pay attention to context, something users had often complained about — people were getting banned for using the Polish word for a bike pedal, which doubles as a homophobic slur, in a cycling context.<br/>Same with nudity. Until now, anything with sexual associations was banned outright; now Facebook will look at whether the content published — a shot showing female nipples, say — serves an educational purpose (a cancer-screening campaign, for instance), depicts breastfeeding, or amounts to some form of protest. Those will be accepted.<br/>Same with other material that used to be off-limits: if we share graphic content showing violence or self-harm alongside a comment expressing firm disapproval, Facebook won't take it down."
+    },
+    {
+      "index": 8,
+      "parent": "heading",
+      "text": "Protecting minors and fighting fake news"
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "The document also stresses special protection for minors, meant to support children, their parents and their teachers; to that end Facebook has set up a dedicated <a0>section</a0>. On top of that, it will remove photos showing child nudity — even ones posted by the parents themselves. Cases where child sexual abuse is suspected will be reported to NCMEC."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "Facebook also underlined its fight against fake news — unverified information will have its reach cut as far as possible.<br/>You'll find the full terms <a0>here</a0>."
+    }
+  ]
+}

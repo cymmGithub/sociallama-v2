@@ -1,0 +1,281 @@
+{
+  "source": "google-polaczylo-social-media-z-seo",
+  "postId": 46,
+  "title": "Google has officially tied social media to SEO. What does that mean for your business?",
+  "excerpt": "Google Search Console now lets you officially link your social profiles (Instagram, TikTok, X, YouTube) to your website. This isn't a gimmick – it's a signal that in Google's eyes, social media and SEO are already one ecosystem. Companies that don't connect the two risk losing visibility in search results and in AI answers. If you don't have the time or the resources to handle it, Social Lama will do it for you.",
+  "metaTitle": "Linking social media to SEO – what's new in GSC",
+  "metaDescription": "Does social media affect SEO? Google just confirmed it with a new feature in GSC. See how to put Social SEO to work in your business!",
+  "slug": "google-links-social-media-to-seo",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "heading",
+      "text": "Google has embraced social media. Seriously."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "For years we've been hearing the same tune: “social media doesn't affect your Google rankings”. Technically – probably true. In practice – we just got proof that Google treats your social profiles as part of your brand's DNA."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "In December 2025 Google added a new feature to Search Console: <b>Social Channels</b>. And in July 2026 it went a step further, launching <b>Platform Properties</b> – an entirely new property type in GSC that lets you attach your Instagram, TikTok, X (formerly Twitter) and YouTube accounts directly to your site."
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "This is not a minor update. It's a declaration: <b>Google wants to officially know which social profiles belong to your company.</b>"
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "What is Google Search Console, and why should you care?"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Think of Google Search Console as your site's control panel, seen through Google's eyes. It shows how people find you, which queries you show up for, what works and what doesn't."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "Until now, GSC dealt only with your website. Now it's opening up to something bigger – to <b>your brand's entire digital ecosystem,</b> social profiles included."
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "How does it work in practice? You go into GSC, add a new property (a “platform property”), pick a platform – Instagram, say – and go through verification. Once it's connected, you see in one place:"
+    },
+    {
+      "index": 8,
+      "parent": "listitem",
+      "text": "<b>Clicks and impressions</b> for your social posts in Google results"
+    },
+    {
+      "index": 9,
+      "parent": "listitem",
+      "text": "<b>The queries</b> that bring people to your content"
+    },
+    {
+      "index": 10,
+      "parent": "listitem",
+      "text": "<b>Your best-performing posts</b> from each platform"
+    },
+    {
+      "index": 11,
+      "parent": "listitem",
+      "text": "<b>The countries and devices</b> the traffic comes from"
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "One tool. The whole picture. No jumping between ten dashboards."
+    },
+    {
+      "index": 13,
+      "parent": "heading",
+      "text": "Why is Google doing this? Three letters: E-E-A-T"
+    },
+    {
+      "index": 14,
+      "parent": "paragraph",
+      "text": "Google does nothing by accident. Behind this change sits a concept that has shaped search algorithms for years: <b>E-E-A-T</b> – Experience, Expertise, Authoritativeness, Trustworthiness."
+    },
+    {
+      "index": 15,
+      "parent": "paragraph",
+      "text": "Google wants to be sure that the brand it shows people is <b>real, active and consistent.</b> And how does it verify that? Partly through the <b>Knowledge Graph</b> – the giant knowledge base where Google connects facts about companies, people and places."
+    },
+    {
+      "index": 16,
+      "parent": "paragraph",
+      "text": "To Google, your social profiles are “proof of identity”. The more credible sources confirm that your company exists and is active, the higher the <b>trust score of your entity</b> (that is, your brand's digital identity) in the Knowledge Graph."
+    },
+    {
+      "index": 17,
+      "parent": "paragraph",
+      "text": "<b>Put simply:</b> Google is checking whether your company is “somebody” online. Social profiles linked to your website help back up your company's authority."
+    },
+    {
+      "index": 18,
+      "parent": "heading",
+      "text": "Why does this matter for your business?"
+    },
+    {
+      "index": 19,
+      "parent": "paragraph",
+      "text": "Here's what changes in practice – and why it's worth dealing with now rather than “someday”."
+    },
+    {
+      "index": 20,
+      "parent": "heading",
+      "text": "1. Consistency grows your visibility in Google"
+    },
+    {
+      "index": 21,
+      "parent": "paragraph",
+      "text": "Google increasingly shows social posts directly in search results. Carousels of Instagram posts, TikTok clips, tweets (posts on X, if we're being current) – all of it turns up in the SERPs."
+    },
+    {
+      "index": 22,
+      "parent": "paragraph",
+      "text": "If your profiles are officially linked to your site, <b>Google knows the content is yours</b>, and it's more willing to show it. If they aren't, the algorithm may simply skip you."
+    },
+    {
+      "index": 23,
+      "parent": "heading",
+      "text": "2. The Knowledge Panel and AI answers"
+    },
+    {
+      "index": 24,
+      "parent": "paragraph",
+      "text": "Brands with a strong “entity” in the Knowledge Graph stand a better chance of showing up in the <b>Knowledge Panel</b> (that information card on the right-hand side of Google's results) and in answers generated by <b>AI Overviews and Gemini.</b>"
+    },
+    {
+      "index": 25,
+      "parent": "paragraph",
+      "text": "This isn't the future – it's happening now. Companies that aren't recognized as a coherent entity become <b>invisible</b> in the new, AI-driven version of Google."
+    },
+    {
+      "index": 26,
+      "parent": "heading",
+      "text": "3. Social SEO is the new standard"
+    },
+    {
+      "index": 27,
+      "parent": "paragraph",
+      "text": "The term “Social SEO” has stopped being an agency buzzword. It's a real direction for optimization: <b>profile bios, hashtags, alt text on posts, consistent brand naming</b> – all of it shapes how Google understands and presents your brand."
+    },
+    {
+      "index": 28,
+      "parent": "heading",
+      "text": "4. Data in one place = better decisions"
+    },
+    {
+      "index": 29,
+      "parent": "paragraph",
+      "text": "Instead of hopping between Instagram, TikTok, Google Analytics and GSC, you now have one panel where you can see <b>how your social media performs inside Google's ecosystem</b>. That changes the quality of your marketing decisions."
+    },
+    {
+      "index": 30,
+      "parent": "heading",
+      "text": "What NOT to do (and what most companies do)"
+    },
+    {
+      "index": 31,
+      "parent": "paragraph",
+      "text": "Here are the three mistakes we see most often with clients before they start working with us:"
+    },
+    {
+      "index": 32,
+      "parent": "listitem",
+      "text": "<b>A social profile with no link to the website</b> – Google can't connect the dots."
+    },
+    {
+      "index": 33,
+      "parent": "listitem",
+      "text": "<b>Inconsistent company details</b> (one name on Instagram, another on the website, a third in Google My Business) – the algorithm doesn't know whether it's the same brand."
+    },
+    {
+      "index": 34,
+      "parent": "listitem",
+      "text": "<b>No structured data (schema markup) with the sameAs property</b> – that's the technical piece that tells Google outright: “this social profile belongs to this site”. Without it, Google is guessing."
+    },
+    {
+      "index": 35,
+      "parent": "paragraph",
+      "text": "Every one of those mistakes is <b>a lost shot at visibility.</b>"
+    },
+    {
+      "index": 36,
+      "parent": "heading",
+      "text": "What should we be emphasizing in social media right now?"
+    },
+    {
+      "index": 37,
+      "parent": "paragraph",
+      "text": "Below we've gathered a few golden rules we follow at our agency, Social Lama. Whether you own a small business in the SME sector, run an e-commerce store, or you're a marketing director or manager who wants the agency you work with to deliver real business results, it's worth knowing what has proved effective for us."
+    },
+    {
+      "index": 38,
+      "parent": "heading",
+      "text": "We don't run profiles “just to publish something”"
+    },
+    {
+      "index": 39,
+      "parent": "paragraph",
+      "text": "Plenty of social media providers work on this principle: three posts a week, a nice graphic, a standard caption. We work differently."
+    },
+    {
+      "index": 40,
+      "parent": "paragraph",
+      "text": "<b>We build a coherent digital footprint for your brand.</b> Every post, every profile bio, every hashtag is part of a bigger strategy in which your social media and your website speak with one voice – to people and to Google's algorithms alike."
+    },
+    {
+      "index": 41,
+      "parent": "heading",
+      "text": "We take care of Social SEO"
+    },
+    {
+      "index": 42,
+      "parent": "paragraph",
+      "text": "We optimize your profiles for search engines. That means:"
+    },
+    {
+      "index": 43,
+      "parent": "listitem",
+      "text": "<b>Consistent NAP data</b> (Name, Address, Phone) on every profile"
+    },
+    {
+      "index": 44,
+      "parent": "listitem",
+      "text": "<b>Correctly implemented structured data</b> with the sameAs property on your site"
+    },
+    {
+      "index": 45,
+      "parent": "listitem",
+      "text": "<b>Linking your profiles in Google Search Console</b> and monitoring their visibility"
+    },
+    {
+      "index": 46,
+      "parent": "listitem",
+      "text": "<b>Optimizing post content</b> for the queries people type into Google"
+    },
+    {
+      "index": 47,
+      "parent": "heading",
+      "text": "We watch the algorithms so you don't have to"
+    },
+    {
+      "index": 48,
+      "parent": "paragraph",
+      "text": "Google's and Meta's algorithms change every week. Literally. What worked in January can be out of date by March."
+    },
+    {
+      "index": 49,
+      "parent": "paragraph",
+      "text": "<b>You focus on making money in your business. We make sure Google and Instagram know how well you're doing it.</b>"
+    },
+    {
+      "index": 50,
+      "parent": "heading",
+      "text": "We understand context, not just tools"
+    },
+    {
+      "index": 51,
+      "parent": "paragraph",
+      "text": "Any child can publish a post. But knowing <b>why</b> that post should look one way and not another, how it feeds your Knowledge Graph, what structured data should sit alongside your site – that takes experience, and ours is something we're proud of."
+    },
+    {
+      "index": 52,
+      "parent": "heading",
+      "text": "What can you do right now?"
+    },
+    {
+      "index": 53,
+      "parent": "paragraph",
+      "text": "If, after reading this article, you have even a shadow of a doubt about whether your social media is “playing on the same team” as your website, that alone is reason enough to check. And if you're worried you're burning budget, book a free consultation with us and find out how your social media can start working for your Google rankings."
+    }
+  ]
+}

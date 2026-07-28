@@ -1,0 +1,76 @@
+{
+  "source": "jak-sprzedawac-na-facebooku-czesc-pierwsza-tworzenie-grupy-docelowej",
+  "postId": 25,
+  "title": "How do you sell on Facebook? Part One – building a target audience",
+  "excerpt": "Here's our guide to being a good advertiser.",
+  "metaTitle": "How do you sell on Facebook? Part One – building a target audience",
+  "metaDescription": "",
+  "slug": "how-to-sell-on-facebook-part-one-target-audience",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Facebook ads – you'd think it was a simple thing. You set up Ads Manager, hook up a payment card, and then work step by step through the instructions and hints served up by Zuckerberg's system. You set a budget, you launch and… nothing? Great – this piece is for you!"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "In this guide I'll show you a few tricks I use myself in day-to-day work to make an ad effective and turn it into conversions. Above all, before you start building ad sets, focus on preparing properly."
+    },
+    {
+      "index": 2,
+      "parent": "heading",
+      "text": "STAGE 1 – Building a target audience"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "Before you start advertising, think about who your Client is. Create what are called personas – even if different groups buy your product, it's a different ad message that will land with each of them. Do you want to sell your blender to a vegan, to a mother of several kids or to an athlete? All of them, I'd guess – so you need to characterize each one precisely in order to build an individual message that hits."
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "Remember, though, that the persona you create can't be your vision or your idea of the audience – it often happens that a manufacturer would like certain people to be the ones choosing their product, while reality looks quite different. Remember that this investment has to translate into sales, so it's the real Clients we have to reach."
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "When you put a target audience together, narrow it as far as it will go. What good is reaching a million random people? You may end up with enormous ad reach and zero sales. We'd burn the budget on impressions. Better to limit it to 5,000 people, 20% of whom will buy your product. So how do you narrow a target audience?"
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "Above all, go with demographic data. Interests, the most common choice when targeting, are very general, and Facebook can sometimes wrongly classify you as, say, a sports fan just because you liked a friend's photo from Runmageddon, Poland's big obstacle-course race. Does that mean you'll buy the newest protein supplement and a pair of running shoes? Not necessarily."
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "So think about hard criteria like age, gender, language, location, the industry they work in, marital status, education level and other data you can't argue with. One very important criterion is the Engaged Shoppers option. Narrow every audience down to engaged shoppers – that's the group that clicked the \"Shop Now\" button in the last week, so it's very valuable from a seller's point of view. It's also worth looking at the option to target the family and friends of people with an occasion coming up – a birthday, an anniversary, a name day (the custom of celebrating the feast day of the saint you're named after) – is there a better moment to suggest your product as a gift for the person celebrating? And how do you find someone with a higher income? Users of the newest iPhones are a good direction, and so are people who travel a lot. Think about how your customer spends their free time, whether they're in a relationship, what devices they use. Target on that basis."
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "Once you've built a few target audiences based on demographic data, it's worth focusing on audiences targeted off the pixel – a piece of code assigned to your ad account which, installed on your store's site, counts traffic: people who viewed your page, but also people who took a specific action – added to cart, bought, viewed product information and so on. Ask your developer to install that code, available in Ads Manager under the Pixels tab – it's your key to success. On top of it you can build advanced remarketing audiences – start with the most effective one – people who added a product to the cart, excluding people who bought. Remind them you exist!"
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "The third basic target audience is what's called a lookalike – a group of people similar to the ones who bought your product. Working from the pixel, Facebook assembles the group of people most similar to your Clients – it takes likes, behaviors, interests and demographics into account."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "There are tons of combinations of standard, remarketing and custom audiences – you can target people who like one particular page and don't like another; who took part in specific events or watched your video; who were active on your Page, and so on. The three described above, though, are the basic targets worth starting from when you build sales campaigns on Facebook."
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "Importantly, if you're testing different target audiences – demographics, remarketing and lookalike – don't change the copy and the graphics as well, because then you won't know whether the better results come from better targeting or better creative. Obviously it's a different story when you're targeting audiences in different cities or of different genders – in that case create individual, personalized messages."
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "And on that note we move to the next enormously important point – the creative – and that's for the next part of the guide."
+    }
+  ]
+}

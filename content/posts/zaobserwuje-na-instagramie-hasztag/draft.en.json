@@ -1,0 +1,26 @@
+{
+  "source": "zaobserwuje-na-instagramie-hasztag",
+  "postId": 38,
+  "title": "I'm following… a hashtag on Instagram!",
+  "excerpt": "Following a specific hashtag on Instagram is now a reality. Since December 12, 2017, Instagram lets you follow not only the profiles of people you pick, but specific hashtags too!",
+  "metaTitle": "I'm following… a hashtag on Instagram!",
+  "metaDescription": "",
+  "slug": "follow-a-hashtag-on-instagram",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "The change looks minor, but it could revolutionize how people use Instagram and take users away from Pinterest. Why? By following individual hashtags we can stay current on the things that interest us – favorite places, hobbies, great food, gadgets. All you have to do is open the hashtag you care about and, exactly as with a profile, hit the “Follow” button. Until now that was Pinterest's job."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "It's also worth noting that this feature could start competing seriously with news media. Say an accident or a disaster happens (the kind that gets a lot of coverage) – witnesses can post their own account of it to their profile. Tagging the event with the right hashtag lets other people learn about it from a range of sources. You can of course unfollow a hashtag at any time, and check which tags your friends follow. And it's worth looking at Instagram's new feature above all from the business side. Instagram is a great place to show off your products – you can build a photo gallery, show devices in everyday use, mark them with your own hashtags, and users will find the item they're after even more easily."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "Do you think this feature is needed on Instagram?"
+    }
+  ]
+}

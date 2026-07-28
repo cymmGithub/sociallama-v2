@@ -1,0 +1,21 @@
+{
+  "source": "instagram-stories-takze-w-whatsapp",
+  "postId": 36,
+  "title": "Instagram Stories in WhatsApp too!",
+  "excerpt": "Instagram has started testing a new option!",
+  "metaTitle": "Instagram Stories in WhatsApp too!",
+  "metaDescription": "",
+  "slug": "instagram-stories-in-whatsapp",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "It looks like we will soon be able<b> </b>to share Instagram Stories straight into WhatsApp with a single click! What is good about that? Adding the option could drive more traffic to the service – not only growing the number of users (especially in countries where the messenger is number one) but also widening the use of Status in WhatsApp, which launched in February. A tie-up like this obviously has its downsides too. It is quick and easy to spot that after a while users get tired of the same content repeated across several channels."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "So, do you like Facebook's new idea?"
+    }
+  ]
+}

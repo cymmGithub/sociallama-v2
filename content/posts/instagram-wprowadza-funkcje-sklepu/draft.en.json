@@ -1,0 +1,66 @@
+{
+  "source": "instagram-wprowadza-funkcje-sklepu",
+  "postId": 28,
+  "title": "Instagram is rolling out a shop feature! [UPDATED JUNE 2019]",
+  "excerpt": "Sell more, straight from the app!",
+  "metaTitle": "Instagram is rolling out a shop feature! [UPDATED JUNE 2019]",
+  "metaDescription": "",
+  "slug": "instagram-adds-a-shop-feature",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Instagram has rolled out product tagging in photos, with tags that send people straight to your shop – exactly the way it works on Facebook. That is a big help, because until now you could not even add links in photo captions."
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "How do you add the shop option to your Instagram account?"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "You need a shop set up on Facebook (if you use Shopify or BigCommerce – you can do it automatically)."
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "You need a business profile connected to a Facebook profile."
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "Go to your profile and tap \"Get Started\" at the top of it. If the alert does not show up, go into settings and pick \"Shopping\". Then all you do is choose the product catalog attached to your page and you are done."
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "If the \"Shopping\" option does not show up, you have to connect your Instagram account to an account in Facebook Business Manager (Business Settings -> Instagram accounts -> add), and then go to Catalogs in the settings (Assets -> Catalogs). If you do not have a catalog yet you can create one, but if you have already added some products to your Facebook shop, it should have been created automatically. Click your product catalog and the Instagram Shopping option will appear right at the bottom. There you have to add the chosen account again. After all that, the Instagram Shopping option should show up within about 24 hours, once Facebook has verified the new settings."
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "How do you tag a product in a photo?"
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "Once you have added the photo, the filters, the caption and the hashtags, pick the products in the photo you want to tag."
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "Type the product name – if you added it to your Facebook shop earlier, you should find it in the search list."
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "Tap \"Done\", then \"Share\"."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "Heads up! You can tag a maximum of 5 products in a single photo, and 20 in an album. You can add products to old photos as well as new ones. The products are visible only in the mobile app – browsing photos on a computer, you will not see them. If the shopping option does not show up for you, you probably need to wait a little – the feature is being rolled out gradually and individual profiles are verified for it automatically. The new feature will certainly help you win customers from somewhere other than Facebook or <a0>Google search rankings</a0>."
+    }
+  ]
+}

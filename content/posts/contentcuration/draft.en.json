@@ -1,0 +1,56 @@
+{
+  "source": "contentcuration",
+  "postId": 77,
+  "title": "Content Curation",
+  "excerpt": "Had enough of the million identical articles turning up on your Facebook feed?",
+  "metaTitle": "Content Curation",
+  "metaDescription": "Had enough of the million identical articles turning up on your Facebook feed? What content curation is, and how to do it yourself.",
+  "slug": "content-curation",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "<b>No time to read everything published on the subjects you care about? Or short on inspiration for creating worthwhile content and sharing things your audience will actually find useful? Take a proper look at what content curation is — it'll help you get past both.</b>"
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "Too much of a good thing."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "These days information reaches us from every direction, and it can be hard to find your footing in that stream — hard to pick out, among an enormous number of articles, something that will genuinely be valuable and interesting to you. Scrolling the Facebook feed takes longer and longer, and reading every link that turns up there is flatly impossible. We don't read pieces to the end, and most of them we don't even notice — they disappear into the crowd, like people riding the subway at rush hour. Journalists, public relations specialists and other writers don't have an easy job of it; they really have to work at getting an audience interested in something and holding its attention for even a moment. The situation may look hopeless, but luckily there's a method for it."
+    },
+    {
+      "index": 3,
+      "parent": "heading",
+      "text": "A helping hand."
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "Does the word curator only make you think of the person who looks after the exhibits in a museum? That's a good lead, because a content curator is exactly the person who, like a museum guide, walks you around the internet and points out the most interesting exhibits. A content curator assembles a collection of everything they can find online on a given subject, then picks out the pieces worth sharing with a wider audience. They filter the enormous stream of information that you have neither the time nor, presumably, the inclination to fight through. The content is chosen by a human and grouped into specific thematic blocks and interests. That way you get genuinely valuable material rather than links spat out by an algorithm that goes for volume instead of quality. Sounds trivial? Contrary to appearances, searching the internet is not simple at all: proper research takes time, skilled analysis<br/>and the ability to connect the individual pieces together."
+    },
+    {
+      "index": 5,
+      "parent": "heading",
+      "text": "Do it yourself."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "Content curation is also a great tool for a marketer, one that makes the process of creating content markedly easier. It comes down to selecting material already published online; it doesn't ask you to write an article from scratch or do any editorial work. It's like putting together a press review — you're given a general topic and you look for interesting material in that area that might appeal to your audience. A simple way to get readers curious about a specific problem, to draw attention to something. It's a cheap method too, because we can share links on our own profiles completely free of charge. On top of that, sharing content like this positions us as the specialist who knows exactly “what, where and how”. We build a steady audience who know that thanks to us they don't have to comb through the vast resources of the internet looking for the articles from the past week that interest them."
+    },
+    {
+      "index": 7,
+      "parent": "heading",
+      "text": "How?"
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "Systematically, above all — you have to get people online used to looking for worthwhile content on your profile. You can put out content like this as rarely as once a month, as long as you're consistent. Remember that too high a frequency, flooding your audience with posts of this kind, isn't a good answer either, since content curation is meant to protect them from exactly that. A good place to share a roundup like this is social media, where people online look most often. Worth remembering to add a short title, or a one-sentence comment, to every link. Unlabeled exhibits in a museum aren't worth much, are they? Come up with your own way of describing links, and add an original, eye-catching image to the list. Even though a content curator is really working with someone else's content, a character of their own, one nobody can copy, is what lets them interest a genuinely wide audience."
+    }
+  ]
+}

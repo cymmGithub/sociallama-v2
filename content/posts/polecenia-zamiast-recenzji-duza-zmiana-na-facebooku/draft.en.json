@@ -1,0 +1,71 @@
+{
+  "source": "polecenia-zamiast-recenzji-duza-zmiana-na-facebooku",
+  "postId": 27,
+  "title": "Recommendations instead of reviews? A big change on Facebook",
+  "excerpt": "A revolution on Facebook?",
+  "metaTitle": "Recommendations instead of reviews? A big Facebook change",
+  "metaDescription": "Facebook swapped star ratings for recommendations — and started counting stray comments as one. Why the new system misfires, and what you can do.",
+  "slug": "recommendations-instead-of-reviews-on-facebook",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "For a while now, customers have been able to recommend a business to other users or warn them off it. Crucially, the five-star scale is gone; instead, Facebook requires at least 25 words of reasoning. The system looks better. But is it really?"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "Not necessarily."
+    },
+    {
+      "index": 2,
+      "parent": "heading",
+      "text": "How do recommendations work?"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "Going to a given place's Page, we can indeed recommend it or advise against it in a few sentences, which we either write ourselves or pick from the suggestions. Facebook decided to go a step further, though, and to count stray comments from elsewhere on the platform as well — under other users' posts, or in groups. The artificial intelligence isn't as intelligent as we'd like, and it matches a recommendation to the text of a comment even when the comment had nothing to do with our company."
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "When the system fails — a recommendation from Pakistan"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "That's what happened with our own Good One group and some random people from abroad who, while leaving a comment, most likely saw the button in the screenshot below."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "Which is how we ended up with, among others, a recommendation from Pakistan 😉"
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "Positive posts and recommendations we can live with (unreliable as they still are), but negative voices from people who have no idea our company exists get under our skin. What can we do about it?"
+    },
+    {
+      "index": 8,
+      "parent": "heading",
+      "text": "What you can do about it"
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "✓ Change your template and remove the reviews tab. Go to Settings -> Edit Page -> Tabs -> Reviews -> Turn off reviews."
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "✓ Message whoever wrote the comment, though that option isn't always available — the user has to have agreed to receive messages from Pages. Click the three dots in the top right corner, then “Send message to author”. Not all opinions are visible to an admin, though, because of privacy settings."
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "We do hope Facebook improves the system as fast as it can. It was meant to prevent fake reviews and ended up creating an even bigger mess. Above all, they should be verifying whether the person who wrote the comment had any chance at all of coming into contact with our business. Facebook is putting a lot of weight on promoting local businesses right now, so we're hoping the bugs get cleared up quickly. To speed that along, you can leave feedback on the new system by opening the reviews tab on your own Page. The “Give feedback” button is on the left."
+    }
+  ]
+}

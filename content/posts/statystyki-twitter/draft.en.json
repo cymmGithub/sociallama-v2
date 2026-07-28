@@ -1,0 +1,341 @@
+{
+  "source": "statystyki-twitter",
+  "postId": 71,
+  "title": "Twitter and analytics – how to measure the results of your Twitter communication",
+  "excerpt": "Have you ever wondered what analytics Twitter has to offer its users? How do you measure the results of your communication on Twitter? Read our post about the platform's built-in tools that let you study and analyze your brand's communication. https://sociallama.pl/twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie/ Twitter isn't as scary as it's made out to be – you just have to take the plunge. Twitter has built-in analytics tools that let you measure the results of your communication.",
+  "metaTitle": "Twitter and analytics – how to measure your Twitter results",
+  "metaDescription": "Wondering what analytics Twitter has to offer? Read our post about the platform's built-in tools for measuring and analyzing your brand's communication.",
+  "slug": "twitter-analytics-how-to-measure-your-results",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "<b>Read our post about the platform's built-in tools that let you study and analyze your brand's communication.</b>"
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "<a0>https://sociallama.pl/twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie/</a0>"
+    },
+    {
+      "index": 2,
+      "parent": "listitem",
+      "text": "<b>Twitter isn't as scary as it's made out to be – you just have to take the plunge.</b>"
+    },
+    {
+      "index": 3,
+      "parent": "listitem",
+      "text": "<b>Twitter has built-in analytics tools that let you measure the results of your communication.</b>"
+    },
+    {
+      "index": 4,
+      "parent": "listitem",
+      "text": "<b>Checking reach on Twitter… basically doesn't exist. What matters is tweet impressions.</b>"
+    },
+    {
+      "index": 5,
+      "parent": "listitem",
+      "text": "<b>Without ever leaving Twitter, you can check exactly what interactions each tweet picked up.</b>"
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "<b>Your brand on Twitter</b>"
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "For the lion's share of companies, Twitter is a kind of terra incognita. For plenty of people, what they know ends at the fact that Twitter exists; the slightly more clued-in will tell you it's a platform for a handful of specific industries. As a result, the decision to show up on Twitter at all gets made relatively rarely – but once you have stepped in, it would be worth keeping track of what your activity is doing."
+    },
+    {
+      "index": 8,
+      "parent": "paragraph",
+      "text": "<b>So how do you measure the results of your communication on Twitter? Is there such a thing as checking reach or engagement?</b> Spoiler: yes, and for the most part you can do it straight from inside the platform itself."
+    },
+    {
+      "index": 9,
+      "parent": "heading",
+      "text": "<b>How to start measuring the results of your communication on Twitter</b>"
+    },
+    {
+      "index": 10,
+      "parent": "paragraph",
+      "text": "To see what analytics Twitter offers, open your account, click “More” at the end of the list on the left, then “Analytics”. If it's the first time you're doing this for your account, a splash screen appears and you just click “Turn analytics on” or “Get started” – one of the two will be there. From now on you'll know what your tweets are really up to!"
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "<i>Fig. 1 The path to your analytics</i>"
+    },
+    {
+      "index": 12,
+      "parent": "paragraph",
+      "text": "To start with, Twitter greets you with numbers, charts, a few selected posts and general chaos that, with the help of this post, you'll have tamed in no time. The whole tool is called Twitter Analytics, and we're about to go through what it does."
+    },
+    {
+      "index": 13,
+      "parent": "heading",
+      "text": "<b>Analytics on Twitter – what does Twitter Analytics show?</b>"
+    },
+    {
+      "index": 14,
+      "parent": "paragraph",
+      "text": "The main Twitter Analytics dashboard opens with a bar summarizing the last 28 days of your activity. You'll find 5 main categories there:"
+    },
+    {
+      "index": 15,
+      "parent": "listitem",
+      "text": "Number of tweets"
+    },
+    {
+      "index": 16,
+      "parent": "listitem",
+      "text": "Tweet impressions"
+    },
+    {
+      "index": 17,
+      "parent": "listitem",
+      "text": "Profile visits"
+    },
+    {
+      "index": 18,
+      "parent": "listitem",
+      "text": "Mentions"
+    },
+    {
+      "index": 19,
+      "parent": "listitem",
+      "text": "Number of followers"
+    },
+    {
+      "index": 20,
+      "parent": "paragraph",
+      "text": "It also shows how each of those numbers moved against the equivalent earlier period – as percentage drops and rises, and on a set of pared-back charts."
+    },
+    {
+      "index": 21,
+      "parent": "paragraph",
+      "text": "The rest of Analytics is tailored to social media specialists and their reports, because the platform sums up your Twitter activity month by month in a way that's easy to read. There are four top categories:"
+    },
+    {
+      "index": 22,
+      "parent": "listitem",
+      "text": "Top Tweet – the post with the most impressions"
+    },
+    {
+      "index": 23,
+      "parent": "listitem",
+      "text": "Top Follower – the person with the most followers who followed your profile that month"
+    },
+    {
+      "index": 24,
+      "parent": "listitem",
+      "text": "Top mention – the most engaging post that tagged your profile"
+    },
+    {
+      "index": 25,
+      "parent": "listitem",
+      "text": "Top media Tweet – the post with the most impressions that had a media element attached (photo, video)"
+    },
+    {
+      "index": 26,
+      "parent": "paragraph",
+      "text": "<i>Fig. 2 The monthly summary on a profile</i>"
+    },
+    {
+      "index": 27,
+      "parent": "paragraph",
+      "text": "Next to the categories above sits a short summary of that month, showing the number of:"
+    },
+    {
+      "index": 28,
+      "parent": "listitem",
+      "text": "Posts"
+    },
+    {
+      "index": 29,
+      "parent": "listitem",
+      "text": "Post impressions"
+    },
+    {
+      "index": 30,
+      "parent": "listitem",
+      "text": "Profile visits"
+    },
+    {
+      "index": 31,
+      "parent": "listitem",
+      "text": "Mentions"
+    },
+    {
+      "index": 32,
+      "parent": "listitem",
+      "text": "New followers"
+    },
+    {
+      "index": 33,
+      "parent": "paragraph",
+      "text": "<b>This is a good place to say how checking reach works on Twitter – because a metric that strictly reports reach does not exist.</b> A reminder: reach is the number of unique people who saw a piece of content, while impressions are the total count of every view, so one person seeing a post several times counts several times. <b>Twitter went all in on impressions</b> and builds its main analytics on them – some external tools will calculate an estimated reach for you, but that will always be nothing more than a ballpark figure."
+    },
+    {
+      "index": 34,
+      "parent": "heading",
+      "text": "<b>How do you check the stats for a single tweet?</b>"
+    },
+    {
+      "index": 35,
+      "parent": "paragraph",
+      "text": "Twitter Analytics also lets you check the stats for individual posts. To do that, go from the “Home” tab to “Tweets”. There you can pick any date range you like and get the data for it. The main chart shows total impressions broken down by day, while the side of the page reports the other measurable results of your communication:"
+    },
+    {
+      "index": 36,
+      "parent": "listitem",
+      "text": "Engagement rate – engagement as a percentage, that is, the ratio of all interactions to total impressions"
+    },
+    {
+      "index": 37,
+      "parent": "listitem",
+      "text": "The number of clicks on links inside your tweets"
+    },
+    {
+      "index": 38,
+      "parent": "listitem",
+      "text": "Retweets, meaning shares of your posts, with an added comment from the author"
+    },
+    {
+      "index": 39,
+      "parent": "listitem",
+      "text": "Likes on posts"
+    },
+    {
+      "index": 40,
+      "parent": "listitem",
+      "text": "Replies to tweets"
+    },
+    {
+      "index": 41,
+      "parent": "paragraph",
+      "text": "Each of the categories above is given as a total, broken down by day on the chart, along with the averaged one-day figures."
+    },
+    {
+      "index": 42,
+      "parent": "paragraph",
+      "text": "The rest of the summary is stats for individual posts. In the main summary you can see impressions, the number of interactions (any action taken on a tweet: likes, shares, link clicks, clicks through to the profile, replies and so on), and the Engagement rate we already mentioned, for each tweet separately."
+    },
+    {
+      "index": 43,
+      "parent": "paragraph",
+      "text": "<i>Fig. 3 The stats summary for individual tweets</i>"
+    },
+    {
+      "index": 44,
+      "parent": "paragraph",
+      "text": "Those are only the default values, though – click on a given post and you get a detailed breakdown of everything anyone did with it. Impressions show up again, of course, but you'll also find things like:"
+    },
+    {
+      "index": 45,
+      "parent": "listitem",
+      "text": "Clicks on the media attached to the tweet"
+    },
+    {
+      "index": 46,
+      "parent": "listitem",
+      "text": "Clicks on the tweet to see all its details (including the discussion)"
+    },
+    {
+      "index": 47,
+      "parent": "listitem",
+      "text": "Hashtag clicks"
+    },
+    {
+      "index": 48,
+      "parent": "listitem",
+      "text": "Likes"
+    },
+    {
+      "index": 49,
+      "parent": "listitem",
+      "text": "Link clicks"
+    },
+    {
+      "index": 50,
+      "parent": "listitem",
+      "text": "Clicks through to your main profile"
+    },
+    {
+      "index": 51,
+      "parent": "listitem",
+      "text": "Replies"
+    },
+    {
+      "index": 52,
+      "parent": "listitem",
+      "text": "Retweets"
+    },
+    {
+      "index": 53,
+      "parent": "paragraph",
+      "text": "One thing worth knowing – these summaries don't show zeros. <b>Only the metrics with at least one recorded action are displayed.</b>"
+    },
+    {
+      "index": 54,
+      "parent": "paragraph",
+      "text": "<i>Fig. 4 A look at the detailed stats for a single post</i>"
+    },
+    {
+      "index": 55,
+      "parent": "paragraph",
+      "text": "The Tweets tab also lets you order your posts by popularity, with the best-performing ones first, and it lets you look through all the same data for your replies in discussions on other people's profiles. <b>There are also more advanced stats here for promoted tweets</b>, because Twitter gives you the option of paying to promote your material."
+    },
+    {
+      "index": 56,
+      "parent": "paragraph",
+      "text": "Data from a date range of up to 31 days can also be downloaded as a ready-made summary, arranged by tweet or by individual day."
+    },
+    {
+      "index": 57,
+      "parent": "heading",
+      "text": "<b>Communication on Twitter – what else can the analytics show us?</b>"
+    },
+    {
+      "index": 58,
+      "parent": "paragraph",
+      "text": "Besides the results listed above, there's a separate tab for video. It lets you check how many times your videos were viewed, plus the so-called Completion rate: the ratio of full views to total views."
+    },
+    {
+      "index": 59,
+      "parent": "paragraph",
+      "text": "The right-hand column, laid out exactly as it is for regular tweets, shows the total number of minutes watched across all your material in a given period, plus retention: plays broken down by how much of each video people actually watched, as a percentage."
+    },
+    {
+      "index": 60,
+      "parent": "paragraph",
+      "text": "Finally, you can check conversions, meaning the actions people take on your site after arriving from Twitter. Anyone who has dealt with the Facebook Pixel will find this familiar, because on Twitter it also involves putting a special tag in your site's code. What you learn about user activity on your site can be very useful when you build paid campaigns on Twitter – conversions let you define your target audience more precisely."
+    },
+    {
+      "index": 61,
+      "parent": "heading",
+      "text": "<b>Twitter and user analytics – where are they?</b>"
+    },
+    {
+      "index": 62,
+      "parent": "paragraph",
+      "text": "As you may have noticed, <b>Twitter's analytics won't tell you much about your followers themselves.</b> That's down to the platform removing Twitter Audience Insights. The tool ran from 2015 to 2020 and let you get to know your followers better – their demographics as much as their interests or their activity on Twitter. Shutting Twitter Audience Insights down took away a lot of useful information about your audience, and for now, unfortunately, the platform has said nothing about a planned alternative."
+    },
+    {
+      "index": 63,
+      "parent": "paragraph",
+      "text": "<b>You're now ready not only to post your brand's first tweet, but to measure the results of the communication you've started on Twitter.</b> Give it a chance and see how absorbing a conversation with your followers can be!"
+    },
+    {
+      "index": 64,
+      "parent": "paragraph",
+      "text": "We help with Twitter and plenty more. Get in touch to see what we offer!"
+    },
+    {
+      "index": 65,
+      "parent": "paragraph",
+      "text": "<a0>WRITE TO US</a0>"
+    }
+  ]
+}

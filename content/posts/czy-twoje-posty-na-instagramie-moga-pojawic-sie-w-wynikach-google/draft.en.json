@@ -1,0 +1,256 @@
+{
+  "source": "czy-twoje-posty-na-instagramie-moga-pojawic-sie-w-wynikach-google",
+  "postId": 49,
+  "title": "Can your Instagram posts show up in Google results?",
+  "excerpt": "Can your Instagram posts show up in Google results? Until recently that was rare, but the breakthrough has arrived. As of July 10, 2025, Instagram officially lets Google index public content from professional accounts (business and creator). That means photos, videos and Reels from those accounts can turn up in Google – alongside websites, blogs and YouTube videos.",
+  "metaTitle": "Can your Instagram posts show up in Google results?",
+  "metaDescription": "As of July 10, 2025, Instagram lets Google index public content from professional accounts – and it's opt-out, so a public profile is in by default.",
+  "slug": "can-instagram-posts-show-up-in-google-results",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "In practice, Instagram is becoming part of the Google search ecosystem, and social media content will start competing for visibility with websites. In this article I explain what Instagram indexing actually is, what exactly changed on July 10, 2025, what risks and opportunities it brings, and how to get your account and your posts ready to benefit from the change."
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "What is indexing, and what changed on July 10, 2025?"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "If you have only ever worked in social media, then <b>SEO </b>— optimization for search engines — was probably a completely foreign concept to you. So let me start at the beginning. Put very simply, indexing is the process in which a search engine (Google, say) checks (<b>crawls</b>) web pages and adds what it finds to its index (its database). That is what lets a piece of content show up in search results for the right keywords. On your own website you normally use tools like <b>Google Search Console</b> to submit new pages to Google or check their indexing status. Instagram and Meta, though, stayed a closed ecosystem for years – public profiles and posts were available on the web, but Google's bots mostly did not check them, thanks to a certain block called noindex. As a result, <b>Instagram content did not show up en masse in Google results</b>, unless someone searched for a specific profile or hashtag outright. Google managed to index some content anyway (Reels, video and profiles especially), treating the noindex directive more as a suggestion – it is estimated that before the change Google had already indexed hundreds of thousands of public Instagram posts. Other search engines (Bing, DuckDuckGo) mostly honored the block, so IG content was all but invisible there."
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "<b>On July 10, 2025 came the plot twist.</b> Meta (Instagram's owner), taking its lead from YT and TikTok, rolled out an update that lets Google's bots (and potentially other search engines) <b>scan public content from professional accounts</b>. An official notice appeared in the Instagram app announcing the change and giving users <u>control </u>over indexing. <b>Instagram announced: “Starting July 10, 2025, public content from professional accounts may appear in search engine results.”</b> In other words, the content of your professional profile may soon appear in Google results, like any other content on the web."
+    },
+    {
+      "index": 4,
+      "parent": "paragraph",
+      "text": "<i>The official notice in the Instagram app from June 2025: the platform says that from July 10, public photos and videos from professional accounts </i><b><i>may appear in search engine results</i></b><i>. Users can change this setting in the privacy section of their account. </i>(Source: Instagram)"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Importantly, <b>not every piece of content and not every account will be indexed</b>. The change applies to <b>professional accounts</b> (business and creator) that are set to <b>public</b> and whose owners are <b>over 18</b>. <b>Personal accounts</b> and private profiles stay excluded – their posts still <b>will not show up in Google results</b>. Google gets access to what is publicly visible on the profile and in the posts, including the <b>username, the bio, the account category description, hashtags and location</b>, and above all the <b>photos, videos, carousels (multiple images) and Reels clips together with their captions</b>. In other words, <b>Google will be able to read the text on your profile and in your posts and to “see” your photos and video</b>, in order to understand what they are about. Instagram points out that indexing will cover <b>posts published after January 1, 2020</b> – older content may stay out of the search engine's reach."
+    },
+    {
+      "index": 6,
+      "parent": "paragraph",
+      "text": "<a0>The best Instagram hashtags to grow your reach on social media</a0>"
+    },
+    {
+      "index": 7,
+      "parent": "heading",
+      "text": "🔍 Which elements will be indexed?"
+    },
+    {
+      "index": 8,
+      "parent": "listitem",
+      "text": "🆔 Username"
+    },
+    {
+      "index": 9,
+      "parent": "listitem",
+      "text": "📝 Bio and the account category description"
+    },
+    {
+      "index": 10,
+      "parent": "listitem",
+      "text": "🧵 Hashtags used in posts"
+    },
+    {
+      "index": 11,
+      "parent": "listitem",
+      "text": "📍 Location added to a post"
+    },
+    {
+      "index": 12,
+      "parent": "listitem",
+      "text": "🖼️ Photos and carousels (multiple images)"
+    },
+    {
+      "index": 13,
+      "parent": "listitem",
+      "text": "🎥 Videos and <b>Reels</b> clips"
+    },
+    {
+      "index": 14,
+      "parent": "listitem",
+      "text": "✍️ Post captions"
+    },
+    {
+      "index": 15,
+      "parent": "listitem",
+      "text": "📅 <b>Posts published after January 1, 2020</b>"
+    },
+    {
+      "index": 16,
+      "parent": "paragraph",
+      "text": "The change is <b>opt-out</b>, which means that <b>by default a public professional account will be indexed</b>, <i>unless</i> its owner excludes it. A new toggle will appear in the privacy settings (something like <i>“Allow public photos and videos to appear in search engine results”</i>) that you can switch off if you don't want your content going to Google. Instagram confirms it: users can <i>turn off</i> indexing in the privacy options, but if they don't, their public content will be <b>available to Google's bots by default</b>."
+    },
+    {
+      "index": 17,
+      "parent": "heading",
+      "text": "✅ Who does the change affect, and who gets indexed in Google?"
+    },
+    {
+      "index": 18,
+      "parent": "listitem",
+      "text": "👤 <b>Professional accounts</b> (business, company and creator)"
+    },
+    {
+      "index": 19,
+      "parent": "listitem",
+      "text": "🌍 <b>Public accounts</b> – set to visible to everyone"
+    },
+    {
+      "index": 20,
+      "parent": "listitem",
+      "text": "🔞 <b>Account owners must be 18 or older</b>"
+    },
+    {
+      "index": 21,
+      "parent": "listitem",
+      "text": "🚫 <b>Will not be indexed</b>:"
+    },
+    {
+      "index": 22,
+      "parent": "listitem",
+      "text": "personal accounts (individual, private)"
+    },
+    {
+      "index": 23,
+      "parent": "listitem",
+      "text": "private profiles (even if they are professional)"
+    },
+    {
+      "index": 24,
+      "parent": "paragraph",
+      "text": "If you run a company or creator profile, <b>your public posts are automatically in play for the search engine</b> as of July 10. If you have a personal account, the change doesn't apply to you – unless you decide to switch to a professional account to take advantage of the new options. Further down we explain <b>how to check and change your account type and your privacy settings</b>, so you have full control over indexing."
+    },
+    {
+      "index": 25,
+      "parent": "paragraph",
+      "text": "<a0>Running social media – how do you manage your presence effectively?</a0>"
+    },
+    {
+      "index": 26,
+      "parent": "heading",
+      "text": "Risks – what happens if you ignore this change?"
+    },
+    {
+      "index": 27,
+      "parent": "paragraph",
+      "text": "Every change brings opportunities, but risks too. The rollout of AI Overviews (AIO) in Poland, for example, cut organic traffic on most sites by around 30%. For content sites that live mainly off the ads on their pages, that was a big drop. For e-commerce, not necessarily. The clients I look after at SEOFLY, for instance, recorded no fall in revenue (and, given the long-term SEO work we do for them, <b>a rise, if anything</b>), because the high-value traffic still reaches the site."
+    },
+    {
+      "index": 28,
+      "parent": "paragraph",
+      "text": "But back to Meta and Instagram, and let's start with the potential <b>risks</b> – what can happen if you <b>brush off Instagram indexing</b> or fail to adapt to the new reality:"
+    },
+    {
+      "index": 29,
+      "parent": "listitem",
+      "text": "<b>Losing visibility to the competition.</b> Once Instagram content starts appearing in Google, your competitors can pick up extra exposure there. <b>Instagram posts will now compete directly with blog articles, product pages and the rest for positions in Google</b>. In practice, a brand that is active on IG and takes care of post SEO can turn up in, say, 4th place – <i>before</i> the user ever reaches your website's result. If your company isn't indexed (because you have a personal account, or you switch the option off) and your competition is, <b>their visual content can take your customers' attention</b> before those customers even see your result. Ignoring this change risks <b>losing organic traffic</b> to the companies that use it first."
+    },
+    {
+      "index": 30,
+      "parent": "listitem",
+      "text": "<b>Losing your edge in search.</b> Until now you could rely on traditional SEO for your website, but the landscape is shifting. Google increasingly answers queries with <b>visual content</b> and multimedia instead of text results alone. On top of that there is the panel of AI-generated answers (Google SGE / AI Overview), which <b>pushes the classic SERP results further down</b>. Analyses say the arrival of AI answers cuts the click-through rate on organic results by as much as ~34–37%, and some sites have reported <b>traffic drops of up to 64%</b>. The upshot is that the fight for the user's attention in Google results is harder than it used to be. If you don't diversify your presence (with social media content, for instance), your <b>visibility may keep falling</b>. The <b>prospect</b> of Google's new “Perspectives” tab (available on mobile), which promotes social media posts for queries about opinions or experiences, also suggests that content from platforms like Instagram will be favored in certain contexts. Your brand missing from those results means handing the field to someone else."
+    },
+    {
+      "index": 31,
+      "parent": "listitem",
+      "text": "<b>FOMO and an image you don't control.</b> If you're not watching what from your Instagram is visible in Google, you can miss important signals. People may run into your old posts outside the context of Instagram. <b>The risk is leaving this to chance</b> – outdated or unwanted content from your public profile can show up for anyone in search. In the extreme, someone may find your photo through <b>Google Images</b>, pulled out of the profile's context. So it matters to decide deliberately: either you <b>turn indexing off</b>, or you actively manage your presence in Google through Instagram."
+    },
+    {
+      "index": 32,
+      "parent": "paragraph",
+      "text": "It's worth noting that for many companies this change is more of an opportunity than a threat, especially for a company that is active in both social media and SEO. It becomes a threat mainly when we miss it and focus on a single channel. So in the next section we'll look at the <b>positive potential</b> of this new development and the benefits you can draw from it."
+    },
+    {
+      "index": 33,
+      "parent": "heading",
+      "text": "The potential – a new traffic channel and more visibility"
+    },
+    {
+      "index": 34,
+      "parent": "paragraph",
+      "text": "Now the good news: <b>Instagram indexing is a huge opportunity</b> to grow your reach, your traffic and your brand recognition beyond the app itself. Here are the key <b>opportunities and benefits</b> that come with the change:"
+    },
+    {
+      "index": 35,
+      "parent": "listitem",
+      "text": "<b>A new source of organic traffic.</b> Your Instagram posts can start generating visits and interest much like web pages do. Even before the official rollout, for example, an SEO analysis showed that in Italy alone <b>Instagram content appeared in the top 10 results for more than 669,000 different queries</b>, roughly 11% of all searches. Google had indexed over <b>600,000 Reels</b> from Instagram, and that number is growing. After July 10 the share of IG results is bigger still. Put more simply: someone can search for <i>“living room decorating ideas”</i> and instead of (or alongside) yet another blog article they'll see <b>an Instagram carousel full of inspiration</b>. One click and that person lands on you – even though they'd never heard of you before. That is a completely <b>new channel for reaching customers</b>, outside the classic methods."
+    },
+    {
+      "index": 36,
+      "parent": "listitem",
+      "text": "<b>Visibility in Google for visual content.</b> For industries built on <b>visual content</b> (fashion, beauty, design, food, travel, crafts and others) this is a genuine revolution. Google looks more and more like Pinterest – users want to <i>see</i> the answer, not only read it. Now your post with a styled product, an infographic or a how-to video can appear in Google results <b>instead of the tenth text article in a row</b>, if it answers the search intent better. Which means <i>a better shot at breaking through</i> with an attractive piece of content. Instagram has long shown the power of images – now it is becoming a <b>full-fledged Google resource</b>, which can send you people looking for inspiration or help, even if they don't actively use Instagram themselves. Your beautiful product photos, the <i>visual content</i> that used to live only in the app, can hook a potential customer straight from the search engine."
+    },
+    {
+      "index": 37,
+      "parent": "listitem",
+      "text": "<b>Getting more out of the content you already have.</b> If you regularly make valuable Instagram posts, <b>they now get a second life in Google results</b>. A local bridal atelier, for instance, may see its collection photos appear in Google Images when someone types <i>“wedding dress Warsaw”</i> – next to results from wedding blogs and fashion directories. A sports shop, in turn, can pick up extra traffic to its site once its Reel on <i>“how to choose running shoes”</i> shows up for a query about running advice. Scenarios like these used to require investing in SEO for a traditional website, or hoping other people would share your posts – now Google pulls your content out to the user <i>by itself</i>. That is <b>free promotion</b> for your brand at the moment someone is actively looking for that information or product."
+    },
+    {
+      "index": 38,
+      "parent": "listitem",
+      "text": "<b>A chance to dominate the results (multi-presence).</b> If you run both a website and an active IG profile, you have a shot at <b>showing up twice</b> in the results for the same query – your blog article in first place, say, and your Instagram post a few positions below. Research suggests Instagram results turn up most often around <b>4th position on the results page</b>. Taking more than one link on the first page is an advantage: even if your site is <i>not</i> number 1, the user can still reach you through the IG post. It raises your overall <b>brand visibility in Google</b> at the competition's expense."
+    },
+    {
+      "index": 39,
+      "parent": "listitem",
+      "text": "<b>Instagram as a “website” for small businesses.</b> Plenty of small business owners and creators rely mainly on social media, without an elaborate site of their own. Now <b>Instagram can act as a mini company page inside Google</b>. When someone searches for your brand name or a product, there's a chance your profile or your IG posts will come up in the results – with current photos, descriptions and reviews. As specialists point out, <b>an Instagram profile can become your “search-optimized business card”</b>, a kind of homepage for the people looking for you online. If you have never had the time or the budget to rank a website, Instagram indexing gives you a way to exist in Google <i>next to</i> traditional sites. For customers it means more information about your brand right there in the results – the latest posts with promotions or products, for instance."
+    },
+    {
+      "index": 40,
+      "parent": "heading",
+      "text": "Lessons from YouTube, TikTok and Shorts – how Google indexes other platforms"
+    },
+    {
+      "index": 41,
+      "parent": "paragraph",
+      "text": "It's worth looking at the wider context: <b>Instagram is not the first social platform whose content ends up in Google</b>. So far Google has successfully (and to its own benefit) indexed <b>YouTube, TikTok and its own YouTube Shorts</b>, among others. Looking at those examples lets us predict what Instagram indexing may look like and how to use it:"
+    },
+    {
+      "index": 42,
+      "parent": "listitem",
+      "text": "<b>YouTube – the pioneering tie-in with Google.</b> YouTube, bought by Google in 2006, has been deeply integrated with the search engine for years. Search for a how-to phrase or a review and you'll often see <b>featured YouTube videos</b> at the top of the results, playable straight from the search page. Google can even point to the right moment in a video for a given phrase (video key moments in the results). That is the effect of deep indexing of YT's audio-visual content plus Google's high trust in the platform. <b>The lesson</b>: valuable video content, especially content that answers specific queries (“how to…”, “review of…”), can generate enormous traffic from organic results. The same may go for Instagram – short how-tos in Reels form can appear next to YT and TikTok videos in the <b>Short Videos</b> section or in Google's carousels."
+    },
+    {
+      "index": 43,
+      "parent": "listitem",
+      "text": "<b>TikTok – competing content in Google.</b> In 2021 reports appeared that Google was negotiating with ByteDance (TikTok's owner) for access to index TikTok videos. The effects have been visible for a while now: <b>short TikTok videos can appear high in the results</b> for some queries, especially on mobile devices. Google is also experimenting with a dedicated <b>“Short Videos”</b> tab in the results – collecting clips from TikTok, IG Reels and YouTube Shorts when they match the search intent (queries about recipes, life hacks, product reviews). It shows that Google sees the value in content from the newer platforms and wants to keep users in one place by offering them everything there (rather than risk them leaving to search on TikTok instead). <b>The lesson</b>: even content made for entertainment or for social media can become a source of evergreen (continuous) traffic. Whoever optimized their TikToks well (on-screen text, good descriptions) is collecting views today not only in the app but through Google as well. The same can happen with your Reels and IG posts – <b>it pays to make them as if they were going to live forever</b> (rather than vanish into the depths of the feed). A well-ranked short video can pull viewers in from Google long after it was published."
+    },
+    {
+      "index": 44,
+      "parent": "listitem",
+      "text": "<b>YouTube Shorts – the link between YT and TikTok.</b> Shorts are YouTube's answer to TikTok and Reels. As part of YouTube they are indexed in Google practically automatically. They appear in the same sections of the results as TikToks or Reels. For marketers that's an interesting conclusion: <b>the short video format has become important enough to earn its own place in the search engine</b>. Google even introduced a “Perspectives” filter, which shows social media content (short videos included) as a supplement to the traditional results. <b>The lesson</b>: content made for mobile and for the short form can reach a very wide audience through search. For you that means <b>it isn't only a long article or a 10-minute video that can win at SEO – a 30-second Reel with one concrete piece of information</b> has that power too."
+    },
+    {
+      "index": 45,
+      "parent": "paragraph",
+      "text": "What follows from these examples? Above all, that <b>the line between social media and the search engine is blurring</b>. A user looking for information increasingly gets a mix of formats: text, image, video, forum posts, Instagram posts… Your marketing strategy should account for that. <b>Maybe you have already done SEO on YouTube, or run TikTok campaigns hoping for a viral hit</b> – now it's worth giving Instagram SEO the same kind of attention."
+    },
+    {
+      "index": 46,
+      "parent": "paragraph",
+      "text": "Remember too that <b>each of these platforms plays by slightly different rules</b>. What works on YouTube (clickable thumbnails, long watch time) takes a different form on Instagram (an attractive profile grid, stopping the scroll within one second). Even so, <b>the goal is the same – engage the viewer and give them content worth their time</b>. Google will pick the IG posts it judges the most valuable and the most popular to display. So make sure yours are exactly that."
+    },
+    {
+      "index": 47,
+      "parent": "paragraph",
+      "text": "To sum up, Instagram officially opening up to Google is a <b>game changer</b> for marketing. The search engine gains access to a trove of visual and social content, and you gain <b>new routes to your audience</b>. Of course, to make full use of that potential you'll want to prepare your account and your material properly. If you want to know more, do read our practical guide on <b>how to get Instagram ready for indexing</b> and how to optimize posts for SEO. And if you want to find out how the Social Lama agency and SEOFLY can help your brand stand out, send us an email with your questions or meet us for a coffee, and we'll be glad to help."
+    },
+    {
+      "index": 48,
+      "parent": "paragraph",
+      "text": "<a0>How to set up an Instagram profile for indexing in Google? – A GUIDE</a0>"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "source": "najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8",
+  "postId": 29,
+  "title": "The biggest new features on Facebook, Messenger and Instagram",
+  "excerpt": "A wrap-up of the F8 conference.",
+  "metaTitle": "The biggest new features on Facebook, Messenger and Instagram",
+  "metaDescription": "A wrap-up of the F8 conference.",
+  "slug": "f8-news-for-facebook-messenger-and-instagram",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "This year's F8, Facebook's developer conference, took place in a rather different atmosphere than usual. The Cambridge Analytica scandal was followed by a raft of changes meant to limit outside companies' access to data. Mark Zuckerberg announced a feature called “Clear History”. It will let users check which apps and sites are collecting data about them, and then delete it."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "What else?"
+    },
+    {
+      "index": 2,
+      "parent": "heading",
+      "text": "Facebook Dating"
+    },
+    {
+      "index": 3,
+      "parent": "paragraph",
+      "text": "Facebook's founder has decided to declare war on Tinder by launching Facebook Dating. You will be able to create a separate, dedicated profile, and the platform's algorithm will use it to match you with potential other halves. Will the idea catch on? Given recent events and the worry about privacy, we doubt it. Tinder and other outside apps let you stay anonymous to the people you know. In theory Facebook says our “dating” profiles will be invisible to them too, but will users want to take the risk? Time will tell."
+    },
+    {
+      "index": 4,
+      "parent": "heading",
+      "text": "Stamping out fake news"
+    },
+    {
+      "index": 5,
+      "parent": "paragraph",
+      "text": "Facebook isn't letting up in its fight against false information. Its next idea for tackling posts of that kind is an option to vote for or against a given article. It also announced that programmers in Silicon Valley are still refining an artificial intelligence meant to recognize fake content and fake accounts."
+    },
+    {
+      "index": 6,
+      "parent": "heading",
+      "text": "Groups"
+    },
+    {
+      "index": 7,
+      "parent": "paragraph",
+      "text": "The algorithm will keep backing groups, so posts published in them will get the biggest organic reach. A Groups TAB and a Join Group overlay are coming too. The first will make it easier for users to reach the groups they already belong to and to discover new ones – gathering everything in one place. The second can be put to marketing use, on your own website for instance."
+    },
+    {
+      "index": 8,
+      "parent": "heading",
+      "text": "Instagram"
+    },
+    {
+      "index": 9,
+      "parent": "paragraph",
+      "text": "Facebook announced new features for IG such as: video chat between users, sharing whatever you happen to be listening to on Spotify in Stories, adding your own effects to Stories (according to FB's data this is the most popular communication channel – users post Stories more often than traditional photos or posts), and an option for discovering new content: Instagram will suggest accounts or channels with a good chance of interesting you. The algorithm will judge that on the basis of what you have done so far."
+    },
+    {
+      "index": 10,
+      "parent": "heading",
+      "text": "Messenger"
+    },
+    {
+      "index": 11,
+      "parent": "paragraph",
+      "text": "Zuckerberg keeps recommending that companies use bots to communicate with their fans. He also gave the numbers so far: there were around 100 thousand bots in 2017 and 300 thousand in 2018 – and it's only May! The number of messages from people to companies has shot up too: from 2 to 8 billion. Messenger will also add automatic translation for when someone writes to us in another language, and refresh the look of the app itself."
+    },
+    {
+      "index": 12,
+      "parent": "heading",
+      "text": "Oculus GO – Facebook in VR"
+    },
+    {
+      "index": 13,
+      "parent": "paragraph",
+      "text": "The last piece of news, and no less interesting, is that Oculus GO has gone on sale (price: $199), letting people browse Facebook in VR form. Facebook will make it easier for developers and designers to create VR and 3D animation."
+    },
+    {
+      "index": 14,
+      "parent": "paragraph",
+      "text": "Will all of this help rebuild Facebook's appeal and its users' trust? The coming months will show."
+    }
+  ]
+}
