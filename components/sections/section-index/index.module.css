@@ -1,5 +1,6 @@
 /*
- * `/uslugi` index styles — plum hero + a cream six-card grid (design D2 / O3).
+ * Section-index styles — plum hero + a cream card grid (design D2 / O3).
+ * Shared by the services and industries hubs.
  */
 
 .breadcrumb {
@@ -101,10 +102,19 @@
   color: var(--color-plum);
 }
 
+/* Industry taglines run longer than service summaries (115–152 chars), so the
+   body is bounded to keep one verbose entry from inflating its whole grid row.
+   Six lines is the measured worst case — at 800px the 3-column grid gives cards
+   only 220px, where the longest tagline wraps to 6 lines (4 at 1280px, 5 at
+   375px) — so shipped copy is never truncated, only pathological copy is. */
 .cardSummary {
   font-family: var(--font-mono);
   font-size: 1rem;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cardCta {

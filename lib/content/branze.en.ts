@@ -36,6 +36,12 @@ export const chrome = {
   ctaText: "Tell us about your challenge — we'll show you how we can help.",
   ctaButton: 'Free consultation',
   ctaHref: '/en/contact',
+  index: {
+    title: 'Industries',
+    intro:
+      'Every industry has its own language, its own pace, its own audience. Find yours and see how we run social there.',
+    cardCta: 'View industry',
+  },
 } satisfies LocalizedBranze['chrome']
 
 // —— Canonical list (same order + variants as branze.ts) ———————————————————————

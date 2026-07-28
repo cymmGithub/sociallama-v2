@@ -66,24 +66,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  // All 24 industry URLs (12 PL + 12 EN) from the canonical list (design D6).
-  // Each PL entry carries its EN counterpart slug (`pairSlug`).
-  const industryRoutes: MetadataRoute.Sitemap = INDUSTRIES.flatMap(
-    (industry) => [
-      {
-        url: `${APP_BASE_URL}/branze/${industry.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      },
-      {
-        url: `${APP_BASE_URL}/en/industries/${industry.pairSlug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      },
-    ]
-  )
+  // Industry pages — the index + all 24 detail URLs (12 PL + 12 EN) from the
+  // canonical list (design D6). Each PL entry carries its EN counterpart slug
+  // (`pairSlug`). The two index URLs are listed here even though desktop chrome
+  // no longer links them (design D4), so they stay crawlable.
+  const industryRoutes: MetadataRoute.Sitemap = [
+    { path: '/branze', priority: 0.8 },
+    { path: '/en/industries', priority: 0.8 },
+    ...INDUSTRIES.flatMap((industry) => [
+      { path: `/branze/${industry.slug}`, priority: 0.7 },
+      { path: `/en/industries/${industry.pairSlug}`, priority: 0.7 },
+    ]),
+  ].map(({ path, priority }) => ({
+    url: `${APP_BASE_URL}${path}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority,
+  }))
 
   // Service pages — the index + six services in both locales. Each PL entry
   // carries its EN counterpart slug (`pairSlug`), mirroring the industry block.

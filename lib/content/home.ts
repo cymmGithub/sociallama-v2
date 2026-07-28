@@ -950,11 +950,25 @@ export const footer = {
       title: 'NAWIGACJA',
       links: [
         { label: 'O NAS', href: '/o-nas' },
-        { label: 'USŁUGI', href: '/uslugi' },
         // { label: 'SZKOLENIA I KURSY', href: '/szkolenia' }, // delayed launch — no page yet, keep out of nav
         { label: 'BLOG', href: '/blog' },
         { label: 'CASE STUDIES', href: '/case-studies' },
         { label: 'KONTAKT', href: '/kontakt' },
+      ],
+    },
+    {
+      // The service detail pages, not the `/uslugi` hub — hub pages are linked
+      // from the mobile overlay menu only (design D4), since desktop chrome
+      // already enumerates every child page.
+      title: 'USŁUGI',
+      links: [
+        { label: 'Strategia', href: '/uslugi/strategia' },
+        { label: 'Content', href: '/uslugi/content' },
+        { label: 'Sprzedaż', href: '/uslugi/sprzedaz' },
+        { label: 'Kampanie reklamowe', href: '/uslugi/kampanie-reklamowe' },
+        { label: 'Kreacje & Wideo', href: '/uslugi/kreacje-wideo' },
+        { label: 'Audyt i konsultacje', href: '/uslugi/audyt-i-konsultacje' },
+        { label: 'Influencer marketing', href: '/uslugi/influencer-marketing' },
       ],
     },
     {

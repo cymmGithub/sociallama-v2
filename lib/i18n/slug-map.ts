@@ -52,9 +52,7 @@ export const SECTIONS = [
   {
     pl: '/branze',
     en: '/en/industries',
-    // No index pair yet: both menus link these paths but neither page exists,
-    // so mapping them would aim the toggle at a 404. Flip to true when they ship.
-    hasIndex: false,
+    hasIndex: true,
     slugs: [
       ['automotive', 'automotive'],
       ['elektronika-i-agd', 'electronics'],

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import { SectionIndex } from '@/components/sections/section-index'
 import { OG_BASE } from '@/lib/content/site'
 import { chrome, SERVICES } from '@/lib/content/uslugi'
-import { ServicesIndex } from './services-index'
 
 const PL_PATH = '/uslugi'
 const EN_PATH = '/en/services'
@@ -32,7 +32,7 @@ const cards = SERVICES.map((service) => ({
 export default function UslugiIndexPage() {
   return (
     <Wrapper theme="plum">
-      <ServicesIndex chrome={chrome} services={cards} base={PL_PATH} />
+      <SectionIndex chrome={chrome} items={cards} base={PL_PATH} />
     </Wrapper>
   )
 }

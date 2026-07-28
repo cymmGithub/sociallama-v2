@@ -47,7 +47,9 @@ Only three new strings per locale are needed, as a `chrome.index` block on the e
 
 ### D3 — Footer grid gets a mid-range step, not a bare 4→5 track swap
 
-The agreed desktop layout is `1.2fr 0.9fr 0.9fr 1.5fr 1.1fr` (invite · NAWIGACJA · USŁUGI · OFERTA · KONTAKT), giving OFERTA the widest track so its `data-cols="2"` sub-grid keeps two columns.
+The agreed desktop layout is `1.2fr 0.9fr 0.9fr 1.5fr 1.1fr` (invite · NAWIGACJA · USŁUGI · OFERTA · KONTAKT), giving OFERTA the widest of the four link tracks.
+
+> **Corrected during implementation.** This decision originally claimed the 1.5fr track would keep OFERTA's `data-cols="2"` sub-grid at two columns. Measured, it does not: the sub-grid needs `2 × 11rem + 2rem` = 384px, and the track delivers 281px at 1280px and 380px at 1600px, only crossing over around 1615px. The premise was wrong but the conclusion survives — the shipped four-track footer was worse (329px at 1600px), and two columns at 1280px would mean ~124px tracks that wrap "Hotele i Miejsca Wypoczynkowe" (223px) and "Nieruchomości i Deweloperzy" (206px). OFERTA therefore renders one clean column on mid-range desktops by design. See the amended `site-footer` spec.
 
 But `--desktop` is `width >= 800px` (`lib/styles/css/root.css:8`), so that rule would engage on an 800px viewport. OFERTA's sub-grid is `repeat(auto-fill, minmax(11rem, 1fr))` (`footer.module.css:169`); at 800px its 1.5/5.6 share is roughly 190px, under one 11rem track, so it silently collapses to one column and the whole footer reads as five cramped strips.
 

@@ -60,6 +60,14 @@ export const chrome = {
   ctaText: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
   ctaButton: 'Bezpłatna konsultacja',
   ctaHref: '/kontakt',
+  // `/branze` index chrome. Cards reuse each industry's `tagline`, so this is
+  // the only copy the index page adds.
+  index: {
+    title: 'Branże',
+    intro:
+      'Każda branża ma swój język, swoje tempo i swoich odbiorców. Znajdź swoją i zobacz, jak prowadzimy w niej social media.',
+    cardCta: 'Zobacz branżę',
+  },
 } as const
 
 // —— Content shape ————————————————————————————————————————————————————————————

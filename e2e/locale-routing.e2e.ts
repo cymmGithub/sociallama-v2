@@ -22,13 +22,6 @@ import { gotoHydrated } from './helpers'
  * resolve. That is what would have caught `/en/training` on the day it shipped.
  */
 
-/**
- * Linked from both menus but not built yet — the index pages are being added
- * separately. Delete these entries when `/branze` and `/en/industries` ship,
- * and flip `hasIndex` in `lib/i18n/slug-map.ts` at the same time.
- */
-const PENDING_PAGES = new Set(['/branze', '/en/industries'])
-
 /** Raw hrefs from the always-mounted menu overlay and the footer. */
 async function chromeHrefs(page: Page): Promise<string[]> {
   return page
@@ -63,7 +56,6 @@ test.describe('Locale routing — chrome links resolve', () => {
 
       const broken: string[] = []
       for (const target of paths) {
-        if (PENDING_PAGES.has(target)) continue
         const response = await page.request.get(target)
         if (response.status() >= 400) {
           broken.push(`${target} → ${response.status()}`)
@@ -123,6 +115,7 @@ test.describe('Locale routing — language toggle', () => {
   // (the case the old prefix-swap logic could not express).
   const CASES = [
     { from: '/uslugi', to: '/en/services' },
+    { from: '/branze', to: '/en/industries' },
     { from: '/uslugi/strategia', to: '/en/services/strategy' },
     { from: '/uslugi/kampanie-reklamowe', to: '/en/services/ad-campaigns' },
     { from: '/branze/elektronika-i-agd', to: '/en/industries/electronics' },

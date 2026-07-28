@@ -71,6 +71,11 @@
 }
 
 /* —— Invite + directory ————————————————————————————————————————————————————— */
+/* Five cells (invite · NAWIGACJA · USŁUGI · OFERTA · KONTAKT) across three
+   bands. The five-track row is held back to 1200px on purpose: --desktop starts
+   at 800px, where OFERTA's 1.5/5.6 share is only ~190px — under one 11rem track
+   of its sub-grid below, so it would silently collapse to a single tall column
+   and the whole footer would read as five cramped strips (design D3). */
 .body {
   display: flex;
   flex-direction: column;
@@ -78,9 +83,13 @@
 
   @media (--desktop) {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1.1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--gap);
     align-items: start;
+  }
+
+  @media (width >= 1200px) {
+    grid-template-columns: 1.2fr 0.9fr 0.9fr 1.5fr 1.1fr;
   }
 }
 

@@ -725,10 +725,25 @@ export const footer = {
       title: 'NAVIGATION',
       links: [
         { label: 'ABOUT US', href: '/en/about-us' },
-        { label: 'SERVICES', href: '/en/services' },
         // { label: 'TRAINING & COURSES', href: '/en/training' }, // delayed launch — no page yet, keep out of nav
         { label: 'CASE STUDIES', href: '/en/case-studies' },
         { label: 'CONTACT', href: '/en/contact' },
+      ],
+    },
+    {
+      // Service detail pages, not the `/en/services` hub (design D4).
+      title: 'SERVICES',
+      links: [
+        { label: 'Strategy', href: '/en/services/strategy' },
+        { label: 'Content', href: '/en/services/content' },
+        { label: 'Sales', href: '/en/services/sales' },
+        { label: 'Ad Campaigns', href: '/en/services/ad-campaigns' },
+        { label: 'Creative & Video', href: '/en/services/creative-video' },
+        { label: 'Audit & Consulting', href: '/en/services/audit-consulting' },
+        {
+          label: 'Influencer Marketing',
+          href: '/en/services/influencer-marketing',
+        },
       ],
     },
     {

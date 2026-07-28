@@ -53,12 +53,12 @@ describe('slug map — industries', () => {
     expect(sectionFor('/branze').slugs.length).toBe(INDUSTRIES.length)
   })
 
-  // The index pages are linked from both menus but do not exist yet, so the
-  // toggle must keep falling back to home rather than aiming at a 404.
-  test('the index pair stays unmapped until the pages ship', () => {
-    expect(sectionFor('/branze').hasIndex).toBe(false)
-    expect(counterpartPath('/branze')).toBe('/en')
-    expect(counterpartPath('/en/industries')).toBe('/')
+  // Both index pages ship, so the toggle maps them as a pair rather than
+  // falling back to the locale home.
+  test('the index pair is mapped', () => {
+    expect(sectionFor('/branze').hasIndex).toBe(true)
+    expect(counterpartPath('/branze')).toBe('/en/industries')
+    expect(counterpartPath('/en/industries')).toBe('/branze')
   })
 })
 
