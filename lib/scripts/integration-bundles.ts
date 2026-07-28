@@ -205,11 +205,12 @@ export const INTEGRATION_BUNDLES = defineBundles({
       'MAILCHIMP_AUDIENCE_ID',
     ],
     barrelExports: [],
-    // The two blog pages are SHARED core files that no other bundle touches;
-    // stripping Mailchimp must remove exactly its own import + mount.
+    // The two shared blog views (each rendered by both locales' routes) are
+    // SHARED core files that no other bundle touches; stripping Mailchimp must
+    // remove exactly its own import + mount.
     codeTransforms: [
       {
-        file: 'app/(frontend)/blog/page.tsx',
+        file: 'app/(frontend)/blog/hub-view.tsx',
         ops: [
           { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
           // Sibling, not the point of its expression: in the hub it sits inside
@@ -223,7 +224,7 @@ export const INTEGRATION_BUNDLES = defineBundles({
         ],
       },
       {
-        file: 'app/(frontend)/[slug]/page.tsx',
+        file: 'app/(frontend)/[slug]/post-article.tsx',
         ops: [
           { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
           // Sibling, not the point of its expression: in the hub it sits inside
@@ -244,8 +245,8 @@ export const INTEGRATION_BUNDLES = defineBundles({
     // comparison documented on `overwriteFiles` (same reasoning as Shopify's
     // revalidate route).
     overwriteFiles: [
-      'app/(frontend)/blog/page.tsx',
-      'app/(frontend)/[slug]/page.tsx',
+      'app/(frontend)/blog/hub-view.tsx',
+      'app/(frontend)/[slug]/post-article.tsx',
     ],
   },
 

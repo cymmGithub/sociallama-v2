@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { BlogListing } from '@/app/(frontend)/blog/listing'
 import { parsePageNumber } from '@/app/(frontend)/blog/pagination'
-import { listing } from '@/lib/content/blog'
+import { listing } from '@/lib/content/blog.en'
 import { getCategories, getPostsPage } from '@/lib/payload/queries'
 
 interface PageProps {
@@ -10,7 +10,9 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const { totalPages } = await getPostsPage(1)
+  // Page count over the translated set only, so English pagination never
+  // reaches a page whose posts exist in Polish alone.
+  const { totalPages } = await getPostsPage(1, undefined, 'en')
   const pages = Array.from(
     { length: Math.max(totalPages - 1, 0) },
     (_, index) => ({ number: String(index + 2) })
@@ -25,25 +27,25 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { number } = await params
   return {
-    title: `Blog — strona ${number}`,
-    alternates: { canonical: `/blog/page/${number}` },
+    title: `Blog — page ${number}`,
+    alternates: { canonical: `/en/blog/page/${number}` },
   }
 }
 
-export default async function BlogPageN({ params }: PageProps) {
+export default async function EnBlogPageN({ params }: PageProps) {
   const { number } = await params
   const page = parsePageNumber(number)
   if (page === null) {
     notFound()
   }
   if (page === 1) {
-    // Page 1 is canonical at /blog
-    permanentRedirect('/blog')
+    // Page 1 is canonical at /en/blog
+    permanentRedirect('/en/blog')
   }
 
   const [postsPage, categories] = await Promise.all([
-    getPostsPage(page),
-    getCategories(),
+    getPostsPage(page, undefined, 'en'),
+    getCategories('en'),
   ])
   if (postsPage.docs.length === 0) {
     notFound()
@@ -53,11 +55,11 @@ export default async function BlogPageN({ params }: PageProps) {
     <BlogListing
       heading="Blog"
       content={listing}
-      listingPath="/blog"
-      basePath=""
-      hubPath="/blog"
-      categoryPath="/category"
-      locale="pl"
+      listingPath="/en/blog"
+      basePath="/en/blog"
+      hubPath="/en/blog"
+      categoryPath="/en/blog/category"
+      locale="en"
       postsPage={postsPage}
       categories={categories}
     />

@@ -11,7 +11,9 @@ import {
 } from 'react'
 import { Link } from '@/components/ui/link'
 import { filterPosts } from '@/lib/blog/search'
-import { hub, hubSearch } from '@/lib/content/blog'
+import { hubSearch as hubSearchPl } from '@/lib/content/blog'
+import { hubSearch as hubSearchEn } from '@/lib/content/blog.en'
+import type { Locale } from '@/lib/i18n/slug-map'
 import type { SearchEntry } from '@/lib/payload/queries'
 import s from './blog.module.css'
 
@@ -24,7 +26,34 @@ import s from './blog.module.css'
  * every post-rendering section on the server: the provider takes the curated
  * sections and the server-rendered grid as `children` and never re-renders
  * them, it only decides whether the grid is shown at all.
+ *
+ * Shared by both locales, and the copy rides that same context: the input is
+ * rendered inside `<HubHeader>`, which has nothing to do with searching, so
+ * making it a prop would mean drilling the search copy through a component that
+ * never reads it. The provider takes a `locale` rather than the copy itself,
+ * because `results` pluralizes a count computed in the browser and a function
+ * cannot cross the server/client boundary — so this is the one blog component
+ * that still reads the content modules directly.
  */
+
+/**
+ * The hub's search copy. Typed structurally rather than through `Localized`,
+ * which maps over object types and would strip `results`'s callability — the
+ * count is pluralized per locale, so the wording stays a function.
+ */
+interface HubSearchCopy {
+  label: string
+  placeholder: string
+  clear: string
+  results: (count: number) => string
+  emptyTitle: string
+  emptyText: string
+}
+
+const HUB_SEARCH: Record<Locale, HubSearchCopy> = {
+  pl: hubSearchPl,
+  en: hubSearchEn,
+}
 
 interface SearchState {
   query: string
@@ -33,6 +62,7 @@ interface SearchState {
   searching: boolean
   /** Matches for the current query; empty while not searching. */
   results: SearchEntry[]
+  content: HubSearchCopy
 }
 
 const SearchContext = createContext<SearchState | null>(null)
@@ -47,12 +77,15 @@ function useSearch(): SearchState {
 
 export function HubSearch({
   index,
+  locale,
   children,
 }: {
   index: SearchEntry[]
+  locale: Locale
   children: ReactNode
 }) {
   const [query, setQuery] = useState('')
+  const content = HUB_SEARCH[locale]
 
   const value = useMemo<SearchState>(() => {
     const searching = query.trim().length > 0
@@ -61,27 +94,28 @@ export function HubSearch({
       setQuery,
       searching,
       results: searching ? filterPosts(index, query) : [],
+      content,
     }
-  }, [index, query])
+  }, [content, index, query])
 
   return <SearchContext value={value}>{children}</SearchContext>
 }
 
 export function HubSearchInput() {
-  const { query, setQuery } = useSearch()
+  const { query, setQuery, content } = useSearch()
   const inputId = useId()
 
   return (
     <div className={s.search}>
       <label className="sr-only" htmlFor={inputId}>
-        {hubSearch.label}
+        {content.label}
       </label>
       <Search aria-hidden="true" className={s.searchIcon} />
       <input
         className={s.searchInput}
         id={inputId}
         onChange={(event) => setQuery(event.target.value)}
-        placeholder={hubSearch.placeholder}
+        placeholder={content.placeholder}
         type="search"
         value={query}
       />
@@ -92,7 +126,7 @@ export function HubSearchInput() {
           type="button"
         >
           <X aria-hidden="true" />
-          <span className="sr-only">{hubSearch.clear}</span>
+          <span className="sr-only">{content.clear}</span>
         </button>
       )}
     </div>
@@ -122,19 +156,31 @@ export function HubCurated({ children }: { children: ReactNode }) {
  *
  * Results render from the shipped index, which carries no covers or bylines —
  * hence the compact rows rather than the full card grid.
+ *
+ * The heading belongs to the hub copy rather than the search copy, so the page
+ * passes it in; `basePath` localizes the result links, Polish posts sitting at
+ * the root and English ones under `/en/blog`.
  */
-export function HubArchive({ children }: { children: ReactNode }) {
-  const { searching, results } = useSearch()
+export function HubArchive({
+  archiveTitle,
+  basePath,
+  children,
+}: {
+  archiveTitle: string
+  basePath: string
+  children: ReactNode
+}) {
+  const { searching, results, content } = useSearch()
 
   return (
     <section className={s.archive}>
       <div className={s.archiveHead}>
-        <h2 className={s.archiveTitle}>{hub.archiveTitle}</h2>
+        <h2 className={s.archiveTitle}>{archiveTitle}</h2>
       </div>
 
       {/* Announced on change; empty while idle so clearing says nothing. */}
       <p aria-live="polite" className="sr-only">
-        {searching ? hubSearch.results(results.length) : ''}
+        {searching ? content.results(results.length) : ''}
       </p>
 
       {!searching && children}
@@ -144,7 +190,7 @@ export function HubArchive({ children }: { children: ReactNode }) {
           <ul className={s.results}>
             {results.map((entry) => (
               <li key={entry.slug}>
-                <Link className={s.result} href={`/${entry.slug}`}>
+                <Link className={s.result} href={`${basePath}/${entry.slug}`}>
                   {entry.category && (
                     <span className={s.resultCategory}>{entry.category}</span>
                   )}
@@ -158,8 +204,8 @@ export function HubArchive({ children }: { children: ReactNode }) {
           </ul>
         ) : (
           <div className={s.empty}>
-            <p className={s.emptyTitle}>{hubSearch.emptyTitle}</p>
-            <p className={s.emptyText}>{hubSearch.emptyText}</p>
+            <p className={s.emptyTitle}>{content.emptyTitle}</p>
+            <p className={s.emptyText}>{content.emptyText}</p>
           </div>
         ))}
     </section>

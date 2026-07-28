@@ -1,6 +1,9 @@
 import cn from 'clsx'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import type * as pl from '@/lib/content/blog'
+import type { Localized } from '@/lib/i18n/parity'
+import type { Locale } from '@/lib/i18n/slug-map'
 import type { PostsPage } from '@/lib/payload/queries'
 import type { Category } from '@/payload-types'
 import s from './blog.module.css'
@@ -9,8 +12,16 @@ import { PostCard } from './post-card'
 
 interface BlogListingProps {
   heading: string
+  content: Localized<typeof pl.listing>
   /** Base listing path for pagination links, e.g. `/blog`. */
+  listingPath: string
+  /** Post URL prefix: empty in Polish, `/en/blog` in English. */
   basePath: string
+  /** Blog hub root, behind the "all categories" pill. */
+  hubPath: string
+  /** Category listing prefix, e.g. `/category`. */
+  categoryPath: string
+  locale: Locale
   postsPage: PostsPage
   categories: Category[]
   /** Slug of the active category page, if any. */
@@ -21,10 +32,18 @@ interface BlogListingProps {
  * Shared listing layout for the /blog hub and /category/{slug} pages:
  * display heading, category pills, card grid, numbered pagination, and an
  * intentional empty state.
+ *
+ * Shared by both locales: posts and categories are locale-resolved by the page,
+ * `content` carries the copy, and the path props localize every link.
  */
 export function BlogListing({
   heading,
+  content,
+  listingPath,
   basePath,
+  hubPath,
+  categoryPath,
+  locale,
   postsPage,
   categories,
   activeCategory,
@@ -34,12 +53,12 @@ export function BlogListing({
       <section className={s.listing}>
         <header className={s.listingHeader}>
           <h1 className={s.listingHeading}>{heading}</h1>
-          <nav className={s.categories} aria-label="Kategorie">
+          <nav className={s.categories} aria-label={content.categoriesAria}>
             <Link
               className={cn(s.categoryPill, !activeCategory && s.pillActive)}
-              href="/blog"
+              href={hubPath}
             >
-              Wszystkie
+              {content.allCategories}
             </Link>
             {categories.map((category) => (
               <Link
@@ -48,7 +67,7 @@ export function BlogListing({
                   s.categoryPill,
                   category.slug === activeCategory && s.pillActive
                 )}
-                href={`/category/${category.slug}`}
+                href={`${categoryPath}/${category.slug}`}
               >
                 {category.title}
               </Link>
@@ -60,21 +79,26 @@ export function BlogListing({
           <>
             <div className={s.grid}>
               {postsPage.docs.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  content={content.postCard}
+                  basePath={basePath}
+                  locale={locale}
+                />
               ))}
             </div>
             <Pagination
-              basePath={basePath}
+              listingPath={listingPath}
+              content={content.pagination}
               page={postsPage.page}
               totalPages={postsPage.totalPages}
             />
           </>
         ) : (
           <div className={s.empty}>
-            <p className={s.emptyTitle}>Jeszcze tu pusto</p>
-            <p className={s.emptyText}>
-              Pracujemy nad nowymi wpisami — zajrzyj wkrótce.
-            </p>
+            <p className={s.emptyTitle}>{content.emptyTitle}</p>
+            <p className={s.emptyText}>{content.emptyText}</p>
           </div>
         )}
       </section>

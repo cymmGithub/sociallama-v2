@@ -37,6 +37,31 @@ export const postRelated = {
   allHref: '/blog',
 } as const
 
+/** Rail heading, plus the accessible name for the table-of-contents nav. */
+export const postToc = {
+  title: 'W tym wpisie',
+  navLabel: 'Spis treści',
+} as const
+
+/**
+ * The share row. The two brand labels carry a `{title}` slot instead of being
+ * functions like `hubVideo.posterLabel`: the row is a client component and its
+ * copy arrives as props, so it has to be serializable.
+ */
+export const postShare = {
+  title: 'Udostępnij',
+  linkedin: 'Udostępnij „{title}” na LinkedInie',
+  facebook: 'Udostępnij „{title}” na Facebooku',
+  copy: 'Kopiuj link do wpisu',
+  copied: 'Link skopiowany',
+} as const
+
+/** The author card's outbound link — one wording per `ResolvedAuthor.kind`. */
+export const postAuthor = {
+  personLink: 'Profil autora',
+  brandLink: 'Poznaj Social Lamę',
+} as const
+
 /**
  * Static copy for the /blog hub. Everything editorial (which post leads, what
  * the picks are, the video) comes from the `blog-hub` global; these are the
@@ -46,9 +71,13 @@ export const hub = {
   eyebrow: 'Blog Social Lamy',
   title: 'Co działa w social mediach — i dlaczego',
   lead: 'Konkretne rozbiórki kampanii, liczby zamiast trendów i rzeczy, które sprawdziliśmy na własnych klientach, zanim je tu opisaliśmy.',
+  categoriesAria: 'Kategorie',
+  allCategories: 'Wszystkie',
   picksTitle: 'Wybór redakcji',
   popularTitle: 'Najczęściej czytane',
   archiveTitle: 'Wszystkie wpisy',
+  /** Follows the minute count in a byline: "5 min czytania". */
+  readingTimeSuffix: 'min czytania',
 } as const
 
 /**
@@ -99,4 +128,66 @@ export const hubSearch = {
   results: (count: number) => `Znaleziono ${count} ${postsPlural(count)}.`,
   emptyTitle: 'Nic nie pasuje',
   emptyText: 'Spróbuj innego słowa albo wyczyść wyszukiwanie.',
+} as const
+
+/** The listing card, wherever it sits: hub grid, category page, related row. */
+export const postCard = {
+  read: 'PRZECZYTAJ',
+} as const
+
+/** The numbered pager under a card grid. */
+export const pagination = {
+  navAria: 'Paginacja',
+  newer: 'Nowsze',
+  older: 'Starsze',
+} as const
+
+/**
+ * The plain listing behind /category/{slug} and /blog/page/{n}. Its category
+ * nav is the hub's, so those two labels are read from `hub` rather than
+ * restated; the card and pager copy rides along because the listing owns both.
+ */
+export const listing = {
+  categoriesAria: hub.categoriesAria,
+  allCategories: hub.allCategories,
+  emptyTitle: 'Jeszcze tu pusto',
+  emptyText: 'Pracujemy nad nowymi wpisami — zajrzyj wkrótce.',
+  postCard,
+  pagination,
+} as const
+
+/**
+ * Everything the post template renders around a post, so the page passes one
+ * prop. The blocks are referenced rather than restated — including the hub's
+ * reading-time suffix, which is the same byline wording — so the article and
+ * the hub can never drift.
+ */
+export const postArticle = {
+  breadcrumbAria: 'Ścieżka nawigacji',
+  /** The hub crumb, and the same label in the BreadcrumbList JSON-LD. */
+  hubLabel: 'Blog',
+  readingTimeSuffix: hub.readingTimeSuffix,
+  cta: postCta,
+  toc: postToc,
+  share: postShare,
+  author: postAuthor,
+  newsletter: postNewsletter,
+  related: postRelated,
+  postCard,
+} as const
+
+/**
+ * The same, for the /blog hub. Its English twin is `as const` rather than
+ * parity-checked: `hubVideo` carries a function, and every member is a block
+ * already checked at its own declaration, so nothing goes unchecked.
+ */
+export const hubView = {
+  hub,
+  promo: hubPromo,
+  video: hubVideo,
+  newsletter: postNewsletter,
+  postCard,
+  pagination,
+  emptyTitle: listing.emptyTitle,
+  emptyText: listing.emptyText,
 } as const

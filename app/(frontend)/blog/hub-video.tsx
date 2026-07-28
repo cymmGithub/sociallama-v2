@@ -1,7 +1,6 @@
 import { ExternalLink, Play } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { hubVideo } from '@/lib/content/blog'
 import type { VideoSpotlight } from '@/lib/payload/queries'
 import s from './blog.module.css'
 
@@ -16,12 +15,27 @@ import s from './blog.module.css'
  * `Link` derives the new-tab behaviour from the href itself — an absolute
  * http(s) URL gets `target="_blank" rel="noopener noreferrer"` automatically —
  * which is why the global refuses to save a destination without a protocol.
+ *
+ * Shared by both locales. `content` is typed structurally rather than through
+ * `Localized`, which maps over object types and would strip `posterLabel`'s
+ * callability.
  */
-export function HubVideo({ video }: { video: VideoSpotlight }) {
+export function HubVideo({
+  video,
+  content,
+}: {
+  video: VideoSpotlight
+  content: {
+    badge: string
+    play: string
+    label: string
+    posterLabel: (title: string) => string
+  }
+}) {
   return (
     <section className={s.spotlight}>
       <Link
-        aria-label={hubVideo.posterLabel(video.title)}
+        aria-label={content.posterLabel(video.title)}
         className={s.spotlightFrame}
         href={video.url}
       >
@@ -36,19 +50,19 @@ export function HubVideo({ video }: { video: VideoSpotlight }) {
         {/* Sits above the frame's scrim, which keeps it legible on any still. */}
         <span className={s.play}>
           <Play aria-hidden="true" />
-          {hubVideo.play}
+          {content.play}
         </span>
       </Link>
 
       <div>
-        <span className={s.spotlightBadge}>{hubVideo.badge}</span>
+        <span className={s.spotlightBadge}>{content.badge}</span>
         <h2 className={s.spotlightTitle}>{video.title}</h2>
         {video.description && (
           <p className={s.spotlightText}>{video.description}</p>
         )}
         <div className={s.spotlightFoot}>
           <Link className={s.outLink} href={video.url}>
-            {hubVideo.label}
+            {content.label}
             <ExternalLink aria-hidden="true" />
           </Link>
           {video.duration && (

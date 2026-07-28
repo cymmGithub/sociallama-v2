@@ -21,11 +21,18 @@ export const posts: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
     group: 'Treść',
-    // Preview button → authenticated draft-mode route → real post template
-    preview: (doc) =>
-      typeof doc?.slug === 'string' && doc.slug.length > 0
-        ? `/api/preview?path=${encodeURIComponent(`/${doc.slug}`)}`
-        : null,
+    // Preview button → authenticated draft-mode route → real post template.
+    // `locale` is the admin's active locale (Payload passes `req.locale`), and
+    // it has to be read: `slug` is localized, so previewing an English draft
+    // yields the English slug, which no Polish post carries — `/{en-slug}`
+    // would 404 on the Polish route.
+    preview: (doc, { locale }) => {
+      if (typeof doc?.slug !== 'string' || doc.slug.length === 0) {
+        return null
+      }
+      const path = locale === 'en' ? `/en/blog/${doc.slug}` : `/${doc.slug}`
+      return `/api/preview?path=${encodeURIComponent(path)}`
+    },
   },
   versions: {
     // validate: true — Payload skips field validation on draft saves by

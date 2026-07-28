@@ -62,7 +62,7 @@ console.log(`Auditing post formatting against: ${dbHost}\n`)
 const { default: config } = await import('@payload-config')
 const { getPayload } = await import('payload')
 
-/** `app/(frontend)/[slug]/page.tsx` renders the rail only at three entries. */
+/** `app/(frontend)/[slug]/post-article.tsx` renders the rail only at three entries. */
 const MIN_TOC_ENTRIES = 3
 
 interface PostFindings {

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { PostArticle } from '@/app/(frontend)/[slug]/post-article'
 import { Wrapper } from '@/components/layout/wrapper'
-import { postArticle } from '@/lib/content/blog'
-import { OG_BASE } from '@/lib/content/site'
+import { postArticle } from '@/lib/content/blog.en'
+import { OG_BASE } from '@/lib/content/site.en'
 import {
   getDraftPostBySlug,
   getPostBySlug,
@@ -11,37 +12,39 @@ import {
   resolveMedia,
 } from '@/lib/payload/queries'
 import type { Post } from '@/payload-types'
-import { PostArticle } from './post-article'
 
 /*
- * Root-level post URLs (/{slug}) for exact parity with the live WordPress
- * site. Static routes (/blog, /category/*, …) always win over this dynamic
- * segment; the posts collection additionally validates slugs against
- * RESERVED_SLUGS so content can never collide with app routes.
+ * English posts are namespaced under /en/blog/{en-slug} rather than sharing the
+ * Polish root-level URLs: `slug` is localized, so the two locales are
+ * independent namespaces. `page` and `category` are static siblings here and
+ * always win over this dynamic segment, which is why the posts collection
+ * reserves them for English slugs.
  */
 
 interface PageProps {
   params: Promise<{ slug: string }>
 }
 
-/** Post URL prefix — empty by design, see the note above. The English route
- *  builds the same URLs under `/en/blog`. */
-const BASE_PATH = ''
+/** Post URL prefix — the English half of the pair; Polish posts sit at the
+ *  site root. */
+const BASE_PATH = '/en/blog'
 
 export async function generateStaticParams() {
-  const slugs = await getPublishedPostSlugs()
-  // Cache Components requires generateStaticParams to be non-empty; on an
-  // empty CMS (fresh deploy before seeding) prerender one guaranteed-404 path
-  // so the build succeeds.
+  const slugs = await getPublishedPostSlugs('en')
+  // Cache Components requires generateStaticParams to be non-empty; with no
+  // post translated yet, prerender one guaranteed-404 path so the build
+  // succeeds.
   if (slugs.length === 0) {
-    return [{ slug: 'placeholder-bez-tresci' }]
+    return [{ slug: 'placeholder-no-content' }]
   }
   return slugs.map((slug) => ({ slug }))
 }
 
+/** Resolves by ENGLISH slug: the slug predicate is scoped to the read locale,
+ *  so an English slug matches no Polish row, and vice versa. */
 async function loadPost(slug: string): Promise<Post | null> {
   const { isEnabled: isDraft } = await draftMode()
-  return isDraft ? getDraftPostBySlug(slug) : getPostBySlug(slug)
+  return isDraft ? getDraftPostBySlug(slug, 'en') : getPostBySlug(slug, 'en')
 }
 
 export async function generateMetadata({
@@ -82,7 +85,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function PostPage({ params }: PageProps) {
+export default async function EnPostPage({ params }: PageProps) {
   const { slug } = await params
   const post = await loadPost(slug)
   if (!post) {
@@ -93,10 +96,10 @@ export default async function PostPage({ params }: PageProps) {
     <Wrapper theme="cream">
       <PostArticle
         basePath={BASE_PATH}
-        categoryPath="/category"
+        categoryPath="/en/blog/category"
         content={postArticle}
-        hubPath="/blog"
-        locale="pl"
+        hubPath="/en/blog"
+        locale="en"
         post={post}
       />
     </Wrapper>

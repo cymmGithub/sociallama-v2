@@ -234,7 +234,11 @@ async function findCategoryBySlug(
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'categories',
-    where: { slug: { equals: slug } },
+    // Gated even though the localized `slug` predicate cannot match a missing
+    // English row on its own. Relying on that would make the exclusion
+    // incidental — true only for as long as nobody adds a fallback or a
+    // second lookup key — where every other query states it outright.
+    where: { and: [{ slug: { equals: slug } }, ...translated(locale)] },
     limit: 1,
     locale,
     ...READ,
@@ -763,9 +767,25 @@ export function resolveMedia(
   return typeof value === 'object' && value !== null ? value : null
 }
 
-/** Resolve a maybe-unpopulated category relation. */
+/**
+ * Resolve a maybe-unpopulated category relation.
+ *
+ * `category` is a shared field, not a localized one, so it populates on an
+ * English post whether or not the category itself has been translated — and
+ * under `fallbackLocale: false` an untranslated one arrives with `title` and
+ * `slug` null. `payload-types.ts` declares both non-nullable, so nothing in
+ * the type system catches it: the chip renders empty and the crumb links to
+ * `/en/blog/category/null`.
+ *
+ * Treating that as "no category" is the same rule `publishedPost` applies to
+ * a curation slot, and it keeps every consumer honest without each having to
+ * remember the check.
+ */
 export function resolveCategory(
   value: number | Category | null | undefined
 ): Category | null {
-  return typeof value === 'object' && value !== null ? value : null
+  if (typeof value !== 'object' || value === null) {
+    return null
+  }
+  return value.title && value.slug ? value : null
 }

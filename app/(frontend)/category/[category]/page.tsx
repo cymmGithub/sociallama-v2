@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { BlogListing } from '@/app/(frontend)/blog/listing'
+import { listing } from '@/lib/content/blog'
 import {
   getCategories,
   getCategoryBySlug,
@@ -56,7 +57,12 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <BlogListing
       heading={category.title}
-      basePath={`/category/${category.slug}`}
+      content={listing}
+      listingPath={`/category/${category.slug}`}
+      basePath=""
+      hubPath="/blog"
+      categoryPath="/category"
+      locale="pl"
       postsPage={postsPage}
       categories={categories}
       activeCategory={category.slug}

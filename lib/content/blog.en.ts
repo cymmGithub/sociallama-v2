@@ -38,13 +38,34 @@ export const postRelated = {
   allHref: '/en/blog',
 } satisfies Localized<typeof pl.postRelated>
 
+export const postToc = {
+  title: 'In this post',
+  navLabel: 'Table of contents',
+} satisfies Localized<typeof pl.postToc>
+
+export const postShare = {
+  title: 'Share',
+  linkedin: 'Share “{title}” on LinkedIn',
+  facebook: 'Share “{title}” on Facebook',
+  copy: 'Copy link to this post',
+  copied: 'Link copied',
+} satisfies Localized<typeof pl.postShare>
+
+export const postAuthor = {
+  personLink: 'Author profile',
+  brandLink: 'Meet Social Lama',
+} satisfies Localized<typeof pl.postAuthor>
+
 export const hub = {
   eyebrow: 'The Social Lama blog',
   title: 'What works in social media — and why',
   lead: 'Campaign teardowns with the numbers left in, not trend roundups. Everything here was tested on our own clients first.',
+  categoriesAria: 'Categories',
+  allCategories: 'All',
   picksTitle: "Editors' picks",
   popularTitle: 'Most read',
   archiveTitle: 'All posts',
+  readingTimeSuffix: 'min read',
 } satisfies Localized<typeof pl.hub>
 
 export const hubPromo = {
@@ -75,4 +96,47 @@ export const hubSearch = {
     `Found ${count} ${count === 1 ? 'post' : 'posts'}.`,
   emptyTitle: 'Nothing matches',
   emptyText: 'Try a different word, or clear the search.',
+} as const
+
+export const postCard = {
+  read: 'READ POST',
+} satisfies Localized<typeof pl.postCard>
+
+export const pagination = {
+  navAria: 'Pagination',
+  newer: 'Newer',
+  older: 'Older',
+} satisfies Localized<typeof pl.pagination>
+
+export const listing = {
+  categoriesAria: hub.categoriesAria,
+  allCategories: hub.allCategories,
+  emptyTitle: 'Nothing here yet',
+  emptyText: "We're working on new posts — check back soon.",
+  postCard,
+  pagination,
+} satisfies Localized<typeof pl.listing>
+
+export const postArticle = {
+  breadcrumbAria: 'Breadcrumb',
+  hubLabel: 'Blog',
+  readingTimeSuffix: hub.readingTimeSuffix,
+  cta: postCta,
+  toc: postToc,
+  share: postShare,
+  author: postAuthor,
+  newsletter: postNewsletter,
+  related: postRelated,
+  postCard,
+} satisfies Localized<typeof pl.postArticle>
+
+export const hubView = {
+  hub,
+  promo: hubPromo,
+  video: hubVideo,
+  newsletter: postNewsletter,
+  postCard,
+  pagination,
+  emptyTitle: listing.emptyTitle,
+  emptyText: listing.emptyText,
 } as const

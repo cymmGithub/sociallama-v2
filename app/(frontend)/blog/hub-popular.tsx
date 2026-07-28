@@ -4,7 +4,9 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolvePostAuthor } from '@/lib/blog/author'
 import { readingTimeMinutes } from '@/lib/blog/reading-time'
-import { hub } from '@/lib/content/blog'
+import type * as pl from '@/lib/content/blog'
+import type { Localized } from '@/lib/i18n/parity'
+import type { Locale } from '@/lib/i18n/slug-map'
 import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
 import type { Post } from '@/payload-types'
 import s from './blog.module.css'
@@ -15,18 +17,31 @@ import s from './blog.module.css'
  * `popular` is an editorial choice, not a measurement, so it is genuinely
  * optional: when it is empty the whole right-hand block goes and the short
  * list spans the full width rather than leaving a gap (design decision 2).
+ *
+ * Shared by the Polish and English hubs: posts are locale-resolved by the page,
+ * `content` carries the labels, and `basePath` prefixes the post links.
  */
 
-function PopularPost({ post }: { post: Post }) {
-  const author = resolvePostAuthor(post)
+function PopularPost({
+  post,
+  content,
+  basePath,
+  locale,
+}: {
+  post: Post
+  content: Localized<typeof pl.hub>
+  basePath: string
+  locale: Locale
+}) {
+  const author = resolvePostAuthor(post, locale)
   const cover = resolveMedia(post.cover)
   const coverUrl = cover?.sizes?.card?.url ?? cover?.url
   const readingTime = post.content ? readingTimeMinutes(post.content) : null
 
   return (
     <div className={s.popular}>
-      <h2 className={s.popularTitle}>{hub.popularTitle}</h2>
-      <Link className={s.popularCard} href={`/${post.slug}`}>
+      <h2 className={s.popularTitle}>{content.popularTitle}</h2>
+      <Link className={s.popularCard} href={`${basePath}/${post.slug}`}>
         {coverUrl && (
           <span className={s.popularMedia}>
             <Image
@@ -48,7 +63,9 @@ function PopularPost({ post }: { post: Post }) {
           <span>
             <span className={s.bylineName}>{author.name}</span>
             {readingTime !== null && (
-              <span className={s.bylineMeta}>{readingTime} min czytania</span>
+              <span className={s.bylineMeta}>
+                {readingTime} {content.readingTimeSuffix}
+              </span>
             )}
           </span>
         </span>
@@ -60,9 +77,15 @@ function PopularPost({ post }: { post: Post }) {
 export function HubPopular({
   popular,
   shortList,
+  content,
+  basePath,
+  locale,
 }: {
   popular: Post | null
   shortList: Post[]
+  content: Localized<typeof pl.hub>
+  basePath: string
+  locale: Locale
 }) {
   if (shortList.length === 0 && !popular) {
     return null
@@ -77,7 +100,11 @@ export function HubPopular({
             const cover = resolveMedia(post.cover)
             const coverUrl = cover?.sizes?.thumbnail?.url ?? cover?.url
             return (
-              <Link className={s.row} href={`/${post.slug}`} key={post.id}>
+              <Link
+                className={s.row}
+                href={`${basePath}/${post.slug}`}
+                key={post.id}
+              >
                 <span className={s.rowMedia}>
                   {coverUrl && (
                     <Image
@@ -102,7 +129,14 @@ export function HubPopular({
         </div>
       )}
 
-      {popular && <PopularPost post={popular} />}
+      {popular && (
+        <PopularPost
+          basePath={basePath}
+          content={content}
+          locale={locale}
+          post={popular}
+        />
+      )}
     </section>
   )
 }

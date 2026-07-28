@@ -3,7 +3,19 @@
 import { Check, Link2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from '@/components/ui/link'
+import type * as pl from '@/lib/content/blog'
+import type { Localized } from '@/lib/i18n/parity'
 import s from './post.module.css'
+
+/**
+ * Fill the `{title}` slot in a brand share label. The labels are templates
+ * rather than functions like `hubVideo.posterLabel` because they arrive here as
+ * props, and a function does not cross the server/client boundary. Replacing
+ * through a callback keeps a `$` in a post title out of the substitution
+ * grammar.
+ */
+const fillTitle = (label: string, title: string) =>
+  label.replace('{title}', () => title)
 
 /**
  * Share row for the rail. LinkedIn and Facebook are plain share-intent links;
@@ -17,11 +29,13 @@ import s from './post.module.css'
 export function PostShare({
   url,
   title,
+  content,
   className,
 }: {
   /** Absolute post URL — share intents reject relative paths. */
   url: string
   title: string
+  content: Localized<typeof pl.postShare>
   className?: string | undefined
 }) {
   const [copied, setCopied] = useState(false)
@@ -41,10 +55,10 @@ export function PostShare({
 
   return (
     <div className={className}>
-      <p className={s.railLabel}>Udostępnij</p>
+      <p className={s.railLabel}>{content.title}</p>
       <div className={s.shareRow}>
         <Link
-          aria-label={`Udostępnij „${title}” na LinkedInie`}
+          aria-label={fillTitle(content.linkedin, title)}
           className={s.shareButton}
           href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
           newTab
@@ -59,7 +73,7 @@ export function PostShare({
           />
         </Link>
         <Link
-          aria-label={`Udostępnij „${title}” na Facebooku`}
+          aria-label={fillTitle(content.facebook, title)}
           className={s.shareButton}
           href={`https://www.facebook.com/sharer/sharer.php?u=${encoded}`}
           newTab
@@ -74,7 +88,7 @@ export function PostShare({
           />
         </Link>
         <button
-          aria-label={copied ? 'Link skopiowany' : 'Kopiuj link do wpisu'}
+          aria-label={copied ? content.copied : content.copy}
           className={s.shareButton}
           onClick={copy}
           type="button"

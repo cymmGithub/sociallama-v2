@@ -126,16 +126,27 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   widened `Localized<ServiceSection>` the EN data actually supplies, casting per branch as
   `service-page.tsx` does. Card `category` is set from `category?.title` rather than the relation,
   since an untranslated category populates with a null title under `fallbackLocale: false`.
-- [ ] 4.1 `app/(frontend-en)/en/blog/page.tsx` and `page/[number]/page.tsx`.
-- [ ] 4.2 `app/(frontend-en)/en/blog/[slug]/page.tsx`, resolving by English slug under `locale: 'en'`. Include the empty-CMS placeholder for Cache Components, matching `app/(frontend-en)/en/case-studies/[slug]/page.tsx:22-28`.
-- [ ] 4.3 `app/(frontend-en)/en/blog/category/[category]/page.tsx` and `page/[number]/page.tsx`.
-- [ ] 4.4 Make draft preview work per locale. `collections/posts.ts:25-28` builds `preview: (doc) => /api/preview?path=/${doc.slug}` — with `slug` localized, previewing under the admin's EN locale yields `/api/preview?path=/{en-slug}`, which hits the **Polish** route and 404s because no Polish post carries that slug. Payload passes the admin locale to the preview function; use it to target `/en/blog/{en-slug}`. Give `app/(frontend-en)/en/blog/[slug]/page.tsx` the matching `draftMode()` branch calling `getDraftPostBySlug(slug, 'en')`. Note `case-studies.ts:33-36` has the same PL-only shape — it is a broken precedent, not a model to copy.
+- [x] 4.1 `app/(frontend-en)/en/blog/page.tsx` and `page/[number]/page.tsx`.
+- [x] 4.2 `app/(frontend-en)/en/blog/[slug]/page.tsx`, resolving by English slug under `locale: 'en'`. Include the empty-CMS placeholder for Cache Components, matching `app/(frontend-en)/en/case-studies/[slug]/page.tsx:22-28`.
+- [x] 4.3 `app/(frontend-en)/en/blog/category/[category]/page.tsx` and `page/[number]/page.tsx`.
+- [x] 4.4 Make draft preview work per locale. `collections/posts.ts:25-28` builds `preview: (doc) => /api/preview?path=/${doc.slug}` — with `slug` localized, previewing under the admin's EN locale yields `/api/preview?path=/{en-slug}`, which hits the **Polish** route and 404s because no Polish post carries that slug. Payload passes the admin locale to the preview function; use it to target `/en/blog/{en-slug}`. Give `app/(frontend-en)/en/blog/[slug]/page.tsx` the matching `draftMode()` branch calling `getDraftPostBySlug(slug, 'en')`. Note `case-studies.ts:33-36` has the same PL-only shape — it is a broken precedent, not a model to copy.
+  `preview: (doc, { locale })` — the second argument is `GeneratePreviewURLOptions`
+  (`node_modules/payload/dist/config/types.d.ts:159-164`), so the admin locale is available without
+  guessing. EN yields `/en/blog/{en-slug}`, PL keeps `/{slug}`. `case-studies.ts:33-36` still has the
+  broken PL-only shape — left alone deliberately, as instructed.
 - [ ] 4.5 **Verify with zero translations on `dev`**: every English blog surface renders as genuinely empty, never as Polish; `/en/blog/page/2` returns 404 rather than an empty page. Do this before any translation exists — it is the only moment the gate is cheap to test.
 
 ## 5. Locale-aware components and content
 
-- [ ] 5.1 **Extract `app/(frontend)/[slug]/page.tsx` into a shared `post-article.tsx`** taking `chrome`/`basePath`/`locale`, mirroring `case-study-article.tsx:35-41`. The page holds Polish that lives in none of the child components: `aria-label="Ścieżka nawigacji"` (L168), the `Blog` crumb → `/blog` (L169), the category crumb → `/category/${slug}` (L173), `{readingTime} min czytania` (L194), `<summary>W tym wpisie</summary>` (L225). Derive `shareUrl` (L129), `alternates.canonical` (L93) and `openGraph.url` (L99) from `basePath` instead of `/${post.slug}`.
-- [ ] 5.2 Convert the remaining blog components to the same pattern: `blog/listing.tsx`, `post-card.tsx`, `pagination.tsx`, `hub-header.tsx`, `hub-featured.tsx`, `hub-popular.tsx`, `hub-promo.tsx`, `hub-search.tsx`, `hub-video.tsx`, `[slug]/post-rail.tsx`, `post-share.tsx`, `author-card.tsx`, and **`components/blog/newsletter.tsx`** — which renders on the hub *and* after every post body, so omitting it leaves a Polish slab on every English blog surface.
+  **NOT DONE — needs a running dev server, which I must not spawn myself.** The zero-translation
+  state is exactly what this worktree's isolated DB holds (1 post, 0 EN rows), so it is ready to
+  test the moment a server is pointed at it.
+- [x] 5.1 **Extract `app/(frontend)/[slug]/page.tsx` into a shared `post-article.tsx`** taking `chrome`/`basePath`/`locale`, mirroring `case-study-article.tsx:35-41`. The page holds Polish that lives in none of the child components: `aria-label="Ścieżka nawigacji"` (L168), the `Blog` crumb → `/blog` (L169), the category crumb → `/category/${slug}` (L173), `{readingTime} min czytania` (L194), `<summary>W tym wpisie</summary>` (L225). Derive `shareUrl` (L129), `alternates.canonical` (L93) and `openGraph.url` (L99) from `basePath` instead of `/${post.slug}`.
+- [x] 5.2 Convert the remaining blog components to the same pattern: `blog/listing.tsx`, `post-card.tsx`, `pagination.tsx`, `hub-header.tsx`, `hub-featured.tsx`, `hub-popular.tsx`, `hub-promo.tsx`, `hub-search.tsx`, `hub-video.tsx`, `[slug]/post-rail.tsx`, `post-share.tsx`, `author-card.tsx`, and **`components/blog/newsletter.tsx`** — which renders on the hub *and* after every post body, so omitting it leaves a Polish slab on every English blog surface.
+  All 13 converted, plus a new shared `app/(frontend)/blog/hub-view.tsx` so the EN hub route is ~20
+  lines like `app/(frontend-en)/en/case-studies/page.tsx`. `hub-search.tsx` takes `locale` rather
+  than copy, because its `results(count)` pluralizer is a function and cannot cross the RSC
+  boundary — the one documented deviation from the copy-as-prop contract.
 - [x] 5.3 Write `lib/content/blog.en.ts` — the only section content module with no `.en.ts` twin. **Replace** `postsPlural` rather than translating it; Polish's three-form plural rule has no English analogue.
   `lib/content/blog.en.ts`. Plain blocks carry `satisfies Localized<typeof pl.X>` so a missing or
   mis-shaped key fails the build; `hubVideo`/`hubSearch` are exempt because they hold functions and
@@ -149,7 +160,14 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   **Design open question answered as `en-US`**, per the American-spelling voice bar — flagged in the
   code as a content decision worth revisiting, not a code one. Call sites still pass no locale and
   keep Polish behaviour; phase 4/5 routes supply it.
-- [ ] 5.5 Fix `[slug]/rich-text.tsx:31-42` so internal links resolve the target document's slug **in the current locale** — an English post must link to `/en/blog/<en-slug>`, never to the Polish root URL.
+- [x] 5.5 Fix `[slug]/rich-text.tsx:31-42` so internal links resolve the target document's slug **in the current locale** — an English post must link to `/en/blog/<en-slug>`, never to the Polish root URL.
+  `linkHref` now takes a `PostPaths` object. Two defects beyond the stated task, both found by the
+  workflow's adversarial reviewer: the function had **two hardcoded `'/'` fallbacks** sending an
+  English reader to the Polish homepage (`/` is PL_HOME and renders `<html lang="pl">`), and it
+  built a URL from a **null slug** when a link's target is untranslated — yielding `/en/blog/`, a
+  silent link to the hub dressed as a link to an article. That is the common case during the phase-9
+  waves, not an edge case, since English bodies are translated from Polish ones whose links point at
+  posts not yet translated. Both now route to a required `fallbackHref`.
 - [x] 5.6 Add an English house byline to `lib/blog/author.ts:36-43` (`role: 'Zespół redakcyjny'` → English, `bio` → English, `url: '/o-nas'` → `/en/about-us`).
 
 ## 6. English chrome and CMS content
@@ -169,7 +187,7 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
 - [ ] 7.3 Update `lib/i18n/slug-map.test.ts:81` — `counterpartPath('/jakis-wpis-na-blogu') === '/en'` is currently asserted, and remains correct with no override. Add assertions for the override path and for `/blog` ↔ `/en/blog`.
 - [ ] 7.4 Emit hreflang across **every** blog surface — none emits any today. Posts and categories via the server-resolved counterpart from 7.2; the hub via `alternatesForPath` once `/blog` ↔ `/en/blog` is in `pathPairs` (`app/(frontend)/blog/page.tsx:20-25` is a static `export const metadata` with a canonical and no `languages`). Decide explicitly whether paginated pages get alternates — page counts differ per locale under the D6 gate, so `/blog/page/5` may have no English counterpart; canonical-only is the likely answer.
 - [ ] 7.5 Add English blog URLs to `app/sitemap.ts` (clone the `enCaseStudyRoutes` block) and add `alternates` to the existing Polish post entries. Include hub pagination for both locales, which is missing today.
-- [ ] 7.6 Set `inLanguage` from the locale in `[slug]/json-ld.tsx:51`; localize the breadcrumb's `'Blog'` label and its `${APP_BASE_URL}/blog` URL (L72).
+- [x] 7.6 Set `inLanguage` from the locale in `[slug]/json-ld.tsx:51`; localize the breadcrumb's `'Blog'` label and its `${APP_BASE_URL}/blog` URL (L72).
 - [ ] 7.7 Add English post and category URLs to `app/llms.txt/route.ts` — it hardcodes four Polish `PAGES` (`:17-38`) and builds `/${post.slug}` and `/category/${slug}` (`:68`, `:79`). Leave `app/robots.ts` alone: it is 16 lines with one `allow: ['/']` rule and a locale-agnostic sitemap pointer, so `/en` is already covered — verified, nothing to change.
 - [ ] 7.8 Give the English blog tree **real** e2e coverage. The existing sweep collects `#site-menu a[href], footer a[href]` only (`e2e/locale-routing.e2e.ts:33-39`), so adding the BLOG link enrols exactly one URL — `/en/blog`. Add a case that samples `/en/blog`, `/en/blog/page/2`, one `/en/blog/{en-slug}`, and one `/en/blog/category/{en-slug}` from `findPublishedPostSlugs`/`findCategories` under `locale: 'en'`. Without this, the suite would pass with 78 of 79 English posts 404ing.
 
@@ -209,3 +227,33 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 - [ ] 10.7 Confirm the formatting audit now runs over both locales and passes for both.
 - [ ] 10.8 Reconcile the `add-industries-hub` conflict at archive time (design D9): its `site-footer` scenario "English footer omits blog surfaces" contradicts this change, and this change's `Locale toggle` text must not silently drop that change's mapped-pairs clause for `/uslugi` and `/branze`.
 - [ ] 10.9 Decide the fate of the `rehearsal` Neon branch once the batch is complete.
+
+## Found during implementation — not in the original task list
+
+- [ ] **`media.alt` is not localized, so every English blog page renders Polish alt text.**
+  `lib/payload/collections/media.ts:39-48` — `alt` is `required` and unlocalized, and there is no
+  `media_locales` table. It renders on every EN surface: the post hero (`post-article.tsx`), every
+  inline body image (`rich-text.tsx`), and the card/featured/popular/video thumbnails. 19 of 31 dev
+  media rows carry Polish diacritics and the rest are Polish too ("Logo marki iRobot"). Localizing
+  it is a **second migration** on a 668-row table plus alt-text translation for the whole library,
+  so it is a scope decision, not a fix to slip in. Neither `design.md` nor this list anticipated it.
+- [ ] **`rich-text.tsx` maps every non-category relation onto the post base path.**
+  `payload.config.ts` uses a bare `lexicalEditor()`, so `LinkFeature` enables all collections — an
+  internal link to a case study yields `/en/blog/{cs-slug}`. Already wrong in Polish (`/{cs-slug}`),
+  so pre-existing; this change widened it into a new URL shape. Flagged, not fixed.
+- [ ] **Both locales' hub-search copy ships in every client bundle.** `hub-search.tsx` holds a
+  `Record<Locale, HubSearchCopy>` inside a `'use client'` module, so PL ships the EN strings and
+  vice versa (~600 bytes). Consequence of the pluralizer-as-function decision; worth revisiting if
+  a third locale ever lands.
+- [ ] **No unit coverage for the new shared views.** `PostArticle`, `BlogHubView` and `linkHref`
+  now decide every URL on both locales, and a wrong `basePath` at any of ~11 call sites is caught by
+  nothing. Tasks 7.3 and 7.8 are the planned coverage and are still open.
+- [ ] **Corpus contradicts design D3's projection grammar** (measured against all 79 posts; the same
+  census reproduces D3's own 1,889-block and 802-of-3,225 figures, so it is trustworthy where it
+  disagrees). 31 nodes sit inside a projected block with no grammar token: 18 `paragraph` in
+  `quote`, 5 `heading` in `listitem`, 4 `listitem` in a nested list, **2 `upload` in `listitem`**,
+  2 `list` in `listitem`. So `quote` is a *container* of paragraphs, `listitem` is sometimes one
+  too, and D3's "upload … never enter[s] the projection" is false. Also: `<code>`, `<sub>`, `<sup>`
+  and `<tab/>` never occur in the corpus, so 8.2's round-trip cannot exercise them — the structural
+  gate should reject an unexpected format mask rather than accept one. Full note in the scratchpad
+  as `D3-correction.md`.

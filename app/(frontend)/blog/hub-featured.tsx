@@ -3,7 +3,9 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolvePostAuthor } from '@/lib/blog/author'
 import { readingTimeMinutes } from '@/lib/blog/reading-time'
-import { hub } from '@/lib/content/blog'
+import type * as pl from '@/lib/content/blog'
+import type { Localized } from '@/lib/i18n/parity'
+import type { Locale } from '@/lib/i18n/slug-map'
 import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
 import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
@@ -15,16 +17,29 @@ import s from './blog.module.css'
  * Both halves come from the `blog-hub` global with newest-first fallbacks
  * applied upstream, so this renders whatever it is handed and never has to
  * reason about empty curation.
+ *
+ * Shared by the Polish and English hubs: posts are locale-resolved by the page,
+ * `content` carries the labels, and `basePath` prefixes the post links.
  */
 
-function FeaturedPost({ post }: { post: Post }) {
+function FeaturedPost({
+  post,
+  content,
+  basePath,
+  locale,
+}: {
+  post: Post
+  content: Localized<typeof pl.hub>
+  basePath: string
+  locale: Locale
+}) {
   const category = resolveCategory(post.category)
-  const author = resolvePostAuthor(post)
+  const author = resolvePostAuthor(post, locale)
   const cover = resolveMedia(post.cover)
   const readingTime = post.content ? readingTimeMinutes(post.content) : null
 
   return (
-    <Link className={s.lead} href={`/${post.slug}`}>
+    <Link className={s.lead} href={`${basePath}/${post.slug}`}>
       {/* No cover means no empty media box — the block just closes up. */}
       {cover?.url && (
         <span className={s.leadMedia}>
@@ -54,11 +69,12 @@ function FeaturedPost({ post }: { post: Post }) {
           <span className={s.bylineMeta}>
             {post.publishedAt && (
               <time dateTime={post.publishedAt}>
-                {formatPostDate(post.publishedAt)}
+                {formatPostDate(post.publishedAt, locale)}
               </time>
             )}
             {post.publishedAt && readingTime !== null && ' · '}
-            {readingTime !== null && `${readingTime} min czytania`}
+            {readingTime !== null &&
+              `${readingTime} ${content.readingTimeSuffix}`}
           </span>
         </span>
       </span>
@@ -69,21 +85,36 @@ function FeaturedPost({ post }: { post: Post }) {
 export function HubFeatured({
   featured,
   picks,
+  content,
+  basePath,
+  locale,
 }: {
   featured: Post
   picks: Post[]
+  content: Localized<typeof pl.hub>
+  basePath: string
+  locale: Locale
 }) {
   return (
     <section className={s.featured}>
-      <FeaturedPost post={featured} />
+      <FeaturedPost
+        basePath={basePath}
+        content={content}
+        locale={locale}
+        post={featured}
+      />
 
       {picks.length > 0 && (
         <div className={s.picks}>
-          <h2 className={s.picksTitle}>{hub.picksTitle}</h2>
+          <h2 className={s.picksTitle}>{content.picksTitle}</h2>
           {picks.map((post) => {
             const category = resolveCategory(post.category)
             return (
-              <Link className={s.pick} href={`/${post.slug}`} key={post.id}>
+              <Link
+                className={s.pick}
+                href={`${basePath}/${post.slug}`}
+                key={post.id}
+              >
                 {category && (
                   <span className={s.pickCategory}>{category.title}</span>
                 )}

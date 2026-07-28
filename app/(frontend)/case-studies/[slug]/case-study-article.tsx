@@ -3,7 +3,7 @@ import { PostRichText } from '@/app/(frontend)/[slug]/rich-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
-import type { Locale } from '@/lib/i18n/slug-map'
+import { EN_HOME, type Locale, PL_HOME } from '@/lib/i18n/slug-map'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy, SocialPlatform } from '@/payload-types'
 import { BrandIcon, hasBrandIcon } from './brand-icons'
@@ -63,6 +63,14 @@ export function CaseStudyArticle({
       platformLogos.set(normalizePlatform(platform.name), media)
     }
   }
+
+  // Embedded rich text may link out to posts and categories, so it takes the
+  // BLOG prefixes for this locale, not the case-study `basePath` above.
+  const postBase = locale === 'en' ? '/en/blog' : ''
+  const categoryBase = locale === 'en' ? '/en/blog/category' : '/category'
+  // A body link with no resolvable target falls back to this locale's home.
+  // `/` and `/en` are different sites; the Polish one renders as lang="pl".
+  const linkFallback = locale === 'en' ? EN_HOME : PL_HOME
 
   const logo = resolveMedia(study.client.logo)
   const cover = resolveMedia(study.cover)
@@ -136,7 +144,13 @@ export function CaseStudyArticle({
               {chrome.sections.client}
             </h2>
             <div className={s.prose}>
-              <PostRichText data={study.client.about} />
+              <PostRichText
+                basePath={postBase}
+                categoryPath={categoryBase}
+                fallbackHref={linkFallback}
+                locale={locale}
+                data={study.client.about}
+              />
             </div>
           </section>
         )}
@@ -147,7 +161,13 @@ export function CaseStudyArticle({
               {chrome.sections.challenge}
             </h2>
             <div className={s.prose}>
-              <PostRichText data={study.challenge} />
+              <PostRichText
+                basePath={postBase}
+                categoryPath={categoryBase}
+                fallbackHref={linkFallback}
+                locale={locale}
+                data={study.challenge}
+              />
             </div>
           </section>
         )}
@@ -231,7 +251,13 @@ export function CaseStudyArticle({
                       <h3 className={s.pillarHeading}>{pillar.heading}</h3>
                       {pillar.body && (
                         <div className={s.pillarBody}>
-                          <PostRichText data={pillar.body} />
+                          <PostRichText
+                            basePath={postBase}
+                            categoryPath={categoryBase}
+                            data={pillar.body}
+                            fallbackHref={linkFallback}
+                            locale={locale}
+                          />
                         </div>
                       )}
                     </div>

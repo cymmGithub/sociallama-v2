@@ -1,6 +1,7 @@
 import { organizationRef } from '@/components/seo/structured-data'
 import type { ResolvedAuthor } from '@/lib/blog/author'
 import { APP_BASE_URL } from '@/lib/env'
+import type { Locale } from '@/lib/i18n/slug-map'
 import type { Post } from '@/payload-types'
 
 /** Absolute-ify a Payload media URL (local dev uploads are relative). */
@@ -36,19 +37,30 @@ export function BlogPostJsonLd({
   post,
   author,
   imageUrl,
+  basePath,
+  hubPath,
+  hubLabel,
+  locale,
 }: {
   post: Post
   author: ResolvedAuthor
   imageUrl: string | null | undefined
+  /** Post URL prefix: `''` (PL, root-level) or `/en/blog`. */
+  basePath: string
+  /** Blog hub path for the first breadcrumb: `/blog` or `/en/blog`. */
+  hubPath: string
+  /** Its label — pass the same string as the visible breadcrumb. */
+  hubLabel: string
+  locale: Locale
 }) {
-  const pageUrl = `${APP_BASE_URL}/${post.slug}`
+  const pageUrl = `${APP_BASE_URL}${basePath}/${post.slug}`
   const image = absolute(imageUrl)
   const description = post.seo?.metaDescription || post.excerpt || undefined
 
   const blogPosting = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    inLanguage: 'pl',
+    inLanguage: locale,
     headline: post.title,
     ...(description ? { description } : {}),
     ...(image ? { image: [image] } : {}),
@@ -69,8 +81,8 @@ export function BlogPostJsonLd({
       {
         '@type': 'ListItem',
         position: 1,
-        name: 'Blog',
-        item: `${APP_BASE_URL}/blog`,
+        name: hubLabel,
+        item: `${APP_BASE_URL}${hubPath}`,
       },
       {
         '@type': 'ListItem',
