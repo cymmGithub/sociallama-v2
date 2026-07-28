@@ -5,9 +5,8 @@
  * export verbatim (Polish copy unchanged, English display headlines as-authored).
  * Components MUST NOT hardcode copy; import from here instead.
  *
- * Excluded from v1 (content-starved, per proposal): FAQ (0 real entries) and the
- * multi-post blog grid (1 real post → a single card). Every quote on the page is
- * real and attributed.
+ * Excluded from v1 (content-starved, per proposal): the multi-post blog grid
+ * (1 real post → a single card). Every quote on the page is real and attributed.
  */
 
 import type { ClientCopy } from '@/lib/content/clients'
@@ -836,6 +835,60 @@ export const testimonialLabels = {
   itemLabel: 'Opinia',
 } as const
 
+// —— FAQ ————————————————————————————————————————————————————————————————————
+
+/**
+ * Six of the twelve drafted entries (source #2, #5, #7, #9, #10, #12), ordered
+ * as a funnel — price, comparison, timeline, measurement, choosing, reach —
+ * not by the source document's numbering. Selection is documented in
+ * openspec/changes/add-homepage-faq/proposal.md; the three rejected entries
+ * duplicate copy already on the page (`services.eyebrow`, `howItWorks.subhead`).
+ *
+ * Answers are the source copy verbatim, hyphen dashes normalised to em dashes.
+ * This same array feeds the `FAQPage` JSON-LD in app/(frontend)/(home)/page.tsx
+ * — Google requires the markup to match the visible copy, so there is exactly
+ * one source for both. Row numerals (01–06) are derived from the index.
+ */
+export const faq = {
+  heading: ['ASK', 'THE LAMA'],
+  eyebrow: 'NAJCZĘŚCIEJ ZADAWANE PYTANIA',
+  ariaLabel: 'Najczęściej zadawane pytania',
+  items: [
+    {
+      question: 'Ile kosztuje prowadzenie social media przez agencję?',
+      answer:
+        'Koszt prowadzenia social media zależy od liczby platform, częstotliwości publikacji i zakresu działań — rynkowo mieści się w przedziale od 3 000 do 15 000 zł miesięcznie. Cennik za profesjonalną obsługę jednego profilu w agencji zwykle startuje od ok. 920 zł netto/mies. Co bardzo ważne w przeciwieństwie do wielu innych agencji w Social Lama budżet reklamowy na kampanie w social media rozliczamy zawsze osobno, aby zachować pełną transparentność.',
+    },
+    {
+      question:
+        'Czym różni się agencja social media od freelancera lub in-house social media managera?',
+      answer:
+        'Freelancer to jedna osoba — agencja to zespół stratega, copywritera, grafika, specjalisty od kampanii i moderatora, dzięki czemu jakość i tempo pracy są nieporównywalne. In-house social media manager zapewnia bliskość marki, ale jego zatrudnienie oznacza koszt kilkunastu tysięcy złotych miesięcznie plus narzędzia i szkolenia. Agencja daje dostęp do kompetencji całego działu marketingu w cenie jednego etatu, a do tego korzysta z profesjonalnych narzędzi analitycznych.',
+    },
+    {
+      question:
+        'Kiedy pojawią się pierwsze efekty prowadzenia SoMe przez Social Lama?',
+      answer:
+        'Pierwsze efekty jakościowe — spójny wizerunek marki, wzrost zaangażowania i lepsze pozycjonowanie profilu — widać zwykle po 4–8 tygodniach. Efekty sprzedażowe i pozyskiwanie leadów zależą od budżetu reklamowego i cyklu zakupowego — dobrze zdefiniowana strategia social media ma 466% większą szansę na sukces, a kampanie reklamowe potrafią zwiększyć przychody nawet o 1000% w 3 miesiące. Aż 83% klientów, którzy zdecydują się na próbną kampanię, kontynuuje z nami współpracę długofalowo.',
+    },
+    {
+      question: 'Jak mierzycie skuteczność działań w social media?',
+      answer:
+        'Każda strategia social media jest oparta na KPI dopasowanych do celów — zasięg, zaangażowanie, ruch na stronie www, liczba leadów lub sprzedaż w e-commerce. Wykorzystujemy profesjonalne narzędzia analityczne oraz statystyki natywne platform, dzięki czemu na bieżąco optymalizujemy działania i budżet reklamowy. Klient co miesiąc otrzymuje przejrzysty raport z analizą wyników i rekomendacjami na kolejny okres.',
+    },
+    {
+      question: 'Jak wybrać dobrą agencję social media?',
+      answer:
+        'Sprawdź dotychczasowe realizacje agencji, poproś o case study z Twojej branży i zwróć uwagę, czy agencja tworzy strategie dopasowane do klienta, czy pracuje na szablonach. Dobra agencja social media taka jak Social Lama zada Ci więcej pytań, niż sama obieca — musi bowiem poznać Twoje grupy docelowe, cele biznesowe oraz konkurencję. Wybieraj partnera, który komunikuje się transparentnie, pokazuje wymierne efekty i jest na bieżąco z najnowszymi trendami w mediach społecznościowych.',
+    },
+    {
+      question: 'Czy Agencja Social Lama działa tylko w Warszawie?',
+      answer:
+        'Nie — mimo że nasza siedziba znajduje się w Warszawie, obsługujemy klientów z całej Polski, a część projektów prowadzimy również w komunikacji dwujęzycznej na rynki zagraniczne. Wśród marek, z którymi współpracowaliśmy, są m.in. Aflofarm z Pabianic (branża farmaceutyczna), STAG (AC S.A.) z Białegostoku (branża automotive/LPG) czy Press-Service Monitoring Mediów z Poznania, a także wiele warszawskich firm, takich jak Pracuj.pl, Medicover, Manpower czy Aquael. Cała komunikacja, briefy, spotkania statusowe i raportowanie odbywają się w pełni zdalnie, w naszym biurze lub u klienta — lokalizacja klienta nie ma dla nas żadnego znaczenia, liczy się dopasowanie strategii do Twoich potrzeb.',
+    },
+  ],
+} as const
+
 // —— CTA ————————————————————————————————————————————————————————————————————
 
 export const joinCta = {
@@ -942,6 +995,7 @@ export type HomeContent = {
   marquee: typeof marquee
   testimonials: typeof testimonials
   testimonialLabels: typeof testimonialLabels
+  faq: typeof faq
   joinCta: typeof joinCta
 }
 

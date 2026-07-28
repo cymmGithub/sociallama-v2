@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
-import { WebSiteJsonLd } from '@/components/seo/structured-data'
+import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
+import { faq } from '@/lib/content/home'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
@@ -12,6 +13,7 @@ import type { Post } from '@/payload-types'
 import { Chapters } from './chapters'
 import { BigMarquee } from './sections/big-marquee'
 import { ClientLogos } from './sections/client-logos'
+import { Faq } from './sections/faq'
 import { Hero } from './sections/hero'
 import heroStyles from './sections/hero/hero.module.css'
 import { HowItWorks } from './sections/how-it-works'
@@ -56,6 +58,7 @@ export default async function HomePage() {
   return (
     <>
       <WebSiteJsonLd />
+      <FaqJsonLd items={faq.items} path="/" />
       <Wrapper theme="plum">
         <Chapters>
           {/* Chapter 1 — plum. Hero + logo belt compose the first viewport as
@@ -78,6 +81,7 @@ export default async function HomePage() {
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
           <>
             <Testimonial />
+            <Faq />
             <JoinCta />
             {newsPost && <NewsLama post={newsPost} />}
           </>

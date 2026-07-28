@@ -1,15 +1,17 @@
-import { socials } from '@/lib/content/home'
+import { type LocalizedHome, socials } from '@/lib/content/home'
 import { APP_NAME } from '@/lib/content/site'
 import { APP_BASE_URL } from '@/lib/env'
+import { localeOf } from '@/lib/i18n/slug-map'
 
 /**
- * Site-wide structured data (JSON-LD). Two nodes, placed per Google's rules:
+ * Site-wide structured data (JSON-LD), placed per Google's rules:
  *
  * - `OrganizationJsonLd` — the brand entity. Rendered in both root layouts so
  *   every page carries a baseline `Organization`.
  * - `WebSiteJsonLd` — powers Google's site-name feature. That feature is only
  *   honored at the domain root, so this is rendered on the Polish homepage (`/`)
  *   alone. (It is NOT the deprecated Sitelinks Search Box — no `SearchAction`.)
+ * - `FaqJsonLd` — the homepage FAQ section, one node per locale homepage.
  *
  * Both nodes share stable `@id`s so `WebSite.publisher` resolves to the same
  * Organization node the layout already emits.
@@ -67,6 +69,48 @@ export function OrganizationJsonLd({ description }: { description: string }) {
       name: 'GOODONE GROUP',
       ...(groupYouTube ? { sameAs: [groupYouTube] } : {}),
     },
+  })
+}
+
+/**
+ * `FAQPage` node for the homepage FAQ section.
+ *
+ * Fed the same `faq.items` array the section renders, from each locale's
+ * content file — Google requires the markup to match the visible copy, and
+ * hand-maintained duplicates drift. Rendered server-side from `page.tsx`, not
+ * from the client section component: structured data has no reason to wait on
+ * hydration. Answers are plain strings in `home.ts`, so nothing needs stripping
+ * before serialising.
+ *
+ * Expect no rich result: FAQ rich results have been restricted to authoritative
+ * government and health sites since August 2023. This is here to be parsed by
+ * answer engines, which is a different (and cheaper) bet.
+ */
+export function FaqJsonLd({
+  items,
+  path,
+}: {
+  items: LocalizedHome['faq']['items']
+  /** Path of the page carrying the section, e.g. `/` or `/en`. */
+  path: string
+}) {
+  const pageUrl = `${APP_BASE_URL}${path}`
+
+  return jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    url: pageUrl,
+    inLanguage: localeOf(path),
+    publisher: organizationRef(),
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
   })
 }
 

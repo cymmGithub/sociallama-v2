@@ -630,6 +630,57 @@ export const testimonialLabels = {
   itemLabel: 'Testimonial',
 } satisfies LocalizedHome['testimonialLabels']
 
+// —— FAQ ————————————————————————————————————————————————————————————————————
+
+/**
+ * `ASK / THE LAMA` is English already, so the heading is shared verbatim with
+ * the Polish set — only the eyebrow and the entries are localised.
+ *
+ * Five entries translate directly. The sixth is authored, not translated: the
+ * Polish original is a local-SEO instrument (Warszawa, Pabianice, Białystok,
+ * Poznań) and none of that signal exists for an English reader, so it asks the
+ * equivalent question for this audience — see design.md Decision 7.
+ */
+export const faq = {
+  heading: ['ASK', 'THE LAMA'],
+  eyebrow: 'FREQUENTLY ASKED QUESTIONS',
+  ariaLabel: 'Frequently asked questions',
+  items: [
+    {
+      question: 'How much does it cost to have an agency run your social media?',
+      answer:
+        "It depends on how many platforms you're on, how often you publish, and how wide the scope is — market rates run from about 3,000 to 15,000 PLN a month. Professional management of a single profile usually starts around 920 PLN net per month. One thing worth knowing: unlike a lot of agencies, Social Lama always bills the ad budget separately, so you can see exactly what you're paying for the work and what actually goes into campaigns.",
+    },
+    {
+      question:
+        'How is an agency different from a freelancer or an in-house social media manager?',
+      answer:
+        "A freelancer is one person — an agency is a strategist, a copywriter, a designer, a campaign specialist, and a moderator, which puts the quality and the pace in a different league. An in-house manager sits close to the brand, but hiring one runs to well over ten thousand złoty a month, plus tools and training. An agency gives you a whole marketing department's worth of skills for the price of one salary, and professional analytics tools on top.",
+    },
+    {
+      question:
+        'When will the first results of Social Lama running your social media show up?',
+      answer:
+        'The first qualitative results — a coherent brand image, higher engagement, a better-positioned profile — usually show after 4–8 weeks. Sales results and lead generation depend on your ad budget and buying cycle: a well-defined social media strategy is 466% more likely to succeed, and ad campaigns can lift revenue by as much as 1000% in three months. And 83% of clients who start with a trial campaign stay with us for the long run.',
+    },
+    {
+      question: 'How do you measure whether social media is working?',
+      answer:
+        "Every social media strategy runs on KPIs matched to your goals — reach, engagement, website traffic, leads, or e-commerce sales. We use professional analytics tools alongside the platforms' native stats, so we tune both the work and the ad budget as we go. Every month you get a clear report with the results and our recommendations for the next one.",
+    },
+    {
+      question: 'How do you pick a good social media agency?',
+      answer:
+        "Look at the agency's past work, ask for a case study from your industry, and check whether it builds strategies around the client or works off templates. A good social media agency — Social Lama included — will ask you more questions than it makes promises, because it has to understand your audiences, your business goals, and your competition first. Pick a partner that communicates transparently, shows measurable results, and keeps up with what's actually happening on the platforms.",
+    },
+    {
+      question: 'Do you work with brands outside Poland?',
+      answer:
+        "Yes. Our office is in Warsaw, but we work with clients across Poland and run a share of our projects as bilingual communication aimed at foreign markets. Brands we've worked with include Aflofarm, STAG (AC S.A.), Press-Service Media Monitoring, Pracuj.pl, Medicover, Manpower and Aquael. Briefs, status meetings and reporting all run remotely, so where you're based makes no difference to us — what matters is fitting the strategy to your goals.",
+    },
+  ],
+} satisfies LocalizedHome['faq']
+
 // —— CTA ————————————————————————————————————————————————————————————————————
 
 export const joinCta = {

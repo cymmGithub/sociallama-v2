@@ -1,0 +1,174 @@
+.section {
+  /* Default translate/fade reveal — deliberately NOT data-reveal-style="wipe":
+     the wipe keeps a border-box clip-path after it settles, which would slice
+     an answer that expands afterwards (design.md Decision 6). */
+  --reveal-transform: translateY(32px);
+
+  /* Lets ::details-content animate from 0 to its intrinsic height. Where it is
+     unsupported the row snaps open instead of sliding — accepted, not worked
+     around (Decision 5). */
+  interpolate-size: allow-keywords;
+
+  padding-block: calc(var(--safe) * 2);
+  padding-inline: var(--safe);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 0.5);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+  /* Cream-lifted orange: plain --color-orange sits at ~3:1 on plum, too low for
+     small text. Same tint as news-lama's .category. */
+  color: color-mix(in srgb, var(--color-orange) 45%, var(--color-cream));
+}
+
+/* Same display scale as the "WHY THAT WORKS" / "HOW IT WORKS" siblings —
+   duplicated by why-that-works.module.css and how-it-works.module.css
+   (.heading/.headingLine); keep the three in sync by hand. */
+.heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.75rem, 9vw, 7rem);
+}
+
+.headingLine {
+  display: block;
+}
+
+.headingLine:last-child {
+  color: var(--color-contrast);
+}
+
+.list {
+  /* Width of the 01–06 numeral column; the answer indents by the same amount so
+     it lines up under the question. */
+  --num-col: 2.75rem;
+
+  border-top: 1px solid var(--line);
+}
+
+.item {
+  border-bottom: 1px solid var(--line);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: var(--num-col) 1fr auto;
+  column-gap: var(--gap);
+  align-items: start;
+  padding-block: calc(var(--gap) * 1.25);
+  cursor: pointer;
+}
+
+/* The global *:focus-visible ring sits 2px outside the row — on a full-bleed
+   row that reads as a page-wide box. Keep the ring, pull it inside the
+   hairline. */
+.summary:focus-visible {
+  outline-offset: -4px;
+}
+
+.number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  /* AA-lifted orange, as .eyebrow. */
+  color: color-mix(in srgb, var(--color-orange) 45%, var(--color-cream));
+  /* Sit on the question's cap line rather than its em box. */
+  padding-top: 0.3em;
+}
+
+.question {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    .summary:hover & {
+      color: var(--color-contrast);
+    }
+  }
+}
+
+/* +/− toggle: two bars, the vertical one rotating flat when the row opens. */
+.sign {
+  position: relative;
+  inline-size: 0.85rem;
+  block-size: 0.85rem;
+  margin-top: 0.35em;
+  color: var(--color-contrast);
+}
+
+.sign::before,
+.sign::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  block-size: 2px;
+  background-color: currentColor;
+  transform: translateY(-50%);
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.sign::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.item[open] .sign::after {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+/* content-visibility is left to the UA (hidden closed, visible open) and only
+   transitioned — declaring it here would override the open-state value and lay
+   the row out at zero height. */
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--duration) var(--ease-out-expo),
+    content-visibility var(--duration) allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+}
+
+.answer {
+  margin-inline-start: calc(var(--num-col) + var(--gap));
+  margin-bottom: calc(var(--gap) * 1.5);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 74ch;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+
+  /* Reading width beats column alignment on a narrow screen. */
+  @media (--mobile) {
+    margin-inline-start: 0;
+  }
+}
+
+/* The global reduced-motion rule covers * and ::before/::after, but not
+   ::details-content — neutralise the height transition here. */
+@media (--reduced-motion) {
+  .item::details-content {
+    transition-duration: 0.01ms;
+  }
+}
