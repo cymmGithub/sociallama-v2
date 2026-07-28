@@ -87,6 +87,26 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   **Flagged, not fixed (as instructed):** `o-nas` is still absent from `STATIC_ROUTES`/`RESERVED_SLUGS`,
   so a Polish post slugged `o-nas` is silently unroutable today.
 
+- [ ] 2.8 **Localize `media.alt`** (user decision 2026-07-28 — mandatory; not implemented, do not
+  start without picking up the content half too). `lib/payload/collections/media.ts:39-48` — `alt` is
+  `required` and unlocalized, so Polish alt text renders on every English surface: the post hero
+  (`post-article.tsx`), every in-body image (`rich-text.tsx`), and the card/featured/popular/video
+  thumbnails. Verified live on `/en/blog/social-media-futbol-en`, where the rendered alts were
+  `Social Media zmieniają polski futbol`, `romowa`, `futbol`, `fut`, `boniek`, `boniek3`.
+  Two halves, and the second is the larger one:
+  - **Schema.** `localized: true` + `payload migrate:create`, then hand-splice the backfill exactly
+    as 2.3 did — the generated file will `CREATE TABLE media_locales` and `DROP COLUMN alt` with
+    nothing between. `media` has no versions table, so there is no `_v` twin. `alt` is `required`,
+    so `media_locales.alt` generates `NOT NULL`, and the `down` must restore it nullable → copy `pl`
+    back → `SET NOT NULL`, the same three-step 2.3 needed for `categories`.
+  - **Content.** **668 media rows** need English alt text. That is a translation batch in its own
+    right, and it is not covered by the phase-9 post pipeline, whose unit is a post body. Decide
+    whether it rides along with phase 9 (alt text for the images a translated post actually uses,
+    incrementally) or runs as its own pass over the whole library.
+  - `alt` is read aloud by screen readers inside `<html lang="en">`, so this is an accessibility
+    defect, not only an SEO one.
+
+
 ## 3. Locale-aware query layer
 
 - [x] 3.1 Thread `locale` through all 14 post/category query functions in `lib/payload/queries.ts` (`findPostBySlug` L43, `findDraftPostBySlug` L62, `findPublishedPostSlugs` L74, `findLatestPost` L91, `findPostsPage` L118, `findCategories` L145, `findCategoryBySlug` L160, `findPostsForSitemap` L175, `findPostsForLlms` L194, `findPostsForPlatform` L317, `findPostsForCategories` L343, `findRelatedPosts` L372, `findSearchIndex` L428, `findBlogHub` L535). Copy the shape of `findCaseStudyBySlug` L219–236. Keep `cacheTag('posts')` shared so both locales invalidate together.
@@ -230,13 +250,9 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 
 ## Found during implementation — not in the original task list
 
-- [ ] **`media.alt` is not localized, so every English blog page renders Polish alt text.**
-  `lib/payload/collections/media.ts:39-48` — `alt` is `required` and unlocalized, and there is no
-  `media_locales` table. It renders on every EN surface: the post hero (`post-article.tsx`), every
-  inline body image (`rich-text.tsx`), and the card/featured/popular/video thumbnails. 19 of 31 dev
-  media rows carry Polish diacritics and the rest are Polish too ("Logo marki iRobot"). Localizing
-  it is a **second migration** on a 668-row table plus alt-text translation for the whole library,
-  so it is a scope decision, not a fix to slip in. Neither `design.md` nor this list anticipated it.
+- [x] **`media.alt` is not localized** — user decision 2026-07-28: **mandatory**, English alt text is
+  required. Promoted to task 2.8 below. (Implementation was started and then reverted on request;
+  nothing of it remains in the tree.)
 - [ ] **`rich-text.tsx` maps every non-category relation onto the post base path.**
   `payload.config.ts` uses a bare `lexicalEditor()`, so `LinkFeature` enables all collections — an
   internal link to a case study yields `/en/blog/{cs-slug}`. Already wrong in Polish (`/{cs-slug}`),
@@ -262,3 +278,15 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   `category/[category]/page.tsx:52`, `category/[category]/page/[number]/page.tsx:43`. Pre-existing;
   the three new EN routes were serialized rather than copying it. Worth closing before the first
   prod build that prerenders both locales' blogs at once.
+- [ ] **The demo fixtures on `rehearsal` are not translations and must be deleted before any real
+  wave.** 12 posts and 2 categories carry synthetic English rows written for the phase-3 gate tests:
+  `title = 'EN ' || <polish title>`, `slug = <pl-slug> || '-en'`, body/excerpt/meta copied from
+  Polish unchanged. The `-en` slug suffix is a fixture artifact and contradicts design D2, which
+  requires authored English slugs (`/en/blog/is-linkedin-premium-worth-it`, not the Polish slug with
+  a suffix). Remove with:
+  `DELETE FROM posts_locales WHERE _locale = 'en'; DELETE FROM categories_locales WHERE _locale = 'en';`
+- [ ] **`max_connections` on a build target.** The first production build against the 79-post
+  rehearsal DB died with `sorry, too many clients already` — 19 Next build workers against a default
+  `max_connections = 100`. Raised to 800 on the throwaway container to get a render. This is the
+  same build-time DB concurrency constraint the repo already documents, and it is worth confirming
+  the prod build target's real limit before the first both-locales build.
