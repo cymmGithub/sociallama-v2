@@ -444,6 +444,53 @@ export function trimTrailingFragment(excerpt: string): string {
   return match ? (match[0] as string).trim() : excerpt.trim()
 }
 
+/** Collapse whitespace and non-breaking spaces, for comparing scraped text. */
+function flatten(text: string): string {
+  return text.replace(/[\s ]+/g, ' ').trim()
+}
+
+/**
+ * Finish the sentence an excerpt was cut off in, using the body it came from.
+ *
+ * Cutting *backwards* to the previous full stop was the wrong direction: the
+ * half-sentence left behind in the body opens the post out of context. On
+ * `google-polaczylo-social-media-z-seo` the excerpt stopped at "Jeśli nie masz
+ * czasu" and the body was left starting "Jeśli nie masz czasu ani zasobów,
+ * żeby to ogarnąć – Social Lama zrobi to za Ciebie." — a call to action whose
+ * "to ogarnąć" refers to sentences that are now only in the header.
+ *
+ * Extending forwards instead puts the whole intro in the lead, where it reads
+ * as written, and leaves the body's copy of it entirely inside the excerpt so
+ * the lead-paragraph fix can drop the block outright.
+ *
+ * Falls back to cutting backwards when the body cannot be matched, or when
+ * finishing the sentence would add more than `maxExtension` characters — a
+ * scrape that stopped early in a very long sentence should not drag all of it
+ * into the teaser.
+ */
+export function completeExcerpt(
+  excerpt: string,
+  bodyOpening: string,
+  maxExtension = 220
+): string {
+  const flat = flatten(excerpt)
+  if (flat === '' || /[.!?…]["»”)\]]?$/.test(flat)) {
+    return flat
+  }
+  const body = flatten(bodyOpening)
+  const anchor = flat.slice(-50)
+  const at = body.indexOf(anchor)
+  if (at === -1) {
+    return trimTrailingFragment(flat)
+  }
+  const rest = body.slice(at + anchor.length)
+  const completion = /^[^.!?…]*[.!?…]["»”)\]]?/.exec(rest)?.[0]
+  if (!completion || completion.length > maxExtension) {
+    return trimTrailingFragment(flat)
+  }
+  return `${flat}${completion}`.trim()
+}
+
 /**
  * Strip the headings an auto-generated excerpt opens with.
  *

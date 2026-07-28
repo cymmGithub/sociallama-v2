@@ -35,6 +35,7 @@
 
 import {
   classifyIntroHeading,
+  completeExcerpt,
   duplicatedPrefixLength,
   duplicatesExcerpt,
   headingLevel,
@@ -47,7 +48,6 @@ import {
   stripDuplicatedPrefix,
   stripLeadingHeadings,
   trimBlockPrefix,
-  trimTrailingFragment,
   unwrapLabelList,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
@@ -177,11 +177,16 @@ for (const post of posts.docs) {
   const content = JSON.parse(JSON.stringify(original)) as { root: LexicalNode }
   const root = content.root
   const rawExcerpt = typeof post.excerpt === 'string' ? post.excerpt : ''
-  // Cut back to the last complete sentence before anything reads it. The
-  // scrape stopped mid-sentence on 47 posts, which both showed a broken lead
-  // in the page header and stopped the lead-paragraph fix below from finding
-  // a whole sentence to remove.
-  let excerpt = trimTrailingFragment(rawExcerpt)
+  // Finish the sentence the scrape cut off, before anything reads the excerpt.
+  // It stopped mid-sentence on 47 posts; completing it from the body puts the
+  // whole intro in the header where it reads as written, and leaves the body's
+  // copy entirely inside the excerpt so the lead-paragraph step can drop the
+  // block rather than leave half a thought behind.
+  const bodyOpening = (root.children ?? [])
+    .slice(0, 8)
+    .map((node) => nodeText(node))
+    .join(' ')
+  let excerpt = completeExcerpt(rawExcerpt, bodyOpening)
   const notes: string[] = []
 
   // --- 1. Bold pseudo-headings ---------------------------------------------
