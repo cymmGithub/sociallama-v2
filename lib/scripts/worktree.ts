@@ -13,7 +13,8 @@
  *   4. bun install  (real install — symlinked node_modules breaks Turbopack)
  *   5. --isolated: create a dedicated DB on :5434, then dev-push + seed it
  *   6. relocate the untracked OpenSpec proposal + commit it on branch — defaults
- *      to the change named after the worktree; --change <slug> when they differ
+ *      to the change named after the worktree; --change <slug> when they differ.
+ *      No-op when the proposal is already committed (step 2 brought it along)
  *   7. boot `bun dev` detached on <port>, logging to the worktree
  *
  * State lands in <worktree>/.worktree-meta.json so `rm` can stop dev, drop the
@@ -152,8 +153,8 @@ const newWorktree = async (argv: string[]) => {
   if (!(await portFree(port))) fail(`Port ${port} is already in use.`)
 
   // House convention: a worktree is named after the change it implements, so
-  // default to that. The proposal is untracked in main, which is exactly why it
-  // needs moving — `git worktree add` only materialises committed files.
+  // default to that. Moving only matters while the proposal is untracked —
+  // `git worktree add` materialises committed files on its own (see step 6).
   const change =
     explicitChange ??
     ((await pathExists(`${repoRoot}/openspec/changes/${name}`))
@@ -243,7 +244,20 @@ const newWorktree = async (argv: string[]) => {
   if (change) {
     step(6, `Folding in OpenSpec proposal ${change}`)
     const src = `${repoRoot}/openspec/changes/${change}`
-    if (await pathExists(src)) {
+    // Already in main's HEAD? Then step 2 materialised it in the worktree and
+    // there is nothing to fold in — moving it would only delete main's copy.
+    const inHead = await capture([
+      'git',
+      'ls-tree',
+      '-r',
+      '--name-only',
+      'HEAD',
+      '--',
+      `openspec/changes/${change}`,
+    ])
+    if (inHead) {
+      log('  already committed on main — the worktree has it, skipping')
+    } else if (await pathExists(src)) {
       const dst = `${worktreePath}/openspec/changes/${change}`
       try {
         await rename(src, dst)
@@ -254,15 +268,26 @@ const newWorktree = async (argv: string[]) => {
       await run(['git', 'add', `openspec/changes/${change}`], {
         cwd: worktreePath,
       })
-      await run(
-        [
-          'git',
-          'commit',
-          '-m',
-          `docs: openspec proposal — ${change}\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`,
-        ],
-        { cwd: worktreePath }
-      )
+      // `git diff --cached --quiet` exits 0 when nothing is staged. Committing
+      // then would exit 1 ("nothing to commit") and kill the run before step 7.
+      const nothingStaged =
+        (await run(['git', 'diff', '--cached', '--quiet'], {
+          cwd: worktreePath,
+          allowFail: true,
+        })) === 0
+      if (nothingStaged) {
+        log('  moved files match the branch already — no commit needed')
+      } else {
+        await run(
+          [
+            'git',
+            'commit',
+            '-m',
+            `docs: openspec proposal — ${change}\n\nCo-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>`,
+          ],
+          { cwd: worktreePath }
+        )
+      }
     } else {
       log(`  (no openspec/changes/${change} in main — skipping)`)
     }
