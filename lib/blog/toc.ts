@@ -1,5 +1,6 @@
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { slugifyHeading } from '@/lib/blog/heading-slug'
+import type { Locale } from '@/lib/i18n/slug-map'
 
 /**
  * The post's table of contents, built server-side from the serialized Lexical
@@ -85,7 +86,10 @@ export function countTrackedHeadings(node: unknown): number {
   return total
 }
 
-export function buildToc(content: SerializedEditorState): TocEntry[] {
+export function buildToc(
+  content: SerializedEditorState,
+  locale: Locale = 'pl'
+): TocEntry[] {
   const entries: TocEntry[] = []
   const seen = new Set<string>()
 
@@ -93,7 +97,10 @@ export function buildToc(content: SerializedEditorState): TocEntry[] {
     if (node.type === 'heading') {
       const tracked = trackedHeading(node)
       if (tracked) {
-        entries.push({ ...tracked, slug: slugifyHeading(tracked.text, seen) })
+        entries.push({
+          ...tracked,
+          slug: slugifyHeading(tracked.text, seen, locale),
+        })
       }
       // Never descend into a heading — a nested heading isn't a thing, and
       // recursing would risk counting its text twice.

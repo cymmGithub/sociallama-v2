@@ -94,7 +94,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 
 | Export | Signature |
 |--------|-----------|
-| formatPostDate | `(iso: string) => string` |
+| formatPostDate | `(iso: string, locale: Locale = 'pl') => string` |
 
 ### Math (`@/utils/math`)
 

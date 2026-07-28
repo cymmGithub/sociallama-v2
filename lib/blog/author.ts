@@ -1,4 +1,9 @@
 import { APP_DESCRIPTION, APP_NAME } from '@/lib/content/site'
+import {
+  APP_DESCRIPTION as APP_DESCRIPTION_EN,
+  APP_NAME as APP_NAME_EN,
+} from '@/lib/content/site.en'
+import type { Locale } from '@/lib/i18n/slug-map'
 import { resolveMedia } from '@/lib/payload/queries'
 import type { Author, Post } from '@/payload-types'
 
@@ -33,13 +38,23 @@ export interface ResolvedAuthor {
  * itself: with named bylines only going forward, this is the default view of
  * the archive, so it has to read as a house byline (design D6).
  */
-const SOCIAL_LAMA: ResolvedAuthor = {
-  kind: 'org',
-  name: APP_NAME,
-  avatarUrl: '/icon.png',
-  role: 'Zespół redakcyjny',
-  bio: APP_DESCRIPTION,
-  url: '/o-nas',
+const SOCIAL_LAMA: Record<Locale, ResolvedAuthor> = {
+  pl: {
+    kind: 'org',
+    name: APP_NAME,
+    avatarUrl: '/icon.png',
+    role: 'Zespół redakcyjny',
+    bio: APP_DESCRIPTION,
+    url: '/o-nas',
+  },
+  en: {
+    kind: 'org',
+    name: APP_NAME_EN,
+    avatarUrl: '/icon.png',
+    role: 'Editorial team',
+    bio: APP_DESCRIPTION_EN,
+    url: '/en/about-us',
+  },
 }
 
 /** Resolve a maybe-unpopulated author relation (depth-dependent union). */
@@ -49,10 +64,13 @@ function resolveAuthorRelation(
   return typeof value === 'object' && value !== null ? value : null
 }
 
-export function resolvePostAuthor(post: Post): ResolvedAuthor {
+export function resolvePostAuthor(
+  post: Post,
+  locale: Locale = 'pl'
+): ResolvedAuthor {
   const author = resolveAuthorRelation(post.author)
   if (!author) {
-    return SOCIAL_LAMA
+    return SOCIAL_LAMA[locale]
   }
 
   const avatar = resolveMedia(author.avatar)

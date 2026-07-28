@@ -136,13 +136,27 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
 
 - [ ] 5.1 **Extract `app/(frontend)/[slug]/page.tsx` into a shared `post-article.tsx`** taking `chrome`/`basePath`/`locale`, mirroring `case-study-article.tsx:35-41`. The page holds Polish that lives in none of the child components: `aria-label="Ścieżka nawigacji"` (L168), the `Blog` crumb → `/blog` (L169), the category crumb → `/category/${slug}` (L173), `{readingTime} min czytania` (L194), `<summary>W tym wpisie</summary>` (L225). Derive `shareUrl` (L129), `alternates.canonical` (L93) and `openGraph.url` (L99) from `basePath` instead of `/${post.slug}`.
 - [ ] 5.2 Convert the remaining blog components to the same pattern: `blog/listing.tsx`, `post-card.tsx`, `pagination.tsx`, `hub-header.tsx`, `hub-featured.tsx`, `hub-popular.tsx`, `hub-promo.tsx`, `hub-search.tsx`, `hub-video.tsx`, `[slug]/post-rail.tsx`, `post-share.tsx`, `author-card.tsx`, and **`components/blog/newsletter.tsx`** — which renders on the hub *and* after every post body, so omitting it leaves a Polish slab on every English blog surface.
-- [ ] 5.3 Write `lib/content/blog.en.ts` — the only section content module with no `.en.ts` twin. **Replace** `postsPlural` rather than translating it; Polish's three-form plural rule has no English analogue.
-- [ ] 5.4 Give `lib/utils/format-date.ts` a locale parameter; update its four call sites. Give `lib/blog/heading-slug.ts` a locale-aware fallback (`'sekcja'` → `'section'`). Leave `reading-time.ts` at 200 wpm for both locales (design D8).
+- [x] 5.3 Write `lib/content/blog.en.ts` — the only section content module with no `.en.ts` twin. **Replace** `postsPlural` rather than translating it; Polish's three-form plural rule has no English analogue.
+  `lib/content/blog.en.ts`. Plain blocks carry `satisfies Localized<typeof pl.X>` so a missing or
+  mis-shaped key fails the build; `hubVideo`/`hubSearch` are exempt because they hold functions and
+  `Localized` maps over object types, which would strip callability rather than widen it.
+  `postsPlural` is replaced, not translated — porting a three-form rule keyed to the last two digits
+  into a two-form language would be porting a bug.
+- [x] 5.4 Give `lib/utils/format-date.ts` a locale parameter; update its four call sites. Give `lib/blog/heading-slug.ts` a locale-aware fallback (`'sekcja'` → `'section'`). Leave `reading-time.ts` at 200 wpm for both locales (design D8).
+  `formatPostDate(iso, locale)` with a `pl-PL`/`en-US` table; `slugifyHeading(text, seen, locale)`
+  with `sekcja`/`section`; `buildToc(content, locale)` threaded through to it, since the walk is the
+  single owner of heading anchors. `reading-time.ts` left at 200 wpm for both, per D8.
+  **Design open question answered as `en-US`**, per the American-spelling voice bar — flagged in the
+  code as a content decision worth revisiting, not a code one. Call sites still pass no locale and
+  keep Polish behaviour; phase 4/5 routes supply it.
 - [ ] 5.5 Fix `[slug]/rich-text.tsx:31-42` so internal links resolve the target document's slug **in the current locale** — an English post must link to `/en/blog/<en-slug>`, never to the Polish root URL.
-- [ ] 5.6 Add an English house byline to `lib/blog/author.ts:36-43` (`role: 'Zespół redakcyjny'` → English, `bio` → English, `url: '/o-nas'` → `/en/about-us`).
+- [x] 5.6 Add an English house byline to `lib/blog/author.ts:36-43` (`role: 'Zespół redakcyjny'` → English, `bio` → English, `url: '/o-nas'` → `/en/about-us`).
 
 ## 6. English chrome and CMS content
 
+  `SOCIAL_LAMA` becomes a per-locale record: `Editorial team`, the EN `APP_DESCRIPTION`, and
+  `/en/about-us`. `resolvePostAuthor(post, locale)` defaults to `pl`, so the four existing call
+  sites are unchanged until phase 5.2 threads the locale.
 - [ ] 6.1 Add BLOG to the English mega-menu and footer in `lib/content/home.en.ts`. Note `lib/i18n/parity.ts:17-18` checks element *type*, not membership — the type system will not catch a missing link, so verify by rendering.
 - [ ] 6.2 Render NewsLAMA on `/en`, gated to translated posts only. Three parts: add a `news` export to `lib/content/home.en.ts`; give `NewsLama` a `content` prop like every one of its sibling sections (`app/(frontend-en)/en/page.tsx:44-60` passes content to all of them, but `sections/news-lama/index.tsx:5` does `import { news } from '@/lib/content/home'` at module scope inside a `'use client'` component, so the EN heading and read-label would stay Polish otherwise); and build the EN view-model with `href: /en/blog/${post.slug}` — `toNewsLamaPost` (`(home)/page.tsx:39-50`) hardcodes `/${post.slug}`.
 - [ ] 6.3 **Author the English CMS content the gate would otherwise leave null**: 4 category `title` + `slug` values (`reklama` → `advertising` etc.), and the author's English `role` + `bio`. Without these, English category pages and author cards render empty rather than translated.
