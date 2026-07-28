@@ -68,3 +68,127 @@ describe('prePass — WordPress internal post embed', () => {
     expect(out).toContain('https://www.youtube.com/embed/dQw4w9WgXcQ')
   })
 })
+
+/**
+ * The presentational-debris pass (repair-blog-post-formatting). These shapes
+ * are the ones the imported corpus actually carried — the same fixtures the
+ * repair's own tests use, expressed as the WordPress HTML they came from — so
+ * the converter can no longer put back what the repair cleared.
+ */
+describe('prePass — presentational debris', () => {
+  it('drops inline justified alignment and keeps centring', () => {
+    const html = `
+      <p style="text-align: justify;">Lejek marketingowy to model.</p>
+      <p style="text-align: center;">Źródło: Post marki Vobis.pl</p>
+    `
+    const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).not.toContain('justify')
+    expect(out).toContain('text-align: center')
+    expect(notes.some((n) => n.includes('justify alignment'))).toBe(true)
+  })
+
+  it('drops a justify alignment class and keeps the other classes', () => {
+    const html = `<p class="wp-block-paragraph has-text-align-justify">Tekst akapitu.</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).not.toContain('has-text-align-justify')
+    expect(out).toContain('wp-block-paragraph')
+  })
+
+  it('keeps a declaration that merely sits beside the justify one', () => {
+    const html = `<p style="color: red; text-align: justify">Tekst.</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).not.toContain('justify')
+    expect(out).toContain('color: red')
+  })
+
+  it('drops WordPress spacer paragraphs', () => {
+    const html = `<p>Pierwszy akapit.</p><p>&nbsp;</p><p><br /></p><p></p><p>Drugi akapit.</p>`
+    const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p>Pierwszy akapit.</p><p>Drugi akapit.</p>')
+    expect(notes.some((n) => n.includes('spacer paragraph'))).toBe(true)
+  })
+
+  it('keeps a blank paragraph that is hiding an image', () => {
+    const html = `<p><img src="https://sociallama.pl/wp-content/uploads/2020/05/x.png" alt="x" /></p>`
+    const { html: out, images } = prePass(html, 'Post title', WP_ORIGIN)
+
+    // The image became an upload marker, so the paragraph is no longer blank.
+    expect(images.size).toBe(1)
+    expect(out).toContain('@@upload:')
+  })
+
+  it('reports rather than removes a blank paragraph holding a link', () => {
+    const html = `<p><a href="https://sociallama.pl/foo/"></a></p>`
+    const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toContain('<a href')
+    expect(notes.some((n) => n.startsWith('WARNING:'))).toBe(true)
+  })
+
+  it('hoists a rule out of a paragraph rather than losing it', () => {
+    // `<hr>` cannot nest inside `<p>`, so the parser closes the paragraph
+    // first: the now-genuinely-empty paragraph goes, the rule stays.
+    const html = `<p>Akapit.</p><p><hr /></p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toContain('<hr>')
+    expect(out).not.toContain('<p></p>')
+  })
+
+  it('converts a word-space non-breaking space', () => {
+    const html = `<p>największy&nbsp;potencjał na viral</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p>największy potencjał na viral</p>')
+  })
+
+  it('preserves a non-breaking space after a Polish one-letter preposition', () => {
+    const html = `<p>promocji – o&nbsp;ile wiesz, w&nbsp;jaki sposób</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toContain('o&nbsp;ile')
+    expect(out).toContain('w&nbsp;jaki')
+  })
+
+  it('preserves a grouped number', () => {
+    const html = `<p>Liczba wyświetleń: 106&nbsp;800</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toContain('106&nbsp;800')
+  })
+
+  it('drops leading and trailing padding runs', () => {
+    const html = `<p>&nbsp;&nbsp;&nbsp;Telefon z dobrym aparatem&nbsp;&nbsp;</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p>Telefon z dobrym aparatem</p>')
+  })
+
+  it('reads a gap straddling an inline tag as one word space', () => {
+    const html = `<p><strong>marketingowy</strong>&nbsp;to model</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p><strong>marketingowy</strong> to model</p>')
+  })
+
+  it('does not read a gap across two paragraphs', () => {
+    // The second paragraph's leading gap is padding, not a word space
+    // continuing "akapitu." from the first.
+    const html = `<p>Koniec akapitu.</p><p>&nbsp;Drugi akapit.</p>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p>Koniec akapitu.</p><p>Drugi akapit.</p>')
+  })
+
+  it('leaves a clean body untouched — a re-import stays clean', () => {
+    const html = `<p>Pierwszy akapit.</p><h2>Sekcja</h2><p>Drugi akapit z czymś.</p>`
+    const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe(html)
+    expect(notes).toEqual([])
+  })
+})

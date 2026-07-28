@@ -29,6 +29,8 @@
     "payload:seed:authors": "bun ./lib/payload/seed-authors.ts",
     "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",
     "payload:repair:embed-links": "bun ./lib/payload/repair-wp-embed-links.ts",
+    "payload:audit:post-formatting": "bun ./lib/payload/audit-post-formatting.ts",
+    "payload:repair:post-formatting": "bun ./lib/payload/repair-post-formatting.ts",
     "clean": "rm -rf .next node_modules/.cache",
     "lint": "biome lint --max-diagnostics=200",
     "lint:fix": "biome lint --write --unsafe --max-diagnostics=200",

@@ -6,7 +6,7 @@ The HTML→Lexical converter SHALL drop WordPress formatting that exists only to
 
 - **Alignment** — a `text-align: justify` declaration, whether inline or via a WP alignment class, SHALL NOT become a `justify` format on the Lexical node. `center` alignment SHALL continue to convert, since it is authored intent.
 - **Spacer paragraphs** — a paragraph whose entire content is line breaks, non-breaking spaces, or empty inline wrappers SHALL NOT be emitted. WordPress uses these for vertical rhythm; the post template supplies its own spacing, so they arrive as double gaps.
-- **Non-breaking spaces** — a `&nbsp;` separating two ordinary words SHALL be converted to an ordinary space. A `&nbsp;` that is genuinely holding a phrase together (before a unit, after a single-letter preposition in Polish) MAY be preserved.
+- **Non-breaking spaces** — a `&nbsp;` separating two ordinary words SHALL be converted to an ordinary space, and a `&nbsp;` used to pad — indenting a block, trailing it, or sitting beside an ordinary space — SHALL NOT survive. A `&nbsp;` that is genuinely holding a phrase together (between digit groups, after a one- or two-letter word in Polish) SHALL be preserved.
 
 This closes a regression path: the repair in this change cleans content already imported, and these requirements stop `migrate-wp.ts` from putting it back on a re-run.
 
@@ -29,6 +29,11 @@ This closes a regression path: the repair in this change cleans content already 
 
 - **WHEN** a WP paragraph or heading separates two ordinary words with `&nbsp;`
 - **THEN** the migrated text carries an ordinary space and wraps normally
+
+#### Scenario: Non-breaking spaces used as WordPress indentation
+
+- **WHEN** a WP paragraph opens or closes with a run of `&nbsp;`
+- **THEN** the migrated text carries neither the run nor a leading or trailing gap
 
 #### Scenario: Already-imported content is repaired
 

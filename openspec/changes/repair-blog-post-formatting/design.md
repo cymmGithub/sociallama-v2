@@ -51,14 +51,70 @@ The audit that produced this change scraped rendered pages, which was right for 
 
 This is the decision most likely to cause quiet damage if got wrong. In Polish typography a non-breaking space after a single-letter preposition (`w`, `i`, `z`, `o`, `a`, `u`) is **correct** and deliberate — it stops an orphaned one-letter word at a line end. Stripping all 2,186 would degrade typography while claiming to improve it.
 
-Measured breakdown:
+**Revised during implementation.** The breakdown below was originally measured
+by scraping rendered HTML, which concatenates text across block boundaries and
+so credited hundreds of block-edge non-breaking spaces with a preceding word
+they do not have. Re-measured against the Lexical trees:
 
-- **1,521 (70%)** stand alone or sit at a block edge — these are the spacer-paragraph nodes, removed by that rule, not this one. The counts are **not additive**.
-- **591** follow a word of 3+ characters, overwhelmingly sentence-final (`nowego.`, `użytkowników.`, `działanie:`) — debris.
-- **56** follow a single-character word — **preserved**.
-- **18** follow a two-character word (`na`, `są`) — ambiguous; preserved, on the principle that leaving a defensible nbsp costs nothing while removing a deliberate one is a regression.
+| bucket | scraped | actual | treatment |
+| --- | --- | --- | --- |
+| inside a spacer paragraph | 1,521 | 276 | leaves with the paragraph |
+| padding: run adjacent to other whitespace | — | 1,111 | **collapse** |
+| padding: trailing run at a block's end | — | 441 | **drop** |
+| padding: leading indent run | — | 16 | **drop** |
+| word space after a 3+ character token | 591 | 69 | **convert** |
+| after a one-character preposition | 56 | 38 | preserve |
+| after a two-character token | 18 | 14 | preserve |
 
-Rule: convert a non-breaking space to an ordinary space only when the token before it is longer than one character. Conservative by construction, and it errs toward authored intent.
+Three consequences:
+
+**The rule is per block, not per text node.** A gap routinely straddles a node
+boundary — a bold word followed by a plain node opening with the non-breaking
+space. Judging each node alone reads the token before the gap as empty and
+preserves the debris, which is what the original per-node rule would have done.
+
+**Padding is its own class, and it is the large one.** 1,568 non-breaking
+spaces neither stand alone in a spacer paragraph nor separate two words: they
+pad. A non-breaking space sitting next to an ordinary space was never holding
+anything together, so collapsing the run is safe by construction — and unlike
+an ordinary space, a non-breaking one does not collapse at render, so these
+are visible (`postów?` followed by twenty of them). Restricting the change to
+word spaces would have cleared 345 of 2,186 and left the visible ones in place.
+
+**Two preserve cases the original rule would have broken.** The threshold is
+"longer than *two* characters", following this decision's stated intent rather
+than its original formula, which contradicted it. And a non-breaking space
+between two digits is preserved whatever the token length: the corpus has five
+grouped numbers (`106 800`, `550 000`), and converting one lets the number wrap
+in half.
+
+### D8 — The rehearsal runs against a restored copy, because there is no dev corpus
+
+`tasks.md` assumed a dev database holding the blog. There isn't one: the local
+development database carries 15 fixture posts, and the 79 imported posts exist
+only in the database `DATABASE_URL_PROD` names (which, pre-launch, is not a
+live production database either).
+
+Rather than collapse phases 3 and 5 into a single write, the rehearsal runs
+against `sociallama_wpcopy` — a `pg_dump` of that database restored into the
+local Postgres container, with `DATABASE_URL` overridden per command. The
+verifier reports identical counts against the copy and the original, so the
+rehearsal is faithful, and the first write to the shared database happens only
+after apply, verify and idempotency have all passed somewhere disposable.
+
+The dump needs a `pg_dump` at least as new as the server (18); the host's is
+16, so it runs via `docker run --rm postgres:18`.
+
+### D9 — The preservation baseline is centred nodes that carry content
+
+The proposal counted 10 deliberate `center` nodes. One of them, in
+`logo-wizerunek-firmy`, is a paragraph with a `center` format and no children
+at all — a spacer that centres nothing. It matches the spacer rule and leaves
+with the other 750.
+
+So "the centred count is unchanged" is the wrong invariant; it would have
+failed for a correct repair. The verifier counts centred nodes that carry
+content, which is 9 before the repair and 9 after.
 
 ### D4 — One repair script, one defect class per flag
 

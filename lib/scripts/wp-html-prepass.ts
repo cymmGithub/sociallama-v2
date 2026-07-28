@@ -10,6 +10,7 @@
 // this is the exact constructor shape convertHTMLToLexical expects.
 // @ts-expect-error jsdom has no bundled or @types declarations
 import { JSDOM } from 'jsdom'
+import { type NbspLeaf, planNbsp } from '@/lib/payload/post-formatting-rules'
 
 /** Decode entities and strip tags via a DOM body. */
 export function htmlToText(html: string): string {
@@ -55,6 +56,192 @@ export function altFromFilename(sourceUrl: string): string {
 }
 
 export const UPLOAD_MARKER = /^@@upload:(.+)@@$/
+
+// ---------------------------------------------------------------------------
+// Presentational debris
+// ---------------------------------------------------------------------------
+
+/**
+ * Elements that own a run of text. A non-breaking-space gap never spans two of
+ * them, and a nested one is normalized on its own pass — the same boundary the
+ * Lexical side draws (post-formatting-rules.ts).
+ */
+const BLOCK_TAGS = new Set([
+  'P',
+  'H1',
+  'H2',
+  'H3',
+  'H4',
+  'H5',
+  'H6',
+  'LI',
+  'BLOCKQUOTE',
+  'TD',
+  'TH',
+  'FIGCAPTION',
+  'DIV',
+])
+
+/** Inline wrappers a spacer paragraph may contain and still be safe to drop. */
+const INERT_INLINE = new Set([
+  'BR',
+  'SPAN',
+  'STRONG',
+  'EM',
+  'B',
+  'I',
+  'U',
+  'SMALL',
+  'FONT',
+])
+
+/** WordPress's ways of saying "justify" in a class. */
+const JUSTIFY_CLASS = /^(?:has-text-align-justify|alignjustify|text-justify)$/i
+
+// `Node.ELEMENT_NODE` and friends live on jsdom's window, not on a Bun
+// global, so the numbers are spelled out rather than read off `Node`.
+const ELEMENT_NODE = 1
+const TEXT_NODE = 3
+
+/**
+ * Strip the formatting WordPress used to simulate layout, so a re-run of the
+ * migration cannot put back what repair-post-formatting.ts just cleared.
+ *
+ * Three classes, matching the repair exactly: justified alignment (inline or
+ * by class, with `center` left alone because it is authored intent), spacer
+ * paragraphs, and non-breaking spaces used as word spaces or as padding. The
+ * non-breaking-space rule is not restated here — it is `planNbsp`, the same
+ * function the repair and the verifier call, fed DOM text nodes instead of
+ * Lexical ones.
+ *
+ * This runs as a DOM pass rather than more regexes because all three rules
+ * need to see element boundaries: which paragraph a `<br>` belongs to, whether
+ * a gap sits at the edge of a block, whether a blank paragraph is hiding an
+ * image.
+ */
+function stripPresentationalDebris(html: string, notes: string[]): string {
+  const document = new JSDOM(`<body>${html}</body>`).window.document as Document
+  const body = document.body
+
+  let justified = 0
+  for (const element of body.querySelectorAll<HTMLElement>('*')) {
+    const style = element.getAttribute('style')
+    if (style && /text-align\s*:\s*justify/i.test(style)) {
+      const kept = style
+        .split(';')
+        .filter(
+          (declaration) =>
+            !/^\s*text-align\s*:\s*justify\s*$/i.test(declaration)
+        )
+        .join(';')
+        .replace(/^;|;$/g, '')
+        .trim()
+      if (kept === '') {
+        element.removeAttribute('style')
+      } else {
+        element.setAttribute('style', kept)
+      }
+      justified++
+    }
+
+    const className = element.getAttribute('class')
+    if (className?.split(/\s+/).some((c) => JUSTIFY_CLASS.test(c))) {
+      const kept = className
+        .split(/\s+/)
+        .filter((c) => c !== '' && !JUSTIFY_CLASS.test(c))
+        .join(' ')
+      if (kept === '') {
+        element.removeAttribute('class')
+      } else {
+        element.setAttribute('class', kept)
+      }
+      justified++
+    }
+  }
+  if (justified > 0) {
+    notes.push(`${justified} justify alignment(s) dropped (center kept)`)
+  }
+
+  let spacers = 0
+  let unclear = 0
+  for (const paragraph of body.querySelectorAll('p')) {
+    if ((paragraph.textContent ?? '').replace(/[\s\u00a0]/g, '') !== '') {
+      continue
+    }
+    // Blank to the text walk, but an image or a rule inside it is real
+    // content — reported and left alone, never guessed at.
+    const opaque = [...paragraph.querySelectorAll('*')].some(
+      (element) => !INERT_INLINE.has(element.tagName)
+    )
+    if (opaque) {
+      unclear++
+      continue
+    }
+    paragraph.remove()
+    spacers++
+  }
+  if (spacers > 0) {
+    notes.push(`${spacers} spacer paragraph(s) dropped`)
+  }
+  if (unclear > 0) {
+    notes.push(
+      `WARNING: ${unclear} blank paragraph(s) kept — they hold something the text walk cannot see`
+    )
+  }
+
+  let wordSpace = 0
+  let padding = 0
+  const blocks: Element[] = [body, ...body.querySelectorAll('*')].filter(
+    (element) => element === body || BLOCK_TAGS.has(element.tagName)
+  )
+  for (const block of blocks) {
+    const texts: (Text | null)[] = []
+    const leaves: NbspLeaf[] = []
+    const collect = (node: Node) => {
+      for (const child of node.childNodes) {
+        if (child.nodeType === TEXT_NODE) {
+          texts.push(child as Text)
+          leaves.push({ node: null, text: (child as Text).data, mutable: true })
+          continue
+        }
+        // Comments and the like carry no text and separate nothing.
+        if (child.nodeType !== ELEMENT_NODE) {
+          continue
+        }
+        const element = child as Element
+        if (element.tagName === 'BR') {
+          texts.push(null)
+          leaves.push({ node: null, text: '\n', mutable: false })
+        } else if (BLOCK_TAGS.has(element.tagName)) {
+          // Normalized as a block of its own.
+        } else if (element.childNodes.length > 0) {
+          collect(element)
+        } else {
+          texts.push(null)
+          leaves.push({ node: null, text: '\uFFFC', mutable: false })
+        }
+      }
+    }
+    collect(block)
+    const plan = planNbsp(leaves)
+    leaves.forEach((leaf, index) => {
+      const target = texts[index]
+      const next = plan.texts[index]
+      if (target && typeof next === 'string' && next !== leaf.text) {
+        target.data = next
+      }
+    })
+    wordSpace += plan.wordSpace
+    padding += plan.padding
+  }
+  if (wordSpace + padding > 0) {
+    notes.push(
+      `${wordSpace} word-space and ${padding} padding non-breaking space(s) resolved`
+    )
+  }
+
+  return body.innerHTML
+}
 
 export interface PrePassResult {
   html: string
@@ -186,6 +373,10 @@ export function prePass(
     images.set(key, { alt, sourceUrl })
     return `<p>@@upload:${key}@@</p>`
   })
+
+  // Last, so it sees the markers as ordinary text and the earlier rules have
+  // already removed the iframes and shortcodes that would confuse it.
+  html = stripPresentationalDebris(html, notes)
 
   return { html, images, notes }
 }

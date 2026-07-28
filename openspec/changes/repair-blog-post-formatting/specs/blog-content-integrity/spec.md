@@ -60,9 +60,11 @@ This is what makes the post page's table of contents work: `buildToc` tracks onl
 
 ### Requirement: Post bodies carry no presentational debris
 
-A post body SHALL NOT carry formatting that exists only to simulate layout. Specifically: no node SHALL carry a `justify` alignment format; no paragraph SHALL exist whose entire content is line breaks, non-breaking spaces, or empty inline wrappers; and a non-breaking space SHALL NOT be used where an ordinary word space is meant.
+A post body SHALL NOT carry formatting that exists only to simulate layout. Specifically: no node SHALL carry a `justify` alignment format; no paragraph SHALL exist whose entire content is line breaks, non-breaking spaces, or empty inline wrappers; and a non-breaking space SHALL NOT be used where an ordinary word space is meant, nor to pad — as an indent, as a trailing gap, or alongside an ordinary space. Unlike an ordinary space, a non-breaking space does not collapse at render, so padding with one is visible.
 
-Deliberate `center` alignment SHALL be preserved — it is authored intent, not debris.
+A non-breaking space SHALL be preserved where it is doing typographic work: after a Polish one- or two-letter word, and between the digit groups of a number.
+
+Deliberate `center` alignment SHALL be preserved where it applies to content — it is authored intent, not debris. A `center` format on an otherwise empty paragraph centres nothing and is a spacer.
 
 #### Scenario: Justified text
 
@@ -83,6 +85,16 @@ Deliberate `center` alignment SHALL be preserved — it is authored intent, not 
 
 - **WHEN** a non-breaking space separates two ordinary words in running text or in a heading
 - **THEN** it is an ordinary space in the published body, and the text wraps normally
+
+#### Scenario: Non-breaking spaces used as padding
+
+- **WHEN** a block's text is indented with a run of non-breaking spaces, ends in one, or holds one alongside an ordinary space
+- **THEN** the published body carries no such run, and the words on either side stay separated
+
+#### Scenario: Non-breaking space doing typographic work
+
+- **WHEN** a non-breaking space follows a Polish one- or two-letter word, or sits between the digit groups of a number
+- **THEN** it survives the repair unchanged
 
 ### Requirement: Formatting is machine-verifiable
 
