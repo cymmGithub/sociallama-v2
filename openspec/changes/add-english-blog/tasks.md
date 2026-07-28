@@ -278,8 +278,8 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   `category/[category]/page.tsx:52`, `category/[category]/page/[number]/page.tsx:43`. Pre-existing;
   the three new EN routes were serialized rather than copying it. Worth closing before the first
   prod build that prerenders both locales' blogs at once.
-- [ ] **The demo fixtures on `rehearsal` are not translations and must be deleted before any real
-  wave.** 12 posts and 2 categories carry synthetic English rows written for the phase-3 gate tests:
+- [x] **The synthetic demo fixtures have been deleted** and replaced with a real 5-post pilot
+  (2026-07-28), so the note below is closed. Original problem, kept for the record: 12 posts and 2 categories carry synthetic English rows written for the phase-3 gate tests:
   `title = 'EN ' || <polish title>`, `slug = <pl-slug> || '-en'`, body/excerpt/meta copied from
   Polish unchanged. The `-en` slug suffix is a fixture artifact and contradicts design D2, which
   requires authored English slugs (`/en/blog/is-linkedin-premium-worth-it`, not the Polish slug with
@@ -290,3 +290,29 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   `max_connections = 100`. Raised to 800 on the throwaway container to get a render. This is the
   same build-time DB concurrency constraint the repo already documents, and it is worth confirming
   the prod build target's real limit before the first both-locales build.
+
+- [x] **Manual 5-post pilot run on `rehearsal`** (2026-07-28), in the spirit of task 9.3 but by hand,
+  since the phase-8 tooling does not exist yet. Translated `social-media-futbol` (984 words, 22
+  blocks, 10 uploads), `koniec-globalnych-fanpagey-na-facebooku` (a link + a linebreak inside one
+  block), plus three short 2017 news items, and all 4 categories. English slugs are authored per D2
+  (`/en/blog/social-media-are-changing-polish-football`), not the Polish slug with a suffix.
+  Method, which is the part worth carrying into task 8.3: text nodes are replaced **positionally
+  within each block, in document order, links included**, and nothing else in the tree is assigned —
+  so uploads, linebreaks, link `fields`, and per-node `format`/`detail`/`mode`/`style` survive by
+  construction rather than by being copied. A block whose text-node count disagrees with the
+  translation is reported and the whole post skipped, never guessed.
+  **Verified**: structural fingerprint (block types/order, upload media ids, link fields, linebreak
+  positions) identical before and after the walk on all 5; the Polish baseline comparator reports
+  **only 6 differences against prod, all of them version-count increments** (+1 per translated post,
+  +5 on the total) — zero Polish content, slug, category, author or hub differences. Heading anchors
+  regenerate in English (`#who-is-behind-polish-football-s-communication`), and the only diacritics
+  left in the English body are proper nouns (Basałaj, Szczęsny, Łączy nas piłka), which is exactly
+  D4's soft-flag case.
+  Writer script kept in the session scratchpad as `write-en.ts` — deliberately NOT committed, so it
+  cannot be mistaken for `lib/payload/translate-post.ts`.
+- [ ] **Some images have Polish text baked into the pixels**, which localizing `media.alt` (task 2.8)
+  does not touch. Visible on the English hub: the cover for
+  `instagram-cenzuruje-zdjecia-ze-zwierzetami` is a screenshot of an Instagram warning written in
+  Polish. This is a content/creative decision per image — replace, crop, or accept — and it needs a
+  pass over the covers and in-body screenshots of whichever posts get translated. Scope unknown
+  until someone counts them.
