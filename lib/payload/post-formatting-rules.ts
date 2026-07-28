@@ -527,6 +527,74 @@ export function classifyIntroHeading(
  * stored truncated and often ends mid-word; that simply stops the match, which
  * is the conservative direction — a word too few is kept, never one too many.
  */
+/**
+ * Remove the first `count` characters of a block's text, in place, keeping
+ * every inline node that survives.
+ *
+ * Rebuilding the block from a plain string instead would flatten the links and
+ * bold runs in whatever is kept — tolerable for a heading, not for a paragraph
+ * of body copy.
+ */
+export function trimBlockPrefix(block: LexicalNode, count: number): void {
+  let remaining = count
+  const leaves: LexicalNode[] = []
+  walkNodes(block, (node) => {
+    if (isTextNode(node)) {
+      leaves.push(node)
+    }
+  })
+  for (const leaf of leaves) {
+    if (remaining <= 0) {
+      break
+    }
+    const text = leaf.text ?? ''
+    if (text.length <= remaining) {
+      remaining -= text.length
+      leaf.text = ''
+    } else {
+      leaf.text = text.slice(remaining)
+      remaining = 0
+    }
+  }
+
+  // Drop the text nodes and inline wrappers left holding nothing.
+  const prune = (node: LexicalNode) => {
+    if (!node.children) {
+      return
+    }
+    node.children = node.children.filter((child) => {
+      prune(child)
+      if (isTextNode(child)) {
+        return child.text !== ''
+      }
+      return child.type === 'linebreak' || (child.children?.length ?? 0) > 0
+    })
+  }
+  prune(block)
+
+  const first = (block.children ?? []).find((child) => isTextNode(child))
+  if (first) {
+    first.text = (first.text ?? '').trimStart()
+  }
+}
+
+/**
+ * How many characters at the start of `text` the excerpt already said — the
+ * cut offset shared by the intro-heading and lead-paragraph fixes. Returns 0
+ * when nothing is shared and `text.length` when everything is.
+ */
+export function duplicatedPrefixLength(text: string, excerpt: string): number {
+  const kept = stripDuplicatedPrefix(text, excerpt)
+  if (kept === text) {
+    return 0
+  }
+  if (kept === '') {
+    return text.length
+  }
+  const at = text.lastIndexOf(kept)
+  return at === -1 ? 0 : at
+}
+
 export function stripDuplicatedPrefix(
   heading: string,
   excerpt: string

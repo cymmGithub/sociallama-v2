@@ -35,15 +35,18 @@
 
 import {
   classifyIntroHeading,
+  duplicatedPrefixLength,
   duplicatesExcerpt,
   headingLevel,
   headingText,
   isBoldPseudoHeading,
   type LexicalNode,
+  nodeText,
   normalizeHeadingLevels,
   promoteToHeading,
   stripDuplicatedPrefix,
   stripLeadingHeadings,
+  trimBlockPrefix,
   unwrapLabelList,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
@@ -158,6 +161,8 @@ let intros = 0
 let promoted = 0
 let unwrapped = 0
 let excerpts = 0
+let leadsDeleted = 0
+let leadsTrimmed = 0
 let relevelled = 0
 let shortened = 0
 let credits = 0
@@ -251,7 +256,34 @@ for (const post of posts.docs) {
     }
   }
 
-  // --- 3. Image credits ------------------------------------------------------
+  // --- 3. Lead paragraph -----------------------------------------------------
+  // The page header renders the excerpt as the lead, and on 38 posts the body
+  // then opens by saying it again — verbatim on 20 of them. Same defect as the
+  // intro heading, one node further down, so it takes the same cut: drop the
+  // sentences the header already showed, delete the block if nothing is left.
+  // `trimBlockPrefix` rather than a rewrite, so links and bold in the surviving
+  // text are not flattened.
+  const leadIndex = (root.children ?? []).findIndex(
+    (node) => nodeText(node).trim().length > 30 || headingLevel(node) !== null
+  )
+  const lead = leadIndex === -1 ? null : root.children?.[leadIndex]
+  if (lead && lead.type === 'paragraph' && excerpt.trim() !== '') {
+    const raw = nodeText(lead)
+    const cut = duplicatedPrefixLength(raw.replace(/\s+/g, ' ').trim(), excerpt)
+    if (cut > 0) {
+      if (cut >= raw.trim().length) {
+        root.children = (root.children ?? []).filter((_, i) => i !== leadIndex)
+        leadsDeleted++
+        notes.push('lead paragraph deleted (the header already renders it)')
+      } else {
+        trimBlockPrefix(lead, cut)
+        leadsTrimmed++
+        notes.push(`lead paragraph trimmed of ${cut} duplicated chars`)
+      }
+    }
+  }
+
+  // --- 4. Image credits ------------------------------------------------------
   // A heading carrying a URL is an image credit — `źródło: https://…` — which
   // WordPress marked up as a heading for the size. A rule rather than an
   // override, because a re-import would bring more of them.
@@ -267,7 +299,7 @@ for (const post of posts.docs) {
     notes.push('image credit heading → paragraph')
   })
 
-  // --- 4. Oversized headings -------------------------------------------------
+  // --- 5. Oversized headings -------------------------------------------------
   for (const override of OVERSIZED.filter((o) => o.slug === post.slug)) {
     let done = false
     // Already applied on an earlier run. Either the rewritten label is
@@ -307,14 +339,14 @@ for (const post of posts.docs) {
     }
   }
 
-  // --- 5. Re-level ----------------------------------------------------------
+  // --- 6. Re-level ----------------------------------------------------------
   const moved = normalizeHeadingLevels(root)
   if (moved > 0) {
     relevelled += moved
     notes.push(`${moved} heading(s) re-levelled`)
   }
 
-  // --- 6. Excerpt ------------------------------------------------------------
+  // --- 7. Excerpt ------------------------------------------------------------
   // Last, so it sees the final headings. The excerpts were scraped from each
   // body's opening with the headings left in, so seven of them begin with the
   // post's own section labels — one leads with five of them run together
@@ -361,7 +393,7 @@ console.log(
   `\n${changedPosts} post(s) ${APPLY ? 'changed' : 'would change'}: ` +
     `${intros} intro heading(s), ${promoted} promoted, ${unwrapped} list label(s), ` +
     `${shortened} shortened, ${credits} image credit(s), ${relevelled} re-levelled, ` +
-    `${excerpts} excerpt(s)` +
+    `${excerpts} excerpt(s), ${leadsDeleted} lead para deleted, ${leadsTrimmed} trimmed` +
     (skipped ? `, ${skipped} override(s) skipped (see above)` : '') +
     (APPLY ? '' : '. Re-run with --apply to write.')
 )
