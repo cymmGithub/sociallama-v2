@@ -290,7 +290,20 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   corpus's actual format bitmasks, the reject-don't-guess cases, and the three structures D3 says
   cannot occur.
 - [ ] 8.3 Write `lib/payload/translate-post.ts` around that projection, following `repair-post-formatting.ts`: `--prod` env swap before the config import (L57–66), deep copy before mutation (L124–127), in-place walk (L136–161), **report and skip ambiguity, never guess** (L163–168), one `payload.update` per post (L199–203), dry-run by default with `--apply` (L42). Two modes (`--extract` / write) and the `TODO` stub guard from `translate-case-study.ts`.
-- [ ] 8.4 Write the structural gate as a pure function so both the workflow and the verifier use the same code: block count/type/order match PL; per-block `<br/>`/`<tab/>` counts and positions match PL; every `<aN>` present exactly once and none invented; markup balanced, grammar-only, bit-ordered; slug URL-safe, EN-unique, not reserved; heading ≤ 85 chars. Polish diacritics are a **soft flag against a proper-noun allowlist**, never a hard reject — "Łukasz Płociński" and "Pracuj.pl" survive translation legitimately.
+- [x] 8.4 Write the structural gate as a pure function so both the workflow and the verifier use the same code: block count/type/order match PL; per-block `<br/>`/`<tab/>` counts and positions match PL; every `<aN>` present exactly once and none invented; markup balanced, grammar-only, bit-ordered; slug URL-safe, EN-unique, not reserved; heading ≤ 85 chars. Polish diacritics are a **soft flag against a proper-noun allowlist**, never a hard reject — "Łukasz Płociński" and "Pracuj.pl" survive translation legitimately.
+  `lib/payload/post-translation-gate.ts` — pure, no I/O, so the batch and the verifier run the same
+  code and cannot disagree about what a defect is.
+  **Positions needed a second check the tag sequence could not give.** A tag sequence orders tags
+  against each other only, so a `<br/>` moving from mid-run to the start is invisible to it — my own
+  test caught that. `structuralShape()` interleaves a `·` marker for each stretch of prose and
+  compares that, which makes position checkable even though the prose itself changed length and
+  wording. Emphasis is stripped before the shape comparison, deliberately: where a bold run sits
+  relative to the words IS a translation decision, whereas a line break is authored structure.
+  Calibrated against the real pilot: **all 5 translations pass with 0 errors**, and the one warning
+  is a genuine soft-flag — `Bogusław Leśnodorski`, a Polish proper noun outside the allowlist,
+  warned rather than rejected exactly as D4 requires. 27 unit tests, each pairing an acceptable
+  translation with the corresponding defect, because a check that never rejects would pass a
+  suite of happy paths just as happily as a correct one.
 - [ ] 8.5 Write `lib/payload/verify-post-en.ts` per design D5 — asserts every guarantee in the spec delta including the intra-block leaf sequence, exits non-zero on failure, writes `content/posts/STATUS.md` under `--status`.
 - [ ] 8.6 Add `payload:translate:post` and `payload:verify:post-en` package scripts.
 - [ ] 8.7 Make `audit-post-formatting.ts` locale-aware (`:139-144` queries with no `locale`, so English passes vacuously today), and scope the Polish `nbsp` rule to `pl` (design D10).
