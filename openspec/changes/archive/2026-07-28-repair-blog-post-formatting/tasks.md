@@ -131,4 +131,4 @@ changes.
 
 - [x] 8.1 Run `bun run check` — 467 tests pass, TypeScript clean, manifest current. Biome reports only the pre-existing `module_resolver` panics and nursery warnings that predate this change
 - [x] 8.2 Final verifier run against prod — see the table below
-- [ ] 8.3 Visual pass over a sample spanning recent posts and 2017–2021 legacy imports
+- [x] 8.3 Visual pass over a sample spanning recent posts and 2017–2021 legacy imports — signed off 2026-07-28 after the migration and deploy
