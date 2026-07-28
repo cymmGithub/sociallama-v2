@@ -302,11 +302,20 @@ describe('intro heading treatment', () => {
     expect(classifyIntroHeading('Budowanie Marki', excerpt)).toBe('genuine')
   })
 
-  it('drops only the words the excerpt already said', () => {
+  it('cuts at a sentence boundary, not where the excerpt happened to stop', () => {
+    // The stored excerpt ends mid-sentence ("Jeśli nie masz czasu"), so
+    // cutting there left the paragraph starting "ani zasobów…". Back up to the
+    // last full stop instead: a few repeated words beat a fragment.
     const heading = `${EXCERPT_GOOGLE} ani zasobów, żeby to ogarnąć.`
     expect(stripDuplicatedPrefix(heading, EXCERPT_GOOGLE)).toBe(
-      'ani zasobów, żeby to ogarnąć.'
+      'Jeśli nie masz czasu ani zasobów, żeby to ogarnąć.'
     )
+  })
+
+  it('keeps the whole heading when there is no sentence boundary to back up to', () => {
+    const excerpt = 'Jeden ciąg słów bez kropki w środku tego zdania'
+    const heading = `${excerpt} i jeszcze trochę więcej.`
+    expect(stripDuplicatedPrefix(heading, excerpt)).toBe(heading)
   })
 
   it('keeps the heading when it shares no opening with the excerpt', () => {

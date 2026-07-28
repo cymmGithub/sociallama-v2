@@ -503,7 +503,29 @@ export function stripDuplicatedPrefix(
   if (shared === 0) {
     return heading
   }
-  const next = headingWords[shared]
+  // Every word matched: the heading says nothing the excerpt does not, so
+  // there is no tail to keep and the caller deletes the block.
+  if (shared === headingWords.length) {
+    return ''
+  }
+
+  // The excerpt is stored truncated, usually mid-sentence, so cutting exactly
+  // where it stops leaves the paragraph starting mid-clause ("ani zasobów,
+  // żeby to ogarnąć…"). Back up to the last sentence boundary instead. That
+  // repeats a few words the header already showed — invisible in practice,
+  // and far better than a fragment. With no boundary to back up to, nothing
+  // is dropped and the whole heading becomes the paragraph.
+  let cut = shared
+  while (
+    cut > 0 &&
+    !/[.!?…:]["»”)]?$/.test(headingWords[cut - 1]?.text ?? '')
+  ) {
+    cut--
+  }
+  if (cut === 0) {
+    return heading
+  }
+  const next = headingWords[cut]
   return next ? heading.slice(next.at).trim() : ''
 }
 

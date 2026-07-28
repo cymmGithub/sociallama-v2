@@ -57,7 +57,7 @@
 - [x] 6.3 Draft the replacement Polish headings — **almost none are needed.** In 19 of 19 extended cases the section already carries a label immediately after the giant heading, so the fix promotes existing copy rather than authoring new. Each entry lists what follows it under **What follows it**
 - [x] 6.4 For the 38 posts with no `h2`, identify which bold paragraphs are section labels and propose the level for each; flag any post whose content genuinely has no sections — section 2, one table per post; posts with no candidates carry an explicit "may genuinely have no sections" note
 - [x] 6.5 Propose re-levelling for the `h3`-first posts and those using `h4`–`h6` — section 3
-- [ ] 6.6 Submit the document for approval — **no post content is written until it comes back approved**
+- [x] 6.6 Submit the document for approval — approved wholesale on 2026-07-28; the proposals stood except where reading them changed the call (see D10)
 
 > **Amended (D10):** the excerpts were auto-generated from each post's opening,
 > so almost every intro heading is a verbatim prefix of its excerpt. Containment
@@ -71,11 +71,11 @@
 
 ## 7. Apply the editorial repair
 
-- [ ] 7.1 Apply the approved intro-heading fixes to all 22 posts
-- [ ] 7.2 Apply the approved heading-hierarchy fixes to all 38 posts
+- [x] 7.1 Apply the approved intro-heading fixes — **31 posts, not 22**: 7 restatements deleted, 19 intro-prose headings demoted (the duplicated prefix dropped), 6 genuine labels deliberately kept. Applied by `payload:apply:heading-fixes`, not by hand — 51 posts of admin editing would not have been reviewable
+- [x] 7.2 Apply the approved heading-hierarchy fixes — 78 bold paragraphs promoted, 5 image credits demoted, 8 oversized headings resolved, 120 headings re-levelled across 50 posts
 - [ ] 7.3 Re-run the verifier: zero headings over 85 characters, zero excerpt-duplicating headings, zero posts without an `h2`, zero `h3`-before-`h2`
 - [ ] 7.4 Confirm the table of contents now renders on every post with three or more sections, and check the rail on the post that prompted this change (`google-polaczylo-social-media-z-seo`) reads as a flat list of real sections
-- [ ] 7.5 Confirm no anchor `id` exceeds a sane length now that no heading is a paragraph
+- [x] 7.5 Confirm no anchor `id` exceeds a sane length now that no heading is a paragraph — longest on the worst post is 45 characters, against 758 before
 
 ## Baseline (task 1.6) — verifier against the corpus, 79 posts, no drafts
 
@@ -107,6 +107,6 @@ measured, so no editorial work goes missing.
 
 ## 8. Close out
 
-- [ ] 8.1 Run `bun run check` (Biome, TypeScript, tests, manifest) — filtering Biome's known non-fatal `module_resolver` panics with `--diagnostic-level=error`
+- [x] 8.1 Run `bun run check` — 467 tests pass, TypeScript clean, manifest current. Biome reports only the pre-existing `module_resolver` panics and nursery warnings that predate this change
 - [ ] 8.2 Final verifier run against prod, with the before/after table recorded in the change
 - [ ] 8.3 Visual pass over a sample spanning recent posts and 2017–2021 legacy imports
