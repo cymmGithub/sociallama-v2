@@ -23,6 +23,7 @@
     "payload:import:case-study": "bun ./lib/payload/import-case-study.ts",
     "payload:translate:case-study": "bun ./lib/payload/translate-case-study.ts",
     "payload:translate:post": "bun ./lib/payload/translate-post.ts",
+    "payload:translate:alt": "bun ./lib/payload/translate-media-alt.ts",
     "payload:verify:post-en": "bun ./lib/payload/verify-post-en.ts",
     "payload:check:drafts": "bun ./lib/payload/check-drafts.ts",
     "payload:verify:case-study-en": "bun ./lib/payload/verify-case-study-en.ts",

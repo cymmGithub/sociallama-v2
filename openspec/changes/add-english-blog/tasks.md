@@ -374,17 +374,35 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 - [x] **`media.alt` is not localized** — user decision 2026-07-28: **mandatory**, English alt text is
   required. Promoted to task 2.8 below. (Implementation was started and then reverted on request;
   nothing of it remains in the tree.)
-- [ ] **`rich-text.tsx` maps every non-category relation onto the post base path.**
+- [x] **`rich-text.tsx` maps every non-category relation onto the post base path.** FIXED.
   `payload.config.ts` uses a bare `lexicalEditor()`, so `LinkFeature` enables all collections — an
-  internal link to a case study yields `/en/blog/{cs-slug}`. Already wrong in Polish (`/{cs-slug}`),
-  so pre-existing; this change widened it into a new URL shape. Flagged, not fixed.
+  internal link to a case study yielded `/en/blog/{cs-slug}`, a 404 shaped exactly like an article
+  URL. `hrefForRelation` now maps `posts` / `categories` / `case-studies` explicitly and defaults
+  everything else — `authors`, `media`, `social-platforms`, `users` — to the locale fallback rather
+  than a fabricated path. Measured first: the corpus contains **zero** internal links in all 79
+  posts, so this never fired and could only ever have fired for someone adding the first one from
+  the CMS. Unit-tested in `rich-text.test.ts`, including that the fallback stays same-locale.
 - [ ] **Both locales' hub-search copy ships in every client bundle.** `hub-search.tsx` holds a
   `Record<Locale, HubSearchCopy>` inside a `'use client'` module, so PL ships the EN strings and
   vice versa (~600 bytes). Consequence of the pluralizer-as-function decision; worth revisiting if
   a third locale ever lands.
-- [ ] **No unit coverage for the new shared views.** `PostArticle`, `BlogHubView` and `linkHref`
-  now decide every URL on both locales, and a wrong `basePath` at any of ~11 call sites is caught by
-  nothing. Tasks 7.3 and 7.8 are the planned coverage and are still open.
+- [x] **No unit coverage for the new shared views.** COVERED, though not the way 7.3/7.8 imagined.
+  `linkHref` and `hrefForRelation` are pure and get ordinary unit tests. The eleven route files that
+  hand-write `basePath` / `hubPath` / `categoryPath` get a **source-level invariant** instead
+  (`lib/i18n/route-locale-paths.test.ts`): rendering `PostArticle` would need a whole Payload
+  document graph mocked into place and would still only prove the one path the test itself passed
+  in, whereas reading what the routes actually pass proves it for all of them at once and keeps
+  proving it for routes added later. It asserts no English route passes a Polish path or the
+  reverse, that both blog triples are exact, and that the route trees are non-empty so a rename
+  cannot make the whole file pass vacuously. Verified by injecting the real failure — an English
+  `categoryPath` into a Polish route — which two independent assertions caught.
+- [x] **Corpus contradicts design D3's projection grammar** — RECORDED in `design.md` as a written
+  D3 amendment, with the census re-run to confirm it rather than copied from the (since-lost)
+  scratchpad note. Corrected two figures in the process: the orphan count is **27**, not 31 — the
+  extra 4 were `listitem`s inside nested lists, which are themselves projected blocks and so not
+  orphans. `<code>`/`<sub>`/`<sup>` confirmed at zero occurrences, and the recommended mitigation
+  turned out to be already implemented (`post-projection.ts:159` throws on unknown format bits).
+  *(original note follows)*
 - [ ] **Corpus contradicts design D3's projection grammar** (measured against all 79 posts; the same
   census reproduces D3's own 1,889-block and 802-of-3,225 figures, so it is trustworthy where it
   disagrees). 31 nodes sit inside a projected block with no grammar token: 18 `paragraph` in
@@ -394,6 +412,11 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   and `<tab/>` never occur in the corpus, so 8.2's round-trip cannot exercise them — the structural
   gate should reject an unexpected format mask rather than accept one. Full note in the scratchpad
   as `D3-correction.md`.
+- [x] **Three Polish routes still `Promise.all` their build-time reads** — FIXED, all three now
+  sequential. Two CASE-STUDY routes still parallelize (`case-studies/[slug]/page.tsx` and its English
+  counterpart); they belong to `add-english-locale`, were not part of what was reported here, and
+  are left alone deliberately. Same hazard, someone's call to make.
+  *(original note follows)*
 - [ ] **Three Polish routes still `Promise.all` their build-time reads**, against the constraint
   `app/(frontend)/blog/page.tsx:22-27` documents: `blog/page/[number]/page.tsx:44`,
   `category/[category]/page.tsx:52`, `category/[category]/page/[number]/page.tsx:43`. Pre-existing;
