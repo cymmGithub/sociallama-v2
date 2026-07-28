@@ -403,3 +403,14 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   Polish. This is a content/creative decision per image — replace, crop, or accept — and it needs a
   pass over the covers and in-body screenshots of whichever posts get translated. Scope unknown
   until someone counts them.
+
+- [x] **A real Neon `rehearsal` branch now exists** (user-supplied 2026-07-28, **1-day expiry**):
+  `ep-lively-pine-as8jrpwr`. Verified a faithful pre-migration clone of prod — all five SQL
+  checksums identical — then migrated, after which the baseline comparator reports **identical to
+  prod**: 79 posts, 293 versions, 4 categories, 1 author, blog-hub intact. This supersedes the local
+  PG18 container as the phase-9 target.
+  **Consequence of the expiry, and it governs how phase 9 must run:** anything written only to this
+  branch is gone within a day. Every translation must therefore be persisted to
+  `content/posts/<slug>/draft.en.json` on disk as the source of truth, with the database write being
+  a projection of it — which is what task 9.2's extract/write split implies anyway. The branch
+  becomes disposable rather than precious.
