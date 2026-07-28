@@ -71,15 +71,22 @@ export interface ServicePageProps {
   /** Locale-correct case-study base (`/case-studies` or `/en/case-studies`). */
   caseStudyBase: string
   /**
+   * Locale-correct post base, joined as `${postBase}/${slug}`. Polish posts
+   * sit at the root for WordPress parity, so PL passes the empty string;
+   * English posts are namespaced, so EN passes `/en/blog`.
+   */
+  postBase: string
+  /**
    * Related posts keyed by platform, server-fetched for the CONTENT page's
-   * platform sections (design D5). Omitted on locales without a blog (EN) and
-   * for platforms with no matches — the block then simply doesn't render.
+   * platform sections (design D5). Omitted for platforms with no matches, and
+   * for a locale with no translated posts — the block then simply doesn't
+   * render.
    */
   relatedByPlatform?: Record<string, readonly RelatedPost[]>
   /**
    * Posts for a `posts` section, server-fetched by category (design D5).
-   * Omitted on locales without a blog (EN), which is the second guard on top of
-   * the EN data simply not declaring the section — either way it can't render.
+   * Omitted when the locale's data declares no such section, or when nothing
+   * matches — either way it can't render.
    */
   topicalPosts?: readonly RelatedPost[]
 }
@@ -275,9 +282,11 @@ function PlatformMedia({ item }: { item: PlatformData }) {
 function RelatedPosts({
   posts,
   kicker,
+  postBase,
 }: {
   posts: readonly RelatedPost[]
   kicker: string
+  postBase: string
 }) {
   return (
     <div className={s.related}>
@@ -285,7 +294,7 @@ function RelatedPosts({
       <ul className={s.relatedList}>
         {posts.map((post) => (
           <li key={post.slug}>
-            <Link className={s.relatedItem} href={`/${post.slug}`}>
+            <Link className={s.relatedItem} href={`${postBase}/${post.slug}`}>
               {post.category && (
                 <span className={s.relatedCategory}>{post.category}</span>
               )}
@@ -303,11 +312,13 @@ function PlatformBlock({
   index,
   related,
   relatedKicker,
+  postBase,
 }: {
   item: PlatformData
   index: number
   related?: readonly RelatedPost[] | undefined
   relatedKicker: string
+  postBase: string
 }) {
   const ref = useReveal<HTMLDivElement>()
   const hasMedia = Boolean(item.cube || item.dashboard)
@@ -323,7 +334,11 @@ function PlatformBlock({
         <p className={s.platformText}>{item.copy}</p>
         {/* Related posts — omitted entirely when there are no matches (D5). */}
         {related && related.length > 0 && (
-          <RelatedPosts posts={related} kicker={relatedKicker} />
+          <RelatedPosts
+            posts={related}
+            kicker={relatedKicker}
+            postBase={postBase}
+          />
         )}
       </div>
       {hasMedia && (
@@ -339,10 +354,12 @@ function Platforms({
   items,
   relatedByPlatform,
   relatedKicker,
+  postBase,
 }: {
   items: readonly PlatformData[]
   relatedByPlatform?: Record<string, readonly RelatedPost[]> | undefined
   relatedKicker: string
+  postBase: string
 }) {
   return (
     <section className={s.platforms} data-theme="cream">
@@ -354,6 +371,7 @@ function Platforms({
             index={index}
             related={relatedByPlatform?.[item.platform]}
             relatedKicker={relatedKicker}
+            postBase={postBase}
           />
         ))}
       </div>
@@ -738,9 +756,11 @@ function LogoStrip({ data }: { data: LogoStripData }) {
 function TopicalPosts({
   data,
   posts,
+  postBase,
 }: {
   data: PostsData
   posts: readonly RelatedPost[]
+  postBase: string
 }) {
   const ref = useReveal<HTMLDivElement>()
   // Graceful omission: no matches means no heading either (D5). This also makes
@@ -757,7 +777,7 @@ function TopicalPosts({
         <ul className={s.postCards}>
           {posts.map((post) => (
             <li key={post.slug} data-reveal-item>
-              <Link className={s.postCard} href={`/${post.slug}`}>
+              <Link className={s.postCard} href={`${postBase}/${post.slug}`}>
                 {post.category && (
                   <span className={s.postCategory}>{post.category}</span>
                 )}
@@ -799,6 +819,7 @@ export function ServicePage({
   sections,
   chrome,
   caseStudyBase,
+  postBase,
   relatedByPlatform,
   topicalPosts,
 }: ServicePageProps) {
@@ -819,6 +840,7 @@ export function ServicePage({
                 items={(section as { items: readonly PlatformData[] }).items}
                 relatedByPlatform={relatedByPlatform}
                 relatedKicker={chrome.relatedKicker}
+                postBase={postBase}
               />
             )
           case 'triptych':
@@ -856,6 +878,7 @@ export function ServicePage({
                 key={key}
                 data={section as PostsData}
                 posts={topicalPosts ?? []}
+                postBase={postBase}
               />
             )
           default:

@@ -55,11 +55,10 @@ export default async function UslugaPage({ params }: PageProps) {
     notFound()
   }
 
-  // Blog links (D5); empty for services without the relevant section. The blog
-  // is PL-only, so only the PL route fetches these. Awaited one after the other,
-  // never in parallel — see the note in related-posts.ts.
-  const relatedByPlatform = await buildRelatedByPlatform(service.sections)
-  const topicalPosts = await buildTopicalPosts(service.sections)
+  // Blog links (D5); empty for services without the relevant section. Awaited
+  // one after the other, never in parallel — see the note in related-posts.ts.
+  const relatedByPlatform = await buildRelatedByPlatform(service.sections, 'pl')
+  const topicalPosts = await buildTopicalPosts(service.sections, 'pl')
 
   return (
     // Plum chrome — the hero paints plum; sections paint their own bands.
@@ -68,6 +67,8 @@ export default async function UslugaPage({ params }: PageProps) {
         sections={service.sections}
         chrome={chrome}
         caseStudyBase="/case-studies"
+        // Polish posts sit at the root: `${''}/${slug}`.
+        postBase=""
         relatedByPlatform={relatedByPlatform}
         topicalPosts={topicalPosts}
       />

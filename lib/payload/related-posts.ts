@@ -1,5 +1,7 @@
 import type { RelatedPost } from '@/app/(frontend)/uslugi/[slug]/service-page'
 import type { ServiceSection } from '@/lib/content/uslugi'
+import type { Localized } from '@/lib/i18n/parity'
+import type { Locale } from '@/lib/i18n/slug-map'
 import {
   getCategories,
   getPostsForCategories,
@@ -10,8 +12,7 @@ import {
 /*
  * Blog-link wiring for the service pages (design D5). Server-only: it reads
  * Payload via the cached queries and hands the route plain, serializable data
- * to pass into the client renderer. The blog is PL-only, so both builders run
- * for PL pages only.
+ * to pass into the client renderer.
  *
  * Two shapes, because the two sections match differently: platform blocks match
  * on post title (platform relevance isn't in the taxonomy), while a `posts`
@@ -22,6 +23,16 @@ import {
  * Title search term per platform. `x` is intentionally absent — a single-letter
  * `like` match is far too noisy to surface relevant posts.
  */
+/**
+ * Sections as the EN data supplies them. `Localized` widens every string
+ * literal, so `kind` arrives as `string` and TypeScript cannot narrow the
+ * union — the same constraint `service-page.tsx` handles by dispatching on
+ * `kind` at runtime and casting per branch (design D8).
+ */
+type Section = Localized<ServiceSection>
+type PlatformsSection = Extract<ServiceSection, { kind: 'platforms' }>
+type PostsSection = Extract<ServiceSection, { kind: 'posts' }>
+
 const PLATFORM_SEARCH: Record<string, string> = {
   facebook: 'Facebook',
   instagram: 'Instagram',
@@ -38,14 +49,12 @@ const PLATFORM_SEARCH: Record<string, string> = {
  * show — the graceful-omission contract (D5).
  */
 export async function buildRelatedByPlatform(
-  sections: readonly ServiceSection[]
+  sections: readonly Section[],
+  locale: Locale = 'pl'
 ): Promise<Record<string, readonly RelatedPost[]>> {
   const platforms = sections
-    .filter(
-      (section): section is Extract<ServiceSection, { kind: 'platforms' }> =>
-        section.kind === 'platforms'
-    )
-    .flatMap((section) => section.items)
+    .filter((section) => section.kind === 'platforms')
+    .flatMap((section) => (section as PlatformsSection).items)
     .filter((item) => !item.dashboard)
     .map((item) => item.platform)
 
@@ -64,15 +73,17 @@ export async function buildRelatedByPlatform(
       continue
     }
     try {
-      const posts = await getPostsForPlatform(term)
+      const posts = await getPostsForPlatform(term, locale)
       const cards: RelatedPost[] = posts.map((post) => {
         const category = resolveCategory(post.category)
         // Conditional spread — `exactOptionalPropertyTypes` forbids an explicit
-        // `category: undefined` on the optional field.
+        // `category: undefined` on the optional field. The title is tested
+        // rather than the relation, because a category with no row in this
+        // locale populates with a null title under `fallbackLocale: false`.
         return {
           slug: post.slug,
           title: post.title,
-          ...(category ? { category: category.title } : {}),
+          ...(category?.title ? { category: category.title } : {}),
         }
       })
       if (cards.length > 0) {
@@ -93,12 +104,12 @@ export async function buildRelatedByPlatform(
  * the renderer drops the section, heading included (the D5 omission contract).
  */
 export async function buildTopicalPosts(
-  sections: readonly ServiceSection[]
+  sections: readonly Section[],
+  locale: Locale = 'pl'
 ): Promise<readonly RelatedPost[]> {
-  const section = sections.find(
-    (item): item is Extract<ServiceSection, { kind: 'posts' }> =>
-      item.kind === 'posts'
-  )
+  const section = sections.find((item) => item.kind === 'posts') as
+    | PostsSection
+    | undefined
   if (!section) {
     return []
   }
@@ -106,7 +117,12 @@ export async function buildTopicalPosts(
   // Sequential and fail-soft for the same reason as above: this runs during
   // static generation against the unpooled prod DB.
   try {
-    const categories = await getCategories()
+    // Category ids are resolved under `pl` in BOTH locales, deliberately.
+    // `section.categories` holds Polish slug literals (lib/content/uslugi.ts),
+    // and `categories.slug` is now localized — so an `en` read returns English
+    // slugs, matches nothing, and the section silently disappears instead of
+    // erroring. The ids are shared across locales; only the slugs differ.
+    const categories = await getCategories('pl')
     const ids = categories
       .filter((category) => section.categories.includes(category.slug))
       .map((category) => category.id)
@@ -114,13 +130,15 @@ export async function buildTopicalPosts(
       return []
     }
 
-    const posts = await getPostsForCategories(ids.join(','))
+    // The posts themselves are read in the requested locale, so their
+    // populated categories carry localized titles for the cards below.
+    const posts = await getPostsForCategories(ids.join(','), locale)
     return posts.map((post) => {
       const category = resolveCategory(post.category)
       return {
         slug: post.slug,
         title: post.title,
-        ...(category ? { category: category.title } : {}),
+        ...(category?.title ? { category: category.title } : {}),
       }
     })
   } catch {

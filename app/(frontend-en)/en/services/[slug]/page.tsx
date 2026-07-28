@@ -4,6 +4,10 @@ import { ServicePage } from '@/app/(frontend)/uslugi/[slug]/service-page'
 import { Wrapper } from '@/components/layout/wrapper'
 import { OG_BASE } from '@/lib/content/site.en'
 import { chrome, findService, SERVICES } from '@/lib/content/uslugi.en'
+import {
+  buildRelatedByPlatform,
+  buildTopicalPosts,
+} from '@/lib/payload/related-posts'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -51,12 +55,23 @@ export default async function EnServicePage({ params }: PageProps) {
     notFound()
   }
 
+  // Blog links (D5). This route previously fetched neither, because the blog
+  // was Polish-only — `uslugi.en.ts` has carried an unused `relatedKicker`
+  // ever since. Sequential, never parallel: see the note in related-posts.ts.
+  // Both return [] until posts are translated, and the blocks then omit
+  // themselves, so this is correct before and after the translation batch.
+  const relatedByPlatform = await buildRelatedByPlatform(service.sections, 'en')
+  const topicalPosts = await buildTopicalPosts(service.sections, 'en')
+
   return (
     <Wrapper theme="plum">
       <ServicePage
         sections={service.sections}
         chrome={chrome}
         caseStudyBase="/en/case-studies"
+        postBase="/en/blog"
+        relatedByPlatform={relatedByPlatform}
+        topicalPosts={topicalPosts}
       />
     </Wrapper>
   )

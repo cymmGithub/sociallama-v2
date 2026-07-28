@@ -89,18 +89,43 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
 
 ## 3. Locale-aware query layer
 
-- [ ] 3.1 Thread `locale` through all 14 post/category query functions in `lib/payload/queries.ts` (`findPostBySlug` L43, `findDraftPostBySlug` L62, `findPublishedPostSlugs` L74, `findLatestPost` L91, `findPostsPage` L118, `findCategories` L145, `findCategoryBySlug` L160, `findPostsForSitemap` L175, `findPostsForLlms` L194, `findPostsForPlatform` L317, `findPostsForCategories` L343, `findRelatedPosts` L372, `findSearchIndex` L428, `findBlogHub` L535). Copy the shape of `findCaseStudyBySlug` L219–236. Keep `cacheTag('posts')` shared so both locales invalidate together.
-- [ ] 3.2 **Add the gate as a `where` predicate**, not a read option (design D6). Under `locale: 'en'`, every post query gains `{ title: { exists: true } }` in its `where`. `fallbackLocale: false` is threaded too, but only as a read guard — it is applied in the `afterRead` pass and provably cannot affect `WHERE` or `COUNT`.
-- [ ] 3.3 Assert the predicate reaches the database: on a partially translated `rehearsal`, `findPostsPage` under `locale: 'en'` must report `totalDocs`/`totalPages` computed over the **translated** set, and `/en/blog/page/{n}` must not exist for pages beyond it.
-- [ ] 3.4 Assert the limit-N queries return translated posts: `findLatestPost` (limit 1), `findRelatedPosts` (limit 3), and `findBlogHub`'s 12-post pool must never return zero English results while translated posts exist. These fail hardest under a post-hoc filter, which is why the predicate has to be in the query.
-- [ ] 3.5 Add a locale to `lib/payload/related-posts.ts` and delete its "the blog is PL-only" comment (L13–14).
-- [ ] 3.6 Wire the service-page blog rails for English — three separate gaps, none of which the locale parameter alone closes:
+- [x] 3.1 Thread `locale` through all 14 post/category query functions in `lib/payload/queries.ts` (`findPostBySlug` L43, `findDraftPostBySlug` L62, `findPublishedPostSlugs` L74, `findLatestPost` L91, `findPostsPage` L118, `findCategories` L145, `findCategoryBySlug` L160, `findPostsForSitemap` L175, `findPostsForLlms` L194, `findPostsForPlatform` L317, `findPostsForCategories` L343, `findRelatedPosts` L372, `findSearchIndex` L428, `findBlogHub` L535). Copy the shape of `findCaseStudyBySlug` L219–236. Keep `cacheTag('posts')` shared so both locales invalidate together.
+- [x] 3.2 **Add the gate as a `where` predicate**, not a read option (design D6). Under `locale: 'en'`, every post query gains `{ title: { exists: true } }` in its `where`. `fallbackLocale: false` is threaded too, but only as a read guard — it is applied in the `afterRead` pass and provably cannot affect `WHERE` or `COUNT`.
+  `TRANSLATED = { title: { exists: true } }` in `queries.ts`, single-sourced and spread into each
+  `and:`. `findCategories` uses it as a bare `where` instead, since it has no other predicate and
+  `{ and: [] }` for `pl` is not a shape I could show to be safe.
+  **One hole the predicate cannot reach:** a curation slot is a relationship an editor sets by hand,
+  not a row the query selects, so an English `featured`/`picks` pointing at an untranslated post
+  would still render. `publishedPost()` now also requires a title, degrading such a slot to the
+  empty-slot fallback.
+- [x] 3.3 Assert the predicate reaches the database: on a partially translated `rehearsal`, `findPostsPage` under `locale: 'en'` must report `totalDocs`/`totalPages` computed over the **translated** set, and `/en/blog/page/{n}` must not exist for pages beyond it.
+- [x] 3.4 Assert the limit-N queries return translated posts: `findLatestPost` (limit 1), `findRelatedPosts` (limit 3), and `findBlogHub`'s 12-post pool must never return zero English results while translated posts exist. These fail hardest under a post-hoc filter, which is why the predicate has to be in the query.
+  3.3 and 3.4 verified together against the rehearsal clone in a partially translated state: 12 of
+  79 posts given English rows, deliberately the **12 oldest** (all 2017) while the newest post is
+  2026 — the arrangement where a post-hoc filter returns nothing. 13 assertions, run by mocking
+  `next/cache` so the *real* exported query functions could be called outside a Next request scope
+  rather than a reimplementation of their `where` clauses. Results: PL 79 docs/9 pages, EN 12 docs/2
+  pages with 9 on page 1 and page 3 empty; `getLatestPost('en')` returns a translated 2017 post;
+  related posts and the whole hub pool English-only; a Polish slug does not resolve under `en` and
+  an English slug does not resolve under `pl`; categories gated 4 → 2; sitemap and search index 12.
+- [x] 3.5 Add a locale to `lib/payload/related-posts.ts` and delete its "the blog is PL-only" comment (L13–14).
+- [x] 3.6 Wire the service-page blog rails for English — three separate gaps, none of which the locale parameter alone closes:
   - `app/(frontend-en)/en/services/[slug]/page.tsx` never calls `buildRelatedByPlatform`/`buildTopicalPosts` at all, so the rails are omitted regardless of locale support. (`lib/content/uslugi.en.ts:23` already carries an unused `relatedKicker: 'READ NEXT'` for a block that never renders.)
   - `app/(frontend)/uslugi/[slug]/service-page.tsx:288` and `:760` hardcode `href={`/${post.slug}`}` — the shared renderer needs a `basePath` prop.
   - `buildTopicalPosts` (`related-posts.ts:110-118`) matches `getCategories()` against `section.categories`, which are Polish literals (`uslugi.ts:366`). Once `categories.slug` is localized, an `en` call returns English slugs and matches zero ids — silently empty, not an error. Match on the category **id**, or on the slug read under `locale: 'pl'`.
 
 ## 4. English routes
 
+  All three gaps closed. `postBase` threaded through `ServicePage` → `Platforms` → `PlatformBlock`
+  → `RelatedPosts` and `TopicalPosts`, mirroring the existing `caseStudyBase`; PL passes `''`
+  (posts sit at the root), EN passes `/en/blog`. The EN services route now calls both builders,
+  which it never did. `buildTopicalPosts` resolves category ids under **`locale: 'pl'`** in both
+  locales, because `section.categories` holds Polish slug literals and a localized `slug` would
+  otherwise match zero ids and silently empty the section; the posts themselves are read in the
+  requested locale so their cards carry localized category titles. Both builders now take the
+  widened `Localized<ServiceSection>` the EN data actually supplies, casting per branch as
+  `service-page.tsx` does. Card `category` is set from `category?.title` rather than the relation,
+  since an untranslated category populates with a null title under `fallbackLocale: false`.
 - [ ] 4.1 `app/(frontend-en)/en/blog/page.tsx` and `page/[number]/page.tsx`.
 - [ ] 4.2 `app/(frontend-en)/en/blog/[slug]/page.tsx`, resolving by English slug under `locale: 'en'`. Include the empty-CMS placeholder for Cache Components, matching `app/(frontend-en)/en/case-studies/[slug]/page.tsx:22-28`.
 - [ ] 4.3 `app/(frontend-en)/en/blog/category/[category]/page.tsx` and `page/[number]/page.tsx`.

@@ -40,7 +40,41 @@ export const RELATED_POSTS_COUNT = 3
 
 const PUBLISHED = { _status: { equals: 'published' as const } }
 
-async function findPostBySlug(slug: string): Promise<Post | null> {
+/**
+ * The English gate (design D6): a post with no English translation does not
+ * exist in English.
+ *
+ * This has to be a `where` predicate, not `fallbackLocale`. `fallbackLocale`
+ * is applied in Payload's `afterRead` field pass, i.e. after the SQL has
+ * already selected and counted the rows — it turns Polish text into `null`,
+ * it does not remove the row. Used as the gate it would give `/en/blog` a
+ * page count computed over all 79 posts, pages mostly full of nulls, and
+ * `findLatestPost` / `findRelatedPosts` returning zero English results while
+ * translated posts exist, because those take the newest N *before* any
+ * filter could run.
+ *
+ * `exists` maps to `isNotNull` in the adapter, and `buildQuery` scopes a
+ * localized field's predicate to the active locale, so this joins
+ * `posts_locales` on `_locale = 'en'`. The migration backfilled only `pl`
+ * rows, so an untranslated post has no English row at all and is excluded
+ * from selection *and* from `countDistinct` — which is what makes the
+ * pagination arithmetic correct.
+ */
+const TRANSLATED = { title: { exists: true } } as const
+
+/** As an `and:` member, for the queries that carry other predicates too. */
+const translated = (locale: Locale) => (locale === 'en' ? [TRANSLATED] : [])
+
+/**
+ * `fallbackLocale: false` is still threaded, but only as a read guard so a
+ * partially written document cannot render half-Polish. It is not the gate.
+ */
+const READ = { fallbackLocale: false } as const
+
+async function findPostBySlug(
+  slug: string,
+  locale: Locale = 'pl'
+): Promise<Post | null> {
   'use cache'
   cacheTag('posts', `post:${slug}`)
   cacheLife('days')
@@ -48,9 +82,13 @@ async function findPostBySlug(slug: string): Promise<Post | null> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: { and: [{ slug: { equals: slug } }, PUBLISHED] },
+    where: {
+      and: [{ slug: { equals: slug } }, ...translated(locale), PUBLISHED],
+    },
     limit: 1,
     depth: 2,
+    locale,
+    ...READ,
   })
   return result.docs[0] ?? null
 }
@@ -59,19 +97,29 @@ async function findPostBySlug(slug: string): Promise<Post | null> {
  * Latest draft version of a post, for authenticated preview only
  * (Next draft mode). Deliberately uncached: preview requests are dynamic.
  */
-async function findDraftPostBySlug(slug: string): Promise<Post | null> {
+async function findDraftPostBySlug(
+  slug: string,
+  locale: Locale = 'pl'
+): Promise<Post | null> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
+    // No `translated()` gate: this is an authenticated preview of one
+    // deliberately targeted document, and the slug lookup is already scoped
+    // to the locale — an English slug only matches an English row.
     where: { slug: { equals: slug } },
     limit: 1,
     depth: 2,
     draft: true,
+    locale,
+    ...READ,
   })
   return result.docs[0] ?? null
 }
 
-async function findPublishedPostSlugs(): Promise<string[]> {
+async function findPublishedPostSlugs(
+  locale: Locale = 'pl'
+): Promise<string[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -79,16 +127,18 @@ async function findPublishedPostSlugs(): Promise<string[]> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     limit: 0,
     pagination: false,
     select: { slug: true },
+    locale,
+    ...READ,
   })
   return result.docs.map((doc) => doc.slug)
 }
 
 /** Newest published post, for the homepage NewsLAMA section. */
-async function findLatestPost(): Promise<Post | null> {
+async function findLatestPost(locale: Locale = 'pl'): Promise<Post | null> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -96,10 +146,12 @@ async function findLatestPost(): Promise<Post | null> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     sort: '-publishedAt',
     limit: 1,
     depth: 2,
+    locale,
+    ...READ,
   })
   return result.docs[0] ?? null
 }
@@ -117,7 +169,8 @@ export interface PostsPage {
  */
 async function findPostsPage(
   page: number,
-  categoryId?: number
+  categoryId?: number,
+  locale: Locale = 'pl'
 ): Promise<PostsPage> {
   'use cache'
   cacheTag('posts')
@@ -126,13 +179,19 @@ async function findPostsPage(
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: categoryId
-      ? { and: [{ category: { equals: categoryId } }, PUBLISHED] }
-      : PUBLISHED,
+    where: {
+      and: [
+        ...(categoryId ? [{ category: { equals: categoryId } }] : []),
+        ...translated(locale),
+        PUBLISHED,
+      ],
+    },
     sort: '-publishedAt',
     limit: POSTS_PER_PAGE,
     page,
     depth: 2,
+    locale,
+    ...READ,
   })
   return {
     docs: result.docs,
@@ -142,7 +201,7 @@ async function findPostsPage(
   }
 }
 
-async function findCategories(): Promise<Category[]> {
+async function findCategories(locale: Locale = 'pl'): Promise<Category[]> {
   'use cache'
   cacheTag('categories')
   cacheLife('days')
@@ -150,14 +209,24 @@ async function findCategories(): Promise<Category[]> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'categories',
+    // Gated like posts: an untranslated category would otherwise surface in
+    // the English UI under its Polish name, pointing at a Polish slug. Written
+    // as a bare `where` rather than an `and:` because there is no other
+    // predicate to join it to.
+    where: locale === 'en' ? TRANSLATED : {},
     sort: 'title',
     limit: 0,
     pagination: false,
+    locale,
+    ...READ,
   })
   return result.docs
 }
 
-async function findCategoryBySlug(slug: string): Promise<Category | null> {
+async function findCategoryBySlug(
+  slug: string,
+  locale: Locale = 'pl'
+): Promise<Category | null> {
   'use cache'
   cacheTag('categories')
   cacheLife('days')
@@ -167,14 +236,16 @@ async function findCategoryBySlug(slug: string): Promise<Category | null> {
     collection: 'categories',
     where: { slug: { equals: slug } },
     limit: 1,
+    locale,
+    ...READ,
   })
   return result.docs[0] ?? null
 }
 
 /** Published posts with slug + updatedAt, for the sitemap. */
-async function findPostsForSitemap(): Promise<
-  Pick<Post, 'slug' | 'updatedAt'>[]
-> {
+async function findPostsForSitemap(
+  locale: Locale = 'pl'
+): Promise<Pick<Post, 'slug' | 'updatedAt'>[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -182,18 +253,20 @@ async function findPostsForSitemap(): Promise<
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     limit: 0,
     pagination: false,
     select: { slug: true, updatedAt: true },
+    locale,
+    ...READ,
   })
   return result.docs
 }
 
 /** Published posts, newest first, with the fields the /llms.txt index needs. */
-async function findPostsForLlms(): Promise<
-  Pick<Post, 'title' | 'slug' | 'excerpt'>[]
-> {
+async function findPostsForLlms(
+  locale: Locale = 'pl'
+): Promise<Pick<Post, 'title' | 'slug' | 'excerpt'>[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -201,11 +274,13 @@ async function findPostsForLlms(): Promise<
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     sort: '-publishedAt',
     limit: 0,
     pagination: false,
     select: { title: true, slug: true, excerpt: true },
+    locale,
+    ...READ,
   })
   return result.docs
 }
@@ -314,7 +389,10 @@ async function findCaseStudiesForSitemap(): Promise<
  * in titles — hence the case-insensitive title `like`. Returns `[]` when nothing
  * matches, so the caller omits the whole block rather than showing empty slots.
  */
-async function findPostsForPlatform(term: string): Promise<Post[]> {
+async function findPostsForPlatform(
+  term: string,
+  locale: Locale = 'pl'
+): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -322,10 +400,18 @@ async function findPostsForPlatform(term: string): Promise<Post[]> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: { and: [{ title: { like: term } }, PUBLISHED] },
+    // `title like` is itself locale-scoped, so under `en` it already matches
+    // English titles only. The gate stays for the same reason it is
+    // everywhere else: `like` on a missing locale row matches nothing, but
+    // relying on that would make the exclusion incidental rather than stated.
+    where: {
+      and: [{ title: { like: term } }, ...translated(locale), PUBLISHED],
+    },
     sort: '-publishedAt',
     limit: 3,
     depth: 2,
+    locale,
+    ...READ,
   })
   return result.docs
 }
@@ -340,7 +426,10 @@ async function findPostsForPlatform(term: string): Promise<Post[]> {
  * `cache()` wrapper keys on argument identity: a fresh array literal per call
  * would never hit, defeating the dedup the wrapper exists for.
  */
-async function findPostsForCategories(ids: string): Promise<Post[]> {
+async function findPostsForCategories(
+  ids: string,
+  locale: Locale = 'pl'
+): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -349,11 +438,17 @@ async function findPostsForCategories(ids: string): Promise<Post[]> {
   const result = await payload.find({
     collection: 'posts',
     where: {
-      and: [{ category: { in: ids.split(',').map(Number) } }, PUBLISHED],
+      and: [
+        { category: { in: ids.split(',').map(Number) } },
+        ...translated(locale),
+        PUBLISHED,
+      ],
     },
     sort: '-publishedAt',
     limit: 3,
     depth: 2,
+    locale,
+    ...READ,
   })
   return result.docs
 }
@@ -371,7 +466,8 @@ async function findPostsForCategories(ids: string): Promise<Post[]> {
  */
 async function findRelatedPosts(
   excludeId: number,
-  categoryId: number | null
+  categoryId: number | null,
+  locale: Locale = 'pl'
 ): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
@@ -387,12 +483,15 @@ async function findRelatedPosts(
         and: [
           { category: { equals: categoryId } },
           { id: { not_equals: excludeId } },
+          ...translated(locale),
           PUBLISHED,
         ],
       },
       sort: '-publishedAt',
       limit: RELATED_POSTS_COUNT,
       depth: 2,
+      locale,
+      ...READ,
     })
     picked.push(...sameCategory.docs)
   }
@@ -401,10 +500,14 @@ async function findRelatedPosts(
     const excluded = [excludeId, ...picked.map((post) => post.id)]
     const newest = await payload.find({
       collection: 'posts',
-      where: { and: [{ id: { not_in: excluded } }, PUBLISHED] },
+      where: {
+        and: [{ id: { not_in: excluded } }, ...translated(locale), PUBLISHED],
+      },
       sort: '-publishedAt',
       limit: RELATED_POSTS_COUNT - picked.length,
       depth: 2,
+      locale,
+      ...READ,
     })
     picked.push(...newest.docs)
   }
@@ -425,7 +528,7 @@ export interface SearchEntry {
  * needs. At ~79 posts this is roughly 16KB — smaller than one cover thumbnail,
  * which is why search is a shipped index rather than a route (design decision 4).
  */
-async function findSearchIndex(): Promise<SearchEntry[]> {
+async function findSearchIndex(locale: Locale = 'pl'): Promise<SearchEntry[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -433,13 +536,15 @@ async function findSearchIndex(): Promise<SearchEntry[]> {
   const payload = await getPayload({ config })
   const result = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     sort: '-publishedAt',
     limit: 0,
     pagination: false,
     // depth 1 populates `category` enough to read its title, and nothing more.
     depth: 1,
     select: { slug: true, title: true, excerpt: true, category: true },
+    locale,
+    ...READ,
   })
 
   return result.docs.map((post) => ({
@@ -490,11 +595,18 @@ const HUB_LIST_SIZE = 4
  * pointing at an unpublished post populates the draft rather than filtering it
  * — without the `_status` check the hub would link to a post the public cannot
  * open. The `typeof` check covers the depth-dependent `number | Post` union.
+ *
+ * The title check is the same rule for the other locale: the `where` gate
+ * cannot reach a slot, because a curation slot is a relationship an editor
+ * sets by hand, not a row the query selects. Under `locale: 'en'` an
+ * untranslated pick populates with a null title, so it degrades to the
+ * empty-slot behaviour instead of rendering a headless card.
  */
 function publishedPost(value: number | Post | null | undefined): Post | null {
   return typeof value === 'object' &&
     value !== null &&
-    value._status === 'published'
+    value._status === 'published' &&
+    value.title
     ? value
     : null
 }
@@ -532,21 +644,33 @@ function resolveSpotlight(video: BlogHub['video']): VideoSpotlight | null {
  * build-time DB concurrency constraint: this runs during static generation
  * against the unpooled prod DB, where a concurrent burst times the build out.
  */
-async function findBlogHub(): Promise<BlogHubData> {
+async function findBlogHub(locale: Locale = 'pl'): Promise<BlogHubData> {
   'use cache'
   cacheTag('blog-hub', 'posts')
   cacheLife('days')
 
   const payload = await getPayload({ config })
 
-  const global = await payload.findGlobal({ slug: 'blog-hub', depth: 2 })
+  // `fallbackLocale: false` is load-bearing here rather than defensive: with
+  // the config's global fallback, an empty English curation slot would
+  // inherit the Polish one and feature a post that has no English version.
+  // Empty English slots must stay empty so the fallbacks below fill them
+  // from the gated pool (task 6.4).
+  const global = await payload.findGlobal({
+    slug: 'blog-hub',
+    depth: 2,
+    locale,
+    ...READ,
+  })
 
   const pool = await payload.find({
     collection: 'posts',
-    where: PUBLISHED,
+    where: { and: [...translated(locale), PUBLISHED] },
     sort: '-publishedAt',
     limit: HUB_POOL_SIZE,
     depth: 2,
+    locale,
+    ...READ,
   })
   const newest = pool.docs
 
