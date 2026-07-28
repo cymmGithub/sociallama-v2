@@ -228,8 +228,15 @@ for (const post of posts.docs) {
     found.preservedNbsp += plan.preserved
   })
 
+  // Every heading in document order, nested ones included. Two posts carry a
+  // how-to list whose steps WordPress marked up as headings inside `<li>`;
+  // `buildToc` walks the whole tree and counts them, so a structural check
+  // reading only root children would report those posts as having no `h2`
+  // while the page renders a full table of contents.
   let seenH2 = false
-  for (const [index, node] of (root.children ?? []).entries()) {
+  let index = -1
+  walkNodes(root, (node) => {
+    index++
     const level = headingLevel(node)
     if (level === null) {
       if (isBoldPseudoHeading(node)) {
@@ -240,7 +247,7 @@ for (const post of posts.docs) {
           text: headingText(node),
         })
       }
-      continue
+      return
     }
     const text = headingText(node)
     found.outline.push({ index, kind: 'heading', level, text })
@@ -266,7 +273,7 @@ for (const post of posts.docs) {
         }
       }
     }
-  }
+  })
 
   found.tocEntries = buildToc(
     post.content as Parameters<typeof buildToc>[0]

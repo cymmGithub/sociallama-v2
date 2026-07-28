@@ -364,15 +364,24 @@ export function headingLevel(node: LexicalNode): number | null {
 
 /**
  * A paragraph whose every visible word is bold — WordPress's way of writing a
- * section label without a heading. Long bold runs are emphasis, not labels,
- * so the length ceiling keeps a bolded sentence out of the set.
+ * section label without a heading.
+ *
+ * Two exclusions, both learned from promoting the wrong things: a bold run
+ * longer than a heading is allowed to be (`MAX_HEADING_LENGTH`) is emphasis or
+ * a whole sentence, not a label — promoting one would manufacture exactly the
+ * oversized heading this change exists to remove. And a bold line carrying a
+ * URL is an image credit (`źródło: https://…`), which is a caption whatever
+ * its length.
  */
 export function isBoldPseudoHeading(node: LexicalNode): boolean {
   if (node.type !== 'paragraph') {
     return false
   }
   const text = headingText(node)
-  if (text === '' || text.length > 120) {
+  if (text === '' || text.length > MAX_HEADING_LENGTH) {
+    return false
+  }
+  if (/https?:\/\/|www\./i.test(text)) {
     return false
   }
   let allBold = true
@@ -417,23 +426,168 @@ export function excerptSimilarity(a: string, b: string): number {
   return (2 * shared) / (left.length + right.size)
 }
 
-/** Does either string contain the other, ignoring case and punctuation? */
-export function containsEitherWay(a: string, b: string): boolean {
-  const left = words(a).join(' ')
-  const right = words(b).join(' ')
-  if (left === '' || right === '') {
-    return false
+export type IntroTreatment = 'restatement' | 'extended' | 'genuine'
+
+/**
+ * How an excerpt-duplicating intro heading is resolved.
+ *
+ * The excerpts were auto-generated from each post's opening, so nearly every
+ * one of these headings is a verbatim prefix of its excerpt. Containment alone
+ * therefore proves nothing — a genuine short section label sitting at the top
+ * of the body is a prefix too. What separates them is how much of the excerpt
+ * the heading accounts for (design D10).
+ */
+export function classifyIntroHeading(
+  heading: string,
+  excerpt: string
+): IntroTreatment {
+  const normalize = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  const h = normalize(heading)
+  const e = normalize(excerpt)
+  // Order matters: an exact match satisfies `includes` both ways, so the
+  // restatement test has to come first or every one reads as an extension.
+  if (e.startsWith(h) && h.length / e.length > 0.8) {
+    return 'restatement'
   }
-  return left.includes(right) || right.includes(left)
+  if (h.includes(e) || h.length > MAX_HEADING_LENGTH) {
+    return 'extended'
+  }
+  return 'genuine'
 }
 
-/** A heading that restates the excerpt the page header already renders. */
+/**
+ * Drop the leading words a heading shares with the excerpt, returning what is
+ * left to become a paragraph.
+ *
+ * Matching runs over normalized words but cuts the original string at a word
+ * boundary, so punctuation and capitalisation survive intact. The excerpt is
+ * stored truncated and often ends mid-word; that simply stops the match, which
+ * is the conservative direction — a word too few is kept, never one too many.
+ */
+export function stripDuplicatedPrefix(
+  heading: string,
+  excerpt: string
+): string {
+  const simple = (word: string) =>
+    word.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')
+
+  const headingWords: { text: string; at: number }[] = []
+  const pattern = /\S+/g
+  let match = pattern.exec(heading)
+  while (match !== null) {
+    headingWords.push({ text: match[0], at: match.index })
+    match = pattern.exec(heading)
+  }
+  const excerptWords = excerpt.split(/\s+/).filter(Boolean)
+
+  let shared = 0
+  while (shared < headingWords.length && shared < excerptWords.length) {
+    const fromHeading = headingWords[shared]?.text ?? ''
+    const fromExcerpt = excerptWords[shared] ?? ''
+    if (simple(fromHeading) !== simple(fromExcerpt)) {
+      break
+    }
+    // A punctuation-only token normalizes to nothing, so two *different* marks
+    // would compare equal. Require those to match verbatim — otherwise a lone
+    // dash in the excerpt would end the match and leave the rest duplicated.
+    if (simple(fromHeading) === '' && fromHeading !== fromExcerpt) {
+      break
+    }
+    shared++
+  }
+  if (shared === 0) {
+    return heading
+  }
+  const next = headingWords[shared]
+  return next ? heading.slice(next.at).trim() : ''
+}
+
+/**
+ * Re-level a body so its headings start at `h2` and skip nothing.
+ *
+ * The distinct levels present are mapped in order onto `h2`, then `h3`, and
+ * anything deeper is clamped to `h3` — `buildToc` tracks nothing below that,
+ * so a fourth level would be invisible in the rail either way. Returns how
+ * many headings changed.
+ */
+export function normalizeHeadingLevels(root: LexicalNode): number {
+  const headings: LexicalNode[] = []
+  walkNodes(root, (node) => {
+    if (headingLevel(node) !== null) {
+      headings.push(node)
+    }
+  })
+  const present = [
+    ...new Set(headings.map((node) => headingLevel(node) as number)),
+  ].sort((a, b) => a - b)
+  if (present.length === 0) {
+    return 0
+  }
+  const mapped = new Map<number, number>()
+  present.forEach((level, index) => {
+    mapped.set(level, index === 0 ? 2 : 3)
+  })
+
+  let changed = 0
+  for (const node of headings) {
+    const tag = `h${mapped.get(headingLevel(node) as number)}`
+    if (node.tag !== tag) {
+      node.tag = tag
+      changed++
+    }
+  }
+  return changed
+}
+
+/**
+ * Turn a bold-paragraph pseudo-heading into a real heading, in place. The bold
+ * bit is cleared from its text: headings already render at weight 800, and
+ * leaving it would carry WordPress's emphasis into a node that no longer needs
+ * it.
+ */
+export function promoteToHeading(node: LexicalNode, tag: string): void {
+  node.type = 'heading'
+  node.tag = tag
+  node.format = ''
+  const paragraphOnly = node as unknown as Record<string, unknown>
+  paragraphOnly.textFormat = undefined
+  paragraphOnly.textStyle = undefined
+  walkNodes(node, (descendant) => {
+    if (isTextNode(descendant)) {
+      descendant.format = Number(descendant.format ?? 0) & ~IS_BOLD
+    }
+  })
+}
+
+/**
+ * A heading that restates the excerpt the page header already renders.
+ *
+ * The test is prefix alignment, not containment. The excerpts were generated
+ * from roughly the first 400 characters of each body, so they *contain* the
+ * first real section heading as well as the intro — testing containment
+ * flagged those too, and a repair acting on it would delete a genuine heading
+ * on every run. The defect is specifically that the body opens by restating
+ * the lead, which means one of the two strings starts with the other.
+ */
 export function duplicatesExcerpt(heading: string, excerpt: string): boolean {
   if (excerpt.trim() === '') {
     return false
   }
-  return (
-    containsEitherWay(heading, excerpt) ||
-    excerptSimilarity(heading, excerpt) >= 0.6
-  )
+  const normalize = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  const h = normalize(heading)
+  const e = normalize(excerpt)
+  if (h === '' || e === '') {
+    return false
+  }
+  return e.startsWith(h) || h.startsWith(e)
 }

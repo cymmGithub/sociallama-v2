@@ -15,6 +15,7 @@
 import { describe, expect, it } from 'bun:test'
 import {
   applyBlockNbsp,
+  classifyIntroHeading,
   classifySpacerParagraph,
   duplicatesExcerpt,
   isBoldPseudoHeading,
@@ -22,7 +23,10 @@ import {
   isJustified,
   type LexicalNode,
   NBSP,
+  normalizeHeadingLevels,
   planBlockNbsp,
+  promoteToHeading,
+  stripDuplicatedPrefix,
 } from './post-formatting-rules'
 
 /** A paragraph carrying one plain text node. */
@@ -269,5 +273,120 @@ describe('heading predicates', () => {
 
   it('does not flag anything when the post has no excerpt', () => {
     expect(duplicatesExcerpt('Cokolwiek', '')).toBe(false)
+  })
+})
+
+/**
+ * The editorial transformations (phase 7). Fixtures come from the posts named
+ * in the review document, so a regression here is traceable to a real page.
+ */
+describe('intro heading treatment', () => {
+  const EXCERPT_GOOGLE =
+    'Google Search Console umożliwia teraz oficjalne powiązanie profili w social mediach z Twoją stroną internetową. To nie gadżet – to sygnał, że w oczach Google social media i SEO to już jeden ekosystem. Jeśli nie masz czasu'
+
+  it('reads a heading that is essentially the whole excerpt as a restatement', () => {
+    const excerpt = 'Co się u nas działo od stycznia do grudnia?'
+    expect(classifyIntroHeading(excerpt, excerpt)).toBe('restatement')
+  })
+
+  it('reads intro prose running past the excerpt as extended', () => {
+    const heading = `${EXCERPT_GOOGLE} ani zasobów, żeby to ogarnąć – Social Lama zrobi to za Ciebie.`
+    expect(classifyIntroHeading(heading, EXCERPT_GOOGLE)).toBe('extended')
+  })
+
+  it('leaves a short genuine section label alone', () => {
+    // "Budowanie Marki" opens the body, so the auto-generated excerpt starts
+    // with it — but it is a real heading, not a restatement.
+    const excerpt =
+      'Budowanie Marki jest procesem długotrwałym i wymaga konsekwencji na każdym etapie prowadzenia komunikacji w mediach społecznościowych.'
+    expect(classifyIntroHeading('Budowanie Marki', excerpt)).toBe('genuine')
+  })
+
+  it('drops only the words the excerpt already said', () => {
+    const heading = `${EXCERPT_GOOGLE} ani zasobów, żeby to ogarnąć.`
+    expect(stripDuplicatedPrefix(heading, EXCERPT_GOOGLE)).toBe(
+      'ani zasobów, żeby to ogarnąć.'
+    )
+  })
+
+  it('keeps the heading when it shares no opening with the excerpt', () => {
+    expect(stripDuplicatedPrefix('Zupełnie inny tekst', EXCERPT_GOOGLE)).toBe(
+      'Zupełnie inny tekst'
+    )
+  })
+
+  it('returns nothing when the heading is entirely inside the excerpt', () => {
+    expect(
+      stripDuplicatedPrefix('Co się u nas działo', 'Co się u nas działo')
+    ).toBe('')
+  })
+})
+
+describe('heading levels', () => {
+  const heading = (tag: string, value: string): LexicalNode => ({
+    type: 'heading',
+    tag,
+    children: [text(value)],
+  })
+  const body = (...children: LexicalNode[]): LexicalNode => ({
+    type: 'root',
+    children,
+  })
+
+  it('lifts a body that opens at h3 so it starts at h2', () => {
+    const root = body(heading('h3', 'Sekcja'), heading('h3', 'Druga'))
+    expect(normalizeHeadingLevels(root)).toBe(2)
+    expect(root.children?.every((n) => n.tag === 'h2')).toBe(true)
+  })
+
+  it('clamps h4 and deeper to h3, which is all buildToc tracks', () => {
+    const root = body(
+      heading('h2', 'Sekcja'),
+      heading('h4', '1. Widoczność w Google'),
+      heading('h6', 'Podpis')
+    )
+    normalizeHeadingLevels(root)
+    expect(root.children?.map((n) => n.tag)).toEqual(['h2', 'h3', 'h3'])
+  })
+
+  it('leaves an already-correct hierarchy untouched', () => {
+    const root = body(heading('h2', 'Sekcja'), heading('h3', 'Podsekcja'))
+    expect(normalizeHeadingLevels(root)).toBe(0)
+  })
+
+  it('re-levels after the only h2 is removed — the google-polaczylo shape', () => {
+    // One bloated h2 plus h3 sections and h4 sub-points. Drop the h2 and the
+    // post would have none at all; re-levelling lifts the whole tree.
+    const root = body(
+      heading('h3', 'Google przytuliło social media. Serio.'),
+      heading('h4', '1. Widoczność')
+    )
+    normalizeHeadingLevels(root)
+    expect(root.children?.map((n) => n.tag)).toEqual(['h2', 'h3'])
+  })
+
+  it('promotes a bold paragraph and clears the now-redundant bold', () => {
+    const node = paraOf(text('Co to jest lejek marketingowy?', 1))
+    promoteToHeading(node, 'h2')
+    expect(node.type).toBe('heading')
+    expect(node.tag).toBe('h2')
+    expect(node.children?.[0]?.format).toBe(0)
+    expect(isBoldPseudoHeading(node)).toBe(false)
+  })
+})
+
+describe('bold pseudo-heading exclusions', () => {
+  it('does not promote a bold run longer than a heading may be', () => {
+    // Promoting one would manufacture the oversized heading this change removes.
+    expect(isBoldPseudoHeading(paraOf(text('a'.repeat(86), 1)))).toBe(false)
+    expect(isBoldPseudoHeading(paraOf(text('a'.repeat(85), 1)))).toBe(true)
+  })
+
+  it('does not promote a bold image credit', () => {
+    expect(
+      isBoldPseudoHeading(
+        paraOf(text('źródło: https://blog.planoly.com/instagram-stories', 1))
+      )
+    ).toBe(false)
   })
 })
