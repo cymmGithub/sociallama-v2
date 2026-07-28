@@ -33,6 +33,7 @@
 
 - [x] 5.1 **The load-bearing check:** `curl -s localhost:3000/ | grep` for a distinctive phrase from a **collapsed** answer — e.g. `466%` from entry #7, which is not the open row. It must appear in the raw response. Repeat for `/en`. Use `curl`, not DevTools: DevTools shows the hydrated DOM and would pass even if the server output were empty.
 - [ ] 5.2 Load the page with JavaScript disabled; confirm all six questions render and every answer is reachable.
+  - **Blocked site-wide, not a FAQ defect.** With JS disabled *every* route renders only the loader: the whole page body ships inside `<div hidden id="S:n">` (the React streaming shell), so nothing in it is visible until hydration reveals it. This cannot pass for the FAQ until that is fixed globally. 5.1 covers the load-bearing half — the answers really are in the server response, verbatim, including collapsed ones. Re-run 5.2 once the shell issue is resolved; it is not tracked by an OpenSpec change yet.
 - [x] 5.3 Validate the emitted `FAQPage` JSON-LD, and diff its question/answer strings against the rendered copy. Expect **no rich result** — this is markup for answer engines, not for the SERP (Decision 8).
 - [x] 5.4 Screenshot the section **expanded, after the reveal has settled**, and confirm no answer is clipped at the section boundary. A DOM assertion cannot see this failure — it needs a screenshot.
 - [x] 5.5 Keyboard pass: tab to each `summary`, confirm a visible focus ring and that Enter/Space toggles. Check `aria-expanded` is exposed.
