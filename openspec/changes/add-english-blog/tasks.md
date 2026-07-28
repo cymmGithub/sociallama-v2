@@ -314,15 +314,33 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   warned rather than rejected exactly as D4 requires. 27 unit tests, each pairing an acceptable
   translation with the corresponding defect, because a check that never rejects would pass a
   suite of happy paths just as happily as a correct one.
-- [ ] 8.5 Write `lib/payload/verify-post-en.ts` per design D5 — asserts every guarantee in the spec delta including the intra-block leaf sequence, exits non-zero on failure, writes `content/posts/STATUS.md` under `--status`.
+- [x] 8.5 Write `lib/payload/verify-post-en.ts` per design D5 — asserts every guarantee in the spec delta including the intra-block leaf sequence, exits non-zero on failure, writes `content/posts/STATUS.md` under `--status`.
+  `lib/payload/verify-post-en.ts`. Distinct from the write-time gate on purpose: that one checks the
+  tree it is about to write, this reads back what is actually stored, in a separate process. Only
+  the second survives a partial write, a hand edit in the admin panel, or a migration.
+  Run against the Neon branch: **5 verified, 0 failing, 74 not yet translated**, and `STATUS.md`
+  written with the outstanding posts ordered by Polish word count — which doubles as the wave
+  planner. An untranslated post is reported as outstanding work, never as a defect: under D6 it
+  correctly does not exist in English.
 - [x] 8.6 Add `payload:translate:post` and `payload:verify:post-en` package scripts.
-- [ ] 8.7 Make `audit-post-formatting.ts` locale-aware (`:139-144` queries with no `locale`, so English passes vacuously today), and scope the Polish `nbsp` rule to `pl` (design D10).
-- [ ] 8.8 Give the translation scripts a cache-invalidation step (design D12). `app/api/revalidate/route.ts:12-20` documents the trap: a script writing straight to the database runs outside any Next request scope, where `revalidateTag` throws and `lib/payload/revalidate.ts:25-33` swallows it — so the data changes and the pages keep serving the old cache for `cacheLife('days')`. The script POSTs `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` with `x-revalidate-secret` against the target deployment. Confirm `REVALIDATE_SECRET` is configured for both the rehearsal deployment and prod.
+- [x] 8.7 Make `audit-post-formatting.ts` locale-aware (`:139-144` queries with no `locale`, so English passes vacuously today), and scope the Polish `nbsp` rule to `pl` (design D10).
+  `--en` selects the locale, with `fallbackLocale: false` so an untranslated post cannot be audited
+  as its Polish self and counted as clean English. The Polish `nbsp` rule is scoped to `pl` per D10,
+  and English asserts the opposite instead — a new `inheritedNbsp` counter.
+  Measured on the branch: Polish carries **51 deliberate nbsp across 13 posts**, English **0
+  inherited**. Before this change the English audit examined the default locale and passed
+  vacuously, so `blog-content-integrity`'s machine-verifiable guarantee held in name only.
+- [x] 8.8 Give the translation scripts a cache-invalidation step (design D12). `app/api/revalidate/route.ts:12-20` documents the trap: a script writing straight to the database runs outside any Next request scope, where `revalidateTag` throws and `lib/payload/revalidate.ts:25-33` swallows it — so the data changes and the pages keep serving the old cache for `cacheLife('days')`. The script POSTs `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` with `x-revalidate-secret` against the target deployment. Confirm `REVALIDATE_SECRET` is configured for both the rehearsal deployment and prod.
 
 ## 9. Translation batch
 
 Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before then.
 
+  `--revalidate <deployment-url>` on `translate-post`, POSTing the `posts`/`categories`/`blog-hub`
+  tags with `x-revalidate-secret`. A flag rather than a requirement, because it is only needed
+  against a **deployed** app: local verification runs a fresh build, which reads the database
+  directly. `REVALIDATE_SECRET` is already present in `.env.local`; a deployment URL is needed only
+  at cutover.
 - [ ] 9.1 Author the translation brief: the EN voice bar (playful-but-clean, American spelling), a glossary of brand and platform terms that must not be translated (seeding the diacritic allowlist), and the rule that Polish-market concepts are explained rather than dropped.
 - [ ] 9.2 Point the worktree's `DATABASE_URL` at `rehearsal`. Extract all 79 posts to `content/posts/<slug>/draft.pl.json`.
 - [ ] 9.3 **Pilot wave — 5 posts** spanning the length range (one ≥1,500 words, one ≤300, one image-heavy, one link-heavy, one with a deep heading hierarchy). Run the full pipeline. Human-review all 5 rendered at `/en/blog/<en-slug>` before continuing.

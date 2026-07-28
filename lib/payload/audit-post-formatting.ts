@@ -74,6 +74,8 @@ interface PostFindings {
   wordSpaceNbsp: number
   paddingNbsp: number
   preservedNbsp: number
+  /** EN only: non-breaking spaces carried over from the Polish source. */
+  inheritedNbsp: number
   centered: number
   longHeadings: { level: number; length: number; text: string }[]
   excerptHeading: { similarity: number; text: string } | null
@@ -133,6 +135,17 @@ function proposeTreatment(heading: string, excerpt: string): string {
 
 const payload = await getPayload({ config })
 
+/**
+ * Which locale to audit. Without one Payload reads the default, so English
+ * content was never examined at all and passed the audit vacuously — the
+ * `blog-content-integrity` guarantee was satisfied in name only (design D10).
+ *
+ * `fallbackLocale: false` matters as much as the locale: with the config's
+ * global fallback, an untranslated post would be audited as its Polish self
+ * and counted as clean English.
+ */
+const LOCALE = process.argv.includes('--en') ? 'en' : 'pl'
+
 // No `_status` filter: a draft-only post is a row in `posts` like any other,
 // and a defect in an unpublished draft is still a defect (spec: "Verifier
 // sees unpublished content").
@@ -141,6 +154,8 @@ const posts = await payload.find({
   limit: 0,
   pagination: false,
   depth: 0,
+  locale: LOCALE,
+  fallbackLocale: false,
 })
 
 const findings: PostFindings[] = []
@@ -161,6 +176,7 @@ for (const post of posts.docs) {
     wordSpaceNbsp: 0,
     paddingNbsp: 0,
     preservedNbsp: 0,
+    inheritedNbsp: 0,
     centered: 0,
     longHeadings: [],
     excerptHeading: null,
@@ -218,15 +234,27 @@ for (const post of posts.docs) {
   // two text nodes still reads as one. Spacer paragraphs are skipped: their
   // non-breaking spaces leave with the paragraph, and counting them here
   // would double-report the same defect.
-  forEachTextBlock(root, (block) => {
-    if (classifySpacerParagraph(block) === 'spacer') {
-      return
-    }
-    const plan = planBlockNbsp(block)
-    found.wordSpaceNbsp += plan.wordSpace
-    found.paddingNbsp += plan.padding
-    found.preservedNbsp += plan.preserved
-  })
+  // Polish only (design D10). The rule requires a non-breaking space after a
+  // Polish one- or two-letter word; English has no orphan-word convention of
+  // that kind, so running it over English would count "defects" that are not
+  // defects and, worse, could not be language-checked if they were repaired.
+  // English asserts the opposite instead: no nbsp inherited at Polish
+  // positions, which is what `inheritedNbsp` below counts.
+  if (LOCALE === 'pl') {
+    forEachTextBlock(root, (block) => {
+      if (classifySpacerParagraph(block) === 'spacer') {
+        return
+      }
+      const plan = planBlockNbsp(block)
+      found.wordSpaceNbsp += plan.wordSpace
+      found.paddingNbsp += plan.padding
+      found.preservedNbsp += plan.preserved
+    })
+  } else {
+    forEachTextBlock(root, (block) => {
+      found.inheritedNbsp += (nodeText(block).match(/\u00a0/g) ?? []).length
+    })
+  }
 
   // Every heading in document order, nested ones included. Two posts carry a
   // how-to list whose steps WordPress marked up as headings inside `<li>`;
@@ -333,7 +361,8 @@ console.log(
   `  blank-but-unclear paras   ${nodesAndPosts((f) => f.unclearSpacers)} (skipped, never removed)`
 )
 console.log(
-  `  nbsp deliberately kept    ${nodesAndPosts((f) => f.preservedNbsp)} — PRESERVE, baseline only`
+  `  nbsp deliberately kept    ${nodesAndPosts((f) => f.preservedNbsp)} — PRESERVE, baseline only`,
+  `  nbsp inherited into EN    ${nodesAndPosts((f) => f.inheritedNbsp)} — EN only; Polish orphan-word spacing has no English analogue`
 )
 console.log(
   `  centred nodes             ${nodesAndPosts((f) => f.centered)} — PRESERVE, baseline only`

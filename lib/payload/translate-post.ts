@@ -5,6 +5,7 @@
  *   bun run payload:translate:post [slug…]             draft.en.json → dry run
  *   bun run payload:translate:post [slug…] --apply     …and write
  *   …--prod                                            target production
+ *   …--revalidate https://…                            invalidate that deployment's cache
  *
  * Two modes, because the translation itself happens between them: `--extract`
  * writes what needs translating, something or someone fills in the English,
@@ -61,6 +62,24 @@ import {
 
 const EXTRACT = process.argv.includes('--extract')
 const APPLY = process.argv.includes('--apply')
+
+/**
+ * Deployment whose cache to invalidate after writing (design D12).
+ *
+ * This script writes straight to the database, which is outside any Next
+ * request scope — `revalidateTag` throws there and `lib/payload/revalidate.ts`
+ * swallows it, so the data changes and the deployed pages keep serving the old
+ * cache for `cacheLife('days')`. Without this step the spot-checks that follow
+ * a wave read a stale page and report the translations as missing, sending
+ * someone to debug a translation engine that worked.
+ *
+ * Not needed when verifying with a fresh local build, which reads the database
+ * directly — hence a flag rather than a requirement.
+ */
+const REVALIDATE = (() => {
+  const index = process.argv.indexOf('--revalidate')
+  return index === -1 ? null : process.argv[index + 1]
+})()
 const CONTENT_DIR = 'content/posts'
 
 /** Proper nouns that survive translation; seeds the diacritic soft-flag. */
@@ -320,6 +339,27 @@ for (const post of found.docs) {
     })
     takenBy.set(enSlug, String(post.id))
     written += 1
+  }
+}
+
+if (REVALIDATE && written > 0) {
+  const secret = process.env.REVALIDATE_SECRET
+  if (secret) {
+    const url = new URL('/api/revalidate', REVALIDATE)
+    for (const tag of ['posts', 'categories', 'blog-hub']) {
+      url.searchParams.append('tag', tag)
+    }
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'x-revalidate-secret': secret },
+    })
+    console.log(
+      `\n  ${response.ok ? '✓' : '✗'} revalidated ${url.host}: ${response.status}`
+    )
+  } else {
+    console.error(
+      '\n  ! --revalidate needs REVALIDATE_SECRET; cache left stale'
+    )
   }
 }
 
