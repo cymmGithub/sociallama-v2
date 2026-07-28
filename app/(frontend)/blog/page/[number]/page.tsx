@@ -26,6 +26,11 @@ export async function generateMetadata({
   const { number } = await params
   return {
     title: `Blog — strona ${number}`,
+    // Canonical only, deliberately (task 7.4). Page counts differ per locale
+    // under the D6 gate — English paginates over translated posts alone — so
+    // /blog/page/5 and /en/blog/page/5 are not the same set of posts, and
+    // often the English one does not exist at all. A reciprocal hreflang pair
+    // here would assert an equivalence that is false.
     alternates: { canonical: `/blog/page/${number}` },
   }
 }

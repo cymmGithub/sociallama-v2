@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
+import { LocaleCounterpart } from '@/components/layout/chrome-provider'
 import { Wrapper } from '@/components/layout/wrapper'
 import { postArticle } from '@/lib/content/blog'
 import { OG_BASE } from '@/lib/content/site'
 import {
   getDraftPostBySlug,
   getPostBySlug,
+  getPostSlugInLocale,
   getPublishedPostSlugs,
   resolveMedia,
 } from '@/lib/payload/queries'
@@ -60,11 +62,27 @@ export async function generateMetadata({
   // Built from BASE_PATH, like the article's own share and breadcrumb URLs, so
   // the canonical can never disagree with what the page renders.
   const pageUrl = `${BASE_PATH}/${post.slug}`
+  const enSlug = await getPostSlugInLocale(post.id, 'en')
 
   return {
     title,
     ...(description ? { description } : {}),
-    alternates: { canonical: pageUrl },
+    // hreflang is resolved here rather than through `alternatesForPath`,
+    // which is built on the synchronous literal table and cannot know a
+    // per-post English slug (design D11). No English row means no `languages`
+    // at all — an untranslated post must not claim a counterpart.
+    alternates: {
+      canonical: pageUrl,
+      ...(enSlug
+        ? {
+            languages: {
+              pl: pageUrl,
+              en: `/en/blog/${enSlug}`,
+              'x-default': pageUrl,
+            },
+          }
+        : {}),
+    },
     openGraph: {
       type: 'article',
       ...OG_BASE,
@@ -89,16 +107,23 @@ export default async function PostPage({ params }: PageProps) {
     notFound()
   }
 
+  // The toggle lives in <Header>/<Footer>, which <Wrapper> renders — so
+  // wrapping here does reach it. Undefined when the post has no English
+  // version, which sends the toggle to /en, as it should.
+  const enSlug = await getPostSlugInLocale(post.id, 'en')
+
   return (
-    <Wrapper theme="cream">
-      <PostArticle
-        basePath={BASE_PATH}
-        categoryPath="/category"
-        content={postArticle}
-        hubPath="/blog"
-        locale="pl"
-        post={post}
-      />
-    </Wrapper>
+    <LocaleCounterpart path={enSlug ? `/en/blog/${enSlug}` : undefined}>
+      <Wrapper theme="cream">
+        <PostArticle
+          basePath={BASE_PATH}
+          categoryPath="/category"
+          content={postArticle}
+          hubPath="/blog"
+          locale="pl"
+          post={post}
+        />
+      </Wrapper>
+    </LocaleCounterpart>
   )
 }

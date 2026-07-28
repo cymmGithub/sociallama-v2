@@ -23,8 +23,9 @@ const GROUP_LABEL: Record<Locale, string> = {
 /**
  * PL/EN switch for the site chrome (design D3). The active locale links to the
  * current path (marked `aria-current`); the other links to the path's
- * counterpart via the slug map — falling back to the other locale's home for
- * paths with no counterpart (e.g. a blog post).
+ * counterpart via the slug map, or via the server-resolved override a route
+ * supplies when only it can know the answer — falling back to the other
+ * locale's home for paths with no counterpart, including an untranslated post.
  *
  * `linkClassName` should be the surrounding chrome's link class so the toggle
  * inherits its colour and size; the active/inactive emphasis is handled here.
@@ -37,8 +38,10 @@ export function LocaleToggle({
   linkClassName?: string | undefined
 }) {
   const pathname = usePathname()
-  const { locale } = useChrome()
-  const counterpart = counterpartPath(pathname)
+  const { locale, counterpart: override } = useChrome()
+  // `override` is set by blog routes, which resolve their own counterpart
+  // server-side because the slug differs per locale (design D11).
+  const counterpart = counterpartPath(pathname, override)
 
   return (
     <div

@@ -31,7 +31,7 @@ export const nav = {
 // —— Chrome: overlay menu ——————————————————————————————————————————————————
 // Industry/service subpages don't exist yet (they 404 in PL too) — the EN links
 // point at their eventual translated-slug URLs (user decision: translated slugs
-// under /en). BLOG is omitted from EN chrome.
+// under /en).
 
 // EN counterpart of MOBILE_BRANZE_SLUGS (home.ts) — EN industry slugs differ
 // from PL, so the core set is declared per locale.
@@ -84,6 +84,7 @@ export const menu = {
   ],
   utility: [
     { label: 'ABOUT US', href: '/en/about-us' },
+    { label: 'BLOG', href: '/en/blog' },
     { label: 'CASE STUDIES', href: '/en/case-studies' },
     { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
   ],
@@ -726,6 +727,7 @@ export const footer = {
       links: [
         { label: 'ABOUT US', href: '/en/about-us' },
         // { label: 'TRAINING & COURSES', href: '/en/training' }, // delayed launch — no page yet, keep out of nav
+        { label: 'BLOG', href: '/en/blog' },
         { label: 'CASE STUDIES', href: '/en/case-studies' },
         { label: 'CONTACT', href: '/en/contact' },
       ],

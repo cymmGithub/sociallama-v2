@@ -2,12 +2,14 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { PostArticle } from '@/app/(frontend)/[slug]/post-article'
+import { LocaleCounterpart } from '@/components/layout/chrome-provider'
 import { Wrapper } from '@/components/layout/wrapper'
 import { postArticle } from '@/lib/content/blog.en'
 import { OG_BASE } from '@/lib/content/site.en'
 import {
   getDraftPostBySlug,
   getPostBySlug,
+  getPostSlugInLocale,
   getPublishedPostSlugs,
   resolveMedia,
 } from '@/lib/payload/queries'
@@ -63,11 +65,26 @@ export async function generateMetadata({
   // Built from BASE_PATH, like the article's own share and breadcrumb URLs, so
   // the canonical can never disagree with what the page renders.
   const pageUrl = `${BASE_PATH}/${post.slug}`
+  const plSlug = await getPostSlugInLocale(post.id, 'pl')
 
   return {
     title,
     ...(description ? { description } : {}),
-    alternates: { canonical: pageUrl },
+    // Every English post is the translation of a Polish one, so the Polish
+    // counterpart always exists — but it is still read rather than assumed,
+    // and omitted if it somehow does not.
+    alternates: {
+      canonical: pageUrl,
+      ...(plSlug
+        ? {
+            languages: {
+              pl: `/${plSlug}`,
+              en: pageUrl,
+              'x-default': `/${plSlug}`,
+            },
+          }
+        : {}),
+    },
     openGraph: {
       type: 'article',
       ...OG_BASE,
@@ -92,16 +109,20 @@ export default async function EnPostPage({ params }: PageProps) {
     notFound()
   }
 
+  const plSlug = await getPostSlugInLocale(post.id, 'pl')
+
   return (
-    <Wrapper theme="cream">
-      <PostArticle
-        basePath={BASE_PATH}
-        categoryPath="/en/blog/category"
-        content={postArticle}
-        hubPath="/en/blog"
-        locale="en"
-        post={post}
-      />
-    </Wrapper>
+    <LocaleCounterpart path={plSlug ? `/${plSlug}` : undefined}>
+      <Wrapper theme="cream">
+        <PostArticle
+          basePath={BASE_PATH}
+          categoryPath="/en/blog/category"
+          content={postArticle}
+          hubPath="/en/blog"
+          locale="en"
+          post={post}
+        />
+      </Wrapper>
+    </LocaleCounterpart>
   )
 }

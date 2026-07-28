@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { BlogListing } from '@/app/(frontend)/blog/listing'
+import { LocaleCounterpart } from '@/components/layout/chrome-provider'
 import { listing } from '@/lib/content/blog'
 import {
   getCategories,
   getCategoryBySlug,
+  getCategorySlugInLocale,
   getPostsPage,
 } from '@/lib/payload/queries'
 
@@ -35,10 +37,27 @@ export async function generateMetadata({
   if (!category) {
     return {}
   }
+
+  const counterSlug = await getCategorySlugInLocale(category.id, 'en')
+
   return {
     title: `${category.title} — Blog`,
     description: `Wpisy w kategorii ${category.title} na blogu Social Lama.`,
-    alternates: { canonical: `/category/${category.slug}` },
+    // Resolved from the document: a category's slug differs per locale, so the
+    // literal path table cannot map it (design D11). Absent when the category
+    // has no row in the other locale.
+    alternates: {
+      canonical: `/category/${category.slug}`,
+      ...(counterSlug
+        ? {
+            languages: {
+              pl: `/category/${category.slug}`,
+              en: `/en/blog/category/${counterSlug}`,
+              'x-default': `/category/${category.slug}`,
+            },
+          }
+        : {}),
+    },
   }
 }
 
@@ -54,18 +73,24 @@ export default async function CategoryPage({ params }: PageProps) {
     getCategories(),
   ])
 
+  const counterSlug = await getCategorySlugInLocale(category.id, 'en')
+
   return (
-    <BlogListing
-      heading={category.title}
-      content={listing}
-      listingPath={`/category/${category.slug}`}
-      basePath=""
-      hubPath="/blog"
-      categoryPath="/category"
-      locale="pl"
-      postsPage={postsPage}
-      categories={categories}
-      activeCategory={category.slug}
-    />
+    <LocaleCounterpart
+      path={counterSlug ? `/en/blog/category/${counterSlug}` : undefined}
+    >
+      <BlogListing
+        heading={category.title}
+        content={listing}
+        listingPath={`/category/${category.slug}`}
+        basePath=""
+        hubPath="/blog"
+        categoryPath="/category"
+        locale="pl"
+        postsPage={postsPage}
+        categories={categories}
+        activeCategory={category.slug}
+      />
+    </LocaleCounterpart>
   )
 }

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { INDUSTRIES } from '../content/branze'
 import { SERVICES } from '../content/uslugi'
-import { counterpartPath, SECTIONS } from './slug-map'
+import { alternatesForPath, counterpartPath, SECTIONS } from './slug-map'
 
 /**
  * The section slug tables in `slug-map.ts` are literals: the module reaches the
@@ -85,5 +85,62 @@ describe('slug map — existing behaviour is unchanged', () => {
   test('an unknown section slug falls back rather than inventing a URL', () => {
     expect(counterpartPath('/uslugi/nie-istnieje')).toBe('/en')
     expect(counterpartPath('/en/services/does-not-exist')).toBe('/')
+  })
+})
+
+/**
+ * Blog counterparts are resolved by the route, not by this module: post and
+ * category slugs differ per locale and live in the database, and this module
+ * ships to the browser (design D11). The hub is the one genuinely static pair.
+ */
+describe('blog paths', () => {
+  test('the hub is a static pair', () => {
+    expect(counterpartPath('/blog')).toBe('/en/blog')
+    expect(counterpartPath('/en/blog')).toBe('/blog')
+  })
+
+  test('a post with no override still falls back to the locale home', () => {
+    // Unchanged behaviour, and correct: an untranslated post has no
+    // counterpart, so the toggle must not invent one.
+    expect(counterpartPath('/jakis-wpis-na-blogu')).toBe('/en')
+    expect(counterpartPath('/en/blog/some-english-post')).toBe('/')
+  })
+
+  test('an override wins over the fallback, in both directions', () => {
+    expect(
+      counterpartPath('/jakis-wpis-na-blogu', '/en/blog/some-english-post')
+    ).toBe('/en/blog/some-english-post')
+    expect(
+      counterpartPath('/en/blog/some-english-post', '/jakis-wpis-na-blogu')
+    ).toBe('/jakis-wpis-na-blogu')
+  })
+
+  test('an override wins over a path that WOULD have mapped', () => {
+    // Guards the precedence: a route that knows the real counterpart must not
+    // be second-guessed by the literal table.
+    expect(counterpartPath('/blog', '/en/blog/page/2')).toBe('/en/blog/page/2')
+  })
+
+  test('alternates carry the override into hreflang, x-default staying PL', () => {
+    expect(
+      alternatesForPath('/jakis-wpis-na-blogu', '/en/blog/some-english-post')
+    ).toEqual({
+      canonical: '/jakis-wpis-na-blogu',
+      languages: {
+        pl: '/jakis-wpis-na-blogu',
+        en: '/en/blog/some-english-post',
+        'x-default': '/jakis-wpis-na-blogu',
+      },
+    })
+    expect(
+      alternatesForPath('/en/blog/some-english-post', '/jakis-wpis-na-blogu')
+    ).toEqual({
+      canonical: '/en/blog/some-english-post',
+      languages: {
+        pl: '/jakis-wpis-na-blogu',
+        en: '/en/blog/some-english-post',
+        'x-default': '/jakis-wpis-na-blogu',
+      },
+    })
   })
 })

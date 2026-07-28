@@ -19,6 +19,7 @@ export const pathPairs = [
   ['/kontakt', '/en/contact'],
   ['/zostan-lama', '/en/become-a-lama'],
   ['/case-studies', '/en/case-studies'],
+  ['/blog', '/en/blog'],
   ['/polityka-prywatnosci', '/en/privacy-policy'],
 ] as const
 
@@ -127,10 +128,21 @@ function sectionCounterpart(path: string): string | null {
 }
 
 /**
- * The other-locale path for `path`. Unmapped paths (e.g. a blog post, which is
- * PL-only) resolve to the other locale's home.
+ * The other-locale path for `path`. Unmapped paths resolve to the other
+ * locale's home.
+ *
+ * `override` exists for the one category of path this module cannot resolve on
+ * its own: a blog post or category, whose slug differs per locale and lives in
+ * the database. Those routes already load the document server-side and so
+ * already know both slugs — they pass the counterpart in rather than this
+ * module growing a lookup table (design D11). It must stay literal-only: it
+ * reaches the browser through `<LocaleToggle>`, and shipping 79 slug pairs to
+ * read one is exactly the bundle cost the header above exists to avoid.
  */
-export function counterpartPath(path: string): string {
+export function counterpartPath(path: string, override?: string): string {
+  if (override) {
+    return override
+  }
   const p = normalize(path)
   const detail = caseStudyDetailCounterpart(p)
   if (detail) return detail
@@ -153,22 +165,28 @@ export function hasCounterpart(path: string): boolean {
 }
 
 /** The PL and EN URLs for the same content — for hreflang pairs. */
-export function hreflangPairsForPath(path: string): { pl: string; en: string } {
+export function hreflangPairsForPath(
+  path: string,
+  override?: string
+): { pl: string; en: string } {
   const p = normalize(path)
   return localeOf(p) === 'pl'
-    ? { pl: p, en: counterpartPath(p) }
-    : { pl: counterpartPath(p), en: p }
+    ? { pl: p, en: counterpartPath(p, override) }
+    : { pl: counterpartPath(p, override), en: p }
 }
 
 /**
  * `alternates` metadata for a mapped page: its own canonical plus the hreflang
  * `languages` map (with `x-default` → the Polish version, per design D8).
  */
-export function alternatesForPath(path: string): {
+export function alternatesForPath(
+  path: string,
+  override?: string
+): {
   canonical: string
   languages: Record<string, string>
 } {
-  const { pl, en } = hreflangPairsForPath(path)
+  const { pl, en } = hreflangPairsForPath(path, override)
   return {
     canonical: normalize(path),
     languages: { pl, en, 'x-default': pl },

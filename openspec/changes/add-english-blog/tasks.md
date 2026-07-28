@@ -195,17 +195,31 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   `SOCIAL_LAMA` becomes a per-locale record: `Editorial team`, the EN `APP_DESCRIPTION`, and
   `/en/about-us`. `resolvePostAuthor(post, locale)` defaults to `pl`, so the four existing call
   sites are unchanged until phase 5.2 threads the locale.
-- [ ] 6.1 Add BLOG to the English mega-menu and footer in `lib/content/home.en.ts`. Note `lib/i18n/parity.ts:17-18` checks element *type*, not membership — the type system will not catch a missing link, so verify by rendering.
+- [x] 6.1 Add BLOG to the English mega-menu and footer in `lib/content/home.en.ts`. Note `lib/i18n/parity.ts:17-18` checks element *type*, not membership — the type system will not catch a missing link, so verify by rendering.
 - [ ] 6.2 Render NewsLAMA on `/en`, gated to translated posts only. Three parts: add a `news` export to `lib/content/home.en.ts`; give `NewsLama` a `content` prop like every one of its sibling sections (`app/(frontend-en)/en/page.tsx:44-60` passes content to all of them, but `sections/news-lama/index.tsx:5` does `import { news } from '@/lib/content/home'` at module scope inside a `'use client'` component, so the EN heading and read-label would stay Polish otherwise); and build the EN view-model with `href: /en/blog/${post.slug}` — `toNewsLamaPost` (`(home)/page.tsx:39-50`) hardcodes `/${post.slug}`.
 - [ ] 6.3 **Author the English CMS content the gate would otherwise leave null**: 4 category `title` + `slug` values (`reklama` → `advertising` etc.), and the author's English `role` + `bio`. Without these, English category pages and author cards render empty rather than translated.
 - [ ] 6.4 Ship English `blog-hub` curation slots empty — `blog-hub-curation`'s existing degrade-to-defaults path fills them from the newest translated posts. (The global's schema was already localized in 2.2.)
 
 ## 7. SEO surface
 
-- [ ] 7.1 Add `['/blog','/en/blog']` to `pathPairs` in `lib/i18n/slug-map.ts` — the one genuinely static pair. Give `counterpartPath` an optional override parameter. **Do not add a blog rule or a slug table**: the module ships to the browser through `<LocaleToggle>` (its own header, L28–36, says so) and `counterpartPath` (L135–147) is synchronous and pure.
-- [ ] 7.2 Resolve blog counterparts **server-side** (design D11): the post and category routes already load the document and know both slugs. Pass the counterpart into `<LocaleToggle>` via `ChromeProvider`, and into `generateMetadata`'s `alternates` directly — not via `alternatesForPath`, which is built on the same synchronous `counterpartPath` (L157–179). A route with no counterpart passes no override and the toggle falls back to `/en` as today.
-- [ ] 7.3 Update `lib/i18n/slug-map.test.ts:81` — `counterpartPath('/jakis-wpis-na-blogu') === '/en'` is currently asserted, and remains correct with no override. Add assertions for the override path and for `/blog` ↔ `/en/blog`.
-- [ ] 7.4 Emit hreflang across **every** blog surface — none emits any today. Posts and categories via the server-resolved counterpart from 7.2; the hub via `alternatesForPath` once `/blog` ↔ `/en/blog` is in `pathPairs` (`app/(frontend)/blog/page.tsx:20-25` is a static `export const metadata` with a canonical and no `languages`). Decide explicitly whether paginated pages get alternates — page counts differ per locale under the D6 gate, so `/blog/page/5` may have no English counterpart; canonical-only is the likely answer.
+- [x] 7.1 Add `['/blog','/en/blog']` to `pathPairs` in `lib/i18n/slug-map.ts` — the one genuinely static pair. Give `counterpartPath` an optional override parameter. **Do not add a blog rule or a slug table**: the module ships to the browser through `<LocaleToggle>` (its own header, L28–36, says so) and `counterpartPath` (L135–147) is synchronous and pure.
+- [x] 7.2 Resolve blog counterparts **server-side** (design D11): the post and category routes already load the document and know both slugs. Pass the counterpart into `<LocaleToggle>` via `ChromeProvider`, and into `generateMetadata`'s `alternates` directly — not via `alternatesForPath`, which is built on the same synchronous `counterpartPath` (L157–179). A route with no counterpart passes no override and the toggle falls back to `/en` as today.
+  **The mechanism turned on a layout detail worth recording**: the toggle renders inside `<Header>`
+  and `<Footer>`, which `<Wrapper>` renders — not the root layout, which says so explicitly. A page
+  wrapping its own content is therefore still an ancestor of the toggle, so a page-level provider
+  reaches it. `ChromeProvider` gained an optional `counterpart`, plus a `<LocaleCounterpart>` that
+  re-provides the inherited chrome with one attached. Post and category routes resolve their own via
+  new `getPostSlugInLocale` / `getCategorySlugInLocale` — one id lookup, not a search — and feed the
+  same value to `generateMetadata`.
+- [x] 7.3 Update `lib/i18n/slug-map.test.ts:81` — `counterpartPath('/jakis-wpis-na-blogu') === '/en'` is currently asserted, and remains correct with no override. Add assertions for the override path and for `/blog` ↔ `/en/blog`.
+- [x] 7.4 Emit hreflang across **every** blog surface — none emits any today. Posts and categories via the server-resolved counterpart from 7.2; the hub via `alternatesForPath` once `/blog` ↔ `/en/blog` is in `pathPairs` (`app/(frontend)/blog/page.tsx:20-25` is a static `export const metadata` with a canonical and no `languages`). Decide explicitly whether paginated pages get alternates — page counts differ per locale under the D6 gate, so `/blog/page/5` may have no English counterpart; canonical-only is the likely answer.
+  Verified on the rendered pages: a translated PL post and its EN counterpart emit **reciprocal**
+  `pl`/`en`/`x-default`; an **untranslated** post emits **zero** hreflang links rather than claiming
+  a counterpart; `/blog` ↔ `/en/blog` and `/category/reklama` ↔ `/en/blog/category/advertising` pair
+  correctly. Toggle destinations verified the same way, including the round-trip 10.4 asks for.
+  **Pagination decided: canonical only.** Page counts differ per locale under the D6 gate, so
+  `/blog/page/5` and `/en/blog/page/5` hold different posts and the English one often does not
+  exist — a reciprocal pair there would assert a false equivalence. Documented in both routes.
 - [ ] 7.5 Add English blog URLs to `app/sitemap.ts` (clone the `enCaseStudyRoutes` block) and add `alternates` to the existing Polish post entries. Include hub pagination for both locales, which is missing today.
 - [x] 7.6 Set `inLanguage` from the locale in `[slug]/json-ld.tsx:51`; localize the breadcrumb's `'Blog'` label and its `${APP_BASE_URL}/blog` URL (L72).
 - [ ] 7.7 Add English post and category URLs to `app/llms.txt/route.ts` — it hardcodes four Polish `PAGES` (`:17-38`) and builds `/${post.slug}` and `/category/${slug}` (`:68`, `:79`). Leave `app/robots.ts` alone: it is 16 lines with one `allow: ['/']` rule and a locale-agnostic sitemap pointer, so `/en` is already covered — verified, nothing to change.

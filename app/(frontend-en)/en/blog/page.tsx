@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { BlogHubView } from '@/app/(frontend)/blog/hub-view'
 import { hubView } from '@/lib/content/blog.en'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getBlogHub,
   getCategories,
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   title: 'Blog',
   description:
     'The Social Lama blog — marketing, advertising, SEO, and social media in practice. Strategies, case studies, and concrete advice for brands.',
-  alternates: { canonical: '/en/blog' },
+  alternates: alternatesForPath('/en/blog'),
 }
 
 /**

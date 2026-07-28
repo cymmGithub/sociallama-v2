@@ -519,6 +519,62 @@ async function findRelatedPosts(
   return picked
 }
 
+/**
+ * A post's slug in a given locale, or null if it has none there.
+ *
+ * The locale toggle and `hreflang` need the OTHER locale's URL, and only the
+ * route can supply it: post slugs differ per locale and live in the database,
+ * so `slug-map.ts` cannot resolve them without shipping every pair to the
+ * browser (design D11). The route already loaded the document, so this is one
+ * extra id lookup rather than a search.
+ *
+ * Null is a real answer, not a failure: an untranslated post genuinely has no
+ * English counterpart, and the toggle must then fall back to the locale home
+ * rather than invent a URL that 404s.
+ */
+async function findPostSlugInLocale(
+  id: number,
+  locale: Locale
+): Promise<string | null> {
+  'use cache'
+  cacheTag('posts')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'posts',
+    where: { and: [{ id: { equals: id } }, PUBLISHED] },
+    limit: 1,
+    depth: 0,
+    select: { slug: true },
+    locale,
+    ...READ,
+  })
+  return result.docs[0]?.slug ?? null
+}
+
+/** A category's slug in a given locale, for the same reason. */
+async function findCategorySlugInLocale(
+  id: number,
+  locale: Locale
+): Promise<string | null> {
+  'use cache'
+  cacheTag('categories')
+  cacheLife('days')
+
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'categories',
+    where: { id: { equals: id } },
+    limit: 1,
+    depth: 0,
+    select: { slug: true },
+    locale,
+    ...READ,
+  })
+  return result.docs[0]?.slug ?? null
+}
+
 /** One row of the client-side search index shipped to the hub. */
 export interface SearchEntry {
   slug: string
@@ -743,6 +799,8 @@ export const getPostsForCategories = cache(findPostsForCategories)
 export const getRelatedPosts = cache(findRelatedPosts)
 export const getBlogHub = cache(findBlogHub)
 export const getSearchIndex = cache(findSearchIndex)
+export const getPostSlugInLocale = cache(findPostSlugInLocale)
+export const getCategorySlugInLocale = cache(findCategorySlugInLocale)
 export const getCaseStudyBySlug = cache(findCaseStudyBySlug)
 export const getDraftCaseStudyBySlug = cache(findDraftCaseStudyBySlug)
 export const getPublishedCaseStudySlugs = cache(findPublishedCaseStudySlugs)
