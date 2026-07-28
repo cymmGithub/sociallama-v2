@@ -468,13 +468,24 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   across 17 posts. A verifier caught it and correctly noted the batch was inconsistent (17 posts
   normalized, 13 did not). Fixed deterministically in a scripted pass. **It had also slipped into
   the five posts translated by hand**, which is the better argument for the mechanical fix.
-- [ ] **Two Polish-source errors, reported not fixed** (change non-goal). Both were "corrected" by
-  revisers and reverted to faithful renderings here, because the spec says an error found in the
-  Polish is reported rather than silently fixed. They need an editorial decision **on the Polish**:
-  - `google-polaczylo-social-media-z-seo` run 13 — PL says *"Trzy litery: E-E-A-T"* (three) for a
-    four-letter acronym. English now says "Three letters" and is visibly wrong to a reader.
-  - `aplikacjavero` run 0 — PL says Vero launched *"5 lat temu"*; against its 2018 publish date that
-    is 2013, but Vero launched in 2015. English now says "five years ago". No rendering is both
-    faithful and true.
+- [x] **Two Polish-source errors — resolved in favour of the truth, on the user's ruling.** Both were
+  "corrected" by revisers, reverted to faithful renderings under the change's non-goal (an error in
+  the Polish is reported, not silently fixed), then escalated. The user chose the true-about-the-
+  world rendering for both, so English now deliberately **diverges in meaning** from its source:
+  - `google-polaczylo-social-media-z-seo` run 13 — PL *"Trzy litery: E-E-A-T"* (three) for a
+    four-letter acronym; EN now reads **"Four letters: E-E-A-T"**. The Polish is almost certainly a
+    leftover from Google's older three-letter E-A-T, which gained the second E in December 2022.
+  - `aplikacjavero` run 0 — PL *"5 lat temu"* against a 2018-03-15 publish date implies 2013; Vero
+    launched July 2015. EN now reads **"launched back in 2015"**. An absolute year rather than
+    another relative expression, because relative time is the thing that broke: "three years ago"
+    would be true only from the author's 2018 vantage and rots again for a 2026 reader.
+
+  The Polish still carries both errors — fixing it is a CMS edit outside this change's scope.
+- [ ] **A third Polish error was silently corrected and never reported** — found while applying the
+  above, so the "reported, not fixed" discipline did leak once. `aplikacjavero` run 0 calls the app
+  *"Vero – Truth Social"*; its real name is **Vero – True Social**, and Truth Social is an unrelated
+  2022 platform that could not have existed in a March 2018 post. The English already says "True
+  Social", which the user's ruling now endorses — so nothing to undo, but the **Polish is wrong on a
+  product name** and should be corrected in the CMS alongside the two above.
 - [ ] **9.8 / 9.9 prod cutover — NOT DONE, needs explicit approval.** Nothing has touched production
   all session; the only prod access was a read-only dump and baseline capture.
