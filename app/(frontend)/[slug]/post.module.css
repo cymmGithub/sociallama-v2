@@ -264,10 +264,11 @@
     position: sticky;
     top: var(--post-anchor-offset);
     /* A rail taller than the viewport must still reach its end rather than
-       pinning its top and clipping the share row. */
+       pinning its top and clipping the share row. The scrolling lives on the
+       heading list below, not here: with it on the rail the share row was
+       inside the scrollport and slid away on a long table of contents. */
     max-height: calc(100dvh - var(--post-anchor-offset) - var(--gap));
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    min-height: 0;
   }
 }
 
@@ -276,6 +277,12 @@
   border-radius: 16px;
   padding: 1.125rem 1.125rem 1rem;
   background-color: var(--surface);
+  /* Column so the label stays put and only the list below it scrolls;
+     `min-height: 0` so this box may shrink inside the rail's flex column
+     instead of forcing it past the viewport. */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .railLabel {
@@ -295,6 +302,11 @@
   margin-top: 0.875rem;
   display: flex;
   flex-direction: column;
+  /* The one scrollport in the rail. The share row sits outside it and stays
+     visible however long the post's heading list runs. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
 }
 
 .tocLink,
