@@ -27,6 +27,12 @@ export default buildConfig({
     pool: {
       connectionString: databaseUrl,
     },
+    // Schema changes land through `payload migrate`, never through push. Push
+    // defaults on outside production, and for a localized field it drops the
+    // base column and creates the `_locales` table with nothing copied between
+    // — dev would silently lose the content prod migrates safely. Dev now
+    // agrees with prod, which already runs `payload migrate` (build:vercel).
+    push: false,
   }),
   collections: [
     posts,

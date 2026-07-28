@@ -11,7 +11,7 @@
  *   2. git worktree add ../<name> -b <name>   (off main HEAD)
  *   3. copy main's .env.local → worktree, overriding DATABASE_URL when isolated
  *   4. bun install  (real install — symlinked node_modules breaks Turbopack)
- *   5. --isolated: create a dedicated DB on :5434, then dev-push + seed it
+ *   5. --isolated: create a dedicated DB on :5434, then migrate + seed it
  *   6. relocate the untracked OpenSpec proposal + commit it on branch — defaults
  *      to the change named after the worktree; --change <slug> when they differ.
  *      No-op when the proposal is already committed (step 2 brought it along)
@@ -39,14 +39,18 @@ const repoRoot = process.cwd()
 /** Run a command with inherited stdio; throw on non-zero unless allowFail. */
 const run = async (
   cmd: string[],
-  opts: { cwd?: string; allowFail?: boolean } = {}
+  opts: {
+    cwd?: string
+    allowFail?: boolean
+    env?: Record<string, string | undefined>
+  } = {}
 ): Promise<number> => {
   const proc = Bun.spawn(cmd, {
     cwd: opts.cwd ?? repoRoot,
     stdout: 'inherit',
     stderr: 'inherit',
     stdin: 'inherit',
-    env: process.env,
+    env: opts.env ?? process.env,
   })
   const code = await proc.exited
   if (code !== 0 && !opts.allowFail) {
@@ -204,8 +208,9 @@ const newWorktree = async (argv: string[]) => {
   step(4, 'Installing dependencies (bun install)')
   await run([bunExecutable, 'install'], { cwd: worktreePath })
 
-  // 5. isolated DB: create + dev-push/seed. The first seed's Payload init pushes
-  //    the schema (dev mode) — clean on an empty DB, no destructive prompt.
+  // 5. isolated DB: create + migrate + seed. Payload runs with `push: false`,
+  //    so nothing builds the schema implicitly any more — without an explicit
+  //    `payload migrate` the seeds below would hit an empty database and fail.
   if (isolated) {
     step(5, `Provisioning isolated DB ${dbName}`)
     const exists = await capture([
@@ -230,13 +235,22 @@ const newWorktree = async (argv: string[]) => {
         `CREATE DATABASE ${dbName}`,
       ])
     }
+    log('  payload migrate')
+    await run([bunExecutable, 'run', 'payload', 'migrate'], {
+      cwd: worktreePath,
+    })
+    // Seed uploads go to local disk (gitignored `media/`), not Vercel Blob:
+    // every worktree shares one blob store, so the second isolated bootstrap
+    // onward dies on "This blob already exists". Local files also keep the
+    // isolated DB's media rows pointing at files only this worktree owns.
+    const seedEnv = { ...process.env, BLOB_READ_WRITE_TOKEN: '' }
     for (const s of [
       'payload:seed',
       'payload:seed:case-studies',
       'payload:seed:platforms',
     ]) {
       log(`  ${s}`)
-      await run([bunExecutable, 'run', s], { cwd: worktreePath })
+      await run([bunExecutable, 'run', s], { cwd: worktreePath, env: seedEnv })
     }
   }
 
