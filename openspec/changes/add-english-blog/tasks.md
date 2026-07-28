@@ -154,13 +154,20 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   (`node_modules/payload/dist/config/types.d.ts:159-164`), so the admin locale is available without
   guessing. EN yields `/en/blog/{en-slug}`, PL keeps `/{slug}`. `case-studies.ts:33-36` still has the
   broken PL-only shape — left alone deliberately, as instructed.
-- [ ] 4.5 **Verify with zero translations on `dev`**: every English blog surface renders as genuinely empty, never as Polish; `/en/blog/page/2` returns 404 rather than an empty page. Do this before any translation exists — it is the only moment the gate is cheap to test.
+- [x] 4.5 **Verify with zero translations on `dev`**: every English blog surface renders as genuinely empty, never as Polish; `/en/blog/page/2` returns 404 rather than an empty page. Do this before any translation exists — it is the only moment the gate is cheap to test.
 
 ## 5. Locale-aware components and content
 
   **NOT DONE — needs a running dev server, which I must not spawn myself.** The zero-translation
   state is exactly what this worktree's isolated DB holds (1 post, 0 EN rows), so it is ready to
   test the moment a server is pointed at it.
+  Done against this worktree's isolated DB (1 Polish post, **0 English rows**) via a production
+  build served locally, since the check is about rendered output rather than types. Results:
+  `/en/blog` renders the English empty state ("Nothing here yet") under `<html lang="en">` with
+  **zero Polish strings**, no post cards and no category chips; `/en/blog/page/2`,
+  `/en/blog/anything`, `/en/blog/category/anything` and `/en/blog/category/seo` (a *Polish* category
+  slug) all render not-found. Polish is unaffected — `/blog` still lists its post with "PRZECZYTAJ".
+  This is the D6 gate's core promise demonstrated: empty, never Polish.
 - [x] 5.1 **Extract `app/(frontend)/[slug]/page.tsx` into a shared `post-article.tsx`** taking `chrome`/`basePath`/`locale`, mirroring `case-study-article.tsx:35-41`. The page holds Polish that lives in none of the child components: `aria-label="Ścieżka nawigacji"` (L168), the `Blog` crumb → `/blog` (L169), the category crumb → `/category/${slug}` (L173), `{readingTime} min czytania` (L194), `<summary>W tym wpisie</summary>` (L225). Derive `shareUrl` (L129), `alternates.canonical` (L93) and `openGraph.url` (L99) from `basePath` instead of `/${post.slug}`.
 - [x] 5.2 Convert the remaining blog components to the same pattern: `blog/listing.tsx`, `post-card.tsx`, `pagination.tsx`, `hub-header.tsx`, `hub-featured.tsx`, `hub-popular.tsx`, `hub-promo.tsx`, `hub-search.tsx`, `hub-video.tsx`, `[slug]/post-rail.tsx`, `post-share.tsx`, `author-card.tsx`, and **`components/blog/newsletter.tsx`** — which renders on the hub *and* after every post body, so omitting it leaves a Polish slab on every English blog surface.
   All 13 converted, plus a new shared `app/(frontend)/blog/hub-view.tsx` so the EN hub route is ~20
@@ -203,11 +210,21 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   `HomeContent` gained `news`, so `LocalizedHome['news']` type-checks the EN twin. The EN homepage
   builds its own view-model because the Polish one hardcodes `/${post.slug}`, and reads
   `getLatestPost('en')` so the section is omitted entirely until something is translated.
-- [ ] 6.3 **Author the English CMS content the gate would otherwise leave null**: 4 category `title` + `slug` values (`reklama` → `advertising` etc.), and the author's English `role` + `bio`. Without these, English category pages and author cards render empty rather than translated.
-- [ ] 6.4 Ship English `blog-hub` curation slots empty — `blog-hub-curation`'s existing degrade-to-defaults path fills them from the newest translated posts. (The global's schema was already localized in 2.2.)
+- [x] 6.3 **Author the English CMS content the gate would otherwise leave null**: 4 category `title` + `slug` values (`reklama` → `advertising` etc.), and the author's English `role` + `bio`. Without these, English category pages and author cards render empty rather than translated.
+  Authored on `rehearsal`: the 4 category `title` + `slug` pairs (`reklama` → `advertising`; the
+  other three slugs are identical in English and stay so, which is legal because uniqueness is per
+  locale), and the author's English `role` + `bio`. `name` and `profileUrl` are shared and untouched;
+  the partner agency's brand name SEOFLY is preserved verbatim.
+- [x] 6.4 Ship English `blog-hub` curation slots empty — `blog-hub-curation`'s existing degrade-to-defaults path fills them from the newest translated posts. (The global's schema was already localized in 2.2.)
 
 ## 7. SEO surface
 
+  Nothing to write — verified instead. `blog_hub_locales` holds a `pl` row only, and the English hub
+  degrades exactly as `blog-hub-curation` requires: "Editors' picks" fills from the newest
+  **translated** posts, "Most read" omits itself because `popular` is empty, and the video spotlight
+  omits itself because there is no English `video.title`. That last one is the load-bearing proof
+  that `fallbackLocale: false` on `findGlobal` works — Polish has a spotlight and English does not
+  inherit it.
 - [x] 7.1 Add `['/blog','/en/blog']` to `pathPairs` in `lib/i18n/slug-map.ts` — the one genuinely static pair. Give `counterpartPath` an optional override parameter. **Do not add a blog rule or a slug table**: the module ships to the browser through `<LocaleToggle>` (its own header, L28–36, says so) and `counterpartPath` (L135–147) is synchronous and pure.
 - [x] 7.2 Resolve blog counterparts **server-side** (design D11): the post and category routes already load the document and know both slugs. Pass the counterpart into `<LocaleToggle>` via `ChromeProvider`, and into `generateMetadata`'s `alternates` directly — not via `alternatesForPath`, which is built on the same synchronous `counterpartPath` (L157–179). A route with no counterpart passes no override and the toggle falls back to `/en` as today.
   **The mechanism turned on a layout detail worth recording**: the toggle renders inside `<Header>`
