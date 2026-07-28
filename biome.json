@@ -33,7 +33,8 @@
       "!**/*.grit",
       "!app/(payload)",
       "!payload-types.ts",
-      "!migrations"
+      "!migrations",
+      "!content/case-studies/**/draft.*.json"
     ]
   },
 
