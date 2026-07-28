@@ -22,6 +22,61 @@ export const pathPairs = [
   ['/polityka-prywatnosci', '/en/privacy-policy'],
 ] as const
 
+/**
+ * Sections whose detail pages carry translated slugs (`pairSlug` in the content
+ * modules). Deliberately kept out of `pathPairs`: the sitemap derives these URLs
+ * straight from the content files (`app/sitemap.ts`), so listing them there too
+ * would emit every URL twice.
+ *
+ * The slug tables are literals rather than imports because this module reaches
+ * the browser through `<LocaleToggle>` — importing `uslugi.ts`/`branze.ts` would
+ * ship ~4k lines of page copy in every bundle to read 19 strings.
+ * `slug-map.test.ts` asserts the tables match the content modules exactly, in
+ * both directions, so a new service or industry cannot silently go unmapped.
+ */
+export const SECTIONS = [
+  {
+    pl: '/uslugi',
+    en: '/en/services',
+    hasIndex: true,
+    slugs: [
+      ['strategia', 'strategy'],
+      ['content', 'content'],
+      ['sprzedaz', 'sales'],
+      ['kampanie-reklamowe', 'ad-campaigns'],
+      ['kreacje-wideo', 'creative-video'],
+      ['audyt-i-konsultacje', 'audit-consulting'],
+      ['influencer-marketing', 'influencer-marketing'],
+    ],
+  },
+  {
+    pl: '/branze',
+    en: '/en/industries',
+    // No index pair yet: both menus link these paths but neither page exists,
+    // so mapping them would aim the toggle at a 404. Flip to true when they ship.
+    hasIndex: false,
+    slugs: [
+      ['automotive', 'automotive'],
+      ['elektronika-i-agd', 'electronics'],
+      ['beauty', 'beauty'],
+      ['health', 'health'],
+      ['finanse', 'finance'],
+      ['petcare', 'pet'],
+      ['alkohole', 'alcohol'],
+      ['fashion', 'fashion'],
+      ['horeca', 'horeca'],
+      ['hotele-i-miejsca-wypoczynkowe', 'hospitality'],
+      ['nieruchomosci-i-deweloperzy', 'real-estate'],
+      ['rozrywka', 'entertainment'],
+    ],
+  },
+] as const satisfies readonly {
+  pl: string
+  en: string
+  hasIndex: boolean
+  slugs: readonly (readonly [string, string])[]
+}[]
+
 const PL_TO_EN = new Map<string, string>(pathPairs.map(([pl, en]) => [pl, en]))
 const EN_TO_PL = new Map<string, string>(pathPairs.map(([pl, en]) => [en, pl]))
 
@@ -48,6 +103,32 @@ function caseStudyDetailCounterpart(path: string): string | null {
 }
 
 /**
+ * Counterpart for a section index or detail page — `/uslugi/strategia` ↔
+ * `/en/services/strategy`. Unlike case studies these slugs are translated, so
+ * they resolve through the section's slug table rather than a prefix swap.
+ * Returns null when `path` belongs to no section, or names a slug the table
+ * doesn't carry (a retired page), so the caller keeps its home fallback.
+ */
+function sectionCounterpart(path: string): string | null {
+  for (const { pl, en, hasIndex, slugs } of SECTIONS) {
+    if (hasIndex && path === pl) return en
+    if (hasIndex && path === en) return pl
+
+    if (path.startsWith(`${pl}/`)) {
+      const slug = path.slice(pl.length + 1)
+      const pair = slugs.find(([plSlug]) => plSlug === slug)
+      return pair ? `${en}/${pair[1]}` : null
+    }
+    if (path.startsWith(`${en}/`)) {
+      const slug = path.slice(en.length + 1)
+      const pair = slugs.find(([, enSlug]) => enSlug === slug)
+      return pair ? `${pl}/${pair[0]}` : null
+    }
+  }
+  return null
+}
+
+/**
  * The other-locale path for `path`. Unmapped paths (e.g. a blog post, which is
  * PL-only) resolve to the other locale's home.
  */
@@ -55,6 +136,8 @@ export function counterpartPath(path: string): string {
   const p = normalize(path)
   const detail = caseStudyDetailCounterpart(p)
   if (detail) return detail
+  const section = sectionCounterpart(p)
+  if (section) return section
   const mapped = PL_TO_EN.get(p) ?? EN_TO_PL.get(p)
   if (mapped) return mapped
   return localeOf(p) === 'en' ? PL_HOME : EN_HOME
@@ -64,7 +147,10 @@ export function counterpartPath(path: string): string {
 export function hasCounterpart(path: string): boolean {
   const p = normalize(path)
   return (
-    caseStudyDetailCounterpart(p) !== null || PL_TO_EN.has(p) || EN_TO_PL.has(p)
+    caseStudyDetailCounterpart(p) !== null ||
+    sectionCounterpart(p) !== null ||
+    PL_TO_EN.has(p) ||
+    EN_TO_PL.has(p)
   )
 }
 

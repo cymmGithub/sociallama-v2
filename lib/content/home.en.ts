@@ -77,7 +77,7 @@ export const menu = {
           href: '/en/services/influencer-marketing',
           mobileHidden: true,
         },
-        { label: 'Training & Courses', href: '/en/training', mobileHidden: true },
+        // { label: 'Training & Courses', href: '/en/training', mobileHidden: true }, // delayed launch — no page yet, keep out of nav
       ],
       more: { label: 'All services', href: '/en/services' },
     },
@@ -726,7 +726,7 @@ export const footer = {
       links: [
         { label: 'ABOUT US', href: '/en/about-us' },
         { label: 'SERVICES', href: '/en/services' },
-        { label: 'TRAINING & COURSES', href: '/en/training' },
+        // { label: 'TRAINING & COURSES', href: '/en/training' }, // delayed launch — no page yet, keep out of nav
         { label: 'CASE STUDIES', href: '/en/case-studies' },
         { label: 'CONTACT', href: '/en/contact' },
       ],

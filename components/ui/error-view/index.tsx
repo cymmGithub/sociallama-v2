@@ -7,6 +7,9 @@ interface ErrorViewProps {
   reset: () => void
   title?: string
   description?: string
+  /** Where "Go Home" lands. A prop rather than a hook because global-error
+   *  renders outside the router, so the locale cannot be read from context. */
+  homeHref?: string
 }
 
 /**
@@ -21,6 +24,7 @@ export function ErrorView({
   reset,
   title = 'Something went wrong',
   description = "We're sorry, but something unexpected happened. Please try again.",
+  homeHref = '/',
 }: ErrorViewProps) {
   useEffect(() => {
     console.error('Error boundary caught:', error)
@@ -54,7 +58,7 @@ export function ErrorView({
         </button>
         {/* biome-ignore lint: global-error renders outside the router, so the Link component cannot be used here */}
         <a
-          href="/"
+          href={homeHref}
           className="rounded border border-gray-300 px-6 py-3 transition-colors hover:bg-gray-50"
         >
           Go Home

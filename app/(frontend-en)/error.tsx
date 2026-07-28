@@ -2,6 +2,7 @@
 
 import { Wrapper } from '@/components/layout/wrapper'
 import { ErrorView } from '@/components/ui/error-view'
+import { EN_HOME } from '@/lib/i18n/slug-map'
 
 interface ErrorPageProps {
   error: Error & { digest?: string }
@@ -12,7 +13,7 @@ interface ErrorPageProps {
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Wrapper theme="cream" className="font-mono">
-      <ErrorView error={error} reset={reset} />
+      <ErrorView error={error} reset={reset} homeHref={EN_HOME} />
     </Wrapper>
   )
 }

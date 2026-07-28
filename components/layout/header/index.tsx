@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
+import { EN_HOME, PL_HOME } from '@/lib/i18n/slug-map'
 import s from './header.module.css'
 
 // Keep the bar revealed within this many pixels of the top so a fresh load or
@@ -20,7 +21,8 @@ const REVEAL_AT_TOP = 80
 const FOOTER_ZONE_FRACTION = 0.6
 
 export function Header() {
-  const { nav, menu } = useChrome().chrome
+  const { chrome, locale } = useChrome()
+  const { nav, menu } = chrome
   const [menuOpen, setMenuOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [overFooter, setOverFooter] = useState(false)
@@ -142,7 +144,9 @@ export function Header() {
       >
         <Link
           className={s.logo}
-          href="/"
+          // Locale-aware: the header renders for both trees, so a literal `/`
+          // would send EN visitors to the Polish home.
+          href={locale === 'en' ? EN_HOME : PL_HOME}
           aria-label={nav.logoAlt}
           onClick={close}
         >
