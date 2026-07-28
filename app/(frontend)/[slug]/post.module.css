@@ -460,6 +460,16 @@
   font-size: 1.0625rem;
   line-height: 1.7;
 
+  /* Payload's <RichText> wraps the body in a `.payload-richtext` div, so the
+     column gap above landed between that wrapper and the in-article CTA —
+     never between paragraphs, which carry no margin of their own. The imported
+     WordPress bodies hid this: their spacer paragraphs supplied the rhythm by
+     accident, and removing those exposed it. `display: contents` lifts the
+     blocks into this flex container so the gap reaches them. */
+  > :global(.payload-richtext) {
+    display: contents;
+  }
+
   h2,
   h3,
   h4 {
