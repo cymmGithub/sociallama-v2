@@ -47,6 +47,7 @@ import {
   stripDuplicatedPrefix,
   stripLeadingHeadings,
   trimBlockPrefix,
+  trimTrailingFragment,
   unwrapLabelList,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
@@ -175,7 +176,12 @@ for (const post of posts.docs) {
   }
   const content = JSON.parse(JSON.stringify(original)) as { root: LexicalNode }
   const root = content.root
-  const excerpt = typeof post.excerpt === 'string' ? post.excerpt : ''
+  const rawExcerpt = typeof post.excerpt === 'string' ? post.excerpt : ''
+  // Cut back to the last complete sentence before anything reads it. The
+  // scrape stopped mid-sentence on 47 posts, which both showed a broken lead
+  // in the page header and stopped the lead-paragraph fix below from finding
+  // a whole sentence to remove.
+  let excerpt = trimTrailingFragment(rawExcerpt)
   const notes: string[] = []
 
   // --- 1. Bold pseudo-headings ---------------------------------------------
@@ -359,14 +365,12 @@ for (const post of posts.docs) {
       headings.push(headingText(node))
     }
   })
-  const trimmedExcerpt = stripLeadingHeadings(excerpt, headings)
+  excerpt = stripLeadingHeadings(excerpt, headings)
   const excerptChanged =
-    excerpt.trim() !== '' && trimmedExcerpt !== excerpt.trim()
+    rawExcerpt.trim() !== '' && excerpt !== rawExcerpt.trim()
   if (excerptChanged) {
     excerpts++
-    notes.push(
-      `excerpt trimmed of ${excerpt.trim().length - trimmedExcerpt.length} leading heading chars`
-    )
+    notes.push(`excerpt ${rawExcerpt.trim().length} → ${excerpt.length} chars`)
   }
 
   if (notes.length === 0) {
@@ -383,7 +387,7 @@ for (const post of posts.docs) {
     id: post.id,
     data: {
       content: content as never,
-      ...(excerptChanged ? { excerpt: trimmedExcerpt } : {}),
+      ...(excerptChanged ? { excerpt } : {}),
     },
   })
   console.log('    → updated')

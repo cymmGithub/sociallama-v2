@@ -427,6 +427,24 @@ export function excerptSimilarity(a: string, b: string): number {
 }
 
 /**
+ * Cut an excerpt back to its last complete sentence.
+ *
+ * The excerpts were scraped by taking roughly the first 400 characters of each
+ * body, which lands mid-sentence 47 times out of 79. The page header renders
+ * the excerpt as the lead, so the reader sees a sentence break off — "…i
+ * odpowiedziach AI. Jeśli nie masz czasu" — and then meets it again, complete,
+ * at the top of the body.
+ *
+ * Dropping the fragment fixes both: the lead ends where a sentence ends, and
+ * the body's opening sentence is no longer a half-echo of it. An excerpt with
+ * no sentence end anywhere is returned untouched rather than emptied.
+ */
+export function trimTrailingFragment(excerpt: string): string {
+  const match = /^[\s\S]*[.!?…]["»”)\]]?(?=\s|$)/.exec(excerpt.trimEnd())
+  return match ? (match[0] as string).trim() : excerpt.trim()
+}
+
+/**
  * Strip the headings an auto-generated excerpt opens with.
  *
  * The excerpts were scraped from each body's first few hundred characters,
