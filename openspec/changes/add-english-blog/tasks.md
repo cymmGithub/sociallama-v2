@@ -87,8 +87,26 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   **Flagged, not fixed (as instructed):** `o-nas` is still absent from `STATIC_ROUTES`/`RESERVED_SLUGS`,
   so a Polish post slugged `o-nas` is silently unroutable today.
 
-- [ ] 2.8 **Localize `media.alt`** (user decision 2026-07-28 — mandatory; not implemented, do not
-  start without picking up the content half too). `lib/payload/collections/media.ts:39-48` — `alt` is
+- [x] 2.8 **Localize `media.alt`** — DONE 2026-07-29, both halves. Schema + migration
+  (`20260728_214001_add_media_alt_localization.ts`, hand-spliced: the generated version would have
+  deleted all 668 alts) and all 668 rows translated, 563 genuinely changed and 105 pass-through
+  junk. **The rollback was exercised this time**: up → down → up round-trips all 668 byte-identically
+  and touched only its own migration.
+  Blast radius is the whole English site, not the blog — media is reached from case studies and
+  services, whose queries keep the global `fallback: true` and so inherit English automatically.
+  Blog queries are the exception, reading with `fallbackLocale: false` for the D6 gate, which
+  propagates into populated media: `alt` can arrive **null** there while `payload-types` still
+  declares it `string`. Same trap as `resolveCategory`; guarded at the one unguarded render site.
+  **Ruling that settled 25 of 68 reported defects:** Polish PRINTED IN THE IMAGE stays Polish and
+  takes an English gloss. The alt describes what is on screen; translating a slogan out of it
+  describes an image that does not exist. The gate learned the convention rather than being muted
+  by it — a quoted phrase followed by a parenthetical is exempt, un-glossed quoted Polish still
+  warns. 19 warnings → 3, all filename junk left deliberately.
+  Verified in the 360-page build: EN pages render English alts, PL render Polish, empty-alt counts
+  match between locales (132 EN / 135 PL — pre-existing decorative images, not a regression), and
+  all 76 EN alts containing Polish are either R1 glosses (18) or proper nouns (58).
+  *(original note follows)*
+- [ ] 2.8 (original) `media.alt` `lib/payload/collections/media.ts:39-48` — `alt` is
   `required` and unlocalized, so Polish alt text renders on every English surface: the post hero
   (`post-article.tsx`), every in-body image (`rich-text.tsx`), and the card/featured/popular/video
   thumbnails. Verified live on `/en/blog/social-media-futbol-en`, where the rendered alts were
