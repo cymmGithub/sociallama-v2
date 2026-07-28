@@ -252,10 +252,21 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   extended, since this change adds four more reads to it.
 - [x] 7.6 Set `inLanguage` from the locale in `[slug]/json-ld.tsx:51`; localize the breadcrumb's `'Blog'` label and its `${APP_BASE_URL}/blog` URL (L72).
 - [x] 7.7 Add English post and category URLs to `app/llms.txt/route.ts` — it hardcodes four Polish `PAGES` (`:17-38`) and builds `/${post.slug}` and `/category/${slug}` (`:68`, `:79`). Leave `app/robots.ts` alone: it is 16 lines with one `allow: ['/']` rule and a locale-agnostic sitemap pointer, so `/en` is already covered — verified, nothing to change.
-- [ ] 7.8 Give the English blog tree **real** e2e coverage. The existing sweep collects `#site-menu a[href], footer a[href]` only (`e2e/locale-routing.e2e.ts:33-39`), so adding the BLOG link enrols exactly one URL — `/en/blog`. Add a case that samples `/en/blog`, `/en/blog/page/2`, one `/en/blog/{en-slug}`, and one `/en/blog/category/{en-slug}` from `findPublishedPostSlugs`/`findCategories` under `locale: 'en'`. Without this, the suite would pass with 78 of 79 English posts 404ing.
+- [x] 7.8 Give the English blog tree **real** e2e coverage. The existing sweep collects `#site-menu a[href], footer a[href]` only (`e2e/locale-routing.e2e.ts:33-39`), so adding the BLOG link enrols exactly one URL — `/en/blog`. Add a case that samples `/en/blog`, `/en/blog/page/2`, one `/en/blog/{en-slug}`, and one `/en/blog/category/{en-slug}` from `findPublishedPostSlugs`/`findCategories` under `locale: 'en'`. Without this, the suite would pass with 78 of 79 English posts 404ing.
 
 ## 8. Translation tooling
 
+  `e2e/en-blog.e2e.ts`, 7 cases, all passing against a real build of this branch.
+  **The config had to be fixed first.** `playwright.config.ts` hardcoded `baseURL: :3000` with
+  `reuseExistingServer`, so from a worktree Playwright attaches to whatever answers on that port —
+  main's dev server — and the suite passes green having never loaded the branch under test.
+  `PLAYWRIGHT_PORT` / `PLAYWRIGHT_BASE_URL` now select the target, defaulting to 3000 as before.
+  URLs are sampled from the **rendered hub** rather than from `findPublishedPostSlugs`/`findCategories`
+  as the task text suggests: those are `'use cache'` functions and throw outside a Next request
+  scope. Reading the hub is also stricter — a post that exists but is linked nowhere counts as
+  unreachable. Zero translated posts is treated as a correct state (the D6 gate), so those cases
+  assert the empty hub rather than failing; what is never tolerated is a linked URL that 404s or
+  Polish chrome on an English page. Includes the toggle round-trip 10.4 asks for.
 - [ ] 8.1 Write the block projection and its inverse (design D3). Grammar: `<b>`/`<i>`/`<u>`/`<s>`/`<code>`/`<sub>`/`<sup>`, `<aN>`, `<br/>`, `<tab/>`; composed format bits nest outermost-lowest-bit; `detail`/`mode`/`style` carried out-of-band per leaf. `upload` and `horizontalrule` never enter the projection; `linebreak` and `tab` **do**, as tokens, because they are inline leaves inside the projected blocks (`post-formatting-rules.ts:53-55`, `:296-299`).
 - [ ] 8.2 **Assert the projection round-trips Polish first**: `parse(project(block))` must reproduce the original block byte-for-byte for all ~1,889 blocks in the corpus. A grammar that cannot round-trip Polish will not survive English. This gates all downstream translation work.
 - [ ] 8.3 Write `lib/payload/translate-post.ts` around that projection, following `repair-post-formatting.ts`: `--prod` env swap before the config import (L57–66), deep copy before mutation (L124–127), in-place walk (L136–161), **report and skip ambiguity, never guess** (L163–168), one `payload.update` per post (L199–203), dry-run by default with `--apply` (L42). Two modes (`--extract` / write) and the `TODO` stub guard from `translate-case-study.ts`.

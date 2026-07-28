@@ -1,5 +1,18 @@
 import { defineConfig } from '@playwright/test'
 
+/**
+ * Which server the suite drives.
+ *
+ * Defaults to :3000, the main checkout's dev server. From a WORKTREE that
+ * default is actively dangerous: `reuseExistingServer` means Playwright
+ * attaches to whatever already answers on the port, so a worktree's suite
+ * silently exercises main's code and passes green while the branch under test
+ * is never loaded. Set `PLAYWRIGHT_PORT` to the worktree's own port (the one
+ * `worktree:new` assigned) to test the code you are actually changing.
+ */
+const PORT = process.env.PLAYWRIGHT_PORT ?? '3000'
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL ?? `http://localhost:${PORT}`
+
 export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.e2e.ts',
@@ -13,7 +26,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   reporter: 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE_URL,
   },
   projects: [
     {
@@ -26,7 +39,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'bun run dev',
-    url: 'http://localhost:3000',
+    url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
