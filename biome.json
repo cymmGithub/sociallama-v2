@@ -59,7 +59,7 @@
     "domains": {
       "next": "recommended",
       "react": "recommended",
-      "project": "recommended"
+      "project": "none"
     },
     "rules": {
       "correctness": {
