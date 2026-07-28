@@ -267,8 +267,28 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   unreachable. Zero translated posts is treated as a correct state (the D6 gate), so those cases
   assert the empty hub rather than failing; what is never tolerated is a linked URL that 404s or
   Polish chrome on an English page. Includes the toggle round-trip 10.4 asks for.
-- [ ] 8.1 Write the block projection and its inverse (design D3). Grammar: `<b>`/`<i>`/`<u>`/`<s>`/`<code>`/`<sub>`/`<sup>`, `<aN>`, `<br/>`, `<tab/>`; composed format bits nest outermost-lowest-bit; `detail`/`mode`/`style` carried out-of-band per leaf. `upload` and `horizontalrule` never enter the projection; `linebreak` and `tab` **do**, as tokens, because they are inline leaves inside the projected blocks (`post-formatting-rules.ts:53-55`, `:296-299`).
-- [ ] 8.2 **Assert the projection round-trips Polish first**: `parse(project(block))` must reproduce the original block byte-for-byte for all ~1,889 blocks in the corpus. A grammar that cannot round-trip Polish will not survive English. This gates all downstream translation work.
+- [x] 8.1 Write the block projection and its inverse (design D3). Grammar: `<b>`/`<i>`/`<u>`/`<s>`/`<code>`/`<sub>`/`<sup>`, `<aN>`, `<br/>`, `<tab/>`; composed format bits nest outermost-lowest-bit; `detail`/`mode`/`style` carried out-of-band per leaf. `upload` and `horizontalrule` never enter the projection; `linebreak` and `tab` **do**, as tokens, because they are inline leaves inside the projected blocks (`post-formatting-rules.ts:53-55`, `:296-299`).
+  `lib/payload/post-projection.ts`. **The unit is a maximal run of adjacent inline children, not a
+  block** — D3's model does not survive the corpus. A `quote` is a container of paragraphs (18 of
+  them), a `listitem` is sometimes one too, and 10 parents mix inline and block children outright,
+  so projecting a "block" as a leaf would flatten its children away. Runs handle every case: a
+  paragraph of prose is one run, a quote yields none of its own and its paragraphs each yield one, a
+  list item with a nested list yields a run for its text and recurses.
+  Link nodes and text nodes are held aside **whole** (minus what the markup encodes) rather than by
+  an enumeration of `detail`/`mode`/`style` — the corpus rejected the enumeration on 194 of 1,875
+  runs, because 39 text nodes omit `version` and links carry an `id`.
+  One token beyond D3's grammar: `<z/>` for a zero-length text node. 33 exist (WordPress debris
+  trailing a link), one of them carrying ITALIC. Dropping them would silently edit the document and
+  put the English leaf sequence permanently out of step with the Polish one.
+- [x] 8.2 **Assert the projection round-trips Polish first**: `parse(project(block))` must reproduce the original block byte-for-byte for all ~1,889 blocks in the corpus. A grammar that cannot round-trip Polish will not survive English. This gates all downstream translation work.
+  **1875 / 1875 runs round-trip byte-identically** across all 79 posts.
+  Three real defects were found only by running it, never by the unit fixtures: the enumerated
+  metadata (194 failures), the dropped empty text nodes (33), and an empty node losing its format
+  (1). A fourth apparent failure — 1874 of them — was my own check comparing key ORDER; the
+  projection was right and the harness was wrong.
+  `lib/payload/post-projection.test.ts` carries 23 unit tests covering each grammar token, the
+  corpus's actual format bitmasks, the reject-don't-guess cases, and the three structures D3 says
+  cannot occur.
 - [ ] 8.3 Write `lib/payload/translate-post.ts` around that projection, following `repair-post-formatting.ts`: `--prod` env swap before the config import (L57–66), deep copy before mutation (L124–127), in-place walk (L136–161), **report and skip ambiguity, never guess** (L163–168), one `payload.update` per post (L199–203), dry-run by default with `--apply` (L42). Two modes (`--extract` / write) and the `TODO` stub guard from `translate-case-study.ts`.
 - [ ] 8.4 Write the structural gate as a pure function so both the workflow and the verifier use the same code: block count/type/order match PL; per-block `<br/>`/`<tab/>` counts and positions match PL; every `<aN>` present exactly once and none invented; markup balanced, grammar-only, bit-ordered; slug URL-safe, EN-unique, not reserved; heading ≤ 85 chars. Polish diacritics are a **soft flag against a proper-noun allowlist**, never a hard reject — "Łukasz Płociński" and "Pracuj.pl" survive translation legitimately.
 - [ ] 8.5 Write `lib/payload/verify-post-en.ts` per design D5 — asserts every guarantee in the spec delta including the intra-block leaf sequence, exits non-zero on failure, writes `content/posts/STATUS.md` under `--status`.
