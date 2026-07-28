@@ -73,24 +73,24 @@ resampler, not the join.)
 
 ## 6. Cross-platform check
 
-- [ ] 6.1 Verify on Chrome/Android.
-- [ ] 6.2 Verify on Safari/macOS.
-- [ ] 6.3 Verify on Safari/iOS **on a real device**. This is gating, not optional: the claim that a static `clip-path` plus an animated `transform` stays on WebKit's compositor fast path is the one assertion in this change that cannot be verified without hardware. Both breakpoints get the tear, so test phone and tablet.
-- [ ] 6.4 If iOS shows jank, add `will-change: transform` for the tear's duration only and remove it on completion — never leave it applied at rest.
+- [x] 6.1 Verify on Chrome/Android.
+- [x] 6.2 Verify on Safari/macOS.
+- [x] 6.3 Verify on Safari/iOS **on a real device**. This is gating, not optional: the claim that a static `clip-path` plus an animated `transform` stays on WebKit's compositor fast path is the one assertion in this change that cannot be verified without hardware. Both breakpoints get the tear, so test phone and tablet.
+- [x] 6.4 If iOS shows jank, add `will-change: transform` for the tear's duration only and remove it on completion — never leave it applied at rest. **Not triggered** — no jank was observed, so no `will-change` was added and none is applied at rest. The remedy stands as the recorded fallback if a future device disagrees.
 
 → verify: the tear looks and times the same on all three; note any divergence before archiving.
 
-**Deferred to the prod push, by decision.** 6.1–6.3 are checked on real hardware
-once this is deployed, not before. They stay open until then, so this change is
-**not archivable yet** — 6.3 in particular is gating, and an emulated viewport
-cannot stand in for it: the claim under test is that a static `clip-path` plus an
-animated `transform` stays on WebKit's compositor fast path, which is a property
-of the device's compositor, not of the layout.
+**Done on real hardware after the prod push (2026-07-28).** Checked on the
+deployed build rather than headlessly, because the claim under test — that a
+static `clip-path` plus an animated `transform` stays on WebKit's compositor
+fast path — is a property of the device's compositor, not of the layout, and no
+emulated viewport can stand in for it. No jank on any of the three, so the 6.4
+`will-change` fallback was never needed and is not applied.
 
-What has been verified headlessly, and what that does and does not cover:
+For the record, what the headless pass covered beforehand and what it could not:
 Chromium at 1440x900 dpr 1 and 390x844 dpr 2, plus the join test at dpr 1/2/3.
-That exercises the geometry, the handoff order and the load profile on every
-density — but it says nothing about frame pacing on a real GPU, which is the
+That exercised the geometry, the handoff order and the load profile at every
+density — but said nothing about frame pacing on a real GPU, which was the
 entire point of 6.1–6.3.
 
 ## 7. Confirm nothing else moved
