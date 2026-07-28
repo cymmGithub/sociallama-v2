@@ -112,6 +112,215 @@ const OVERSIZED: { slug: string; match: string; rewrite: string | null }[] = [
   },
 ]
 
+/**
+ * Sections for the seven legacy posts that had no `h2` but enough material to
+ * carry one, approved 2026-07-28. Eleven of these labels already existed in
+ * the prose and are only lifted out of it (`cut`); the rest name paragraphs
+ * that are already on the page. No new prose is written anywhere.
+ *
+ * The ten shorter posts — 37 to 213 words, mostly 2017 news about features
+ * that have since been discontinued — are deliberately left alone. Reaching
+ * three sections there would mean inventing content about dead products, and
+ * a table of contents over four paragraphs reads worse, not better.
+ *
+ * `cut` splits a label off the front of its paragraph; without it the heading
+ * is inserted before (or after) the anchor block. `at` matches the start of
+ * the target's text.
+ */
+interface SectionEdit {
+  slug: string
+  at: string
+  heading: string
+  cut?: string
+  where?: 'after'
+  tag?: string
+}
+
+const SECTIONS: SectionEdit[] = [
+  // Podsumowanie konferencji F8 — five labels already inline as "Grupy – …".
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Założyciel Facebooka postanowił wypowiedzieć wojnę Tinderowi',
+    heading: 'Facebook Dating',
+  },
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Eliminowanie fake newsów',
+    heading: 'Eliminowanie fake newsów',
+    cut: 'Eliminowanie fake newsów – ',
+  },
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Grupy –',
+    heading: 'Grupy',
+    cut: 'Grupy – ',
+  },
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Instagram –',
+    heading: 'Instagram',
+    cut: 'Instagram – ',
+  },
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Messenger –',
+    heading: 'Messenger',
+    cut: 'Messenger – ',
+  },
+  {
+    slug: 'najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8',
+    at: 'Ostatnia, ale nie mniej interesująca informacja',
+    heading: 'Oculus GO – Facebook w VR',
+  },
+
+  // Wizerunek sportowca — one heading per section, not per brand: the five
+  // brand labels are a list inside the first section.
+  {
+    slug: 'wizeruneksportowca',
+    at: 'Lewandowski wystąpił już w reklamach takich marek',
+    heading: 'W reklamach jakich marek wystąpił Lewandowski?',
+  },
+  {
+    slug: 'wizeruneksportowca',
+    at: 'Jaka jest na to reakcja odbiorców?',
+    heading: 'Jak reagują odbiorcy?',
+  },
+  {
+    slug: 'wizeruneksportowca',
+    at: 'Co na to eksperci?',
+    heading: 'Co na to eksperci?',
+    cut: 'Co na to eksperci? ',
+  },
+  {
+    slug: 'wizeruneksportowca',
+    at: 'Z zupełnie innym przypadkiem mamy do czynienia',
+    heading: 'Wizerunek bez zgody – przypadek Platformy Obywatelskiej',
+  },
+
+  // Rebranding Instagrama.
+  {
+    slug: 'logo-wizerunek-firmy',
+    at: 'Ian Spalter, dyrektor artystyczny Instagrama',
+    heading: 'Dlaczego Instagram zmienił logo?',
+  },
+  {
+    slug: 'logo-wizerunek-firmy',
+    at: 'Ian Spalter, dyrektor artystyczny Instagrama',
+    heading: 'Jak wyglądała nowa identyfikacja?',
+    where: 'after',
+  },
+  {
+    slug: 'logo-wizerunek-firmy',
+    at: 'Gdybyśmy mieli ocenić już teraz',
+    heading: 'Czy rebranding się udał?',
+  },
+
+  // Polecenia zamiast recenzji. "Rewolucja na Facebooku?" is deliberately NOT
+  // promoted: it is the post's entire excerpt, so a heading saying the same
+  // thing puts it on screen twice. The header carries it as the lead and the
+  // lead-paragraph step drops the body's copy; the three headings below are
+  // enough for the rail.
+  {
+    slug: 'polecenia-zamiast-recenzji-duza-zmiana-na-facebooku',
+    at: 'Faktycznie wchodząc na fanpage danego miejsca',
+    heading: 'Jak działają polecenia?',
+  },
+  {
+    slug: 'polecenia-zamiast-recenzji-duza-zmiana-na-facebooku',
+    at: 'Tak wydarzyło się w przypadku naszej grupy Good One',
+    heading: 'Kiedy system zawodzi – polecenie z Pakistanu',
+  },
+  {
+    slug: 'polecenia-zamiast-recenzji-duza-zmiana-na-facebooku',
+    at: '✓ Zmienić szablon i usunąć kartę z recenzjami',
+    heading: 'Co możesz z tym zrobić?',
+  },
+
+  // Nowy regulamin Facebooka.
+  {
+    slug: 'nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu',
+    at: 'Rzeczywiście znalazły się wśród nich takie słowa',
+    heading: 'Jakie słowa trafiły na listę?',
+  },
+  {
+    slug: 'nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu',
+    at: 'Część istotnych punktów regulaminu pozostaje bez zmian',
+    heading: 'Co pozostało bez zmian?',
+  },
+  {
+    slug: 'nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu',
+    at: 'Nowy regulamin podkreśla jednak, że algorytm',
+    heading: 'Algorytm ma czytać kontekst',
+  },
+  {
+    slug: 'nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu',
+    at: 'Dokument podkreśla także szczególną ochronę nieletnich',
+    heading: 'Ochrona nieletnich i walka z fake newsami',
+  },
+
+  // Social media a polski futbol — a narrative, so the headings mark its beats.
+  {
+    slug: 'social-media-futbol',
+    at: 'Od kilku lat zaczęły pojawiać się zakulisowe materiały',
+    heading: 'Kto stoi za komunikacją polskiego futbolu?',
+  },
+  {
+    slug: 'social-media-futbol',
+    at: 'Komunikacja w internecie stała się czymś oczywistym',
+    heading: 'Kibic dostaje informacje z pierwszej ręki',
+  },
+  {
+    slug: 'social-media-futbol',
+    at: 'Grzegorze Krychowiak, obecnie zawodnik francuskiego PSG',
+    heading: 'Krychowiak kontra Boniek – riposty, które budują wizerunek',
+  },
+  {
+    slug: 'social-media-futbol',
+    at: 'W modowe zamieszanie z Krychowiakiem zaangażował się',
+    heading: 'Dystans do siebie jako strategia',
+  },
+
+  // Moderacja — the LAMA acronym becomes the table of contents.
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'Impreza. Ktoś właśnie, ze szklanką w dłoni',
+    heading: 'Dlaczego warto odpisywać?',
+  },
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'Nasze socialowe stadko lubi',
+    heading: 'Moderacja w stylu LAMA',
+  },
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'L – long-term relationship',
+    heading: 'L – long-term relationship',
+    cut: 'L – long-term relationship – ',
+    tag: 'h3',
+  },
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'A – awareness',
+    heading: 'A – awareness',
+    cut: 'A – awareness – ',
+    tag: 'h3',
+  },
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'M – maybe?',
+    heading: 'M – maybe? Eksperymentujmy',
+    cut: 'M – maybe? …eksperymentujmy! ',
+    tag: 'h3',
+  },
+  {
+    slug: 'nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage',
+    at: 'A – award',
+    heading: 'A – award',
+    cut: 'A – award – ',
+    tag: 'h3',
+  },
+]
+
 if (process.argv.includes('--prod')) {
   const prodUrl = process.env.DATABASE_URL_PROD
   if (!prodUrl) {
@@ -147,6 +356,16 @@ function setText(node: LexicalNode, text: string): void {
   node.children = [{ type: 'text', text, format: 0 } as LexicalNode]
 }
 
+/** A fresh heading node carrying one line of plain text. */
+function headingNode(text: string, tag: string): LexicalNode {
+  return {
+    type: 'heading',
+    tag,
+    format: '',
+    children: [{ type: 'text', text, format: 0 } as LexicalNode],
+  }
+}
+
 /** Turn a heading node into an ordinary paragraph, keeping its children. */
 function demoteToParagraph(node: LexicalNode): void {
   node.type = 'paragraph'
@@ -164,6 +383,7 @@ let unwrapped = 0
 let excerpts = 0
 let leadsDeleted = 0
 let leadsTrimmed = 0
+let sections = 0
 let relevelled = 0
 let shortened = 0
 let credits = 0
@@ -275,7 +495,7 @@ for (const post of posts.docs) {
   // `trimBlockPrefix` rather than a rewrite, so links and bold in the surviving
   // text are not flattened.
   const leadIndex = (root.children ?? []).findIndex(
-    (node) => nodeText(node).trim().length > 30 || headingLevel(node) !== null
+    (node) => nodeText(node).trim() !== '' || headingLevel(node) !== null
   )
   const lead = leadIndex === -1 ? null : root.children?.[leadIndex]
   if (lead && lead.type === 'paragraph' && excerpt.trim() !== '') {
@@ -350,6 +570,59 @@ for (const post of posts.docs) {
     }
   }
 
+  // --- 5b. Approved sections for the legacy posts ----------------------------
+  // After the lead-paragraph step, so the anchors match the text as it will
+  // ship. Re-running is a no-op: a heading that already carries the approved
+  // text means this edit has been applied.
+  for (const edit of SECTIONS.filter((entry) => entry.slug === post.slug)) {
+    const kids: LexicalNode[] = root.children ?? []
+    const already = kids.some(
+      (node) =>
+        headingLevel(node) !== null && headingText(node) === edit.heading
+    )
+    if (already) {
+      continue
+    }
+    const index = kids.findIndex((node) => nodeText(node).startsWith(edit.at))
+    if (index === -1) {
+      skipped++
+      console.log(
+        `! #${post.id} ${post.slug} — SKIPPED section "${edit.heading}": no block starting "${edit.at.slice(0, 40)}…"`
+      )
+      continue
+    }
+    const target = kids[index] as LexicalNode
+    const tag = edit.tag ?? 'h2'
+
+    if (edit.cut) {
+      const raw = nodeText(target)
+      if (!raw.startsWith(edit.cut)) {
+        skipped++
+        console.log(
+          `! #${post.id} ${post.slug} — SKIPPED section "${edit.heading}": block does not open with the label`
+        )
+        continue
+      }
+      if (raw.trim().length === edit.cut.trim().length) {
+        // The whole block was the label — it becomes the heading.
+        promoteToHeading(target, tag)
+        setText(target, edit.heading)
+      } else {
+        trimBlockPrefix(target, edit.cut.length)
+        kids.splice(index, 0, headingNode(edit.heading, tag))
+      }
+    } else {
+      kids.splice(
+        edit.where === 'after' ? index + 1 : index,
+        0,
+        headingNode(edit.heading, tag)
+      )
+    }
+    root.children = kids
+    sections++
+    notes.push(`section "${edit.heading}"`)
+  }
+
   // --- 6. Re-level ----------------------------------------------------------
   const moved = normalizeHeadingLevels(root)
   if (moved > 0) {
@@ -402,7 +675,8 @@ console.log(
   `\n${changedPosts} post(s) ${APPLY ? 'changed' : 'would change'}: ` +
     `${intros} intro heading(s), ${promoted} promoted, ${unwrapped} list label(s), ` +
     `${shortened} shortened, ${credits} image credit(s), ${relevelled} re-levelled, ` +
-    `${excerpts} excerpt(s), ${leadsDeleted} lead para deleted, ${leadsTrimmed} trimmed` +
+    `${excerpts} excerpt(s), ${leadsDeleted} lead para deleted, ${leadsTrimmed} trimmed, ` +
+    `${sections} section(s)` +
     (skipped ? `, ${skipped} override(s) skipped (see above)` : '') +
     (APPLY ? '' : '. Re-run with --apply to write.')
 )
