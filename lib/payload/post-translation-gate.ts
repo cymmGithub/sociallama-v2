@@ -340,7 +340,7 @@ export function checkDiacritics(
 ): Finding[] {
   const allowed = new Set(allowlist.map((entry) => entry.toLowerCase()))
   const suspects = new Set<string>()
-  for (const word of text.split(/[\s,.;:!?()„”"'—–-]+/)) {
+  for (const word of text.split(/[\s,.;:!?()„“”"'’—–-]+/)) {
     if (!(word && POLISH_DIACRITIC.test(word))) {
       continue
     }

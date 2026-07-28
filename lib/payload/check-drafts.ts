@@ -47,14 +47,18 @@ const allowlist: string[] = await readFile(
   .then((raw) => JSON.parse(raw) as string[])
   .catch(() => [])
 
-const slugs =
-  requested.length > 0
-    ? requested
-    : ALL
-      ? (await readdir(CONTENT_DIR, { withFileTypes: true }))
-          .filter((entry) => entry.isDirectory())
-          .map((entry) => entry.name)
-      : []
+async function slugsToCheck(): Promise<string[]> {
+  if (requested.length > 0) {
+    return requested
+  }
+  if (!ALL) {
+    return []
+  }
+  const entries = await readdir(CONTENT_DIR, { withFileTypes: true })
+  return entries.filter((entry) => entry.isDirectory()).map((e) => e.name)
+}
+
+const slugs = await slugsToCheck()
 
 if (slugs.length === 0) {
   throw new Error('payload:check:drafts needs slugs, or --all')
@@ -114,7 +118,7 @@ for (const slug of slugs) {
       const linkCount = (plRun.text.match(/<a\d+>/g) ?? []).length
       findings.push(
         ...checkRunMarkup(
-          { text: plRun.text, links: Array(linkCount).fill({}), meta: [] },
+          { text: plRun.text, links: new Array(linkCount).fill({}), meta: [] },
           enRun.text,
           `run ${index} (${plRun.parent})`
         )

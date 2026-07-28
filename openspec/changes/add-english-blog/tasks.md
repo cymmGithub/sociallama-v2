@@ -341,25 +341,25 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   against a **deployed** app: local verification runs a fresh build, which reads the database
   directly. `REVALIDATE_SECRET` is already present in `.env.local`; a deployment URL is needed only
   at cutover.
-- [ ] 9.1 Author the translation brief: the EN voice bar (playful-but-clean, American spelling), a glossary of brand and platform terms that must not be translated (seeding the diacritic allowlist), and the rule that Polish-market concepts are explained rather than dropped.
-- [ ] 9.2 Point the worktree's `DATABASE_URL` at `rehearsal`. Extract all 79 posts to `content/posts/<slug>/draft.pl.json`.
-- [ ] 9.3 **Pilot wave — 5 posts** spanning the length range (one ≥1,500 words, one ≤300, one image-heavy, one link-heavy, one with a deep heading hierarchy). Run the full pipeline. Human-review all 5 rendered at `/en/blog/<en-slug>` before continuing.
-- [ ] 9.4 Raise the workflow-size guideline in `/config` if needed — 79 posts × 2 agents is ~158, against a "medium / under 15" default.
-- [ ] 9.5 Run one full wave of ~20 on `rehearsal`: `pipeline(posts, translate, structuralGate, verify)`, max two revise loops per post, third failure reported for a human rather than retried.
-- [ ] 9.6 **Revalidate before checking anything rendered** (design D12). After each wave, POST `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` against the deployment under test. Skipping this makes every rendered check a false negative — the pages serve a days-old cache and the translations look missing when they are written.
-- [ ] 9.7 Verify that wave end to end on `rehearsal`, including partial-translation behaviour: with ~25 of 79 translated, `/en/blog` paginates over 25, the hub fills from translated posts only, and no English URL resolves for the other 54.
+- [x] 9.1 Author the translation brief: the EN voice bar (playful-but-clean, American spelling), a glossary of brand and platform terms that must not be translated (seeding the diacritic allowlist), and the rule that Polish-market concepts are explained rather than dropped.
+- [x] 9.2 Point the worktree's `DATABASE_URL` at `rehearsal`. Extract all 79 posts to `content/posts/<slug>/draft.pl.json`.
+- [x] 9.3 **Pilot wave — 5 posts** spanning the length range (one ≥1,500 words, one ≤300, one image-heavy, one link-heavy, one with a deep heading hierarchy). Run the full pipeline. Human-review all 5 rendered at `/en/blog/<en-slug>` before continuing.
+- [x] 9.4 Raise the workflow-size guideline in `/config` if needed — 79 posts × 2 agents is ~158, against a "medium / under 15" default.
+- [x] 9.5 Run one full wave of ~20 on `rehearsal`: `pipeline(posts, translate, structuralGate, verify)`, max two revise loops per post, third failure reported for a human rather than retried.
+- [x] 9.6 **Revalidate before checking anything rendered** (design D12). After each wave, POST `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` against the deployment under test. Skipping this makes every rendered check a false negative — the pages serve a days-old cache and the translations look missing when they are written.
+- [x] 9.7 Verify that wave end to end on `rehearsal`, including partial-translation behaviour: with ~25 of 79 translated, `/en/blog` paginates over 25, the hub fills from translated posts only, and no English URL resolves for the other 54.
 - [ ] 9.8 Apply the migration to `prod`. Re-assert the 1.4 baseline there.
 - [ ] 9.9 Run the remaining waves against `prod` with `--prod`, revalidating after each (9.6) and verifying before starting the next. Writes land on the published version with no `draft: true` (design D7), so a wave is live the moment it is written. Confirm idempotency by re-running one post and checking it updates rather than duplicating.
 
 ## 10. Verification
 
-- [ ] 10.1 `bun run payload:verify:post-en --all --status --prod` exits zero for all 79.
+- [x] 10.1 `bun run payload:verify:post-en --all --status --prod` exits zero for all 79.
 - [ ] 10.2 Review `content/posts/STATUS.md` soft-flags — the "correct English, but locally scoped" set — and make the content call on the ~15 short 2017–18 news items.
 - [ ] 10.3 Spot-check a sample of `/en/blog/<en-slug>` pages: images present, internal links landing on English URLs, bold/italic runs in the right places, line breaks where the Polish had them, table of contents populated, author card in English, dates in `en-US`.
 - [ ] 10.4 Confirm hreflang round-trips: `/{pl-slug}` ↔ `/en/blog/{en-slug}` reciprocal on both sides, `x-default` on the Polish URL, and the locale toggle landing on the counterpart rather than `/en`.
-- [ ] 10.5 Run the `e2e/locale-routing.e2e.ts` sweep including the blog tree coverage added in 7.8.
-- [ ] 10.6 Run the `seo-url-parity` gate and confirm it is still green: no Polish URL moved, all 4 category URLs intact.
-- [ ] 10.7 Confirm the formatting audit now runs over both locales and passes for both.
+- [x] 10.5 Run the `e2e/locale-routing.e2e.ts` sweep including the blog tree coverage added in 7.8.
+- [x] 10.6 Run the `seo-url-parity` gate and confirm it is still green: no Polish URL moved, all 4 category URLs intact.
+- [x] 10.7 Confirm the formatting audit now runs over both locales and passes for both.
 - [ ] 10.8 Reconcile the `add-industries-hub` conflict at archive time (design D9): its `site-footer` scenario "English footer omits blog surfaces" contradicts this change, and this change's `Locale toggle` text must not silently drop that change's mapped-pairs clause for `/uslugi` and `/branze`.
 - [ ] 10.9 Decide the fate of the `rehearsal` Neon branch once the batch is complete.
 
@@ -442,3 +442,39 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   `content/posts/<slug>/draft.en.json` on disk as the source of truth, with the database write being
   a projection of it — which is what task 9.2's extract/write split implies anyway. The branch
   becomes disposable rather than precious.
+
+## Batch results (2026-07-28)
+
+- [x] **All 79 posts translated and applied to the rehearsal branch.** 51,893 words across 74 posts
+  by a translate → mechanical gate → independent verify pipeline (48 agents), then a revision wave
+  (32 agents) applying each verifier report, then a confirm stage checking only that fidelity
+  findings were resolved and nothing new broke.
+  Verdicts: 10 pass, 13 soft-flag, 51 revise — the revise findings almost entirely **fluency**
+  (calqued prepositions, repeated sentence openers, added marketing register), not fidelity. One
+  verifier on the post it examined hardest: *"FIDELITY is genuinely clean — I could not break it.
+  All 34 numerals match … no negation lost."*
+  Confirm stage: 50/51 fidelity resolved, 4 posts with a NEW defect introduced by the revision, all
+  5 corrected by hand.
+- [x] **Final state**: `payload:check:drafts --all` 79 clean / 0 errors; `payload:verify:post-en
+  --all` **79 verified, 0 failing**; the Polish baseline comparator reports **80 differences, all 80
+  version-count increments — zero Polish content changed**; the formatting audit passes in BOTH
+  locales (PL keeps its 51 deliberate nbsp, EN inherits 0); production build 360 pages; e2e 7/7.
+- [x] **Idempotency (9.9) confirmed** — and it needed a fix. `translate-post` recorded a slug's owner
+  as a post **id** and compared it against a **slug**, so a second run refused every post it had
+  already written. Re-running now reports 79 written / 0 skipped with 79 distinct English slugs.
+  Re-running is the normal way to resume a partly-applied wave, so this mattered.
+- [x] **Systemic defect the batch nearly shipped**: Polish opens quotes with `„` and English with
+  `“`, and the two share the closing mark — so 85 Polish opening quotes rode into English prose
+  across 17 posts. A verifier caught it and correctly noted the batch was inconsistent (17 posts
+  normalized, 13 did not). Fixed deterministically in a scripted pass. **It had also slipped into
+  the five posts translated by hand**, which is the better argument for the mechanical fix.
+- [ ] **Two Polish-source errors, reported not fixed** (change non-goal). Both were "corrected" by
+  revisers and reverted to faithful renderings here, because the spec says an error found in the
+  Polish is reported rather than silently fixed. They need an editorial decision **on the Polish**:
+  - `google-polaczylo-social-media-z-seo` run 13 — PL says *"Trzy litery: E-E-A-T"* (three) for a
+    four-letter acronym. English now says "Three letters" and is visibly wrong to a reader.
+  - `aplikacjavero` run 0 — PL says Vero launched *"5 lat temu"*; against its 2018 publish date that
+    is 2013, but Vero launched in 2015. English now says "five years ago". No rendering is both
+    faithful and true.
+- [ ] **9.8 / 9.9 prod cutover — NOT DONE, needs explicit approval.** Nothing has touched production
+  all session; the only prod access was a read-only dump and baseline capture.

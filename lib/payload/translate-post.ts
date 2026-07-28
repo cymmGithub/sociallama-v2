@@ -291,7 +291,15 @@ for (const post of found.docs) {
     findings.push(
       ...checkTree(root, content.root),
       ...checkSlug(String(draft.slug), {
-        takenBy: takenBy.get(String(draft.slug)),
+        // `takenBy` holds the owning post's ID, so it has to be compared with
+        // THIS post's ID. Comparing it with the Polish slug never matched,
+        // which made a second run refuse every post it had already written —
+        // the script was not idempotent, and re-running is the normal way to
+        // resume a partly-applied wave.
+        takenBy:
+          takenBy.get(String(draft.slug)) === String(post.id)
+            ? undefined
+            : takenBy.get(String(draft.slug)),
         polishSlug: slug,
       }),
       ...checkHeadings(content.root),
