@@ -49,10 +49,51 @@ export interface PostPaths {
   fallbackHref: string
 }
 
-function linkHref(
-  node: SerializedLinkNode | SerializedAutoLinkNode,
-  { basePath, categoryPath, fallbackHref }: PostPaths
+/**
+ * `payload.config.ts` uses a bare `lexicalEditor()`, so its `LinkFeature`
+ * offers an editor EVERY collection as an internal link target — including
+ * `authors`, `media`, `social-platforms` and `users`, none of which have a
+ * public URL of their own.
+ *
+ * This used to be a single ternary: categories took `categoryPath`, and
+ * everything else took `basePath`. That is only correct for posts. A link to a
+ * case study produced `/en/blog/{cs-slug}` — a 404 dressed as an article link,
+ * and unnoticeable in review because it looks exactly like a post URL.
+ *
+ * So the mapping is now explicit and the default is `fallbackHref`, not a
+ * guess. An unmappable relation lands somewhere real rather than somewhere
+ * plausible. Nothing in the current corpus exercises this — all 79 posts
+ * contain zero internal links — which is precisely why it needed to be closed
+ * before someone adds the first one from the CMS and never sees it break.
+ */
+export function hrefForRelation(
+  relationTo: string,
+  slug: string,
+  { basePath, categoryPath, fallbackHref }: PostPaths,
+  locale: Locale
 ): string {
+  switch (relationTo) {
+    case 'posts':
+      return `${basePath}/${slug}`
+    case 'categories':
+      return `${categoryPath}/${slug}`
+    // Case-study slugs are shared across locales (slug-map.ts:100-104), so the
+    // prefix swap is the whole difference.
+    case 'case-studies':
+      return locale === 'en'
+        ? `/en/case-studies/${slug}`
+        : `/case-studies/${slug}`
+    default:
+      return fallbackHref
+  }
+}
+
+export function linkHref(
+  node: SerializedLinkNode | SerializedAutoLinkNode,
+  paths: PostPaths,
+  locale: Locale
+): string {
+  const { fallbackHref } = paths
   if (node.fields.linkType !== 'internal') {
     return node.fields.url ?? fallbackHref
   }
@@ -74,9 +115,7 @@ function linkHref(
     return fallbackHref
   }
 
-  return doc.relationTo === 'categories'
-    ? `${categoryPath}/${slug}`
-    : `${basePath}/${slug}`
+  return hrefForRelation(String(doc.relationTo), slug, paths, locale)
 }
 
 function UploadImage({ node }: { node: SerializedUploadNode }) {
@@ -92,7 +131,15 @@ function UploadImage({ node }: { node: SerializedUploadNode }) {
     <span className={s.figure}>
       <Image
         src={media.url}
-        alt={media.alt}
+        // `payload-types` declares `alt` as a plain `string`, and since it
+        // became `localized: true` that is a lie on this surface: blog queries
+        // read with `fallbackLocale: false` for the design D6 gate, which
+        // propagates into depth-populated media, so an untranslated image
+        // arrives with `alt: null`. Nothing in the type system catches it —
+        // the same trap `resolveCategory` fell into. An empty alt marks the
+        // image decorative, which is the correct degradation when there is
+        // genuinely no description to give.
+        alt={media.alt ?? ''}
         {...(media.width && media.height
           ? { width: media.width, height: media.height }
           : { fill: true })}
@@ -141,14 +188,14 @@ function makeConverters(
     },
     link: ({ node, nodesToJSX }) => (
       <Link
-        href={linkHref(node, paths)}
+        href={linkHref(node, paths, locale)}
         {...(node.fields.newTab ? { target: '_blank' } : {})}
       >
         {nodesToJSX({ nodes: node.children })}
       </Link>
     ),
     autolink: ({ node, nodesToJSX }) => (
-      <Link href={linkHref(node, paths)}>
+      <Link href={linkHref(node, paths, locale)}>
         {nodesToJSX({ nodes: node.children })}
       </Link>
     ),

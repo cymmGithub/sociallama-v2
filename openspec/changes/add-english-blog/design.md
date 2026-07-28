@@ -154,6 +154,35 @@ The engine to copy is **`repair-post-formatting.ts`**, not `translate-case-study
 
 From `translate-case-study.ts` only the *harness* carries over: two-mode `--extract` CLI, a per-slug on-disk review artifact, the `TODO` stub-refusal guard, and structural count assertions before writing.
 
+#### D3 amendment — measured against the corpus, and wrong in three places
+
+D3 was written from a census that this change re-ran against all 79 posts. The
+re-run reproduces D3's own headline figures exactly — **1,889 projected blocks**
+and **3,225 text nodes** — which is the reason to trust it where it disagrees.
+It disagrees on three points, and the implementation follows the corpus:
+
+- **`quote` is a container of paragraphs, not a leaf block.** 18 `paragraph`
+  nodes sit directly inside a `quote`. D3 lists `quote` alongside `paragraph`
+  and `heading` as if it held prose itself.
+- **`listitem` is sometimes a container too** — 5 `heading`, 2 `list` and, flatly
+  contradicting D3's "`upload` … never enter[s] the projection", **2 `upload`**
+  nodes sit inside one. 27 nodes in total are direct children of a projected
+  block with no grammar token to represent them. (A looser count of 31 also
+  counts the 4 `listitem`s inside those 2 nested lists; they are themselves
+  projected blocks, so the tighter 27 is the number that matters to the
+  grammar.)
+- **The unit of translation is therefore not "a block".** `post-projection.ts`
+  projects a *maximal run of adjacent inline children*, and holds every other
+  node aside whole. That is what makes a container block representable at all,
+  and it is why all 1,875 runs round-trip byte-identically.
+
+Two grammar tokens are also untestable by construction: `<code>`, `<sub>` and
+`<sup>` have **zero** occurrences in the corpus (the only format masks present
+are 0, 1, 2, 3, 4, 8 and 9), so task 8.2's round-trip cannot exercise them. The
+mitigation is already in place rather than planned — `post-projection.ts:159`
+throws on any bit outside the known set, so an unexpected mask fails the gate
+instead of being silently projected as unformatted text.
+
 ### D4 — The translation batch is a workflow: translate, gate in code, verify in a fresh context.
 
 `blog-content-integrity` already requires that replacement copy be reviewed before it is written to the database. The pipeline satisfies that with an independent verifier rather than a rubber stamp — the verifying agent never sees the translating agent's reasoning, only the Polish source and the English result.

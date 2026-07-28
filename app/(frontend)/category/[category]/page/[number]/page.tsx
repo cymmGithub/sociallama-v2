@@ -40,10 +40,11 @@ export default async function CategoryPageN({ params }: PageProps) {
     notFound()
   }
 
-  const [postsPage, categories] = await Promise.all([
-    getPostsPage(page, category.id),
-    getCategories(),
-  ])
+  // Sequential, not `Promise.all`: see the build-time DB concurrency constraint
+  // documented in `app/(frontend)/blog/page.tsx`. A parallel burst against the
+  // prod instance during static generation is what times a build out.
+  const postsPage = await getPostsPage(page, category.id)
+  const categories = await getCategories()
   if (postsPage.docs.length === 0) {
     notFound()
   }
