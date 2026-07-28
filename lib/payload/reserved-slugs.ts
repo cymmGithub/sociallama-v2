@@ -22,6 +22,9 @@ export const RESERVED_SLUGS: readonly string[] = [
   'admin',
   'api',
   'category',
+  // Root of the English locale tree (app/(frontend-en)/en/page.tsx). A post
+  // slugged `en` has always been permanently shadowed by it.
+  'en',
   // Planned pages already linked from the menu and footer
   'uslugi',
   'szkolenia',
@@ -39,3 +42,17 @@ export const RESERVED_SLUGS: readonly string[] = [
   'opengraph-image.jpg',
   'twitter-image.jpg',
 ]
+
+/**
+ * Slugs an *English* post can never use.
+ *
+ * English posts are namespaced at `/en/blog/{slug}`, so none of the root-level
+ * Polish reservations above apply to them — `RESERVED_SLUGS` describes
+ * collisions with `/{slug}`, a shape English does not have.
+ *
+ * The namespace does not remove the problem entirely, though: `[slug]` sits
+ * alongside two static siblings under `/en/blog/`, and a static segment always
+ * wins over a dynamic one. A post slugged `page` or `category` would resolve
+ * to the pagination or category route and never render.
+ */
+export const RESERVED_EN_POST_SLUGS: readonly string[] = ['page', 'category']

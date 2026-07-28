@@ -33,6 +33,7 @@ export const categories: CollectionConfig = {
       label: 'Nazwa',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -41,6 +42,10 @@ export const categories: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      // Localized so English reads `/en/blog/category/advertising` rather than
+      // `/category/reklama`. The Polish values must not move: they are the
+      // live WordPress category URLs.
+      localized: true,
       validate: validatePostSlug,
       admin: {
         description:

@@ -96,6 +96,10 @@ export const blogHub: GlobalConfig = {
       label: 'Wyróżniony wpis',
       type: 'relationship',
       relationTo: 'posts',
+      // Curation is per-locale: an English hub must never feature a post that
+      // has no English translation. English ships with empty slots and falls
+      // back to newest-translated-first, exactly as an empty PL global does.
+      localized: true,
       admin: {
         description:
           'Duży wpis otwierający blog. Pusto = najnowszy opublikowany wpis.',
@@ -108,6 +112,7 @@ export const blogHub: GlobalConfig = {
       relationTo: 'posts',
       hasMany: true,
       maxRows: 4,
+      localized: true,
       admin: {
         description:
           'Lista obok wyróżnionego wpisu, maksymalnie cztery pozycje — kolejność jak tutaj. Pusto = cztery kolejne najnowsze wpisy.',
@@ -118,6 +123,7 @@ export const blogHub: GlobalConfig = {
       label: 'Najczęściej czytane',
       type: 'relationship',
       relationTo: 'posts',
+      localized: true,
       admin: {
         description:
           'Jeden wpis w bloku „Najczęściej czytane”. To wybór redakcji, nie pomiar ruchu. Pusto = cały blok znika.',
@@ -136,6 +142,7 @@ export const blogHub: GlobalConfig = {
           name: 'title',
           label: 'Tytuł wideo',
           type: 'text',
+          localized: true,
           validate: validateVideoTitle,
         },
         {
@@ -151,6 +158,7 @@ export const blogHub: GlobalConfig = {
           name: 'description',
           label: 'Opis',
           type: 'textarea',
+          localized: true,
           admin: {
             description: 'Dwa–trzy zdania o tym, co jest w materiale.',
           },
@@ -159,6 +167,7 @@ export const blogHub: GlobalConfig = {
           name: 'duration',
           label: 'Długość',
           type: 'text',
+          localized: true,
           admin: {
             description: 'Opcjonalnie, w formacie 8:42.',
           },

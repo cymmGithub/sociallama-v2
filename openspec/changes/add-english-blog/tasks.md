@@ -6,17 +6,37 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
 
 ## 1. Disarm the schema hazard (own commit, no schema change)
 
-- [ ] 1.1 Add `push: false` to `postgresAdapter` in `payload.config.ts`, **and insert `payload migrate` into `lib/scripts/worktree.ts` before the seed loop** (`:234-240`). The isolated bootstrap currently relies on push to build the schema — its own comment says so (`:207`: "The first seed's Payload init pushes the schema (dev mode)") — so with push off those seeds hit a schema-less database and fail, breaking the `--isolated` worktree this change's risk table prescribes. Three other changes are in flight on the same bootstrap.
+- [x] 1.1 Add `push: false` to `postgresAdapter` in `payload.config.ts`, **and insert `payload migrate` into `lib/scripts/worktree.ts` before the seed loop** (`:234-240`). The isolated bootstrap currently relies on push to build the schema — its own comment says so (`:207`: "The first seed's Payload init pushes the schema (dev mode)") — so with push off those seeds hit a schema-less database and fail, breaking the `--isolated` worktree this change's risk table prescribes. Three other changes are in flight on the same bootstrap.
   **Acceptance: a fresh `bun run worktree:new --isolated` provisions and seeds successfully**, plus `bun run check` passes. Booting the dev server against the already-populated shared DB does not exercise this and cannot catch it.
-- [ ] 1.2 Snapshot `dev` and `prod` before anything else. Record where the snapshots live.
-- [ ] 1.3 **Reconcile the `dev` migration ledger.** `payload_migrations` holds 5 rows against 8 files in `migrations/` — the schema is current because push built it, so `payload migrate` will attempt `20260726_212614_add_author_role` and die on "column already exists" (`node_modules/payload/dist/database/migrations/migrate.js:17-53`). Either rebuild dev from migrations (accepting the loss of its 15 local fixtures) or insert ledger rows for the three already-applied migrations. **Gate: `bun payload migrate` reports a clean no-op on `dev`.** Nothing in phase 2 starts until this passes.
-- [ ] 1.4 Record the pre-migration baseline on `prod`: all 79 posts (`slug` + content hash of `title`/`excerpt`/`content`), all 4 categories (`title` + `slug`), the 1 author (`role` + `bio`), and the `blog-hub` global's `featured`/`popular`/`picks`/`video.*`. This is what 2.5 asserts against, so it must exist before the schema changes.
+- [x] 1.2 Snapshot `dev` and `prod` before anything else. Record where the snapshots live.
+  Taken 2026-07-28 to `/mnt/work/goodone/.db-snapshots/add-english-blog/` (see its `README.md`):
+  `prod.2026-07-28.sql` (8.7M — 79 posts, 293 `_posts_v`, 4 categories, 1 author, 48 case studies),
+  plus both local DBs. Prod is **PG 18.4**, so it needs an 18-series `pg_dump`; the container's
+  v17 client and the host's v16 both refuse on version mismatch.
+- [x] 1.3 **Reconcile the `dev` migration ledger.** `payload_migrations` holds 5 rows against 8 files in `migrations/` — the schema is current because push built it, so `payload migrate` will attempt `20260726_212614_add_author_role` and die on "column already exists" (`node_modules/payload/dist/database/migrations/migrate.js:17-53`). Either rebuild dev from migrations (accepting the loss of its 15 local fixtures) or insert ledger rows for the three already-applied migrations. **Gate: `bun payload migrate` reports a clean no-op on `dev`.** Nothing in phase 2 starts until this passes.
+  Done by inserting the 3 ledger rows (batch 4), after verifying the push-built schema matches those
+  migrations exactly — all columns, 9/9 indexes, 5/5 FKs. **The design missed a second blocker:** the
+  executed migrate is `@payloadcms/drizzle/dist/migrate.js`, not the `payload` core file cited, and it
+  prompts interactively on *any* `batch = -1` row — the `dev` push marker. Ledger rows alone left
+  `migrate` hanging on `(y/N)`. Marker deleted; both DBs now report a clean no-op with data intact.
+  This worktree's isolated DB (`sociallama_add_english_blog`) was empty and took all 8 migrations from
+  scratch, so it never had a marker.
+- [x] 1.4 Record the pre-migration baseline on `prod`: all 79 posts (`slug` + content hash of `title`/`excerpt`/`content`), all 4 categories (`title` + `slug`), the 1 author (`role` + `bio`), and the `blog-hub` global's `featured`/`popular`/`picks`/`video.*`. This is what 2.5 asserts against, so it must exist before the schema changes.
+  Captured to `content/baselines/blog-prod.json` by a new `lib/payload/baseline-blog-content.ts`
+  (`bun run payload:baseline:blog --prod --out|--compare`), which reads through the Local API under
+  `locale: 'pl', fallbackLocale: false` — the same read on both sides of the migration, which SQL
+  could not be, since these columns move to `*_locales`. 79 posts / 293 versions / 4 categories /
+  1 author, per-field hashes plus the shared fields and per-post version counts. Comparator
+  negative-tested: detects content-hash change, `title → ∅`, a moved category slug, a version-count
+  drop and a deleted post; exits 1 on difference, 0 on identical.
+  Note for 2.3: prod's `blog-hub` has **empty** `featured`/`popular`/`picks` — only `video.*` is set,
+  so the `blog_hub_rels` locale backfill will match zero rows (it is still required for correctness).
 
 ## 2. Localize the collections
 
-- [ ] 2.1 Add `localized: true` to `posts`: `title`, `excerpt`, `content`, `slug`, `seo.metaTitle`, `seo.metaDescription`. Leave `cover`, `category`, `author`, `publishedAt`, `seo.ogImage` shared.
-- [ ] 2.2 Add `localized: true` to `categories.title` and `categories.slug`; to `authors.role` and `authors.bio`; and to the `blog-hub` global's `featured`, `picks`, `popular`, `video.title`, `video.description`, `video.duration`. Localized relationships on a global are supported (`node_modules/@payloadcms/drizzle/dist/schema/buildRawSchema.js:75-91`) — the global is localized **here**, in the same migration, not later in phase 6.
-- [ ] 2.3 Generate the migration with `payload migrate:create`, then **hand-splice every backfill** (design D1). `migrate:create` emits `CREATE TABLE` + `DROP COLUMN` with nothing between them:
+- [x] 2.1 Add `localized: true` to `posts`: `title`, `excerpt`, `content`, `slug`, `seo.metaTitle`, `seo.metaDescription`. Leave `cover`, `category`, `author`, `publishedAt`, `seo.ogImage` shared.
+- [x] 2.2 Add `localized: true` to `categories.title` and `categories.slug`; to `authors.role` and `authors.bio`; and to the `blog-hub` global's `featured`, `picks`, `popular`, `video.title`, `video.description`, `video.duration`. Localized relationships on a global are supported (`node_modules/@payloadcms/drizzle/dist/schema/buildRawSchema.js:75-91`) — the global is localized **here**, in the same migration, not later in phase 6.
+- [x] 2.3 Generate the migration with `payload migrate:create`, then **hand-splice every backfill** (design D1). `migrate:create` emits `CREATE TABLE` + `DROP COLUMN` with nothing between them:
   - `posts_locales` and `_posts_v_locales` ← `INSERT … SELECT … , 'pl', id`
   - `categories_locales` ← same (no versions table, no `_v` twin)
   - `authors_locales` ← same
@@ -24,10 +44,48 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   - `UPDATE blog_hub_rels SET locale = 'pl' WHERE locale IS NULL` — localizing a `hasMany` adds a `locale` column that leaves existing pick rows invisible in both locales (`schema/build.js:477-483`)
 
   Do not recreate the `_locales` enum or the existing `_posts_v.snapshot` / `published_locale` columns. Write a real `down` that restores the columns and copies `pl` rows back for all four tables.
-- [ ] 2.4 Verify the spliced SQL by reading it, before running it anywhere. Every `DROP COLUMN` must be preceded by an `INSERT … SELECT` that carries its data. This review is the change's single highest-risk moment.
-- [ ] 2.5 Clone `prod` to a throwaway Neon branch — this is `rehearsal`, and it is **kept**, not torn down: it is where the pilot runs. Apply the migration there. Assert against the 1.4 baseline: 79 posts return `title`/`excerpt`/`content` byte-identical under `locale: 'pl'`, 4 categories return `title`+`slug`, the author returns `role`+`bio`, the global's slots and picks survive, and post version history is intact. Note whether the drizzle rename prompt appeared.
-- [ ] 2.6 Apply to `dev`, run `payload generate:types`, confirm `locale: 'pl' | 'en'` types regenerate and `bun run check` passes.
-- [ ] 2.7 Extend `RESERVED_SLUGS` / `STATIC_ROUTES` with `en` — a post slugged `en` is already permanently shadowed by `app/(frontend-en)/en/page.tsx`. Make `validate-slug.ts` locale-aware. Leave the missing `o-nas` entry alone; flag it, do not fix it here.
+  `migrations/20260728_163231_add_blog_localization.ts`. Generated output emitted 21 `DROP COLUMN`s
+  and zero data-copying, exactly as predicted; the 5 `INSERT … SELECT` blocks plus the
+  `blog_hub_rels` UPDATE are hand-added and marked as such. **No drizzle rename prompt appeared**
+  (design open question — answered: it does not trigger).
+  Two defects in the generated `down` the design did not anticipate, both fixed:
+  it dropped the `_locales` tables *before* re-adding the base columns (nothing left to copy back),
+  and `ADD COLUMN "title" varchar NOT NULL` on a populated `categories` fails outright. Columns now
+  come back nullable, take their `pl` values, then take `NOT NULL`. `down` also deletes non-`pl`
+  `blog_hub_rels` rows so English picks cannot survive as Polish ones.
+- [x] 2.4 Verify the spliced SQL by reading it, before running it anywhere. Every `DROP COLUMN` must be preceded by an `INSERT … SELECT` that carries its data. This review is the change's single highest-risk moment.
+  Verified mechanically rather than by eye: a script parses the `up` block, maps each of the 21
+  `DROP COLUMN`s to its locale table, and asserts an `INSERT` carries that exact column *and* sits
+  at an earlier offset. 21/21 ok, 5/5 inserts free of positional drift between their column list
+  and their `SELECT` list.
+- [x] 2.5 Clone `prod` to a throwaway Neon branch — this is `rehearsal`, and it is **kept**, not torn down: it is where the pilot runs. Apply the migration there. Assert against the 1.4 baseline: 79 posts return `title`/`excerpt`/`content` byte-identical under `locale: 'pl'`, 4 categories return `title`+`slug`, the author returns `role`+`bio`, the global's slots and picks survive, and post version history is intact. Note whether the drizzle rename prompt appeared.
+  **Rehearsed on a local PG18 prod clone, not a Neon branch** — no `neonctl` and no `NEON_API_KEY`
+  are available here. `postgres:18-alpine` on `:5435` (container `sociallama-rehearsal`, db `neondb`),
+  restored from `prod.2026-07-28.sql`. Fidelity of the clone proved by SQL checksums over
+  `posts`/`_posts_v`/`categories`/`authors`/`blog_hub` — all five md5s identical to live prod — since
+  the Payload comparator cannot read a pre-migration DB once the config declares localized fields.
+  Results: migration applied in 72ms; `posts_locales` 79 rows (`pl` only), `_posts_v_locales` 293,
+  `categories_locales` 4, `authors_locales` 1, `blog_hub_locales` 1; the baseline comparator reports
+  **identical** against `blog-prod.json`. `down` then round-tripped: all five checksums back to the
+  prod values, all `*_locales` tables gone, `categories.title`/`slug` NOT NULL restored. `up`
+  re-applied afterwards, so the clone sits migrated.
+  **STILL NEEDED for phase 9:** a real Neon branch plus a deployment pointing at it — the pilot wave
+  needs a reachable `/api/revalidate` (design D12), which a local container cannot provide.
+- [x] 2.6 Apply to `dev`, run `payload generate:types`, confirm `locale: 'pl' | 'en'` types regenerate and `bun run check` passes.
+  `payload-types.ts` is **unchanged**, correctly: `localization` was already config-wide for
+  case-studies, so `locale: 'pl' | 'en'` (L106) predates this change and per-field `localized: true`
+  does not alter the emitted interfaces. `bun run check` exits 0 — 491 tests pass.
+- [x] 2.7 Extend `RESERVED_SLUGS` / `STATIC_ROUTES` with `en` — a post slugged `en` is already permanently shadowed by `app/(frontend-en)/en/page.tsx`. Make `validate-slug.ts` locale-aware. Leave the missing `o-nas` entry alone; flag it, do not fix it here.
+  `en` added to `RESERVED_SLUGS` (not to `STATIC_ROUTES`, which `app/sitemap.ts` also consumes —
+  adding it there would have emitted a duplicate `/en` sitemap entry as a side effect).
+  **Design D2 is slightly wrong** where it says namespacing "removes the collision surface entirely":
+  `/en/blog/[slug]` is a *sibling* of `/en/blog/page/[number]` and `/en/blog/category/[category]`
+  (tasks 4.1/4.3), and a static segment beats a dynamic one. So English posts have exactly two
+  reserved slugs — new `RESERVED_EN_POST_SLUGS = ['page', 'category']`. `validatePostSlug` now picks
+  the list from `req.locale`, since the Polish root-level list describes a URL shape English does not
+  have. 8 tests in `lib/payload/validate-slug.test.ts`; `bun run check` exits 0 at 499 tests.
+  **Flagged, not fixed (as instructed):** `o-nas` is still absent from `STATIC_ROUTES`/`RESERVED_SLUGS`,
+  so a Polish post slugged `o-nas` is silently unroutable today.
 
 ## 3. Locale-aware query layer
 

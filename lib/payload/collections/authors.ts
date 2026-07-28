@@ -52,6 +52,7 @@ export const authors: CollectionConfig = {
       name: 'role',
       label: 'Rola / stanowisko',
       type: 'text',
+      localized: true,
       admin: {
         description:
           'Jedna linijka, np. „Specjalista SEO, SEOFLY”. Pokazujemy ją w szynie obok wpisu i w wizytówce autora pod tekstem. Bez niej zostaje samo nazwisko.',
@@ -61,6 +62,7 @@ export const authors: CollectionConfig = {
       name: 'bio',
       label: 'Bio',
       type: 'textarea',
+      localized: true,
       admin: {
         description:
           'Dwa–trzy zdania pokazywane w wizytówce autora pod wpisem.',

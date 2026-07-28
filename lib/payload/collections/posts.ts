@@ -48,6 +48,7 @@ export const posts: CollectionConfig = {
       label: 'Tytuł',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
@@ -56,6 +57,10 @@ export const posts: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
+      // Localized: English posts get real English slugs, so `unique` becomes
+      // unique *per locale* — `/{pl-slug}` and `/en/blog/{en-slug}` are
+      // independent namespaces.
+      localized: true,
       validate: validatePostSlug,
       admin: {
         position: 'sidebar',
@@ -101,6 +106,7 @@ export const posts: CollectionConfig = {
       name: 'excerpt',
       label: 'Zajawka',
       type: 'textarea',
+      localized: true,
       admin: {
         description:
           'Krótki opis pokazywany na kartach wpisów i w wynikach wyszukiwania.',
@@ -116,6 +122,7 @@ export const posts: CollectionConfig = {
       name: 'content',
       label: 'Treść',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'seo',
@@ -126,6 +133,7 @@ export const posts: CollectionConfig = {
           name: 'metaTitle',
           label: 'Meta tytuł',
           type: 'text',
+          localized: true,
           admin: {
             description: 'Domyślnie: tytuł wpisu.',
           },
@@ -134,6 +142,7 @@ export const posts: CollectionConfig = {
           name: 'metaDescription',
           label: 'Meta opis',
           type: 'textarea',
+          localized: true,
           admin: {
             description: 'Domyślnie: zajawka wpisu.',
           },

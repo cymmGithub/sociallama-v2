@@ -30,6 +30,7 @@
     "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",
     "payload:repair:embed-links": "bun ./lib/payload/repair-wp-embed-links.ts",
     "payload:audit:post-formatting": "bun ./lib/payload/audit-post-formatting.ts",
+    "payload:baseline:blog": "bun ./lib/payload/baseline-blog-content.ts",
     "payload:repair:post-formatting": "bun ./lib/payload/repair-post-formatting.ts",
     "payload:apply:heading-fixes": "bun ./lib/payload/apply-heading-fixes.ts",
     "clean": "rm -rf .next node_modules/.cache",
