@@ -1,0 +1,16 @@
+{
+  "source": "karuzelainstagramstories",
+  "postId": 34,
+  "title": "A three-card carousel comes to Instagram Stories",
+  "excerpt": "Instagram Stories are a hit with users, so it is no surprise that brands are just as keen to run sponsored content through them. Until now you could share only one element: a 5-second photo or a 15-second video. Instagram has just announced a big convenience for advertisers — a three-card carousel.",
+  "metaTitle": "A three-card carousel comes to Instagram Stories",
+  "metaDescription": "Instagram Stories are a hit with users, so it is no surprise that brands are just as keen to run sponsored content through them. Until now you could share only one element: a 5-second photo or a 15-second video. Instagram has just announced a big convenience for advertisers — a three-card carousel.",
+  "slug": "three-card-carousel-instagram-stories",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "The maximum length of a single card is not changing, so the total running time for a carousel ad in Insta Stories will be as much as 45 seconds! That gives us room to fit more information into the content and to pull the audience into the story."
+    }
+  ]
+}

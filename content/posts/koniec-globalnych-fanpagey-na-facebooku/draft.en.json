@@ -1,0 +1,26 @@
+{
+  "source": "koniec-globalnych-fanpagey-na-facebooku",
+  "postId": 32,
+  "title": "The end of global Facebook Pages?",
+  "excerpt": "The end of global Pages?",
+  "metaTitle": "The end of global Facebook Pages?",
+  "metaDescription": "The end of global Pages?",
+  "slug": "the-end-of-global-facebook-pages",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Until recently you could create a global Page on Facebook: one page that published content to local markets, kept a single total fan count, a unique URL, and global statistics across every fan. And although Facebook's Help Center still describes the global page structure (<a0>goo.gl/IdBJE0</a0>) and the rules for creating one, the feature is no longer available. In Poland such a page could never be created from the Page itself,<br/>only through Facebook's support department. Now not even the platform's own specialists can help."
+    },
+    {
+      "index": 1,
+      "parent": "heading",
+      "text": "What does Facebook's Help Center say?"
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "We decided to verify the news and wrote to Facebook's Help Center. The consultants informed us that the feature has been switched off and is available only to advertisers who have been assigned a „personal mentor”. They also admitted that the official help pages are not kept up to date and can be misleading. So what does it take for Facebook to grant you „your own consultant”? Wait! There are a great many advertisers, consultants are assigned once a quarter, and they simply cannot handle everyone."
+    }
+  ]
+}

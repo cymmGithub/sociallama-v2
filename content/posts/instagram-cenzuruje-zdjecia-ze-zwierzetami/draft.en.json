@@ -1,0 +1,26 @@
+{
+  "source": "instagram-cenzuruje-zdjecia-ze-zwierzetami",
+  "postId": 39,
+  "title": "Instagram is censoring photos with animals!",
+  "excerpt": "Instagram has decided to look out for animal welfare.",
+  "metaTitle": "Instagram is censoring photos with animals!",
+  "metaDescription": "Instagram has decided to look out for animal welfare.",
+  "slug": "instagram-is-censoring-photos-with-animals",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "Together with other organisations working on behalf of wild animals, it has drawn up a list of hashtags connected with animal cruelty. Any user who types such a tag into the app's search will be met with a warning: „Protect wildlife on Instagram. Animal abuse and the sale of endangered animals or their parts is not allowed on Instagram. You are searching for a hashtag that may be associated with posts that encourage harmful behaviour towards animals or the environment”. That is how the platform has decided to push back on photographs of people petting a tiger, riding an elephant, or taking a selfie with a koala. The warning will therefore appear on pictures tagged #koalaselfie or #lionselfie."
+    },
+    {
+      "index": 1,
+      "parent": "paragraph",
+      "text": "The campaign was created to protect species that are not only at risk of extinction but are also treated as living toys for tourists. It is meant to raise awareness of the harm done to animals handled this way. Instagram is also encouraging people to report posts themselves where the treatment of animals raises doubts."
+    },
+    {
+      "index": 2,
+      "parent": "paragraph",
+      "text": "Fortunately the Lama is not endangered, so you can pet this one all you like! 🙂"
+    }
+  ]
+}

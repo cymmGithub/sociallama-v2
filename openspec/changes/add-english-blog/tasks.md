@@ -289,7 +289,17 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   `lib/payload/post-projection.test.ts` carries 23 unit tests covering each grammar token, the
   corpus's actual format bitmasks, the reject-don't-guess cases, and the three structures D3 says
   cannot occur.
-- [ ] 8.3 Write `lib/payload/translate-post.ts` around that projection, following `repair-post-formatting.ts`: `--prod` env swap before the config import (L57–66), deep copy before mutation (L124–127), in-place walk (L136–161), **report and skip ambiguity, never guess** (L163–168), one `payload.update` per post (L199–203), dry-run by default with `--apply` (L42). Two modes (`--extract` / write) and the `TODO` stub guard from `translate-case-study.ts`.
+- [x] 8.3 Write `lib/payload/translate-post.ts` around that projection, following `repair-post-formatting.ts`: `--prod` env swap before the config import (L57–66), deep copy before mutation (L124–127), in-place walk (L136–161), **report and skip ambiguity, never guess** (L163–168), one `payload.update` per post (L199–203), dry-run by default with `--apply` (L42). Two modes (`--extract` / write) and the `TODO` stub guard from `translate-case-study.ts`.
+  `lib/payload/translate-post.ts`, two modes as specified, exercised end to end against the **real
+  Neon branch**: extract → 5 `draft.pl.json` (run counts 22/1/3/1/3, matching the corpus census) →
+  hand-authored `draft.en.json` → dry run clean → `--apply` → **5 written, 0 skipped**. The baseline
+  comparator then reported the same 6 differences as the local pilot, every one a version-count
+  increment: no Polish content moved.
+  **Disk is the source of truth, not the database** — a decision forced by the branch's 1-day expiry
+  and worth keeping regardless. `draft.en.json` is committed; `draft.pl.json` is gitignored because
+  `--extract` regenerates it from Payload. `content/posts/taxonomy.en.json` holds the category and
+  author English from 6.3 for the same reason: it is content, not schema, so it does not travel with
+  a migration and would otherwise have to be retyped at prod cutover.
 - [x] 8.4 Write the structural gate as a pure function so both the workflow and the verifier use the same code: block count/type/order match PL; per-block `<br/>`/`<tab/>` counts and positions match PL; every `<aN>` present exactly once and none invented; markup balanced, grammar-only, bit-ordered; slug URL-safe, EN-unique, not reserved; heading ≤ 85 chars. Polish diacritics are a **soft flag against a proper-noun allowlist**, never a hard reject — "Łukasz Płociński" and "Pracuj.pl" survive translation legitimately.
   `lib/payload/post-translation-gate.ts` — pure, no I/O, so the batch and the verifier run the same
   code and cannot disagree about what a defect is.
@@ -305,7 +315,7 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   translation with the corresponding defect, because a check that never rejects would pass a
   suite of happy paths just as happily as a correct one.
 - [ ] 8.5 Write `lib/payload/verify-post-en.ts` per design D5 — asserts every guarantee in the spec delta including the intra-block leaf sequence, exits non-zero on failure, writes `content/posts/STATUS.md` under `--status`.
-- [ ] 8.6 Add `payload:translate:post` and `payload:verify:post-en` package scripts.
+- [x] 8.6 Add `payload:translate:post` and `payload:verify:post-en` package scripts.
 - [ ] 8.7 Make `audit-post-formatting.ts` locale-aware (`:139-144` queries with no `locale`, so English passes vacuously today), and scope the Polish `nbsp` rule to `pl` (design D10).
 - [ ] 8.8 Give the translation scripts a cache-invalidation step (design D12). `app/api/revalidate/route.ts:12-20` documents the trap: a script writing straight to the database runs outside any Next request scope, where `revalidateTag` throws and `lib/payload/revalidate.ts:25-33` swallows it — so the data changes and the pages keep serving the old cache for `cacheLife('days')`. The script POSTs `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` with `x-revalidate-secret` against the target deployment. Confirm `REVALIDATE_SECRET` is configured for both the rehearsal deployment and prod.
 

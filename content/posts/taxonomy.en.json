@@ -1,0 +1,15 @@
+{
+  "_note": "English CMS content the D6 gate would otherwise leave null (task 6.3). Keyed by Polish slug / author name. Committed so it can be re-applied to any environment — it is content, not schema, so it does not travel with a migration.",
+  "categories": {
+    "social-media": { "title": "Social media", "slug": "social-media" },
+    "seo": { "title": "SEO", "slug": "seo" },
+    "reklama": { "title": "Advertising", "slug": "advertising" },
+    "marketing": { "title": "Marketing", "slug": "marketing" }
+  },
+  "authors": {
+    "Łukasz Płociński": {
+      "role": "SEO Specialist, SEOFLY",
+      "bio": "For over fifteen years he has been running SEO for websites and online stores at our partner agency, combining an analytical approach with creativity and keeping pace with every change in Google’s algorithms."
+    }
+  }
+}

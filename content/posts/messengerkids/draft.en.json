@@ -1,0 +1,16 @@
+{
+  "source": "messengerkids",
+  "postId": 40,
+  "title": "Messenger Kids — a version for the youngest users online",
+  "excerpt": "Messenger keeps gaining ground.",
+  "metaTitle": "Messenger Kids — a version for the youngest users online",
+  "metaDescription": "Messenger keeps gaining ground.",
+  "slug": "messenger-kids-version-for-the-youngest-users",
+  "runs": [
+    {
+      "index": 0,
+      "parent": "paragraph",
+      "text": "In Poland this October, more than 300,000 people aged 7 to 12 were using Messenger! Facebook's leadership noticed in good time that younger and younger people are on social media, which is why they decided to build a children's version of the popular messenger. With Messenger Kids, parents gain a way to keep an eye on their children, because a child's account is linked to a parent's Facebook account. It is worth stressing that the adults cannot read the conversations. What they can do is accept or reject the people their children talk to. The messenger is free, carries no ads, and comes with playful stickers, filters and sound effects — all designed with the youngest users in mind 🙂 Messenger Kids exists not only to fight the inappropriate content children can run into on the „grown-up” messenger, but also to keep them off competing apps. For now the app is available only to users in the USA, and can be installed on iOS."
+    }
+  ]
+}
