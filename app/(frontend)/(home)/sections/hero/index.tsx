@@ -95,12 +95,12 @@ export function Hero({ content = hero }: { content?: LocalizedHome['hero'] }) {
 
         {/* Mobile llama: the same index-driven outfit swap, full-bleed below
             the copy (.media hides this box on desktop). Framed to the llama via
-            .mobileLook since the stills sit bottom-right in their canvas. */}
+            .mobileBox since the stills sit bottom-right in their canvas. */}
         <div className={s.media}>
           <HeroLooks
             index={rotation.index}
             alt={content.llamaAlt}
-            positionClass={s.mobileLook}
+            positionClass={s.mobileBox}
           />
         </div>
       </div>

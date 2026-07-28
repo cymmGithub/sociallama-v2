@@ -62,29 +62,236 @@
        bicorne (look-05) starts at y=19 and had its ear tips sliced off.
        Height is explicit (not top/bottom stretch): <img> posters resolve an
        auto height from their intrinsic ratio instead of the pins, which
-       shrank the poster out of the clip's box. */
+       shrank the poster out of the clip's box. The box is now a <div> wrapping
+       the stills and the tear bands, so `aspect-ratio` supplies the width the
+       replaced element used to derive from its own intrinsic ratio — same box,
+       and it stays the stills' exact shape so `contain` is a no-op here. */
     top: calc(var(--safe) * 2 + 53px);
     bottom: 0;
     right: 0;
     width: auto;
+    aspect-ratio: 820 / 1080;
     height: calc(100% - var(--safe) * 2 - 53px);
   }
 }
 
-/* Outfit stack: all five look stills share the .video box; only the active
-   one is visible. The dissolve is deliberately unhurried and starts 270ms
-   AFTER the word — the word leads, the wardrobe answers, so the two read as
-   one action instead of two scripts firing on the same tick. Out-easing (not
-   the old symmetric ease-in-out-quad) so it leaves fast and arrives slow.
-   All five poses share the same body, so the fade stays clean — the outgoing
-   and incoming llamas register on top of each other, no ghosted double image. */
+/* —— Wardrobe slice tear —————————————————————————————————————————————
+   The wardrobe no longer cross-dissolves; it shears into seven horizontal
+   bands that displace sideways and hand off to the incoming look band by band
+   (replace-hero-wardrobe-dissolve). It still starts 270ms AFTER the word —
+   the word leads, the wardrobe answers, so the two read as one action rather
+   than two scripts firing on the same tick — and the contrast between a silky
+   1.95s word and a hard-cutting llama is the point.
+
+   Timeline, in ms from the rotator tick:
+      0  the headline word starts its 1.95s slide
+    240  the outgoing bands come up UNDISPLACED, over the resting still
+    270  the resting still drops out and the tear starts — step 1 displacement
+    360  step 2 displacement; bands 2,5 flip to the incoming look
+    450  step 3 displacement; bands 0,4,6 flip
+    540  displacement settles; bands 1,3 flip; the resting still returns
+    570  the bands switch off
+
+   Both handovers overlap by 30ms on purpose, so some layer always owns the
+   frame and a dropped frame can never expose bare plum. Both overlaps sit at
+   ZERO displacement — that is why the bands lead the still by 30ms at the
+   start rather than trailing it: an overlap taken mid-displacement would show
+   the un-torn llama ghosting behind the torn one. At zero displacement the two
+   owners are pixel-identical, so the overlap costs only a double-composite of
+   a body that is ~98.8% opaque, i.e. ~1/255 — below the visibility floor.
+
+   Everything is CSS keyframes, so a transition is one class change and no
+   per-step main-thread work on a page already running Lenis in rAF. */
+
+.llamaBox {
+  position: absolute;
+  /* A displaced band would otherwise push the page into horizontal overflow —
+     nothing clips the x axis globally. The box is cropped tight to the llama
+     on desktop, which is why the bottom bands' throws are the smallest. */
+  overflow: clip;
+}
+
+/* The five resting stills, one visible at a time. The layer visible at rest
+   stays a real <img> so the HTML preload scanner still finds look-01 while
+   parsing; a CSS background is only discovered after style resolution.
+   `contain` + bottom anchoring fits the whole wardrobe into the mobile media
+   box (a cover head-crop hid the one thing the swap exists to show); the
+   desktop box is the stills' exact ratio, so it is a no-op there. */
 .look {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-position: 50% 100%;
   opacity: 0;
-  transition: opacity 1.26s var(--ease-out-quart) 270ms;
 }
 
 .lookActive {
   opacity: 1;
+}
+
+/* Band layers. Each owns seven strips; the outgoing layer takes the frame
+   when the tear starts, the incoming layer gives it back once the resting
+   still is up. Exactly one layer owns each strip at any moment — the mattes
+   are transparent, so an outgoing look left drawn UNDER an incoming one shows
+   through wherever the incoming silhouette is narrower (look-05's bicorne
+   behind look-01 is unmistakable). Handing off is what makes the tear correct
+   on this asset set, not just a stylistic choice. */
+.bandLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation-duration: 1ms;
+  animation-timing-function: steps(1);
+  animation-fill-mode: both;
+}
+
+.bandsOut {
+  animation-delay: 240ms;
+}
+
+.bandsIn {
+  animation-delay: 570ms;
+}
+
+/* One band = one horizontal strip of the look. `clip-path` is written once per
+   resize on integer pixel rows (both sides of a boundary round to the same
+   integer, so strips butt exactly — no gap to antialias and, critically, no
+   overlap: the mattes' bodies sit at alpha 250–254, so an overlap composites
+   into a ridge that measured 3.3–3.7/255 in a prototype). A static clip bakes
+   into the texture at rasterization and costs nothing per frame; only an
+   animated one re-rasterizes, and this one never animates.
+
+   No `will-change`: fourteen promoted layers per instance, twenty-eight across
+   both breakpoints, on an 820x1080 element at dpr 3 is a memory hazard on
+   exactly the weakest platform. The transform animation deliberately does not
+   fill forwards either — it reverts to the declared `transform: none` so no
+   band is left holding a filling animation between tears. */
+.band {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center bottom;
+  animation-duration: 270ms, 1ms;
+  animation-delay: 270ms, var(--flip);
+  animation-timing-function: steps(1);
+  animation-fill-mode: none, both;
+}
+
+/* Three 90ms displacement steps, then home. `steps(1)` holds each keyframe for
+   its whole interval, so the tear jumps instead of interpolating — which is
+   also why the per-band custom properties are safe here: unregistered custom
+   properties cannot be interpolated, and stepping never asks them to be. */
+@keyframes tearShiftA {
+  0% {
+    transform: translateX(var(--dx-a));
+  }
+  33.3334% {
+    transform: translateX(var(--dx-b));
+  }
+  66.6667% {
+    transform: translateX(var(--dx-c));
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes cutOnA {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cutOffA {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* The B set is a byte-for-byte copy of A, and the two alternate per
+   transition. A CSS animation only restarts when its NAME changes, and these
+   band elements persist across transitions — so alternating the name is what
+   keeps a tear a single class toggle rather than a remount or a JS restart.
+   The rotator has an odd number of looks, so the index's own parity repeats at
+   the wrap and cannot be used; the component counts transitions instead. */
+@keyframes tearShiftB {
+  0% {
+    transform: translateX(var(--dx-a));
+  }
+  33.3334% {
+    transform: translateX(var(--dx-b));
+  }
+  66.6667% {
+    transform: translateX(var(--dx-c));
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes cutOnB {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cutOffB {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.tearA .bandsOut {
+  animation-name: cutOnA;
+}
+.tearA .bandsIn {
+  animation-name: cutOffA;
+}
+.tearA .bandsOut .band {
+  animation-name: tearShiftA, cutOffA;
+}
+.tearA .bandsIn .band {
+  animation-name: tearShiftA, cutOnA;
+}
+.tearA .lookOut {
+  animation: cutOffA 1ms steps(1) 270ms both;
+}
+.tearA .lookIn {
+  animation: cutOnA 1ms steps(1) 540ms both;
+}
+
+.tearB .bandsOut {
+  animation-name: cutOnB;
+}
+.tearB .bandsIn {
+  animation-name: cutOffB;
+}
+.tearB .bandsOut .band {
+  animation-name: tearShiftB, cutOffB;
+}
+.tearB .bandsIn .band {
+  animation-name: tearShiftB, cutOnB;
+}
+.tearB .lookOut {
+  animation: cutOffB 1ms steps(1) 270ms both;
+}
+.tearB .lookIn {
+  animation: cutOnB 1ms steps(1) 540ms both;
 }
 
 .inner {
@@ -254,25 +461,14 @@
   }
 }
 
-/* Mobile llama: the same transparent outfit stills, fitted whole into the
-   mobile media box. This used to be a cover head-crop anchored at 12% — punchy,
-   but it let the shirt fall below the fold: on a 360px phone only ~34% of the
-   wardrobe cleared it, hiding the one thing the look swap exists to show.
-   `contain` scales the llama down a little and fits it entirely, bottom-flush
-   on the client-logos band; the transparent sides are just section plum, so the
-   box still reads seamless.
-
-   `!important` beats the inline object-fit the Image component always emits
-   (inline styles yield only to !important) — which is why plain contain
-   silently lost when this rule was scoped to portrait tablets. */
-.mobileLook {
-  position: absolute;
+/* Mobile llama box: fills the mobile media column. The stills and the tear
+   bands inside it are fitted whole (`.look` / `.band` own the contain +
+   bottom anchoring) rather than cover-cropped — a head-crop let the shirt fall
+   below the fold: on a 360px phone only ~34% of the wardrobe cleared it,
+   hiding the one thing the look swap exists to show. The transparent sides are
+   just section plum, so the box still reads seamless. */
+.mobileBox {
   inset: 0;
-  width: 100%;
-  height: 100%;
-  /* biome-ignore lint/complexity/noImportantStyles: must beat next/image's inline object-fit:cover — inline styles yield only to !important */
-  object-fit: contain !important;
-  object-position: 50% 100%;
 }
 
 /* Portrait tablets (and narrow, tall windows) at ≥800px land in the desktop

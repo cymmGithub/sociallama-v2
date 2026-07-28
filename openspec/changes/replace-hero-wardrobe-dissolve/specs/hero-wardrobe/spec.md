@@ -94,7 +94,9 @@ The transition SHALL NOT alter how the hero loads. The first look SHALL remain t
 
 The layer visible at rest SHALL be a real `<img>` element carrying the existing preload and fetch priority, so that it remains discoverable by the HTML preload scanner. The tear bands MAY be CSS background layers, and SHALL NOT be assigned an image until the first transition fires, so that they issue no request during initial load.
 
-The band decomposition introduces additional DOM nodes. This is accepted, and is bounded: no more than fifteen layers per breakpoint instance.
+The band decomposition introduces additional DOM nodes. This is accepted, and is bounded: no more than nineteen drawing layers per breakpoint instance — the five resting stills plus fourteen bands — carried by no more than twenty-one elements, the extra two being the band layers' wrappers, which only hold opacity and paint nothing.
+
+The five stills are not reducible to one. This requirement's own first clause obliges looks 2–5 to load eagerly at normal priority, and the eager `<img>` per look is the mechanism that does it.
 
 #### Scenario: First paint is unaffected
 
