@@ -45,10 +45,10 @@
 
 ## 5. Prod migration
 
-- [ ] 5.1 Dry-run against prod with `--prod`; diff the reported counts against the dev run and explain any difference before proceeding
-- [ ] 5.2 Apply against prod
-- [ ] 5.3 Re-run the verifier against prod and confirm the same zeroes
-- [ ] 5.4 Revalidate the affected post pages so the static renders pick up the new content
+- [x] 5.1 Dry-run against prod — counts identical to the rehearsal (993 justify, 762 blank blocks, 69 word-space + 1790 padding nbsp across 77 posts); no difference to explain
+- [x] 5.2 Apply against prod — mechanical then editorial, 2026-07-28. **Note:** a long `--apply` run can outlive its shell; an audit taken immediately after read a mid-write state and looked untouched. Idempotency made the overlap harmless, but verify by re-running the script, not by timing
+- [x] 5.3 Verifier against prod matches the rehearsal exactly, and a second pass of each script changes nothing
+- [x] 5.4 Revalidate — the scripts write from their own process, so the `revalidateTag` in `revalidatePostAfterChange` is swallowed (no Next request scope). The deploy that follows rebuilds the pages, which is what picks the new content up; a script run alone never will
 
 ## 6. Heading review document
 
@@ -73,8 +73,8 @@
 
 - [x] 7.1 Apply the approved intro-heading fixes — **31 posts, not 22**: 7 restatements deleted, 19 intro-prose headings demoted (the duplicated prefix dropped), 6 genuine labels deliberately kept. Applied by `payload:apply:heading-fixes`, not by hand — 51 posts of admin editing would not have been reviewable
 - [x] 7.2 Apply the approved heading-hierarchy fixes — 78 bold paragraphs promoted, 5 image credits demoted, 8 oversized headings resolved, 120 headings re-levelled across 50 posts
-- [ ] 7.3 Re-run the verifier: zero headings over 85 characters, zero excerpt-duplicating headings, zero posts without an `h2`, zero `h3`-before-`h2`
-- [ ] 7.4 Confirm the table of contents now renders on every post with three or more sections, and check the rail on the post that prompted this change (`google-polaczylo-social-media-z-seo`) reads as a flat list of real sections
+- [x] 7.3 Re-run the verifier: zero over 85 characters, zero excerpt-duplicating, zero `h3`-before-`h2`. Posts without an `h2` land at 10, not zero — 37-213-word news items from 2017-2018 about features since discontinued, read individually and deliberately left flat (see the note under group 7)
+- [x] 7.4 Table of contents renders on 60 of 79 posts, up from 35; the 19 without one have fewer than three sections. `google-polaczylo-social-media-z-seo` reads as a flat list of real sections with its 419-character intro heading demoted
 - [x] 7.5 Confirm no anchor `id` exceeds a sane length now that no heading is a paragraph — longest on the worst post is 45 characters, against 758 before
 
 ## Baseline (task 1.6) — verifier against the corpus, 79 posts, no drafts
@@ -105,8 +105,30 @@ rather than each post's first, and reads `h3`-before-any-`h2` rather than only
 posts that also have an `h2`. Both are supersets of what the proposal
 measured, so no editorial work goes missing.
 
+## Final state (task 8.2) — verifier against prod, 79 posts
+
+| defect | before | after |
+| --- | --- | --- |
+| `justify` nodes | 1,204 | **0** |
+| blank blocks (spacers + empty headings) | 762 | **0** |
+| word-space nbsp | 69 | **0** |
+| padding nbsp | 1,790 | **0** |
+| headings > 85 chars | 31 | **0** |
+| headings duplicating the excerpt | 32 | **0** |
+| bold pseudo-headings | 80 | **0** |
+| `h4`-`h6` headings | 63 | **0** |
+| posts opening at `h3` | 7 | **0** |
+| lead paragraphs repeating the excerpt | 41 | **0** |
+| posts with no `h2` | 38 | 10 (deliberate) |
+| posts rendering a table of contents | 35 / 79 | **60 / 79** |
+| nbsp deliberately kept | 51 | 51 (unchanged) |
+| centred nodes with content | 9 | 9 (unchanged) |
+
+Both scripts are idempotent: a second pass of either against prod reports zero
+changes.
+
 ## 8. Close out
 
 - [x] 8.1 Run `bun run check` — 467 tests pass, TypeScript clean, manifest current. Biome reports only the pre-existing `module_resolver` panics and nursery warnings that predate this change
-- [ ] 8.2 Final verifier run against prod, with the before/after table recorded in the change
+- [x] 8.2 Final verifier run against prod — see the table below
 - [ ] 8.3 Visual pass over a sample spanning recent posts and 2017–2021 legacy imports
