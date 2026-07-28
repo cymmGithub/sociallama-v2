@@ -40,10 +40,12 @@ export default async function EnCategoryPageN({ params }: PageProps) {
     notFound()
   }
 
-  const [postsPage, categories] = await Promise.all([
-    getPostsPage(page, category.id, 'en'),
-    getCategories('en'),
-  ])
+  // Sequential, never Promise.all: the project's build-time DB
+  // concurrency constraint. These prerender against the unpooled prod
+  // instance alongside every other blog page, and a concurrent burst
+  // there exhausts connection headroom and times the build out.
+  const postsPage = await getPostsPage(page, category.id, 'en')
+  const categories = await getCategories('en')
   if (postsPage.docs.length === 0) {
     notFound()
   }
