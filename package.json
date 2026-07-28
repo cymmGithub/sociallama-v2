@@ -21,6 +21,8 @@
     "payload:seed": "bun ./lib/payload/seed.ts",
     "payload:seed:case-studies": "bun ./lib/payload/seed-case-studies.ts",
     "payload:import:case-study": "bun ./lib/payload/import-case-study.ts",
+    "payload:translate:case-study": "bun ./lib/payload/translate-case-study.ts",
+    "payload:verify:case-study-en": "bun ./lib/payload/verify-case-study-en.ts",
     "payload:publish:case-studies": "bun ./lib/payload/publish-case-studies.ts",
     "payload:order:case-studies": "bun ./lib/payload/order-case-studies.ts",
     "payload:seed:platforms": "bun ./lib/payload/seed-social-platforms.ts",

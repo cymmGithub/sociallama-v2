@@ -1,14 +1,14 @@
 ## Why
 
-The `import-case-study-decks` change landed 44 client decks as Polish `case-studies` documents (45 imported; `medicover` blocked on a corrupted source deck). Their English locale currently has no translated content — the `/en/case-studies/[slug]` route works because the collection's Polish-fallback behavior renders the PL text — but nothing there is actually in English. That's correct-but-incomplete: the `Localized<>` chrome, the EN listing/detail routes, and the fallback contract already exist (shipped in `add-case-studies` and reused throughout `import-case-study-decks`); the gap is translated content, not capability.
+The `import-case-study-decks` change landed 45 client decks as Polish `case-studies` documents (`medicover` was blocked on a corrupted source deck and has no document at all, so it is not part of that 45). Their English locale currently has no translated content — the `/en/case-studies/[slug]` route works because the collection's Polish-fallback behavior renders the PL text — but nothing there is actually in English. That's correct-but-incomplete: the `Localized<>` chrome, the EN listing/detail routes, and the fallback contract already exist (shipped in `add-case-studies` and reused throughout `import-case-study-decks`); the gap is translated content, not capability.
 
 ## What Changes
 
 - **No schema, route, or SEO changes.** The `case-studies` collection's `en` locale, `/en/case-studies` listing, and `/en/case-studies/[slug]` detail pages are reused as-is — the same surface the original iRobot/Pracuj/Volvo EN pass already exercises.
-- **EN authoring pass**: for each of the 44 non-blocked studies, translate the localized fields — `title`, `excerpt`, `tags`, `period`, `client.about`, `challenge` (intro + ordered objectives), each pillar's `heading` + `body`, and `results` metric labels (`platform`/`metric` — `value` is usually numeric/unit and often needs no translation, verified per study) — to the same voice/quality bar as the Polish original.
+- **EN authoring pass**: for each of the 45 imported studies, translate the localized fields — `title`, `excerpt`, `tags`, `client.about`, `challenge` (intro + ordered objectives), each pillar's `tag` + `heading` + `body`, and `results` metric labels (`platform`/`metric` — `value` is usually numeric/unit and often needs no translation, verified per study) — to the same voice/quality bar as the Polish original.
 - **Import via `payload.update(..., locale: 'en')`**, mirroring `lib/payload/seed-case-studies.ts`'s existing EN pass: pillar media is **reused by index** from the already-uploaded Polish creatives — no new media decisions, no re-upload, no re-cropping.
 - **Idempotent, re-runnable**: re-running an EN update for a slug overwrites that locale's fields, never creates a duplicate document (same doc, second locale).
-- **Scope**: all 44 studies currently live with a `pl` locale document (i.e. every imported study except `medicover`, which has no document to translate). Draft/published status is inherited from the existing PL document — this change does not alter it.
+- **Scope**: all 45 studies that currently have a `pl` locale document (`medicover` has none and is out of scope). All 45 are already published; the EN write targets the published document directly (design D5), so a translation is live as soon as it is written. This change does not alter any document's draft/published status.
 
 ## Capabilities
 

@@ -187,7 +187,11 @@ export function CaseStudyArticle({
                           key={`${item.metric}-${item.value}`}
                           className={s.tile}
                         >
-                          <CountUp className={s.tileValue} value={item.value} />
+                          <CountUp
+                            className={s.tileValue}
+                            value={item.value}
+                            locale={locale}
+                          />
                           <span className={s.tileMetric}>{item.metric}</span>
                         </div>
                       ))}
