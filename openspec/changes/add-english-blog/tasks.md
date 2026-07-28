@@ -356,7 +356,13 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 - [x] 10.1 `bun run payload:verify:post-en --all --status --prod` exits zero for all 79.
 - [ ] 10.2 Review `content/posts/STATUS.md` soft-flags — the "correct English, but locally scoped" set — and make the content call on the ~15 short 2017–18 news items.
 - [ ] 10.3 Spot-check a sample of `/en/blog/<en-slug>` pages: images present, internal links landing on English URLs, bold/italic runs in the right places, line breaks where the Polish had them, table of contents populated, author card in English, dates in `en-US`.
-- [ ] 10.4 Confirm hreflang round-trips: `/{pl-slug}` ↔ `/en/blog/{en-slug}` reciprocal on both sides, `x-default` on the Polish URL, and the locale toggle landing on the counterpart rather than `/en`.
+- [x] 10.4 Confirm hreflang round-trips — verified against the prerendered HTML rather than a running
+  server, which is the stronger check: it is what actually ships. Both `/aplikacjavero` and
+  `/en/blog/vero-is-taking-over-phones` emit the identical reciprocal triple (`pl`, `en`,
+  `x-default`), with `x-default` on the Polish URL per design D8; 4104 hreflang links across the
+  build. The locale toggle half is covered by the passing round-trip case in `e2e/en-blog.e2e.ts`
+  (10.5). The hrefs read `localhost:3000` only because `NEXT_PUBLIC_BASE_URL` is unset for a local
+  build — `lib/env.ts:92` already warns if that ever happens in production.
 - [x] 10.5 Run the `e2e/locale-routing.e2e.ts` sweep including the blog tree coverage added in 7.8.
 - [x] 10.6 Run the `seo-url-parity` gate and confirm it is still green: no Polish URL moved, all 4 category URLs intact.
 - [x] 10.7 Confirm the formatting audit now runs over both locales and passes for both.
@@ -405,6 +411,13 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   `max_connections = 100`. Raised to 800 on the throwaway container to get a render. This is the
   same build-time DB concurrency constraint the repo already documents, and it is worth confirming
   the prod build target's real limit before the first both-locales build.
+
+  **Checked 2026-07-28: largely a non-issue on the real target.** The failure was against the local
+  Docker container on `:5435`, which is a direct connection. Both `DATABASE_URL_PROD` and
+  `DATABASE_URL_REHEARSAL` point at Neon **`-pooler`** endpoints, which multiplex build workers over
+  a small backend pool, so 19 workers do not become 19 backends. The separate `Promise.all` hazard
+  below is *not* covered by this and still bites on Neon — pooling caps concurrency, it does not
+  make parallel queries from one build worker safe.
 
 - [x] **Manual 5-post pilot run on `rehearsal`** (2026-07-28), in the spirit of task 9.3 but by hand,
   since the phase-8 tooling does not exist yet. Translated `social-media-futbol` (984 words, 22
