@@ -96,10 +96,35 @@ describe('spacer paragraphs', () => {
     ).toBe('unclear')
   })
 
-  it('is not fooled by a non-paragraph blank node', () => {
+  it('treats an empty heading as a spacer too', () => {
+    // 11 of these in the corpus: a heading node with no text, which renders as
+    // nothing but still claims a heading's margin. buildToc already skips
+    // them, so removing one cannot shift an anchor.
     expect(
       classifySpacerParagraph({ type: 'heading', tag: 'h2', children: [] })
+    ).toBe('spacer')
+    expect(
+      classifySpacerParagraph({ type: 'heading', tag: 'h3', children: [] })
+    ).toBe('spacer')
+  })
+
+  it('keeps a heading that has text', () => {
+    expect(
+      classifySpacerParagraph({
+        type: 'heading',
+        tag: 'h2',
+        children: [text('Co to jest lejek marketingowy?')],
+      })
     ).toBe('content')
+  })
+
+  it('is not fooled by a blank list or quote', () => {
+    expect(classifySpacerParagraph({ type: 'quote', children: [] })).toBe(
+      'content'
+    )
+    expect(classifySpacerParagraph({ type: 'list', children: [] })).toBe(
+      'content'
+    )
   })
 })
 

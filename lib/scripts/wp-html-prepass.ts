@@ -164,28 +164,30 @@ function stripPresentationalDebris(html: string, notes: string[]): string {
 
   let spacers = 0
   let unclear = 0
-  for (const paragraph of body.querySelectorAll('p')) {
-    if ((paragraph.textContent ?? '').replace(/[\s\u00a0]/g, '') !== '') {
+  // Headings as well as paragraphs: an empty heading renders as nothing but
+  // still claims a heading's margin, and WordPress emitted plenty of them.
+  for (const block of body.querySelectorAll('p, h1, h2, h3, h4, h5, h6')) {
+    if ((block.textContent ?? '').replace(/[\s\u00a0]/g, '') !== '') {
       continue
     }
     // Blank to the text walk, but an image or a rule inside it is real
     // content — reported and left alone, never guessed at.
-    const opaque = [...paragraph.querySelectorAll('*')].some(
+    const opaque = [...block.querySelectorAll('*')].some(
       (element) => !INERT_INLINE.has(element.tagName)
     )
     if (opaque) {
       unclear++
       continue
     }
-    paragraph.remove()
+    block.remove()
     spacers++
   }
   if (spacers > 0) {
-    notes.push(`${spacers} spacer paragraph(s) dropped`)
+    notes.push(`${spacers} blank block(s) dropped`)
   }
   if (unclear > 0) {
     notes.push(
-      `WARNING: ${unclear} blank paragraph(s) kept — they hold something the text walk cannot see`
+      `WARNING: ${unclear} blank block(s) kept — they hold something the text walk cannot see`
     )
   }
 

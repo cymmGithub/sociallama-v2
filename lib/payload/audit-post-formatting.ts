@@ -33,11 +33,15 @@ import {
   isJustified,
   type LexicalNode,
   MAX_HEADING_LENGTH,
+  nodeText,
   planBlockNbsp,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
 
 const DETAIL = process.argv.includes('--detail')
+const REVIEW = process.argv.includes('--review')
+const REVIEW_PATH =
+  'openspec/changes/repair-blog-post-formatting/heading-review.md'
 
 if (process.argv.includes('--prod')) {
   const prodUrl = process.env.DATABASE_URL_PROD
@@ -78,6 +82,53 @@ interface PostFindings {
   boldPseudoHeadings: string[]
   deepHeadings: { level: number; text: string }[]
   tocEntries: number
+  excerpt: string
+  title: string
+  /** The blocks right after the first heading — what an "extended" fix promotes. */
+  afterFirstHeading: string[]
+  /** Section labels in reading order, real and fake, for the review document. */
+  outline: {
+    index: number
+    kind: 'heading' | 'bold'
+    level: number | null
+    text: string
+  }[]
+}
+
+/**
+ * How an excerpt-duplicating heading should be resolved, proposed from the
+ * text alone. A sorting heuristic and nothing more — one genuine heading in
+ * the corpus scores 0.25 similarity and a threshold would misfile it, so the
+ * review document is where a human confirms or overrides (design D7).
+ */
+function proposeTreatment(heading: string, excerpt: string): string {
+  const normalize = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  const h = normalize(heading)
+  const e = normalize(excerpt)
+
+  // The excerpts were auto-generated from each post's opening, so almost every
+  // one of these headings is a prefix of its excerpt. That alone proves
+  // nothing: a genuine short section label sitting at the top of the body is a
+  // prefix too. What separates them is how much of the excerpt the heading
+  // accounts for.
+  // Order matters: an exact match satisfies `includes` in both directions, so
+  // the restatement test has to come first or every one of them reads as an
+  // extension.
+  if (e.startsWith(h) && h.length / e.length > 0.8) {
+    return 'restatement — the heading is essentially the whole excerpt. Delete the block'
+  }
+  if (h.includes(e) || h.length > MAX_HEADING_LENGTH) {
+    return 'extended — intro prose marked up as a heading. Drop the part the excerpt already says, demote the rest to a paragraph, and promote the section label that follows'
+  }
+  if (e.startsWith(h)) {
+    return 'likely genuine — a short section label that merely opens the body, which is why the auto-generated excerpt starts with it. Keep, and check it reads as a label'
+  }
+  return 'genuine but overlong — shorten to a label'
 }
 
 const payload = await getPayload({ config })
@@ -118,6 +169,28 @@ for (const post of posts.docs) {
     boldPseudoHeadings: [],
     deepHeadings: [],
     tocEntries: 0,
+    excerpt: typeof post.excerpt === 'string' ? post.excerpt : '',
+    title: typeof post.title === 'string' ? post.title : '',
+    afterFirstHeading: [],
+    outline: [],
+  }
+
+  const blocks = root.children ?? []
+  const firstHeadingAt = blocks.findIndex((node) => headingLevel(node) !== null)
+  if (firstHeadingAt !== -1) {
+    found.afterFirstHeading = blocks
+      .slice(firstHeadingAt + 1, firstHeadingAt + 4)
+      .map((node) => {
+        const level = headingLevel(node)
+        let kind = node.type
+        if (level) {
+          kind = `h${level}`
+        } else if (isBoldPseudoHeading(node)) {
+          kind = 'bold <p>'
+        }
+        return `${kind}: ${nodeText(node).replace(/\s+/g, ' ').trim().slice(0, 90)}`
+      })
+      .filter((line) => !line.endsWith(': '))
   }
 
   walkNodes(root, (node) => {
@@ -156,12 +229,21 @@ for (const post of posts.docs) {
   })
 
   let seenH2 = false
-  for (const node of root.children ?? []) {
+  for (const [index, node] of (root.children ?? []).entries()) {
     const level = headingLevel(node)
     if (level === null) {
+      if (isBoldPseudoHeading(node)) {
+        found.outline.push({
+          index,
+          kind: 'bold',
+          level: null,
+          text: headingText(node),
+        })
+      }
       continue
     }
     const text = headingText(node)
+    found.outline.push({ index, kind: 'heading', level, text })
     if (level === 2) {
       seenH2 = true
       found.hasH2 = true
@@ -332,5 +414,167 @@ if (DETAIL) {
   }
 }
 
-console.log(DETAIL ? '' : '\nRe-run with --detail for the per-post breakdown.')
+// ---------------------------------------------------------------------------
+// Review document (--review)
+// ---------------------------------------------------------------------------
+
+/**
+ * One markdown document covering every post needing editorial work, so the
+ * copy is reviewable as a body of work rather than post by post — tone drift
+ * across fifty headlines is visible in a list and invisible one at a time
+ * (design D6). Every proposal here is a measurement; nothing is applied until
+ * the document comes back approved.
+ */
+function renderReview(): string {
+  const lines: string[] = []
+  const quote = (text: string) => text.replace(/\|/g, '\\|')
+
+  lines.push('# Heading review — repair-blog-post-formatting')
+  lines.push('')
+  lines.push(
+    'Generated by `bun run payload:audit:post-formatting --review`. Every',
+    '**Proposed** line is computed from the text and is a starting point, not a',
+    'decision — see design D7. Fill in **Approved** to accept, or write the',
+    'replacement you want. No post content is written until this document is',
+    'approved (design D6).'
+  )
+  lines.push('')
+
+  lines.push('## 1. Headings duplicating the excerpt')
+  lines.push('')
+  lines.push(
+    `${excerptHeadings.length} post(s). The page header already renders the`,
+    'excerpt as the lead, so these say the same thing twice.'
+  )
+  lines.push('')
+  for (const found of excerptHeadings) {
+    const heading = found.excerptHeading
+    if (!heading) {
+      continue
+    }
+    lines.push(`### ${found.slug}`)
+    lines.push('')
+    lines.push(`- **Title:** ${quote(found.title)}`)
+    lines.push(`- **Excerpt:** ${quote(found.excerpt)}`)
+    lines.push(
+      `- **Heading** (${heading.text.length} chars, similarity ${heading.similarity.toFixed(2)}): ${quote(heading.text)}`
+    )
+    lines.push(
+      `- **Proposed:** ${proposeTreatment(heading.text, found.excerpt)}`
+    )
+    if (found.afterFirstHeading.length > 0) {
+      lines.push('- **What follows it:**')
+      for (const line of found.afterFirstHeading) {
+        lines.push(`  - \`${quote(line)}\``)
+      }
+    }
+    lines.push('- **Approved:** ')
+    lines.push('')
+  }
+
+  lines.push('## 2. Posts with no `h2`')
+  lines.push('')
+  lines.push(
+    `${withoutH2.length} post(s). Section labels are bold paragraphs, so`,
+    '`buildToc` sees nothing and the rail never renders. Give each row a level',
+    '(`h2`/`h3`), or `keep` to leave it as a paragraph.'
+  )
+  lines.push('')
+  for (const found of withoutH2) {
+    lines.push(`### ${found.slug}`)
+    lines.push('')
+    lines.push(
+      `_${found.outline.length} candidate(s), toc ${found.tocEntries}_`
+    )
+    lines.push('')
+    if (found.outline.length === 0) {
+      lines.push(
+        '> No section labels found — this post may genuinely have no sections.',
+        '> Confirm by reading it.'
+      )
+      lines.push('')
+      continue
+    }
+    lines.push('| block | current | text | proposed | approved |')
+    lines.push('| --- | --- | --- | --- | --- |')
+    for (const entry of found.outline) {
+      const current = entry.kind === 'bold' ? 'bold `<p>`' : `h${entry.level}`
+      const proposed = entry.kind === 'bold' ? 'h2' : `h${entry.level}`
+      lines.push(
+        `| ${entry.index} | ${current} | ${quote(entry.text)} | ${proposed} | |`
+      )
+    }
+    lines.push('')
+  }
+
+  const relevel = findings.filter(
+    (found) =>
+      found.hasH2 && (found.h3BeforeH2 || found.deepHeadings.length > 0)
+  )
+  lines.push('## 3. Hierarchy to re-level')
+  lines.push('')
+  lines.push(
+    `${relevel.length} post(s) that do have an \`h2\` but open below it or use`,
+    '`h4`–`h6`. `buildToc` tracks only `h2`/`h3`, so anything deeper is invisible',
+    'to the rail.'
+  )
+  lines.push('')
+  for (const found of relevel) {
+    lines.push(`### ${found.slug}`)
+    lines.push('')
+    if (found.h3BeforeH2) {
+      lines.push('> Opens at `h3` before its first `h2`.')
+      lines.push('')
+    }
+    lines.push('| block | current | text | proposed | approved |')
+    lines.push('| --- | --- | --- | --- | --- |')
+    for (const entry of found.outline) {
+      const current = entry.kind === 'bold' ? 'bold `<p>`' : `h${entry.level}`
+      // A bold label or an h4+ both become h3: the post already has its h2s,
+      // and buildToc tracks nothing deeper than h3.
+      const tooDeep = entry.level !== null && entry.level >= 4
+      const proposed =
+        entry.kind === 'bold' || tooDeep ? 'h3' : `h${entry.level}`
+      lines.push(
+        `| ${entry.index} | ${current} | ${quote(entry.text)} | ${proposed} | |`
+      )
+    }
+    lines.push('')
+  }
+
+  const longOnly = findings.filter(
+    (found) => found.longHeadings.length > 0 && !found.excerptHeading
+  )
+  lines.push('## 4. Oversized headings that do not duplicate the excerpt')
+  lines.push('')
+  lines.push(
+    `${longOnly.length} post(s) with a heading over ${MAX_HEADING_LENGTH}`,
+    'characters that is not a restatement of the lead — shorten to a label.'
+  )
+  lines.push('')
+  for (const found of longOnly) {
+    lines.push(`### ${found.slug}`)
+    lines.push('')
+    for (const heading of found.longHeadings) {
+      lines.push(
+        `- **h${heading.level}, ${heading.length} chars:** ${quote(heading.text)}`
+      )
+      lines.push('- **Approved:** ')
+    }
+    lines.push('')
+  }
+
+  return lines.join('\n')
+}
+
+if (REVIEW) {
+  await Bun.write(REVIEW_PATH, renderReview())
+  console.log(`\nReview document written to ${REVIEW_PATH}`)
+}
+
+console.log(
+  DETAIL || REVIEW
+    ? ''
+    : '\nRe-run with --detail for the per-post breakdown, or --review to draft the heading document.'
+)
 process.exit(0)

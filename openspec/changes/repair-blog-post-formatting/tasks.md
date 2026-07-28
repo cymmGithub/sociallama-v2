@@ -32,7 +32,7 @@
 - [x] 3.1 Dry-run against the rehearsal copy; read every reported node, confirming no real content is in the removal set — the removal set is exactly 751 paragraphs: 475 empty, 276 holding a single non-breaking space. None carries a visible character; nothing was skipped
 - [x] 3.2 Apply against the rehearsal copy
 - [x] 3.3 Re-run the verifier: justify, spacer, word-space and padding nbsp counts are zero; centred content nodes hold at 9 and deliberate non-breaking spaces at 51
-- [ ] 3.4 Spot-check the worst offenders in the browser — `lejek-marketingowy-w-social-media-jak-tworzyc-by-sprzedawac-wiecej` (148 justified, 62 spacers), `najlepsze-hasztagi-insta`, `wizeruneksportowca` (285 nbsp) — confirming word-spacing rivers are gone and vertical rhythm is even
+- [x] 3.4 Spot-check the worst offenders in the browser — all three render with `text-align: justify` on zero blocks, no empty paragraphs and no stray non-breaking spaces (checked via computed style, not markup). **This is what turned up the `.body` gap bug:** vertical rhythm was *not* even afterwards, because the template's paragraph spacing had never worked — see the Impact note in `proposal.md`. Re-checked after the CSS fix: paragraph gap 0px → 12px
 - [x] 3.5 Re-run the repair unchanged to prove idempotency: zero posts modified on the second pass
 
 ## 4. Harden the importer
@@ -52,12 +52,22 @@
 
 ## 6. Heading review document
 
-- [ ] 6.1 Extend the verifier with a `--review` mode that emits one markdown document covering every affected post: current heading text, its length, similarity to the excerpt, proposed classification, proposed action, and a slot for the new headline
-- [ ] 6.2 For each of the 22 duplicated intros, classify as subsumed (delete the block), extended (drop the duplicated prefix, demote the tail to a paragraph, author a heading for the section), or genuine-but-overlong (shorten) — confirming each classification by reading the post rather than trusting the similarity score (design D7)
-- [ ] 6.3 Draft the replacement Polish headings, matching the existing editorial voice
-- [ ] 6.4 For the 38 posts with no `h2`, identify which bold paragraphs are section labels and propose the level for each; flag any post whose content genuinely has no sections
-- [ ] 6.5 Propose re-levelling for the 3 `h3`-first posts and the 15 posts using `h4`–`h6`, including the `h6`-as-image-caption cases in `5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory`
+- [x] 6.1 Extend the verifier with a `--review` mode that emits one markdown document covering every affected post — `heading-review.md`, 992 lines, 88 posts across four sections
+- [x] 6.2 Classify the duplicated intros — **32, not 22** (the verifier counts every post, the original audit only first headings). Split into **7 restatement** (delete), **19 extended** (intro prose marked up as a heading), **6 likely genuine** (short section labels). The mechanical proposal called all 32 "subsumed"; reading them showed why that was wrong — see the amendment below
+- [x] 6.3 Draft the replacement Polish headings — **almost none are needed.** In 19 of 19 extended cases the section already carries a label immediately after the giant heading, so the fix promotes existing copy rather than authoring new. Each entry lists what follows it under **What follows it**
+- [x] 6.4 For the 38 posts with no `h2`, identify which bold paragraphs are section labels and propose the level for each; flag any post whose content genuinely has no sections — section 2, one table per post; posts with no candidates carry an explicit "may genuinely have no sections" note
+- [x] 6.5 Propose re-levelling for the `h3`-first posts and those using `h4`–`h6` — section 3
 - [ ] 6.6 Submit the document for approval — **no post content is written until it comes back approved**
+
+> **Amended (D10):** the excerpts were auto-generated from each post's opening,
+> so almost every intro heading is a verbatim prefix of its excerpt. Containment
+> therefore proves nothing on its own — a genuine short section label at the top
+> of the body is a prefix too. The split turns on how much of the excerpt the
+> heading accounts for: ≥80% is a restatement, longer than the excerpt is intro
+> prose, a short label with a long excerpt is genuine. `media-spolecznosciowe-jako-pomoc-w-sprzedazy`
+> ("Budowanie Marki", 15 chars) and `jak-stworzyc-biogram-na-instagramie`
+> ("Czym jest bio na Instagramie?") are real headings the original rule would
+> have deleted.
 
 ## 7. Apply the editorial repair
 
@@ -72,7 +82,7 @@
 | defect | proposal's figure | verifier | after repair (rehearsal) |
 | --- | --- | --- | --- |
 | `justify` nodes | 1,204 | 1,204 | **0** |
-| spacer paragraphs | 748 | 751 | **0** |
+| spacer paragraphs | 748 | 751 + 11 empty headings | **0** |
 | word-space nbsp | — | 69 | **0** |
 | padding nbsp | — | 1,790 | **0** |
 | nbsp deliberately kept | 74 | 51 | 51 (unchanged) |

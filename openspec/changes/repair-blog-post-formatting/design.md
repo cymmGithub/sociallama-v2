@@ -105,6 +105,19 @@ after apply, verify and idempotency have all passed somewhere disposable.
 The dump needs a `pg_dump` at least as new as the server (18); the host's is
 16, so it runs via `docker run --rm postgres:18`.
 
+### D9b — Empty headings are spacers too
+
+The corpus carries 11 heading nodes with no text at all, across 7 posts. The
+spacer rule as written covered only paragraphs, so the repair left them: they
+render as nothing, but still claim a heading's `margin-top` — which became
+visible once the body's paragraph gap started working.
+
+They are the same defect class, so the predicate now covers `paragraph` and
+`heading` alike, and the importer drops blank headings as well as blank
+paragraphs. `buildToc` already skips a heading with no text, so removing one
+cannot shift an anchor. Lists and quotes are deliberately *not* included: a
+blank one of those is more likely a conversion bug worth seeing than debris.
+
 ### D9 — The preservation baseline is centred nodes that carry content
 
 The proposal counted 10 deliberate `center` nodes. One of them, in

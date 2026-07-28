@@ -95,10 +95,18 @@ const INERT_CHILD_TYPES = new Set(['text', 'linebreak', 'tab'])
 
 export type SpacerVerdict = 'spacer' | 'content' | 'unclear'
 
+/** Blocks that are pure debris when they hold no visible text. */
+const SPACER_BLOCK_TYPES = new Set(['paragraph', 'heading'])
+
 /**
- * `'spacer'` — a paragraph whose entire content is whitespace, line breaks or
+ * `'spacer'` — a block whose entire content is whitespace, line breaks or
  * non-breaking spaces, wrapped in nothing but inline text nodes. WordPress
  * uses these for vertical rhythm; the post template supplies its own.
+ *
+ * Headings count as well as paragraphs: the corpus carries 11 heading nodes
+ * with no text at all, and an empty heading is a spacer that also claims a
+ * heading's `margin-top`. `buildToc` already skips them, so removing one
+ * cannot shift an anchor.
  *
  * `'unclear'` — blank to the text walk but holding a node type that could
  * render something (an image, a horizontal rule). Reported, never removed.
@@ -106,7 +114,7 @@ export type SpacerVerdict = 'spacer' | 'content' | 'unclear'
  * `'content'` — anything with a single visible character.
  */
 export function classifySpacerParagraph(node: LexicalNode): SpacerVerdict {
-  if (node.type !== 'paragraph') {
+  if (!SPACER_BLOCK_TYPES.has(node.type)) {
     return 'content'
   }
   if (nodeText(node).replace(/[\s\u00a0]/g, '') !== '') {

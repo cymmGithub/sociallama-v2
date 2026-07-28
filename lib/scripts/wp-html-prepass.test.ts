@@ -109,7 +109,15 @@ describe('prePass — presentational debris', () => {
     const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
 
     expect(out).toBe('<p>Pierwszy akapit.</p><p>Drugi akapit.</p>')
-    expect(notes.some((n) => n.includes('spacer paragraph'))).toBe(true)
+    expect(notes.some((n) => n.includes('blank block'))).toBe(true)
+  })
+
+  it('drops an empty heading', () => {
+    // 11 of these in the corpus — invisible, but they claim a heading's margin.
+    const html = `<p>Akapit.</p><h3></h3><h2>&nbsp;</h2><h3>Prawdziwa sekcja</h3>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe('<p>Akapit.</p><h3>Prawdziwa sekcja</h3>')
   })
 
   it('keeps a blank paragraph that is hiding an image', () => {
