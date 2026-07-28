@@ -27,6 +27,7 @@ import {
   planBlockNbsp,
   promoteToHeading,
   stripDuplicatedPrefix,
+  unwrapLabelList,
 } from './post-formatting-rules'
 
 /** A paragraph carrying one plain text node. */
@@ -356,6 +357,54 @@ describe('heading levels', () => {
     )
     normalizeHeadingLevels(root)
     expect(root.children?.map((n) => n.tag)).toEqual(['h2', 'h3', 'h3'])
+  })
+
+  it('flattens a body that opens below its own shallowest level', () => {
+    // h3 sections then one closing h2 — that h2 is the last section, not a
+    // parent of everything before it, so they are all peers.
+    const root = body(
+      heading('h3', 'Beauty'),
+      heading('h3', 'Fashion'),
+      heading('h2', 'Co łączy branże?')
+    )
+    normalizeHeadingLevels(root)
+    expect(root.children?.map((n) => n.tag)).toEqual(['h2', 'h2', 'h2'])
+  })
+
+  it('unwraps a single-item list into a heading', () => {
+    const list: LexicalNode = {
+      type: 'list',
+      tag: 'ol',
+      children: [
+        { type: 'listitem', children: [text('Zadbaj o strategię', 1)] },
+      ],
+    }
+    const heading = unwrapLabelList(list, 'h2')
+    expect(heading?.type).toBe('heading')
+    expect(heading?.tag).toBe('h2')
+    expect(heading?.children?.[0]?.text).toBe('Zadbaj o strategię')
+    expect(heading?.children?.[0]?.format).toBe(0)
+  })
+
+  it('leaves a real list alone', () => {
+    const list: LexicalNode = {
+      type: 'list',
+      tag: 'ul',
+      children: [
+        { type: 'listitem', children: [text('Pierwszy')] },
+        { type: 'listitem', children: [text('Drugi')] },
+      ],
+    }
+    expect(unwrapLabelList(list, 'h2')).toBeNull()
+  })
+
+  it('leaves a single-item list that is too long to be a label', () => {
+    const list: LexicalNode = {
+      type: 'list',
+      tag: 'ul',
+      children: [{ type: 'listitem', children: [text('a'.repeat(90))] }],
+    }
+    expect(unwrapLabelList(list, 'h2')).toBeNull()
   })
 
   it('leaves an already-correct hierarchy untouched', () => {

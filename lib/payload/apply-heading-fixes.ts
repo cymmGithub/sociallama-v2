@@ -43,6 +43,8 @@ import {
   normalizeHeadingLevels,
   promoteToHeading,
   stripDuplicatedPrefix,
+  stripLeadingHeadings,
+  unwrapLabelList,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
 
@@ -154,6 +156,8 @@ function demoteToParagraph(node: LexicalNode): void {
 let changedPosts = 0
 let intros = 0
 let promoted = 0
+let unwrapped = 0
+let excerpts = 0
 let relevelled = 0
 let shortened = 0
 let credits = 0
@@ -195,6 +199,26 @@ for (const post of posts.docs) {
   if (promotedHere > 0) {
     promoted += promotedHere
     notes.push(`${promotedHere} bold paragraph(s) → headings`)
+  }
+
+  // Single-item lists used as section labels. One level below the labels
+  // above where those exist — in `lejek-marketingowy` the bold labels are the
+  // sections and these are the numbered points inside them — and the top
+  // level where the post has nothing else, which is how two posts with no
+  // headings at all get their sections back.
+  const labelTag = hasRealHeading || promotedHere > 0 ? 'h3' : 'h2'
+  let unwrappedHere = 0
+  root.children = (root.children ?? []).map((node) => {
+    const heading = unwrapLabelList(node, labelTag)
+    if (!heading) {
+      return node
+    }
+    unwrappedHere++
+    return heading
+  })
+  if (unwrappedHere > 0) {
+    unwrapped += unwrappedHere
+    notes.push(`${unwrappedHere} single-item list(s) → headings`)
   }
 
   // --- 2. Intro heading -----------------------------------------------------
@@ -283,11 +307,34 @@ for (const post of posts.docs) {
     }
   }
 
-  // --- 4. Re-level ----------------------------------------------------------
+  // --- 5. Re-level ----------------------------------------------------------
   const moved = normalizeHeadingLevels(root)
   if (moved > 0) {
     relevelled += moved
     notes.push(`${moved} heading(s) re-levelled`)
+  }
+
+  // --- 6. Excerpt ------------------------------------------------------------
+  // Last, so it sees the final headings. The excerpts were scraped from each
+  // body's opening with the headings left in, so seven of them begin with the
+  // post's own section labels — one leads with five of them run together
+  // before reaching a sentence. Those labels are genuine headings, so the
+  // duplication is the excerpt's fault, not theirs. This is the only field
+  // outside `content` the change writes.
+  const headings: string[] = []
+  walkNodes(root, (node) => {
+    if (headingLevel(node) !== null) {
+      headings.push(headingText(node))
+    }
+  })
+  const trimmedExcerpt = stripLeadingHeadings(excerpt, headings)
+  const excerptChanged =
+    excerpt.trim() !== '' && trimmedExcerpt !== excerpt.trim()
+  if (excerptChanged) {
+    excerpts++
+    notes.push(
+      `excerpt trimmed of ${excerpt.trim().length - trimmedExcerpt.length} leading heading chars`
+    )
   }
 
   if (notes.length === 0) {
@@ -302,15 +349,19 @@ for (const post of posts.docs) {
   await payload.update({
     collection: 'posts',
     id: post.id,
-    data: { content: content as never },
+    data: {
+      content: content as never,
+      ...(excerptChanged ? { excerpt: trimmedExcerpt } : {}),
+    },
   })
   console.log('    → updated')
 }
 
 console.log(
   `\n${changedPosts} post(s) ${APPLY ? 'changed' : 'would change'}: ` +
-    `${intros} intro heading(s), ${promoted} promoted, ` +
-    `${shortened} shortened, ${credits} image credit(s), ${relevelled} re-levelled` +
+    `${intros} intro heading(s), ${promoted} promoted, ${unwrapped} list label(s), ` +
+    `${shortened} shortened, ${credits} image credit(s), ${relevelled} re-levelled, ` +
+    `${excerpts} excerpt(s)` +
     (skipped ? `, ${skipped} override(s) skipped (see above)` : '') +
     (APPLY ? '' : '. Re-run with --apply to write.')
 )

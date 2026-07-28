@@ -426,6 +426,64 @@ export function excerptSimilarity(a: string, b: string): number {
   return (2 * shared) / (left.length + right.size)
 }
 
+/**
+ * Strip the headings an auto-generated excerpt opens with.
+ *
+ * The excerpts were scraped from each body's first few hundred characters,
+ * headings included — so an excerpt routinely begins with the post's own
+ * section labels run together: "Budowanie marki Interakcja z klientami Reklama
+ * i promocja … Dziś porozmawiamy o tym, jak…". That is what the card teaser
+ * and the meta description show.
+ *
+ * Removing them leaves the prose that was always meant to be the lead. Unlike
+ * `stripDuplicatedPrefix` this cuts exactly at the heading's end and does not
+ * back up to a sentence boundary: a label rarely ends in punctuation, and
+ * backing up would decline to cut at all.
+ */
+export function stripLeadingHeadings(
+  excerpt: string,
+  headings: readonly string[]
+): string {
+  const simple = (word: string) =>
+    word.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')
+
+  let out = excerpt.trim()
+  let cutting = true
+  while (cutting) {
+    cutting = false
+    for (const heading of headings) {
+      const headingWords = heading.split(/\s+/).filter(Boolean).map(simple)
+      if (headingWords.length === 0) {
+        continue
+      }
+      const pattern = /\S+/g
+      const positions: { text: string; at: number }[] = []
+      let match = pattern.exec(out)
+      while (match !== null) {
+        positions.push({ text: match[0], at: match.index })
+        match = pattern.exec(out)
+      }
+      if (positions.length <= headingWords.length) {
+        continue
+      }
+      const matches = headingWords.every(
+        (word, i) => simple(positions[i]?.text ?? '') === word
+      )
+      if (!matches) {
+        continue
+      }
+      const next = positions[headingWords.length]
+      if (!next) {
+        continue
+      }
+      out = out.slice(next.at).trim()
+      cutting = true
+      break
+    }
+  }
+  return out
+}
+
 export type IntroTreatment = 'restatement' | 'extended' | 'genuine'
 
 /**
@@ -551,9 +609,23 @@ export function normalizeHeadingLevels(root: LexicalNode): number {
     return 0
   }
   const mapped = new Map<number, number>()
-  present.forEach((level, index) => {
-    mapped.set(level, index === 0 ? 2 : 3)
-  })
+
+  // A body that opens below its own shallowest level is not describing a
+  // hierarchy. Three posts run a series of `h3` sections and then close with a
+  // single `h2` ("Wniosek: strategia to klucz do sukcesu") — that `h2` is the
+  // last section, not a parent of everything before it. Mapping levels in
+  // order would leave the sections as subsections of nothing, so the whole set
+  // flattens to `h2` instead.
+  const firstLevel = headingLevel(headings[0] as LexicalNode) as number
+  if (firstLevel !== present[0]) {
+    for (const level of present) {
+      mapped.set(level, 2)
+    }
+  } else {
+    present.forEach((level, index) => {
+      mapped.set(level, index === 0 ? 2 : 3)
+    })
+  }
 
   let changed = 0
   for (const node of headings) {
@@ -564,6 +636,77 @@ export function normalizeHeadingLevels(root: LexicalNode): number {
     }
   }
   return changed
+}
+
+/**
+ * A list holding exactly one short item is not a list — it is a section label
+ * WordPress wrapped in `<ol>`/`<ul>` so it would render with a number or a
+ * bullet. The corpus has 36 of them across 6 posts, and every one reads as a
+ * heading: "Zadbaj o strategię komunikacji", "Zwiększenie sprzedaży". Two of
+ * those posts have no other headings at all, so their sections were invisible
+ * to the table of contents.
+ *
+ * Returns the node to put in the list's place, or `null` if this list is a
+ * real list. A single item that already holds a heading — WordPress marked up
+ * the step as `<li><h2>` in one post — yields that heading, lifted out of the
+ * list to where a heading belongs.
+ */
+export function unwrapLabelList(
+  node: LexicalNode,
+  tag: string
+): LexicalNode | null {
+  if (node.type !== 'list') {
+    return null
+  }
+  const items = node.children ?? []
+  if (items.length !== 1) {
+    return null
+  }
+  const item = items[0]
+  if (!item) {
+    return null
+  }
+  const text = headingText(item)
+  if (text === '' || text.length > MAX_HEADING_LENGTH) {
+    return null
+  }
+  // Anything the text walk cannot see — a nested list, an image — means this
+  // is carrying more than a label.
+  let inertOnly = true
+  walkNodes(item, (descendant) => {
+    if (
+      ![
+        'listitem',
+        'text',
+        'linebreak',
+        'link',
+        'autolink',
+        'heading',
+      ].includes(descendant.type)
+    ) {
+      inertOnly = false
+    }
+  })
+  if (!inertOnly) {
+    return null
+  }
+
+  const nested = (item.children ?? []).find(
+    (child) => headingLevel(child) !== null
+  )
+  if (nested) {
+    return { ...nested, tag }
+  }
+  return {
+    type: 'heading',
+    tag,
+    format: '',
+    children: (item.children ?? []).map((child) =>
+      isTextNode(child)
+        ? { ...child, format: Number(child.format ?? 0) & ~IS_BOLD }
+        : child
+    ),
+  }
 }
 
 /**
