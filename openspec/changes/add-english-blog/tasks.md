@@ -196,7 +196,13 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   `/en/about-us`. `resolvePostAuthor(post, locale)` defaults to `pl`, so the four existing call
   sites are unchanged until phase 5.2 threads the locale.
 - [x] 6.1 Add BLOG to the English mega-menu and footer in `lib/content/home.en.ts`. Note `lib/i18n/parity.ts:17-18` checks element *type*, not membership — the type system will not catch a missing link, so verify by rendering.
-- [ ] 6.2 Render NewsLAMA on `/en`, gated to translated posts only. Three parts: add a `news` export to `lib/content/home.en.ts`; give `NewsLama` a `content` prop like every one of its sibling sections (`app/(frontend-en)/en/page.tsx:44-60` passes content to all of them, but `sections/news-lama/index.tsx:5` does `import { news } from '@/lib/content/home'` at module scope inside a `'use client'` component, so the EN heading and read-label would stay Polish otherwise); and build the EN view-model with `href: /en/blog/${post.slug}` — `toNewsLamaPost` (`(home)/page.tsx:39-50`) hardcodes `/${post.slug}`.
+- [x] 6.2 Render NewsLAMA on `/en`, gated to translated posts only. Three parts: add a `news` export to `lib/content/home.en.ts`; give `NewsLama` a `content` prop like every one of its sibling sections (`app/(frontend-en)/en/page.tsx:44-60` passes content to all of them, but `sections/news-lama/index.tsx:5` does `import { news } from '@/lib/content/home'` at module scope inside a `'use client'` component, so the EN heading and read-label would stay Polish otherwise); and build the EN view-model with `href: /en/blog/${post.slug}` — `toNewsLamaPost` (`(home)/page.tsx:39-50`) hardcodes `/${post.slug}`.
+  `NewsLama` now takes `content` + `locale` props. It is a `'use client'` module, so its
+  module-scope `import { news } from '@/lib/content/home'` rendered Polish regardless of route —
+  making the props required surfaced a **third** call site nobody had listed, `o-nas/page.tsx:95`.
+  `HomeContent` gained `news`, so `LocalizedHome['news']` type-checks the EN twin. The EN homepage
+  builds its own view-model because the Polish one hardcodes `/${post.slug}`, and reads
+  `getLatestPost('en')` so the section is omitted entirely until something is translated.
 - [ ] 6.3 **Author the English CMS content the gate would otherwise leave null**: 4 category `title` + `slug` values (`reklama` → `advertising` etc.), and the author's English `role` + `bio`. Without these, English category pages and author cards render empty rather than translated.
 - [ ] 6.4 Ship English `blog-hub` curation slots empty — `blog-hub-curation`'s existing degrade-to-defaults path fills them from the newest translated posts. (The global's schema was already localized in 2.2.)
 
@@ -220,9 +226,15 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   **Pagination decided: canonical only.** Page counts differ per locale under the D6 gate, so
   `/blog/page/5` and `/en/blog/page/5` hold different posts and the English one often does not
   exist — a reciprocal pair there would assert a false equivalence. Documented in both routes.
-- [ ] 7.5 Add English blog URLs to `app/sitemap.ts` (clone the `enCaseStudyRoutes` block) and add `alternates` to the existing Polish post entries. Include hub pagination for both locales, which is missing today.
+- [x] 7.5 Add English blog URLs to `app/sitemap.ts` (clone the `enCaseStudyRoutes` block) and add `alternates` to the existing Polish post entries. Include hub pagination for both locales, which is missing today.
+  Verified in the generated XML: 249 URLs, 5 `/en/blog/{post}`, 8 `/en/blog/category/*`, 8 pagination
+  entries (both locales, previously missing entirely), 27 `xhtml:link` alternates. A translated
+  Polish post carries `pl`/`en`/`x-default`; an untranslated one carries **none**. Alternates are
+  built by joining the two locales' rows on post/category **id** — `findPostsForSitemap` now selects
+  `id` — rather than one lookup per post. The pre-existing `Promise.all` was serialized instead of
+  extended, since this change adds four more reads to it.
 - [x] 7.6 Set `inLanguage` from the locale in `[slug]/json-ld.tsx:51`; localize the breadcrumb's `'Blog'` label and its `${APP_BASE_URL}/blog` URL (L72).
-- [ ] 7.7 Add English post and category URLs to `app/llms.txt/route.ts` — it hardcodes four Polish `PAGES` (`:17-38`) and builds `/${post.slug}` and `/category/${slug}` (`:68`, `:79`). Leave `app/robots.ts` alone: it is 16 lines with one `allow: ['/']` rule and a locale-agnostic sitemap pointer, so `/en` is already covered — verified, nothing to change.
+- [x] 7.7 Add English post and category URLs to `app/llms.txt/route.ts` — it hardcodes four Polish `PAGES` (`:17-38`) and builds `/${post.slug}` and `/category/${slug}` (`:68`, `:79`). Leave `app/robots.ts` alone: it is 16 lines with one `allow: ['/']` rule and a locale-agnostic sitemap pointer, so `/en` is already covered — verified, nothing to change.
 - [ ] 7.8 Give the English blog tree **real** e2e coverage. The existing sweep collects `#site-menu a[href], footer a[href]` only (`e2e/locale-routing.e2e.ts:33-39`), so adding the BLOG link enrols exactly one URL — `/en/blog`. Add a case that samples `/en/blog`, `/en/blog/page/2`, one `/en/blog/{en-slug}`, and one `/en/blog/category/{en-slug}` from `findPublishedPostSlugs`/`findCategories` under `locale: 'en'`. Without this, the suite would pass with 78 of 79 English posts 404ing.
 
 ## 8. Translation tooling

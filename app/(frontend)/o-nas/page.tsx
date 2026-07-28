@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
+import { news } from '@/lib/content/home'
 import { oNasMeta } from '@/lib/content/o-nas'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
@@ -92,7 +93,7 @@ export default async function ONasPage() {
         <JoinCta />
       </div>
       <div data-theme="plum-deep">
-        {newsPost && <NewsLama post={newsPost} />}
+        {newsPost && <NewsLama content={news} locale="pl" post={newsPost} />}
       </div>
     </Wrapper>
   )

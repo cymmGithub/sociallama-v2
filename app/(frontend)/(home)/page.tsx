@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
-import { faq } from '@/lib/content/home'
+import { faq, news } from '@/lib/content/home'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
@@ -83,7 +83,9 @@ export default async function HomePage() {
             <Testimonial />
             <Faq />
             <JoinCta />
-            {newsPost && <NewsLama post={newsPost} />}
+            {newsPost && (
+              <NewsLama content={news} locale="pl" post={newsPost} />
+            )}
           </>
         </Chapters>
       </Wrapper>

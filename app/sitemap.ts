@@ -7,6 +7,7 @@ import {
   getCaseStudiesForSitemap,
   getCategories,
   getPostsForSitemap,
+  getPostsPage,
 } from '@/lib/payload/queries'
 import { STATIC_ROUTES } from '@/lib/static-routes'
 
@@ -20,15 +21,53 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   )
 
-  // Published only — both queries constrain _status; drafts never appear here.
-  const [posts, categories, caseStudies] = await Promise.all([
-    getPostsForSitemap(),
-    getCategories(),
-    getCaseStudiesForSitemap(),
-  ])
+  // Published only — every query constrains _status; drafts never appear here.
+  //
+  // Read SEQUENTIALLY rather than with Promise.all, per the project's
+  // build-time DB concurrency constraint (see app/(frontend)/blog/page.tsx).
+  // This runs during static generation alongside every other page; the English
+  // locale doubled the number of reads here, which is the wrong direction to
+  // take a concurrent burst against the unpooled prod instance.
+  const posts = await getPostsForSitemap('pl')
+  const enPosts = await getPostsForSitemap('en')
+  const categories = await getCategories('pl')
+  const enCategories = await getCategories('en')
+  const caseStudies = await getCaseStudiesForSitemap()
+  const plHub = await getPostsPage(1, undefined, 'pl')
+  const enHub = await getPostsPage(1, undefined, 'en')
 
-  const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${APP_BASE_URL}/${post.slug}`,
+  // Joined by id, so a Polish post can name its English URL without one lookup
+  // each. A post absent from `enPosts` has no English version — the D6 gate
+  // already excluded it — and so gets no `alternates` rather than a guess.
+  const enSlugByPostId = new Map(enPosts.map((post) => [post.id, post.slug]))
+  const enSlugByCategoryId = new Map(
+    enCategories.map((category) => [category.id, category.slug])
+  )
+
+  /** hreflang for a pair, `x-default` on Polish (design D8). */
+  const languagesFor = (pl: string, en: string) => ({
+    languages: {
+      pl: `${APP_BASE_URL}${pl}`,
+      en: `${APP_BASE_URL}${en}`,
+      'x-default': `${APP_BASE_URL}${pl}`,
+    },
+  })
+
+  const postRoutes: MetadataRoute.Sitemap = posts.map((post) => {
+    const enSlug = enSlugByPostId.get(post.id)
+    return {
+      url: `${APP_BASE_URL}/${post.slug}`,
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+      ...(enSlug
+        ? { alternates: languagesFor(`/${post.slug}`, `/en/blog/${enSlug}`) }
+        : {}),
+    }
+  })
+
+  const enPostRoutes: MetadataRoute.Sitemap = enPosts.map((post) => ({
+    url: `${APP_BASE_URL}/en/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt),
     changeFrequency: 'monthly',
     priority: 0.7,
@@ -41,12 +80,54 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
-    url: `${APP_BASE_URL}/category/${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-  }))
+  const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => {
+    const enSlug = enSlugByCategoryId.get(category.id)
+    return {
+      url: `${APP_BASE_URL}/category/${category.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+      ...(enSlug
+        ? {
+            alternates: languagesFor(
+              `/category/${category.slug}`,
+              `/en/blog/category/${enSlug}`
+            ),
+          }
+        : {}),
+    }
+  })
+
+  const enCategoryRoutes: MetadataRoute.Sitemap = enCategories.map(
+    (category) => ({
+      url: `${APP_BASE_URL}/en/blog/category/${category.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    })
+  )
+
+  /**
+   * Hub pagination, missing entirely until now — in either locale.
+   *
+   * No `alternates`: page counts differ per locale under the D6 gate, so
+   * /blog/page/2 and /en/blog/page/2 are different sets of posts (task 7.4).
+   * Page 1 is omitted because it is canonical at the hub itself.
+   */
+  const paginationRoutes: MetadataRoute.Sitemap = [
+    ...Array.from({ length: Math.max(plHub.totalPages - 1, 0) }, (_, i) => ({
+      url: `${APP_BASE_URL}/blog/page/${i + 2}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.4,
+    })),
+    ...Array.from({ length: Math.max(enHub.totalPages - 1, 0) }, (_, i) => ({
+      url: `${APP_BASE_URL}/en/blog/page/${i + 2}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.4,
+    })),
+  ]
 
   // English marketing/legal pages (translated-slug URLs from the slug map) plus
   // the EN case-study details (same slugs + updatedAt as the Polish docs).
@@ -103,8 +184,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...baseRoutes,
     ...postRoutes,
+    ...enPostRoutes,
     ...caseStudyRoutes,
     ...categoryRoutes,
+    ...enCategoryRoutes,
+    ...paginationRoutes,
     ...enStaticRoutes,
     ...enCaseStudyRoutes,
     ...industryRoutes,

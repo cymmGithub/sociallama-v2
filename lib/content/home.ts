@@ -1011,6 +1011,7 @@ export type HomeContent = {
   testimonialLabels: typeof testimonialLabels
   faq: typeof faq
   joinCta: typeof joinCta
+  news: typeof news
 }
 
 /** Same shape, string/number literals widened so translations compile. */

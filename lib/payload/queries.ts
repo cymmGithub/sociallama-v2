@@ -249,7 +249,7 @@ async function findCategoryBySlug(
 /** Published posts with slug + updatedAt, for the sitemap. */
 async function findPostsForSitemap(
   locale: Locale = 'pl'
-): Promise<Pick<Post, 'slug' | 'updatedAt'>[]> {
+): Promise<Pick<Post, 'id' | 'slug' | 'updatedAt'>[]> {
   'use cache'
   cacheTag('posts')
   cacheLife('days')
@@ -260,7 +260,9 @@ async function findPostsForSitemap(
     where: { and: [...translated(locale), PUBLISHED] },
     limit: 0,
     pagination: false,
-    select: { slug: true, updatedAt: true },
+    // `id` is selected so the sitemap can join the two locales' rows and emit
+    // hreflang alternates without one lookup per post.
+    select: { id: true, slug: true, updatedAt: true },
     locale,
     ...READ,
   })

@@ -715,6 +715,15 @@ export const joinCta = {
   button: { label: 'WRITE TO US', href: '/en/contact' },
 } satisfies LocalizedHome['joinCta']
 
+// —— NewsLAMA ——————————————————————————————————————————————————————————————
+// "NewsLAMA" is the brand name of the section and stays untranslated; only the
+// read label is localized.
+
+export const news = {
+  heading: 'NewsLAMA',
+  readLabel: 'READ IT',
+} satisfies LocalizedHome['news']
+
 // —— Footer ————————————————————————————————————————————————————————————————
 
 export const footer = {

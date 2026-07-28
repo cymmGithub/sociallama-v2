@@ -2,15 +2,19 @@
 
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { news } from '@/lib/content/home'
+import type * as pl from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import type { Localized } from '@/lib/i18n/parity'
+import type { Locale } from '@/lib/i18n/slug-map'
 import { formatPostDate } from '@/lib/utils/format-date'
 import s from './news-lama.module.css'
 
 /**
  * Serializable view-model built server-side from the latest published
- * Payload post (see app/(frontend)/(home)/page.tsx). Static labels
- * (heading, read label) stay in lib/content/home.ts.
+ * Payload post (see app/(frontend)/(home)/page.tsx). Static labels arrive as
+ * a `content` prop: this is a 'use client' module, so a module-scope import
+ * of the Polish copy would render Polish on the English homepage no matter
+ * which locale the route is.
  */
 export interface NewsLamaPost {
   title: string
@@ -25,16 +29,24 @@ export interface NewsLamaPost {
 
 const HEADING_ACCENT = 'LAMA'
 
-export function NewsLama({ post }: { post: NewsLamaPost }) {
+export function NewsLama({
+  post,
+  content,
+  locale,
+}: {
+  post: NewsLamaPost
+  content: Localized<typeof pl.news>
+  locale: Locale
+}) {
   const ref = useReveal<HTMLElement>()
 
-  const formattedDate = formatPostDate(post.date)
+  const formattedDate = formatPostDate(post.date, locale)
 
-  // "NewsLAMA" → "News" + accented "LAMA" (copy stays in lib/content/home.ts)
-  const hasAccent = news.heading.endsWith(HEADING_ACCENT)
+  // "NewsLAMA" → "News" + accented "LAMA"
+  const hasAccent = content.heading.endsWith(HEADING_ACCENT)
   const headingPrefix = hasAccent
-    ? news.heading.slice(0, -HEADING_ACCENT.length)
-    : news.heading
+    ? content.heading.slice(0, -HEADING_ACCENT.length)
+    : content.heading
 
   return (
     <section ref={ref} className={s.section}>
@@ -63,7 +75,7 @@ export function NewsLama({ post }: { post: NewsLamaPost }) {
           </div>
           <h3 className={s.title}>{post.title}</h3>
           <p className={s.excerpt}>{post.excerpt}</p>
-          <span className={s.read}>{news.readLabel}</span>
+          <span className={s.read}>{content.readLabel}</span>
         </div>
       </Link>
     </section>
