@@ -257,3 +257,8 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   and `<tab/>` never occur in the corpus, so 8.2's round-trip cannot exercise them — the structural
   gate should reject an unexpected format mask rather than accept one. Full note in the scratchpad
   as `D3-correction.md`.
+- [ ] **Three Polish routes still `Promise.all` their build-time reads**, against the constraint
+  `app/(frontend)/blog/page.tsx:22-27` documents: `blog/page/[number]/page.tsx:44`,
+  `category/[category]/page.tsx:52`, `category/[category]/page/[number]/page.tsx:43`. Pre-existing;
+  the three new EN routes were serialized rather than copying it. Worth closing before the first
+  prod build that prerenders both locales' blogs at once.
