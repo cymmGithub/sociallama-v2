@@ -1,0 +1,71 @@
+{
+  "slug": "bioagris",
+  "clientName": "Bioagris",
+  "title": "Bioagris — expert video communication for an agricultural brand on TikTok and YouTube",
+  "excerpt": "We build awareness for Bioagris in a narrow, specialized agricultural market with video content that explains \"how and why the product works\" — 8107 subscribers on YouTube and individual videos pulling 250–500k views on TikTok.",
+  "tags": [
+    "Agriculture",
+    "Video",
+    "Expert content"
+  ],
+  "clientAbout": [
+    "Bioagris is a Polish brand working in the agricultural industry, specializing in modern solutions that support crop growing. Its core business is the sale and distribution of fertilizers and crop protection products, especially natural and biological ones, which help increase yields while staying safe for the environment and for human health.",
+    "The brand supports food producers — farmers, gardeners, orchard growers, and community gardeners — with products that promote healthy plant growth, reduce biotic and abiotic stress, and improve the efficiency of fertilization and crop protection. Bioagris puts real weight on education and sharing industry knowledge, running a blog, how-to videos, and expert advice for the people who use its products."
+  ],
+  "challenge": {
+    "intro": "Our job is to build awareness for Bioagris on Facebook, TikTok, and YouTube — in a specialized industry aimed at a narrow audience, where trust rests on both expert credibility and a simple message.",
+    "objectives": [
+      "Communication that explains \"how and why the product works\" simply and clearly — walking the viewer through it step by step and showing the product's real value.",
+      "Expertise and simplicity — passing on specialist knowledge in a way people understand, without losing credibility.",
+      "A content strategy that covers both education and sales, and a consistent visual language for the brand."
+    ]
+  },
+  "pillars": [
+    {
+      "tag": "#VIDEO",
+      "heading": "Video that explains how and why the product works",
+      "body": [
+        "Even though Bioagris works in a specialized industry and aims its products at a narrow audience, video communication performs very well. We went with content that walks the viewer through things step by step and plainly explains how the products work — like MycoTech BIO in tomato, cucumber, and pepper seedlings.",
+        "The numbers back it up: the TikTok profile has gathered 1782 followers, and the YouTube channel 8107 subscribers. Individual videos reach around 250–500k views on TikTok, and anywhere from a few thousand up to 270k on YouTube."
+      ]
+    },
+    {
+      "tag": "#EXPERTISE",
+      "heading": "Expertise and simplicity, without losing credibility",
+      "body": [
+        "The key to Bioagris's communication is getting specialist knowledge across in a way people understand — a simple but thorough explanation of how the products work, backed by concrete effects (higher productivity, plant resistance) and by evidence: research and grower trials.",
+        "We lead with transparency and education: we show the composition and what each ingredient actually does, present real use cases — fields before and after the products were used — and spell out concrete benefits like higher yields, better soil, and safety for the environment. All of it in one consistent voice: expert, but easy to follow."
+      ]
+    },
+    {
+      "tag": "#CREATIVES",
+      "heading": "A consistent visual language for the brand",
+      "body": [
+        "We developed a consistent system of graphic creatives for Bioagris, one in which the product always sits in a real growing context — in the field, in the soil, among the plants — with a clear, specific tagline holding the message together.",
+        "That's how we made, among others, product creatives presenting NHDELTA as \"number 1 in its category,\" along with seasonal materials that support sales and education, like \"Strawberries — time to start!\" encouraging growers to look after the foundations of the harvest."
+      ]
+    }
+  ],
+  "results": [
+    {
+      "platform": "YouTube",
+      "metric": "Subscribers",
+      "value": "8,107"
+    },
+    {
+      "platform": "TikTok",
+      "metric": "Followers",
+      "value": "1,782"
+    },
+    {
+      "platform": "TikTok",
+      "metric": "Content views",
+      "value": "250–500k"
+    },
+    {
+      "platform": "YouTube",
+      "metric": "Content views",
+      "value": "up to 270k"
+    }
+  ]
+}

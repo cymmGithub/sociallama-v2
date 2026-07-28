@@ -1,0 +1,87 @@
+{
+  "slug": "vobis",
+  "clientName": "Vobis",
+  "title": "Vobis — nine years of Facebook communication that speaks the language of Millennials and Gen Z",
+  "excerpt": "Continuous Facebook communication for Vobis since 2016 — real-time marketing, new post formats, and active moderation lifted the share of engaged users by 7.98 pp in a year and generated nearly 789k post views.",
+  "tags": [
+    "Consumer electronics & appliances",
+    "Real-time marketing",
+    "Facebook"
+  ],
+  "clientAbout": [
+    "Vobis is an online electronics store that has been on the Polish market for over 30 years. Its range covers computers, laptops, consumer electronics and home appliances, mobile devices, camera gear, and tools — and for over a decade the company has focused above all on online sales.",
+    "We have run Vobis's Facebook communication without a break since 2016, the year the company moved its sales model primarily onto its website. Over that long partnership Vobis rebranded for its 25th anniversary (2017), celebrated 30 years on the market (2022), and launched a new website on a new engine (2024)."
+  ],
+  "challenge": {
+    "intro": "Social Lama's brief was to run Vobis's Facebook communication for the long haul — so that it would keep pace with shifting trends and keep bringing fresh ideas into the messaging, even after years of working together.",
+    "objectives": [
+      "Reshaping the tone of communication for Millennial and Gen Z audiences (the key shift, made in late 2023).",
+      "Creating content that matches current trends in electronics and home appliance retail.",
+      "Adapting the communication to the changes the company went through over the years — the rebrand among them — and keeping it consistent with the brand's other communication areas.",
+      "Building engagement at the point where audiences meet the brand on Facebook."
+    ]
+  },
+  "pillars": [
+    {
+      "tag": "#RTM",
+      "heading": "Real-time marketing and a humorous tone of voice",
+      "body": [
+        "A brand built around technology and electronics has to feel current and move with the trends. Working up posts ad hoc in the spirit of real-time marketing, in late 2023 we refreshed the brand's visual style and committed to a strongly humorous, mildly provocative tone of voice — in posts and in moderation alike — aimed squarely at Millennials and Gen Z.",
+        "Fast reactions to whatever people are talking about — from sports references to internet memes — build the image of a dynamic, trend-aware brand and generate above-average engagement around current events."
+      ]
+    },
+    {
+      "tag": "#NEW_POST_FORMATS",
+      "heading": "Testing new content formats",
+      "body": [
+        "To build strong engagement, we tested new ideas for post formats to see which ones convert best into audience interaction. It turned out that text-only posts with no graphics, published on one of the backgrounds available in Facebook's native tool, deliver above-average results.",
+        "Stripped of branding as they are, those posts look like something from a group or a friend's feed, which makes people more willing to interact. Running the format every so often gave the target group's engagement an extra push, and that fed straight into reach."
+      ]
+    },
+    {
+      "tag": "#MODERATION",
+      "heading": "Active moderation and dialogue with the audience",
+      "body": [
+        "Millennials and Gen Z value dialogue with a brand, and they respect companies bold enough to join interesting discussions in the comments. With active moderation and individually written, often playful replies to comments, we created a space that brings people closer to the brand.",
+        "That's why Vobis is known as a brand that \"talks\" with its audience — a conversation now is what makes someone remember the brand later."
+      ]
+    }
+  ],
+  "results": [
+    {
+      "platform": "Facebook",
+      "metric": "Post views (Dec 2023–Nov 2024)",
+      "value": "788,753"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Fan growth",
+      "value": "+2,874"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Engaged users",
+      "value": "7,689 (+3,345)"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Engaged users as a share of profile size",
+      "value": "20.58% (+7.98 pp)"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Interactivity Index (per Sotrender)",
+      "value": "21,879 (+4,848)"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Brand replies to comments",
+      "value": "443 (+315)"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Clicks through to the website",
+      "value": "3,048"
+    }
+  ]
+}

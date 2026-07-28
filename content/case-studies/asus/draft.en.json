@@ -1,0 +1,98 @@
+{
+  "slug": "asus",
+  "clientName": "ASUS",
+  "title": "ASUS — an educational campaign about artificial intelligence that makes ASUS AI features click",
+  "excerpt": "An ASUS AI education campaign on YouTube, Facebook, and Instagram — 35 posts and 9 video pieces in 6 weeks, including films and reels made with the influencer @technokrata that make AI features easy to grasp.",
+  "tags": [
+    "Consumer electronics",
+    "Artificial intelligence",
+    "Educational campaign"
+  ],
+  "clientAbout": [
+    "ASUS is one of the world's most recognizable consumer electronics brands — a maker of laptops, smartphones, and computer hardware with a consistent bet on innovation. The brand's latest generations of devices are built around artificial intelligence from the ground up: from the Copilot assistant, through the MyASUS app, to ASUS's own AI features supporting creativity, performance, and everyday work.",
+    "We built this campaign promoting ASUS AI for the ASUS brand and ran it on the social channels of Vobis — the online electronics store whose social media we have run without a break since 2016. It's an established community of nearly 26 million likes on Facebook, made up of people genuinely interested in new technology — the ideal environment for content teaching what artificial intelligence can do."
+  ],
+  "challenge": {
+    "intro": "Social Lama's brief was to educate audiences about what artificial intelligence can do and about ASUS AI features — among 25- to 50-year-olds with moderate tech knowledge, to whom the more advanced options were often entirely unfamiliar.",
+    "objectives": [
+      "Raising awareness of AI technology among the target group — people with moderate technical knowledge.",
+      "Presenting MyASUS as a tool that optimizes and simplifies using ASUS devices.",
+      "Showing that Copilot is a personal assistant that solves problems, simplifies life, and adapts to its user.",
+      "Presenting AI as simple, intuitive, and indispensable technology for everyday use."
+    ]
+  },
+  "pillars": [
+    {
+      "tag": "#YOUTUBE",
+      "heading": "Educational AI films and the Technokrata collaboration",
+      "body": [
+        "On YouTube we showed how ASUS's AI-powered solutions improve everyday work and creative projects. We demonstrated real uses of features like Windows Copilot, StoryCube, and Adaptive Dimming to make AI's capabilities feel familiar. Practical scenarios and a fast-moving format underlined the benefits for organization, performance, and data security — bringing ASUS's modern technology within reach of non-specialists who had found these options completely foreign.",
+        "We brought Beniamin Jursa, known as Technokrata, into the campaign — a technology enthusiast and well-regarded creator who tests and reviews the newest hardware daily. His knowledge, his commitment, and his knack for explaining complicated subjects in plain terms made him the natural choice for promoting AI-based solutions."
+      ]
+    },
+    {
+      "tag": "#FACEBOOK",
+      "heading": "Graphic posts matched to personas",
+      "body": [
+        "Given the sheer breadth of what ASUS hardware offers and simplifies, we created a series of posts showing how individual technologies apply to specific audiences. Through short, catchy lines and bullet points we pointed to the real benefits of ASUS's own solutions, such as Copilot+, DialPad, StoryCube, and the AI assistant.",
+        "By singling out a dozen or so core personas — from creative professionals to people focused on their health — audiences could see clearly how ASUS products would help them day to day, and easily recognize themselves in the profiles we presented. That delivered the project's main goal: education and greater awareness of the technology inside ASUS devices."
+      ]
+    },
+    {
+      "tag": "#ANIMATION",
+      "heading": "Animations that explain AI in 10 seconds",
+      "body": [
+        "We produced a series of animations presenting the key features of ASUS hardware and software in an attractive, fast-moving format. Each was designed to show an AI-based technology at work in 10 seconds or less.",
+        "The animations cover the performance of the ASUS AI PC, the creative range of MuseTree, smart search in StoryCube, the effectiveness of AI Noise Cancelling, and what MyASUS does. Visual effects, smooth transitions, and a consistent aesthetic made the benefits of ASUS technology easy to grasp, supporting both its promotion and its understanding among users."
+      ]
+    },
+    {
+      "tag": "#REELS",
+      "heading": "Reels with Technokrata on Instagram",
+      "body": [
+        "On Instagram, Beniamin Jursa \"Technokrata\" created a series of reels for us showing how simple it is to use AI features to make everyday tasks easier — aimed at users who don't work with technology day to day.",
+        "The joint campaign underlined how innovative ASUS products are and how accessible they are to a broad audience — and the creator's deep knowledge of computer hardware and gaming fit the needs of a project promoting AI-based solutions perfectly."
+      ]
+    },
+    {
+      "tag": "#CAROUSELS",
+      "heading": "Carousels and stories that reveal AI features step by step",
+      "body": [
+        "Carousels on Facebook and Instagram were a key part of the campaign, tying visually and thematically back to the posts and animations. Each opened with an intriguing question or line, and the slides that followed gradually introduced specific technologies — automatic brightness adjustment, noise reduction, the smart AiSense camera. Graphic effects made their workings intuitive, and a consistent, modern style reinforced the brand's image as innovative and user-focused.",
+        "Instagram stories rounded out the campaign, extending the messages from the static posts and animations in a consistent way. Each story highlighted key features of the ASUS AI PC, MuseTree, StoryCube, AI Noise Cancelling, and MyASUS, referring back to the Facebook personas and showing how ASUS technology adapts to different needs — from creative professionals, through gamers, to people working remotely."
+      ]
+    }
+  ],
+  "results": [
+    {
+      "platform": "Facebook",
+      "metric": "Likes",
+      "value": "26,000,000"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Graphic posts and animations",
+      "value": "22"
+    },
+    {
+      "platform": "Facebook",
+      "metric": "Carousels (Facebook and Instagram)",
+      "value": "3"
+    },
+    {
+      "platform": "YouTube",
+      "metric": "Educational AI films",
+      "value": "4"
+    },
+    {
+      "platform": "Instagram",
+      "metric": "Reels with @technokrata",
+      "value": "5"
+    },
+    {
+      "platform": "Instagram",
+      "metric": "Stories",
+      "value": "10"
+    }
+  ]
+}
