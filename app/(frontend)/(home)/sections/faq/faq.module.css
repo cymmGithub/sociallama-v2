@@ -43,10 +43,25 @@
   line-height: 0.9;
   letter-spacing: -0.03em;
   font-size: clamp(2.75rem, 9vw, 7rem);
+
+  /* One line needs ~298px at the 2.75rem floor, which is wider than the safe
+     area below 360px — the heading would re-wrap and push the page sideways.
+     Ease the floor only there; the shared scale is untouched at every width
+     the sibling sections are checked at. */
+  @media (width < 360px) {
+    font-size: 2.5rem;
+  }
 }
 
+/* Unlike the WHY/HOW siblings this heading sits on one line — the two spans
+   stay separate only to keep "THE LAMA" in the accent colour below. They carry
+   no whitespace text node between them, so the gap is a margin. */
 .headingLine {
-  display: block;
+  display: inline;
+}
+
+.headingLine + .headingLine {
+  margin-left: 0.25em;
 }
 
 .headingLine:last-child {
