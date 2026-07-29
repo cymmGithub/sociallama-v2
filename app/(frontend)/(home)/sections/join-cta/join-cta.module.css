@@ -1,4 +1,8 @@
 .section {
+  /* Overshoot easing for the cube pop and the heart beat. Local, not a
+     global token — nothing else in the repo asks for a spring yet. */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   padding-block: calc(var(--safe) * 4);
   padding-inline: var(--safe);
   display: flex;
@@ -77,6 +81,65 @@
   transition: transform 650ms var(--ease-out-expo);
 }
 
+/* —— Platform services, placement C (design D5) ————————————————————————————
+   All seven lists stack in one grid cell, so the block's height is the
+   tallest list's and nothing reflows as the word turns. Inactive lists are
+   transparent rather than `display: none` — they must stay in the
+   accessibility tree and in the crawled markup. */
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  max-width: 44ch;
+
+  @media (--desktop) {
+    align-items: flex-start;
+  }
+}
+
+/* Direct child only: a bare `p` here would reach into the card's caption
+   and thread and repaint them on white. */
+.services > .servicesLead {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+.serviceStack {
+  display: grid;
+}
+
+.serviceList {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms var(--ease-out-expo);
+
+  @media (--desktop) {
+    justify-content: flex-start;
+  }
+}
+
+.serviceListActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chip {
+  font-size: 0.875rem;
+  line-height: 1.2;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -104,9 +167,8 @@
   }
 }
 
-/* Square box for the looping llama clip (the Video primitive fills it and
-   reserves the 1:1 ratio itself). Hero-scale: the llama dominates the media
-   column (user request 2026-07-17) — the clip composites seamlessly, so a
+/* Square box for the mascot well. Hero-scale: the llama dominates the media
+   column (user request 2026-07-17) — the cutout composites seamlessly, so a
    large box costs nothing visually. */
 .media {
   flex: 0 0 auto;
@@ -121,10 +183,12 @@
 }
 
 /* —— Sponsored-post chrome (user pick 2026-07-17) ————————————————————————
-   White post card wraps the clip — the CTA becomes the ad we'd run. Fixed
+   White post card wraps the mascot — the CTA becomes the ad we'd run. Fixed
    light palette on purpose: the card reads as a foreign artifact (a post),
-   not as part of the chapter theme. */
+   not as part of the chapter theme. `position: relative` anchors the toast
+   and the options sheet, both of which cover the card. */
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -206,8 +270,139 @@
 
 .cardMore {
   margin-left: auto;
-  width: 22px;
-  height: 22px;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* —— Media well ————————————————————————————————————————————————————————
+   The mascot ships as a transparent cutout, so the ground is a stylesheet
+   decision and stays one (design D7). Brand plum with a falloff toward the
+   corners: a real backdrop is never flat, and that falloff is what makes a
+   cutout read as a photograph rather than a sticker. */
+.well {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--color-primary);
+  background-image: radial-gradient(
+    115% 88% at 50% 16%,
+    #a83c65 0%,
+    #8d2f53 54%,
+    #601c37 100%
+  );
+}
+
+/* The stage is the llama's own bounding box. Expressing the cube slot as a
+   percentage of THIS rather than of the card is what keeps the cube on the
+   raised paw at every width, with no breakpoint-specific offsets. The crop
+   is driven by the cube — it is the top of the composition, and framing on
+   the head instead pushes the cube out of the well.
+
+   Height 100% at top 4% (user call 2026-07-29: more air in the post). The
+   cube shrinks with the stage, which is the price of the slot being anchored
+   to the mascot; holding the cube's absolute size instead was tried and
+   abandoned, because the box grows around a slot centre that already sits
+   near the top of the well, so it leaves the frame faster than lowering the
+   stage can compensate. `top + height` must stay >= 100% — below that the
+   chest-cropped torso stops meeting the bottom edge and floats. */
+.stage {
+  position: absolute;
+  left: 50%;
+  top: 4%;
+  height: 100%;
+  aspect-ratio: 693 / 979;
+  transform: translateX(-50%);
+}
+
+.llama {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slot {
+  position: absolute;
+  left: 0.6%;
+  top: 2.4%;
+  width: 20.2%;
+  aspect-ratio: 1;
+}
+
+/* Every cube is in the DOM; only the active one is visible. The square box
+   plus object-fit normalises seven different native ratios to one visual
+   weight, so the swap reads as a substitution and not as a resize.
+
+   The box overshoots the slot (165%, centred by the negative offsets) so the
+   icons floating around each cube have room. Width and height are explicit
+   on purpose: `width: auto` on a replaced element resolves to its intrinsic
+   size clamped by the global `img { max-width: 100% }`, NOT to the box the
+   insets describe — which rendered the cube at slot size while positioning
+   it as if it were 165%, hard against the corner. `max-width: none` keeps
+   that same global clamp from capping it again. */
+.cube {
+  position: absolute;
+  left: -32.5%;
+  top: -32.5%;
+  width: 165%;
+  height: 165%;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out-expo);
+}
+
+/* A pop, not a cross-fade: the pose depicts an object being caught and
+   replaced, and a cross-fade would read as a slide turning. */
+.cubeActive {
+  opacity: 1;
+  animation: cube-pop 520ms var(--spring);
+}
+
+@keyframes cube-pop {
+  0% {
+    transform: scale(0.55) rotate(-18deg);
+  }
+  60% {
+    transform: scale(1.08) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* Double-tap bloom — the gesture's only feedback inside the well. */
+.bloom {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 96px;
+  height: 96px;
+  margin: -48px 0 0 -48px;
+  color: #fff;
+  filter: drop-shadow(0 4px 14px rgb(0 0 0 / 0.4));
+  animation: bloom 900ms var(--ease-out-expo) forwards;
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  45% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
 }
 
 .cardFooter {
@@ -220,11 +415,43 @@
 .cardActions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
+}
+
+/* Every control in the card is a real button: the row used to be four
+   decorative SVGs behind aria-hidden, which invited a gesture the card
+   could not answer. */
+.action {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: inherit;
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
 
   svg {
     width: 24px;
     height: 24px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* The comment control retires when the thread runs out. aria-disabled
+     rather than `disabled`, so a keyboard user does not lose focus
+     mid-thread when the last pair lands. */
+  &[aria-disabled="true"] {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (--hover) {
+    &:hover {
+      background-color: rgb(0 0 0 / 0.06);
+    }
   }
 }
 
@@ -232,11 +459,329 @@
   margin-left: auto;
 }
 
+/* Progressive fill: an outline heart with a filled copy clipped to --fill,
+   so four activations walk it from part-filled to whole. */
+.heart {
+  position: relative;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.heartFill {
+  color: #ed4956;
+  clip-path: inset(calc(100% - var(--fill, 45%)) 0 0 0);
+  transition: clip-path 420ms var(--ease-out-expo);
+}
+
+/* The payoff for four deliberate presses: six particles out past the icon's
+   edge and gone. Deliberately small — the heart filling is the event, and a
+   firework here would upstage a card that is meant to read as one post. */
+.burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* Quad, not expo. Expo front-loads so hard that the particles reach 94% of
+     their travel and most of their fade inside ~100ms — measured, and the
+     result is invisible rather than subtle. Quad spreads the motion across
+     the duration, and the opacity plateau keeps them legible while they fly. */
+  i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
+    border-radius: 50%;
+    background-color: #ed4956;
+    opacity: 0;
+    animation: burst 620ms var(--ease-out-quad) forwards;
+  }
+}
+
+/* rotate() first turns the particle's own axes, so the translate that follows
+   throws it along its angle — six of them make a ring without six keyframes. */
+@keyframes burst {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateY(-3px) scale(0.4);
+  }
+  18% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateY(-16px) scale(0.9);
+  }
+}
+
+.heartBeatA {
+  animation: heart-beat-a 420ms var(--spring);
+}
+
+.heartBeatB {
+  animation: heart-beat-b 420ms var(--spring);
+}
+
+@keyframes heart-beat-a {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.32);
+  }
+  60% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes heart-beat-b {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.32);
+  }
+  60% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* The paper plane leaves and a fresh one arrives — the only motion on the
+   one control that carries no joke. */
+.flyA {
+  animation: fly-a 620ms var(--ease-out-expo);
+}
+
+.flyB {
+  animation: fly-b 620ms var(--ease-out-expo);
+}
+
+@keyframes fly-a {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  45% {
+    transform: translate(16px, -16px) rotate(14deg);
+    opacity: 0;
+  }
+  46% {
+    transform: translate(-12px, 12px) rotate(-8deg);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes fly-b {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  45% {
+    transform: translate(16px, -16px) rotate(14deg);
+    opacity: 0;
+  }
+  46% {
+    transform: translate(-12px, 12px) rotate(-8deg);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
 .cardLikes {
   font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .cardCaption {
   font-size: 0.875rem;
   line-height: 1.35;
+}
+
+/* —— Comment thread ————————————————————————————————————————————————————— */
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.threadLine {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.threadReply {
+  padding-left: 1.25rem;
+  color: #4a4a4a;
+}
+
+/* —— Save toast ————————————————————————————————————————————————————————— */
+
+.toast {
+  position: absolute;
+  inset-inline: 12px;
+  bottom: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background-color: #1c1c1c;
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.35);
+  animation: toast-in 320ms var(--ease-out-expo);
+}
+
+.toastCta {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-contrast);
+  white-space: nowrap;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* —— Options sheet ————————————————————————————————————————————————————— */
+
+.sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  background-color: rgb(0 0 0 / 0.45);
+}
+
+.sheetPanel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px;
+  border-radius: 16px 16px 20px 20px;
+  background-color: #fff;
+  animation: sheet-in 320ms var(--ease-out-expo);
+}
+
+.sheetList {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheetItem,
+.sheetClose {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.3;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+
+  @media (--hover) {
+    &:hover {
+      background-color: rgb(0 0 0 / 0.06);
+    }
+  }
+}
+
+.sheetClose {
+  border-top: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 0 0 10px 10px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.sheetAnswer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.sheetCta {
+  padding: 0.65em 1.4em;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* —— Reduced motion ————————————————————————————————————————————————————
+   The global neutralizer in global.css selects `*`, so every class-declared
+   animation here outranks it — hence this block, the same way the header,
+   footer and testimonial modules each carry their own. Each effect collapses
+   to its END state, never to a withheld one: the cube is simply already
+   there, the heart is already filled, the sheet is already up. The bloom is
+   the exception only in appearance — its end state is "gone", so not drawing
+   it at all is the correct collapse, not a suppression of content. */
+@media (--reduced-motion) {
+  .serviceList,
+  .cube,
+  .heartFill {
+    transition-duration: 0.01ms;
+  }
+
+  .cubeActive,
+  .heartBeatA,
+  .heartBeatB,
+  .flyA,
+  .flyB,
+  .sheetPanel,
+  .toast {
+    animation: none;
+  }
+
+  /* Both end in "gone", so not drawing them is the correct collapse. */
+  .bloom,
+  .burst {
+    display: none;
+  }
 }

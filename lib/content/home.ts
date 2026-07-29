@@ -987,35 +987,150 @@ export const joinCta = {
   /* Rotating token = preposition + locative + "?" in one string — Polish
      locative case forces per-word prepositions (W FACEBOOKU / NA
      INSTAGRAMIE), and keeping the "?" inside the token means it never
-     detaches from the sliding word. */
+     detaches from the sliding word.
+     Seven platform tokens, no disciplines: every token now drives a cube and
+     a services list, and `W STRATEGII?` / `W WIDEO?` had neither — a
+     discipline applies to every platform, so it has no platform to show.
+     `cube` repeats the paths from lib/content/uslugi.ts on purpose: the same
+     seven cubes drive the platform section on /uslugi/content, and this repo
+     keeps asset paths in the content file (uslugi.en.ts duplicates them the
+     same way). `services` is distilled from those platforms' descriptions
+     there, so this section cannot drift from the services pages — LinkedIn,
+     X and YouTube carry no advertising item because we do not sell one. */
   rotator: [
-    { token: 'NA FACEBOOKU?' },
-    { token: 'NA INSTAGRAMIE?' },
-    { token: 'NA TIKTOKU?' },
-    { token: 'NA LINKEDINIE?' },
-    { token: 'NA PINTEREŚCIE?' },
-    { token: 'NA X (TWITTERZE)?' },
-    { token: 'NA YOUTUBIE?' },
-    { token: 'W STRATEGII?' },
-    { token: 'W WIDEO?' },
+    {
+      token: 'NA FACEBOOKU?',
+      cube: '/assets/cube-facebook-70862a.png',
+      services: [
+        'posty angażujące',
+        'obsługa społeczności',
+        'komunikacja w grupach',
+        'kampanie Meta Ads',
+      ],
+    },
+    {
+      token: 'NA INSTAGRAMIE?',
+      cube: '/assets/cube-instagram.png',
+      services: [
+        'estetyczny feed',
+        'rolki i relacje',
+        'spójny wizerunek',
+        'kampanie Meta Ads',
+      ],
+    },
+    {
+      token: 'NA TIKTOKU?',
+      cube: '/assets/cube-tiktok.png',
+      services: [
+        'krótkie wideo',
+        'trendy i real-time',
+        'język platformy',
+        'kampanie TikTok Ads',
+      ],
+    },
+    {
+      token: 'NA LINKEDINIE?',
+      cube: '/assets/cube-linkedin.png',
+      services: [
+        'personal branding ekspertów',
+        'komunikacja B2B',
+        'budowanie autorytetu',
+      ],
+    },
+    {
+      token: 'NA PINTEREŚCIE?',
+      cube: '/assets/cube-pinterest-6e33ed.png',
+      services: [
+        'inspiracje i poradniki',
+        'wizualne kolekcje',
+        'intencje wyszukiwania',
+        'ruch na stronę',
+      ],
+    },
+    {
+      token: 'NA X (TWITTERZE)?',
+      cube: '/assets/cube-x-5d9863.png',
+      services: [
+        'szybka, reaktywna komunikacja',
+        'ekspercki głos marki',
+        'real-time marketing',
+      ],
+    },
+    {
+      token: 'NA YOUTUBIE?',
+      cube: '/assets/cube-youtube.png',
+      services: [
+        'wideo długie i krótkie',
+        'budowanie subskrypcji',
+        'pozycjonowanie eksperckie',
+      ],
+    },
   ],
-  /* Looping multi-arm llama clip, graded + edge-feathered to flat #722341
-     (plum-deep, seamless composite — gated by verify-clip-bg.ts). */
-  clip: '/clips/cta-llama-work.mp4',
-  poster: '/clips/cta-llama-work-poster.jpg',
-  /* Sponsored-post chrome around the clip (user pick 2026-07-17): the CTA
-     literally becomes the ad we'd run for ourselves. */
+  /* Kicker above the platform chip list (design D5, placement C). */
+  servicesLead: 'CO ROBIMY',
+  /* Transparent cutout composited onto the plum well by CSS — no background
+     is baked in, so the well stays a stylesheet decision (design D7). */
+  llama: '/assets/join-cta-llama.webp',
+  llamaAlt:
+    'Lama w granatowym garniturze i bordowym fularze z uniesioną łapą — maskotka Social Lama',
+  /* Sponsored-post chrome around the mascot (user pick 2026-07-17): the CTA
+     literally becomes the ad we'd run for ourselves. Every gag in here ends
+     at /kontakt — without that rule the card is a fidget toy competing with
+     the section's own button (design D6). */
   post: {
     href: 'https://www.instagram.com/social.lama/',
     handle: 'social.lama',
     meta: 'Sponsorowane',
     metaNote: 'i tak to polubisz',
+    metaNoteLiked: 'a nie mówiliśmy?',
     likes: '1 024 polubienia',
+    likesLiked: '1 025 polubień',
     caption: 'Kiedy klient pyta, czy ogarniemy wszystko 🦙💪',
     onInstagram: 'na Instagramie',
+    like: 'Polub post',
+    /* Send is the one control with no joke — it really copies the link. One
+       honest button is what makes the other five read as comedy rather than
+       as a broken interface (design D6). */
+    share: 'Udostępnij post',
+    shareCopied: 'Link skopiowany',
+    save: 'Zapisz post',
+    saveToast: 'Zapisane. Tylko że zapisany post nie zrobi Ci contentu.',
+    saveToastCta: 'NAPISZ DO NAS',
+    comment: 'Pokaż komentarze',
+    /* A real objection we hear on first calls, answered the way we answer it.
+       One exchange only (user call 2026-07-29), and it ends there — the
+       control simply retires, with no sign-off line. The card stays a post
+       rather than turning into a transcript with a footer. */
+    thread: [
+      {
+        author: 'agnieszka.p',
+        question: 'Nasza branża jest nudna.',
+        answer:
+          'Nie ma nudnych branż, są nudne treści. Mamy case studies z branż „bez potencjału”.',
+      },
+    ],
+    /* The "⋯" sheet. One option answers honestly what this section is. */
+    menu: 'Więcej opcji',
+    menuTitle: 'Opcje posta',
+    menuItems: [
+      {
+        label: 'Dlaczego widzę tę reklamę?',
+        answer:
+          'Bo to nie jest reklama, tylko sekcja na naszej stronie. Ale gdybyśmy odpalili kampanię, wyglądałaby dokładnie tak.',
+      },
+      {
+        label: 'Ukryj reklamę',
+        answer:
+          'Możemy. Zostanie sama treść — a treść to akurat to, co robimy dla klientów.',
+      },
+      {
+        label: 'Zgłoś',
+        answer: 'Zgłoszone. Sami sobie. Rozpatrzone po naszej myśli.',
+      },
+    ],
+    menuCta: { label: 'NAPISZ DO NAS', href: '/kontakt' },
+    menuClose: 'Zamknij',
   },
-  llamaAlt:
-    'Wieloręka lama w tweedowej kamizelce trzyma laptop, telefon, pędzel, klaps filmowy, kubek i paczkę — maskotka Social Lama',
   button: { label: 'NAPISZ DO NAS', href: '/kontakt' },
 } as const
 

@@ -36,11 +36,16 @@ expressed as a percentage of it — `left 0.6%`, `top 2.4%`, `width 20.2%`. Tyin
 the slot to the llama rather than to the card means the cube stays at the paw at
 every card width, with no breakpoint-specific offsets.
 
-Framing: the stage is `height: 112%` of the square well at `top: 2%`, showing
+Framing: the stage is `height: 100%` of the square well at `top: 4%`, showing
 the composition from just above the cube down to the lower chest. The crop is
 driven by the **cube**, not the head — the cube is the top of the composition,
 and an earlier framing that anchored on the llama pushed the cube out of the
 frame entirely.
+
+`top + height` is the invariant to respect: it must stay at or above 100%, or
+the chest-cropped torso stops meeting the bottom edge and reads as a bust
+floating in the well. That, not the cube, is what bounds how small the mascot
+can go — the usable range at `top: 4%` is roughly 96%–112%.
 
 ## D3 — The cubes already exist
 
@@ -80,11 +85,12 @@ YouTube Ads are not offered, so those two lists carry three items instead of
 four, and X carries no ads item. The asymmetry is deliberate and should not be
 "fixed" by padding.
 
-Placement remains open. Option B (second caption line) was chosen while the
-carousel existed, on the argument that a carousel's caption is where per-slide
-text belongs. With the carousel gone that argument is gone, and option C (chips
-under the heading) both keeps the card a single coherent post and fills the left
-column's dead space below the button. The mock ships both behind a toggle.
+Placement: **option C — chips under the heading** (decided 2026-07-29). Option B
+(second caption line) was chosen while the carousel existed, on the argument
+that a carousel's caption is where per-slide text belongs. With the carousel
+gone that argument went with it, and C both keeps the card a single coherent
+post with one joke and fills the left column's dead space below the button.
+The toggle existed only in the mock; it does not ship.
 
 ## D6 — Interaction scope
 
@@ -94,14 +100,41 @@ smallest of them. The genuinely expensive ones are the `⋯` sheet — a modal
 needing `Escape`, focus management and focus return — and the comment thread,
 which is eight lines of dialogue per locale rather than any real code.
 
-One rule governs all of them: **every gag terminates in `/kontakt`.** A filled
-heart grows the payoff link, saving raises a toast with a contact button, the
-thread ends by handing over to a real conversation. Without that rule the card
-is a fidget toy competing with the section's own CTA.
+The original rule was that **every** gag terminates in `/kontakt` — a filled
+heart grew a payoff link, the exhausted thread signed off with one, the save
+toast and the `⋯` sheet carried their own. In review (2026-07-29) that proved
+to be three routes too many inside a card sitting inches from the section's own
+`NAPISZ DO NAS` button: repeated at every turn it reads as nagging rather than
+converting, and each one added a line of chrome to a card whose whole conceit
+is that it is a single post.
+
+**Two routes remain**: the save toast and the `⋯` sheet's honest answer. The
+like now pays off in the meta note alone, and the thread ends on its answer
+with the control simply retiring. The principle behind the rule survives —
+the card converts rather than merely entertaining — but it is carried by the
+two interactions where a contact prompt is the natural next beat, not by all
+five. A future addition should ask whether it earns a route, not assume one.
 
 `Send` is deliberately the one control with no joke — it really copies the link.
 One honest button is what makes the other five read as intentional comedy rather
 than a broken interface.
+
+The completion burst uses `--ease-out-quad`, not the `--ease-out-expo` this
+module reaches for everywhere else. Expo front-loads so aggressively that the
+particles cover 94% of their travel and most of their fade inside ~100ms —
+measured, by freezing the animation with a negative delay — which renders as
+nothing at all rather than as something subtle. A short effect needs its motion
+spread across its duration, not compressed into the front of it; the opacity
+also holds a plateau to 55% so the particles stay legible while they fly.
+
+The typewriter derives its character count from elapsed time, not from one
+character per tick. Per-tick incrementing makes the speed constant a *floor*
+rather than a duration: every tick is a state update, so render cost is added
+to each interval and the line types as slowly as the device is heavy — measured
+at 34ms/char against a stated 18ms, and slower again under a higher device
+pixel ratio. That mattered little as a drip across four exchanges; with one
+exchange the typewriter is the whole payoff, and a 2.8s reveal of the only
+punchline reads as broken. Time-derived, it holds ~18.5ms/char at any load.
 
 ## D7 — The well is a CSS decision, permanently
 
@@ -165,4 +198,48 @@ them again:
   never restores a line. Re-deriving the contour (erode to core → per-row right
   edge → median then gaussian along y → clip → feather) fixed it.
 
-The assets and scripts live in `assets-src/join-cta-looks/`.
+The assets and scripts themselves did not survive — they lived in a scratchpad
+that was gone by the time this change was implemented (2026-07-29), so the
+planned `assets-src/join-cta-looks/` archive was dropped. The findings above
+are the whole of what remains, which is the part worth keeping: anything that
+generates a *set* of mascot images will hit them again.
+
+## D10 — Two things the geometry does not get for free
+
+Both surfaced only under measurement, and both would read as "the CSS is
+roughly right" to the eye:
+
+- **`width: auto` does not fill an inset box on a replaced element.** The cube
+  slot is described by negative insets, and an `<img>` with `width: auto`
+  resolves to its *intrinsic* size (clamped by the global `img { max-width:
+  100% }`) rather than to the box those insets describe. The cube rendered at
+  slot size while being positioned as though it were 165% — hard into the
+  corner, icons clipped. Width, height and `max-width: none` are explicit for
+  that reason.
+- **The global reduced-motion neutralizer cannot reach a class.** It selects
+  `*`, so every animation declared on a class in this module outranks it. The
+  module carries its own `@media (--reduced-motion)` block, as the header,
+  footer and testimonial modules already do. AGENTS.md's "the global
+  neutralizer zeroes CSS animation" holds only for element-level declarations.
+
+The stage sits at `top: 4%` rather than the 2% the mock used: at 2% every cube
+crossed the top of the well, the mock included. The framing is still driven by
+the cube, just with the clearance the design asked for.
+
+## D11 — The cube's size is the mascot's size
+
+Asked for more air in the post (2026-07-29), the stage dropped from 112% to
+100%. The cube shrank with it — 18.6% of the well to 14% — because the slot is
+a percentage of the stage. Holding the cube's absolute size was tried and
+rejected: growing the overscale to compensate expands the box around a slot
+centre that already sits near the top of the well, so the cube leaves the frame
+faster than lowering the stage can claw back, and solving for both targets at
+once diverges (it ran away to a 832% overscale before being abandoned).
+
+Decoupling them properly would mean anchoring the cube box by a corner instead
+of its centre, or sizing it against the well rather than the slot. Both throw
+away the one property this geometry exists for: that the cube tracks the paw at
+every card width with no breakpoint-specific offsets. **The cube scaling with
+the mascot is the cost of that guarantee, and it is the right trade** — but a
+future request to enlarge the cube alone should start here, not with the
+overscale number.

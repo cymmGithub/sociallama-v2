@@ -740,30 +740,130 @@ export const joinCta = {
   headingLead: 'NEED A HAND',
   // English drops the Polish locative cases — a flat "ON <platform>?" per token,
   // "?" kept inside so it never detaches from the sliding word.
+  // Seven platform tokens only: each drives a cube and a services list, which
+  // the two discipline tokens never had. Cube paths mirror the PL file (and
+  // uslugi.en.ts) — artwork is not localized, only the copy around it.
   rotator: [
-    { token: 'ON FACEBOOK?' },
-    { token: 'ON INSTAGRAM?' },
-    { token: 'ON TIKTOK?' },
-    { token: 'ON LINKEDIN?' },
-    { token: 'ON PINTEREST?' },
-    { token: 'ON X (TWITTER)?' },
-    { token: 'ON YOUTUBE?' },
-    { token: 'WITH STRATEGY?' },
-    { token: 'WITH VIDEO?' },
+    {
+      token: 'ON FACEBOOK?',
+      cube: '/assets/cube-facebook-70862a.png',
+      services: [
+        'posts worth engaging with',
+        'community management',
+        'conversations in groups',
+        'Meta Ads campaigns',
+      ],
+    },
+    {
+      token: 'ON INSTAGRAM?',
+      cube: '/assets/cube-instagram.png',
+      services: [
+        'an aesthetic feed',
+        'reels and stories',
+        'a consistent look',
+        'Meta Ads campaigns',
+      ],
+    },
+    {
+      token: 'ON TIKTOK?',
+      cube: '/assets/cube-tiktok.png',
+      services: [
+        'short video',
+        'trends and real-time',
+        'the platform’s language',
+        'TikTok Ads campaigns',
+      ],
+    },
+    {
+      token: 'ON LINKEDIN?',
+      cube: '/assets/cube-linkedin.png',
+      services: [
+        'expert personal branding',
+        'B2B communication',
+        'authority worth trusting',
+      ],
+    },
+    {
+      token: 'ON PINTEREST?',
+      cube: '/assets/cube-pinterest-6e33ed.png',
+      services: [
+        'inspiration and how-tos',
+        'visual collections',
+        'search intent',
+        'traffic to your site',
+      ],
+    },
+    {
+      token: 'ON X (TWITTER)?',
+      cube: '/assets/cube-x-5d9863.png',
+      services: [
+        'fast, reactive communication',
+        'an expert brand voice',
+        'real-time marketing',
+      ],
+    },
+    {
+      token: 'ON YOUTUBE?',
+      cube: '/assets/cube-youtube.png',
+      services: [
+        'long and short video',
+        'subscribers who stay',
+        'positioning as the source',
+      ],
+    },
   ],
-  clip: '/clips/cta-llama-work.mp4',
-  poster: '/clips/cta-llama-work-poster.jpg',
+  servicesLead: 'WHAT WE DO',
+  llama: '/assets/join-cta-llama.webp',
+  llamaAlt:
+    'A llama in a navy suit and burgundy cravat with one raised paw — the Social Lama mascot',
   post: {
     href: 'https://www.instagram.com/social.lama/',
     handle: 'social.lama',
     meta: 'Sponsored',
     metaNote: "you'll like it anyway",
+    metaNoteLiked: 'told you so',
     likes: '1,024 likes',
+    likesLiked: '1,025 likes',
     caption: "When a client asks if we've got it all covered 🦙💪",
     onInstagram: 'on Instagram',
+    like: 'Like this post',
+    share: 'Share this post',
+    shareCopied: 'Link copied',
+    save: 'Save this post',
+    // Not a literal translation of the PL line — the joke has to land in
+    // English on its own, and "saved posts don't make content" does.
+    saveToast: "Saved. Though a saved post has never made anyone's content.",
+    saveToastCta: 'WRITE TO US',
+    comment: 'Show comments',
+    thread: [
+      {
+        author: 'agnieszka.p',
+        question: 'Our industry is boring.',
+        answer:
+          'There are no boring industries, only boring posts. We have case studies from "no potential" ones.',
+      },
+    ],
+    menu: 'More options',
+    menuTitle: 'Post options',
+    menuItems: [
+      {
+        label: 'Why am I seeing this ad?',
+        answer:
+          "Because it isn't an ad — it's a section on our own site. But if we ran the campaign, it would look exactly like this.",
+      },
+      {
+        label: 'Hide this ad',
+        answer:
+          "We can. That leaves just the content — which happens to be what we make for clients.",
+      },
+      {
+        label: 'Report',
+        answer: 'Reported. To ourselves. Resolved in our favor.',
+      },
+    ],
+    menuCta: { label: 'WRITE TO US', href: '/en/contact' },
+    menuClose: 'Close',
   },
-  llamaAlt:
-    'A many-armed llama in a tweed vest holding a laptop, phone, paintbrush, clapperboard, mug, and parcel — the Social Lama mascot',
   button: { label: 'WRITE TO US', href: '/en/contact' },
 } satisfies LocalizedHome['joinCta']
 

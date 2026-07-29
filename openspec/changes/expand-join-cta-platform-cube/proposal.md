@@ -37,15 +37,18 @@ Explicitly **out of scope** (see Non-Goals): the hero, Payload-managed copy, and
 - **No claims we cannot support.** LinkedIn Ads and YouTube Ads are absent from the services copy because we do not offer them (confirmed 2026-07-28); those two platforms carry three items rather than four. X carries no ads item at all.
 - **The superseded clip stays in the repo.** `public/clips/cta-llama-work.mp4` and its poster are no longer referenced but are not deleted.
 
-## Open Questions
+## Resolved Questions
 
-- **Where the services copy lives.** Option B (a second caption line inside the card) was chosen on 2026-07-28, but under the carousel premise — the argument was that a carousel's caption is where per-slide text naturally goes. That premise is gone. Option C (a chip list under the heading, in the left column, which is otherwise empty below the button) now keeps the card as a single coherent post with one joke, and fills real dead space. **The mock defaults to C and ships a toggle so both can be judged; this needs an explicit call before implementation.**
-- **Cube art direction.** The supplied llama tosses a small white die with three flat logos. The repo cubes are larger, brand-coloured, and surrounded by floating platform icons. They read instantly and cost nothing, but they are a different visual language from the source image. If the die style is preferred, seven dice in that style would have to be produced.
+Both were settled on 2026-07-29, before implementation.
+
+- **Where the services copy lives → option C**, a chip list under the heading in the left column. Option B (a second caption line inside the card) had been chosen on 2026-07-28 under the carousel premise — that a carousel's caption is where per-slide text naturally goes. With the carousel gone the premise went too, and C keeps the card a single coherent post with one joke while filling real dead space. The mock's B/C toggle does not ship.
+- **Cube art direction → the existing repo cubes, unchanged.** The supplied llama tosses a small white die with three flat logos; the repo cubes are larger, brand-coloured and ringed with floating platform icons. They are a different register from the source image, but they read instantly, cost nothing, and make the homepage and `/uslugi/content` speak one visual language. Seven dice in the source's style were not produced.
+- **The seven-look archive was dropped.** Task 1.4 planned to move the rejected exploration into `assets-src/join-cta-looks/`, but the scripts, cutouts and muzzle template no longer existed anywhere on disk by implementation time. The findings survive in `design.md`; the binaries do not.
 
 ## Impact
 
 - **Modified code**:
-  - `lib/content/home.ts` — `joinCta.rotator` drops to seven entries, each gaining a `platform` key (for the cube) and a `services` list. `joinCta.post` gains the comment-thread and ad-menu strings. `home.en.ts` mirrors it (the `LocalizedHome` parity gate enforces this).
+  - `lib/content/home.ts` — `joinCta.rotator` drops to seven entries, each gaining a `cube` path and a `services` list. (The path is carried directly rather than a `platform` key indexing a lookup: `Localized<T>` widens string literals to `string`, so a key could not type-index a `Record<PlatformKey, …>` on the EN side, and `uslugi.en.ts` already duplicates these same seven paths — the house pattern is asset paths in the content file.) `joinCta.post` gains the comment-thread and ad-menu strings. `home.en.ts` mirrors it (the `LocalizedHome` parity gate enforces this).
   - `app/(frontend)/(home)/sections/join-cta/index.tsx` — mascot and cube as separate layers, cube swap on the rotator index, six interactions, thread and sheet.
   - `app/(frontend)/(home)/sections/join-cta/join-cta.module.css` — well gradient, stage/slot geometry, control states, thread, sheet, toast.
   - `lib/content/uslugi.ts` — untouched, but it is the source of truth the services copy is derived from.
