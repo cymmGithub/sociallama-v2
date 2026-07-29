@@ -655,12 +655,18 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
     would be true only from the author's 2018 vantage and rots again for a 2026 reader.
 
   The Polish still carries both errors — fixing it is a CMS edit outside this change's scope.
-- [ ] **A third Polish error was silently corrected and never reported** — found while applying the
-  above, so the "reported, not fixed" discipline did leak once. `aplikacjavero` run 0 calls the app
-  *"Vero – Truth Social"*; its real name is **Vero – True Social**, and Truth Social is an unrelated
-  2022 platform that could not have existed in a March 2018 post. The English already says "True
-  Social", which the user's ruling now endorses — so nothing to undo, but the **Polish is wrong on a
-  product name** and should be corrected in the CMS alongside the two above.
+- [x] **All three Polish source errors FIXED IN THE CMS by the user, 2026-07-29** — the English no
+  longer diverges from its source anywhere. Verified in the production database and live in both
+  locales:
+  - `google-polaczylo-social-media-z-seo`: "Trzy litery" → **"Cztery litery: E-E-A-T"**
+  - `aplikacjavero`: "5 lat temu" → **"w 2015 roku"**, and "Truth Social" → **"True Social"**
+  The third was the one this change had silently corrected in English without reporting it, which
+  is recorded above as a leak in the report-don't-fix discipline. It is now fixed at the source, so
+  the leak is closed rather than merely endorsed.
+  **The structural gate still passes against the edited Polish** — 54 and 4 runs, unchanged, 0
+  skipped — because the edit stayed inside existing text nodes. Worth knowing for next time: a CMS
+  edit that splits or merges a text node WOULD change the run count and make every English draft
+  for that post fail the gate until re-extracted.
 - [x] **9.8 / 9.9 prod cutover — SHIPPED 2026-07-29** on explicit approval. This entry read "NOT
   DONE, nothing has touched production" for most of the change and is kept, corrected, rather than
   deleted: it is the line someone would trust. See 9.8 and 9.9 above for what actually happened,

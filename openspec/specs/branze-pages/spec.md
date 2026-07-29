@@ -3,9 +3,7 @@
 ## Purpose
 
 Define the per-industry (`/branze/*` and `/en/industries/*`) marketing pages: the canonical industry list that drives every surface, live routing in both locales, proof-vs-editorial variant selection, industry-specific approved copy, and the localized SEO surface for these pages.
-
 ## Requirements
-
 ### Requirement: Canonical industry list drives every surface
 
 A single typed content module SHALL define the canonical industry list — order, PL/EN labels, PL/EN slugs — per the design D1 table (proof-first order: Automotive, Elektronika i AGD, Beauty, Health, Finanse, Petcare, then Alkohole, Fashion, Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy, Rozrywka). The overlay menu BRANŻE column, the footer OFERTA column, `generateStaticParams`, and the sitemap SHALL all derive from this module in this order, in both locales. Labels are bare nouns — no "Branża" prefix anywhere.
@@ -22,7 +20,7 @@ A single typed content module SHALL define the canonical industry list — order
 
 ### Requirement: Every industry resolves to a live page in both locales
 
-Each of the 12 industries SHALL have a statically generated page at `/branze/<pl-slug>` and `/en/industries/<en-slug>`. No industry link in the menu or footer may 404. Footer OFERTA items SHALL link to these routes (replacing the current `/` placeholders).
+Each of the 12 industries SHALL have a statically generated page at `/branze/<pl-slug>` and `/en/industries/<en-slug>`, and an index SHALL exist at `/branze` and `/en/industries` (see `industries-hub`). No industry link in the menu or footer may 404, and neither index path may 404. Footer OFERTA items SHALL link to these routes (replacing the current `/` placeholders).
 
 #### Scenario: All 24 routes live
 
@@ -33,6 +31,11 @@ Each of the 12 industries SHALL have a statically generated page at `/branze/<pl
 
 - **WHEN** the footer renders
 - **THEN** each OFERTA item navigates to its industry page, not to `/`
+
+#### Scenario: Index routes live
+
+- **WHEN** `/branze` or `/en/industries` is requested
+- **THEN** it returns 200 with the industries index in the matching locale
 
 ### Requirement: Variant is selected by proof data
 
@@ -99,7 +102,7 @@ Every page SHALL carry copy written for that industry (hero claim, manifesto, ma
 
 ### Requirement: Localized SEO surface for industry pages
 
-Each page SHALL emit locale-correct metadata (title, description, OG), hreflang alternates to its counterpart with `x-default` pointing at the Polish URL, and all 24 URLs SHALL appear in the sitemap.
+Each page SHALL emit locale-correct metadata (title, description, OG), hreflang alternates to its counterpart with `x-default` pointing at the Polish URL, and all 24 detail URLs plus both index URLs SHALL appear in the sitemap.
 
 #### Scenario: Hreflang pair
 
@@ -109,4 +112,5 @@ Each page SHALL emit locale-correct metadata (title, description, OG), hreflang 
 #### Scenario: Sitemap coverage
 
 - **WHEN** the sitemap is generated
-- **THEN** it lists all 12 PL and all 12 EN industry URLs
+- **THEN** it lists all 12 PL and all 12 EN industry URLs, plus `/branze` and `/en/industries`
+
