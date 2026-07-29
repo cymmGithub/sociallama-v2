@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
@@ -45,6 +46,13 @@ export const metadata: Metadata = {
  * measured it as a ~4.5s LCP resource-load delay (2026-07-29 audit).
  */
 async function HomeNews() {
+  // Request-time on purpose: with the fetch prerenderable, "/" built as a
+  // fully-static route whose cold/expired regenerations are BUFFERED by
+  // Vercel — the whole document (hero included) waited ~4s on the query.
+  // connection() turns this hole into a true PPR stream: the shell always
+  // ships instantly from the build output, and only this box renders per
+  // request (still reading the daily 'use cache' data, so it stays fast).
+  await connection()
   // Latest published post for NewsLAMA; the section is omitted entirely
   // when no post exists.
   const latestPost = await getLatestPost()

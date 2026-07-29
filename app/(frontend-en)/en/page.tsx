@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { Chapters } from '@/app/(frontend)/(home)/chapters'
 import { BigMarquee } from '@/app/(frontend)/(home)/sections/big-marquee'
@@ -64,6 +65,9 @@ function toEnNewsLamaPost(post: Post): NewsLamaPost {
  * comment there for the LCP numbers behind this).
  */
 async function EnHomeNews() {
+  // Request-time on purpose, mirroring the Polish HomeNews: keeps /en a true
+  // PPR route whose shell ships instantly instead of a buffered regeneration.
+  await connection()
   // Newest TRANSLATED post: `getLatestPost('en')` carries the D6 gate, so the
   // section is omitted entirely until at least one post exists in English —
   // rather than showing a Polish one under English chrome.
