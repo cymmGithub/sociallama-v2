@@ -141,7 +141,15 @@ async function findPublishedPostSlugs(
 async function findLatestPost(locale: Locale = 'pl'): Promise<Post | null> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  // On-demand-only, no time-based revalidate: any finite revalidate makes
+  // every consuming route ISR, and Vercel's cold-PoP path for ISR routes
+  // buffers the WHOLE document (~3-5s) even when the prerender is fresh —
+  // measured on /o-nas vs the pure-static /zostan-lama, 2026-07-30. The
+  // profiles can't express "never" ('max' = 30d), so this passes Next's own
+  // INFINITE_CACHE sentinel (0xfffffffe) directly; the routes then prerender
+  // with `revalidate: false` and serve as plain static. Freshness is
+  // unaffected: the Payload publish hook fires revalidateTag('posts').
+  cacheLife({ stale: 300, revalidate: 0xfffffffe, expire: 0xfffffffe })
 
   const payload = await getPayload({ config })
   const result = await payload.find({

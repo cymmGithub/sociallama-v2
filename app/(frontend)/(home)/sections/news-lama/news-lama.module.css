@@ -87,6 +87,46 @@
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
 
+/* Skeleton bones (see skeleton.tsx): flat currentColor washes so they track
+   the chapter theme, with a soft opacity pulse. */
+.bone {
+  border-radius: 8px;
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  animation: bone-pulse 1.6s ease-in-out infinite;
+}
+
+.boneChip {
+  width: 6.5em;
+  height: 1em;
+}
+
+.boneTitle {
+  width: min(18em, 80%);
+  height: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.boneLine {
+  width: 90%;
+  height: 0.95rem;
+}
+
+.boneLineShort {
+  width: 60%;
+  height: 0.95rem;
+}
+
+@keyframes bone-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bone {
+    animation: none;
+  }
+}
+
 .read {
   margin-top: auto;
   font-family: var(--font-display);

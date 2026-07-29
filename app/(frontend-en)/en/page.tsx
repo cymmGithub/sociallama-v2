@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { Chapters } from '@/app/(frontend)/(home)/chapters'
 import { BigMarquee } from '@/app/(frontend)/(home)/sections/big-marquee'
@@ -13,6 +12,7 @@ import {
   NewsLama,
   type NewsLamaPost,
 } from '@/app/(frontend)/(home)/sections/news-lama'
+import { NewsLamaSkeleton } from '@/app/(frontend)/(home)/sections/news-lama/skeleton'
 import { Services } from '@/app/(frontend)/(home)/sections/services'
 import { Testimonial } from '@/app/(frontend)/(home)/sections/testimonial'
 import { WhyThatWorks } from '@/app/(frontend)/(home)/sections/why-that-works'
@@ -65,9 +65,8 @@ function toEnNewsLamaPost(post: Post): NewsLamaPost {
  * comment there for the LCP numbers behind this).
  */
 async function EnHomeNews() {
-  // Request-time on purpose, mirroring the Polish HomeNews: keeps /en a true
-  // PPR route whose shell ships instantly instead of a buffered regeneration.
-  await connection()
+  // Prerenderable on purpose, mirroring the Polish HomeNews: the news bakes
+  // into the build so /en serves as pure static (see the comment there).
   // Newest TRANSLATED post: `getLatestPost('en')` carries the D6 gate, so the
   // section is omitted entirely until at least one post exists in English —
   // rather than showing a Polish one under English chrome.
@@ -111,7 +110,7 @@ export default function EnHomePage() {
             />
             <Faq content={en.faq} />
             <JoinCta content={en.joinCta} />
-            <Suspense fallback={null}>
+            <Suspense fallback={<NewsLamaSkeleton heading={en.news.heading} />}>
               <EnHomeNews />
             </Suspense>
           </>

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { connection } from 'next/server'
 import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
@@ -21,6 +20,7 @@ import heroStyles from './sections/hero/hero.module.css'
 import { HowItWorks } from './sections/how-it-works'
 import { JoinCta } from './sections/join-cta'
 import { NewsLama, type NewsLamaPost } from './sections/news-lama'
+import { NewsLamaSkeleton } from './sections/news-lama/skeleton'
 import { Services } from './sections/services'
 import { Testimonial } from './sections/testimonial'
 import { WhyThatWorks } from './sections/why-that-works'
@@ -46,13 +46,11 @@ export const metadata: Metadata = {
  * measured it as a ~4.5s LCP resource-load delay (2026-07-29 audit).
  */
 async function HomeNews() {
-  // Request-time on purpose: with the fetch prerenderable, "/" built as a
-  // fully-static route whose cold/expired regenerations are BUFFERED by
-  // Vercel — the whole document (hero included) waited ~4s on the query.
-  // connection() turns this hole into a true PPR stream: the shell always
-  // ships instantly from the build output, and only this box renders per
-  // request (still reading the daily 'use cache' data, so it stays fast).
-  await connection()
+  // Prerenderable on purpose: findLatestPost is 'use cache' with
+  // cacheLife('max'), so the news bakes into the build and "/" serves as
+  // pure static — the only serving class Vercel's cold-PoP path doesn't
+  // buffer (a PPR resume and time-based ISR both measured ~4s document,
+  // 2026-07-30). Freshness comes from revalidateTag('posts') on publish.
   // Latest published post for NewsLAMA; the section is omitted entirely
   // when no post exists.
   const latestPost = await getLatestPost()
@@ -104,7 +102,7 @@ export default function HomePage() {
             <Testimonial />
             <Faq />
             <JoinCta />
-            <Suspense fallback={null}>
+            <Suspense fallback={<NewsLamaSkeleton heading={news.heading} />}>
               <HomeNews />
             </Suspense>
           </>
