@@ -78,10 +78,43 @@ export interface Service {
   dwellMs?: number
 }
 
+/**
+ * One fragment of a proof panel's supporting sentence. Figures are their own
+ * part so the component can accent them without string-matching the copy —
+ * the numbers are the load-bearing content and they read as such.
+ */
+export type SayPart = string | { figure: string }
+
 export interface Step {
   number: string
   text: string
   image: string
+  /**
+   * Proof copy (see the `how-it-works-proof` capability). Each step carries a
+   * headline and one sentence drawn from a real client report, plus a link to
+   * the case-study section holding the same figures. Every figure is a real
+   * measurement, reproduced without rounding for effect.
+   *
+   * Nothing here may carry a year, a full date or a month name — elapsed time
+   * is expressed as a duration. `how-it-works.test.ts` enforces it.
+   */
+  proof: {
+    /** Panel headline. */
+    title: string
+    /** One sentence, ~15–25 words, carrying one or two figures. */
+    say: SayPart[]
+    /**
+     * Roster key for the wordmark shown in the step's proof card. Absent on
+     * the closing step, which addresses the reader rather than a client.
+     */
+    client?: 'irobot' | 'volvo' | 'pracuj-pl'
+    /**
+     * Case-study slug plus the section anchor carrying the same evidence,
+     * resolved against the locale's case-study base. Absent on the closing
+     * step, which has no call to action (decision, 2026-07-28).
+     */
+    href?: string
+  }
 }
 
 export interface Testimonial {
@@ -712,31 +745,89 @@ export const howItWorks = {
   heading: ['HOW', 'IT WORKS'],
   subhead: 'JAK WYGLĄDA WSPÓŁPRACA Z SOCIAL LAMĄ?',
   ariaLabel: 'Jak to działa',
+  /** Rail label above the five steps. */
+  railLabel: 'Proces',
+  railAriaLabel: 'Kroki współpracy',
+  /** Precedes the client wordmark in each step's proof card — the mark itself
+   *  is the brand name, so the label deliberately stops short of it. */
+  proofLabel: 'Tak to wyglądało u',
+  /** Shared link text on every proof card. */
+  caseStudyCta: 'Zobacz case study',
   steps: [
     {
       number: '01',
       text: 'Określamy Twoje cele, potrzeby i możliwości podczas warsztatów strategicznych.',
       image: '/assets/step-1.png',
+      proof: {
+        title: 'Zaczynaliśmy od 1\u00A0168 obserwujących',
+        say: [
+          'Mierzymy stan wyjściowy, żeby dało się udowodnić, że coś zadziałało. Po 17 miesiącach: ',
+          { figure: '+5\u00A0054' },
+          ' obserwujących i ',
+          { figure: '+57\u00A0911' },
+          ' polubień.',
+        ],
+        client: 'irobot',
+        href: 'irobot#wyzwanie',
+      },
     },
     {
       number: '02',
       text: 'Przygotowujemy indywidualną strategię i rozpoczynamy komunikację.',
       image: '/assets/step-2.png',
+      proof: {
+        title: 'Dwa salony, trzy platformy, sześć strategii',
+        say: [
+          'Każdy profil dostał własny plan treści na Facebooka, Instagram i LinkedIn — zamiast jednego skopiowanego na wszystkie.',
+        ],
+        client: 'volvo',
+        href: 'volvo#podejscie',
+      },
     },
     {
       number: '03',
       text: 'Proaktywnie rekomendujemy nowe rozwiązania i możliwości.',
       image: '/assets/step-3.png',
+      proof: {
+        title: 'Filtr AR, którego nie było w briefie',
+        say: [
+          'Sami go zaproponowaliśmy. ',
+          { figure: '6,79\u00A0mln' },
+          ' wyświetleń i ',
+          { figure: '4\u00A0885' },
+          ' filmów nagranych przez użytkowników — w tym przez influencerów bez żadnej umowy.',
+        ],
+        client: 'pracuj-pl',
+        href: 'pracuj-pl#podejscie',
+      },
     },
     {
       number: '04',
       text: 'Analizujemy wyniki i wprowadzamy niezbędne zmiany.',
       image: '/assets/step-4.png',
+      proof: {
+        title: 'Zmieniliśmy podejście — i to widać',
+        say: [
+          'Zanim przejęliśmy kanał, przybywało kilkuset subskrypcji rocznie. W pierwszym roku naszej opieki ',
+          { figure: 'blisko dwudziestokrotnie' },
+          ' więcej.',
+        ],
+        client: 'irobot',
+        href: 'irobot#wyniki',
+      },
     },
     {
       number: '05',
       text: 'Raportujemy nasze działania.',
       image: '/assets/step-5.png',
+      // No link: this step addresses the reader rather than a case, so it has
+      // no call to action (decision, 2026-07-28).
+      proof: {
+        title: 'Wszystko, co widziałeś, to prawdziwe liczby z raportów',
+        say: [
+          'Raport z działań dostajesz co miesiąc, a na koniec roku pełne podsumowanie — bez dopominania się.',
+        ],
+      },
     },
   ] satisfies Step[],
 } as const

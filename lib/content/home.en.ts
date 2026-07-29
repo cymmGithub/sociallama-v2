@@ -516,31 +516,83 @@ export const howItWorks = {
   heading: ['HOW', 'IT WORKS'],
   subhead: "WHAT'S IT LIKE WORKING WITH SOCIAL LAMA?",
   ariaLabel: 'How it works',
+  railLabel: 'Process',
+  railAriaLabel: 'Steps of the engagement',
+  proofLabel: "Here's how it looked at",
+  caseStudyCta: 'See the case study',
   steps: [
     {
       number: '01',
       text: 'We pin down your goals, needs, and possibilities in a strategy workshop.',
       image: '/assets/step-1.png',
+      proof: {
+        title: 'We started at 1,168 followers',
+        say: [
+          'We measure the baseline, because otherwise nobody can prove anything worked. Seventeen months later: ',
+          { figure: '+5,054' },
+          ' followers and ',
+          { figure: '+57,911' },
+          ' likes.',
+        ],
+        client: 'irobot',
+        href: 'irobot#wyzwanie',
+      },
     },
     {
       number: '02',
       text: 'We build a tailored strategy and kick your communication off.',
       image: '/assets/step-2.png',
+      proof: {
+        title: 'Two dealerships, three platforms, six strategies',
+        say: [
+          'Every profile got its own content plan for Facebook, Instagram, and LinkedIn — instead of one copied across all of them.',
+        ],
+        client: 'volvo',
+        href: 'volvo#podejscie',
+      },
     },
     {
       number: '03',
       text: 'We proactively recommend new solutions and opportunities.',
       image: '/assets/step-3.png',
+      proof: {
+        title: 'The AR filter nobody briefed us on',
+        say: [
+          'We proposed it ourselves. ',
+          { figure: '6.79M' },
+          ' views and ',
+          { figure: '4,885' },
+          ' videos shot by users — influencers included, with no contract in sight.',
+        ],
+        client: 'pracuj-pl',
+        href: 'pracuj-pl#podejscie',
+      },
     },
     {
       number: '04',
       text: 'We analyze the results and make the changes that are needed.',
       image: '/assets/step-4.png',
+      proof: {
+        title: 'We changed the approach — and it shows',
+        say: [
+          'Before we took the channel over, it gained a few hundred subscribers a year. In our first year, ',
+          { figure: 'nearly twenty times' },
+          ' that.',
+        ],
+        client: 'irobot',
+        href: 'irobot#wyniki',
+      },
     },
     {
       number: '05',
       text: 'We report on everything we do.',
       image: '/assets/step-5.png',
+      proof: {
+        title: 'Everything you just saw is a real number from a real report',
+        say: [
+          'You get a report on our work every month, and a full wrap-up at the end of the year — no chasing required.',
+        ],
+      },
     },
   ],
 } satisfies LocalizedHome['howItWorks']

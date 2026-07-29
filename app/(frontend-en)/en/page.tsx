@@ -82,7 +82,10 @@ export default async function EnHomePage() {
           <>
             <WhyThatWorks content={en.whyThatWorks} />
             <Services content={en.services} />
-            <HowItWorks content={en.howItWorks} />
+            <HowItWorks
+              content={en.howItWorks}
+              caseStudyBase="/en/case-studies"
+            />
             <BigMarquee />
           </>
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}

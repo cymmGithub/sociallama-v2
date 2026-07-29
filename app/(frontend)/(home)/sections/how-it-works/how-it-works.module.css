@@ -21,8 +21,8 @@
   justify-content: center;
   /* Tighter rhythm than the pre-stage layout: the plum panel adds height
      around the cards, and the display-scale heading must stay on screen. */
-  gap: calc(var(--gap) * 1.5);
-  padding-block: calc(var(--safe) * 1.25);
+  gap: var(--gap);
+  padding-block: var(--safe);
 
   /* Mobile (user feedback 2026-07-14): heading and all five steps share the
      pinned viewport. `safe center` degrades to top-aligned on short screens,
@@ -70,12 +70,6 @@
   color: var(--color-contrast);
 }
 
-/* Plum stage panel (Mock B, user decision 2026-07-14): steps and progress sit
-   on a rounded plum gradient with an orange glow and grain — the same backdrop
-   language as the services stage above, so the chapter reads as one system.
-   Also duplicated by why-that-works.module.css (.stage) and, off the homepage,
-   case-studies.module.css (.cardMedia); keep the four in sync by hand.
-   Absolute palette tokens (plum/orange/cream/ink) keep the island theme-proof. */
 .stage {
   position: relative;
   border-radius: 20px;
@@ -86,13 +80,18 @@
     var(--color-plum) 65%
   );
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  /* Rail left, one exhibit panel right, progress spanning both. Deliberately
+     no `flex: 1` — the stage is content-sized and vertically centred inside the
+     sticky, and stretching it to the viewport strands the panels in empty plum
+     (design Decision 2). */
+  display: grid;
+  grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
   gap: calc(var(--gap) * 1.5);
 
   @media (--mobile) {
     padding: var(--gap);
     gap: var(--gap);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   /* Orange glow blob, top-right (services-stage recipe). */
@@ -132,78 +131,86 @@
   }
 }
 
-.steps {
+/* —— Step rail ——————————————————————————————————————————————————————————— */
+
+.rail {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 0.75);
+  gap: calc(var(--gap) * 0.35);
 
-  @media (--desktop) {
+  /* Narrow viewports lay the rail out as a horizontal strip; the active item is
+     scrolled into the middle from JS, which must not move page scroll. */
+  @media (--mobile) {
     flex-direction: row;
-    align-items: stretch;
-    gap: var(--gap);
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.2rem;
   }
 }
 
-/* Glassy cards on the plum stage; the active one lightens and glows orange. */
-.step {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--gap);
-  padding: calc(var(--gap));
+.railLabel {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  margin-bottom: 0.3rem;
+
+  @media (--mobile) {
+    display: none;
+  }
+}
+
+/* The glassy card treatment the five step cards used to carry moves onto the
+   rail items, so the section keeps the active-state language it already had. */
+.railItem {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  text-align: left;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--color-cream) 14%, transparent);
-  background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
-  /* Smooth the panel grain behind the glass so the noise reads on the exposed
-     background only — the cards keep their clean smooth-gradient show-through. */
+  border: 1px solid color-mix(in srgb, var(--color-cream) 12%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 4%, transparent);
   backdrop-filter: blur(6px);
-  opacity: 0.4;
+  opacity: 0.42;
   transition:
     opacity var(--duration) var(--ease-out-expo),
     border-color var(--duration) var(--ease-out-expo),
     background-color var(--duration) var(--ease-out-expo),
-    box-shadow var(--duration) var(--ease-out-expo),
-    transform var(--duration) var(--ease-out-expo);
+    box-shadow var(--duration) var(--ease-out-expo);
 
   @media (--mobile) {
-    padding: calc(var(--gap) * 0.75);
+    width: 13.5rem;
+    flex: 0 0 auto;
+    padding: 0.6rem 0.7rem;
+    border-radius: 10px;
+    grid-template-columns: 2.1rem 1fr;
+    gap: 0.55rem;
   }
 
-  @media (--desktop) {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  &[data-active="true"] {
+  &[aria-current="true"] {
     opacity: 1;
     background-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
     border-color: color-mix(in srgb, var(--color-orange) 70%, transparent);
-    box-shadow: 0 0 60px -10px
+    box-shadow: 0 0 50px -12px
       color-mix(in srgb, var(--color-orange) 45%, transparent);
-    transform: scale(1.03);
   }
 }
 
 .number {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 1.05;
   color: var(--color-orange);
-  flex: 0 0 auto;
-}
 
-/* Icons are cream+orange PNGs (strokes recolored from ink, user decision
-   2026-07-14) so they sit directly on the plum cards, matching the text. */
-.stepMedia {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 auto;
-
-  @media (--desktop) {
-    width: 64px;
-    height: 64px;
+  @media (--mobile) {
+    font-size: 1.05rem;
   }
 }
 
@@ -211,16 +218,196 @@
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.9rem;
-  line-height: 1.45;
+  line-height: 1.4;
   color: var(--color-cream);
+  min-width: 0;
 
   @media (--mobile) {
-    font-size: 0.8rem;
-    line-height: 1.4;
+    font-size: 0.76rem;
+    line-height: 1.35;
   }
 }
 
+/* —— Exhibit panels ——————————————————————————————————————————————————————— */
+
+/* One grid cell holds all five panels, so the stage is always as tall as the
+   tallest and its height never changes between steps. */
+.panels {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  color: var(--color-cream);
+}
+
+.panel {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: clamp(1rem, 3vw, 2.4rem);
+  align-items: center;
+  /* `visibility`, not `display`: the inactive panels keep contributing their
+     height (that is what pins the stage) while staying out of the tab order
+     and the accessibility tree. */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease-out-expo);
+
+  &[data-active="true"] {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (--mobile) {
+    gap: 0.9rem;
+  }
+}
+
+.panelText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+/* The copy is the panel's whole job, so it runs at display scale rather than
+   the caption size it had when it shared the width with an exhibit. */
+.panelTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  font-size: clamp(1.15rem, 4vw, 3.7rem);
+  color: var(--color-cream);
+  text-wrap: balance;
+
+  @media (--mobile) {
+    font-size: 1.15rem;
+    line-height: 1.06;
+  }
+}
+
+.panelSay {
+  font-size: clamp(0.82rem, 1.15vw, 1.15rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
+  max-width: 60ch;
+
+  @media (--mobile) {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    max-width: none;
+  }
+}
+
+/* The figures are what is left of the evidence, so they carry the accent. */
+.figure {
+  color: var(--color-orange);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Proof card. Subtle by request — a quiet slab rather than a panel — but it is
+   the only thing on the section's surface that says these figures belong to a
+   client rather than to us, so it still has to read at a glance. The whole card
+   is the link; the wordmark inside it is the brand name, so the label above
+   stops short of repeating it. */
+.proofCard {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-cream) 18%, transparent);
+  background-color: color-mix(in srgb, var(--color-cream) 7%, transparent);
+  backdrop-filter: blur(6px);
+  transition:
+    border-color var(--duration) var(--ease-out-expo),
+    background-color var(--duration) var(--ease-out-expo);
+
+  &:hover,
+  &:focus-visible {
+    border-color: color-mix(in srgb, var(--color-orange) 65%, transparent);
+    background-color: color-mix(in srgb, var(--color-cream) 12%, transparent);
+  }
+
+  /* On a phone the card is the panel's main affordance, so it spans the column
+     and clears the 44px touch target on its own. */
+  @media (--mobile) {
+    align-self: stretch;
+    padding: 0.7rem 0.85rem;
+  }
+}
+
+/* "Tak to wyglądało u [VOLVO]" — one line, so the mark must not wrap away from
+   the words that introduce it. */
+.proofLine {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.proofLabel {
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
+
+  @media (--mobile) {
+    font-size: 0.76rem;
+  }
+}
+
+/* Wordmarks ship black on transparent; recoloured here rather than as a second
+   set of PNGs, so the roster stays one file per client. */
+.proofMark {
+  height: 1.3rem;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+
+  @media (--mobile) {
+    height: 1.1rem;
+  }
+}
+
+.proofCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+
+  @media (--mobile) {
+    font-size: 0.72rem;
+  }
+}
+
+/* Nudges right when the card is hovered or focused. Transform only, so it stays
+   on the compositor; the global reduced-motion neutralizer zeroes the
+   transition, leaving the arrow simply static. */
+.proofArrow {
+  width: 1.1em;
+  height: 1.1em;
+  stroke-width: 2.5;
+  flex: 0 0 auto;
+  transition: transform var(--duration) var(--ease-out-expo);
+}
+
+.proofCard:hover .proofArrow,
+.proofCard:focus-visible .proofArrow {
+  transform: translateX(4px);
+}
+
 .progress {
+  grid-column: 1 / -1;
   height: 3px;
   width: 100%;
   background-color: color-mix(in srgb, var(--color-cream) 18%, transparent);
@@ -240,9 +427,12 @@
   transition: width var(--duration) var(--ease-out-expo);
 }
 
-/* Reduced motion / no-pin fallback: render as a plain stacked list in its
-   final state (all steps visible on the stage), per the homepage
-   reduced-motion scenario. */
+/* Reduced motion / no-pin fallback: the section renders unpinned in its resting
+   state, per the homepage reduced-motion scenario. Scroll no longer advances
+   the steps, so the rail is lifted out of its dimmed state — at 0.42 the
+   inactive sentences are hard to read when nothing is going to brighten them.
+   The active item keeps its border, so the rail still agrees with the panel
+   beside it. */
 @media (--reduced-motion) {
   .pin {
     min-height: auto;
@@ -253,7 +443,7 @@
     min-height: auto;
   }
 
-  .step {
-    opacity: 1;
+  .railItem {
+    opacity: 0.75;
   }
 }
