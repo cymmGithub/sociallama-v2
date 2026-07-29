@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
 import { faq, news } from '@/lib/content/home'
@@ -36,6 +37,23 @@ export const metadata: Metadata = {
   },
 }
 
+/**
+ * The only CMS-dependent slice of the homepage, isolated behind Suspense so
+ * the rest of the page prerenders into the static shell. With the fetch
+ * awaited at the page root instead, every cold/expired ISR render held the
+ * ENTIRE body (hero included) hostage to the Payload→Neon roundtrip — PSI
+ * measured it as a ~4.5s LCP resource-load delay (2026-07-29 audit).
+ */
+async function HomeNews() {
+  // Latest published post for NewsLAMA; the section is omitted entirely
+  // when no post exists.
+  const latestPost = await getLatestPost()
+  const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
+  return newsPost ? (
+    <NewsLama content={news} locale="pl" post={newsPost} />
+  ) : null
+}
+
 function toNewsLamaPost(post: Post): NewsLamaPost {
   const cover = resolveMedia(post.cover)
   return {
@@ -49,12 +67,7 @@ function toNewsLamaPost(post: Post): NewsLamaPost {
   }
 }
 
-export default async function HomePage() {
-  // Latest published post for NewsLAMA; the section is omitted entirely
-  // when no post exists.
-  const latestPost = await getLatestPost()
-  const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
-
+export default function HomePage() {
   return (
     <>
       <WebSiteJsonLd />
@@ -83,9 +96,9 @@ export default async function HomePage() {
             <Testimonial />
             <Faq />
             <JoinCta />
-            {newsPost && (
-              <NewsLama content={news} locale="pl" post={newsPost} />
-            )}
+            <Suspense fallback={null}>
+              <HomeNews />
+            </Suspense>
           </>
         </Chapters>
       </Wrapper>

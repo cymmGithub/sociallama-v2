@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Chapters } from '@/app/(frontend)/(home)/chapters'
 import { BigMarquee } from '@/app/(frontend)/(home)/sections/big-marquee'
 import { ClientLogos } from '@/app/(frontend)/(home)/sections/client-logos'
@@ -57,13 +58,23 @@ function toEnNewsLamaPost(post: Post): NewsLamaPost {
   }
 }
 
-export default async function EnHomePage() {
+/**
+ * The only CMS-dependent slice, Suspense-isolated exactly like the Polish
+ * homepage's HomeNews so the hero prerenders into the static shell (see the
+ * comment there for the LCP numbers behind this).
+ */
+async function EnHomeNews() {
   // Newest TRANSLATED post: `getLatestPost('en')` carries the D6 gate, so the
   // section is omitted entirely until at least one post exists in English —
   // rather than showing a Polish one under English chrome.
   const latestPost = await getLatestPost('en')
   const newsPost = latestPost ? toEnNewsLamaPost(latestPost) : null
+  return newsPost ? (
+    <NewsLama content={en.news} locale="en" post={newsPost} />
+  ) : null
+}
 
+export default function EnHomePage() {
   return (
     <>
       <FaqJsonLd items={en.faq.items} path="/en" />
@@ -96,9 +107,9 @@ export default async function EnHomePage() {
             />
             <Faq content={en.faq} />
             <JoinCta content={en.joinCta} />
-            {newsPost && (
-              <NewsLama content={en.news} locale="en" post={newsPost} />
-            )}
+            <Suspense fallback={null}>
+              <EnHomeNews />
+            </Suspense>
           </>
         </Chapters>
       </Wrapper>

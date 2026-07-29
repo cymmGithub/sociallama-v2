@@ -2,7 +2,7 @@
 
 import cn from 'clsx'
 import { useResizeObserver } from 'hamo'
-import { type CSSProperties, useState } from 'react'
+import { type CSSProperties, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import s from './hero.module.css'
 
@@ -137,8 +137,16 @@ export function HeroLooks({
   // so they issue no request during load.
   const hasTorn = track.prev >= 0
   const tearClass = hasTorn && (track.tick % 2 === 1 ? s.tearA : s.tearB)
-  const outgoing = hasTorn ? `url(${lookUrl(track.prev)})` : undefined
-  const incoming = hasTorn ? `url(${lookUrl(track.index)})` : undefined
+  // The bands must cite the URL the browser ACTUALLY loaded for the <img>s,
+  // not lookUrl() verbatim: on Vercel the imgs get a skew-protection query
+  // appended (`?dpl=…`), and a bare lookUrl() background is a different cache
+  // key — every look re-downloaded on its first tear, then revalidated on
+  // every later one. currentSrc is only read once a tear fires, long after
+  // the imgs mounted, and falls back to lookUrl() before then.
+  const lookRefs = useRef<(HTMLImageElement | null)[]>([])
+  const servedUrl = (i: number) => lookRefs.current[i]?.currentSrc || lookUrl(i)
+  const outgoing = hasTorn ? `url(${servedUrl(track.prev)})` : undefined
+  const incoming = hasTorn ? `url(${servedUrl(track.index)})` : undefined
 
   return (
     <div ref={setBoxRef} className={cn(positionClass, s.llamaBox, tearClass)}>
@@ -148,6 +156,9 @@ export function HeroLooks({
         return (
           <Image
             key={lookUrl(i)}
+            ref={(el) => {
+              lookRefs.current[i] = el
+            }}
             src={lookUrl(i)}
             width={820}
             height={1080}

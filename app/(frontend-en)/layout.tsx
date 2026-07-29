@@ -81,9 +81,17 @@ export const viewport: Viewport = {
   colorScheme: 'normal',
 }
 
-export default async function Layout({ children }: PropsWithChildren) {
+/**
+ * draftMode() quarantined behind its own Suspense, mirroring the Polish
+ * layout — awaiting it in the layout body suspended the whole page tree into
+ * one hidden late-streamed segment (see the comment there).
+ */
+async function TempusPatch() {
   const { isEnabled: isDraftMode } = await draftMode()
+  return <ReactTempus patch={!isDraftMode} />
+}
 
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <html
       lang="en"
@@ -114,7 +122,9 @@ export default async function Layout({ children }: PropsWithChildren) {
           </TransformProvider>
         </RealViewport>
         <OptionalFeatures />
-        <ReactTempus patch={!isDraftMode} />
+        <Suspense fallback={null}>
+          <TempusPatch />
+        </Suspense>
         <Analytics />
       </body>
     </html>

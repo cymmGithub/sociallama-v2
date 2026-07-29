@@ -75,9 +75,21 @@ export const viewport: Viewport = {
   colorScheme: 'normal',
 }
 
-export default async function Layout({ children }: PropsWithChildren) {
+/**
+ * The layout's ONLY request-bound read, quarantined behind its own Suspense:
+ * awaiting draftMode() in the layout body suspended the ENTIRE page tree, so
+ * every route streamed as one hidden late segment (`<div hidden id="S:1">`)
+ * that could not paint until its last byte arrived — the top mobile-LCP
+ * offender in the 2026-07-29 audit. Isolated here, only this leaf suspends
+ * and the pages stream in order, visible as they arrive.
+ */
+async function TempusPatch() {
+  // RAF management - lightweight, but don't patch in draft mode to avoid conflicts
   const { isEnabled: isDraftMode } = await draftMode()
+  return <ReactTempus patch={!isDraftMode} />
+}
 
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <html
       lang="pl"
@@ -117,8 +129,9 @@ export default async function Layout({ children }: PropsWithChildren) {
         {/* Optional features - conditionally loaded based on configuration */}
         <OptionalFeatures />
 
-        {/* RAF management - lightweight, but don't patch in draft mode to avoid conflicts */}
-        <ReactTempus patch={!isDraftMode} />
+        <Suspense fallback={null}>
+          <TempusPatch />
+        </Suspense>
         <Analytics />
       </body>
     </html>

@@ -136,6 +136,19 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   headers: async () => [
+    // Hand-placed media in /public otherwise ships Vercel's default
+    // `max-age=0, must-revalidate` — the hero outfit tear re-validated every
+    // look on every rotator pass (2026-07-29 audit). A day of freshness plus a
+    // week of stale-while-revalidate keeps in-place file replacements viable.
+    {
+      source: '/clips/:path*',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'public, max-age=86400, stale-while-revalidate=604800',
+        },
+      ],
+    },
     {
       source: '/(.*)',
       headers: [
