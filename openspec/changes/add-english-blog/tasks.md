@@ -407,7 +407,21 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 ## 10. Verification
 
 - [x] 10.1 `bun run payload:verify:post-en --all --status --prod` exits zero for all 79.
-- [ ] 10.2 Review `content/posts/STATUS.md` soft-flags — the "correct English, but locally scoped" set — and make the content call on the ~15 short 2017–18 news items.
+- [x] 10.2 **Reviewed. Decision: publish all of them in English — user, 2026-07-29.** No action
+  needed: all 79 are already translated and live, so the decision is to keep them.
+  **The task's premise did not match reality and is worth recording.** It describes "the ~15 short
+  2017-18 news items" flagged as "correct English, but locally scoped". `STATUS.md` contains no
+  such set: its 13 soft flags are 12 diacritic proper-noun warnings plus one identical-title note.
+  There ARE 25 pre-2019 posts, which is presumably what was meant, and they are live.
+  All 13 flags reviewed and benign — better than benign. The diacritics are place names (Kraków,
+  Gdańsk, Poznań, Żoliborz, Krupówki), people (Jarosław Kuźniar, Zdzisław Beksiński), and campaign
+  names (#lódożerca, O ZGAsł), and the translators added GLOSSES for the culture-bound ones:
+  `WOŚP` reads "WOŚP, Poland's biggest annual charity fundraiser"; `#lódożerca` is explained as
+  "one letter off the Polish ludożerca — a man-eater". `contentcuration`'s identical title is
+  correct: "Content Curation" is already English.
+  A scan for missing spaces flagged `analysisand` / `wayswith` / `postswith` and **all three were
+  false positives** — each is a `<br/>` line break whose tag the scan stripped, and each matches its
+  Polish `<br/>` count exactly. Recorded because the next person to run that scan will hit them too.
 - [x] 10.3 **Done — all 79 pairs, not a sample.** A structural comparison of every English post
   against its Polish counterpart, run over the prerendered HTML: image counts, bold/italic run
   counts, `<br>` counts, table-of-contents depth, author card, and date format. Six of the seven
