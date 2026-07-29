@@ -534,6 +534,11 @@ export const howItWorks = {
           { figure: '+57,911' },
           ' likes.',
         ],
+        stats: [
+          { figure: '+5,054', label: 'followers' },
+          { figure: '+57,911', label: 'likes' },
+          { figure: '17', label: 'months' },
+        ],
         client: 'irobot',
         href: 'irobot#wyzwanie',
       },
@@ -546,6 +551,11 @@ export const howItWorks = {
         title: 'Two dealerships, three platforms, six strategies',
         say: [
           'Every profile got its own content plan for Facebook, Instagram, and LinkedIn — instead of one copied across all of them.',
+        ],
+        stats: [
+          { figure: '2', label: 'dealerships' },
+          { figure: '3', label: 'platforms' },
+          { figure: '6', label: 'strategies' },
         ],
         client: 'volvo',
         href: 'volvo#podejscie',
@@ -564,6 +574,11 @@ export const howItWorks = {
           { figure: '4,885' },
           ' videos shot by users — influencers included, with no contract in sight.',
         ],
+        stats: [
+          { figure: '6.79M', label: 'views' },
+          { figure: '4,885', label: 'user videos' },
+          { figure: '0', label: 'influencer contracts' },
+        ],
         client: 'pracuj-pl',
         href: 'pracuj-pl#podejscie',
       },
@@ -579,6 +594,10 @@ export const howItWorks = {
           { figure: 'nearly twenty times' },
           ' that.',
         ],
+        stats: [
+          { figure: '~20×', label: 'more subscribers' },
+          { figure: '1', label: 'year in our care' },
+        ],
         client: 'irobot',
         href: 'irobot#wyniki',
       },
@@ -591,6 +610,10 @@ export const howItWorks = {
         title: 'Everything you just saw is a real number from a real report',
         say: [
           'You get a report on our work every month, and a full wrap-up at the end of the year — no chasing required.',
+        ],
+        stats: [
+          { figure: '12', label: 'reports a year' },
+          { figure: '1', label: 'annual wrap-up' },
         ],
       },
     },

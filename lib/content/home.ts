@@ -104,6 +104,21 @@ export interface Step {
     /** One sentence, ~15–25 words, carrying one or two figures. */
     say: SayPart[]
     /**
+     * The step's figures, restated at display scale beneath the sentence.
+     *
+     * These are the same measurements the sentence already carries, lifted out
+     * of the prose so they read at a glance — the panel is 1000px wide and a
+     * 60ch sentence left most of it empty. Two or three per step: below two the
+     * row reads as a stray number, above three the figures stop being scannable
+     * at the size that makes them worth lifting.
+     *
+     * Steps whose sentence carries no digits (02, 05) take their figures from
+     * their own copy — `Dwa salony, trzy platformy, sześć strategii`, and the
+     * monthly/annual reporting cadence. Nothing here may be a measurement the
+     * copy does not already make.
+     */
+    stats: readonly { figure: string; label: string }[]
+    /**
      * Roster key for the wordmark shown in the step's proof card. Absent on
      * the closing step, which addresses the reader rather than a client.
      */
@@ -767,6 +782,11 @@ export const howItWorks = {
           { figure: '+57\u00A0911' },
           ' polubień.',
         ],
+        stats: [
+          { figure: '+5 054', label: 'obserwujących' },
+          { figure: '+57 911', label: 'polubień' },
+          { figure: '17', label: 'miesięcy' },
+        ],
         client: 'irobot',
         href: 'irobot#wyzwanie',
       },
@@ -779,6 +799,11 @@ export const howItWorks = {
         title: 'Dwa salony, trzy platformy, sześć strategii',
         say: [
           'Każdy profil dostał własny plan treści na Facebooka, Instagram i LinkedIn — zamiast jednego skopiowanego na wszystkie.',
+        ],
+        stats: [
+          { figure: '2', label: 'salony' },
+          { figure: '3', label: 'platformy' },
+          { figure: '6', label: 'strategii' },
         ],
         client: 'volvo',
         href: 'volvo#podejscie',
@@ -797,6 +822,11 @@ export const howItWorks = {
           { figure: '4\u00A0885' },
           ' filmów nagranych przez użytkowników — w tym przez influencerów bez żadnej umowy.',
         ],
+        stats: [
+          { figure: '6,79 mln', label: 'wyświetleń' },
+          { figure: '4 885', label: 'filmów użytkowników' },
+          { figure: '0', label: 'umów z influencerami' },
+        ],
         client: 'pracuj-pl',
         href: 'pracuj-pl#podejscie',
       },
@@ -812,6 +842,10 @@ export const howItWorks = {
           { figure: 'blisko dwudziestokrotnie' },
           ' więcej.',
         ],
+        stats: [
+          { figure: '~20×', label: 'więcej subskrypcji' },
+          { figure: '1', label: 'rok opieki' },
+        ],
         client: 'irobot',
         href: 'irobot#wyniki',
       },
@@ -826,6 +860,10 @@ export const howItWorks = {
         title: 'Wszystko, co widziałeś, to prawdziwe liczby z raportów',
         say: [
           'Raport z działań dostajesz co miesiąc, a na koniec roku pełne podsumowanie — bez dopominania się.',
+        ],
+        stats: [
+          { figure: '12', label: 'raportów w roku' },
+          { figure: '1', label: 'podsumowanie roczne' },
         ],
       },
     },

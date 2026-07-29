@@ -51,6 +51,36 @@ function Say({
 }
 
 /**
+ * The step's figures, restated at display scale under the sentence.
+ *
+ * The panel is the full width of the stage minus the rail, and a sentence
+ * capped at 60ch left most of that width empty — the figures are what fills it.
+ * Nothing here is new evidence: every value is already in the sentence above,
+ * or (steps 02 and 05, whose sentences carry no digits) in the step's own
+ * headline and cadence copy.
+ *
+ * Rendered as plain spans rather than a list: assistive technology should read
+ * "+5 054 obserwujących" as the run of text it already is in the sentence, not
+ * announce a second list of items.
+ */
+function Stats({
+  stats,
+}: {
+  stats: HowItWorksContent['steps'][number]['proof']['stats']
+}) {
+  return (
+    <div className={s.stats}>
+      {stats.map((stat) => (
+        <div className={s.stat} key={stat.label}>
+          <span className={s.statFigure}>{stat.figure}</span>
+          <span className={s.statLabel}>{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/**
  * Where a step's figures came from, and the way to check them.
  *
  * The section carries no exhibits, so nothing on its own surface would
@@ -101,9 +131,11 @@ function ProofCard({
 }
 
 /**
- * One step's evidence: headline, one sentence carrying its figures, and the
- * proof card that says whose figures they are. The density this replaced is
- * what made the section feel like filler, and the budget is part of the spec.
+ * One step's evidence: headline, one sentence carrying its figures, the figure
+ * row that restates them at display scale, and the proof card that says whose
+ * figures they are. The figure row is pinned to the foot of the panel and the
+ * card sits under it at the right edge, so the panel occupies the stage's full
+ * height instead of floating in the middle of it.
  */
 function Panel({
   step,
@@ -125,13 +157,16 @@ function Panel({
       <div className={s.panelText}>
         <p className={s.panelTitle}>{proof.title}</p>
         <Say parts={proof.say} className={s.panelSay} />
+        <Stats stats={proof.stats} />
         {proof.client && proof.href && (
-          <ProofCard
-            client={proof.client}
-            href={`${caseStudyBase}/${proof.href}`}
-            label={proofLabel}
-            cta={caseStudyCta}
-          />
+          <div className={s.cardRow}>
+            <ProofCard
+              client={proof.client}
+              href={`${caseStudyBase}/${proof.href}`}
+              label={proofLabel}
+              cta={caseStudyCta}
+            />
+          </div>
         )}
       </div>
     </div>

@@ -80,10 +80,11 @@
     var(--color-plum) 65%
   );
   overflow: hidden;
-  /* Rail left, one exhibit panel right, progress spanning both. Deliberately
-     no `flex: 1` — the stage is content-sized and vertically centred inside the
-     sticky, and stretching it to the viewport strands the panels in empty plum
-     (design Decision 2). */
+  /* Rail left, one exhibit panel right, progress spanning both. On desktop the
+     stage stays content-sized: the rail is five items tall and already sets a
+     height the panel fills, so stretching would only add plum.
+     (Original design Decision 2 said the same about mobile. That no longer
+     holds — see the mobile query below.) */
   display: grid;
   grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
   gap: calc(var(--gap) * 1.5);
@@ -92,6 +93,17 @@
     padding: var(--gap);
     gap: var(--gap);
     grid-template-columns: minmax(0, 1fr);
+    /* Here the rail is a 90px horizontal strip, so nothing sets a height and
+       the stage floated: measured at 417×906 it filled ~455px and left half the
+       pinned screen as bare ground. `min-height` rather than `flex: 1` — it can
+       only grow the block, never squeeze it, so short phones (where the content
+       is already taller than this) are untouched and cannot be clipped by it.
+
+       The reason the original decision forbade this is gone: the figure row is
+       pinned to the foot of the panel, so added height opens between the copy
+       and the figures instead of stranding the panel in empty plum. */
+    min-height: 68svh;
+    grid-template-rows: auto minmax(0, 1fr) auto;
   }
 
   /* Orange glow blob, top-right (services-stage recipe). */
@@ -243,7 +255,11 @@
   grid-area: 1 / 1;
   display: grid;
   gap: clamp(1rem, 3vw, 2.4rem);
-  align-items: center;
+  /* Stretch, not centre: the panel is shorter than the five-item rail beside
+     it, and centring it left plum above and below the copy. Stretching lets the
+     figure row pin itself to the foot of the stage instead. Mobile keeps the
+     old centring — see the query below. */
+  align-items: stretch;
   /* `visibility`, not `display`: the inactive panels keep contributing their
      height (that is what pins the stage) while staying out of the tab order
      and the accessibility tree. */
@@ -268,6 +284,24 @@
   flex-direction: column;
   gap: 0.6rem;
   min-width: 0;
+
+  /* Mobile stacks the rail above the copy, so the stage's spare height is kept
+     out of the copy and split above and below it instead. Measured at 417×906,
+     letting it open mid-panel between the sentence and the figures gave 85px on
+     the fullest step and 207px on the closing one — a hole rather than spacing.
+     Centring the block keeps the copy one unit, sets it off from the step strip
+     above, and leaves the figures clear of the progress bar below.
+
+     The card is pinned to the foot separately, so the spare height splits into
+     one margin above the copy and one below it. That is done with a pair of auto
+     margins (`.panelTitle` top, `.stats` bottom) rather than `justify-content`,
+     for two reasons: an auto margin on the card alone would win over
+     `justify-content` and top-align the copy instead of centring it, and the
+     pair still centres correctly on the closing step, which has no card at all.
+
+     Desktop keeps the split: there the rail is a tall column beside the panel,
+     so pinning the figures to the foot lines them up with the rail's own end,
+     and centring would strand the glow in the empty top corner. */
 }
 
 /* The copy is the panel's whole job, so it runs at display scale rather than
@@ -285,6 +319,8 @@
   @media (--mobile) {
     font-size: 1.15rem;
     line-height: 1.06;
+    /* Half the stage's spare height sits here — see `.panelText`. */
+    margin-top: auto;
   }
 }
 
@@ -306,6 +342,184 @@
   color: var(--color-orange);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+}
+
+/* —— Figure row ——————————————————————————————————————————————————————————
+   The same figures the sentence carries, restated at display scale. The panel
+   runs the full width of the stage minus the rail (~1000px at 1440) and the
+   sentence stops at 60ch, so the row is what occupies the width the prose
+   leaves — and `margin-top: auto` drops it to the foot of the panel, which is
+   what stops the stage from being taller than its own content.
+
+   Because it lands on the same baseline on every step, the row also reads as a
+   fixed instrument rather than as copy that happens to be long on step 03. */
+.stats {
+  display: flex;
+  align-items: stretch;
+  margin-top: auto;
+  border-block: 1px solid
+    color-mix(in srgb, var(--color-cream) 20%, transparent);
+
+  /* Stacked on mobile, not squeezed. Three cells across a 390px panel gives each
+     one ~110px, which forces the figures down to a size that defeats the point
+     of lifting them out of the sentence. As rows they keep the display scale and
+     read as a short ledger — and the pinned viewport has the room: measured at
+     390×844 the stage left 188px of empty ground above and below itself. */
+  @media (--mobile) {
+    display: block;
+    /* Sits directly under the sentence; the spare height goes below it instead,
+       which is what leaves the proof card alone at the foot of the panel. */
+    margin-top: 0.35rem;
+    margin-bottom: auto;
+  }
+}
+
+.stat {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 1rem 1.4rem 0.95rem;
+
+  @media (--mobile) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.45rem 0;
+  }
+}
+
+.stat + .stat {
+  border-left: 1px solid color-mix(in srgb, var(--color-cream) 20%, transparent);
+
+  @media (--mobile) {
+    border-left: 0;
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-cream) 16%, transparent);
+  }
+}
+
+.statFigure {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3.2vw, 2.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--color-orange);
+  font-variant-numeric: tabular-nums;
+  /* Grouped figures already use a non-breaking separator; this also keeps
+     "~20×" and "6,79 mln" off two lines in the narrowest cell. */
+  white-space: nowrap;
+
+  @media (--mobile) {
+    font-size: 1.3rem;
+  }
+}
+
+.statLabel {
+  display: block;
+  margin-top: 0.45rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.69rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-cream) 66%, transparent);
+
+  /* Sits beside the figure on a stacked row, so it trails to the far edge
+     rather than sitting under it. */
+  @media (--mobile) {
+    margin-top: 0;
+    font-size: 0.62rem;
+    text-align: right;
+  }
+}
+
+/* Tall phones — where the stage's `min-height` actually grows the block.
+   68svh exceeds the panel's own height only above roughly a 680px viewport, so
+   that is exactly the range with spare room to spend on type: below it the block
+   is still content-sized and larger type would only push the section off screen.
+   Tying the two to the same threshold keeps them from drifting apart. */
+@media (--mobile) and (min-height: 680px) {
+  .stepText {
+    font-size: 0.84rem;
+  }
+
+  .number {
+    font-size: 1.15rem;
+  }
+
+  .panelTitle {
+    font-size: 1.45rem;
+    line-height: 1.05;
+  }
+
+  .panelSay {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .statFigure {
+    font-size: 1.6rem;
+  }
+
+  .statLabel {
+    font-size: 0.66rem;
+  }
+
+  .proofLabel {
+    font-size: 0.86rem;
+  }
+
+  .proofCta {
+    font-size: 0.78rem;
+  }
+}
+
+/* Short viewports — an older phone, or Android with the browser chrome showing.
+   On mobile the panel (not the rail) is what sets the stage height, so the row is
+   the one thing here that can push the section past its pinned screen: measured
+   at 360×568 it overflowed by 28px. The figures stay and drop one notch rather
+   than being hidden, since they are the reason the row exists. */
+@media (--mobile) and (max-height: 620px) {
+  /* Tightened together with the row: at 360×568 the section clears the fold by
+     only a few pixels, so the gaps inside the copy have to give a little too. */
+  .panelText {
+    gap: 0.45rem;
+  }
+
+  .stats {
+    margin-top: 0.15rem;
+  }
+
+  .stat {
+    padding: 0.2rem 0;
+  }
+
+  .statFigure {
+    font-size: 1.05rem;
+  }
+
+  .statLabel {
+    font-size: 0.56rem;
+  }
+}
+
+/* The card follows the figure row at the far edge, so the panel closes on the
+   same corner the rail's progress bar runs to. */
+.cardRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+
+  @media (--mobile) {
+    /* Back to block flow: the card is still the panel's main affordance here,
+       and `.proofCard` stretches to the column only when nothing is laying it
+       out as a flex item. `align-self: stretch` on it cannot do that inside a
+       row, which would silently shrink the touch target to its content. */
+    display: block;
+    margin-top: 0;
+  }
 }
 
 /* Proof card. Subtle by request — a quiet slab rather than a panel — but it is

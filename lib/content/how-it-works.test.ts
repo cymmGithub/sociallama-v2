@@ -155,6 +155,39 @@ describe('how-it-works proof content', () => {
     }
   })
 
+  /* The figure row is the panel's fill mechanism, so its shape is part of the
+     spec rather than a styling detail: one figure reads as a stray number and
+     four stop being scannable at the size that makes lifting them worthwhile. */
+  test.each(
+    LOCALES
+  )('%s: every step carries two or three figures', (_, content) => {
+    for (const step of content.steps) {
+      expect(step.proof.stats.length).toBeGreaterThanOrEqual(2)
+      expect(step.proof.stats.length).toBeLessThanOrEqual(3)
+      for (const stat of step.proof.stats) {
+        expect(stat.figure.trim()).not.toBe('')
+        expect(stat.label.trim()).not.toBe('')
+      }
+    }
+  })
+
+  /* Same rule as the sentence's figures, and it bites harder here: the row's
+     cells are ~1/3 of the panel, so a plain space is a likely wrap point. */
+  test.each(LOCALES)('%s: row figures cannot wrap', (_, content) => {
+    for (const step of content.steps) {
+      for (const stat of step.proof.stats) {
+        expect(`stat ${JSON.stringify(stat.figure)}`).not.toMatch(/\d ? \d/)
+      }
+    }
+  })
+
+  /* The row restates evidence and never adds any — but that rule is not worth
+     asserting mechanically. Half the steps spell their figures as words in the
+     copy the row draws from ("Dwa salony, trzy platformy"; "Seventeen months
+     later"), so a digit-match check would be an exception list wearing a test's
+     clothes. The constraint lives in `Step.proof.stats` and the capability
+     spec, and is enforced by review. */
+
   test('both locales point at the same case-study sections', () => {
     expect(enHowItWorks.steps.map((step) => step.proof.href)).toEqual(
       plHowItWorks.steps.map((step) => step.proof.href)
