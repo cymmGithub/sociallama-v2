@@ -106,7 +106,7 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   match between locales (132 EN / 135 PL — pre-existing decorative images, not a regression), and
   all 76 EN alts containing Polish are either R1 glosses (18) or proper nouns (58).
   *(original note follows)*
-- [ ] 2.8 (original) `media.alt` `lib/payload/collections/media.ts:39-48` — `alt` is
+  > 2.8 (original) `media.alt` `lib/payload/collections/media.ts:39-48` — `alt` is
   `required` and unlocalized, so Polish alt text renders on every English surface: the post hero
   (`post-article.tsx`), every in-body image (`rich-text.tsx`), and the card/featured/popular/video
   thumbnails. Verified live on `/en/blog/social-media-futbol-en`, where the rendered alts were
@@ -421,7 +421,7 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   orphans. `<code>`/`<sub>`/`<sup>` confirmed at zero occurrences, and the recommended mitigation
   turned out to be already implemented (`post-projection.ts:159` throws on unknown format bits).
   *(original note follows)*
-- [ ] **Corpus contradicts design D3's projection grammar** (measured against all 79 posts; the same
+  > **Corpus contradicts design D3's projection grammar** (measured against all 79 posts; the same
   census reproduces D3's own 1,889-block and 802-of-3,225 figures, so it is trustworthy where it
   disagrees). 31 nodes sit inside a projected block with no grammar token: 18 `paragraph` in
   `quote`, 5 `heading` in `listitem`, 4 `listitem` in a nested list, **2 `upload` in `listitem`**,
@@ -435,7 +435,7 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   counterpart); they belong to `add-english-locale`, were not part of what was reported here, and
   are left alone deliberately. Same hazard, someone's call to make.
   *(original note follows)*
-- [ ] **Three Polish routes still `Promise.all` their build-time reads**, against the constraint
+  > **Three Polish routes still `Promise.all` their build-time reads**, against the constraint
   `app/(frontend)/blog/page.tsx:22-27` documents: `blog/page/[number]/page.tsx:44`,
   `category/[category]/page.tsx:52`, `category/[category]/page/[number]/page.tsx:43`. Pre-existing;
   the three new EN routes were serialized rather than copying it. Worth closing before the first
@@ -447,11 +447,16 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   requires authored English slugs (`/en/blog/is-linkedin-premium-worth-it`, not the Polish slug with
   a suffix). Remove with:
   `DELETE FROM posts_locales WHERE _locale = 'en'; DELETE FROM categories_locales WHERE _locale = 'en';`
-- [ ] **`max_connections` on a build target.** The first production build against the 79-post
+- [x] **`max_connections` on a build target.** The first production build against the 79-post
   rehearsal DB died with `sorry, too many clients already` — 19 Next build workers against a default
   `max_connections = 100`. Raised to 800 on the throwaway container to get a render. This is the
   same build-time DB concurrency constraint the repo already documents, and it is worth confirming
   the prod build target's real limit before the first both-locales build.
+
+  **CLOSED 2026-07-29 by measurement, not argument.** The full 360-page production build ran
+  against the Neon branch with 19 workers and did not time out. Combined with both targets being
+  `-pooler` endpoints, the original failure is confirmed specific to the direct-connect Docker
+  container. Nothing further to do.
 
   **Checked 2026-07-28: largely a non-issue on the real target.** The failure was against the local
   Docker container on `:5435`, which is a direct connection. Both `DATABASE_URL_PROD` and
