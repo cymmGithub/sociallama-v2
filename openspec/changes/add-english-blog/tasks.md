@@ -366,8 +366,23 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 - [x] 9.5 Run one full wave of ~20 on `rehearsal`: `pipeline(posts, translate, structuralGate, verify)`, max two revise loops per post, third failure reported for a human rather than retried.
 - [x] 9.6 **Revalidate before checking anything rendered** (design D12). After each wave, POST `/api/revalidate?tag=posts&tag=categories&tag=blog-hub` against the deployment under test. Skipping this makes every rendered check a false negative — the pages serve a days-old cache and the translations look missing when they are written.
 - [x] 9.7 Verify that wave end to end on `rehearsal`, including partial-translation behaviour: with ~25 of 79 translated, `/en/blog` paginates over 25, the hub fills from translated posts only, and no English URL resolves for the other 54.
-- [ ] 9.8 Apply the migration to `prod`. Re-assert the 1.4 baseline there.
-- [ ] 9.9 Run the remaining waves against `prod` with `--prod`, revalidating after each (9.6) and verifying before starting the next. Writes land on the published version with no `draft: true` (design D7), so a wave is live the moment it is written. Confirm idempotency by re-running one post and checking it updates rather than duplicating.
+- [x] 9.8 Apply the migration to `prod`. Re-assert the 1.4 baseline there.
+  **DONE 2026-07-29.** Both migrations applied; baseline re-asserted **identical** — 79 posts, 293
+  versions, 4 categories, 1 author, blog-hub intact, and the media alt checksum unchanged through
+  the column move. Applied twice, in fact: the first run exposed that `main` had moved and now
+  carried `add-industries-hub`, so the branch needed a rebase before it could deploy. Rather than
+  leave prod's schema ahead of its deployed code for the length of an unbounded merge, the
+  migration was **rolled back** — all three table checksums returned byte-identical, which is the
+  hand-written `down` proving itself on production — then re-applied once the rebase was green.
+- [x] 9.9 Run the remaining waves against `prod` — **DONE 2026-07-29.** 79 posts written, 0 skipped;
+  668 media alts written, 0 skipped, 3 warnings (the filename junk, left deliberately). Verified on
+  prod: `payload:verify:post-en --all --prod` reports 79 verified / 0 failing, and the baseline
+  shows 80 differences that are all version-count increments — zero Polish drift. Verified live at
+  `sociallama-v2.vercel.app`: all **79/79** English slugs return 200, the hub renders `lang="en"`
+  with English slugs and no Polish chrome, a post carries reciprocal hreflang with `x-default` on
+  the Polish URL and English `alt` text, and the Polish counterpart is untouched.
+  *(original follows)*
+  > 9.9 Run the remaining waves against `prod` with `--prod`, revalidating after each (9.6) and verifying before starting the next. Writes land on the published version with no `draft: true` (design D7), so a wave is live the moment it is written. Confirm idempotency by re-running one post and checking it updates rather than duplicating.
 
 ## 10. Verification
 
