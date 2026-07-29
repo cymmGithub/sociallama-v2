@@ -589,13 +589,23 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   D4's soft-flag case.
   Writer script kept in the session scratchpad as `write-en.ts` — deliberately NOT committed, so it
   cannot be mistaken for `lib/payload/translate-post.ts`.
-- [ ] **Some images have Polish text baked into the pixels**, which localizing `media.alt` (task 2.8)
-  does not touch. Visible on the English hub: the cover for
-  `instagram-cenzuruje-zdjecia-ze-zwierzetami` is a screenshot of an Instagram warning written in
-  Polish. This is a content/creative decision per image — replace, crop, or accept — and it needs a
-  pass over the covers and in-body screenshots of whichever posts get translated. Scope unknown
-  until someone counts them.
-
+- [x] **Some images have Polish text baked into the pixels** — SPUN OUT into its own change,
+  `localize-blog-image-text` (2026-07-29). It is image production, not data localization, and it
+  belongs here only as a hand-off note.
+  The note said "scope unknown until someone counts them", so they were counted — and the count is
+  the finding: **261 media rows are reachable from the 79 posts (79 covers + 182 body images), and
+  metadata cannot tell you which of them carry Polish pixels.** Three heuristics were tried and all
+  three missed the one image known to be affected, because alt text records an image's SUBJECT, not
+  whether words appear inside it. The known cover's alt is a faithful "Instagram cenzuruje zdjęcia
+  ze zwierzętami!" and says nothing about the picture being a Polish screenshot. So the audit is
+  visual and IS the work.
+  Confirmed by opening it: that cover is a full-screen Polish Instagram dialog — heading, body and
+  both buttons ("Anuluj" / "Wyświetl posty").
+  Scoped to BLOG SURFACES ONLY on the user's call. Most images carrying Polish text on this site
+  are case-study creatives, where the Polish IS the client work being shown.
+  Worth carrying forward: this change already localized `media.alt` and glossed on-image Polish
+  under ruling R1, so a screen-reader user is told what the image says. The residual harm is to
+  SIGHTED English readers, which is narrower than the original note implied.
 - [x] **A real Neon `rehearsal` branch now exists** (user-supplied 2026-07-28, **1-day expiry**):
   `ep-lively-pine-as8jrpwr`. Verified a faithful pre-migration clone of prod — all five SQL
   checksums identical — then migrated, after which the baseline comparator reports **identical to
