@@ -233,6 +233,26 @@ Every task that touches a database names which one. `dev` = Docker Postgres `:54
   other three slugs are identical in English and stay so, which is legal because uniqueness is per
   locale), and the author's English `role` + `bio`. `name` and `profileUrl` are shared and untouched;
   the partner agency's brand name SEOFLY is preserved verbatim.
+- [x] **6.3 SHIPPED BROKEN, FIXED 2026-07-29.** 6.3 authored the English categories and author
+  role/bio **by hand, directly against the rehearsal database**, and committed `taxonomy.en.json` so
+  it could be re-applied at cutover. Nothing ever consumed that file — there was no writer, only a
+  note — so the prod cutover ran `translate:post` and `translate:alt` and silently did nothing for
+  categories and authors. Production shipped with **4 Polish categories and 0 English ones**, and an
+  author card carrying a name and a link and no description.
+  Neither failed loudly, which is why it survived every check: `author-card.tsx:29-30` guards
+  `{author.role && …}` and `resolveCategory` returns null unless BOTH title and slug are present, so
+  missing data degraded into absence rather than an error.
+  **The e2e case that should have caught it skipped itself on exactly the failing condition** —
+  `test.skip(categories.length === 0)` — so the suite reported 7/7 while the hub linked no
+  categories at all. The skip is now keyed on POSTS, with an explicit assertion that a hub carrying
+  translated posts must link categories; the only legitimate empty case is the zero-translation
+  fixture from 4.5.
+  Fixed by `lib/payload/apply-taxonomy-en.ts` (`bun run payload:apply:taxonomy-en [--prod] --apply`),
+  which projects the committed file onto any database the way the other two writers do. Applied to
+  prod: 5 written, 0 missing; categories_locales en=4, authors_locales en=1; revalidated and
+  verified live, and the e2e suite passes 7/7 against the deployment.
+  **Lesson worth keeping: content that lives in exactly one database is content that gets left
+  behind.** Every other localized entity had a file *and* a writer; this one had only the file.
 - [x] 6.4 Ship English `blog-hub` curation slots empty — `blog-hub-curation`'s existing degrade-to-defaults path fills them from the newest translated posts. (The global's schema was already localized in 2.2.)
 
 ## 7. SEO surface

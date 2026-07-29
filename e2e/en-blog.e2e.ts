@@ -105,8 +105,21 @@ test.describe('English blog tree', () => {
     page,
   }) => {
     await gotoHydrated(page, '/en/blog')
-    const { categories } = await hubLinks(page)
-    test.skip(categories.length === 0, 'no translated categories yet')
+    const { posts, categories } = await hubLinks(page)
+
+    // The skip is keyed on POSTS, not categories. Keyed on categories, this
+    // case skipped itself on precisely the condition it exists to catch:
+    // production shipped with four Polish categories and zero English ones,
+    // the hub rendered no category links at all, and this test reported green
+    // the whole time. Categories are a fixed set of four, translated once, so
+    // a hub with translated posts and no categories is incoherent — the only
+    // legitimate empty case is the zero-translation fixture from task 4.5,
+    // where there are no posts either.
+    test.skip(posts.length === 0, 'zero-translation fixture: nothing to check')
+    expect(
+      categories,
+      'hub links translated posts but no categories — the English category rows are missing'
+    ).not.toEqual([])
 
     const broken: string[] = []
     for (const href of categories.slice(0, 4)) {

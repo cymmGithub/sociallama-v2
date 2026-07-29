@@ -1,6 +1,6 @@
 {
   "name": "@darkroom.engineering/satus",
-  "description": "Next.js 16 starter by darkroom.engineering — React 19, TypeScript strict, Tailwind v4, Zod validation, and production-ready integrations",
+  "description": "Next.js 16 starter by darkroom.engineering \u2014 React 19, TypeScript strict, Tailwind v4, Zod validation, and production-ready integrations",
   "version": "2.0.1",
   "license": "MIT",
   "type": "module",
@@ -24,6 +24,7 @@
     "payload:translate:case-study": "bun ./lib/payload/translate-case-study.ts",
     "payload:translate:post": "bun ./lib/payload/translate-post.ts",
     "payload:translate:alt": "bun ./lib/payload/translate-media-alt.ts",
+    "payload:apply:taxonomy-en": "bun ./lib/payload/apply-taxonomy-en.ts",
     "payload:verify:post-en": "bun ./lib/payload/verify-post-en.ts",
     "payload:check:drafts": "bun ./lib/payload/check-drafts.ts",
     "payload:verify:case-study-en": "bun ./lib/payload/verify-case-study-en.ts",
