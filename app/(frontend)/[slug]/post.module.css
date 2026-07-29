@@ -226,17 +226,22 @@
   @media (--desktop) {
     display: grid;
     /*
-     * 300px, not 238px. At 238 the longest post's table of contents (20
-     * entries) overflowed its scrollport by 127px and wrapped 7 of them onto a
-     * second line; at 300 all 20 sit on one line and, with the tighter entry
-     * spacing in .tocLink, the list fits with no scroll at all on a 1440x900
-     * viewport. Measured, not estimated.
+     * 320px, not 238px. At 238 the longest post's table of contents (20
+     * entries) overflowed its scrollport by 127px and clipped mid-entry, with 7
+     * of the 20 wrapping onto a second line. Together with the tighter entry
+     * spacing in .tocLink, 320 clears the whole list on a 1440x900 viewport.
+     * Measured against the built CSS, not estimated.
+     *
+     * 300 was tried first and was enough for English but not for Polish, which
+     * writes longer headings and still lost 13px — half a line — on its longest
+     * post. That is the reason for the extra 20px: the rail has to hold the
+     * wordier of the two languages, so English is sized by Polish here.
      *
      * The width comes out of the body column, which sounds like a cost and is
-     * not: the measure goes 80 -> 73 characters per line, and 80 was already
+     * not: the measure goes 80 -> 71 characters per line, and 80 was already
      * past the comfortable range. Both columns improve.
      */
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: 320px minmax(0, 1fr);
     gap: clamp(40px, 5.4vw, 76px);
     align-items: start;
   }
@@ -246,7 +251,7 @@
  * A post with fewer than three headings has no table of contents, so there is
  * nothing worth keeping in a sticky column — the rail is dropped entirely and
  * the share row takes its mobile position under the body. Three icons alone in
- * a 300px gutter read as stranded, and with the byline gone (design D6a) that
+ * a 320px gutter read as stranded, and with the byline gone (design D6a) that
  * is all the rail would hold.
  */
 .layoutNoRail {
