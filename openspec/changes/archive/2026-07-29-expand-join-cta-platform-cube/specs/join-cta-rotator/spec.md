@@ -15,7 +15,9 @@ The join-cta heading SHALL render the static lead "POTRZEBUJESZ WSPARCIA" follow
 - **WHEN** assistive technology reads the section heading
 - **THEN** it announces the full first-entry phrase ("POTRZEBUJESZ WSPARCIA NA FACEBOOKU?") regardless of which token is visually active, and the rotating spans are hidden from the accessibility tree
 
-### Requirement: Looping clip media column
+### Requirement: Mascot media column
+*(renamed from "Looping clip media column" — this change is what removed the clip, so the old title contradicted its own body.)*
+
 The join-cta media column SHALL render a **static mascot cutout** — the suited llama — as a transparent image composited onto the section's plum well by CSS; no background SHALL be baked into the asset. The well SHALL be the brand plum with a radial falloff toward the corners so the cutout reads as a photograph rather than a flat swatch. The mascot SHALL be served `unoptimized` (Next's optimizer corrupts transparent WebP colour and alpha). The mascot SHALL NOT change with the rotator — only the platform cube it holds does, per **Platform cube swap**. The mascot SHALL carry the `joinCta.llamaAlt` label.
 
 #### Scenario: Mascot is stable
@@ -98,7 +100,7 @@ The card's action controls SHALL be real controls, not decoration: they SHALL be
 ### Requirement: Prepared clip asset
 **Reason**: The section no longer renders a video. The looping clip was already replaced by its first frame as a stopgap on 2026-07-22, and this change replaces the media column with a static mascot cutout plus a swapping cube. The grading, ping-pong loop, corner-sampling gate and colour-tag rules all described a video asset that is no longer wired in.
 
-**Migration**: `public/clips/cta-llama-work.mp4` and `cta-llama-work-poster.jpg` remain in the repository, unreferenced, as the fallback if this change is reverted. `lib/scripts/verify-clip-bg.ts` stays — other clips still use it. The "no perceivable edge against the section background" obligation is carried forward by the composited-not-baked scenario in **Looping clip media column**, which achieves the same outcome without fixing a background into the asset.
+**Migration**: `public/clips/cta-llama-work.mp4` and `cta-llama-work-poster.jpg` remain in the repository, unreferenced, as the fallback if this change is reverted. `lib/scripts/verify-clip-bg.ts` stays — other clips still use it. The "no perceivable edge against the section background" obligation is carried forward by the composited-not-baked scenario in **Mascot media column**, which achieves the same outcome without fixing a background into the asset.
 
 ### Requirement: Poster fallback
 **Reason**: The poster existed to stand in for a `<video>` before hydration and under reduced motion. With a still mascot there is no video to stand in for — the image renders server-side on the normal path, so the pre-hydration and reduced-motion cases collapse into it.
