@@ -452,7 +452,14 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
     forward in this change's text. Verified: all four index pairs plus `/blog` and `/o-nas`
     round-trip through `counterpartPath`.
   Both changes still pass `openspec validate`.
-- [ ] 10.9 Decide the fate of the `rehearsal` Neon branch once the batch is complete.
+- [x] 10.9 **Decided: let it expire. WON'T-FIX / no action.** The branch carries a 1-day expiry and
+  is now redundant — production is the source of truth, holding all 79 translations, 668 English
+  alts and the English categories and author. Losing it costs nothing in any case:
+  `content/posts/<slug>/draft.en.json`, `content/media/alts.en.json` and `content/posts/
+  taxonomy.en.json` are committed, and between `payload:translate:post`, `payload:translate:alt`
+  and `payload:apply:taxonomy-en` they reproduce the entire English corpus against any database.
+  That property was the whole point of keeping disk as the source of truth (design D3) and it is
+  what makes deleting a database a non-event.
 
 ## Found during implementation — not in the original task list
 
@@ -467,10 +474,23 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   than a fabricated path. Measured first: the corpus contains **zero** internal links in all 79
   posts, so this never fired and could only ever have fired for someone adding the first one from
   the CMS. Unit-tested in `rich-text.test.ts`, including that the fallback stays same-locale.
-- [ ] **Both locales' hub-search copy ships in every client bundle.** `hub-search.tsx` holds a
-  `Record<Locale, HubSearchCopy>` inside a `'use client'` module, so PL ships the EN strings and
-  vice versa (~600 bytes). Consequence of the pluralizer-as-function decision; worth revisiting if
-  a third locale ever lands.
+- [x] **Both locales' hub-search copy ships to the blog hubs. WON'T-FIX — measured, and the original
+  note overstated it twice over.** `hub-search.tsx` holds a `Record<Locale, HubSearchCopy>` inside a
+  `'use client'` module, so a Polish visitor downloads the English strings and the reverse.
+  Measured against the live deployment rather than reasoned about:
+  - **Not "every client bundle".** Next code-splits it into one chunk that only `/blog` and
+    `/en/blog` pull in. Confirmed by fetching every chunk of `/`, `/en`, `/o-nas`, `/blog` and
+    `/en/blog` and grepping for the copy: the homepage carries none of it, in either locale.
+  - **Not "~600 bytes".** That was the source size. Stripping the Polish half out of the live chunk
+    and re-gzipping prices the duplication at **88 bytes gzipped** — 2.3% of a 3,874-byte chunk, on
+    two routes, smaller than one HTTP header.
+  Left alone deliberately. The cause is that `results` is a FUNCTION — Polish pluralization is
+  irregular (1 wpis / 2 wpisy / 5 wpisów) — and a function cannot be serialized from a server
+  component, so it has to live in the client bundle. Removing the duplication means restructuring
+  how the pluralizer reaches the client, which is worse code for 88 bytes.
+  **Keep the note for what it predicts, not what it costs:** a third locale makes the waste two
+  thirds instead of one half, and the same pattern applied to a larger localized block would ship
+  something that actually matters.
 - [x] **No unit coverage for the new shared views.** COVERED, though not the way 7.3/7.8 imagined.
   `linkHref` and `hrefForRelation` are pure and get ordinary unit tests. The eleven route files that
   hand-write `basePath` / `hubPath` / `categoryPath` get a **source-level invariant** instead
@@ -498,7 +518,11 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   gate should reject an unexpected format mask rather than accept one. Full note in the scratchpad
   as `D3-correction.md`.
 - [x] **Three Polish routes still `Promise.all` their build-time reads** — FIXED, all three now
-  sequential. Two CASE-STUDY routes still parallelize (`case-studies/[slug]/page.tsx` and its English
+  sequential. **The two CASE-STUDY routes are deliberately LEFT AS-IS** (user decision 2026-07-29):
+  they inherit a documented rule they predate, they belong to `add-english-locale`, and the full
+  362-page production build has since passed repeatedly with them unchanged — both database
+  endpoints are Neon `-pooler`, which multiplexes build workers. A consistency gap against a
+  written rule, not an observed failure. Two CASE-STUDY routes still parallelize (`case-studies/[slug]/page.tsx` and its English
   counterpart); they belong to `add-english-locale`, were not part of what was reported here, and
   are left alone deliberately. Same hazard, someone's call to make.
   *(original note follows)*
@@ -613,5 +637,7 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
   2022 platform that could not have existed in a March 2018 post. The English already says "True
   Social", which the user's ruling now endorses — so nothing to undo, but the **Polish is wrong on a
   product name** and should be corrected in the CMS alongside the two above.
-- [ ] **9.8 / 9.9 prod cutover — NOT DONE, needs explicit approval.** Nothing has touched production
-  all session; the only prod access was a read-only dump and baseline capture.
+- [x] **9.8 / 9.9 prod cutover — SHIPPED 2026-07-29** on explicit approval. This entry read "NOT
+  DONE, nothing has touched production" for most of the change and is kept, corrected, rather than
+  deleted: it is the line someone would trust. See 9.8 and 9.9 above for what actually happened,
+  including the coupling between migration and deploy that the plan did not anticipate.
