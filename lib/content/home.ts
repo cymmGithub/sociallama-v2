@@ -586,11 +586,12 @@ export const services = {
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
       stage: {
         kind: 'panels',
-        // Twelve case-study creatives drawn from eight brands. The stage renders
-        // the first seven on desktop; 8–12 are wide-screen-only extras (≥1440px)
-        // — see the `panel:nth-child(n + 8)` rules in the CSS. Mobile shows only
-        // the first three (existing rule), so 1–3 read as a trio and keep the
-        // two flagship brands (Volvo, Pracuj.pl) there.
+        // Eight case-study creatives, one per brand (wariant B of the 2026-07-30
+        // panel reduction: the 12-creative roster dropped the second Volvo,
+        // Stadler Form, and Julius Meinl plus O, ZGASŁ?, and every panel grew).
+        // All eight render at every desktop width — there is no wide-screen-only
+        // tier anymore. Mobile shows only the first three (existing rule), so
+        // 1–3 read as a trio: Volvo, Mercator, Julius Meinl.
         //
         // Each slot's geometry is height-driven, so width follows the source
         // aspect ratio: swaps stay near the ratio the slot was tuned for, and
@@ -610,10 +611,10 @@ export const services = {
             height: 1023,
           },
           {
-            src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
-            alt: 'Kreacja Volvo „Gorący okres?” o przygotowaniu auta na lato',
-            width: 351,
-            height: 760,
+            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
+            alt: 'Kreacja Julius Meinl „3 błędy w latte art” — czerwona filiżanka z latte',
+            width: 320,
+            height: 524,
           },
           {
             src: '/case-studies/skibooking/skibooking-gallery-2.jpg',
@@ -634,18 +635,6 @@ export const services = {
             height: 1400,
           },
           {
-            src: '/case-studies/ozgasl/ozgasl-gallery-2.jpg',
-            alt: 'Humorystyczna rolka O, ZGASŁ? — mechanik z filtrem AR i podpisem „Kiedy Klient mówi, że jednak sam naprawi auto”',
-            width: 760,
-            height: 1400,
-          },
-          {
-            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
-            alt: 'Kreacja Julius Meinl „3 błędy w latte art” — czerwona filiżanka z latte',
-            width: 320,
-            height: 524,
-          },
-          {
             src: '/case-studies/ariadna/ariadna-gallery-4.jpg',
             alt: 'Kadr z filmu dla panelu Ariadna — dziewczyna z telefonem i podpisem „Ja: rozwiązuję ankiety”',
             width: 774,
@@ -656,18 +645,6 @@ export const services = {
             alt: 'Rolka Galerii Riviera o dwumetrowej pisance w centrum handlowym',
             width: 824,
             height: 1400,
-          },
-          {
-            src: '/case-studies/stadler-form/stadler-form-gallery-7.jpg',
-            alt: 'Kadr Stadler Form — dyfuzor z efektem płomienia obok notatnika',
-            width: 788,
-            height: 1400,
-          },
-          {
-            src: '/case-studies/julius-meinl/julius-meinl-gallery-7.jpg',
-            alt: 'Czerwona filiżanka Julius Meinl trzymana na tle drewnianych lameli',
-            width: 325,
-            height: 525,
           },
         ],
       },

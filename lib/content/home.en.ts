@@ -371,10 +371,10 @@ export const services = {
             height: 1023,
           },
           {
-            src: '/case-studies/volvo/volvo-vcw-goracy.jpg',
-            alt: 'Volvo “Hot season?” creative on getting your car ready for summer',
-            width: 351,
-            height: 760,
+            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
+            alt: 'Julius Meinl creative “3 latte art mistakes” — a red cup of latte',
+            width: 320,
+            height: 524,
           },
           {
             src: '/case-studies/skibooking/skibooking-gallery-2.jpg',
@@ -395,18 +395,6 @@ export const services = {
             height: 1400,
           },
           {
-            src: '/case-studies/ozgasl/ozgasl-gallery-2.jpg',
-            alt: 'Playful O, ZGASŁ? reel — a mechanic with an AR filter, captioned “when the client says they will fix the car themselves”',
-            width: 760,
-            height: 1400,
-          },
-          {
-            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
-            alt: 'Julius Meinl creative “3 latte art mistakes” — a red cup of latte',
-            width: 320,
-            height: 524,
-          },
-          {
             src: '/case-studies/ariadna/ariadna-gallery-4.jpg',
             alt: 'Still from an Ariadna research-panel video — a girl with a phone, captioned “me: filling in surveys”',
             width: 774,
@@ -417,18 +405,6 @@ export const services = {
             alt: 'Riviera mall reel about a two-metre Easter egg in the shopping centre',
             width: 824,
             height: 1400,
-          },
-          {
-            src: '/case-studies/stadler-form/stadler-form-gallery-7.jpg',
-            alt: 'Stadler Form still — a flame-effect diffuser beside a notebook',
-            width: 788,
-            height: 1400,
-          },
-          {
-            src: '/case-studies/julius-meinl/julius-meinl-gallery-7.jpg',
-            alt: 'A red Julius Meinl cup held against a wooden slat wall',
-            width: 325,
-            height: 525,
           },
         ],
       },
