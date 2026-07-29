@@ -225,7 +225,18 @@
 
   @media (--desktop) {
     display: grid;
-    grid-template-columns: 238px minmax(0, 1fr);
+    /*
+     * 300px, not 238px. At 238 the longest post's table of contents (20
+     * entries) overflowed its scrollport by 127px and wrapped 7 of them onto a
+     * second line; at 300 all 20 sit on one line and, with the tighter entry
+     * spacing in .tocLink, the list fits with no scroll at all on a 1440x900
+     * viewport. Measured, not estimated.
+     *
+     * The width comes out of the body column, which sounds like a cost and is
+     * not: the measure goes 80 -> 73 characters per line, and 80 was already
+     * past the comfortable range. Both columns improve.
+     */
+    grid-template-columns: 300px minmax(0, 1fr);
     gap: clamp(40px, 5.4vw, 76px);
     align-items: start;
   }
@@ -235,7 +246,7 @@
  * A post with fewer than three headings has no table of contents, so there is
  * nothing worth keeping in a sticky column — the rail is dropped entirely and
  * the share row takes its mobile position under the body. Three icons alone in
- * a 238px gutter read as stranded, and with the byline gone (design D6a) that
+ * a 300px gutter read as stranded, and with the byline gone (design D6a) that
  * is all the rail would hold.
  */
 .layoutNoRail {
@@ -312,7 +323,13 @@
 .tocLink,
 .tocLinkNested {
   display: block;
-  padding: 0.4375rem 0 0.4375rem 0.875rem;
+  /*
+   * The vertical padding is deliberately tighter than it looks like it should
+   * be. On a 20-entry list it is 280px of pure spacing — more than a third of
+   * the available column height — so trimming it buys more headroom than
+   * widening the rail does, and unlike width it costs nothing elsewhere.
+   */
+  padding: 0.3125rem 0 0.3125rem 0.875rem;
   font-size: 0.8125rem;
   line-height: 1.35;
   color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
