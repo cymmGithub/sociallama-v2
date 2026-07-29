@@ -41,6 +41,7 @@
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { counterpartPath, EN_HOME } from '@/lib/i18n/slug-map'
 import {
   nodesOf,
   type ProjNode,
@@ -156,6 +157,8 @@ if (requested.length > 0 && found.docs.length !== requested.length) {
 
 /** Every English slug already in use, so the gate can spot a collision. */
 const takenBy = new Map<string, string>()
+/** Polish post slug → English post slug, for rewriting body links. */
+const plSlugToEn = new Map<string, string>()
 if (!EXTRACT) {
   const existing = await payload.find({
     collection: 'posts',
@@ -166,10 +169,60 @@ if (!EXTRACT) {
     fallbackLocale: false,
     select: { slug: true },
   })
+  const enById = new Map<string, string>()
   for (const doc of existing.docs) {
     if (doc.slug) {
       takenBy.set(doc.slug, String(doc.id))
+      enById.set(String(doc.id), doc.slug)
     }
+  }
+  // Built from the database rather than the drafts, so a post translated in an
+  // earlier wave is a valid link target for one translated later.
+  for (const doc of found.docs) {
+    const en = enById.get(String(doc.id))
+    if (doc.slug && en) {
+      plSlugToEn.set(String(doc.slug), en)
+    }
+  }
+}
+
+/**
+ * Rewrite site-relative link URLs in a translated body to their English
+ * counterparts.
+ *
+ * The projection holds link `fields` out of band and restores them verbatim,
+ * which is right for the relation and the tag positions and wrong for the one
+ * thing that is locale-specific: a `linkType: 'custom'` link carries a
+ * hardcoded path, so a Polish URL rode straight through into English bodies.
+ * The result reads worse than an untranslated link — the anchor text IS
+ * English, so nothing looks broken until the reader lands on a Polish article.
+ *
+ * Post targets resolve through the slug map; everything else through
+ * `counterpartPath`. A path with no counterpart is left ALONE and reported,
+ * never rewritten to `/en`: sending a reader to the homepage silently discards
+ * a link the author meant, and a human should decide what replaces it.
+ */
+function remapLinks(node: ProjNode, unmapped: string[]): void {
+  const fields = (node as { fields?: { linkType?: string; url?: string } })
+    .fields
+  const url = fields?.url
+  if (fields && typeof url === 'string' && url.startsWith('/')) {
+    const [path = ''] = url.split(/[?#]/)
+    const slug = path.replace(/^\/+|\/+$/g, '')
+    const enPost = plSlugToEn.get(slug)
+    if (enPost) {
+      fields.url = `/en/blog/${enPost}`
+    } else if (!path.startsWith('/en')) {
+      const counterpart = counterpartPath(path)
+      if (counterpart !== EN_HOME) {
+        fields.url = counterpart
+      } else {
+        unmapped.push(url)
+      }
+    }
+  }
+  for (const child of node.children ?? []) {
+    remapLinks(child, unmapped)
   }
 }
 
@@ -287,7 +340,16 @@ for (const post of found.docs) {
     }
   }
 
+  const unmapped: string[] = []
   if (!broke) {
+    remapLinks(content.root, unmapped)
+    for (const url of unmapped) {
+      findings.push({
+        level: 'warn',
+        where: 'body link',
+        message: `${url} has no English counterpart — left pointing at Polish`,
+      })
+    }
     findings.push(
       ...checkTree(root, content.root),
       ...checkSlug(String(draft.slug), {

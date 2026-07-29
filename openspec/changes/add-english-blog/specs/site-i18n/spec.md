@@ -54,11 +54,15 @@ English posts SHALL be served at `/en/blog/{en-slug}`, the English hub at `/en/b
 ## MODIFIED Requirements
 
 ### Requirement: Locale toggle
-The site chrome (overlay menu and footer) SHALL include a PL/EN toggle on both locales, marking the current locale (`aria-current`) and linking to the counterpart of the current path. `/blog` ↔ `/en/blog` is a static pair. Post and category counterparts — `/{pl-slug}` ↔ `/en/blog/{en-slug}` and `/category/{pl-slug}` ↔ `/en/blog/category/{en-slug}` — SHALL be resolved from the document, since the slugs differ per locale, and SHALL be resolved on the server and supplied to the toggle. The client-side path map SHALL remain a static literal table; no per-post slug table may be shipped to the browser. For a path with no counterpart in the other locale — including a post that has not been translated — the toggle SHALL link to that locale's home.
+The site chrome (overlay menu and footer) SHALL include a PL/EN toggle on both locales, marking the current locale (`aria-current`) and linking to the counterpart of the current path via the slug map. Section index pages SHALL be mapped pairs — `/uslugi` ↔ `/en/services` and `/branze` ↔ `/en/industries` — so the toggle lands on the counterpart index rather than the locale home. `/blog` ↔ `/en/blog` is a static pair. Post and category counterparts — `/{pl-slug}` ↔ `/en/blog/{en-slug}` and `/category/{pl-slug}` ↔ `/en/blog/category/{en-slug}` — SHALL be resolved from the document, since the slugs differ per locale, and SHALL be resolved on the server and supplied to the toggle. The client-side path map SHALL remain a static literal table; no per-post slug table may be shipped to the browser. For a path with no counterpart in the other locale — including a post that has not been translated — the toggle SHALL link to that locale's home.
 
 #### Scenario: Toggle round-trips a mapped page
 - **WHEN** a visitor on `/o-nas` activates EN and then PL
 - **THEN** they land on `/en/about-us` and back on `/o-nas`
+
+#### Scenario: Toggle round-trips the industries index
+- **WHEN** a visitor on `/branze` activates EN and then PL
+- **THEN** they land on `/en/industries` and back on `/branze`, never on the locale home
 
 #### Scenario: Toggle round-trips a translated post
 - **WHEN** a visitor on a translated Polish post activates EN and then PL

@@ -408,7 +408,23 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 
 - [x] 10.1 `bun run payload:verify:post-en --all --status --prod` exits zero for all 79.
 - [ ] 10.2 Review `content/posts/STATUS.md` soft-flags — the "correct English, but locally scoped" set — and make the content call on the ~15 short 2017–18 news items.
-- [ ] 10.3 Spot-check a sample of `/en/blog/<en-slug>` pages: images present, internal links landing on English URLs, bold/italic runs in the right places, line breaks where the Polish had them, table of contents populated, author card in English, dates in `en-US`.
+- [x] 10.3 **Done — all 79 pairs, not a sample.** A structural comparison of every English post
+  against its Polish counterpart, run over the prerendered HTML: image counts, bold/italic run
+  counts, `<br>` counts, table-of-contents depth, author card, and date format. Six of the seven
+  checks were clean across all 79. Two things it caught:
+  - **A real defect: 43 links in English bodies pointed at Polish URLs**, across 26 posts. The
+    anchor text was English, so nothing looked broken until the reader landed on a Polish article —
+    invisible to every check that came before. Cause: the projection holds link `fields` out of band
+    and restores them verbatim, which is right for a relation and wrong for a `linkType: 'custom'`
+    link, whose hardcoded path is locale-specific. Fixed in `translate-post.ts` rather than as a
+    one-off repair, so it applies on every write and cannot be undone by a re-run: post targets
+    resolve through the slug map, everything else through `counterpartPath`. 41 of 43 remapped;
+    the 2 `/oferta/*` links have no English counterpart and are left alone and REPORTED, never
+    silently rewritten to `/en`, which would discard a link the author meant. Applied to prod,
+    verified in the database and on the live page.
+  - **A false positive worth recording**: the author check first reported 74 of 79 failing because
+    it grepped for the guest author's role. All 79 carry an English author card; most use the house
+    author ("Social Lama / Editorial team"). Zero Polish author strings on any English page.
 - [x] 10.4 Confirm hreflang round-trips — verified against the prerendered HTML rather than a running
   server, which is the stronger check: it is what actually ships. Both `/aplikacjavero` and
   `/en/blog/vero-is-taking-over-phones` emit the identical reciprocal triple (`pl`, `en`,
@@ -419,7 +435,23 @@ Runs against `rehearsal` until 9.7. Nothing in this phase touches `prod` before 
 - [x] 10.5 Run the `e2e/locale-routing.e2e.ts` sweep including the blog tree coverage added in 7.8.
 - [x] 10.6 Run the `seo-url-parity` gate and confirm it is still green: no Polish URL moved, all 4 category URLs intact.
 - [x] 10.7 Confirm the formatting audit now runs over both locales and passes for both.
-- [ ] 10.8 Reconcile the `add-industries-hub` conflict at archive time (design D9): its `site-footer` scenario "English footer omits blog surfaces" contradicts this change, and this change's `Locale toggle` text must not silently drop that change's mapped-pairs clause for `/uslugi` and `/branze`.
+- [x] 10.8 **Reconciled.** Both halves of the conflict, both verified against shipped behaviour
+  rather than intent:
+  - **The footer.** `add-industries-hub` specified "English footer omits blog surfaces — no BLOG
+    link and no link to `/blog` or any category route", which was correct when written: with no
+    English blog, a BLOG link in English chrome could only point at Polish articles. This change
+    creates the thing that scenario compensated for, so `specs/site-footer/spec.md` now MODIFIES it
+    narrowly — the BLOG link returns pointing at `/en/blog`, while "no `/blog` from English chrome"
+    and "no category routes in the footer" both stand unchanged. `add-industries-hub`'s *other*
+    footer requirement ("Hub pages are linked from the mobile menu only") is deliberately NOT
+    modified and still holds: the live English footer links the seven service and twelve industry
+    detail pages and neither index.
+  - **The locale toggle.** Both changes MODIFY the same requirement, and this one archives later —
+    so as written it would have silently deleted the mapped-pairs clause for `/uslugi` and
+    `/branze`, exactly as this task warned. That clause and its round-trip scenario are now carried
+    forward in this change's text. Verified: all four index pairs plus `/blog` and `/o-nas`
+    round-trip through `counterpartPath`.
+  Both changes still pass `openspec validate`.
 - [ ] 10.9 Decide the fate of the `rehearsal` Neon branch once the batch is complete.
 
 ## Found during implementation — not in the original task list
