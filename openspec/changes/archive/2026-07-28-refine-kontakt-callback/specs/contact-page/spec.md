@@ -1,3 +1,11 @@
+> **Archived without syncing (2026-07-28).** These deltas modify requirements
+> that `add-contact-page` introduces, and that change had not been archived yet,
+> so no `openspec/specs/contact-page/spec.md` existed to apply them to. Applying
+> them standalone would have created a partial capability spec. All four
+> requirements below were folded into
+> `openspec/changes/add-contact-page/specs/contact-page/spec.md` instead, and
+> will reach the main specs when that change is archived.
+
 ## MODIFIED Requirements
 
 ### Requirement: Low-friction contact form
