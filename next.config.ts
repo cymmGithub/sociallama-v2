@@ -138,10 +138,15 @@ const nextConfig: NextConfig = {
   headers: async () => [
     // Hand-placed media in /public otherwise ships Vercel's default
     // `max-age=0, must-revalidate` — the hero outfit tear re-validated every
-    // look on every rotator pass (2026-07-29 audit). A day of freshness plus a
-    // week of stale-while-revalidate keeps in-place file replacements viable.
+    // look on every rotator pass, and the browser re-fetched all marquee
+    // logos on every visit (2026-07-29 audit). This poisons the optimizer
+    // too: /_next/image responses inherit the SOURCE file's Cache-Control,
+    // so with max-age=0 sources nothing image-shaped was cacheable at all.
+    // A day of freshness plus a week of stale-while-revalidate keeps
+    // in-place file replacements viable (they propagate within a day).
     {
-      source: '/clips/:path*',
+      source:
+        '/:dir(assets|authors|branze|case-studies|clips|o-nas|social-platforms)/:path*',
       headers: [
         {
           key: 'Cache-Control',
