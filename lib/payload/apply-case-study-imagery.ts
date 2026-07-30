@@ -412,6 +412,130 @@ const PLAN: Op[] = [
         'A wall-mounted television on a marble wall in a bright living room, with a wooden media console below',
     },
   },
+
+  /**
+   * —— fixing a regression the recrops caused ——
+   *
+   * Payload skips generating an image size when the source is smaller than the
+   * target in BOTH dimensions. The `og` size is 1200x630, and the tall originals
+   * cleared it on height alone: `bioagris-cover.jpg` at 648x810 produced an og
+   * variant, `adamed-cover.jpg` at 934x1400 likewise.
+   *
+   * Recropping them into short landscape strips dropped every one below 630 tall
+   * while still under 1200 wide, so the og variant stopped being generated. The
+   * page then fell back to the original file while STILL declaring
+   * `og:image:width 1200` / `og:image:height 630` — metadata that did not match
+   * the bytes, on the image every social platform reads.
+   *
+   * The fix is the same crop rendered at exactly 1200x630, so the size is
+   * generated and the declaration is true. Upscales run from 1.11x to 1.85x,
+   * checked at 1:1: soft but clean, and an OG image renders near 500px in a feed.
+   * The card variant (1024w) now generates too, which it did not before.
+   *
+   * `galeria-rondo-wiatraczna`, `getaway` and `vobis` are absent from this list —
+   * their sources are already 1200px or wider, so their og variants were fine.
+   */
+  {
+    slug: 'bioagris',
+    file: 'bioagris-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'bioagris-cover-3.jpg',
+      altPl:
+        'Dłonie przesypujące żyzną, ciemną glebę w świetle zachodzącego słońca',
+      altEn: 'Hands sifting rich dark soil in the light of the setting sun',
+    },
+  },
+  {
+    slug: 'kontigo',
+    file: 'kontigo-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'kontigo-cover-3.jpg',
+      altPl:
+        'Dwie kobiety w turbanach z ręczników nakładają sobie maseczki kosmetyczne — kadr z okładki grupy KontigoCLUB',
+      altEn:
+        'Two women in towel turbans applying face masks to each other — from the KontigoCLUB group cover',
+    },
+  },
+  {
+    slug: 'produkty-cukiernicze-brzesc',
+    file: 'produkty-cukiernicze-brzesc-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'produkty-cukiernicze-brzesc-cover-3.jpg',
+      altPl:
+        'Opakowanie słomki ptysiowej Pano obok miski pełnej słomki na drewnianym blacie',
+      altEn:
+        'A pack of Pano choux straws beside a bowl of them on a wooden counter',
+    },
+  },
+  {
+    slug: 'vistula',
+    file: 'vistula-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'vistula-cover-3.jpg',
+      altPl:
+        'Czterech studentów Uczelni Vistula w kreacji kampanii „Why Vistula?”',
+      altEn:
+        'Four Vistula University students in the “Why Vistula?” campaign creative',
+    },
+  },
+  {
+    slug: 'entelo',
+    file: 'entelo-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'entelo-cover-3.jpg',
+      altPl:
+        'Strona Entelo — Dobre Krzesło na Facebooku z hasłem „Produkujemy meble. Tworzymy przestrzenie. Dbamy o zdrowie.”',
+      altEn:
+        'The Entelo — Dobre Krzesło Facebook page, headlined “We make furniture. We create spaces. We care about health.”',
+    },
+  },
+  {
+    slug: 'adamed',
+    file: 'adamed-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'adamed-cover-3.jpg',
+      altPl:
+        'Kobieta z zamkniętymi oczami wdycha powietrze na tle zieleni — kreacja kampanii Adamed „Głęboki oddech”',
+      altEn:
+        'A woman breathing in with her eyes closed against greenery — from Adamed’s “Głęboki oddech” campaign',
+    },
+  },
+  {
+    slug: 'personal-effect',
+    file: 'personal-effect-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'personal-effect-cover-3.jpg',
+      altPl:
+        'Kobieta przy biurku w jasnym wnętrzu — kadr z materiałów Personal Effect',
+      altEn:
+        'A woman at a desk in a bright interior — from Personal Effect’s own material',
+    },
+  },
+  {
+    slug: 'asus',
+    file: 'asus-cover-2.jpg',
+    why: 'Below 1200x630 in both dimensions, so no og variant was generated',
+    target: 'cover',
+    replace: {
+      file: 'asus-cover-3.jpg',
+      altPl: 'Otwarty laptop ASUS Zenbook S 16 na jasnym tle',
+      altEn: 'An open ASUS Zenbook S 16 laptop on a light background',
+    },
+  },
 ]
 
 const { default: config } = await import('@payload-config')
