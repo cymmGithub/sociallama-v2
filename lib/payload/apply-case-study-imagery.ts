@@ -363,6 +363,55 @@ const PLAN: Op[] = [
       altEn: 'An open ASUS Zenbook S 16 laptop on a light background',
     },
   },
+
+  /**
+   * —— licensed stock, on instruction ——
+   *
+   * These two are Pexels photographs, which the `case-studies` spec forbids:
+   * "Generic stock or library photography standing in for work" SHALL NOT
+   * appear. They are here because the recrops could not rescue either cover and
+   * neither client's deck holds a usable landscape frame — Getaway's own post
+   * frame was only 468x262 and visibly soft at hero size, and Vobis's cover was
+   * a Facebook screenshot whose joke died in the crop.
+   *
+   * Recorded as a deliberate exception rather than smuggled in: the spec and the
+   * site now disagree on two covers, and the requirement needs amending to say
+   * so, otherwise the next audit will "fix" these straight back.
+   *
+   * Both were chosen to carry NO third-party marks, which ruled out most of the
+   * search results — an HP lid, a Miele oven, Samsung remotes, a Netflix screen,
+   * a Coca-Cola can. A competitor's logo on a multi-brand retailer's cover would
+   * be worse than the generic photograph.
+   *
+   * Provenance for the next audit: Pexels photo 2007395 (Getaway) and 6636320
+   * (Vobis), cropped to 1600x842.
+   */
+  {
+    slug: 'getaway',
+    file: 'getaway-cover-2.jpg',
+    why: 'Own-post frame was only 468x262 — visibly soft once the hero upscaled it 2.5x',
+    target: 'cover',
+    replace: {
+      file: 'getaway-cover-3.jpg',
+      altPl:
+        'Skrzydło samolotu i chmury w zachodzącym słońcu, widok z okna pasażerskiego',
+      altEn:
+        'An aircraft wing and clouds at sunset, seen from a passenger window',
+    },
+  },
+  {
+    slug: 'vobis',
+    file: 'vobis-cover-2.jpg',
+    why: 'Recrop saved the pun but the source is a Facebook screenshot, not a cover image',
+    target: 'cover',
+    replace: {
+      file: 'vobis-cover-3.jpg',
+      altPl:
+        'Telewizor na marmurowej ścianie w jasnym salonie, poniżej drewniana szafka RTV',
+      altEn:
+        'A wall-mounted television on a marble wall in a bright living room, with a wooden media console below',
+    },
+  },
 ]
 
 const { default: config } = await import('@payload-config')
