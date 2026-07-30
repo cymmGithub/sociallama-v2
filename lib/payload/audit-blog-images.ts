@@ -73,6 +73,12 @@ interface Entry {
   reason: string
   /** Set when a previously audited id is no longer reachable. */
   stale?: true
+  /** R3: the image is accepted but its Polish needs an English gloss in `alt`. */
+  glossRequired?: true
+  /** Why a non-`accept` verdict cannot be acted on, e.g. a shared `cover`. */
+  blockedBy?: string
+  /** The English-only media row that replaced this one in the EN body. */
+  enMediaId?: string
 }
 
 const READ = { depth: 0, fallbackLocale: false } as const
@@ -196,7 +202,13 @@ for (const id of ids) {
   const hit = found.get(id)!
   const doc = byId.get(id)
   const prior = previous[id]
+  // Spread the prior entry FIRST so every human-recorded field survives —
+  // glossRequired, blockedBy, enMediaId and anything added later. Cherry-picking
+  // verdict and reason here silently dropped 60 glossRequired flags and 5
+  // blockedBy markers on the first re-run, which is precisely the loss this
+  // script's merge-only contract exists to prevent.
   images[id] = {
+    ...prior,
     filename: String(doc?.filename ?? '(missing media row)'),
     url: String(doc?.url ?? ''),
     width: (doc?.width as number | null) ?? null,
@@ -208,6 +220,8 @@ for (const id of ids) {
     verdict: prior?.verdict ?? 'unreviewed',
     reason: prior?.reason ?? '',
   }
+  // Reachable again: the marker from a previous run no longer applies.
+  delete images[id].stale
 }
 
 // Keep ids that fell out of the corpus rather than dropping their verdicts.

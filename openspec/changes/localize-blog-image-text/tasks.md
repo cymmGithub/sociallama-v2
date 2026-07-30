@@ -94,24 +94,71 @@ Downgrading would make the artifact claim these pages are fine when they are not
       accounts, so they come from a human. Ids 132/133 are *not* in the capture list: they are
       2019 Polish analytics that cannot be re-captured and must not be recreated, so they sit
       at `accept` + `glossRequired`.
-- [ ] 4.2 For every image left at `accept` whose Polish text carries meaning, verify its English alt quotes the Polish and follows it with a parenthetical English gloss, per the `add-english-blog` R1 convention. Add the gloss where it is missing — this is what makes `accept` legitimate rather than neglect.
-      **61 images flagged `glossRequired` in the audit. NOT started — spec requirement R3 is
-      unsatisfied until this is done.** This is the one piece of reader-facing value that needs
-      no captures and no schema change. Note that many of these carry junk alt inherited from the
-      WordPress import (`Zdj 1`, `aaaa`, `Untitled design 8`, `AdobeStock 1307231344`), so there is
-      often no description to attach a gloss *to* — the alt has to be written from scratch.
+- [x] 4.2 For every image left at `accept` whose Polish text carries meaning, verify its English alt quotes the Polish and follows it with a parenthetical English gloss, per the `add-english-blog` R1 convention. Add the gloss where it is missing — this is what makes `accept` legitimate rather than neglect.
+
+      **60 written and applied to production; spec R3 is now satisfied.** Authored in
+      `content/media/en-alt-glosses.json`, applied with `bun run payload:apply:en-alt --prod --apply`,
+      which writes `locale: 'en'` only. Verified: the Polish `alt` on all 261 rows is byte-identical
+      before and after.
+
+      Started from 61. Id 186 was **de-flagged**: its filename is Polish
+      (`…facebook_kolorowe_komentarze…`) but the mock-up in the image is entirely English, so there
+      is nothing to gloss. The flag had been set from the filename rather than the picture — the
+      exact inference the spec forbids.
+
+      Nearly all of these arrived from the WordPress import with a filename as their alt (`Zdj 1`,
+      `aaaa`, `3a 1`, `AdobeStock 1307231344`), so there was no description to attach a gloss *to*;
+      each alt is written from scratch against the image.
+
+      **Not fixed, out of scope:** the *Polish* alt on many of the same rows is equally junk
+      (`altPl` for id 19 is "Screenshot 20250320 163845"). That harms Polish screen-reader users and
+      predates this change, which is about English readers. Worth its own change.
 
 ## 5. Verify
 
-- [ ] 5.1 Rebuild and confirm every affected post still renders its images, in both locales.
-- [ ] 5.2 Check the blog hub, post cards and related rail for any cover that changed — a cover appears in more places than its own post.
-- [ ] 5.3 Confirm no case-study or services image was modified. `git diff` over the media artifact and any uploaded files should touch blog surfaces only.
-- [ ] 5.4 Revalidate the affected posts on the deployment, then re-check the live pages. **A single request after revalidation proves nothing** — the first read serves stale and triggers the regeneration; check again after.
-- [ ] 5.5 Re-run the alt-text gate (`payload:translate:alt`) so any alt edited in 3.5 or 4.2 is re-checked against the glossary and the gloss convention.
+**Scope of what shipped: alt strings only.** No image file was added, replaced or deleted, and no
+post body changed, so the rendering surface is untouched by construction.
+
+- [x] 5.1 Rebuild and confirm every affected post still renders its images, in both locales.
+      Checked live rather than by rebuilding, since nothing that affects rendering changed:
+      `/prowadzenie-social-media` and `/en/blog/social-media-management` both serve 9 `<img>` tags.
+- [x] 5.2 Check the blog hub, post cards and related rail for any cover that changed — a cover appears in more places than its own post.
+      **No cover changed** — all five cover verdicts are blocked, and phase 4 touched in-body alt only.
+      Nothing reaches the hub, the cards or the related rail.
+- [x] 5.3 Confirm no case-study or services image was modified. `git diff` over the media artifact and any uploaded files should touch blog surfaces only.
+      `git status` touches `content/media/*`, `content/posts/glossary.json`, `lib/payload/*` and
+      `package.json`. No `public/` asset, no case-study or services file.
+- [x] 5.4 Revalidate the affected posts on the deployment, then re-check the live pages. **A single request after revalidation proves nothing** — the first read serves stale and triggers the regeneration; check again after.
+      `POST /api/revalidate?tag=posts&tag=blog-hub` on `sociallama-v2.vercel.app`. The warning was
+      exactly right: read 1 still served the old alt, read 4 served the gloss. The Polish page still
+      serves its Polish alt, confirming the write was locale-scoped.
+- [x] 5.5 Re-run the alt-text gate (`payload:translate:alt`) so any alt edited in 3.5 or 4.2 is re-checked against the glossary and the gloss convention.
+      First run: **0 skipped, 4 warnings.** All four were mine, and all were real convention breaches
+      rather than false positives — ids 132/133 put one combined gloss after a run of separate quotes
+      (the gate needs each quote followed by its own parenthetical), and id 141 nested Polish „…”
+      quotes inside the outer quote, which the pattern cannot see through. Rewritten and re-applied.
+      Id 196 needed `Niby-Prasówka` added to `content/posts/glossary.json`, which is what that
+      allowlist is for — it already holds LAMÓWKA, Brześć and Pracuj.pl.
+      Second run: **668 rows, 0 skipped, 0 warnings.**
+
+      **Hazard worth recording:** the gate treats `content/media/alts.en.json` as the source of truth
+      and the database as a projection of it. Writing alt straight to the database leaves that file
+      stale, so the next `payload:translate:alt --apply` would quietly revert all 60. `alts.en.json`
+      is updated in step here; any future direct alt write must do the same.
 
 ## 6. Close out
 
-- [ ] 6.1 Commit `content/media/image-audit.json` with all verdicts final.
+- [x] 6.1 Commit `content/media/image-audit.json` with all verdicts final.
+      All 261 verdicts recorded, plus `glossRequired` (60) and `blockedBy` (5).
+
+      **Bug found and fixed while verifying:** `audit-blog-images.ts` rebuilt each entry field by
+      field, carrying over only `verdict` and `reason`. Its docstring promised a merge that "never
+      overwrites a verdict a human already recorded" — and verdicts did survive — but the first
+      re-run silently dropped all 60 `glossRequired` flags and all 5 `blockedBy` markers, because
+      those fields were added to the artifact after the script was written. It now spreads the prior
+      entry first and overlays only what it re-derives from the database, so fields added later
+      survive by construction rather than by someone remembering to list them. Verified by a full
+      re-run: 60 and 5 both intact.
 - [x] 6.2 Record the count of images accepted, cropped, replaced and recreated, so the next locale knows what it is inheriting.
 
       **261 images over 79 English posts: 234 `accept` · 22 `replace` · 5 `recreate` · 0 `crop` · 0 unreviewed.**

@@ -37,6 +37,7 @@
     "payload:audit:post-formatting": "bun ./lib/payload/audit-post-formatting.ts",
     "payload:audit:blog-images": "bun ./lib/payload/audit-blog-images.ts",
     "payload:repoint:en-images": "bun ./lib/payload/repoint-en-images.ts",
+    "payload:apply:en-alt": "bun ./lib/payload/apply-en-alt.ts",
     "payload:baseline:blog": "bun ./lib/payload/baseline-blog-content.ts",
     "payload:repair:post-formatting": "bun ./lib/payload/repair-post-formatting.ts",
     "payload:apply:heading-fixes": "bun ./lib/payload/apply-heading-fixes.ts",
