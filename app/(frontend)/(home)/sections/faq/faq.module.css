@@ -107,6 +107,15 @@
 }
 
 .question {
+  /* The global `p, li, … { text-wrap: pretty }` cannot reach this: the question
+     is a `<span>` inside a `<summary>`, neither of which the type selector
+     matches. `.summary` is `display: grid`, which blockifies this grid item, so
+     `text-wrap` does apply once declared. `balance` rather than `pretty` because
+     a question is at most four lines — well inside Chromium's balance cap.
+     Measured at 768px: 2 lines / 1 word ("Lama?") / ratio 0.088 → 5 words /
+     0.91, and it clears two more at 390px, one of them on the EN home, which
+     shares this component. */
+  text-wrap: balance;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.15rem, 2.1vw, 1.75rem);

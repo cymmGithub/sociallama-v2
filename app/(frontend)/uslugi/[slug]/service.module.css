@@ -665,6 +665,9 @@
 /* —— Shared heading for the client-documented sections ————————————————————————— */
 
 .sectionHeading {
+  /* Short block: measured, `balance` removes the widow here where `pretty`
+     cannot — see lib/styles/css/global.css for the numbers. */
+  text-wrap: balance;
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
@@ -972,6 +975,7 @@
 }
 
 .bannerHeading {
+  text-wrap: balance;
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
@@ -1028,6 +1032,7 @@
 }
 
 .logoStripHeading {
+  text-wrap: balance;
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;

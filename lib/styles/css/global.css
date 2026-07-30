@@ -68,6 +68,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* —— Widow avoidance in flowing text ————————————————————————————————————————
+   `text-wrap: pretty` is the only declaration that specifically avoids a short
+   last line; `balance` equalises line lengths instead, which is a heading job
+   and does not remove a widow. Before this rule, 1919 of 1970 measured widows
+   sat in blocks whose computed value was plain `wrap` — no protection at all.
+
+   Measured with `lib/scripts/audit-rendered-widows.ts` over 75 Polish routes ×
+   5 widths: this one rule removes 691 of those 1970 occurrences and introduces
+   12, all of them in headings, which is why it is scoped to flowing text and
+   not applied to `h1`–`h6`. Mobile gains most (390px: −49%), 1920px least
+   (−17%), because a wide measure leaves fewer bad breaks to begin with.
+
+   Hyphenation cannot help here: Chromium ships no Polish dictionary, so
+   `hyphens: auto` is a permanent no-op for the primary locale. */
+p,
+li,
+dd,
+dt,
+blockquote,
+figcaption {
+  text-wrap: pretty;
+}
+
 /* —— Footer reveal (desktop) ————————————————————————————————————————————————
    The footer is pinned beneath the page and uncovered as the content scrolls
    up over it (brightscout-style). For the reveal to read, #main-content must be

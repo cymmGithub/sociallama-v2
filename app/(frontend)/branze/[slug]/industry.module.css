@@ -353,6 +353,9 @@
 }
 
 .portfolioHeading {
+  /* Short block: measured, `balance` removes the widow here where `pretty`
+     cannot — see lib/styles/css/global.css for the numbers. */
+  text-wrap: balance;
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4.5vw, 3rem);
@@ -652,6 +655,7 @@
 }
 
 .manifestoHeading {
+  text-wrap: balance;
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 3rem);
@@ -677,6 +681,7 @@
 }
 
 .chip {
+  text-wrap: balance;
   display: flex;
   align-items: baseline;
   gap: 1rem;
@@ -725,6 +730,7 @@
 }
 
 .relatedHeading {
+  text-wrap: balance;
   margin-top: 0.6rem;
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.4vw, 2.4rem);
@@ -889,6 +895,7 @@
 }
 
 .orbitItem {
+  text-wrap: balance;
   position: absolute;
   top: 50%;
   left: 50%;

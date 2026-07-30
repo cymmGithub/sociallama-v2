@@ -145,6 +145,9 @@
 /* Gradient container filled by the member's head+torso cutout; the label
    stands at the bottom. A warm top glow sits behind the head. */
 .tile {
+  /* Short block: measured, `balance` removes the widow here where `pretty`
+     cannot — see lib/styles/css/global.css for the numbers. */
+  text-wrap: balance;
   position: relative;
   aspect-ratio: 4 / 5;
   border-radius: 12px;
