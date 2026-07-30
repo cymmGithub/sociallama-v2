@@ -267,10 +267,11 @@
     transform 0.28s ease;
 }
 
-/* Hidden at rest only where hover exists; everywhere else (touch, and any UA
-   that doesn't resolve the query) it stays visible, since there is no gesture
-   that could reveal it — and with no visible label it is the tile's only cue
-   that it leads somewhere. Keyboard focus reveals it via :focus-within. */
+/* The arrow is a hover affordance and nothing else: hidden at rest, revealed by
+   hovering the tile or by keyboard focus. Where there is no hover to reveal it
+   (touch), it is dropped entirely rather than pinned on — user decision
+   2026-07-30. The tile stays a link there; it simply carries no visible mark,
+   which is the accepted cost of the cleaner grid. */
 @media (hover: hover) {
   .tileArrow {
     opacity: 0;
@@ -283,6 +284,12 @@
   }
 }
 
+@media (hover: none) {
+  .tileArrow {
+    display: none;
+  }
+}
+
 @media (--reduced-motion) {
   .tileArrow {
     transition: none;
@@ -292,64 +299,6 @@
   .tile:hover .tileArrow,
   .tile:focus-within .tileArrow {
     transform: none;
-  }
-}
-
-/* CTA card filling the final grid slot: an orange accent tile linking to the
-   /o-nas team slider. Matches the portrait tiles' shape; stands out by colour. */
-.ctaTile {
-  aspect-ratio: 4 / 5;
-}
-
-.ctaLink {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.5em;
-  height: 100%;
-  padding: clamp(12px, 1.7cqw, 22px);
-  border-radius: 12px;
-  background: linear-gradient(
-    150deg,
-    var(--color-orange),
-    color-mix(in srgb, var(--color-orange) 68%, var(--color-plum))
-  );
-  color: var(--color-ink);
-  text-decoration: none;
-  transition:
-    transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.3s ease;
-}
-
-.ctaText {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(0.82rem, 1.9cqw, 1.15rem);
-  line-height: 1.06;
-  letter-spacing: -0.01em;
-}
-
-.ctaIcon {
-  width: clamp(20px, 2.4cqw, 30px);
-  height: auto;
-  transition: transform 0.3s ease;
-}
-
-@media (hover: hover) {
-  .ctaLink:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 32px rgb(0 0 0 / 0.28);
-  }
-
-  .ctaLink:hover .ctaIcon {
-    transform: translateX(3px);
-  }
-}
-
-@media (--reduced-motion) {
-  .ctaLink,
-  .ctaIcon {
-    transition: none;
   }
 }
 
