@@ -502,13 +502,10 @@ export const howItWorks = {
       text: 'We pin down your goals, needs, and possibilities in a strategy workshop.',
       image: '/assets/step-1.png',
       proof: {
-        title: 'We started at 1,168 followers',
+        // Mirrors PL 01: no headline, and the colon hands off to the figure row
+        // rather than the prose restating the same two numbers.
         say: [
-          'We measure the baseline, because otherwise nobody can prove anything worked. Seventeen months later: ',
-          { figure: '+5,054' },
-          ' followers and ',
-          { figure: '+57,911' },
-          ' likes.',
+          "We measure the baseline, because otherwise nobody can prove anything worked. We started at 1,168 followers — here's where seventeen months got us:",
         ],
         stats: [
           { figure: '+5,054', label: 'followers' },
@@ -542,13 +539,9 @@ export const howItWorks = {
       text: 'We proactively recommend new solutions and opportunities.',
       image: '/assets/step-3.png',
       proof: {
-        title: 'The AR filter nobody briefed us on',
+        // Mirrors PL 03: no headline, because the sentence opens with it.
         say: [
-          'We proposed it ourselves. ',
-          { figure: '6.79M' },
-          ' views and ',
-          { figure: '4,885' },
-          ' videos shot by users — influencers included, with no contract in sight.',
+          'The AR filter nobody briefed us on — we proposed it ourselves. Users shot videos with it, influencers too. Not one contract signed!',
         ],
         stats: [
           { figure: '6.79M', label: 'views' },

@@ -90,17 +90,21 @@ export interface Step {
   text: string
   image: string
   /**
-   * Proof copy (see the `how-it-works-proof` capability). Each step carries a
-   * headline and one sentence drawn from a real client report, plus a link to
-   * the case-study section holding the same figures. Every figure is a real
-   * measurement, reproduced without rounding for effect.
+   * Proof copy (see the `how-it-works-proof` capability). Each step carries one
+   * sentence drawn from a real client report, optionally a headline above it,
+   * plus a link to the case-study section holding the same figures. Every
+   * figure is a real measurement, reproduced without rounding for effect.
    *
    * Nothing here may carry a year, a full date or a month name — elapsed time
    * is expressed as a duration. `how-it-works.test.ts` enforces it.
    */
   proof: {
-    /** Panel headline. */
-    title: string
+    /**
+     * Panel headline. Optional: the headline and the sentence now render at the
+     * same size, so a step whose sentence already opens with its headline (PL
+     * 01 and 03) carries the sentence alone rather than saying it twice.
+     */
+    title?: string
     /** One sentence, ~15–25 words, carrying one or two figures. */
     say: SayPart[]
     /**
@@ -757,13 +761,11 @@ export const howItWorks = {
       text: 'Określamy Twoje cele, potrzeby i\u00A0możliwości podczas warsztatów strategicznych.',
       image: '/assets/step-1.png',
       proof: {
-        title: 'Zaczynaliśmy od 1\u00A0168 obserwujących',
+        // No headline (user decision, 2026-07-30): the sentence absorbed it, and
+        // the trailing colon hands off to the figure row rather than the prose
+        // restating the same two numbers.
         say: [
-          'Mierzymy stan wyjściowy, żeby dało się udowodnić, że coś zadziałało. Po 17 miesiącach: ',
-          { figure: '+5\u00A0054' },
-          ' obserwujących i ',
-          { figure: '+57\u00A0911' },
-          ' polubień.',
+          'Mierzymy stan wyjściowy, żeby dało się udowodnić, że coś zadziałało. Zaczynaliśmy od 1\u00A0168 obserwujących, a\u00A0to są wyniki po 17 miesiącach:',
         ],
         stats: [
           { figure: '+5 054', label: 'obserwujących' },
@@ -797,13 +799,10 @@ export const howItWorks = {
       text: 'Proaktywnie rekomendujemy nowe rozwiązania i\u00A0możliwości.',
       image: '/assets/step-3.png',
       proof: {
-        title: 'Filtr AR, którego nie było w\u00A0briefie',
+        // No headline (user decision, 2026-07-30) — the sentence leads with the
+        // filter, so the old headline is its opening clause.
         say: [
-          'Sami go zaproponowaliśmy. ',
-          { figure: '6,79\u00A0mln' },
-          ' wyświetleń i ',
-          { figure: '4\u00A0885' },
-          ' filmów nagranych przez użytkowników — w\u00A0tym przez influencerów bez żadnej umowy.',
+          'Filtr AR, którego nie było w\u00A0briefie — sami go zaproponowaliśmy. Z\u00A0jego udziałem nagrali filmy użytkownicy, a\u00A0także influencerzy. Bez żadnej umowy!',
         ],
         stats: [
           { figure: '6,79 mln', label: 'wyświetleń' },

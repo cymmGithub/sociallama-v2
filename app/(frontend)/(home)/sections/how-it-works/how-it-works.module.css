@@ -305,35 +305,58 @@
 }
 
 /* The copy is the panel's whole job, so it runs at display scale rather than
-   the caption size it had when it shared the width with an exhibit. */
-.panelTitle {
+   the caption size it had when it shared the width with an exhibit — and
+   headline and sentence run at ONE size (user decision, 2026-07-30), so the
+   panel reads as a single statement rather than a title with a caption under
+   it. Only weight, case and tint separate them now.
+
+   2.4rem rather than the 3.7rem the headline used to run at, because the stage
+   cannot afford more. All five panels share one grid cell, so the stage is
+   permanently as tall as the tallest step, and the section is pinned
+   (`min-height: 100svh`) — copy that does not fit is cut off the top and bottom
+   of the screen rather than scrolled to. Measured in Chromium with both at the
+   old 3.7rem: the stage needs 1038px inside an 816px viewport, and the figure
+   row and proof card fall off it (+138 at 1440×900, +244 at 1366×768, +181 at
+   1280×800, +140 at 800×700 — it fails at every desktop width, not just the
+   tight ones). `clamp(1.15rem, 2.6vw, 2.4rem)` is the largest shared size that
+   clears all of them, and is still 2.1× the sentence's previous size. */
+.panelTitle,
+.panelSay {
   font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 1.02;
-  font-size: clamp(1.15rem, 4vw, 3.7rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.14;
+  font-size: clamp(1.15rem, 2.6vw, 2.4rem);
   color: var(--color-cream);
-  text-wrap: balance;
+  text-wrap: pretty;
 
   @media (--mobile) {
     font-size: 1.15rem;
-    line-height: 1.06;
+    line-height: 1.12;
+  }
+}
+
+.panelTitle {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+
+  @media (--mobile) {
     /* Half the stage's spare height sits here — see `.panelText`. */
     margin-top: auto;
   }
 }
 
 .panelSay {
-  font-size: clamp(0.82rem, 1.15vw, 1.15rem);
-  line-height: 1.5;
   color: color-mix(in srgb, var(--color-cream) 88%, transparent);
-  max-width: 60ch;
 
-  @media (--mobile) {
-    font-size: 0.82rem;
-    line-height: 1.45;
-    max-width: none;
+  /* Steps 01 and 03 carry no headline, so the sentence is the panel's first
+     element and has to take the auto margin the headline would have held. */
+  &:first-child {
+    @media (--mobile) {
+      margin-top: auto;
+    }
   }
 }
 
@@ -345,11 +368,14 @@
 }
 
 /* —— Figure row ——————————————————————————————————————————————————————————
-   The same figures the sentence carries, restated at display scale. The panel
-   runs the full width of the stage minus the rail (~1000px at 1440) and the
-   sentence stops at 60ch, so the row is what occupies the width the prose
-   leaves — and `margin-top: auto` drops it to the foot of the panel, which is
-   what stops the stage from being taller than its own content.
+   The same figures the sentence carries, restated at display scale. The row is
+   what occupies the width and depth the prose leaves — and `margin-top: auto`
+   drops it to the foot of the panel, which is what stops the stage from being
+   taller than its own content.
+
+   (The sentence used to stop at 60ch, which is what left the width empty. It
+   now runs the full panel at display size, so the row fills what is left below
+   it rather than beside it.)
 
    Because it lands on the same baseline on every step, the row also reads as a
    fixed instrument rather than as copy that happens to be long on step 03. */
@@ -449,14 +475,10 @@
     font-size: 1.15rem;
   }
 
-  .panelTitle {
-    font-size: 1.45rem;
-    line-height: 1.05;
-  }
-
+  .panelTitle,
   .panelSay {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.45rem;
+    line-height: 1.1;
   }
 
   .statFigure {
@@ -485,7 +507,19 @@
   /* Tightened together with the row: at 360×568 the section clears the fold by
      only a few pixels, so the gaps inside the copy have to give a little too. */
   .panelText {
-    gap: 0.45rem;
+    gap: 0.3rem;
+  }
+
+  /* The sentence now runs at the headline's size, so it is the block that grows
+     fastest here — the widest step spends four lines on it, and each line costs
+     what a line of the headline costs. Both drop together rather than the
+     sentence falling back to a caption size the section no longer uses
+     anywhere. Measured at 360×568: at 1rem the pinned section ran 19px past the
+     screen; 0.9rem plus the tighter gaps above brings it back inside. */
+  .panelTitle,
+  .panelSay {
+    font-size: 0.9rem;
+    line-height: 1.14;
   }
 
   .stats {

@@ -131,11 +131,14 @@ function ProofCard({
 }
 
 /**
- * One step's evidence: headline, one sentence carrying its figures, the figure
- * row that restates them at display scale, and the proof card that says whose
- * figures they are. The figure row is pinned to the foot of the panel and the
- * card sits under it at the right edge, so the panel occupies the stage's full
- * height instead of floating in the middle of it.
+ * One step's evidence: one sentence carrying its figures, optionally a headline
+ * above it, the figure row that restates them at display scale, and the proof
+ * card that says whose figures they are. The figure row is pinned to the foot of
+ * the panel and the card sits under it at the right edge, so the panel occupies
+ * the stage's full height instead of floating in the middle of it.
+ *
+ * Headline and sentence render at the same size, so a step whose sentence
+ * already opens with its headline omits the headline rather than repeating it.
  */
 function Panel({
   step,
@@ -155,7 +158,7 @@ function Panel({
   return (
     <div className={s.panel} data-active={active}>
       <div className={s.panelText}>
-        <p className={s.panelTitle}>{proof.title}</p>
+        {proof.title && <p className={s.panelTitle}>{proof.title}</p>}
         <Say parts={proof.say} className={s.panelSay} />
         <Stats stats={proof.stats} />
         {proof.client && proof.href && (
