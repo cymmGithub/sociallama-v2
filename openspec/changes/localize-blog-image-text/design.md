@@ -66,6 +66,49 @@ A post cover is reused by the hub grid, the post cards, the related-posts rail a
 
 Where a screenshot must be replaced, capture the same screen from an English-locale account rather than editing Polish text out of the existing PNG. A retouched screenshot is a fabricated interface: it can silently misrepresent what the product actually says in English, and it ages badly. If genuine capture is impossible, prefer `crop` or `accept` with a clear alt gloss over a doctored image.
 
+### D4a — `content` is localized; `cover` is not (found during the audit)
+
+`lib/payload/collections/posts.ts`: `content` carries `localized: true`; `cover` and
+`seo.ogImage` do not. This was not known when D4/D5 were written, and it splits the fix
+work along a line the plan did not anticipate.
+
+- **In-body images are per-locale already.** The English body is an independent Lexical
+  tree, so its `upload` nodes can point at a different media row than the Polish body's.
+  An English capture is uploaded as a **new** row and only the English tree is repointed;
+  the Polish post keeps its Polish screenshot, which is correct for its reader. No schema
+  change, and `lib/payload/repoint-en-images.ts` does it.
+- **Covers are not.** A cover is shared, so the D5 risk is unavoidable there. The five
+  cover verdicts carry `blockedBy: "cover-relation-not-localized"`.
+
+This inverts the priority in D3. Covers reach more surfaces, but they are the half that
+cannot be fixed here; in-body images reach one page each and are fixable today — and they
+hold the worst failures, twenty step-by-step walkthrough screenshots in Polish UI.
+
+*Consequence for task 3.4:* "replace the file on the existing row" is correct for a shared
+cover and exactly backwards for an in-body image, where sharing the row is the thing to
+avoid.
+
+### D4b — The durable fix for authored covers is not to bake text in
+
+Three of the five blocked covers (28, 29, 31) are LAMÓWKA roundup cards: agency-authored
+artwork whose three Polish news headlines exist nowhere else on the page. Fifteen more
+covers are title cards that bake the post headline into the pixels — accepted here only
+because the English `h1` renders directly above them.
+
+For that whole class, localizing the `cover` relation is the *weaker* fix. Rendering the
+text from the already-translated fields — an HTML overlay for on-page use, `next/og`
+`ImageResponse` for the 1200×630 social preview — removes the problem for every future
+locale at once and lets an editor ship a post without a designer cutting a card.
+
+It does **not** help ids 179/180, which are genuine captures of a Polish Instagram dialog;
+only a localized `cover` reaches those. The two deferred changes are complementary.
+
+Cost, so this is not mistaken for a cheap win: no dynamic OG generation exists today
+(`lib/utils/metadata.ts:66` falls back to a static `/opengraph-image.jpg`, and covers
+render as a plain `<Image>` in `app/(frontend)/blog/post-card.tsx:39`); ~20 covers need
+clean background plates cut, since text cannot be overlaid on a card that already has
+text; and the overlay must survive four aspect ratios in two languages.
+
 ### D5 — Any replaced image needs its `alt` re-checked
 
 `media.alt` is localized per-locale. Replacing the file makes both locales' alt text potentially wrong — the Polish alt now describes an English screenshot on the Polish page, since the media row is shared. Every `replace` or `recreate` therefore carries an alt review for **both** locales, not just English.

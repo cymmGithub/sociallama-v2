@@ -1,0 +1,4247 @@
+{
+  "images": {
+    "2": {
+      "filename": "2026-07-Jak-dodac-Social-Media-do-Google-Search-Console-Ekran-wyboru-w-Google-Search-Console.png",
+      "url": "/api/media/file/2026-07-Jak-dodac-Social-Media-do-Google-Search-Console-Ekran-wyboru-w-Google-Search-Console.png",
+      "width": 1975,
+      "height": 802,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "google-polaczylo-social-media-z-seo"
+      ],
+      "altPl": "Jak dodać Social Media do Google Search Console - Ekran wyboru w Google Search Console",
+      "altEn": "How to add Social Media to Google Search Console - Selection screen in Google Search Console",
+      "verdict": "replace",
+      "reason": "Google Search Console property-type dialog in Polish; the post tells the reader which option to choose."
+    },
+    "8": {
+      "filename": "2025-09-POST-lamowka-11-e1757971842123.png",
+      "url": "/api/media/file/2025-09-POST-lamowka-11-e1757971842123.png",
+      "width": 1920,
+      "height": 3462,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "influencer-vs-tworca-ugc-na-czym-polega-roznica"
+      ],
+      "altPl": "POST lamowka 11 e1757971842123",
+      "altEn": "POST lamowka 11 e1757971842123",
+      "verdict": "recreate",
+      "reason": "Authored INFLUENCER vs TWÓRCA UGC comparison table; the entire payload is Polish prose that appears nowhere else."
+    },
+    "9": {
+      "filename": "2025-09-POST-lamowka-10.png",
+      "url": "/api/media/file/2025-09-POST-lamowka-10.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "influencer-vs-tworca-ugc-na-czym-polega-roznica"
+      ],
+      "altPl": "Influencer vs. Twórca UGC – na czym polega różnica?",
+      "altEn": "Influencer vs. UGC creator – what is the difference?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "19": {
+      "filename": "2020-08-Screenshot_20250320-163845.png",
+      "url": "/api/media/file/2020-08-Screenshot_20250320-163845.png",
+      "width": 1439,
+      "height": 419,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-stworzyc-biogram-na-instagramie"
+      ],
+      "altPl": "Screenshot 20250320 163845",
+      "altEn": "Screenshot 20250320 163845",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "20": {
+      "filename": "2020-08-Screenshot_20250320-163939.png",
+      "url": "/api/media/file/2020-08-Screenshot_20250320-163939.png",
+      "width": 1439,
+      "height": 527,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-stworzyc-biogram-na-instagramie"
+      ],
+      "altPl": "Screenshot 20250320 163939",
+      "altEn": "Screenshot 20250320 163939",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "21": {
+      "filename": "2020-08-POST-lamowka-2.png",
+      "url": "/api/media/file/2020-08-POST-lamowka-2.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-stworzyc-biogram-na-instagramie"
+      ],
+      "altPl": "Jak stworzyć skuteczny biogram na Instagramie, który przyciągnie uwagę użytkowników?",
+      "altEn": "How to create an effective Instagram bio that will grab users' attention?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "22": {
+      "filename": "2025-02-Projekt-bez-nazwy-8.png",
+      "url": "/api/media/file/2025-02-Projekt-bez-nazwy-8.png",
+      "width": 1080,
+      "height": 1920,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-dostosowac-profil-do-nowego-formatu-zdjec-na-instagramie"
+      ],
+      "altPl": "Projekt bez nazwy 8",
+      "altEn": "Untitled design 8",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "23": {
+      "filename": "2025-02-POST-lamowka-1.png",
+      "url": "/api/media/file/2025-02-POST-lamowka-1.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-dostosowac-profil-do-nowego-formatu-zdjec-na-instagramie"
+      ],
+      "altPl": "Jak dostosować profil do nowego formatu zdjęć na Instagramie?",
+      "altEn": "How to adapt your profile to Instagram's new photo format?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "24": {
+      "filename": "2025-02-Projekt-bez-nazwy.png",
+      "url": "/api/media/file/2025-02-Projekt-bez-nazwy.png",
+      "width": 1080,
+      "height": 1920,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-dodac-rolke-probna-na-instagramie"
+      ],
+      "altPl": "Projekt bez nazwy",
+      "altEn": "Untitled project",
+      "verdict": "replace",
+      "reason": "Instagram reel composer in Polish, with an arrow pointing at a Polish toggle the reader is told to find."
+    },
+    "25": {
+      "filename": "2025-02-POST-lamowka-3.png",
+      "url": "/api/media/file/2025-02-POST-lamowka-3.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-dodac-rolke-probna-na-instagramie"
+      ],
+      "altPl": "Jak dodać rolkę próbną na Instagramie?",
+      "altEn": "How to add a trial reel on Instagram?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "28": {
+      "filename": "2024-11-lamowka.png",
+      "url": "/api/media/file/2024-11-lamowka.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lamowka-strasznie-fajne-kreacje-na-halloween"
+      ],
+      "altPl": "LAMÓWKA – STRASZNIE FAJNE KREACJE NA HALLOWEEN",
+      "altEn": "LAMÓWKA – SPOOKILY COOL CREATIVES FOR HALLOWEEN",
+      "verdict": "recreate",
+      "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
+      "blockedBy": "cover-relation-not-localized"
+    },
+    "29": {
+      "filename": "2024-10-lamowka-2.png",
+      "url": "/api/media/file/2024-10-lamowka-2.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lamowka-instagramowe-rewolucje-w-dm-ach"
+      ],
+      "altPl": "LAMÓWKA – instagramowe rewolucje w dm-ach",
+      "altEn": "LAMÓWKA – Instagram revolutions in DMs",
+      "verdict": "recreate",
+      "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
+      "blockedBy": "cover-relation-not-localized"
+    },
+    "31": {
+      "filename": "2024-10-lamowka.png",
+      "url": "/api/media/file/2024-10-lamowka.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lamowka-jan-matejko-x-lady-gaga-tego-crossoveru-nikt-sie-nie-spodziewal"
+      ],
+      "altPl": "LAMÓWKA – Jan Matejko x Lady Gaga, tego crossoveru nikt się nie spodziewał",
+      "altEn": "LAMÓWKA – Jan Matejko x Lady Gaga, the crossover nobody saw coming",
+      "verdict": "recreate",
+      "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
+      "blockedBy": "cover-relation-not-localized"
+    },
+    "33": {
+      "filename": "2024-03-Zrzut-ekranu-2024-03-05-120846.png",
+      "url": "/api/media/file/2024-03-Zrzut-ekranu-2024-03-05-120846.png",
+      "width": 610,
+      "height": 699,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "bialy-mis-zaprasza-do-reklamowania-sie-w-social-mediach"
+      ],
+      "altPl": "Zrzut ekranu 2024 03 05 120846",
+      "altEn": "Zrzut ekranu 2024 03 05 120846",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "35": {
+      "filename": "2024-01-rolki.jpg",
+      "url": "/api/media/file/2024-01-rolki.jpg",
+      "width": 1200,
+      "height": 675,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "instagram-zegna-funkcje-katalogow-co-dalej"
+      ],
+      "altPl": "rolki",
+      "altEn": "reels",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "36": {
+      "filename": "2024-01-instagram.jpg",
+      "url": "/api/media/file/2024-01-instagram.jpg",
+      "width": 1200,
+      "height": 798,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-zegna-funkcje-katalogow-co-dalej"
+      ],
+      "altPl": "Instagram Żegna Funkcję Katalogów – Co Dalej?",
+      "altEn": "Instagram Says Goodbye to the Catalogs Feature – What's Next?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "37": {
+      "filename": "2023-12-Dopasowanie.png",
+      "url": "/api/media/file/2023-12-Dopasowanie.png",
+      "width": 1200,
+      "height": 613,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "instagram-reels-czy-tiktok-ktora-platforma-bedzie-lepsza-dla-twojej-marki-porady-roznice-i-triki"
+      ],
+      "altPl": "Dopasowanie",
+      "altEn": "Matching",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "38": {
+      "filename": "2023-12-ABC-TiKTok.jpg",
+      "url": "/api/media/file/2023-12-ABC-TiKTok.jpg",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "instagram-reels-czy-tiktok-ktora-platforma-bedzie-lepsza-dla-twojej-marki-porady-roznice-i-triki"
+      ],
+      "altPl": "ABC TiKTok",
+      "altEn": "ABC TiKTok",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "39": {
+      "filename": "2023-12-Insagramowe-rolki.jpg",
+      "url": "/api/media/file/2023-12-Insagramowe-rolki.jpg",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "instagram-reels-czy-tiktok-ktora-platforma-bedzie-lepsza-dla-twojej-marki-porady-roznice-i-triki"
+      ],
+      "altPl": "Insagramowe rolki",
+      "altEn": "Instagram Reels",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "40": {
+      "filename": "2023-12-Roznice-content.jpg",
+      "url": "/api/media/file/2023-12-Roznice-content.jpg",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "instagram-reels-czy-tiktok-ktora-platforma-bedzie-lepsza-dla-twojej-marki-porady-roznice-i-triki"
+      ],
+      "altPl": "Roznice content",
+      "altEn": "Content differences",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "41": {
+      "filename": "2023-12-TikTokvsReals.jpg",
+      "url": "/api/media/file/2023-12-TikTokvsReals.jpg",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-reels-czy-tiktok-ktora-platforma-bedzie-lepsza-dla-twojej-marki-porady-roznice-i-triki"
+      ],
+      "altPl": "Instagram Reels czy TikTok? Która platforma będzie lepsza dla Twojej marki? Porady, różnice i triki",
+      "altEn": "Instagram Reels or TikTok? Which platform will be better for your brand? Tips, differences, and tricks",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "43": {
+      "filename": "2023-06-smsupportsales.png",
+      "url": "/api/media/file/2023-06-smsupportsales.png",
+      "width": 1200,
+      "height": 676,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "media-spolecznosciowe-jako-pomoc-w-sprzedazy"
+      ],
+      "altPl": "Social media wspierają sprzedaż",
+      "altEn": "Social media support sales",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "45": {
+      "filename": "2022-10-rolki-na-instagramie.jpg",
+      "url": "/api/media/file/2022-10-rolki-na-instagramie.jpg",
+      "width": 1280,
+      "height": 853,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "rolki-na-instagramie"
+      ],
+      "altPl": "rolki na instagramie",
+      "altEn": "reels on instagram",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "46": {
+      "filename": "2022-10-instagram-reels.jpg",
+      "url": "/api/media/file/2022-10-instagram-reels.jpg",
+      "width": 1280,
+      "height": 853,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "rolki-na-instagramie"
+      ],
+      "altPl": "instagram reels",
+      "altEn": "instagram reels",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "47": {
+      "filename": "2022-10-instagram-photos.jpg",
+      "url": "/api/media/file/2022-10-instagram-photos.jpg",
+      "width": 1280,
+      "height": 854,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "rolki-na-instagramie"
+      ],
+      "altPl": "instagram photos",
+      "altEn": "instagram photos",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "49": {
+      "filename": "2022-05-pierwsze-kroki-1.png",
+      "url": "/api/media/file/2022-05-pierwsze-kroki-1.png",
+      "width": 862,
+      "height": 1414,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "pierwsze kroki 1",
+      "altEn": "first steps 1",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "50": {
+      "filename": "2022-05-konta.jpg",
+      "url": "/api/media/file/2022-05-konta.jpg",
+      "width": 800,
+      "height": 1265,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "konta",
+      "altEn": "accounts",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "51": {
+      "filename": "2022-05-jaki-problem.jpg",
+      "url": "/api/media/file/2022-05-jaki-problem.jpg",
+      "width": 801,
+      "height": 823,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "jaki problem",
+      "altEn": "what problem",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "52": {
+      "filename": "2022-05-uzyskaj-pomoc.jpg",
+      "url": "/api/media/file/2022-05-uzyskaj-pomoc.jpg",
+      "width": 806,
+      "height": 632,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "uzyskaj pomoc",
+      "altEn": "get help",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "53": {
+      "filename": "2022-05-czat.jpg",
+      "url": "/api/media/file/2022-05-czat.jpg",
+      "width": 817,
+      "height": 512,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "czat",
+      "altEn": "chat",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "54": {
+      "filename": "2022-05-przeslano-zgloszenie.png",
+      "url": "/api/media/file/2022-05-przeslano-zgloszenie.png",
+      "width": 475,
+      "height": 326,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "przeslano zgloszenie",
+      "altEn": "submission sent",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "55": {
+      "filename": "2022-05-profil.jpg",
+      "url": "/api/media/file/2022-05-profil.jpg",
+      "width": 278,
+      "height": 384,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "profil",
+      "altEn": "profile",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "56": {
+      "filename": "2022-05-wsparcie-i-pomoc.png",
+      "url": "/api/media/file/2022-05-wsparcie-i-pomoc.png",
+      "width": 275,
+      "height": 176,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "wsparcie i pomoc",
+      "altEn": "support and help",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "57": {
+      "filename": "2022-05-przekaz-opinie-facebook.png",
+      "url": "/api/media/file/2022-05-przekaz-opinie-facebook.png",
+      "width": 417,
+      "height": 181,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "przekaz opinie facebook",
+      "altEn": "przekaz opinie facebook",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "58": {
+      "filename": "2022-05-wystapil-blad.png",
+      "url": "/api/media/file/2022-05-wystapil-blad.png",
+      "width": 414,
+      "height": 410,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "wystapil blad",
+      "altEn": "an error occurred",
+      "verdict": "replace",
+      "reason": "Step in the Facebook support walkthrough; every menu, label and button an English reader must click is Polish."
+    },
+    "61": {
+      "filename": "2022-03-agencja-social-media.jpg",
+      "url": "/api/media/file/2022-03-agencja-social-media.jpg",
+      "width": 6240,
+      "height": 4160,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "social-lama-podsumowanie-2021-roku"
+      ],
+      "altPl": "agencja social media",
+      "altEn": "social media agency",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "63": {
+      "filename": "2021-11-image7.png",
+      "url": "/api/media/file/2021-11-image7.png",
+      "width": 1436,
+      "height": 704,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "aktualne-wymiary-grafik-na-facebooku"
+      ],
+      "altPl": "Aktualne wymiary grafik na Facebooku",
+      "altEn": "Current image dimensions on Facebook",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "64": {
+      "filename": "2021-11-image6.png",
+      "url": "/api/media/file/2021-11-image6.png",
+      "width": 1407,
+      "height": 293,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "aktualne-wymiary-grafik-na-facebooku"
+      ],
+      "altPl": "Facebook – wymiary grafik w 2021 roku",
+      "altEn": "Facebook – image dimensions in 2021",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "65": {
+      "filename": "2021-11-image8.png",
+      "url": "/api/media/file/2021-11-image8.png",
+      "width": 1418,
+      "height": 534,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "aktualne-wymiary-grafik-na-facebooku"
+      ],
+      "altPl": "Facebook – wymiary zdjęcia w tle",
+      "altEn": "Facebook – cover photo dimensions",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "66": {
+      "filename": "2021-11-image9.png",
+      "url": "/api/media/file/2021-11-image9.png",
+      "width": 1426,
+      "height": 608,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "aktualne-wymiary-grafik-na-facebooku"
+      ],
+      "altPl": "Facebook – wymiary grafiki tła wydarzenia",
+      "altEn": "Facebook – event background image dimensions",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "68": {
+      "filename": "2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach.jpg",
+      "url": "/api/media/file/2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach.jpg",
+      "width": 838,
+      "height": 558,
+      "roles": [
+        "body",
+        "cover"
+      ],
+      "posts": [
+        "jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach"
+      ],
+      "altPl": "Jak przygotować świąteczną kampanię marketingową w social mediach",
+      "altEn": "How to prepare a Christmas marketing campaign on social media",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "69": {
+      "filename": "2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach-2.jpg",
+      "url": "/api/media/file/2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach-2.jpg",
+      "width": 855,
+      "height": 569,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach"
+      ],
+      "altPl": "Jak przygotować świąteczną kampanię marketingową w social mediach",
+      "altEn": "How to prepare a holiday marketing campaign on social media",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "70": {
+      "filename": "2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach-3.jpg",
+      "url": "/api/media/file/2021-10-jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach-3.jpg",
+      "width": 879,
+      "height": 585,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przygotowac-swiateczna-kampanie-marketingowa-w-social-mediach"
+      ],
+      "altPl": "Jak przygotować świąteczną kampanię marketingową w social mediach",
+      "altEn": "How to prepare a holiday marketing campaign on social media",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "71": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka-1.jpg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka-1.jpg",
+      "width": 963,
+      "height": 472,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Jak pobrać z faktury z Facebooka 1",
+      "altEn": "How to download invoices from Facebook 1",
+      "verdict": "replace",
+      "reason": "Step in the \"where to find your Facebook ad invoices\" walkthrough; the billing UI is entirely Polish."
+    },
+    "72": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka-2.jpg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka-2.jpg",
+      "width": 957,
+      "height": 429,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Jak pobrać z faktury z Facebooka krok 2",
+      "altEn": "How to download invoices from Facebook step 2",
+      "verdict": "replace",
+      "reason": "Step in the \"where to find your Facebook ad invoices\" walkthrough; the billing UI is entirely Polish."
+    },
+    "73": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka-3.jpg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka-3.jpg",
+      "width": 830,
+      "height": 602,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Jak pobrać z faktury z Facebooka krok 3",
+      "altEn": "How to download invoices from Facebook step 3",
+      "verdict": "replace",
+      "reason": "Step in the \"where to find your Facebook ad invoices\" walkthrough; the billing UI is entirely Polish."
+    },
+    "74": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka-4.jpg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka-4.jpg",
+      "width": 856,
+      "height": 353,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Jak pobrać z faktury z Facebooka krok 4",
+      "altEn": "How to download invoices from Facebook step 4",
+      "verdict": "replace",
+      "reason": "Step in the \"where to find your Facebook ad invoices\" walkthrough; the billing UI is entirely Polish."
+    },
+    "75": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka-5.jpg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka-5.jpg",
+      "width": 768,
+      "height": 225,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Jak pobrać z faktury z Facebooka krok 5",
+      "altEn": "How to download invoices from Facebook step 5",
+      "verdict": "replace",
+      "reason": "Step in the \"where to find your Facebook ad invoices\" walkthrough; the billing UI is entirely Polish."
+    },
+    "78": {
+      "filename": "2021-07-nowosc-social-media-2021.jpg",
+      "url": "/api/media/file/2021-07-nowosc-social-media-2021.jpg",
+      "width": 1024,
+      "height": 683,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "trendy-social-media-2021"
+      ],
+      "altPl": "Nowości social media 2021",
+      "altEn": "Social media news 2021",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "79": {
+      "filename": "2021-07-trendy-social-media-2021.jpg",
+      "url": "/api/media/file/2021-07-trendy-social-media-2021.jpg",
+      "width": 1480,
+      "height": 987,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "trendy-social-media-2021"
+      ],
+      "altPl": "Trendy social media 2021",
+      "altEn": "Social media trends 2021",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "81": {
+      "filename": "2021-07-Zdj-1.png",
+      "url": "/api/media/file/2021-07-Zdj-1.png",
+      "width": 1340,
+      "height": 1340,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "statystyki-twitter"
+      ],
+      "altPl": "Zdj 1",
+      "altEn": "Zdj 1",
+      "verdict": "replace",
+      "reason": "Twitter navigation menu in Polish; the post walks the reader to a specific menu item."
+    },
+    "82": {
+      "filename": "2021-07-Zdj-2.png",
+      "url": "/api/media/file/2021-07-Zdj-2.png",
+      "width": 960,
+      "height": 1060,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "statystyki-twitter"
+      ],
+      "altPl": "Zdj 2",
+      "altEn": "Zdj 2",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "83": {
+      "filename": "2021-07-Zdj-3.png",
+      "url": "/api/media/file/2021-07-Zdj-3.png",
+      "width": 640,
+      "height": 946,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "statystyki-twitter"
+      ],
+      "altPl": "Zdj 3",
+      "altEn": "Zdj 3",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "84": {
+      "filename": "2021-07-Zdj-4.jpg",
+      "url": "/api/media/file/2021-07-Zdj-4.jpg",
+      "width": 463,
+      "height": 306,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "statystyki-twitter"
+      ],
+      "altPl": "Zdj 4",
+      "altEn": "Zdj 4",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "87": {
+      "filename": "2021-03-Zrzut-ekranu-2021-03-31-121941.png",
+      "url": "/api/media/file/2021-03-Zrzut-ekranu-2021-03-31-121941.png",
+      "width": 650,
+      "height": 329,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-stworzenie-nazwy-marki"
+      ],
+      "altPl": "Zrzut ekranu 2021 03 31 121941",
+      "altEn": "Screenshot 2021 03 31 121941",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "88": {
+      "filename": "2021-03-ozga-1.png",
+      "url": "/api/media/file/2021-03-ozga-1.png",
+      "width": 871,
+      "height": 493,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "case-study-stworzenie-nazwy-marki"
+      ],
+      "altPl": "CASE STUDY: stworzenie nazwy marki",
+      "altEn": "CASE STUDY: creating a brand name",
+      "verdict": "accept",
+      "reason": "The Polish pun \"O, ZGAsł?\" is the brand name the case study invented — replacing it would erase the subject."
+    },
+    "89": {
+      "filename": "2021-02-UNF1.jpg",
+      "url": "/api/media/file/2021-02-UNF1.jpg",
+      "width": 1600,
+      "height": 896,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "UNF1",
+      "altEn": "UNF1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "90": {
+      "filename": "2021-02-SET.jpg",
+      "url": "/api/media/file/2021-02-SET.jpg",
+      "width": 816,
+      "height": 667,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "SET",
+      "altEn": "SET",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "91": {
+      "filename": "2021-02-an.png",
+      "url": "/api/media/file/2021-02-an.png",
+      "width": 1000,
+      "height": 433,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "an",
+      "altEn": "an",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "92": {
+      "filename": "2021-02-story-lab.jpg",
+      "url": "/api/media/file/2021-02-story-lab.jpg",
+      "width": 679,
+      "height": 419,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "story lab",
+      "altEn": "story lab",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "93": {
+      "filename": "2021-02-story-art.png",
+      "url": "/api/media/file/2021-02-story-art.png",
+      "width": 500,
+      "height": 889,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "story art",
+      "altEn": "story art",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "95": {
+      "filename": "2021-01-adam.png",
+      "url": "/api/media/file/2021-01-adam.png",
+      "width": 344,
+      "height": 603,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-mechanicy-na-tiktoku"
+      ],
+      "altPl": "adam",
+      "altEn": "adam",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "96": {
+      "filename": "2021-01-aaaa.png",
+      "url": "/api/media/file/2021-01-aaaa.png",
+      "width": 282,
+      "height": 564,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-mechanicy-na-tiktoku"
+      ],
+      "altPl": "aaaa",
+      "altEn": "aaaa",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "97": {
+      "filename": "2021-01-bbbb.png",
+      "url": "/api/media/file/2021-01-bbbb.png",
+      "width": 280,
+      "height": 546,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-mechanicy-na-tiktoku"
+      ],
+      "altPl": "bbbb",
+      "altEn": "bbbb",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "98": {
+      "filename": "2021-01-mechanicy.png",
+      "url": "/api/media/file/2021-01-mechanicy.png",
+      "width": 285,
+      "height": 530,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-mechanicy-na-tiktoku"
+      ],
+      "altPl": "mechanicy",
+      "altEn": "mechanics",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "99": {
+      "filename": "2021-01-Mechanik-Ozga-na-bloga-v1-fiolet-1.png",
+      "url": "/api/media/file/2021-01-Mechanik-Ozga-na-bloga-v1-fiolet-1.png",
+      "width": 1200,
+      "height": 1200,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "case-study-mechanicy-na-tiktoku"
+      ],
+      "altPl": "CASE STUDY: mechanicy na TikToku",
+      "altEn": "CASE STUDY: mechanics on TikTok",
+      "verdict": "accept",
+      "reason": "Client's own Polish TikTok/Instagram profile; the account is the artefact being shown."
+    },
+    "100": {
+      "filename": "2020-12-mamalama.png",
+      "url": "/api/media/file/2020-12-mamalama.png",
+      "width": 600,
+      "height": 594,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-lama-podsumowanie-roku-2020"
+      ],
+      "altPl": "mamalama",
+      "altEn": "mamalama",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "101": {
+      "filename": "2020-12-do-wpisu.png",
+      "url": "/api/media/file/2020-12-do-wpisu.png",
+      "width": 600,
+      "height": 395,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-lama-podsumowanie-roku-2020"
+      ],
+      "altPl": "do wpisu",
+      "altEn": "for the post",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "103": {
+      "filename": "2020-12-126287467_694715964773423_2348838246559764960_n-1.jpg",
+      "url": "/api/media/file/2020-12-126287467_694715964773423_2348838246559764960_n-1.jpg",
+      "width": 781,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "126287467 694715964773423 2348838246559764960 n 1",
+      "altEn": "126287467 694715964773423 2348838246559764960 n 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "104": {
+      "filename": "2020-12-126506342_370941210636373_7261744793616025791_n-1.png",
+      "url": "/api/media/file/2020-12-126506342_370941210636373_7261744793616025791_n-1.png",
+      "width": 914,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "126506342 370941210636373 7261744793616025791 n 1",
+      "altEn": "126506342 370941210636373 7261744793616025791 n 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "105": {
+      "filename": "2020-12-125867655_385999689290921_879095558105021819_n.png",
+      "url": "/api/media/file/2020-12-125867655_385999689290921_879095558105021819_n.png",
+      "width": 902,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "125867655 385999689290921 879095558105021819 n",
+      "altEn": "125867655 385999689290921 879095558105021819 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "106": {
+      "filename": "2020-12-127186550_154665569691305_8500319504835624599_n.png",
+      "url": "/api/media/file/2020-12-127186550_154665569691305_8500319504835624599_n.png",
+      "width": 902,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "127186550 154665569691305 8500319504835624599 n",
+      "altEn": "127186550 154665569691305 8500319504835624599 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "107": {
+      "filename": "2020-12-126009157_405515713889795_8968695011591844158_n-1.jpg",
+      "url": "/api/media/file/2020-12-126009157_405515713889795_8968695011591844158_n-1.jpg",
+      "width": 786,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "126009157 405515713889795 8968695011591844158 n 1",
+      "altEn": "126009157 405515713889795 8968695011591844158 n 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "108": {
+      "filename": "2020-12-126007676_375846900197021_2120195209400369148_n-1.jpg",
+      "url": "/api/media/file/2020-12-126007676_375846900197021_2120195209400369148_n-1.jpg",
+      "width": 908,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "126007676 375846900197021 2120195209400369148 n 1",
+      "altEn": "126007676 375846900197021 2120195209400369148 n 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "110": {
+      "filename": "2020-11-zdalna-1.png",
+      "url": "/api/media/file/2020-11-zdalna-1.png",
+      "width": 1200,
+      "height": 628,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "zdalna 1",
+      "altEn": "zdalna 1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "111": {
+      "filename": "2020-11-pozycja-przy-komputerze.jpg",
+      "url": "/api/media/file/2020-11-pozycja-przy-komputerze.jpg",
+      "width": 400,
+      "height": 396,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "pozycja przy komputerze",
+      "altEn": "posture at the computer",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "112": {
+      "filename": "2020-11-praca-zdalna-2.png",
+      "url": "/api/media/file/2020-11-praca-zdalna-2.png",
+      "width": 1200,
+      "height": 628,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "praca zdalna 2",
+      "altEn": "remote work 2",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "113": {
+      "filename": "2020-11-kawa.png",
+      "url": "/api/media/file/2020-11-kawa.png",
+      "width": 987,
+      "height": 516,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "kawa",
+      "altEn": "coffee",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "114": {
+      "filename": "2020-11-trelefon.png",
+      "url": "/api/media/file/2020-11-trelefon.png",
+      "width": 1200,
+      "height": 628,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "trelefon",
+      "altEn": "trelefon",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "115": {
+      "filename": "2020-11-Projekt-bez-tytulu-16.png",
+      "url": "/api/media/file/2020-11-Projekt-bez-tytulu-16.png",
+      "width": 940,
+      "height": 788,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-pracowac-zdalnie-i-efektywnie"
+      ],
+      "altPl": "Jak pracować zdalnie i efektywnie?",
+      "altEn": "How to work remotely and effectively?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "116": {
+      "filename": "2020-07-mbank.png",
+      "url": "/api/media/file/2020-07-mbank.png",
+      "width": 407,
+      "height": 787,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polscy-tiktokerzy-i-kampanie-promocyjne-na-tiktoku"
+      ],
+      "altPl": "polscy tiktokerzy, najpopularniejsi tiktokerzy w Polsce",
+      "altEn": "Polish TikTokers, the most popular TikTokers in Poland",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "117": {
+      "filename": "2020-07-coca-cola.png",
+      "url": "/api/media/file/2020-07-coca-cola.png",
+      "width": 387,
+      "height": 776,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polscy-tiktokerzy-i-kampanie-promocyjne-na-tiktoku"
+      ],
+      "altPl": "czym jest tiktok, znani tiktokerzy polska",
+      "altEn": "what is tiktok, famous polish tiktokers",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "118": {
+      "filename": "2020-07-szlachetna.png",
+      "url": "/api/media/file/2020-07-szlachetna.png",
+      "width": 400,
+      "height": 779,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polscy-tiktokerzy-i-kampanie-promocyjne-na-tiktoku"
+      ],
+      "altPl": "jak działa tiktok, gwiazdy tiktoka",
+      "altEn": "how tiktok works, tiktok stars",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "119": {
+      "filename": "2020-07-zabielski.png",
+      "url": "/api/media/file/2020-07-zabielski.png",
+      "width": 390,
+      "height": 721,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polscy-tiktokerzy-i-kampanie-promocyjne-na-tiktoku"
+      ],
+      "altPl": "spotkanie z tiktokerami, najpopularniejsi tiktokerzy",
+      "altEn": "meeting with TikTokers, the most popular TikTokers",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "120": {
+      "filename": "2020-07-TikTok.jpg",
+      "url": "/api/media/file/2020-07-TikTok.jpg",
+      "width": 1024,
+      "height": 640,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "polscy-tiktokerzy-i-kampanie-promocyjne-na-tiktoku"
+      ],
+      "altPl": "Polscy tiktokerzy",
+      "altEn": "Polish TikTokers",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "121": {
+      "filename": "2020-04-nietetyczne-tło.png",
+      "url": "/api/media/file/2020-04-nietetyczne-t%C5%82o.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "nietetyczne tło",
+      "altEn": "unaesthetic background",
+      "verdict": "recreate",
+      "reason": "Authored do/don't photography graphic whose Polish captions are the lesson being taught."
+    },
+    "122": {
+      "filename": "2020-04-Aplikacje.png",
+      "url": "/api/media/file/2020-04-Aplikacje.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Aplikacje",
+      "altEn": "Apps",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "123": {
+      "filename": "2020-04-Copy-of-Copy-of-Presentation-16_9-–-Untitled-Design.png",
+      "url": "/api/media/file/2020-04-Copy-of-Copy-of-Presentation-16_9-%E2%80%93-Untitled-Design.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Copy of Copy of Presentation 16 9 – Untitled Design",
+      "altEn": "Copy of Copy of Presentation 16 9 – Untitled Design",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "124": {
+      "filename": "2020-04-Copy-of-Copy-of-Copy-of-Copy-of-Presentation-16_9-–-Untitled-Design.png",
+      "url": "/api/media/file/2020-04-Copy-of-Copy-of-Copy-of-Copy-of-Presentation-16_9-%E2%80%93-Untitled-Design.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Copy of Copy of Copy of Copy of Presentation 16 9 – Untitled Design",
+      "altEn": "Copy of Copy of Copy of Copy of Presentation 16 9 – Untitled Design",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "125": {
+      "filename": "2020-04-Copy-of-Presentation-16_9-–-Untitled-Design-1.png",
+      "url": "/api/media/file/2020-04-Copy-of-Presentation-16_9-%E2%80%93-Untitled-Design-1.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Copy of Presentation 16 9 – Untitled Design 1",
+      "altEn": "Copy of Presentation 16 9 – Untitled Design 1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "126": {
+      "filename": "2020-04-Copy-of-Presentation-16_9-–-Untitled-Design.png",
+      "url": "/api/media/file/2020-04-Copy-of-Presentation-16_9-%E2%80%93-Untitled-Design.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Copy of Presentation 16 9 – Untitled Design",
+      "altEn": "Copy of Presentation 16 9 – Untitled Design",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "127": {
+      "filename": "2020-04-bez-efektu.png",
+      "url": "/api/media/file/2020-04-bez-efektu.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "bez efektu",
+      "altEn": "no effect",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "128": {
+      "filename": "2020-04-cold-smoth-tasty.png",
+      "url": "/api/media/file/2020-04-cold-smoth-tasty.png",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "JAK ZROBIĆ INSTAGRAMOWE ZDJĘCIE?",
+      "altEn": "HOW TO TAKE AN INSTAGRAM PHOTO?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "129": {
+      "filename": "2020-03-1.png",
+      "url": "/api/media/file/2020-03-1.png",
+      "width": 884,
+      "height": 561,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "1",
+      "altEn": "1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "130": {
+      "filename": "2020-03-2a.png",
+      "url": "/api/media/file/2020-03-2a.png",
+      "width": 881,
+      "height": 560,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "2a",
+      "altEn": "2a",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "131": {
+      "filename": "2020-03-3a-1.png",
+      "url": "/api/media/file/2020-03-3a-1.png",
+      "width": 884,
+      "height": 564,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "3a 1",
+      "altEn": "3a 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "132": {
+      "filename": "2020-03-PRZED-1.png",
+      "url": "/api/media/file/2020-03-PRZED-1.png",
+      "width": 749,
+      "height": 121,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "PRZED 1",
+      "altEn": "BEFORE 1",
+      "verdict": "accept",
+      "reason": "Polish Facebook reach labels, but the before/after numbers carry the point; cannot be re-captured (2019 data) so a gloss is the honest fix.",
+      "glossRequired": true
+    },
+    "133": {
+      "filename": "2020-03-PO.png",
+      "url": "/api/media/file/2020-03-PO.png",
+      "width": 750,
+      "height": 123,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "PO",
+      "altEn": "PO",
+      "verdict": "accept",
+      "reason": "Polish Facebook reach labels, but the before/after numbers carry the point; cannot be re-captured (2019 data) so a gloss is the honest fix.",
+      "glossRequired": true
+    },
+    "134": {
+      "filename": "2020-03-krysia.png",
+      "url": "/api/media/file/2020-03-krysia.png",
+      "width": 885,
+      "height": 564,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "krysia",
+      "altEn": "krysia",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "135": {
+      "filename": "2020-03-br-1.png",
+      "url": "/api/media/file/2020-03-br-1.png",
+      "width": 613,
+      "height": 603,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "case-study-produkty-cukiernicze-brzesc"
+      ],
+      "altPl": "CASE STUDY Produkty Cukiernicze Brześć",
+      "altEn": "CASE STUDY Produkty Cukiernicze Brześć",
+      "verdict": "accept",
+      "reason": "Brześć client creative; the Polish speech bubbles are the campaign work being presented."
+    },
+    "136": {
+      "filename": "2020-02-InkedOryginalny-sok-zgadywanka_LI-1.jpg",
+      "url": "/api/media/file/2020-02-InkedOryginalny-sok-zgadywanka_LI-1.jpg",
+      "width": 939,
+      "height": 620,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "InkedOryginalny sok zgadywanka LI 1",
+      "altEn": "InkedOryginalny sok zgadywanka LI 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "137": {
+      "filename": "2020-02-InkedOryginalny-Sok-krzyżówka_LI-1.jpg",
+      "url": "/api/media/file/2020-02-InkedOryginalny-Sok-krzy%C5%BC%C3%B3wka_LI-1.jpg",
+      "width": 996,
+      "height": 614,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "InkedOryginalny Sok krzyżówka LI 1",
+      "altEn": "InkedOryginalny Sok krzyżówka LI 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "138": {
+      "filename": "2020-02-InkedInkedWordline-zagadka_LI.jpg",
+      "url": "/api/media/file/2020-02-InkedInkedWordline-zagadka_LI.jpg",
+      "width": 1158,
+      "height": 522,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "InkedInkedWordline zagadka LI",
+      "altEn": "InkedInkedWordline zagadka LI",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "139": {
+      "filename": "2020-02-Inkedbrześć-dialog-2_LI.jpg",
+      "url": "/api/media/file/2020-02-Inkedbrze%C5%9B%C4%87-dialog-2_LI.jpg",
+      "width": 992,
+      "height": 608,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "Inkedbrześć dialog 2 LI",
+      "altEn": "Inkedbrześć dialog 2 LI",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "140": {
+      "filename": "2020-02-InkedIce-Dream-rtm_LI.jpg",
+      "url": "/api/media/file/2020-02-InkedIce-Dream-rtm_LI.jpg",
+      "width": 992,
+      "height": 612,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "InkedIce Dream rtm LI",
+      "altEn": "InkedIce Dream rtm LI",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "141": {
+      "filename": "2020-02-id-nowy-marketing.png",
+      "url": "/api/media/file/2020-02-id-nowy-marketing.png",
+      "width": 492,
+      "height": 326,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "id nowy marketing",
+      "altEn": "id new marketing",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "142": {
+      "filename": "2020-02-vobis-do-notki.png",
+      "url": "/api/media/file/2020-02-vobis-do-notki.png",
+      "width": 913,
+      "height": 482,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "vobis do notki",
+      "altEn": "vobis do notki",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "143": {
+      "filename": "2020-02-Inkeddd-głosowanie_LI.jpg",
+      "url": "/api/media/file/2020-02-Inkeddd-g%C5%82osowanie_LI.jpg",
+      "width": 992,
+      "height": 614,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "Inkeddd głosowanie LI",
+      "altEn": "Inkeddd głosowanie LI",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "144": {
+      "filename": "2020-02-farecla.png",
+      "url": "/api/media/file/2020-02-farecla.png",
+      "width": 1160,
+      "height": 802,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "farecla",
+      "altEn": "farecla",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "145": {
+      "filename": "2020-02-kumak.png",
+      "url": "/api/media/file/2020-02-kumak.png",
+      "width": 1199,
+      "height": 793,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "kumak",
+      "altEn": "kumak",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "146": {
+      "filename": "2020-02-komć-1.png",
+      "url": "/api/media/file/2020-02-kom%C4%87-1.png",
+      "width": 1185,
+      "height": 788,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "komć 1",
+      "altEn": "comment 1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "147": {
+      "filename": "2020-02-InkedIce-Dream-rtm_LI-1.jpg",
+      "url": "/api/media/file/2020-02-InkedIce-Dream-rtm_LI-1.jpg",
+      "width": 627,
+      "height": 304,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-angazowac-na-facebooku-przyklady-postow-ktore-wzbudza-reakcje-twoich-klientow"
+      ],
+      "altPl": "Jak angażować na Facebooku? Przykłady postów, które wzbudzą reakcje Twoich Klientów.",
+      "altEn": "How to build engagement on Facebook? Examples of posts that will spark reactions from your customers.",
+      "verdict": "accept",
+      "reason": "Ice Dream client creative; the Polish riddle is the campaign work being presented."
+    },
+    "148": {
+      "filename": "2020-02-platformy.png",
+      "url": "/api/media/file/2020-02-platformy.png",
+      "width": 901,
+      "height": 822,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zainstalowac-piksel-facebooka-na-swojej-stronie"
+      ],
+      "altPl": "platformy",
+      "altEn": "platforms",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "149": {
+      "filename": "2020-02-menu.png",
+      "url": "/api/media/file/2020-02-menu.png",
+      "width": 1194,
+      "height": 538,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zainstalowac-piksel-facebooka-na-swojej-stronie"
+      ],
+      "altPl": "menu",
+      "altEn": "menu",
+      "verdict": "replace",
+      "reason": "Facebook Events Manager menu in Polish, mid-walkthrough for installing the Pixel."
+    },
+    "150": {
+      "filename": "2020-02-Piksel.png",
+      "url": "/api/media/file/2020-02-Piksel.png",
+      "width": 1600,
+      "height": 745,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-zainstalowac-piksel-facebooka-na-swojej-stronie"
+      ],
+      "altPl": "Piksel",
+      "altEn": "Pixel",
+      "verdict": "replace",
+      "reason": "Pixel setup summary in Polish; the confirmation state the reader is told to look for."
+    },
+    "151": {
+      "filename": "2020-02-apps_facebook-pixel.jpg",
+      "url": "/api/media/file/2020-02-apps_facebook-pixel.jpg",
+      "width": 646,
+      "height": 313,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-zainstalowac-piksel-facebooka-na-swojej-stronie"
+      ],
+      "altPl": "Jak zainstalować piksel Facebooka na swojej stronie?",
+      "altEn": "How to install the Facebook pixel on your website?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "152": {
+      "filename": "2020-01-P1180337.jpg",
+      "url": "/api/media/file/2020-01-P1180337.jpg",
+      "width": 1201,
+      "height": 1600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "P1180337",
+      "altEn": "P1180337",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "153": {
+      "filename": "2020-01-82948930_2413202535608028_6776798162125324288_n.jpg",
+      "url": "/api/media/file/2020-01-82948930_2413202535608028_6776798162125324288_n.jpg",
+      "width": 248,
+      "height": 496,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "82948930 2413202535608028 6776798162125324288 n",
+      "altEn": "82948930 2413202535608028 6776798162125324288 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "154": {
+      "filename": "2020-01-83291529_223158115351879_7620925592757600256_n.jpg",
+      "url": "/api/media/file/2020-01-83291529_223158115351879_7620925592757600256_n.jpg",
+      "width": 273,
+      "height": 417,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "83291529 223158115351879 7620925592757600256 n",
+      "altEn": "83291529 223158115351879 7620925592757600256 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "155": {
+      "filename": "2020-01-83904335_3373843159354848_6123858189902413824_n.jpg",
+      "url": "/api/media/file/2020-01-83904335_3373843159354848_6123858189902413824_n.jpg",
+      "width": 266,
+      "height": 462,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "83904335 3373843159354848 6123858189902413824 n",
+      "altEn": "83904335 3373843159354848 6123858189902413824 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "156": {
+      "filename": "2020-01-84006185_802665333477370_7466843383315562496_n.jpg",
+      "url": "/api/media/file/2020-01-84006185_802665333477370_7466843383315562496_n.jpg",
+      "width": 252,
+      "height": 487,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "84006185 802665333477370 7466843383315562496 n",
+      "altEn": "84006185 802665333477370 7466843383315562496 n",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "157": {
+      "filename": "2020-01-P1180345.jpg",
+      "url": "/api/media/file/2020-01-P1180345.jpg",
+      "width": 1600,
+      "height": 1201,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-przelamac-lody-case-study-self-gelaterii-ice-dream"
+      ],
+      "altPl": "Jak przełamać lody? CASE STUDY self – gelaterii Ice Dream",
+      "altEn": "How to break the ice? CASE STUDY of the Ice Dream self-service gelateria",
+      "verdict": "accept",
+      "reason": "Ice Dream client creative; \"LIŻESZ czy GRYZIESZ?\" is the campaign line being presented."
+    },
+    "158": {
+      "filename": "2019-09-lama-z-kieliszkiem_NA-BLOGA.png",
+      "url": "/api/media/file/2019-09-lama-z-kieliszkiem_NA-BLOGA.png",
+      "width": 750,
+      "height": 500,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "nie-boj-sie-odpisac-jak-z-powodzeniem-moderowac-fanpage"
+      ],
+      "altPl": "Nie bój się odpisać! Jak z powodzeniem moderować fanpage?",
+      "altEn": "Don't be afraid to reply! How to successfully moderate a fanpage?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "159": {
+      "filename": "2018-10-social-lama-bl-18-paz.png",
+      "url": "/api/media/file/2018-10-social-lama-bl-18-paz.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-sprzedawac-na-facebooku-czesc-pierwsza-tworzenie-grupy-docelowej"
+      ],
+      "altPl": "Jak sprzedawać na Facebooku? Część Pierwsza – tworzenie grupy docelowej",
+      "altEn": "How to sell on Facebook? Part One – creating a target audience",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "160": {
+      "filename": "2018-08-Lama-Blog2.png",
+      "url": "/api/media/file/2018-08-Lama-Blog2.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-budowac-marke-osobista-na-instagramie"
+      ],
+      "altPl": "Jak budować markę osobistą na Instagramie?",
+      "altEn": "How to build a personal brand on Instagram?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "161": {
+      "filename": "2018-08-polecanie.png",
+      "url": "/api/media/file/2018-08-polecanie.png",
+      "width": 430,
+      "height": 148,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polecenia-zamiast-recenzji-duza-zmiana-na-facebooku"
+      ],
+      "altPl": "polecanie",
+      "altEn": "recommending",
+      "verdict": "accept",
+      "reason": "Polish \"Poleć miejsce\" recommendation prompt — the exact Facebook feature the post is about.",
+      "glossRequired": true
+    },
+    "162": {
+      "filename": "2018-08-good-one.png",
+      "url": "/api/media/file/2018-08-good-one.png",
+      "width": 496,
+      "height": 440,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "polecenia-zamiast-recenzji-duza-zmiana-na-facebooku"
+      ],
+      "altPl": "good one",
+      "altEn": "good one",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "163": {
+      "filename": "2018-08-Social-LAma-fb-20-sierpnia.png",
+      "url": "/api/media/file/2018-08-Social-LAma-fb-20-sierpnia.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "polecenia-zamiast-recenzji-duza-zmiana-na-facebooku"
+      ],
+      "altPl": "Polecenia zamiast recenzji? Duża zmiana na Facebooku",
+      "altEn": "Recommendations instead of reviews? A big change on Facebook",
+      "verdict": "accept",
+      "reason": "The single word \"Polecam!\" (I recommend!) is exactly the Facebook feature the post is about."
+    },
+    "164": {
+      "filename": "2018-05-Social-Lama-Blog1.png",
+      "url": "/api/media/file/2018-05-Social-Lama-Blog1.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-wprowadza-funkcje-sklepu"
+      ],
+      "altPl": "Instagram wprowadza funkcję sklepu! [AKTUALIZACJA CZERWIEC 2019]",
+      "altEn": "Instagram introduces a shop feature! [UPDATE JUNE 2019]",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "165": {
+      "filename": "2018-05-Mark-Zuckerberg.png",
+      "url": "/api/media/file/2018-05-Mark-Zuckerberg.png",
+      "width": 608,
+      "height": 404,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "najwazniejsze-nowosci-na-facebooku-messengerze-i-instagramie-zapowiedziane-na-konferencji-f8"
+      ],
+      "altPl": "Najważniejsze nowości na Facebooku, Messengerze i Instagramie",
+      "altEn": "The most important new features on Facebook, Messenger and Instagram",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "166": {
+      "filename": "2018-04-Social-Lama-blog-26-kwietnia-1.png",
+      "url": "/api/media/file/2018-04-Social-Lama-blog-26-kwietnia-1.png",
+      "width": 799,
+      "height": 667,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "nowy-regulamin-facebooka-cenzura-czy-rozwoj-portalu"
+      ],
+      "altPl": "Nowy regulamin Facebooka – cenzura czy rozwój portalu?",
+      "altEn": "Facebook's new terms of service – censorship or the platform's development?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "167": {
+      "filename": "2018-04-cele_tt.png",
+      "url": "/api/media/file/2018-04-cele_tt.png",
+      "width": 1374,
+      "height": 681,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "cele tt",
+      "altEn": "cele tt",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "168": {
+      "filename": "2018-04-targetowanie_tt.png",
+      "url": "/api/media/file/2018-04-targetowanie_tt.png",
+      "width": 904,
+      "height": 739,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "targetowanie tt",
+      "altEn": "targeting tt",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "169": {
+      "filename": "2018-04-zachowania_tt.png",
+      "url": "/api/media/file/2018-04-zachowania_tt.png",
+      "width": 902,
+      "height": 415,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "zachowania tt",
+      "altEn": "tt behaviors",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "170": {
+      "filename": "2018-04-miejsca_tt.png",
+      "url": "/api/media/file/2018-04-miejsca_tt.png",
+      "width": 483,
+      "height": 767,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "miejsca tt",
+      "altEn": "places tt",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "171": {
+      "filename": "2018-04-ayOCiaZ.gif",
+      "url": "/api/media/file/2018-04-ayOCiaZ.gif",
+      "width": 500,
+      "height": 439,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "ayOCiaZ",
+      "altEn": "ayOCiaZ",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "172": {
+      "filename": "2018-04-Social-Lama-fb-11a-kwietnia.png",
+      "url": "/api/media/file/2018-04-Social-Lama-fb-11a-kwietnia.png",
+      "width": 800,
+      "height": 660,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "twitter-poradnik-jak-komunikowac-i-promowac-marke-na-tej-platformie"
+      ],
+      "altPl": "Twitter – poradnik jak komunikować i promować markę na tej platformie",
+      "altEn": "Twitter – a guide on how to communicate and promote a brand on this platform",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "173": {
+      "filename": "2018-03-Zrzut-ekranu-2018-03-16-o-16.12.35.png",
+      "url": "/api/media/file/2018-03-Zrzut-ekranu-2018-03-16-o-16.12.35.png",
+      "width": 651,
+      "height": 543,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "koniec-globalnych-fanpagey-na-facebooku"
+      ],
+      "altPl": "Koniec globalnych fanpage’y na Facebooku?",
+      "altEn": "The end of global fan pages on Facebook?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "174": {
+      "filename": "2018-03-29258505_1681235481923213_6424798770147360768_n.png",
+      "url": "/api/media/file/2018-03-29258505_1681235481923213_6424798770147360768_n.png",
+      "width": 895,
+      "height": 747,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "aplikacjavero"
+      ],
+      "altPl": "Vero podbija smartfony internautów!",
+      "altEn": "Vero is conquering internet users' smartphones!",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "175": {
+      "filename": "2018-02-LAmusia-dzis.png",
+      "url": "/api/media/file/2018-02-LAmusia-dzis.png",
+      "width": 471,
+      "height": 393,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "karuzelainstagramstories"
+      ],
+      "altPl": "Trójelementowa karuzela na Istagram Stories!",
+      "altEn": "A three-part carousel on Instagram Stories!",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "176": {
+      "filename": "2018-01-Lama-na-blog.png",
+      "url": "/api/media/file/2018-01-Lama-na-blog.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "zmiana-w-aktualnosciach-na-facebooku"
+      ],
+      "altPl": "Zmiana w aktualnościach na Facebooku!",
+      "altEn": "A change in the News Feed on Facebook!",
+      "verdict": "accept",
+      "reason": "Polish posts are filler inside a feed mock-up; the point is the feed layout, not the wording."
+    },
+    "177": {
+      "filename": "2018-01-lama_insta-history-na-whatsup.png",
+      "url": "/api/media/file/2018-01-lama_insta-history-na-whatsup.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-stories-takze-w-whatsapp"
+      ],
+      "altPl": "Instagram Stories także w WhatsApp!",
+      "altEn": "Instagram Stories in WhatsApp too!",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "178": {
+      "filename": "2017-12-Lama-18-blog.png",
+      "url": "/api/media/file/2017-12-Lama-18-blog.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "facebookselfie"
+      ],
+      "altPl": "Facebook poprosi Cię o… selfie!",
+      "altEn": "Facebook will ask you for… a selfie!",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "179": {
+      "filename": "2017-12-25397991_1510866979020698_701956397_o.png",
+      "url": "/api/media/file/2017-12-25397991_1510866979020698_701956397_o.png",
+      "width": 900,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "zaobserwuje-na-instagramie-hasztag"
+      ],
+      "altPl": "Zaobserwuje na Instagramie… hasztag!",
+      "altEn": "On Instagram, I'll follow… a hashtag!",
+      "verdict": "replace",
+      "reason": "Full-screen Polish Instagram dialog (\"Nowość! Obserwuj hasztagi\") is the entire image; its meaning is carried wholly by Polish prose.",
+      "blockedBy": "cover-relation-not-localized"
+    },
+    "180": {
+      "filename": "2017-12-25346403_1509949519112444_423142800_o.png",
+      "url": "/api/media/file/2017-12-25346403_1509949519112444_423142800_o.png",
+      "width": 900,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-cenzuruje-zdjecia-ze-zwierzetami"
+      ],
+      "altPl": "Instagram cenzuruje zdjęcia ze zwierzętami!",
+      "altEn": "Instagram censors photos with animals!",
+      "verdict": "replace",
+      "reason": "The documented case: full-screen Polish Instagram warning, heading + body + both buttons (\"Anuluj\" / \"Wyświetl posty\"), and the post exists to explain what it says.",
+      "blockedBy": "cover-relation-not-localized"
+    },
+    "181": {
+      "filename": "2017-12-aaa.png",
+      "url": "/api/media/file/2017-12-aaa.png",
+      "width": 944,
+      "height": 476,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "messengerkids"
+      ],
+      "altPl": "Messenger Kids – wersja dla najmłodszych internautów",
+      "altEn": "Messenger Kids – a version for the youngest internet users",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "182": {
+      "filename": "2017-01-Youtube-stories-statyczny-BLOG.png",
+      "url": "/api/media/file/2017-01-Youtube-stories-statyczny-BLOG.png",
+      "width": 968,
+      "height": 644,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "storiesyoutube"
+      ],
+      "altPl": "Stories na… Youtubie!",
+      "altEn": "Stories on… Youtube!",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "183": {
+      "filename": "2017-12-szablon-FB-YT-vs-FB.png",
+      "url": "/api/media/file/2017-12-szablon-FB-YT-vs-FB.png",
+      "width": 1200,
+      "height": 800,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "youtubevsfacebook"
+      ],
+      "altPl": "YouTube vs Facebook – wojna na… filmy?",
+      "altEn": "YouTube vs Facebook – a war of… videos?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "184": {
+      "filename": "2017-01-instant-video-cover-newsroom-615x461.png",
+      "url": "/api/media/file/2017-01-instant-video-cover-newsroom-615x461.png",
+      "width": 615,
+      "height": 461,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "nowoscinafacebookujakjewykorzystacwbiznesie"
+      ],
+      "altPl": "instant video cover newsroom 615x461",
+      "altEn": "instant video cover newsroom 615x461",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "185": {
+      "filename": "2017-01-Bonfire-960x514.png",
+      "url": "/api/media/file/2017-01-Bonfire-960x514.png",
+      "width": 960,
+      "height": 514,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "nowoscinafacebookujakjewykorzystacwbiznesie"
+      ],
+      "altPl": "Bonfire 960x514",
+      "altEn": "Bonfire 960x514",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "186": {
+      "filename": "2017-01-ru-0-r-6500-n-VX23891489Lhn_facebook_kolorowe_komentarze_w_polsce_nowa_funkcja_w_fazie_testo.jpg",
+      "url": "/api/media/file/2017-01-ru-0-r-6500-n-VX23891489Lhn_facebook_kolorowe_komentarze_w_polsce_nowa_funkcja_w_fazie_testo.jpg",
+      "width": 640,
+      "height": 522,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "nowoscinafacebookujakjewykorzystacwbiznesie"
+      ],
+      "altPl": "ru 0 r 6500 n VX23891489Lhn facebook kolorowe komentarze w polsce nowa funkcja w fazie testo",
+      "altEn": "ru 0 r 6500 n VX23891489Lhn facebook kolorowe komentarze w polsce nowa funkcja w fazie testo",
+      "verdict": "accept",
+      "reason": "Polish news-article card quoted as a source; re-capturing it in English would misrepresent what was published.",
+      "glossRequired": true
+    },
+    "188": {
+      "filename": "2017-05-hejt1.png",
+      "url": "/api/media/file/2017-05-hejt1.png",
+      "width": 481,
+      "height": 312,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "hejt1",
+      "altEn": "hejt1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "189": {
+      "filename": "2017-05-hejt2.png",
+      "url": "/api/media/file/2017-05-hejt2.png",
+      "width": 479,
+      "height": 247,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "hejt2",
+      "altEn": "hejt2",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "190": {
+      "filename": "2017-05-meh.png",
+      "url": "/api/media/file/2017-05-meh.png",
+      "width": 1200,
+      "height": 900,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "meh",
+      "altEn": "meh",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "191": {
+      "filename": "2017-05-dur.jpg",
+      "url": "/api/media/file/2017-05-dur.jpg",
+      "width": 640,
+      "height": 600,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "dur",
+      "altEn": "dur",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "192": {
+      "filename": "2017-05-ins4.jpg",
+      "url": "/api/media/file/2017-05-ins4.jpg",
+      "width": 657,
+      "height": 656,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "ins4",
+      "altEn": "ins4",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "193": {
+      "filename": "2017-05-insta.jpg",
+      "url": "/api/media/file/2017-05-insta.jpg",
+      "width": 665,
+      "height": 309,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "logo-wizerunek-firmy"
+      ],
+      "altPl": "Jak zmiana logo wpływa na wizerunek marki? Rebranding social media na przykładzie Instagrama",
+      "altEn": "How does a logo change affect a brand's image? Social media rebranding with Instagram as an example",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "194": {
+      "filename": "2017-01-pijar.png",
+      "url": "/api/media/file/2017-01-pijar.png",
+      "width": 454,
+      "height": 421,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "contentcuration"
+      ],
+      "altPl": "pijar",
+      "altEn": "PR",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "195": {
+      "filename": "2017-01-sprawny.png",
+      "url": "/api/media/file/2017-01-sprawny.png",
+      "width": 755,
+      "height": 594,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "contentcuration"
+      ],
+      "altPl": "sprawny",
+      "altEn": "efficient",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "196": {
+      "filename": "2017-01-sowa.png",
+      "url": "/api/media/file/2017-01-sowa.png",
+      "width": 939,
+      "height": 584,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "contentcuration"
+      ],
+      "altPl": "sowa",
+      "altEn": "owl",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "198": {
+      "filename": "2017-01-romowa.png",
+      "url": "/api/media/file/2017-01-romowa.png",
+      "width": 571,
+      "height": 160,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "romowa",
+      "altEn": "romowa",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "199": {
+      "filename": "2017-05-futbol.png",
+      "url": "/api/media/file/2017-05-futbol.png",
+      "width": 567,
+      "height": 106,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "futbol",
+      "altEn": "futbol",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "200": {
+      "filename": "2017-05-fut.png",
+      "url": "/api/media/file/2017-05-fut.png",
+      "width": 500,
+      "height": 435,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "fut",
+      "altEn": "fut",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "201": {
+      "filename": "2017-05-boniek.png",
+      "url": "/api/media/file/2017-05-boniek.png",
+      "width": 491,
+      "height": 311,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "boniek",
+      "altEn": "boniek",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "202": {
+      "filename": "2017-01-boniek3.jpg",
+      "url": "/api/media/file/2017-01-boniek3.jpg",
+      "width": 620,
+      "height": 594,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "boniek3",
+      "altEn": "boniek3",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "203": {
+      "filename": "2017-01-bonom.jpg",
+      "url": "/api/media/file/2017-01-bonom.jpg",
+      "width": 735,
+      "height": 828,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "bonom",
+      "altEn": "bonom",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "204": {
+      "filename": "2017-05-tomasz.png",
+      "url": "/api/media/file/2017-05-tomasz.png",
+      "width": 544,
+      "height": 206,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "tomasz",
+      "altEn": "tomasz",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "205": {
+      "filename": "2017-01-marin.png",
+      "url": "/api/media/file/2017-01-marin.png",
+      "width": 829,
+      "height": 592,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "marin",
+      "altEn": "marin",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "206": {
+      "filename": "2017-05-lewyyyyy.png",
+      "url": "/api/media/file/2017-05-lewyyyyy.png",
+      "width": 441,
+      "height": 509,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "lewyyyyy",
+      "altEn": "lewyyyyy",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "207": {
+      "filename": "2017-05-lewandowski_calling.jpeg",
+      "url": "/api/media/file/2017-05-lewandowski_calling.jpeg",
+      "width": 443,
+      "height": 507,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "lewandowski calling",
+      "altEn": "lewandowski calling",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "209": {
+      "filename": "2017-04-lets.jpg",
+      "url": "/api/media/file/2017-04-lets.jpg",
+      "width": 940,
+      "height": 627,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "lets",
+      "altEn": "lets",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "210": {
+      "filename": "2017-01-593ffaeed6d7330ac272359f_thumbs_in-house-printing.jpg",
+      "url": "/api/media/file/2017-01-593ffaeed6d7330ac272359f_thumbs_in-house-printing.jpg",
+      "width": 620,
+      "height": 476,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "593ffaeed6d7330ac272359f thumbs in house printing",
+      "altEn": "593ffaeed6d7330ac272359f thumbs in house printing",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "211": {
+      "filename": "2017-01-a.jpg",
+      "url": "/api/media/file/2017-01-a.jpg",
+      "width": 940,
+      "height": 627,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "a",
+      "altEn": "a",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "212": {
+      "filename": "2017-01-if.jpg",
+      "url": "/api/media/file/2017-01-if.jpg",
+      "width": 500,
+      "height": 321,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "if",
+      "altEn": "if",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "214": {
+      "filename": "2017-01-lewando.png",
+      "url": "/api/media/file/2017-01-lewando.png",
+      "width": 547,
+      "height": 593,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "lewando",
+      "altEn": "lewando",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "215": {
+      "filename": "2017-01-lewy1.png",
+      "url": "/api/media/file/2017-01-lewy1.png",
+      "width": 509,
+      "height": 557,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "lewy1",
+      "altEn": "lewy1",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "216": {
+      "filename": "2017-01-lew.png",
+      "url": "/api/media/file/2017-01-lew.png",
+      "width": 1278,
+      "height": 567,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "lew",
+      "altEn": "lew",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "217": {
+      "filename": "2017-01-pokole.jpg",
+      "url": "/api/media/file/2017-01-pokole.jpg",
+      "width": 655,
+      "height": 503,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "pokole",
+      "altEn": "pokole",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "218": {
+      "filename": "2017-01-po.jpg",
+      "url": "/api/media/file/2017-01-po.jpg",
+      "width": 599,
+      "height": 738,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "po",
+      "altEn": "po",
+      "verdict": "accept",
+      "reason": "Real Polish content quoted as source material — a client creative, a public post or the subject account. Re-capturing it in English would fabricate something that never existed (D4), so it is accepted with an alt gloss.",
+      "glossRequired": true
+    },
+    "219": {
+      "filename": "2017-03-ROBERCIK.jpg",
+      "url": "/api/media/file/2017-03-ROBERCIK.jpg",
+      "width": 500,
+      "height": 339,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "wizeruneksportowca"
+      ],
+      "altPl": "Wizerunek sportowca w marketingu na przykładzie Lewandowskiego",
+      "altEn": "An athlete's image in marketing, using Lewandowski as an example",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "220": {
+      "filename": "2016-12-progno.jpg",
+      "url": "/api/media/file/2016-12-progno.jpg",
+      "width": 640,
+      "height": 267,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prognoza-2017"
+      ],
+      "altPl": "progno",
+      "altEn": "progno",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "221": {
+      "filename": "2016-12-pr.png",
+      "url": "/api/media/file/2016-12-pr.png",
+      "width": 720,
+      "height": 340,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prognoza-2017"
+      ],
+      "altPl": "pr",
+      "altEn": "pr",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "222": {
+      "filename": "2016-12-pul.jpg",
+      "url": "/api/media/file/2016-12-pul.jpg",
+      "width": 640,
+      "height": 383,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prognoza-2017"
+      ],
+      "altPl": "pul",
+      "altEn": "pul",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "223": {
+      "filename": "2016-12-pulpi.jpg",
+      "url": "/api/media/file/2016-12-pulpi.jpg",
+      "width": 1600,
+      "height": 667,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prognoza-2017"
+      ],
+      "altPl": "pulpi",
+      "altEn": "pulpi",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "224": {
+      "filename": "2017-09-prognoza.jpg",
+      "url": "/api/media/file/2017-09-prognoza.jpg",
+      "width": 1024,
+      "height": 303,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "prognoza-2017"
+      ],
+      "altPl": "Social media: prognoza na 2017 rok",
+      "altEn": "Social media: the forecast for 2017",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "225": {
+      "filename": "2026-07-AdobeStock_294425685_Editorial_Use_Only-scaled.jpeg",
+      "url": "/api/media/file/2026-07-AdobeStock_294425685_Editorial_Use_Only-scaled.jpeg",
+      "width": 2560,
+      "height": 1707,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "google-polaczylo-social-media-z-seo"
+      ],
+      "altPl": "Mężczyzna wpisujący zapytanie w wyszukiwarkę Google na laptopie – prezentacja mechanizmu działania Social SEO.",
+      "altEn": "A man typing a query into Google search on a laptop – a demonstration of how Social SEO works.",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "226": {
+      "filename": "2026-07-AdobeStock_2079796684-scaled.jpeg",
+      "url": "/api/media/file/2026-07-AdobeStock_2079796684-scaled.jpeg",
+      "width": 2560,
+      "height": 1439,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "google-polaczylo-social-media-z-seo"
+      ],
+      "altPl": "Analiza wykresów marketingowych na ekranie komputera, ilustrująca jak połączyć social media z SEO za pomocą narzędzi Google.",
+      "altEn": "Analysis of marketing charts on a computer screen, illustrating how to combine social media with SEO using Google tools.",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "227": {
+      "filename": "2026-07-POST-lamowka-.png",
+      "url": "/api/media/file/2026-07-POST-lamowka-.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "google-polaczylo-social-media-z-seo"
+      ],
+      "altPl": "Google oficjalnie połączyło social media z SEO. Co to oznacza dla Twojego biznesu?",
+      "altEn": "Google has officially connected social media with SEO. What does this mean for your business?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "228": {
+      "filename": "2025-12-AdobeStock_1655658519-scaled.jpeg",
+      "url": "/api/media/file/2025-12-AdobeStock_1655658519-scaled.jpeg",
+      "width": 2560,
+      "height": 1450,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "linkedin-premium-czy-warto"
+      ],
+      "altPl": "subskrypcja linkedin premium - analiza czy warto",
+      "altEn": "linkedin premium subscription - an analysis of whether it's worth it",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "229": {
+      "filename": "2025-12-AdobeStock_558479866-scaled.jpeg",
+      "url": "/api/media/file/2025-12-AdobeStock_558479866-scaled.jpeg",
+      "width": 2560,
+      "height": 1707,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "linkedin-premium-czy-warto"
+      ],
+      "altPl": "Co daje konto premium na LinkedIn?",
+      "altEn": "What does a premium account on LinkedIn give you?",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "230": {
+      "filename": "2025-12-AdobeStock_1710913868-scaled.jpeg",
+      "url": "/api/media/file/2025-12-AdobeStock_1710913868-scaled.jpeg",
+      "width": 2560,
+      "height": 1282,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "linkedin-premium-czy-warto"
+      ],
+      "altPl": "Linkedin premium - jak wykorzystać konto do promocji kariery lub firmy?",
+      "altEn": "Linkedin premium - how to use your account to promote your career or company?",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "231": {
+      "filename": "2025-12-POST-lamowka-12.png",
+      "url": "/api/media/file/2025-12-POST-lamowka-12.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "linkedin-premium-czy-warto"
+      ],
+      "altPl": "LinkedIn Premium – Czy warto zainwestować w płatną wersję?",
+      "altEn": "LinkedIn Premium – Is it worth investing in the paid version?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "232": {
+      "filename": "2025-08-AdobeStock_1307231344.jpeg",
+      "url": "/api/media/file/2025-08-AdobeStock_1307231344.jpeg",
+      "width": 6000,
+      "height": 4000,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "dlaczego-moj-instagram-nie-jest-indeksowany-przez-google"
+      ],
+      "altPl": "AdobeStock 1307231344",
+      "altEn": "AdobeStock 1307231344",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "233": {
+      "filename": "2025-08-POST-lamowka-2.png",
+      "url": "/api/media/file/2025-08-POST-lamowka-2.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "dlaczego-moj-instagram-nie-jest-indeksowany-przez-google"
+      ],
+      "altPl": "Dlaczego mój Instagram nie jest indeksowany przez Google?",
+      "altEn": "Why isn't my Instagram indexed by Google?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "234": {
+      "filename": "2025-08-AdobeStock_595206667_Editorial_Use_Only.jpeg",
+      "url": "/api/media/file/2025-08-AdobeStock_595206667_Editorial_Use_Only.jpeg",
+      "width": 7728,
+      "height": 5152,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-skonfigurowac-profil-na-instagramie-do-indeksowania-w-google-poradnik"
+      ],
+      "altPl": "AdobeStock 595206667 Editorial Use Only",
+      "altEn": "AdobeStock 595206667 Editorial Use Only",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "235": {
+      "filename": "2025-08-POST-lamowka-1.png",
+      "url": "/api/media/file/2025-08-POST-lamowka-1.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-skonfigurowac-profil-na-instagramie-do-indeksowania-w-google-poradnik"
+      ],
+      "altPl": "Jak skonfigurować profil na Instagramie do indeksowania w Google? – PORADNIK",
+      "altEn": "How to set up an Instagram profile for indexing in Google? – GUIDE",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "236": {
+      "filename": "2025-07-AdobeStock_1258731838.jpeg",
+      "url": "/api/media/file/2025-07-AdobeStock_1258731838.jpeg",
+      "width": 5824,
+      "height": 3264,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "czy-twoje-posty-na-instagramie-moga-pojawic-sie-w-wynikach-google"
+      ],
+      "altPl": "AdobeStock 1258731838",
+      "altEn": "AdobeStock 1258731838",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "237": {
+      "filename": "2025-07-POST-lamowka-8.png",
+      "url": "/api/media/file/2025-07-POST-lamowka-8.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "czy-twoje-posty-na-instagramie-moga-pojawic-sie-w-wynikach-google"
+      ],
+      "altPl": "Czy Twoje posty na Instagramie mogą pojawić się w wynikach Google?",
+      "altEn": "Can your Instagram posts show up in Google results?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "238": {
+      "filename": "2025-07-AdobeStock_378217656.jpeg",
+      "url": "/api/media/file/2025-07-AdobeStock_378217656.jpeg",
+      "width": 6000,
+      "height": 4000,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "top-6-branz-dla-influencer-marketingu"
+      ],
+      "altPl": "AdobeStock 378217656",
+      "altEn": "AdobeStock 378217656",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "239": {
+      "filename": "2025-07-POST-lamowka-7.png",
+      "url": "/api/media/file/2025-07-POST-lamowka-7.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "top-6-branz-dla-influencer-marketingu"
+      ],
+      "altPl": "TOP 6 branż dla influencer marketingu",
+      "altEn": "TOP 6 industries for influencer marketing",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "240": {
+      "filename": "2025-07-AdobeStock_1300192890.jpeg",
+      "url": "/api/media/file/2025-07-AdobeStock_1300192890.jpeg",
+      "width": 5120,
+      "height": 3328,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "employee-advocacy-jak-mowic-o-pracy-po-swojemu-i-dlaczego-warto"
+      ],
+      "altPl": "AdobeStock 1300192890",
+      "altEn": "AdobeStock 1300192890",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "241": {
+      "filename": "2025-07-POST-lamowka-6.png",
+      "url": "/api/media/file/2025-07-POST-lamowka-6.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "employee-advocacy-jak-mowic-o-pracy-po-swojemu-i-dlaczego-warto"
+      ],
+      "altPl": "Employee advocacy – jak mówić o pracy po swojemu (i dlaczego warto)",
+      "altEn": "Employee advocacy – how to talk about your work in your own way (and why it's worth it)",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "242": {
+      "filename": "2025-06-Za-co-odpowiada-social-media-manager-budowanie-swiadomosci-marki.jpeg",
+      "url": "/api/media/file/2025-06-Za-co-odpowiada-social-media-manager-budowanie-swiadomosci-marki.jpeg",
+      "width": 4440,
+      "height": 2959,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "Za co odpowiada social media manager - budowanie świadomości marki",
+      "altEn": "What a social media manager is responsible for - building brand awareness",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "243": {
+      "filename": "2025-06-w-jaki-sposob-mozemy-pomoc-dotrzec-Twojej-firmie-do-szerokiego-grona-odbiorcow.jpeg",
+      "url": "/api/media/file/2025-06-w-jaki-sposob-mozemy-pomoc-dotrzec-Twojej-firmie-do-szerokiego-grona-odbiorcow.jpeg",
+      "width": 7680,
+      "height": 3840,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "w jaki sposób możemy pomóc dotrzeć Twojej firmie do szerokiego grona odbiorców",
+      "altEn": "how we can help your company reach a wide audience",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "244": {
+      "filename": "2025-06-social-media-cennik-dobierz-elementy-oferty-ktore-sa-potrzebne-do-zwiekszenia-sprzedazy.jpeg",
+      "url": "/api/media/file/2025-06-social-media-cennik-dobierz-elementy-oferty-ktore-sa-potrzebne-do-zwiekszenia-sprzedazy.jpeg",
+      "width": 6000,
+      "height": 2637,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "social media cennik - dobierz elementy oferty które są potrzebne do zwiększenia sprzedaży",
+      "altEn": "social media pricing - select the offer elements you need to increase sales",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "245": {
+      "filename": "2025-06-komu-zlecic-marketing-spolecznosciowy-i-wsparcie-w-budowaniu-relacji.jpeg",
+      "url": "/api/media/file/2025-06-komu-zlecic-marketing-spolecznosciowy-i-wsparcie-w-budowaniu-relacji.jpeg",
+      "width": 4000,
+      "height": 3000,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "komu zlecić marketing społecznościowy i wsparcie w budowaniu relacji",
+      "altEn": "who to outsource social media marketing and relationship-building support to",
+      "verdict": "accept",
+      "reason": "The agency's own Polish Instagram profile, shown as its own example.",
+      "glossRequired": true
+    },
+    "246": {
+      "filename": "2025-06-Agencja-odpowiedzialna-za-prowadzenie-instagrama-i-wymyslanie-kreatywnych-postow.jpg",
+      "url": "/api/media/file/2025-06-Agencja-odpowiedzialna-za-prowadzenie-instagrama-i-wymyslanie-kreatywnych-postow.jpg",
+      "width": 3264,
+      "height": 2176,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "Agencja odpowiedzialna za prowadzenie instagrama i wymyślanie kreatywnych postów",
+      "altEn": "An agency responsible for running Instagram and coming up with creative posts",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "247": {
+      "filename": "2025-06-Prowadzenie-social-media-Jak-skutecznie-zarzadzac-swoja-obecnoscia.jpeg",
+      "url": "/api/media/file/2025-06-Prowadzenie-social-media-Jak-skutecznie-zarzadzac-swoja-obecnoscia.jpeg",
+      "width": 6000,
+      "height": 3708,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "prowadzenie-social-media"
+      ],
+      "altPl": "Prowadzenie social media - Jak skutecznie zarządzać swoją obecnością",
+      "altEn": "Social media management - How to effectively manage your presence",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "248": {
+      "filename": "2025-05-AdobeStock_528534578.jpeg",
+      "url": "/api/media/file/2025-05-AdobeStock_528534578.jpeg",
+      "width": 5616,
+      "height": 3744,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "najlepsze-hasztagi-insta"
+      ],
+      "altPl": "jak dodawać hashtagi na Instagramie, żeby częściej pojawiać się w wynikach wyszukiwania",
+      "altEn": "how to add hashtags on Instagram to show up more often in search results",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "249": {
+      "filename": "2025-05-AdobeStock_124927897.jpeg",
+      "url": "/api/media/file/2025-05-AdobeStock_124927897.jpeg",
+      "width": 4500,
+      "height": 1500,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "najlepsze-hasztagi-insta"
+      ],
+      "altPl": "czy warto używać hashtagów które weszły na listę aktualnie zbanowanych hashtagów",
+      "altEn": "is it worth using hashtags that have landed on the list of currently banned hashtags",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "250": {
+      "filename": "2025-05-POST-lamowka-5.png",
+      "url": "/api/media/file/2025-05-POST-lamowka-5.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "najlepsze-hasztagi-insta"
+      ],
+      "altPl": "Najlepsze hashtagi insta, które zwiększą Twoje zasięgi w social mediach",
+      "altEn": "The best insta hashtags that will boost your reach on social media",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "251": {
+      "filename": "2025-05-AdobeStock_509908812.jpeg",
+      "url": "/api/media/file/2025-05-AdobeStock_509908812.jpeg",
+      "width": 5860,
+      "height": 3875,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "czy-warto-zaczynac-od-zera-jak-algorytm-traktuje-nowe-i-istniejace-profile-w-social-mediach"
+      ],
+      "altPl": "AdobeStock 509908812",
+      "altEn": "AdobeStock 509908812",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "252": {
+      "filename": "2025-05-POST-lamowka-4.png",
+      "url": "/api/media/file/2025-05-POST-lamowka-4.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "czy-warto-zaczynac-od-zera-jak-algorytm-traktuje-nowe-i-istniejace-profile-w-social-mediach"
+      ],
+      "altPl": "Czy warto zaczynać od zera? Jak algorytm traktuje nowe i istniejące profile w social mediach?",
+      "altEn": "Is it worth starting from scratch? How does the algorithm treat new and existing social media profiles?",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "253": {
+      "filename": "2025-04-AdobeStock_1364148925.jpeg",
+      "url": "/api/media/file/2025-04-AdobeStock_1364148925.jpeg",
+      "width": 7360,
+      "height": 4912,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-stworzyc-brief-marketingowy"
+      ],
+      "altPl": "Co powinien zawierać brief marketingowy",
+      "altEn": "What a marketing brief should include",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "254": {
+      "filename": "2025-04-AdobeStock_191135619.jpeg",
+      "url": "/api/media/file/2025-04-AdobeStock_191135619.jpeg",
+      "width": 6000,
+      "height": 4000,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-stworzyc-brief-marketingowy"
+      ],
+      "altPl": "przykładowy brief marketingowy - wzór dla agencji reklamowej",
+      "altEn": "a sample marketing brief - a template for an advertising agency",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "255": {
+      "filename": "2025-04-AdobeStock_99592236.jpeg",
+      "url": "/api/media/file/2025-04-AdobeStock_99592236.jpeg",
+      "width": 4300,
+      "height": 2580,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-stworzyc-brief-marketingowy"
+      ],
+      "altPl": "kreatywny brief reklamowy dostosowany do konkretnych potrzeb",
+      "altEn": "a creative advertising brief tailored to specific needs",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "256": {
+      "filename": "2025-04-POST-lamowka-3.png",
+      "url": "/api/media/file/2025-04-POST-lamowka-3.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-stworzyc-brief-marketingowy"
+      ],
+      "altPl": "Jak stworzyć skuteczny brief marketingowy? Przewodnik krok po kroku",
+      "altEn": "How to create an effective marketing brief? A step-by-step guide",
+      "verdict": "accept",
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+    },
+    "257": {
+      "filename": "2025-01-Image_20250115_180242_334-1.jpeg",
+      "url": "/api/media/file/2025-01-Image_20250115_180242_334-1.jpeg",
+      "width": 3024,
+      "height": 2699,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-social-lama-widzi-social-media-w-2025"
+      ],
+      "altPl": "Image 20250115 180242 334 1",
+      "altEn": "Image 20250115 180242 334 1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "258": {
+      "filename": "2025-01-AdobeStock_1089850237_Editorial_Use_Only-1.jpeg",
+      "url": "/api/media/file/2025-01-AdobeStock_1089850237_Editorial_Use_Only-1.jpeg",
+      "width": 6000,
+      "height": 4000,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-social-lama-widzi-social-media-w-2025"
+      ],
+      "altPl": "AdobeStock 1089850237 Editorial Use Only 1",
+      "altEn": "AdobeStock 1089850237 Editorial Use Only 1",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "259": {
+      "filename": "2025-01-lamowka.png",
+      "url": "/api/media/file/2025-01-lamowka.png",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-social-lama-widzi-social-media-w-2025"
+      ],
+      "altPl": "Jak Social Lama widzi social media w 2025?",
+      "altEn": "How does Social Lama see social media in 2025?",
+      "verdict": "accept",
+      "reason": "\"OKIEM SOCIAL LAMY\" is a series label beside the readable \"SOCIAL MEDIA 2025\"; no content is locked in Polish."
+    },
+    "260": {
+      "filename": "2024-11-AdobeStock_270048773.jpeg",
+      "url": "/api/media/file/2024-11-AdobeStock_270048773.jpeg",
+      "width": 3100,
+      "height": 2067,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-sprzedawac-w-social-mediach-podczas-black-friday"
+      ],
+      "altPl": "AdobeStock 270048773",
+      "altEn": "AdobeStock 270048773",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "261": {
+      "filename": "2024-11-AdobeStock_520579766.jpeg",
+      "url": "/api/media/file/2024-11-AdobeStock_520579766.jpeg",
+      "width": 6328,
+      "height": 4306,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-sprzedawac-w-social-mediach-podczas-black-friday"
+      ],
+      "altPl": "AdobeStock 520579766",
+      "altEn": "AdobeStock 520579766",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "262": {
+      "filename": "2024-11-AdobeStock_94320998.jpeg",
+      "url": "/api/media/file/2024-11-AdobeStock_94320998.jpeg",
+      "width": 4288,
+      "height": 2848,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-sprzedawac-w-social-mediach-podczas-black-friday"
+      ],
+      "altPl": "Jak sprzedawać w social mediach podczas Black Friday?",
+      "altEn": "How to sell on social media during Black Friday?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "263": {
+      "filename": "2024-10-AdobeStock_432394124_Editorial_Use_Only.jpeg",
+      "url": "/api/media/file/2024-10-AdobeStock_432394124_Editorial_Use_Only.jpeg",
+      "width": 8256,
+      "height": 5504,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "tiktok-zmienil-zasady-marketingowej-gry-ale-co-dalej"
+      ],
+      "altPl": "TikTok zmienił zasady marketingowej gry – ale co dalej?",
+      "altEn": "TikTok has changed the rules of the marketing game – but what comes next?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "264": {
+      "filename": "2024-09-AdobeStock_258823398.jpeg",
+      "url": "/api/media/file/2024-09-AdobeStock_258823398.jpeg",
+      "width": 6720,
+      "height": 4480,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "lamowka-twoje-zrodlo-najswiezszych-newsow-ze-swiata-social-mediow"
+      ],
+      "altPl": "AdobeStock 258823398",
+      "altEn": "AdobeStock 258823398",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "265": {
+      "filename": "2024-09-lamowka_cover_1.jpg",
+      "url": "/api/media/file/2024-09-lamowka_cover_1.jpg",
+      "width": 1200,
+      "height": 725,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lamowka-twoje-zrodlo-najswiezszych-newsow-ze-swiata-social-mediow"
+      ],
+      "altPl": "„Lamówka” – Twoje źródło najświeższych newsów ze świata social mediów",
+      "altEn": "“Lamówka” – Your source for the freshest news from the world of social media",
+      "verdict": "accept",
+      "reason": "Series announcement card; \"LAMÓWKA\" is the series name and carries no information the post lacks."
+    },
+    "266": {
+      "filename": "2024-03-AdobeStock_510343953_Editorial_Use_Only.jpeg",
+      "url": "/api/media/file/2024-03-AdobeStock_510343953_Editorial_Use_Only.jpeg",
+      "width": 6960,
+      "height": 4640,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "bialy-mis-zaprasza-do-reklamowania-sie-w-social-mediach"
+      ],
+      "altPl": "AdobeStock 510343953 Editorial Use Only",
+      "altEn": "AdobeStock 510343953 Editorial Use Only",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "267": {
+      "filename": "2024-03-AdobeStock_639083256.jpeg",
+      "url": "/api/media/file/2024-03-AdobeStock_639083256.jpeg",
+      "width": 8256,
+      "height": 5504,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "bialy-mis-zaprasza-do-reklamowania-sie-w-social-mediach"
+      ],
+      "altPl": "Biały miś zaprasza do… reklamowania się w social mediach",
+      "altEn": "A white bear invites you to… advertise on social media",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "268": {
+      "filename": "2023-09-AdobeStock_281127753-1.jpeg",
+      "url": "/api/media/file/2023-09-AdobeStock_281127753-1.jpeg",
+      "width": 4942,
+      "height": 3035,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lejek-marketingowy-w-social-media-jak-tworzyc-by-sprzedawac-wiecej"
+      ],
+      "altPl": "Lejek marketingowy w social media – jak tworzyć, by sprzedawać więcej",
+      "altEn": "The marketing funnel in social media – how to build one to sell more",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "269": {
+      "filename": "2022-12-Wideo.jpeg",
+      "url": "/api/media/file/2022-12-Wideo.jpeg",
+      "width": 1980,
+      "height": 1321,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "podroz-po-social-mediach-jak-wykorzystac-je-w-komunikacji-branzy-hotelarskiej"
+      ],
+      "altPl": "wykorzystać je w komunikacji branży hotelarskiej",
+      "altEn": "use them in hospitality industry communications",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "270": {
+      "filename": "2022-12-podroz-po-social-mediach.jpeg",
+      "url": "/api/media/file/2022-12-podroz-po-social-mediach.jpeg",
+      "width": 1980,
+      "height": 1320,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "podroz-po-social-mediach-jak-wykorzystac-je-w-komunikacji-branzy-hotelarskiej"
+      ],
+      "altPl": "komunikacji branży hotelarskiej",
+      "altEn": "hospitality industry communication",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "271": {
+      "filename": "2022-12-Influencerzy.jpeg",
+      "url": "/api/media/file/2022-12-Influencerzy.jpeg",
+      "width": 1980,
+      "height": 1320,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "podroz-po-social-mediach-jak-wykorzystac-je-w-komunikacji-branzy-hotelarskiej"
+      ],
+      "altPl": "influencerzy",
+      "altEn": "influencers",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "272": {
+      "filename": "2022-12-komunikacja-branzy-hotelarskiej.jpeg",
+      "url": "/api/media/file/2022-12-komunikacja-branzy-hotelarskiej.jpeg",
+      "width": 1980,
+      "height": 1188,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "podroz-po-social-mediach-jak-wykorzystac-je-w-komunikacji-branzy-hotelarskiej"
+      ],
+      "altPl": "Podróż po social mediach",
+      "altEn": "A journey through social media",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "273": {
+      "filename": "2022-07-zdjecie-2.jpeg",
+      "url": "/api/media/file/2022-07-zdjecie-2.jpeg",
+      "width": 1980,
+      "height": 1320,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "biznesowy-potencjal-grup-na-facebooku"
+      ],
+      "altPl": "grupa fb",
+      "altEn": "fb group",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "274": {
+      "filename": "2022-07-zdjecie1.jpeg",
+      "url": "/api/media/file/2022-07-zdjecie1.jpeg",
+      "width": 1980,
+      "height": 1321,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "biznesowy-potencjal-grup-na-facebooku"
+      ],
+      "altPl": "grupy facebook",
+      "altEn": "facebook groups",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "275": {
+      "filename": "2022-07-gurpyfb.jpg",
+      "url": "/api/media/file/2022-07-gurpyfb.jpg",
+      "width": 1280,
+      "height": 853,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "biznesowy-potencjal-grup-na-facebooku"
+      ],
+      "altPl": "Biznesowy potencjał grup na Facebooku",
+      "altEn": "The business potential of Facebook groups",
+      "verdict": "accept",
+      "reason": "Screenshot text is Thai, not Polish, and is incidental to the point about Facebook groups."
+    },
+    "276": {
+      "filename": "2022-05-Press-F-to-pay-respect.jpeg",
+      "url": "/api/media/file/2022-05-Press-F-to-pay-respect.jpeg",
+      "width": 4321,
+      "height": 3372,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-skontaktowac-sie-z-supportem-facebooka"
+      ],
+      "altPl": "Jak skontaktować się z supportem Facebooka?",
+      "altEn": "How to contact Facebook support?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "277": {
+      "filename": "2022-04-Formularz-Lead-Ads.jpeg",
+      "url": "/api/media/file/2022-04-Formularz-Lead-Ads.jpeg",
+      "width": 5055,
+      "height": 2967,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "reklama-facebook-lead-ads-zdobadz-bezposredni-kontakt-do-twojego-potencjalnego-klienta-dlaczego-warto-wybrac-pozyskiwanie-kontaktow-poprzez-lead-ads-na-facebooku"
+      ],
+      "altPl": "Formularz Lead Ads",
+      "altEn": "Lead Ads form",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "278": {
+      "filename": "2022-04-Jak-generowac-Leady-na-Facebooku.jpeg",
+      "url": "/api/media/file/2022-04-Jak-generowac-Leady-na-Facebooku.jpeg",
+      "width": 4743,
+      "height": 3162,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "reklama-facebook-lead-ads-zdobadz-bezposredni-kontakt-do-twojego-potencjalnego-klienta-dlaczego-warto-wybrac-pozyskiwanie-kontaktow-poprzez-lead-ads-na-facebooku"
+      ],
+      "altPl": "formularz lead ads",
+      "altEn": "lead ads form",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "279": {
+      "filename": "2022-04-Reklamy-na-Facebooku.jpeg",
+      "url": "/api/media/file/2022-04-Reklamy-na-Facebooku.jpeg",
+      "width": 3873,
+      "height": 3873,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "reklama-facebook-lead-ads-zdobadz-bezposredni-kontakt-do-twojego-potencjalnego-klienta-dlaczego-warto-wybrac-pozyskiwanie-kontaktow-poprzez-lead-ads-na-facebooku"
+      ],
+      "altPl": "FB LEAD ADS",
+      "altEn": "FB LEAD ADS",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "280": {
+      "filename": "2022-04-Reklama-Facebook-Lead-Ads.-Pozyskiwanie-kontaktow-poprzez-Lead-Ads-na-Facebooku.jpeg",
+      "url": "/api/media/file/2022-04-Reklama-Facebook-Lead-Ads.-Pozyskiwanie-kontaktow-poprzez-Lead-Ads-na-Facebooku.jpeg",
+      "width": 5477,
+      "height": 2739,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "reklama-facebook-lead-ads-zdobadz-bezposredni-kontakt-do-twojego-potencjalnego-klienta-dlaczego-warto-wybrac-pozyskiwanie-kontaktow-poprzez-lead-ads-na-facebooku"
+      ],
+      "altPl": "lead ads facebook",
+      "altEn": "lead ads facebook",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "281": {
+      "filename": "2022-02-Jak-zorganizowac-legalny-konkurs-na-Facebooku-1.jpeg",
+      "url": "/api/media/file/2022-02-Jak-zorganizowac-legalny-konkurs-na-Facebooku-1.jpeg",
+      "width": 7360,
+      "height": 4912,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-zorganizowac-legalny-konkurs-na-facebooku"
+      ],
+      "altPl": "konkurs na facebooku",
+      "altEn": "contest on facebook",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "282": {
+      "filename": "2021-11-AdobeStock_289121933.jpeg",
+      "url": "/api/media/file/2021-11-AdobeStock_289121933.jpeg",
+      "width": 4713,
+      "height": 3183,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "aktualne-wymiary-grafik-na-facebooku"
+      ],
+      "altPl": "Aktualne wymiary grafik na Facebooku",
+      "altEn": "Current image dimensions on Facebook",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "283": {
+      "filename": "2021-10-jak-pobrac-faktury-z-facebooka.jpeg",
+      "url": "/api/media/file/2021-10-jak-pobrac-faktury-z-facebooka.jpeg",
+      "width": 640,
+      "height": 426,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "gdzie-znalezc-faktury-za-reklamy-na-facebooku"
+      ],
+      "altPl": "Gdzie znaleźć faktury za reklamy na Facebooku?",
+      "altEn": "Where to find invoices for Facebook ads?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "284": {
+      "filename": "2021-08-reklama-na-pinterest.jpeg",
+      "url": "/api/media/file/2021-08-reklama-na-pinterest.jpeg",
+      "width": 680,
+      "height": 1019,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "pinterest-dla-e-commerce"
+      ],
+      "altPl": "Reklama na Pinterest",
+      "altEn": "Advertising on Pinterest",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "285": {
+      "filename": "2021-08-sprzedaz-na-pinterest.jpeg",
+      "url": "/api/media/file/2021-08-sprzedaz-na-pinterest.jpeg",
+      "width": 960,
+      "height": 640,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "pinterest-dla-e-commerce"
+      ],
+      "altPl": "Sprzedaż na Pinterest",
+      "altEn": "Selling on Pinterest",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "286": {
+      "filename": "2021-08-Pinterest-dla-e-commerce.jpeg",
+      "url": "/api/media/file/2021-08-Pinterest-dla-e-commerce.jpeg",
+      "width": 700,
+      "height": 467,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "pinterest-dla-e-commerce"
+      ],
+      "altPl": "Pinterest dla e-commerce",
+      "altEn": "Pinterest for e-commerce",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "287": {
+      "filename": "2021-07-nowosci-social-media.jpeg",
+      "url": "/api/media/file/2021-07-nowosci-social-media.jpeg",
+      "width": 1086,
+      "height": 724,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "trendy-social-media-2021"
+      ],
+      "altPl": "Nowości social media",
+      "altEn": "Social media news",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "288": {
+      "filename": "2021-07-trendy-social-media-2021-jpeg.jpeg",
+      "url": "/api/media/file/2021-07-trendy-social-media-2021-jpeg.jpeg",
+      "width": 900,
+      "height": 600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "trendy-social-media-2021"
+      ],
+      "altPl": "Trendy social media 2021",
+      "altEn": "Social media trends 2021",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "289": {
+      "filename": "2021-07-statystyki-twitter.jpeg",
+      "url": "/api/media/file/2021-07-statystyki-twitter.jpeg",
+      "width": 1210,
+      "height": 805,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "statystyki-twitter"
+      ],
+      "altPl": "Statystyki Twitter",
+      "altEn": "Twitter statistics",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "290": {
+      "filename": "2021-04-AdobeStock_296541378.jpeg",
+      "url": "/api/media/file/2021-04-AdobeStock_296541378.jpeg",
+      "width": 1600,
+      "height": 1067,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "jak-efektywnie-zarzadzac-czasem"
+      ],
+      "altPl": "AdobeStock 296541378",
+      "altEn": "AdobeStock 296541378",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "291": {
+      "filename": "2021-04-AdobeStock_69947464-1.jpeg",
+      "url": "/api/media/file/2021-04-AdobeStock_69947464-1.jpeg",
+      "width": 1600,
+      "height": 1067,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-efektywnie-zarzadzac-czasem"
+      ],
+      "altPl": "Jak efektywnie zarządzać czasem?",
+      "altEn": "How to manage your time effectively?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "292": {
+      "filename": "2021-02-AdobeStock_298306173.jpeg",
+      "url": "/api/media/file/2021-02-AdobeStock_298306173.jpeg",
+      "width": 1600,
+      "height": 946,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "5-aplikacji-dzieki-ktorym-stworzysz-estetyczne-instastory"
+      ],
+      "altPl": "5 aplikacji, dzięki którym stworzysz estetyczne InstaStory",
+      "altEn": "5 apps for creating aesthetic Insta Stories",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "293": {
+      "filename": "2020-12-1608629394445-01.jpeg",
+      "url": "/api/media/file/2020-12-1608629394445-01.jpeg",
+      "width": 1536,
+      "height": 1536,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "social-lama-podsumowanie-roku-2020"
+      ],
+      "altPl": "Social Lama – podsumowanie roku 2020",
+      "altEn": "Social Lama – 2020 year in review",
+      "verdict": "accept",
+      "reason": "Team selfie; the only Polish is an out-of-focus llama poster behind them."
+    },
+    "294": {
+      "filename": "2020-12-AdobeStock_214513527.jpeg",
+      "url": "/api/media/file/2020-12-AdobeStock_214513527.jpeg",
+      "width": 1600,
+      "height": 1067,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "wlasny-filtr-na-instastory"
+      ],
+      "altPl": "Własny filtr na InstaStory – Czy Twoja marka tego potrzebuje?",
+      "altEn": "Your own filter on InstaStory – Does your brand need it?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "295": {
+      "filename": "2017-01-pexels-photo-262545.jpeg",
+      "url": "/api/media/file/2017-01-pexels-photo-262545.jpeg",
+      "width": 940,
+      "height": 624,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "nowoscinafacebookujakjewykorzystacwbiznesie"
+      ],
+      "altPl": "Nowości na Facebooku – jak wykorzystać je w biznesie?",
+      "altEn": "New features on Facebook – how to use them in business?",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "296": {
+      "filename": "2017-06-blog.jpeg",
+      "url": "/api/media/file/2017-06-blog.jpeg",
+      "width": 940,
+      "height": 627,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "contentcuration"
+      ],
+      "altPl": "Content Curation",
+      "altEn": "Content Curation",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "297": {
+      "filename": "2017-05-Brutto-Grosika-Jodła-Show-i-bezglutenowe-ciastka.jpeg",
+      "url": "/api/media/file/2017-05-Brutto-Grosika-Jod%C5%82a-Show-i-bezglutenowe-ciastka.jpeg",
+      "width": 1600,
+      "height": 900,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "social-media-futbol"
+      ],
+      "altPl": "Social Media zmieniają polski futbol",
+      "altEn": "Social media is changing Polish football",
+      "verdict": "accept",
+      "reason": "PZPN / Polish national team branding is the subject — the post is about Polish football."
+    },
+    "298": {
+      "filename": "2017-01-zie.jpeg",
+      "url": "/api/media/file/2017-01-zie.jpeg",
+      "width": 940,
+      "height": 596,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "zie",
+      "altEn": "zie",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "299": {
+      "filename": "2017-04-zegar.jpg",
+      "url": "/api/media/file/2017-04-zegar.jpg",
+      "width": 940,
+      "height": 627,
+      "roles": [
+        "body"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "zegar",
+      "altEn": "clock",
+      "verdict": "accept",
+      "reason": "Stock photography, a brand mark, or interface already in English; no Polish an English reader could misread."
+    },
+    "300": {
+      "filename": "2017-04-zaro.jpg",
+      "url": "/api/media/file/2017-04-zaro.jpg",
+      "width": 940,
+      "height": 620,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "zzyciacd"
+      ],
+      "altPl": "Z życia Content Designera, czyli kilka słów o szukaniu inspiracji",
+      "altEn": "From the life of a Content Designer, or a few words about looking for inspiration",
+      "verdict": "accept",
+      "reason": "No Polish text in the image; nothing an English reader could misread."
+    }
+  }
+}
