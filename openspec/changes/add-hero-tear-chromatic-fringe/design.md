@@ -5,7 +5,7 @@ The tear (replace-hero-wardrobe-dissolve) shears the llama into seven bands that
 A 4-variant mock (artifact 7fb776e6, built from the production timing tables) settled the mechanism and the shortlist. Two findings from the mock carry over:
 
 - A deep-plum ghost is invisible against the plum ground; **cream + orange** is the pair that completes the torn-print read for variants A/B.
-- Freezing choreography by wall-clock timers misses the tear (the first style flush after creating band layers can start CSS animations late); verification must seek `animation.currentTime` via WAAPI.
+- Freezing choreography by wall-clock timers misses the tear (the first style flush after creating band layers can start CSS animations late); verification must seek `animation.currentTime` via WAAPI. Capture the `getAnimations({subtree: true})` references once at freeze time and reuse them for every seek: a finished fill-none animation stops being "relevant" and drops out of later `getAnimations()` queries, so any seek past 540 ms silently loses `tearShift`/ghost from a re-queried list (found implementing 2.3 — the held references stay seekable and rewinding makes them relevant again).
 
 ## Goals / Non-Goals
 

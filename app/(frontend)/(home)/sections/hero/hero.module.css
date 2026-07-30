@@ -171,13 +171,71 @@
   position: absolute;
   inset: 0;
   opacity: 0;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center bottom;
   animation-duration: 270ms, 1ms;
   animation-delay: 270ms, var(--flip);
   animation-timing-function: steps(1);
   animation-fill-mode: none, both;
+}
+
+/* The strip's look image lives on a child span, not the band's own
+   background: an element's background is always its lowest paint layer, so
+   nothing — not even a negative-z-index pseudo — can paint beneath it, and
+   the ghost inks must sit under the image (fringes peek past the silhouette
+   edge only). The band itself paints nothing; it carries the clip, the shear
+   animation, and the inherited `--look` both the span and the ghosts consume.
+   `--look` is unset until the first tear, and a failed var() substitution
+   computes to `none` — no image, no request, exactly as before. */
+.strip {
+  position: absolute;
+  inset: 0;
+  background-image: var(--look);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center bottom;
+}
+
+/* Chromatic misregistration ghosts (add-hero-tear-chromatic-fringe): two flat
+   inks per strip — cyan offset 10px left, red offset 10px right — masked by
+   the look's own alpha so they are exact silhouettes, drawn beneath the strip
+   image so they peek past its edge only and never tint the body. A static
+   mask bakes into the texture at rasterization exactly like the bands' static
+   clip; only opacity and transform ever animate. The mask cites the same
+   inherited `--look` the strip does — one URL, one cache entry — and until
+   the first tear `--look` is unset, so the pseudos hold no mask, no ink is
+   composited (opacity 0), and nothing rasterizes at load.
+
+   The inks are deliberately off-palette: a literal RGB split reads as press
+   misregistration, which the brand's own cream/orange could not do against
+   the plum ground (reviewed live A/B/C on dev, 2026-07-30 — this was the pick).
+
+   z-index: -1 keeps the inks under the strip image but inside the band's own
+   stacking context (its running transform/opacity animations establish one
+   whenever anything is visible). The band's clip-path clips its pseudos too,
+   so a ghost shifts sideways under a fixed strip window — misregistration
+   per strip, not a displaced copy of the whole llama. The parent band's
+   shear transform carries the ghosts; their own transform is only the
+   constant ±10px offset. No will-change, same as the bands. */
+.band::before,
+.band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background-color: #21e6ff;
+  mask-image: var(--look);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center bottom;
+  transform: translateX(-10px);
+  animation-duration: 540ms;
+  animation-timing-function: steps(1);
+  animation-fill-mode: none;
+}
+
+.band::after {
+  background-color: #ff2e5b;
+  transform: translateX(10px);
 }
 
 /* Three 90ms displacement steps, then home. `steps(1)` holds each keyframe for
@@ -213,6 +271,24 @@
     opacity: 1;
   }
   to {
+    opacity: 0;
+  }
+}
+
+/* Ghost window: 540ms of steps(1) with no delay holds 0 through the first
+   half, jumps to the ink opacity exactly at 270ms (the tear's first
+   displacement) and back to the declared 0 exactly at 540ms (displacement
+   settles) — hard steps, no fade, per the fringe spec. Which layer's ghosts
+   actually show is gated by the band's own cutOn/cutOff handoff, so each
+   strip fringes the look it is currently drawing. */
+@keyframes ghostA {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
     opacity: 0;
   }
 }
@@ -256,6 +332,18 @@
   }
 }
 
+@keyframes ghostB {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .tearA .bandsOut {
   animation-name: cutOnA;
 }
@@ -267,6 +355,10 @@
 }
 .tearA .bandsIn .band {
   animation-name: tearShiftA, cutOnA;
+}
+.tearA .band::before,
+.tearA .band::after {
+  animation-name: ghostA;
 }
 .tearA .lookOut {
   animation: cutOffA 1ms steps(1) 270ms both;
@@ -286,6 +378,10 @@
 }
 .tearB .bandsIn .band {
   animation-name: tearShiftB, cutOnB;
+}
+.tearB .band::before,
+.tearB .band::after {
+  animation-name: ghostB;
 }
 .tearB .lookOut {
   animation: cutOffB 1ms steps(1) 270ms both;

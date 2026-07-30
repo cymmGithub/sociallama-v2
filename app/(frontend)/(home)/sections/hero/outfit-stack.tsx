@@ -62,6 +62,14 @@ const TEAR_TABLE: readonly TearBand[] = [
  * look-01 was the case that blocked this last time). The whole schedule lives
  * in CSS keyframes; JS only toggles a class and writes the band geometry.
  *
+ * Each strip carries two flat-ink ghost silhouettes of its own look, offset
+ * left and right, visible only while the bands are displaced
+ * (add-hero-tear-chromatic-fringe) — the reason the strip image sits on a
+ * child span rather than the band's own background: the ghosts are the band's
+ * pseudo-elements, and an element's background can never be painted over by
+ * them. The served look URL therefore rides the band as `--look`, which both
+ * consumers read.
+ *
  * Rendered once per breakpoint (`positionClass` supplies the desktop absolute
  * box or the mobile media box); the 5 URLs are identical, so the browser still
  * fetches only 5 files no matter how many instances mount.
@@ -142,7 +150,10 @@ export function HeroLooks({
   // appended (`?dpl=…`), and a bare lookUrl() background is a different cache
   // key — every look re-downloaded on its first tear, then revalidated on
   // every later one. currentSrc is only read once a tear fires, long after
-  // the imgs mounted, and falls back to lookUrl() before then.
+  // the imgs mounted, and falls back to lookUrl() before then. The URL rides
+  // the band as an inherited `--look` custom property because two consumers
+  // share it: the strip span's background-image and the ghost pseudos'
+  // mask-image — a second URL string would be a second cache key again.
   const lookRefs = useRef<(HTMLImageElement | null)[]>([])
   const servedUrl = (i: number) => lookRefs.current[i]?.currentSrc || lookUrl(i)
   const outgoing = hasTorn ? `url(${servedUrl(track.prev)})` : undefined
@@ -188,8 +199,10 @@ export function HeroLooks({
             className={s.band}
             // biome-ignore lint/suspicious/noArrayIndexKey: the band grid is a fixed-length ladder of strips, not a reorderable list
             key={i}
-            style={{ ...band, backgroundImage: outgoing } as CSSProperties}
-          />
+            style={{ ...band, '--look': outgoing } as CSSProperties}
+          >
+            <span className={s.strip} />
+          </div>
         ))}
       </div>
       <div className={cn(s.bandLayer, s.bandsIn)}>
@@ -198,8 +211,10 @@ export function HeroLooks({
             className={s.band}
             // biome-ignore lint/suspicious/noArrayIndexKey: the band grid is a fixed-length ladder of strips, not a reorderable list
             key={i}
-            style={{ ...band, backgroundImage: incoming } as CSSProperties}
-          />
+            style={{ ...band, '--look': incoming } as CSSProperties}
+          >
+            <span className={s.strip} />
+          </div>
         ))}
       </div>
     </div>

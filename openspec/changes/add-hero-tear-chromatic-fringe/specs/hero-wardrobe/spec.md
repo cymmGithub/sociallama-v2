@@ -6,13 +6,11 @@ During a tear, each band strip SHALL draw flat-color ghost silhouettes of its ow
 
 Ghosts SHALL be visible only while the bands are displaced — switching on at 270 ms and off at 540 ms after the rotator tick, in hard steps on the same stepped schedule as the tear — and SHALL ride each band's own shear displacement at a constant additional offset of ±G. At rest and between transitions no ghost SHALL be drawn anywhere, and the settled frame SHALL be pixel-identical to the pre-change hero.
 
-The shipped fringe SHALL use exactly one of the following candidate variants, selected by the user during live review on the dev server (the losing rows are deleted and this table is locked to the chosen values before archive):
+The fringe SHALL use these values — a literal RGB split, deliberately off-palette, picked by the user in live review on the dev server against two brand-palette alternatives:
 
-| Variant | Left ink | Right ink | G | Opacity |
-| --- | --- | --- | --- | --- |
-| A | cream `#faf9f5` | orange `#f09b39` | 6 px | 0.35 |
-| B | cream `#faf9f5` | orange `#f09b39` | 14 px | 0.60 |
-| C | cyan `#21e6ff` | red `#ff2e5b` | 10 px | 0.50 |
+| Left ink | Right ink | G | Opacity |
+| --- | --- | --- | --- |
+| cyan `#21e6ff` | red `#ff2e5b` | 10 px | 0.50 |
 
 #### Scenario: Fringe exists only inside the displacement window
 
