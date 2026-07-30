@@ -16,7 +16,7 @@ export const postCta = {
 
 export const postNewsletter = {
   title: 'NewsLAMA raz w miesiącu',
-  text: 'Jeden mail, trzy rzeczy, które faktycznie zmieniły się w social mediach. Bez „10 trendów, które musisz znać”.',
+  text: 'Jeden mail, trzy rzeczy, które faktycznie zmieniły się w\u00A0social mediach. Bez „10 trendów, które musisz znać”.',
   placeholder: 'Twój adres e-mail',
   label: 'Zapisz się',
   note: 'Możesz wypisać się jednym kliknięciem. Nie wysyłamy nic poza newsletterem.',
@@ -25,7 +25,7 @@ export const postNewsletter = {
    * `foo_` convention), so the reader-facing wording is mapped here.
    */
   messages: {
-    success: 'Jesteś na liście. Sprawdź skrzynkę i potwierdź zapis.',
+    success: 'Jesteś na liście. Sprawdź skrzynkę i\u00A0potwierdź zapis.',
     invalidEmail: 'Ten adres e-mail wygląda na niepoprawny.',
     failure: 'Nie udało się zapisać. Spróbuj ponownie za chwilę.',
   },
@@ -69,8 +69,8 @@ export const postAuthor = {
  */
 export const hub = {
   eyebrow: 'Blog Social Lamy',
-  title: 'Co działa w social mediach — i dlaczego',
-  lead: 'Konkretne rozbiórki kampanii, liczby zamiast trendów i rzeczy, które sprawdziliśmy na własnych klientach, zanim je tu opisaliśmy.',
+  title: 'Co działa w\u00A0social mediach — i\u00A0dlaczego',
+  lead: 'Konkretne rozbiórki kampanii, liczby zamiast trendów i\u00A0rzeczy, które sprawdziliśmy na własnych klientach, zanim je tu opisaliśmy.',
   categoriesAria: 'Kategorie',
   allCategories: 'Wszystkie',
   picksTitle: 'Wybór redakcji',
@@ -88,7 +88,7 @@ export const hub = {
  */
 export const hubPromo = {
   title: 'Nie tylko piszemy — robimy',
-  text: 'Zobacz, jak te zasady wyglądają w prawdziwych kampaniach.',
+  text: 'Zobacz, jak te zasady wyglądają w\u00A0prawdziwych kampaniach.',
   label: 'Zobacz case studies',
   href: '/case-studies',
 } as const

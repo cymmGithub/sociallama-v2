@@ -76,7 +76,7 @@ export const contactForm = {
     services: { label: 'Czego dotyczy?', optional: 'opcjonalnie' },
     message: {
       label: 'Twoja wiadomość',
-      placeholder: 'Opowiedz nam krótko o swoim projekcie.',
+      placeholder: 'Opowiedz nam krótko o\u00A0swoim projekcie.',
     },
   },
   submit: {
@@ -86,11 +86,11 @@ export const contactForm = {
     error: 'Spróbuj ponownie',
   },
   // Reassurance next to the submit pill — aligned to the lede's 24h promise.
-  note: 'Odzywamy się w 24h, w dni robocze.',
+  note: 'Odzywamy się w\u00A024h, w\u00A0dni robocze.',
   // RODO note near the submit row. Split so the component can wrap only the
   // link in <Link>; the href points at the existing privacy page.
   privacyNote: {
-    text: 'Twoje dane wykorzystamy tylko po to, żeby odpowiedzieć na wiadomość (i oddzwonić, jeśli zostawisz numer).',
+    text: 'Twoje dane wykorzystamy tylko po to, żeby odpowiedzieć na wiadomość (i\u00A0oddzwonić, jeśli zostawisz numer).',
     linkLabel: 'Polityka prywatności',
     linkHref: '/polityka-prywatnosci',
   },
@@ -110,7 +110,7 @@ export const contactForm = {
     success: 'Dzięki! Odezwiemy się najszybciej, jak to możliwe.',
     error: 'Nie udało się wysłać wiadomości. Spróbuj ponownie za chwilę.',
     security: 'Weryfikacja bezpieczeństwa nie powiodła się. Odśwież stronę.',
-    rateLimit: 'Za dużo prób. Odczekaj chwilę i spróbuj ponownie.',
+    rateLimit: 'Za dużo prób. Odczekaj chwilę i\u00A0spróbuj ponownie.',
   },
   // Per-field validation messages. Used server-side by the Zod schema and
   // client-side via the form kit's `invalidMessage` formatter.
@@ -127,7 +127,7 @@ export const contactForm = {
 // —— Metrics band ————————————————————————————————————————————————————————————
 
 // Intro line above the numbers (mock's band head, next to the Smile icon).
-export const contactMetricsHead = 'Kilka liczb o tym, co robimy dla marek:'
+export const contactMetricsHead = 'Kilka liczb o\u00A0tym, co robimy dla marek:'
 
 export const contactMetrics = [
   { value: '500 000', caption: 'zaangażowanych fanów' },

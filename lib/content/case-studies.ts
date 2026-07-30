@@ -14,7 +14,7 @@ export const caseStudiesListing = {
     'Case studies Social Lama — realne efekty naszej pracy w social mediach: strategie, kampanie i twarde liczby dla marek z handlu, nieruchomości, FMCG, rozrywki i e-commerce.',
   heading: 'Case studies',
   subhead:
-    'Jak pracujemy i co z tego wynika — wybrane projekty Social Lama wraz z liczbami, które je opisują.',
+    'Jak pracujemy i\u00A0co z\u00A0tego wynika — wybrane projekty Social Lama wraz z\u00A0liczbami, które je opisują.',
   cardRead: 'ZOBACZ CASE STUDY',
   empty: {
     title: 'Już wkrótce',
@@ -38,7 +38,7 @@ export const caseStudyChrome = {
   // competing with the conversion one.
   cta: {
     title: 'Zbudujmy coś podobnego dla Twojej marki',
-    text: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
+    text: 'Opowiedz nam o\u00A0swoim wyzwaniu — pokażemy, jak możemy pomóc.',
     primary: 'Porozmawiajmy o Twoim biznesie',
   },
 } as const

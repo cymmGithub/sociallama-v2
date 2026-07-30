@@ -30,8 +30,8 @@ export default function PrivacyPolicyPage() {
         <header className={s.header}>
           <h1 className={s.title}>Polityka prywatności</h1>
           <p className={s.lead}>
-            Polityka prywatności i informacja o sposobie ochrony danych
-            osobowych użytkowników strony internetowej.
+            Polityka prywatności i&nbsp;informacja o&nbsp;sposobie ochrony
+            danych osobowych użytkowników strony internetowej.
           </p>
         </header>
 
@@ -39,19 +39,20 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 1. Administrator</h2>
           <ol>
             <li>
-              Administratorem danych osobowych jest Good One sp. z o.o. z
-              siedzibą we Wrocławiu, ul. Januszowicka 5/121; 53-135 Wrocław,
-              NIP: 525-287-21-79; KRS: 0000914751; REGON: 389646858
+              Administratorem danych osobowych jest Good One sp. z&nbsp;o.o.
+              z&nbsp;siedzibą we Wrocławiu, ul. Januszowicka 5/121;
+              53-135&nbsp;Wrocław, NIP: 525-287-21-79; KRS: 0000914751; REGON:
+              389646858
             </li>
             <li>
               (dalej „<strong>Administrator</strong>”), który przykłada dużą
-              wagę do ochrony prywatności i poufności danych osobowych swoich
-              Klientów i innych osób fizycznych, których dane są przez
-              Administratora przetwarzane (zwanych dalej „
+              wagę do ochrony prywatności i&nbsp;poufności danych osobowych
+              swoich Klientów i&nbsp;innych osób fizycznych, których dane są
+              przez Administratora przetwarzane (zwanych dalej „
               <strong>Użytkownikami</strong>”).
             </li>
             <li>
-              Z Administratorem można kontaktować się pisemnie, kierując
+              Z&nbsp;Administratorem można kontaktować się pisemnie, kierując
               korespondencję na adres siedziby Administratora, e-mailowo pod
               adresem: kontakt@goodone.co lub poprzez wypełnienie formularza
               kontaktowego dostępnego na stronie internetowej Administratora.
@@ -64,89 +65,98 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 2. Zasady przetwarzania danych osobowych</h2>
           <ol>
             <li>
-              Administrator przetwarza dane osobowe w minimalnym zakresie
+              Administrator przetwarza dane osobowe w&nbsp;minimalnym zakresie
               koniecznym do realizacji celów ich przetwarzania, określonych
               jasno niniejszą Polityką Prywatności.
             </li>
             <li>
-              Administrator z należytą starannością dobiera i stosuje
-              odpowiednie środki techniczne i organizacyjne zapewniające ochronę
-              przetwarzanych danych osobowych. Pełen dostęp do baz danych
-              posiadają jedynie osoby należycie uprawnione przez Administratora.
+              Administrator z&nbsp;należytą starannością dobiera i&nbsp;stosuje
+              odpowiednie środki techniczne i&nbsp;organizacyjne zapewniające
+              ochronę przetwarzanych danych osobowych. Pełen dostęp do baz
+              danych posiadają jedynie osoby należycie uprawnione przez
+              Administratora.
             </li>
             <li>
               Administrator zabezpiecza dane osobowe przed ich udostępnieniem
-              osobom nieupoważnionym, jak również przed ich przetwarzaniem z
-              naruszeniem obowiązujących przepisów prawa. Administrator
+              osobom nieupoważnionym, jak również przed ich przetwarzaniem
+              z&nbsp;naruszeniem obowiązujących przepisów prawa. Administrator
               przetwarzając dane osobowe stosuje rozwiązania dostosowane do
-              skali i charakteru przetwarzania zapewniając osobom, których dane
-              dotyczą, najwyższy stopień ochrony wynikający zarówno ze
-              stosowanych rozwiązań technologicznych, jak i organizacyjnych.
+              skali i&nbsp;charakteru przetwarzania zapewniając osobom, których
+              dane dotyczą, najwyższy stopień ochrony wynikający zarówno ze
+              stosowanych rozwiązań technologicznych, jak
+              i&nbsp;organizacyjnych.
             </li>
             <li>
-              Przetwarzane będą następujące dane osobowe: imię i nazwisko, adres
-              e-mail, nr telefonu.
+              Przetwarzane będą następujące dane osobowe: imię i&nbsp;nazwisko,
+              adres e-mail, nr telefonu.
             </li>
           </ol>
 
           <h2>Artykuł 3. Podstawa przetwarzania danych osobowych</h2>
           <ol>
             <li>
-              Podane przez Użytkownika dane osobowe przetwarzane są zgodnie z
-              niniejszą Polityką Prywatności oraz obowiązującymi przepisami
-              prawa, w szczególności zgodnie z rozporządzeniem Parlamentu
-              Europejskiego i Rady (UE) 2016/679 z 27.04.2016 r. w sprawie
-              ochrony osób fizycznych w związku z przetwarzaniem danych
-              osobowych i w sprawie swobodnego przepływu takich danych oraz
-              uchylenia dyrektywy 95/46/WE z dnia 27 kwietnia 2016 r. („RODO”).
+              Podane przez Użytkownika dane osobowe przetwarzane są zgodnie
+              z&nbsp;niniejszą Polityką Prywatności oraz obowiązującymi
+              przepisami prawa, w&nbsp;szczególności zgodnie
+              z&nbsp;rozporządzeniem Parlamentu Europejskiego i&nbsp;Rady (UE)
+              2016/679 z&nbsp;27.04.2016 r. w&nbsp;sprawie ochrony osób
+              fizycznych w&nbsp;związku z&nbsp;przetwarzaniem danych osobowych
+              i&nbsp;w&nbsp;sprawie swobodnego przepływu takich danych oraz
+              uchylenia dyrektywy 95/46/WE z&nbsp;dnia 27 kwietnia 2016 r.
+              („RODO”).
             </li>
             <li>
               Podanie danych osobowych jest dobrowolne, jednakże ich niepodanie
-              spowoduje, że zawarcie i realizacja umowy, przesłanie zapytania
-              lub wykonanie wnioskowanych czynności będzie niemożliwe.
+              spowoduje, że zawarcie i&nbsp;realizacja umowy, przesłanie
+              zapytania lub wykonanie wnioskowanych czynności będzie niemożliwe.
             </li>
             <li>Podstawą przetwarzania danych osobowych jest:</li>
           </ol>
           <ul>
             <li>
-              6 ust. 1 lit. a RODO – w zakresie danych osobowych uzyskanych za
-              pomocą zgody, na warunkach określonych w art. 7 RODO;
+              6 ust. 1 lit. a&nbsp;RODO – w&nbsp;zakresie danych osobowych
+              uzyskanych za pomocą zgody, na warunkach określonych w&nbsp;art. 7
+              RODO;
             </li>
             <li>
-              6 ust. 1 lit. b RODO – w zakresie danych podawanych dobrowolnie w
-              celu udzielania odpowiedzi na wszelkie skierowane zapytania lub
-              wnioski oraz prowadzenie dalszej korespondencji czy kontaktu przed
-              zawarciem umowy, jak również przygotowania i realizacji Umowy
-              pomiędzy Użytkownikiem a Administratorem lub podmiotem, któremu
-              Administrator zleca wykonanie Umowy.
+              6 ust. 1 lit. b RODO – w&nbsp;zakresie danych podawanych
+              dobrowolnie w&nbsp;celu udzielania odpowiedzi na wszelkie
+              skierowane zapytania lub wnioski oraz prowadzenie dalszej
+              korespondencji czy kontaktu przed zawarciem umowy, jak również
+              przygotowania i&nbsp;realizacji Umowy pomiędzy Użytkownikiem
+              a&nbsp;Administratorem lub podmiotem, któremu Administrator zleca
+              wykonanie Umowy.
             </li>
           </ul>
           <p>
             Podanie danych jest dobrowolne, jednak niezbędne do realizacji Umowy
-            lub prowadzenia korespondencji z Administratorem.
+            lub prowadzenia korespondencji z&nbsp;Administratorem.
           </p>
           <ul>
             <li>
-              6 ust. 1 lit. f RODO – w zakresie danych przetwarzanych w związku
-              z realizacją prawnie uzasadnionych celów Administratora.
+              6 ust. 1 lit. f RODO – w&nbsp;zakresie danych przetwarzanych
+              w&nbsp;związku z&nbsp;realizacją prawnie uzasadnionych celów
+              Administratora.
             </li>
           </ul>
           <ol>
             <li>
               Administrator może przetwarzać dane osób trzecich udostępnione
-              przez Użytkowników w celu lub w związku ze świadczeniem usług
-              przez Administratora. Użytkownik, przekazując Administratorowi
-              dane osób trzecich, każdorazowo oświadcza, że posiada stosowną
-              zgodę osób trzecich na przekazanie ich danych Administratorowi.
+              przez Użytkowników w&nbsp;celu lub w&nbsp;związku ze świadczeniem
+              usług przez Administratora. Użytkownik, przekazując
+              Administratorowi dane osób trzecich, każdorazowo oświadcza, że
+              posiada stosowną zgodę osób trzecich na przekazanie ich danych
+              Administratorowi.
             </li>
             <li>
-              Użytkownik w razie zmiany danych osobowych, o których mowa w
-              niniejszej Polityce Prywatności, poinformuje niezwłocznie
-              Administratora w celu aktualizacji danych osobowych.
+              Użytkownik w&nbsp;razie zmiany danych osobowych, o&nbsp;których
+              mowa w&nbsp;niniejszej Polityce Prywatności, poinformuje
+              niezwłocznie Administratora w&nbsp;celu aktualizacji danych
+              osobowych.
             </li>
             <li>
-              Administrator nie stosuje wobec Użytkowników profilowania w
-              rozumieniu art. 4 pkt 4) RODO.
+              Administrator nie stosuje wobec Użytkowników profilowania
+              w&nbsp;rozumieniu art. 4 pkt 4) RODO.
             </li>
           </ol>
 
@@ -157,54 +167,57 @@ export default function PrivacyPolicyPage() {
           </p>
           <ul>
             <li>
-              w zakresie prowadzenia korespondencji – dane osobowe będą
+              w&nbsp;zakresie prowadzenia korespondencji – dane osobowe będą
               przechowywane przez okres niezbędny do obsługi zapytania, tj.
               okres trwania korespondencji uzasadniony rodzajem zapytania
               (jednak nie dłużej niż przez okres 6 miesięcy od daty zakończenia
               korespondencji).
             </li>
             <li>
-              w zakresie wykonania umowy – do czasu zakończenia realizacji
-              umowy, a po tym czasie przez okres wymagany przez przepisy prawa
-              lub dla realizacji ewentualnych roszczeń, jakie może podnosić
-              Administrator i jakie mogą być podnoszone wobec Administratora;
+              w&nbsp;zakresie wykonania umowy – do czasu zakończenia realizacji
+              umowy, a&nbsp;po tym czasie przez okres wymagany przez przepisy
+              prawa lub dla realizacji ewentualnych roszczeń, jakie może
+              podnosić Administrator i&nbsp;jakie mogą być podnoszone wobec
+              Administratora;
             </li>
             <li>
-              w zakresie wypełniania obowiązku prawnego ciążącego na
+              w&nbsp;zakresie wypełniania obowiązku prawnego ciążącego na
               Administratorze – do czasu jego wypełnienia;
             </li>
             <li>
-              w zakresie realizacji prawnie uzasadnionych interesów przez
+              w&nbsp;zakresie realizacji prawnie uzasadnionych interesów przez
               Administratora lub przez stronę trzecią – do czasu ich realizacji
               lub do czasu wniesienia przez Użytkownika sprzeciwu wobec
-              przetwarzania danych osobowych, o ile nie występują uzasadnione
-              podstawy dalszego przetwarzania;
+              przetwarzania danych osobowych, o&nbsp;ile nie występują
+              uzasadnione podstawy dalszego przetwarzania;
             </li>
             <li>
-              w zakresie przetwarzania realizowanego wyłącznie w oparciu o zgodę
-              – do czasu niezwłocznego usunięcia danych, zrealizowanego w
-              oparciu o zgłoszone przez Użytkownika żądanie.
+              w&nbsp;zakresie przetwarzania realizowanego wyłącznie
+              w&nbsp;oparciu o&nbsp;zgodę – do czasu niezwłocznego usunięcia
+              danych, zrealizowanego w&nbsp;oparciu o&nbsp;zgłoszone przez
+              Użytkownika żądanie.
             </li>
           </ul>
 
           <h2>Artykuł 5. Prawa Użytkownika</h2>
           <ol>
             <li>
-              W związku z przetwarzaniem danych osobowych przez Administratora,
-              Użytkownik ma prawo do:
+              W&nbsp;związku z&nbsp;przetwarzaniem danych osobowych przez
+              Administratora, Użytkownik ma prawo do:
             </li>
             <li>żądania dostępu do danych osobowych – art. 15;</li>
           </ol>
           <p>
             Na żądanie Użytkownika dotyczące dostępu do jego danych
             Administrator informuje Użytkownika, czy przetwarza jego dane, oraz
-            informuje Użytkownika o szczegółach przetwarzania zgodnie z RODO, a
-            także udziela Użytkownikowi dostępu do danych go dotyczących. Dostęp
-            do danych będzie zrealizowany przez przesłanie kopii danych drogą
-            elektroniczną. W przypadku żądania dostarczenia kolejnej kopii
-            danych w formie papierowej Administrator ma prawo obciążyć
-            Użytkownika kosztami związanymi z ich przygotowaniem w takiej formie
-            i wysłaniem zgodnie z art. 15 ust. 3 RODO.
+            informuje Użytkownika o&nbsp;szczegółach przetwarzania zgodnie
+            z&nbsp;RODO, a&nbsp;także udziela Użytkownikowi dostępu do danych go
+            dotyczących. Dostęp do danych będzie zrealizowany przez przesłanie
+            kopii danych drogą elektroniczną. W&nbsp;przypadku żądania
+            dostarczenia kolejnej kopii danych w&nbsp;formie papierowej
+            Administrator ma prawo obciążyć Użytkownika kosztami związanymi
+            z&nbsp;ich przygotowaniem w&nbsp;takiej formie i&nbsp;wysłaniem
+            zgodnie z&nbsp;art. 15 ust. 3 RODO.
           </p>
           <ol>
             <li>prawo do sprostowania danych osobowych – 16 RODO;</li>
@@ -217,59 +230,62 @@ export default function PrivacyPolicyPage() {
             <li>prawo do żądania usunięcia danych osobowych – art. 17 RODO;</li>
           </ol>
           <p>
-            Prawo to obowiązuje w zakresie, w jakim usunięcie danych nie stoi w
-            sprzeczności z obowiązującymi Administratora przepisami,
+            Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim usunięcie danych
+            nie stoi w&nbsp;sprzeczności z&nbsp;obowiązującymi Administratora
+            przepisami,
           </p>
           <ol>
             <li>prawo do ograniczenia przetwarzania danych – art. 18 RODO;</li>
           </ol>
           <p>
-            Prawo to obowiązuje w zakresie, w jakim Administrator może
-            ograniczyć przetwarzanie danych osobowych w kontekście
-            obowiązujących go przepisów oraz w jakim nie narusza to prawa
+            Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim Administrator może
+            ograniczyć przetwarzanie danych osobowych w&nbsp;kontekście
+            obowiązujących go przepisów oraz w&nbsp;jakim nie narusza to prawa
             Administratora do dochodzenia swoich roszczeń od Użytkownika.
           </p>
           <ol>
             <li>przenoszenia danych – art. 20 RODO;</li>
           </ol>
           <p>
-            Na żądanie Użytkownika Administrator wydaje w ustrukturyzowanym,
-            powszechnie używanym formacie nadającym się do odczytu maszynowego
-            lub przekazuje innemu podmiotowi, jeśli jest to możliwe, dane
-            dotyczące Użytkownika, który dostarczył je w celu zawarcia lub
-            wykonania Umowy lub które przetwarzane są na podstawie zgody.
+            Na żądanie Użytkownika Administrator wydaje
+            w&nbsp;ustrukturyzowanym, powszechnie używanym formacie nadającym
+            się do odczytu maszynowego lub przekazuje innemu podmiotowi, jeśli
+            jest to możliwe, dane dotyczące Użytkownika, który dostarczył je
+            w&nbsp;celu zawarcia lub wykonania Umowy lub które przetwarzane są
+            na podstawie zgody.
           </p>
           <ol>
             <li>wniesienia sprzeciwu wobec przetwarzania – art. 21 RODO;</li>
           </ol>
           <p>
             Jeżeli Użytkownik zgłosi umotywowany jego szczególną sytuacją
-            sprzeciw względem przetwarzania jego danych a dane są przetwarzane
-            przez Administratora w oparciu o uzasadniony interes Administratora,
-            Administrator uwzględni sprzeciw, o ile nie zachodzą po stronie
-            Administratora ważne prawnie uzasadnione podstawy do przetwarzania,
-            nadrzędne wobec interesów, praw i wolności osoby zgłaszającej
-            sprzeciw, lub podstawy do ustalenia, dochodzenia lub obrony
-            roszczeń.
+            sprzeciw względem przetwarzania jego danych a&nbsp;dane są
+            przetwarzane przez Administratora w&nbsp;oparciu o&nbsp;uzasadniony
+            interes Administratora, Administrator uwzględni sprzeciw, o&nbsp;ile
+            nie zachodzą po stronie Administratora ważne prawnie uzasadnione
+            podstawy do przetwarzania, nadrzędne wobec interesów, praw
+            i&nbsp;wolności osoby zgłaszającej sprzeciw, lub podstawy do
+            ustalenia, dochodzenia lub obrony roszczeń.
           </p>
           <ol>
             <li>
-              cofnięcia zgody na przewarzanie danych, bez wpływu na zgodność z
-              prawem przetwarzania, którego dokonano na postawie zgody przed jej
-              cofnięciem – art. 7 ust. 3 RODO;
+              cofnięcia zgody na przewarzanie danych, bez wpływu na zgodność
+              z&nbsp;prawem przetwarzania, którego dokonano na postawie zgody
+              przed jej cofnięciem&nbsp;–
+              art.&nbsp;7&nbsp;ust.&nbsp;3&nbsp;RODO;
             </li>
             <li>wniesienia skargi do organu nadzorczego – art. 77 RODO.</li>
             <li>
-              Jeżeli Administrator nie będzie w stanie ustalić treści żądania
-              lub zidentyfikować osoby realizującej ww. uprawnienia w oparciu o
-              dokonane zgłoszenie, zwróci się do wnioskodawcy o dodatkowe
-              informacje.
+              Jeżeli Administrator nie będzie w&nbsp;stanie ustalić treści
+              żądania lub zidentyfikować osoby realizującej ww. uprawnienia
+              w&nbsp;oparciu o&nbsp;dokonane zgłoszenie, zwróci się do
+              wnioskodawcy o&nbsp;dodatkowe informacje.
             </li>
             <li>
-              Odpowiedź na zgłoszenia zostanie udzielona najpóźniej w ciągu
-              miesiąca od jego otrzymania. W razie konieczności przedłużenia
-              tego terminu, Administrator poinformuje wnioskodawcę o przyczynach
-              takiego przedłużenia.
+              Odpowiedź na zgłoszenia zostanie udzielona najpóźniej w&nbsp;ciągu
+              miesiąca od jego otrzymania. W&nbsp;razie konieczności
+              przedłużenia tego terminu, Administrator poinformuje wnioskodawcę
+              o&nbsp;przyczynach takiego przedłużenia.
             </li>
           </ol>
 
@@ -278,17 +294,18 @@ export default function PrivacyPolicyPage() {
             <li>
               Dane osobowe będą udostępniane jedynie uprawnionym podmiotom, tj.
               upoważnionym pracownikom Administratora oraz innym osobom
-              działającym z upoważnienia Administratora, oraz innym podmiotom
-              upoważnionym do odbioru danych Użytkownika na podstawie
+              działającym z&nbsp;upoważnienia Administratora, oraz innym
+              podmiotom upoważnionym do odbioru danych Użytkownika na podstawie
               odpowiednich przepisów prawa, jak również podmiotom świadczącym
               usługi na rzecz Administratora usług IT. Dane osobowe Użytkowników
-              mogą być przekazywane innym podmiotom – w przypadkach
+              mogą być przekazywane innym podmiotom – w&nbsp;przypadkach
               niewskazanych przez Administratora bądź przepisy prawa – tylko za
               zgodą Użytkownika.
             </li>
             <li>
               Administrator zobowiązuje się do nieprzekazywania danych osobowych
-              Użytkowników do krajów trzecich i organizacji międzynarodowych.
+              Użytkowników do krajów trzecich i&nbsp;organizacji
+              międzynarodowych.
             </li>
             <li>
               Administrator zobowiąże wszelkie podmioty, którym powierzy dane
@@ -300,43 +317,44 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 7. Pliki Cookies</h2>
           <ol>
             <li>
-              W serwisie internetowym www.sociallama.pl („Serwis”) stosuje się
-              dane informatyczne przechowywane w urządzeniach końcowych
-              użytkowników Serwisu, tj. w szczególności pliki tekstowe,
-              zawierające m.in. nazwę strony internetowej, z której pochodzą,
-              czas przechowywania ich na urządzeniu końcowym oraz unikalny numer
-              („Cookies”).
+              W&nbsp;serwisie internetowym www.sociallama.pl („Serwis”) stosuje
+              się dane informatyczne przechowywane w&nbsp;urządzeniach końcowych
+              użytkowników Serwisu, tj. w&nbsp;szczególności pliki tekstowe,
+              zawierające m.in. nazwę strony internetowej, z&nbsp;której
+              pochodzą, czas przechowywania ich na urządzeniu końcowym oraz
+              unikalny numer („Cookies”).
             </li>
             <li>
-              Na podstawie art. 173 ust. 1 ustawy Prawo telekomunikacyjne z dnia
-              16 lipca 2004 r. (Dz. U. z 2021 r. poz. 576) Administrator
-              niniejszym informuje, że:
+              Na podstawie art. 173 ust. 1 ustawy Prawo telekomunikacyjne
+              z&nbsp;dnia 16 lipca 2004 r. (Dz. U. z&nbsp;2021 r. poz. 576)
+              Administrator niniejszym informuje, że:
             </li>
             <li>
-              pliki Cookies są stosowane w Serwisie w celu ułatwienia
-              korzystania z Serwisu, pozwalają dostosowywać treści dostępne w
-              Serwisie do indywidualnych potrzeb i preferencji użytkowników
-              Serwisu, jak również służą do opracowywania ogólnych statystyk
-              dotyczących korzystania z Serwisu.
+              pliki Cookies są stosowane w&nbsp;Serwisie w&nbsp;celu ułatwienia
+              korzystania z&nbsp;Serwisu, pozwalają dostosowywać treści dostępne
+              w&nbsp;Serwisie do indywidualnych potrzeb i&nbsp;preferencji
+              użytkowników Serwisu, jak również służą do opracowywania ogólnych
+              statystyk dotyczących korzystania z&nbsp;Serwisu.
             </li>
             <li>
               dane osobowe gromadzone przy użyciu plików Cookies są zbierane
-              wyłącznie w celu wykonywania określonych funkcji na rzecz
-              użytkowników i są zaszyfrowane w sposób uniemożliwiający dostęp do
-              nich osobom nieuprawnionym.
+              wyłącznie w&nbsp;celu wykonywania określonych funkcji na rzecz
+              użytkowników i&nbsp;są zaszyfrowane w&nbsp;sposób uniemożliwiający
+              dostęp do nich osobom nieuprawnionym.
             </li>
             <li>
               użytkownik Serwisu ma możliwość wyrażenia zgody na stosowanie
-              Cookies poprzez dokonanie odpowiednich ustawień w swojej
-              przeglądarce internetowej (w szczególności umożliwienie lub
+              Cookies poprzez dokonanie odpowiednich ustawień w&nbsp;swojej
+              przeglądarce internetowej (w&nbsp;szczególności umożliwienie lub
               zablokowanie stosowania plików „cookies”).
             </li>
             <li>
-              użytkownik Serwisu może dokonać w każdym czasie zmiany ustawień
-              dotyczących Cookies – szczegółowe informacje o możliwości i
-              sposobach obsługi plików Cookies dostępne są w ustawieniach
-              oprogramowania (przeglądarki internetowej). Przykładowe opcje
-              edytowania ustawień w popularnych przeglądarkach:
+              użytkownik Serwisu może dokonać w&nbsp;każdym czasie zmiany
+              ustawień dotyczących Cookies – szczegółowe informacje
+              o&nbsp;możliwości i&nbsp;sposobach obsługi plików Cookies dostępne
+              są w&nbsp;ustawieniach oprogramowania (przeglądarki internetowej).
+              Przykładowe opcje edytowania ustawień w&nbsp;popularnych
+              przeglądarkach:
             </li>
           </ol>
           <ul>

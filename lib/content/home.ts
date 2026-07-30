@@ -333,7 +333,7 @@ export const clientCardCta = {
 export const clients = {
   'a1-karting': {
     numbers:
-      '3,7 mln wyświetleń na Facebooku i o 397% więcej interakcji z zawartością.',
+      '3,7 mln wyświetleń na Facebooku i\u00A0o\u00A0397% więcej interakcji z\u00A0zawartością.',
     metrics: [
       { label: 'Wyświetlenia · TikTok', value: '767 tys.' },
       { label: 'Wyświetlenia · Instagram', value: '552,1 tys.' },
@@ -347,7 +347,7 @@ export const clients = {
   aquael: {
     testimonial: {
       quote:
-        'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty.',
+        'Social Lama jest agencją, która w\u00A0pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o\u00A0kolejne projekty.',
       author: 'Beata Nartowska',
       company: 'Aquael',
       image: '/assets/testimonial-nartowska.jpg',
@@ -357,7 +357,7 @@ export const clients = {
   // on the one audience-scale figure it carries and the rows keep the volume.
   asus: {
     numbers:
-      '26 000 000 polubień na Facebooku i 44 materiały o funkcjach ASUS AI w 6 tygodni.',
+      '26 000 000 polubień na Facebooku i\u00A044 materiały o\u00A0funkcjach ASUS AI w\u00A06 tygodni.',
     metrics: [
       { label: 'Filmy o AI · YouTube', value: '4' },
       { label: 'Reelsy z @technokrata', value: '5' },
@@ -366,7 +366,7 @@ export const clients = {
   },
   'dolina-charlotty': {
     numbers:
-      '15,5 mln wyświetleń na Facebooku i wzrost wyświetleń na Instagramie o 1706%.',
+      '15,5 mln wyświetleń na Facebooku i\u00A0wzrost wyświetleń na Instagramie o\u00A01706%.',
     metrics: [
       { label: 'Kliknięcia linku · Facebook', value: '99 509' },
       { label: 'Interakcje · Facebook', value: '51 278' },
@@ -374,7 +374,7 @@ export const clients = {
     ],
   },
   'dynamic-development': {
-    numbers: '3,4 mln zasięgu na Facebooku i 1,2 mln na Instagramie.',
+    numbers: '3,4 mln zasięgu na Facebooku i\u00A01,2 mln na Instagramie.',
     metrics: [
       { label: 'Kliknięcia linku · Facebook', value: '45 tys.' },
       { label: 'Odwiedziny profilu · Facebook', value: '27 tys.' },
@@ -382,7 +382,7 @@ export const clients = {
     ],
   },
   'ed-invest': {
-    numbers: '2,6 mln wyświetleń na Facebooku — o 180% więcej niż wcześniej.',
+    numbers: '2,6 mln wyświetleń na Facebooku — o\u00A0180% więcej niż wcześniej.',
     metrics: [
       { label: 'Kliknięcia linku · Instagram', value: '+1073%' },
       { label: 'Zasięg · Instagram', value: '94 tys.' },
@@ -391,7 +391,7 @@ export const clients = {
   },
   engie: {
     numbers:
-      '264 tys. wyświetleń publikacji na LinkedInie i 1 248 nowych obserwatorów.',
+      '264 tys. wyświetleń publikacji na LinkedInie i\u00A01 248 nowych obserwatorów.',
     metrics: [
       { label: 'Reakcje · LinkedIn', value: '5 375' },
       { label: 'Wyświetlenia · Facebook', value: '69,1 tys.' },
@@ -400,7 +400,7 @@ export const clients = {
   },
   'fm-logistics': {
     numbers:
-      'Ponad 800 tys. wyświetleń postów na LinkedInie i 2 111 nowych obserwujących organicznie.',
+      'Ponad 800 tys. wyświetleń postów na LinkedInie i\u00A02 111 nowych obserwujących organicznie.',
     metrics: [
       { label: 'Społeczność · LinkedIn', value: '6 894 → 9 005' },
       { label: 'Reakcje · LinkedIn', value: '+10,7 tys.' },
@@ -409,7 +409,7 @@ export const clients = {
   },
   'galeria-rondo-wiatraczna': {
     numbers:
-      'Po 2,5 mln wyświetleń na Facebooku i Instagramie oraz 2,14 mln w wyszukiwarce Google.',
+      'Po 2,5 mln wyświetleń na Facebooku i\u00A0Instagramie oraz 2,14 mln w\u00A0wyszukiwarce Google.',
     metrics: [
       { label: 'Widzów · Facebook', value: '750 tys.' },
       { label: 'Widzów · Instagram', value: '280 tys.' },
@@ -418,7 +418,7 @@ export const clients = {
   },
   imid: {
     numbers:
-      '825 tys. wyświetleń na Facebooku i wzrost wyświetleń na Instagramie o 5845%.',
+      '825 tys. wyświetleń na Facebooku i\u00A0wzrost wyświetleń na Instagramie o\u00A05845%.',
     metrics: [
       { label: 'Wzrost interakcji · Instagram', value: '+116 200%' },
       { label: 'Wzrost interakcji · Facebook', value: '+159%' },
@@ -431,14 +431,14 @@ export const clients = {
   irobot: {
     testimonial: {
       quote:
-        'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić.',
+        'Od blisko dwóch lat współpracujemy z\u00A0agencją Social Lama przy działaniach na TikToku oraz YouTube i\u00A0z\u00A0pełnym przekonaniem możemy ją polecić.',
       author: 'Małgorzata Radomska',
       company: 'iRobot Polska',
       image: '/assets/testimonial-radomska.jpg',
     },
   },
   'julius-meinl': {
-    numbers: '433 tys. wyświetleń na Facebooku — wzrost o 1380%.',
+    numbers: '433 tys. wyświetleń na Facebooku — wzrost o\u00A01380%.',
     metrics: [
       { label: 'Wyświetlenia · LinkedIn', value: '413 408' },
       { label: 'Interakcje · Facebook', value: '4 806' },
@@ -446,14 +446,14 @@ export const clients = {
     ],
   },
   'jw-construction': {
-    numbers: '27 tys. organicznych wyświetleń na LinkedInie i 819 reakcji.',
+    numbers: '27 tys. organicznych wyświetleń na LinkedInie i\u00A0819 reakcji.',
     metrics: [
       { label: 'Nowi obserwatorzy · LinkedIn', value: '186' },
     ],
   },
   mercator: {
     numbers:
-      '4 mln wyświetleń publikacji na Facebooku i 542 tys. na Instagramie.',
+      '4 mln wyświetleń publikacji na Facebooku i\u00A0542 tys. na Instagramie.',
     metrics: [
       { label: 'Reakcje · Facebook', value: '2 968' },
       { label: 'Reakcje · Instagram', value: '2 820' },
@@ -462,7 +462,7 @@ export const clients = {
   },
   motointegrator: {
     numbers:
-      '620% ROAS kampanii remarketingowej w Niemczech, przy 0,08 € za kliknięcie.',
+      '620% ROAS kampanii remarketingowej w\u00A0Niemczech, przy 0,08 € za kliknięcie.',
     metrics: [
       { label: 'Zasięg / mies. · Facebook', value: '554 320' },
       { label: 'Komentarze / mies. · Facebook', value: '1 305' },
@@ -471,7 +471,7 @@ export const clients = {
   },
   polomarket: {
     numbers:
-      '30 mln wyświetleń filmów w kampanii i 128 tys. polubień na TikToku.',
+      '30 mln wyświetleń filmów w\u00A0kampanii i\u00A0128 tys. polubień na TikToku.',
     metrics: [
       { label: 'Fani · Facebook', value: '158 706' },
       { label: 'Reakcje · Facebook', value: '46 370' },
@@ -479,7 +479,7 @@ export const clients = {
     ],
   },
   'pracuj-pl': {
-    numbers: '95,4 mln wyświetleń na TikToku i 52,6 tys. obserwujących.',
+    numbers: '95,4 mln wyświetleń na TikToku i\u00A052,6 tys. obserwujących.',
     metrics: [
       { label: 'Widzowie · TikTok', value: '94,8 mln' },
       { label: 'Polubienia · TikTok', value: '104,8 tys.' },
@@ -487,7 +487,7 @@ export const clients = {
   },
   'produkty-cukiernicze-brzesc': {
     numbers:
-      'Dziesięciokrotny wzrost eksportu i o 50% większy dzienny zasięg na Facebooku.',
+      'Dziesięciokrotny wzrost eksportu i\u00A0o\u00A050% większy dzienny zasięg na Facebooku.',
     metrics: [
       { label: 'Zasięg organiczny · Facebook', value: '+52,8%' },
       { label: 'Zasięg postów · Facebook', value: '368 → 549' },
@@ -495,14 +495,14 @@ export const clients = {
   },
   rabkoland: {
     numbers:
-      'Prawie 3 mln wyświetleń na YouTubie odcinka nakręconego w Rabkolandzie.',
+      'Prawie 3 mln wyświetleń na YouTubie odcinka nakręconego w\u00A0Rabkolandzie.',
     metrics: [
       { label: 'Wzrost zasięgu · Instagram', value: '+38%' },
     ],
   },
   riviera: {
     numbers:
-      '306% rocznego KPI zasięgu na TikToku i ponad 3 mln osób, do których dotarliśmy.',
+      '306% rocznego KPI zasięgu na TikToku i\u00A0ponad 3 mln osób, do których dotarliśmy.',
     metrics: [
       { label: 'Zasięg · Instagram', value: '163% KPI' },
       { label: 'Nowi obserwujący · Facebook', value: '160% KPI' },
@@ -519,7 +519,7 @@ export const clients = {
   },
   vistula: {
     numbers:
-      'Prawie 3,9 mln więcej wyświetleń profilu na Instagramie i 1 615 nowych obserwujących.',
+      'Prawie 3,9 mln więcej wyświetleń profilu na Instagramie i\u00A01 615 nowych obserwujących.',
     metrics: [
       { label: 'Nowi obserwujący · Facebook', value: '+794' },
       { label: 'Wzrost wyświetleń · Facebook', value: '+142 534' },
@@ -545,7 +545,7 @@ export const whyThatWorks = {
      split mid-statement, full original copy preserved across the two parts. */
   manifesto: {
     strong:
-      'Ponieważ znamy się na rzeczy. Zajmujemy się kompleksową obsługą marek w social mediach,',
+      'Ponieważ znamy się na rzeczy. Zajmujemy się kompleksową obsługą marek w\u00A0social mediach,',
     muted:
       'projektując strategie komunikacyjne dopasowane indywidualnie do potrzeb każdego biznesu.',
   },
@@ -553,9 +553,9 @@ export const whyThatWorks = {
      user decision 2026-07-14) — bold ink lead, muted gray closer. */
   support: {
     strong:
-      'Prowadź z nami atrakcyjną komunikację, buduj zaangażowaną społeczność i rozwijaj swój biznes w mediach społecznościowych. Z naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
+      'Prowadź z\u00A0nami atrakcyjną komunikację, buduj zaangażowaną społeczność i\u00A0rozwijaj swój biznes w\u00A0mediach społecznościowych. Z\u00A0naszą pomocą osiągniesz te cele szybciej, niż myślisz!',
     muted:
-      'Zadbamy o Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
+      'Zadbamy o\u00A0Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
   link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/case-studies' },
   // CTA card filling the last grid slot — jumps to the "NASZE LAMY" team slider.
@@ -564,7 +564,7 @@ export const whyThatWorks = {
   // Caption under the two cert cards. The marks are not self-explanatory — one
   // sentence saying what they cover beats presenting them without comment.
   certsLabel:
-    'DIMAQ Professional i Meta Small Business Academy — potwierdzone kompetencje w marketingu cyfrowym i reklamie w ekosystemie Meta.',
+    'DIMAQ Professional i\u00A0Meta Small Business Academy — potwierdzone kompetencje w\u00A0marketingu cyfrowym i\u00A0reklamie w\u00A0ekosystemie Meta.',
   certAlt: {
     dimaq: 'Certyfikat DIMAQ professional',
     meta: 'Certyfikat Meta Small Business Academy',
@@ -583,9 +583,9 @@ export const services = {
     {
       id: 'content',
       title: 'CONTENT',
-      body: 'Strategia to nasz punkt wyjścia: poznajemy Waszą markę i odbiorców, by budować skuteczną komunikację w social mediach.',
+      body: 'Strategia to nasz punkt wyjścia: poznajemy Waszą markę i\u00A0odbiorców, by budować skuteczną komunikację w\u00A0social mediach.',
       bodyLong:
-        'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i możliwości, grupę docelową oraz wartości i charakter marki, by zbudować skuteczną komunikację w mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia, na bieżąco monitorujemy działania, konsekwentnie realizujemy plan i regularnie raportujemy wyniki.',
+        'Strategia to nasz punkt wyjścia: poznajemy Wasze potrzeby i\u00A0możliwości, grupę docelową oraz wartości i\u00A0charakter marki, by zbudować skuteczną komunikację w\u00A0mediach społecznościowych. Na tej bazie wyznaczamy mierzalne cele, dobieramy właściwe narzędzia, na bieżąco monitorujemy działania, konsekwentnie realizujemy plan i\u00A0regularnie raportujemy wyniki.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
       stage: {
         kind: 'panels',
@@ -657,7 +657,7 @@ export const services = {
       title: 'SPRZEDAŻ',
       body: 'Komunikacja ma spełniać swoją najważniejszą rolę: sprzedaż — skuteczność mierzymy sukcesem Twojego biznesu.',
       bodyLong:
-        'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
+        'Tworząc ofertę dla Twojej marki dbamy o\u00A0to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w\u00A0social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/sprzedaz' },
       // Device-mockup creatives (iPad / MacBook) exported with their frames and
       // shadows baked in on transparency, so they render as bare floating panels
@@ -708,9 +708,9 @@ export const services = {
     {
       id: 'kreacje',
       title: 'KREACJE I WIDEO',
-      body: 'Grafiki, wideo, rolki i animacje — pełne spektrum kreacji dopasowanych do trendów i preferencji odbiorców.',
+      body: 'Grafiki, wideo, rolki i\u00A0animacje — pełne spektrum kreacji dopasowanych do trendów i\u00A0preferencji odbiorców.',
       bodyLong:
-        'Grafiki, wideo, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w social mediach. W naszych strategiach dbamy o różnorodność przekazów oraz dopasowanie ich do trendów i preferencji odbiorców.',
+        'Grafiki, wideo, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w\u00A0social mediach. W\u00A0naszych strategiach dbamy o\u00A0różnorodność przekazów oraz dopasowanie ich do trendów i\u00A0preferencji odbiorców.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/kreacje-wideo' },
       // Longer dwell so the clips get time to actually play (user request).
       dwellMs: 11000,
@@ -751,7 +751,7 @@ export const howItWorks = {
   steps: [
     {
       number: '01',
-      text: 'Określamy Twoje cele, potrzeby i możliwości podczas warsztatów strategicznych.',
+      text: 'Określamy Twoje cele, potrzeby i\u00A0możliwości podczas warsztatów strategicznych.',
       image: '/assets/step-1.png',
       proof: {
         title: 'Zaczynaliśmy od 1\u00A0168 obserwujących',
@@ -773,12 +773,12 @@ export const howItWorks = {
     },
     {
       number: '02',
-      text: 'Przygotowujemy indywidualną strategię i rozpoczynamy komunikację.',
+      text: 'Przygotowujemy indywidualną strategię i\u00A0rozpoczynamy komunikację.',
       image: '/assets/step-2.png',
       proof: {
         title: 'Dwa salony, trzy platformy, sześć strategii',
         say: [
-          'Każdy profil dostał własny plan treści na Facebooka, Instagram i LinkedIn — zamiast jednego skopiowanego na wszystkie.',
+          'Każdy profil dostał własny plan treści na Facebooka, Instagram i\u00A0LinkedIn — zamiast jednego skopiowanego na wszystkie.',
         ],
         stats: [
           { figure: '2', label: 'salony' },
@@ -791,16 +791,16 @@ export const howItWorks = {
     },
     {
       number: '03',
-      text: 'Proaktywnie rekomendujemy nowe rozwiązania i możliwości.',
+      text: 'Proaktywnie rekomendujemy nowe rozwiązania i\u00A0możliwości.',
       image: '/assets/step-3.png',
       proof: {
-        title: 'Filtr AR, którego nie było w briefie',
+        title: 'Filtr AR, którego nie było w\u00A0briefie',
         say: [
           'Sami go zaproponowaliśmy. ',
           { figure: '6,79\u00A0mln' },
           ' wyświetleń i ',
           { figure: '4\u00A0885' },
-          ' filmów nagranych przez użytkowników — w tym przez influencerów bez żadnej umowy.',
+          ' filmów nagranych przez użytkowników — w\u00A0tym przez influencerów bez żadnej umowy.',
         ],
         stats: [
           { figure: '6,79 mln', label: 'wyświetleń' },
@@ -813,12 +813,12 @@ export const howItWorks = {
     },
     {
       number: '04',
-      text: 'Analizujemy wyniki i wprowadzamy niezbędne zmiany.',
+      text: 'Analizujemy wyniki i\u00A0wprowadzamy niezbędne zmiany.',
       image: '/assets/step-4.png',
       proof: {
-        title: 'Zmieniliśmy podejście — i to widać',
+        title: 'Zmieniliśmy podejście — i\u00A0to widać',
         say: [
-          'Zanim przejęliśmy kanał, przybywało kilkuset subskrypcji rocznie. W pierwszym roku naszej opieki ',
+          'Zanim przejęliśmy kanał, przybywało kilkuset subskrypcji rocznie. W\u00A0pierwszym roku naszej opieki ',
           { figure: 'blisko dwudziestokrotnie' },
           ' więcej.',
         ],
@@ -837,9 +837,9 @@ export const howItWorks = {
       // No link: this step addresses the reader rather than a case, so it has
       // no call to action (decision, 2026-07-28).
       proof: {
-        title: 'Wszystko, co widziałeś, to prawdziwe liczby z raportów',
+        title: 'Wszystko, co widziałeś, to prawdziwe liczby z\u00A0raportów',
         say: [
-          'Raport z działań dostajesz co miesiąc, a na koniec roku pełne podsumowanie — bez dopominania się.',
+          'Raport z\u00A0działań dostajesz co miesiąc, a\u00A0na koniec roku pełne podsumowanie — bez dopominania się.',
         ],
         stats: [
           { figure: '12', label: 'raportów w roku' },
@@ -859,7 +859,7 @@ export const marquee = ['THAT WORKS', 'WITH SOCIAL LAMA'] as const
 export const testimonials: Testimonial[] = [
   {
     quote:
-      'Od blisko dwóch lat współpracujemy z agencją Social Lama przy działaniach na TikToku oraz YouTube i z pełnym przekonaniem możemy ją polecić. Zespół wyróżnia się dużą wiedzą i kompetencjami, a także partnerskim podejściem do współpracy — zawsze możemy liczyć na zaangażowanie, sprawną komunikację i realne wsparcie w realizacji celów.',
+      'Od blisko dwóch lat współpracujemy z\u00A0agencją Social Lama przy działaniach na TikToku oraz YouTube i\u00A0z\u00A0pełnym przekonaniem możemy ją polecić. Zespół wyróżnia się dużą wiedzą i\u00A0kompetencjami, a\u00A0także partnerskim podejściem do współpracy — zawsze możemy liczyć na zaangażowanie, sprawną komunikację i\u00A0realne wsparcie w\u00A0realizacji celów.',
     author: 'Małgorzata Radomska',
     company: 'iRobot Polska',
     image: '/assets/testimonial-radomska.jpg',
@@ -872,7 +872,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'Jesteśmy zadowoleni z działań Social Lamy w mediach społecznościowych. Agencja stworzyła koncepcję profilu i strategię komunikacji dla jednego z naszych produktów od podstaw, skutecznie i konsekwentnie pozyskując coraz szerszą grupę zaangażowanych odbiorców. Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
+      'Jesteśmy zadowoleni z\u00A0działań Social Lamy w\u00A0mediach społecznościowych. Agencja stworzyła koncepcję profilu i\u00A0strategię komunikacji dla jednego z\u00A0naszych produktów od podstaw, skutecznie i\u00A0konsekwentnie pozyskując coraz szerszą grupę zaangażowanych odbiorców. Kreatywne pomysły, ciekawe projekty wizualne, interesujące rozwiązania dostosowane do grupy docelowej, przy tym sumienność i\u00A0pełen profesjonalizm. Gorąco polecam Social Lamę do realizacji projektów, które wymagają wyjścia poza szablon.',
     author: 'Marta Szwat',
     company: 'Uniphar',
     image: '/assets/testimonial-szwat.jpg',
@@ -888,7 +888,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'Agencja Social Lama to profesjonalny zespół specjalistów, który wspierał działania marki STAG w obrębie social media. Agencja opracowała strategię komunikacji, która odpowiadała naszym celom wizerunkowym i prowadziła komunikację w dwóch językach. Rekomenduję agencję Social Lama ze względu na proaktywność, kreatywność i zaangażowanie w powierzony projekt.',
+      'Agencja Social Lama to profesjonalny zespół specjalistów, który wspierał działania marki STAG w\u00A0obrębie social media. Agencja opracowała strategię komunikacji, która odpowiadała naszym celom wizerunkowym i\u00A0prowadziła komunikację w\u00A0dwóch językach. Rekomenduję agencję Social Lama ze względu na proaktywność, kreatywność i\u00A0zaangażowanie w\u00A0powierzony projekt.',
     author: 'Marta Jemiejłańczuk',
     company: 'STAG',
     image: '/assets/testimonial-jemiejlanczuk.jpg',
@@ -900,7 +900,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'Szczerze rekomenduję współpracę z agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele. Jesteśmy zadowoleni z efektów działań zespołu.',
+      'Szczerze rekomenduję współpracę z\u00A0agencją Social Lama. Zespół doskonale zrozumiał nasze potrzeby i\u00A0przygotował adekwatną strategię komunikacji, na podstawie której na bieżąco realizuje wytyczone cele. Jesteśmy zadowoleni z\u00A0efektów działań zespołu.',
     author: 'Piotr Treszczotko',
     company: 'Funtronic',
     image: '/assets/testimonial-treszczotko.jpg',
@@ -913,7 +913,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'Social Lama jest agencją, która w pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o kolejne projekty. Agencja proponuje nowe rozwiązania i pomysły, które wspólnie wcielamy w życie.',
+      'Social Lama jest agencją, która w\u00A0pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o\u00A0kolejne projekty. Agencja proponuje nowe rozwiązania i\u00A0pomysły, które wspólnie wcielamy w\u00A0życie.',
     author: 'Beata Nartowska',
     company: 'Aquael',
     image: '/assets/testimonial-nartowska.jpg',
@@ -925,7 +925,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Ze względu na cele i grupę docelową, wspólnie zdecydowaliśmy się na komunikację w serwisie LinkedIn. Polecamy współpracę z zespołem Social Lama.',
+      'Agencja Social Lama była odpowiedzialna za strategię komunikacji, doradztwo merytoryczne, copywriting, moderację oraz kreacje graficzne. Ze względu na cele i\u00A0grupę docelową, wspólnie zdecydowaliśmy się na komunikację w\u00A0serwisie LinkedIn. Polecamy współpracę z\u00A0zespołem Social Lama.',
     author: 'Katarzyna Gosiewska',
     company: 'Intrum',
     image: '/assets/testimonial-gosiewska.jpg',
@@ -966,34 +966,34 @@ export const faq = {
     {
       question: 'Ile kosztuje prowadzenie social media przez agencję?',
       answer:
-        'Koszt prowadzenia social media zależy od liczby platform, częstotliwości publikacji i zakresu działań — rynkowo mieści się w przedziale od 3 000 do 15 000 zł miesięcznie. Cennik za profesjonalną obsługę jednego profilu w agencji zwykle startuje od ok. 920 zł netto/mies. Co bardzo ważne w przeciwieństwie do wielu innych agencji w Social Lama budżet reklamowy na kampanie w social media rozliczamy zawsze osobno, aby zachować pełną transparentność.',
+        'Koszt prowadzenia social media zależy od liczby platform, częstotliwości publikacji i\u00A0zakresu działań — rynkowo mieści się w\u00A0przedziale od 3 000 do 15 000 zł miesięcznie. Cennik za profesjonalną obsługę jednego profilu w\u00A0agencji zwykle startuje od ok. 920 zł netto/mies. Co bardzo ważne w\u00A0przeciwieństwie do wielu innych agencji w\u00A0Social Lama budżet reklamowy na kampanie w\u00A0social media rozliczamy zawsze osobno, aby zachować pełną transparentność.',
     },
     {
       question:
         'Czym różni się agencja social media od freelancera lub in-house social media managera?',
       answer:
-        'Freelancer to jedna osoba — agencja to zespół stratega, copywritera, grafika, specjalisty od kampanii i moderatora, dzięki czemu jakość i tempo pracy są nieporównywalne. In-house social media manager zapewnia bliskość marki, ale jego zatrudnienie oznacza koszt kilkunastu tysięcy złotych miesięcznie plus narzędzia i szkolenia. Agencja daje dostęp do kompetencji całego działu marketingu w cenie jednego etatu, a do tego korzysta z profesjonalnych narzędzi analitycznych.',
+        'Freelancer to jedna osoba — agencja to zespół stratega, copywritera, grafika, specjalisty od kampanii i\u00A0moderatora, dzięki czemu jakość i\u00A0tempo pracy są nieporównywalne. In-house social media manager zapewnia bliskość marki, ale jego zatrudnienie oznacza koszt kilkunastu tysięcy złotych miesięcznie plus narzędzia i\u00A0szkolenia. Agencja daje dostęp do kompetencji całego działu marketingu w\u00A0cenie jednego etatu, a\u00A0do tego korzysta z\u00A0profesjonalnych narzędzi analitycznych.',
     },
     {
       question:
         'Kiedy pojawią się pierwsze efekty prowadzenia SoMe przez Social Lama?',
       answer:
-        'Pierwsze efekty jakościowe — spójny wizerunek marki, wzrost zaangażowania i lepsze pozycjonowanie profilu — widać zwykle po 4–8 tygodniach. Efekty sprzedażowe i pozyskiwanie leadów zależą od budżetu reklamowego i cyklu zakupowego — dobrze zdefiniowana strategia social media ma 466% większą szansę na sukces, a kampanie reklamowe potrafią zwiększyć przychody nawet o 1000% w 3 miesiące. Aż 83% klientów, którzy zdecydują się na próbną kampanię, kontynuuje z nami współpracę długofalowo.',
+        'Pierwsze efekty jakościowe — spójny wizerunek marki, wzrost zaangażowania i\u00A0lepsze pozycjonowanie profilu — widać zwykle po 4–8 tygodniach. Efekty sprzedażowe i\u00A0pozyskiwanie leadów zależą od budżetu reklamowego i\u00A0cyklu zakupowego — dobrze zdefiniowana strategia social media ma 466% większą szansę na sukces, a\u00A0kampanie reklamowe potrafią zwiększyć przychody nawet o\u00A01000% w\u00A03 miesiące. Aż 83% klientów, którzy zdecydują się na próbną kampanię, kontynuuje z\u00A0nami współpracę długofalowo.',
     },
     {
-      question: 'Jak mierzycie skuteczność działań w social media?',
+      question: 'Jak mierzycie skuteczność działań w\u00A0social media?',
       answer:
-        'Każda strategia social media jest oparta na KPI dopasowanych do celów — zasięg, zaangażowanie, ruch na stronie www, liczba leadów lub sprzedaż w e-commerce. Wykorzystujemy profesjonalne narzędzia analityczne oraz statystyki natywne platform, dzięki czemu na bieżąco optymalizujemy działania i budżet reklamowy. Klient co miesiąc otrzymuje przejrzysty raport z analizą wyników i rekomendacjami na kolejny okres.',
+        'Każda strategia social media jest oparta na KPI dopasowanych do celów — zasięg, zaangażowanie, ruch na stronie www, liczba leadów lub sprzedaż w\u00A0e-commerce. Wykorzystujemy profesjonalne narzędzia analityczne oraz statystyki natywne platform, dzięki czemu na bieżąco optymalizujemy działania i\u00A0budżet reklamowy. Klient co miesiąc otrzymuje przejrzysty raport z\u00A0analizą wyników i\u00A0rekomendacjami na kolejny okres.',
     },
     {
       question: 'Jak wybrać dobrą agencję social media?',
       answer:
-        'Sprawdź dotychczasowe realizacje agencji, poproś o case study z Twojej branży i zwróć uwagę, czy agencja tworzy strategie dopasowane do klienta, czy pracuje na szablonach. Dobra agencja social media taka jak Social Lama zada Ci więcej pytań, niż sama obieca — musi bowiem poznać Twoje grupy docelowe, cele biznesowe oraz konkurencję. Wybieraj partnera, który komunikuje się transparentnie, pokazuje wymierne efekty i jest na bieżąco z najnowszymi trendami w mediach społecznościowych.',
+        'Sprawdź dotychczasowe realizacje agencji, poproś o\u00A0case study z\u00A0Twojej branży i\u00A0zwróć uwagę, czy agencja tworzy strategie dopasowane do klienta, czy pracuje na szablonach. Dobra agencja social media taka jak Social Lama zada Ci więcej pytań, niż sama obieca — musi bowiem poznać Twoje grupy docelowe, cele biznesowe oraz konkurencję. Wybieraj partnera, który komunikuje się transparentnie, pokazuje wymierne efekty i\u00A0jest na bieżąco z\u00A0najnowszymi trendami w\u00A0mediach społecznościowych.',
     },
     {
-      question: 'Czy Agencja Social Lama działa tylko w Warszawie?',
+      question: 'Czy Agencja Social Lama działa tylko w\u00A0Warszawie?',
       answer:
-        'Nie — mimo że nasza siedziba znajduje się w Warszawie, obsługujemy klientów z całej Polski, a część projektów prowadzimy również w komunikacji dwujęzycznej na rynki zagraniczne. Wśród marek, z którymi współpracowaliśmy, są m.in. Aflofarm z Pabianic (branża farmaceutyczna), STAG (AC S.A.) z Białegostoku (branża automotive/LPG) czy Press-Service Monitoring Mediów z Poznania, a także wiele warszawskich firm, takich jak Pracuj.pl, Medicover, Manpower czy Aquael. Cała komunikacja, briefy, spotkania statusowe i raportowanie odbywają się w pełni zdalnie, w naszym biurze lub u klienta — lokalizacja klienta nie ma dla nas żadnego znaczenia, liczy się dopasowanie strategii do Twoich potrzeb.',
+        'Nie — mimo że nasza siedziba znajduje się w\u00A0Warszawie, obsługujemy klientów z\u00A0całej Polski, a\u00A0część projektów prowadzimy również w\u00A0komunikacji dwujęzycznej na rynki zagraniczne. Wśród marek, z\u00A0którymi współpracowaliśmy, są m.in. Aflofarm z\u00A0Pabianic (branża farmaceutyczna), STAG (AC S.A.) z\u00A0Białegostoku (branża automotive/LPG) czy Press-Service Monitoring Mediów z\u00A0Poznania, a\u00A0także wiele warszawskich firm, takich jak Pracuj.pl, Medicover, Manpower czy Aquael. Cała komunikacja, briefy, spotkania statusowe i\u00A0raportowanie odbywają się w\u00A0pełni zdalnie, w\u00A0naszym biurze lub u\u00A0klienta — lokalizacja klienta nie ma dla nas żadnego znaczenia, liczy się dopasowanie strategii do Twoich potrzeb.',
     },
   ],
 } as const
@@ -1127,7 +1127,7 @@ export const joinCta = {
         author: 'agnieszka.p',
         question: 'Nasza branża jest nudna.',
         answer:
-          'Nie ma nudnych branż, są nudne treści. Mamy case studies z branż „bez potencjału”.',
+          'Nie ma nudnych branż, są nudne treści. Mamy case studies z\u00A0branż „bez potencjału”.',
       },
     ],
     /* The "⋯" dropdown. Each option opens its own answer beneath it; the first
@@ -1143,12 +1143,12 @@ export const joinCta = {
       {
         label: 'Ukryj reklamę',
         answer:
-          'Jasne, możemy schować. Zostanie sam llama w garniturze — i szczerze, on radzi sobie lepiej niż niejedna kampania.',
+          'Jasne, możemy schować. Zostanie sam llama w\u00A0garniturze — i\u00A0szczerze, on radzi sobie lepiej niż niejedna kampania.',
       },
       {
         label: 'Zgłoś',
         answer:
-          'Przyjęliśmy zgłoszenie i przekazaliśmy je do działu, który siedzi biurko obok. Obiecali się temu przyjrzeć przy kawie.',
+          'Przyjęliśmy zgłoszenie i\u00A0przekazaliśmy je do działu, który siedzi biurko obok. Obiecali się temu przyjrzeć przy kawie.',
       },
     ],
     menuCta: { label: 'NAPISZ DO NAS', href: '/kontakt' },
@@ -1210,8 +1210,8 @@ export const footer = {
     phone: '+48 796 996 118',
     email: 'halohalo@sociallama.pl',
     addresses: [
-      'ul. Płocka 9/11B, 01-231 Warszawa',
-      'ul. Januszowicka 5/121, 53-135 Wrocław',
+      'ul. Płocka 9/11B, 01-231\u00A0Warszawa',
+      'ul. Januszowicka 5/121, 53-135\u00A0Wrocław',
     ],
   },
   copyright: 'Copyright 2026 sociallama. All rights reserved.',

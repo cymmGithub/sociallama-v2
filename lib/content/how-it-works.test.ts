@@ -62,6 +62,9 @@ function assertUndated(label: string, text: string) {
   expect(`${label}: ${text}`).not.toMatch(EN_MONTHS)
 }
 
+/** The bind the Polish orphan-word rule inserts; not a word change. */
+const NBSP = '\u00A0'
+
 describe('how-it-works proof content', () => {
   test.each(LOCALES)('%s: nothing is dated', (locale, content) => {
     for (const text of allStrings(content)) assertUndated(locale, text)
@@ -93,8 +96,15 @@ describe('how-it-works proof content', () => {
     ])
   })
 
+  /* Compared with non-breaking spaces read as ordinary spaces: the Polish
+     orphan-word rule binds a one-letter word to the next one, which changes how
+     a sentence may wrap and not one word of what it says. Asserting the raw
+     string would make this a whitespace test rather than the content-drift test
+     it is meant to be. */
   test('the Polish step sentences are verbatim', () => {
-    expect(plHowItWorks.steps.map((step) => step.text)).toEqual([
+    expect(
+      plHowItWorks.steps.map((step) => step.text.replaceAll(NBSP, ' '))
+    ).toEqual([
       'Określamy Twoje cele, potrzeby i możliwości podczas warsztatów strategicznych.',
       'Przygotowujemy indywidualną strategię i rozpoczynamy komunikację.',
       'Proaktywnie rekomendujemy nowe rozwiązania i możliwości.',

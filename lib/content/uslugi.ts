@@ -50,14 +50,14 @@ export const chrome = {
   // The button carries the header CTA's wording (`nav.cta` in home.ts) — one
   // phrasing for one action, everywhere on the site.
   ctaHeadline: 'Zróbmy to razem',
-  ctaText: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
+  ctaText: 'Opowiedz nam o\u00A0swoim wyzwaniu — pokażemy, jak możemy pomóc.',
   ctaButton: 'Porozmawiajmy o Twoim biznesie',
   ctaHref: '/kontakt',
   // `/uslugi` index chrome.
   index: {
     title: 'Usługi',
     intro:
-      'Od strategii po sprzedaż — pełne spektrum działań w social mediach. Wybierz obszar, w którym możemy pomóc Twojej marce.',
+      'Od strategii po sprzedaż — pełne spektrum działań w\u00A0social mediach. Wybierz obszar, w\u00A0którym możemy pomóc Twojej marce.',
     cardCta: 'Dowiedz się więcej',
   },
 } as const
@@ -284,7 +284,7 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Strategia',
         intro:
-          'Skuteczna komunikacja w social mediach nie zaczyna się od publikacji posta, kampanii reklamowej czy wyboru influencera — zaczyna się od strategii. To ona określa, do kogo marka mówi, jakie cele chce osiągnąć i czym wyróżnia się na tle konkurencji. Tworzymy strategie social media i digital dla marek, które chcą działać świadomie, konsekwentnie i długofalowo.',
+          'Skuteczna komunikacja w\u00A0social mediach nie zaczyna się od publikacji posta, kampanii reklamowej czy wyboru influencera — zaczyna się od strategii. To ona określa, do kogo marka mówi, jakie cele chce osiągnąć i\u00A0czym wyróżnia się na tle konkurencji. Tworzymy strategie social media i\u00A0digital dla marek, które chcą działać świadomie, konsekwentnie i\u00A0długofalowo.',
       },
       {
         kind: 'triptych',
@@ -293,22 +293,22 @@ export const SERVICES = [
           {
             icon: 'Compass',
             title: 'Jasny kierunek',
-            body: 'Strategia porządkuje komunikację i wyznacza priorytety. Zespół wie, które działania wspierają cele marki — a które tylko wypełniają kalendarz.',
+            body: 'Strategia porządkuje komunikację i\u00A0wyznacza priorytety. Zespół wie, które działania wspierają cele marki — a\u00A0które tylko wypełniają kalendarz.',
           },
           {
             icon: 'MessageSquare',
             title: 'Spójna komunikacja',
-            body: 'Odbiorcy oczekują od marek konsekwencji. Wypracowujemy jednolity sposób mówienia we wszystkich kanałach, niezależnie od formatu i platformy.',
+            body: 'Odbiorcy oczekują od marek konsekwencji. Wypracowujemy jednolity sposób mówienia we wszystkich kanałach, niezależnie od formatu i\u00A0platformy.',
           },
           {
             icon: 'Wallet',
             title: 'Lepszy budżet',
-            body: 'Zaplanowane działania to mniejsze ryzyko nietrafionych inwestycji. Wskazujemy kanały i formaty, które przyniosą największą wartość biznesową.',
+            body: 'Zaplanowane działania to mniejsze ryzyko nietrafionych inwestycji. Wskazujemy kanały i\u00A0formaty, które przyniosą największą wartość biznesową.',
           },
           {
             icon: 'BarChart3',
             title: 'Mierzalne efekty',
-            body: 'Każda strategia zawiera konkretne cele i wskaźniki efektywności, dzięki którym da się ocenić rezultaty, a nie tylko o nich dyskutować.',
+            body: 'Każda strategia zawiera konkretne cele i\u00A0wskaźniki efektywności, dzięki którym da się ocenić rezultaty, a\u00A0nie tylko o\u00A0nich dyskutować.',
           },
         ],
       },
@@ -317,12 +317,12 @@ export const SERVICES = [
         kicker: 'ZAKRES',
         heading: 'Co zawiera strategia?',
         intro:
-          'Każdą strategię przygotowujemy indywidualnie — pod specyfikę marki, jej cele biznesowe i potrzeby komunikacyjne. W zależności od projektu dokument obejmuje m.in.:',
+          'Każdą strategię przygotowujemy indywidualnie — pod specyfikę marki, jej cele biznesowe i\u00A0potrzeby komunikacyjne. W\u00A0zależności od projektu dokument obejmuje m.in.:',
         items: [
           'Analizę marki, rynku i konkurencji',
           'Charakterystykę grupy docelowej',
           'Cele komunikacyjne',
-          'Klimat, styl komunikacji i filary contentowe',
+          'Klimat, styl komunikacji i\u00A0filary contentowe',
           'Rekomendowane działania komunikacyjne',
         ],
         // The client asked for a visual here. No graphic was supplied, so the
@@ -342,26 +342,26 @@ export const SERVICES = [
         steps: [
           {
             title: 'Warsztat',
-            body: 'Każdy projekt zaczynamy od rozmowy. Poznajemy markę, jej cele, wyzwania i oczekiwania wobec działań marketingowych.',
+            body: 'Każdy projekt zaczynamy od rozmowy. Poznajemy markę, jej cele, wyzwania i\u00A0oczekiwania wobec działań marketingowych.',
           },
           {
             title: 'Analiza',
-            body: 'Badamy rynek, konkurencję, dotychczasową komunikację i zachowania odbiorców. Zbieramy dane i wyciągamy z nich wnioski.',
+            body: 'Badamy rynek, konkurencję, dotychczasową komunikację i\u00A0zachowania odbiorców. Zbieramy dane i\u00A0wyciągamy z\u00A0nich wnioski.',
           },
           {
             title: 'Rekomendacje',
-            body: 'Na tej podstawie przygotowujemy rekomendacje strategiczne — komunikacja, content, kanały i działania reklamowe.',
+            body: 'Na tej podstawie przygotowujemy rekomendacje strategiczne — komunikacja, content, kanały i\u00A0działania reklamowe.',
           },
           {
             title: 'Prezentacja',
-            body: 'Gotową strategię omawiamy na spotkaniu. Wyjaśniamy rekomendacje, odpowiadamy na pytania i ustalamy kolejne kroki.',
+            body: 'Gotową strategię omawiamy na spotkaniu. Wyjaśniamy rekomendacje, odpowiadamy na pytania i\u00A0ustalamy kolejne kroki.',
           },
         ],
       },
       {
         kind: 'banner',
         heading: 'Potrzebujesz samej strategii? To możliwe.',
-        body: 'Najczęściej realizujemy strategię razem z wdrożeniem, ale przygotujemy też sam dokument — dla firm z własnym zespołem marketingowym albo marek, które chcą zweryfikować obecny kierunek działań. Wycenę dopasujemy do zakresu projektu.',
+        body: 'Najczęściej realizujemy strategię razem z\u00A0wdrożeniem, ale przygotujemy też sam dokument — dla firm z\u00A0własnym zespołem marketingowym albo marek, które chcą zweryfikować obecny kierunek działań. Wycenę dopasujemy do zakresu projektu.',
         cta: { label: 'Zapytaj o wycenę strategii', href: '/kontakt' },
       },
       {
@@ -390,13 +390,13 @@ export const SERVICES = [
         'Prowadzimy social media marek na siedmiu platformach — Facebook, Instagram, TikTok, X, LinkedIn, Pinterest, YouTube. Content dopasowany do każdego kanału.',
     },
     summary:
-      'Prowadzenie profili i content dopasowany do specyfiki każdej platformy.',
+      'Prowadzenie profili i\u00A0content dopasowany do specyfiki każdej platformy.',
     sections: [
       {
         kind: 'hero',
         title: 'Content',
         intro:
-          'Każda platforma rządzi się własnymi prawami — inny format, inny język, inny odbiorca. Tworzymy content dopasowany do specyfiki każdego kanału i konsekwentnie budujemy obecność marki tam, gdzie są jej odbiorcy.',
+          'Każda platforma rządzi się własnymi prawami — inny format, inny język, inny odbiorca. Tworzymy content dopasowany do specyfiki każdego kanału i\u00A0konsekwentnie budujemy obecność marki tam, gdzie są jej odbiorcy.',
       },
       {
         kind: 'platforms',
@@ -404,43 +404,43 @@ export const SERVICES = [
           {
             platform: 'facebook',
             name: 'Facebook',
-            copy: 'Budujemy społeczność i utrzymujemy stały kontakt z odbiorcami — od postów angażujących po obsługę społeczności i komunikację w grupach.',
+            copy: 'Budujemy społeczność i\u00A0utrzymujemy stały kontakt z\u00A0odbiorcami — od postów angażujących po obsługę społeczności i\u00A0komunikację w\u00A0grupach.',
             cube: '/assets/cube-facebook-70862a.png',
           },
           {
             platform: 'instagram',
             name: 'Instagram',
-            copy: 'Estetyczny feed, rolki i relacje, które budują pożądanie wokół marki. Łączymy spójny wizerunek z formatami, które napędzają zasięg.',
+            copy: 'Estetyczny feed, rolki i\u00A0relacje, które budują pożądanie wokół marki. Łączymy spójny wizerunek z\u00A0formatami, które napędzają zasięg.',
             cube: '/assets/cube-instagram.png',
           },
           {
             platform: 'tiktok',
             name: 'TikTok',
-            copy: 'Krótkie wideo, trendy i real-time marketing. Tworzymy content, który wpisuje się w język platformy i realnie się rozprzestrzenia.',
+            copy: 'Krótkie wideo, trendy i\u00A0real-time marketing. Tworzymy content, który wpisuje się w\u00A0język platformy i\u00A0realnie się rozprzestrzenia.',
             cube: '/assets/cube-tiktok.png',
           },
           {
             platform: 'x',
             name: 'X',
-            copy: 'Szybka, reaktywna komunikacja i budowanie eksperckiego głosu marki w czasie rzeczywistym.',
+            copy: 'Szybka, reaktywna komunikacja i\u00A0budowanie eksperckiego głosu marki w\u00A0czasie rzeczywistym.',
             cube: '/assets/cube-x-5d9863.png',
           },
           {
             platform: 'linkedin',
             name: 'LinkedIn',
-            copy: 'Personal branding ekspertów i komunikacja B2B, która buduje autorytet marki i realne relacje biznesowe.',
+            copy: 'Personal branding ekspertów i\u00A0komunikacja B2B, która buduje autorytet marki i\u00A0realne relacje biznesowe.',
             cube: '/assets/cube-linkedin.png',
           },
           {
             platform: 'pinterest',
             name: 'Pinterest',
-            copy: 'Content, który żyje długo i napędza ruch — inspiracje, poradniki i wizualne kolekcje wpisane w intencje wyszukiwania.',
+            copy: 'Content, który żyje długo i\u00A0napędza ruch — inspiracje, poradniki i\u00A0wizualne kolekcje wpisane w\u00A0intencje wyszukiwania.',
             cube: '/assets/cube-pinterest-6e33ed.png',
           },
           {
             platform: 'youtube',
             name: 'YouTube',
-            copy: 'Wideo długie i krótkie, które budują subskrypcję i pozycjonują markę jako źródło wiedzy w swojej kategorii.',
+            copy: 'Wideo długie i\u00A0krótkie, które budują subskrypcję i\u00A0pozycjonują markę jako źródło wiedzy w\u00A0swojej kategorii.',
             cube: '/assets/cube-youtube.png',
           },
         ],
@@ -463,13 +463,13 @@ export const SERVICES = [
     // Names the social platforms, to contrast with Kampanie reklamowe's search
     // on the /uslugi index — the only surface where the two are seen together.
     summary:
-      'Sprzedaż w social mediach — kampanie na Facebooku, Instagramie i TikToku, rozliczane z wyniku.',
+      'Sprzedaż w\u00A0social mediach — kampanie na Facebooku, Instagramie i\u00A0TikToku, rozliczane z\u00A0wyniku.',
     sections: [
       {
         kind: 'hero',
         title: 'Sprzedaż',
         intro:
-          'Tworząc ofertę dla Twojej marki dbamy o to, by komunikacja spełniała swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
+          'Tworząc ofertę dla Twojej marki dbamy o\u00A0to, by komunikacja spełniała swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w\u00A0social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       },
       {
         kind: 'triptych',
@@ -478,17 +478,17 @@ export const SERVICES = [
           {
             icon: 'Target',
             title: 'Cel',
-            body: 'Zaczynamy od konkretnego celu biznesowego — sprzedaż, leady, ruch — i pod niego układamy całą komunikację.',
+            body: 'Zaczynamy od konkretnego celu biznesowego — sprzedaż, leady, ruch — i\u00A0pod niego układamy całą komunikację.',
           },
           {
             icon: 'ShoppingCart',
             title: 'Kampania',
-            body: 'Łączymy content organiczny z płatnymi kampaniami. Docieramy do właściwych odbiorców we właściwym momencie ścieżki zakupowej.',
+            body: 'Łączymy content organiczny z\u00A0płatnymi kampaniami. Docieramy do właściwych odbiorców we właściwym momencie ścieżki zakupowej.',
           },
           {
             icon: 'BarChart3',
             title: 'Wynik',
-            body: 'Mierzymy, optymalizujemy i raportujemy. Liczy się to, co dzieje się po kliknięciu — nie sam zasięg.',
+            body: 'Mierzymy, optymalizujemy i\u00A0raportujemy. Liczy się to, co dzieje się po kliknięciu — nie sam zasięg.',
           },
         ],
       },
@@ -499,7 +499,7 @@ export const SERVICES = [
           {
             platform: 'facebook',
             name: 'Meta Ads',
-            copy: 'Kampanie sprzedażowe w ekosystemie Meta — precyzyjne targetowanie i rozliczenie z realnej konwersji.',
+            copy: 'Kampanie sprzedażowe w\u00A0ekosystemie Meta — precyzyjne targetowanie i\u00A0rozliczenie z\u00A0realnej konwersji.',
             dashboard: {
               src: '/assets/sprzedaz-meta-ads.png',
               alt: 'Menedżer reklam Meta — wyniki kampanii sprzedażowych',
@@ -510,7 +510,7 @@ export const SERVICES = [
           {
             platform: 'x',
             name: 'X',
-            copy: 'Wzrost wyświetleń i zaangażowania przełożony na ruch i rozpoznawalność marki.',
+            copy: 'Wzrost wyświetleń i\u00A0zaangażowania przełożony na ruch i\u00A0rozpoznawalność marki.',
             dashboard: {
               src: '/assets/sprzedaz-x.png',
               alt: 'Analityka X — wzrost wyświetleń i zaangażowania',
@@ -521,7 +521,7 @@ export const SERVICES = [
           {
             platform: 'tiktok',
             name: 'TikTok',
-            copy: 'Statystyki wyświetleń i obserwujących, które rosną wraz z zasięgiem sprzedażowych kampanii wideo.',
+            copy: 'Statystyki wyświetleń i\u00A0obserwujących, które rosną wraz z\u00A0zasięgiem sprzedażowych kampanii wideo.',
             dashboard: {
               src: '/assets/sprzedaz-tiktok.png',
               alt: 'TikTok Studio — statystyki wyświetleń i obserwujących',
@@ -532,7 +532,7 @@ export const SERVICES = [
           {
             platform: 'youtube',
             name: 'YouTube',
-            copy: 'Wzrost wyświetleń i subskrypcji budujący długofalową obecność marki w wideo.',
+            copy: 'Wzrost wyświetleń i\u00A0subskrypcji budujący długofalową obecność marki w\u00A0wideo.',
             dashboard: {
               src: '/assets/sprzedaz-youtube.png',
               alt: 'Statystyki kanału YouTube — wzrost wyświetleń',
@@ -543,7 +543,7 @@ export const SERVICES = [
           {
             platform: 'linkedin',
             name: 'LinkedIn',
-            copy: 'Wzrost odwiedzin i obserwujących profilu firmowego, przekładający się na relacje B2B.',
+            copy: 'Wzrost odwiedzin i\u00A0obserwujących profilu firmowego, przekładający się na relacje B2B.',
             dashboard: {
               src: '/assets/sprzedaz-linkedin.png',
               alt: 'Analiza strony LinkedIn — wzrost odwiedzin i obserwujących',
@@ -554,7 +554,7 @@ export const SERVICES = [
           {
             platform: 'instagram',
             name: 'Instagram',
-            copy: 'Wzrost zasięgu i obserwujących, który zamienia uwagę w realny ruch na stronie.',
+            copy: 'Wzrost zasięgu i\u00A0obserwujących, który zamienia uwagę w\u00A0realny ruch na stronie.',
             dashboard: {
               src: '/assets/sprzedaz-instagram.png',
               alt: 'Statystyki Instagrama — wzrost zasięgu i obserwujących',
@@ -575,7 +575,8 @@ export const SERVICES = [
             logo: '/case-studies/irobot/irobot-logo.png',
             kicker: 'CASE STUDY',
             brand: 'iRobot',
-            title: 'Humor i edukacja, które budują markę na YouTube i TikToku',
+            title:
+              'Humor i\u00A0edukacja, które budują markę na YouTube i\u00A0TikToku',
           },
         ],
       },
@@ -584,8 +585,8 @@ export const SERVICES = [
         // Named rather than implied, so a visitor who landed here hunting for
         // Google Ads is routed instead of bouncing.
         kind: 'banner',
-        heading: 'Szukasz SEO i kampanii w Google?',
-        body: 'Wyszukiwarką zajmuje się SEOFly — siostrzana agencja z Grupy Good One. Tutaj prowadzimy sprzedaż w social mediach, tam — widoczność i kampanie w Google.',
+        heading: 'Szukasz SEO i\u00A0kampanii w\u00A0Google?',
+        body: 'Wyszukiwarką zajmuje się SEOFly — siostrzana agencja z\u00A0Grupy Good One. Tutaj prowadzimy sprzedaż w\u00A0social mediach, tam — widoczność i\u00A0kampanie w\u00A0Google.',
         cta: {
           label: 'Zobacz kampanie reklamowe',
           href: '/uslugi/kampanie-reklamowe',
@@ -612,13 +613,13 @@ export const SERVICES = [
     },
     // Names search, to contrast with Sprzedaż's social platforms on the index.
     summary:
-      'Widoczność w wyszukiwarce — SEO, Google Ads i strony WWW, razem z SEOFly.',
+      'Widoczność w\u00A0wyszukiwarce — SEO, Google Ads i\u00A0strony WWW, razem z\u00A0SEOFly.',
     sections: [
       {
         kind: 'hero',
         title: 'Kampanie reklamowe',
         intro:
-          'Widoczność w wyszukiwarce, kampanie w Google i strony, które realizują cele biznesowe. Obszar SEO i performance rozwijamy razem z SEOFly — siostrzaną agencją z Grupy Good One. Od pozycjonowania i audytów, przez treści pod SEO, po analitykę i raportowanie.',
+          'Widoczność w\u00A0wyszukiwarce, kampanie w\u00A0Google i\u00A0strony, które realizują cele biznesowe. Obszar SEO i\u00A0performance rozwijamy razem z\u00A0SEOFly — siostrzaną agencją z\u00A0Grupy Good One. Od pozycjonowania i\u00A0audytów, przez treści pod SEO, po analitykę i\u00A0raportowanie.',
       },
       {
         kind: 'triptych',
@@ -630,38 +631,38 @@ export const SERVICES = [
           {
             icon: 'Search',
             title: 'SEO',
-            body: 'Zwiększamy widoczność marek w wyszukiwarce Google, docierając do użytkowników dokładnie wtedy, gdy szukają produktów lub usług. Stawiamy na działania, które przekładają się na realny ruch i wyniki biznesowe.',
+            body: 'Zwiększamy widoczność marek w\u00A0wyszukiwarce Google, docierając do użytkowników dokładnie wtedy, gdy szukają produktów lub usług. Stawiamy na działania, które przekładają się na realny ruch i\u00A0wyniki biznesowe.',
           },
           {
             icon: 'MousePointerClick',
             title: 'ADS',
             // D1: Google only. Meta Ads and TikTok Ads stay on /uslugi/sprzedaz,
             // which already proves them with dashboard panels.
-            body: 'Prowadzimy kampanie Google Ads, które wspierają sprzedaż, generują leady i budują świadomość marki. Dobieramy działania do celów biznesowych i stale optymalizujemy ich efektywność.',
+            body: 'Prowadzimy kampanie Google Ads, które wspierają sprzedaż, generują leady i\u00A0budują świadomość marki. Dobieramy działania do celów biznesowych i\u00A0stale optymalizujemy ich efektywność.',
           },
           {
             icon: 'PenTool',
             title: 'Content marketing',
             // "pod pozycjonowanie" is the client's own qualifier — it is what
             // separates this tile from /uslugi/content. Do not drop it.
-            body: 'Tworzymy wartościowe treści pod pozycjonowanie, które budują eksperckość marki i odpowiadają na potrzeby odbiorców na każdym etapie ścieżki zakupowej.',
+            body: 'Tworzymy wartościowe treści pod pozycjonowanie, które budują eksperckość marki i\u00A0odpowiadają na potrzeby odbiorców na każdym etapie ścieżki zakupowej.',
           },
           {
             icon: 'ClipboardCheck',
             title: 'Audyty SEO',
             // "strony internetowe" likewise separates this from
             // /uslugi/audyt-i-konsultacje, which audits social media profiles.
-            body: 'Analizujemy strony internetowe, identyfikujemy obszary wymagające poprawy i przygotowujemy konkretne rekomendacje, które zwiększają widoczność oraz skuteczność działań.',
+            body: 'Analizujemy strony internetowe, identyfikujemy obszary wymagające poprawy i\u00A0przygotowujemy konkretne rekomendacje, które zwiększają widoczność oraz skuteczność działań.',
           },
           {
             icon: 'Globe',
             title: 'Strony WWW',
-            body: 'Projektujemy i wdrażamy nowoczesne strony internetowe, które nie tylko dobrze wyglądają, ale przede wszystkim realizują cele biznesowe i wspierają pozyskiwanie klientów.',
+            body: 'Projektujemy i\u00A0wdrażamy nowoczesne strony internetowe, które nie tylko dobrze wyglądają, ale przede wszystkim realizują cele biznesowe i\u00A0wspierają pozyskiwanie klientów.',
           },
           {
             icon: 'BarChart3',
             title: 'Analityka i raportowanie',
-            body: 'Mierzymy efekty działań i analizujemy dane, aby podejmować trafne decyzje marketingowe. Regularne raportowanie pozwala stale rozwijać i optymalizować prowadzone działania.',
+            body: 'Mierzymy efekty działań i\u00A0analizujemy dane, aby podejmować trafne decyzje marketingowe. Regularne raportowanie pozwala stale rozwijać i\u00A0optymalizować prowadzone działania.',
           },
         ],
       },
@@ -675,7 +676,7 @@ export const SERVICES = [
         logo: '/assets/seofly-logo-light.png',
         // No tagline — SEOFly publish none, and inventing one is the mistake
         // the Folks block already carries.
-        copy: 'Skuteczny marketing nie kończy się na jednym kanale — dlatego połączyliśmy siły z SEOFly, agencją specjalizującą się w SEO i performance marketingu. Social Lama odpowiada za strategię, content i social media, a SEOFly rozwija widoczność marek w wyszukiwarce i realizuje kampanie performance. Obie należą do Grupy Good One, więc kompetencje — od social mediów, przez SEO i performance, po PR, influencer marketing i employer branding — spotykają się w jednym miejscu. Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        copy: 'Skuteczny marketing nie kończy się na jednym kanale — dlatego połączyliśmy siły z\u00A0SEOFly, agencją specjalizującą się w\u00A0SEO i\u00A0performance marketingu. Social Lama odpowiada za strategię, content i\u00A0social media, a\u00A0SEOFly rozwija widoczność marek w\u00A0wyszukiwarce i\u00A0realizuje kampanie performance. Obie należą do Grupy Good One, więc kompetencje — od social mediów, przez SEO i\u00A0performance, po PR, influencer marketing i\u00A0employer branding — spotykają się w\u00A0jednym miejscu. Jeden partner. Wiele kompetencji. BETTER WORKS.',
         href: '/kontakt',
         // Ambient search/performance footage (Pexels, free licence).
         video: {
@@ -699,13 +700,14 @@ export const SERVICES = [
       description:
         'Grafiki, wideo, rolki i animacje — pełne spektrum kreacji w social mediach. Głębokie zaplecze wideograficzne i copywriterskie, dopasowane do trendów.',
     },
-    summary: 'Pełne spektrum kreacji — od grafiki i copy po wideo i animacje.',
+    summary:
+      'Pełne spektrum kreacji — od grafiki i\u00A0copy po wideo i\u00A0animacje.',
     sections: [
       {
         kind: 'hero',
         title: 'Kreacje & Wideo',
         intro:
-          'Grafiki, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w social mediach. Dbamy o różnorodność przekazów i dopasowanie ich do trendów oraz preferencji odbiorców.',
+          'Grafiki, karuzele, infografiki, rolki, animacje, wizualizacje — głębokie zaplecze wideograficzne oraz copywriterskie pozwala nam oferować pełne spektrum kreacji w\u00A0social mediach. Dbamy o\u00A0różnorodność przekazów i\u00A0dopasowanie ich do trendów oraz preferencji odbiorców.',
       },
       {
         kind: 'triptych',
@@ -714,17 +716,17 @@ export const SERVICES = [
           {
             icon: 'PenTool',
             title: 'Obsługa graficzna',
-            body: 'Posty, karuzele, infografiki i key visuale — spójny system wizualny, który wyróżnia markę w feedzie.',
+            body: 'Posty, karuzele, infografiki i\u00A0key visuale — spójny system wizualny, który wyróżnia markę w\u00A0feedzie.',
           },
           {
             icon: 'Video',
             title: 'Realizacje wideo',
-            body: 'Od koncepcji przez zdjęcia po montaż. Rolki, reklamy i formaty natywne nagrywane z myślą o platformie.',
+            body: 'Od koncepcji przez zdjęcia po montaż. Rolki, reklamy i\u00A0formaty natywne nagrywane z\u00A0myślą o\u00A0platformie.',
           },
           {
             icon: 'Sparkles',
             title: 'Animacje',
-            body: 'Motion design i animacje, które nadają markom ruch — od prostych bumperów po rozbudowane wizualizacje.',
+            body: 'Motion design i\u00A0animacje, które nadają markom ruch — od prostych bumperów po rozbudowane wizualizacje.',
           },
         ],
       },
@@ -734,7 +736,7 @@ export const SERVICES = [
         name: 'Diea',
         logo: '/assets/diea-logo-light.png',
         tagline: 'from idea to Design',
-        copy: 'Największe realizacje wideo tworzymy z DIEA — studiem produkcyjnym z grupy Good One. Pełne zaplecze sprzętowe i produkcyjne pozwala nam realizować projekty każdej skali.',
+        copy: 'Największe realizacje wideo tworzymy z\u00A0DIEA — studiem produkcyjnym z\u00A0grupy Good One. Pełne zaplecze sprzętowe i\u00A0produkcyjne pozwala nam realizować projekty każdej skali.',
         href: '/kontakt',
         // DIEA 2025 showreel, presented as a full-bleed cover (user-supplied).
         video: {
@@ -760,13 +762,13 @@ export const SERVICES = [
         'Audyt Waszej obecności w social mediach i konsultacje strategiczne. Konkretne wnioski i rekomendacje, które możecie wdrożyć od razu.',
     },
     summary:
-      'Zewnętrzne spojrzenie na Waszą komunikację — konkretne wnioski i rekomendacje.',
+      'Zewnętrzne spojrzenie na Waszą komunikację — konkretne wnioski i\u00A0rekomendacje.',
     sections: [
       {
         kind: 'hero',
         title: 'Audyt i konsultacje',
         intro:
-          'Potrzebujesz zweryfikować skuteczność swoich działań w social mediach albo skonsultować pomysł z ekspertem? Przeanalizujemy Twój profil, wskażemy mocne strony i obszary do poprawy, a podczas indywidualnej konsultacji omówimy konkretne rekomendacje oraz kolejne kroki.',
+          'Potrzebujesz zweryfikować skuteczność swoich działań w\u00A0social mediach albo skonsultować pomysł z\u00A0ekspertem? Przeanalizujemy Twój profil, wskażemy mocne strony i\u00A0obszary do poprawy, a\u00A0podczas indywidualnej konsultacji omówimy konkretne rekomendacje oraz kolejne kroki.',
         cta: { label: 'Umów konsultację', href: '/kontakt' },
       },
       // The invented Audyt/Rekomendacje/Konsultacje triptych is gone (D7): the
@@ -777,12 +779,12 @@ export const SERVICES = [
         kicker: 'ZAKRES',
         heading: 'Co obejmuje usługa?',
         intro:
-          'Nie zawsze potrzeba nowej strategii — czasem wystarczy świeże spojrzenie eksperta. Analizujemy profile marki w social mediach, sprawdzamy komunikację, content, wyniki i działania reklamowe, a wnioski omawiamy podczas indywidualnej konsultacji.',
+          'Nie zawsze potrzeba nowej strategii — czasem wystarczy świeże spojrzenie eksperta. Analizujemy profile marki w\u00A0social mediach, sprawdzamy komunikację, content, wyniki i\u00A0działania reklamowe, a\u00A0wnioski omawiamy podczas indywidualnej konsultacji.',
         items: [
           'Analiza profili w social mediach',
           'Ocena strategii komunikacji i contentu',
           'Analiza działań reklamowych',
-          'Wskazanie mocnych stron i obszarów do poprawy',
+          'Wskazanie mocnych stron i\u00A0obszarów do poprawy',
           'Praktyczne rekomendacje do wdrożenia',
           '45-minutowa konsultacja online ze specjalistą Social Lamy',
         ],
@@ -804,7 +806,7 @@ export const SERVICES = [
       {
         kind: 'banner',
         heading: 'Umów konsultację online',
-        body: 'Masz pytanie, potrzebujesz drugiej opinii albo chcesz omówić wyzwania swojej marki? Umów 45-minutową konsultację online ze specjalistą Social Lamy — wspólnie przeanalizujemy Twoją sytuację, odpowiemy na pytania i wskażemy najlepsze kierunki działań.',
+        body: 'Masz pytanie, potrzebujesz drugiej opinii albo chcesz omówić wyzwania swojej marki? Umów 45-minutową konsultację online ze specjalistą Social Lamy — wspólnie przeanalizujemy Twoją sytuację, odpowiemy na pytania i\u00A0wskażemy najlepsze kierunki działań.',
         // The client wrote "Wybierz termin w kalendarzu", but this routes to the
         // contact form, not a scheduler (D4) — so it asks about a slot rather
         // than promising a calendar we don't show.
@@ -825,7 +827,7 @@ export const SERVICES = [
             // Not a prefix strip: the brand was embedded in the sentence, so it
             // is rewritten rather than deleted. "marek" (plural) still points at
             // the two Volvo marks the study covers, which the logo names.
-            title: 'Budowa marek na LinkedInie, Facebooku i Instagramie',
+            title: 'Budowa marek na LinkedInie, Facebooku i\u00A0Instagramie',
           },
         ],
       },
@@ -844,13 +846,13 @@ export const SERVICES = [
         'Kampanie influencer marketingowe — dobór twórców, strategia współpracy i realizacja. Autentyczne treści, które budują zasięg i zaufanie.',
     },
     summary:
-      'Kampanie z twórcami — od doboru influencerów po realizację i rozliczenie.',
+      'Kampanie z\u00A0twórcami — od doboru influencerów po realizację i\u00A0rozliczenie.',
     sections: [
       {
         kind: 'hero',
         title: 'Influencer marketing',
         intro:
-          'Influencer marketing pozwala markom budować wiarygodność, angażować odbiorców i skutecznie docierać do nowych grup docelowych. Tworzymy kampanie dopasowane do celów biznesowych marki — od budowania świadomości, przez edukację, aż po wsparcie sprzedaży. Kompleksowo realizujemy działania z twórcami internetowymi: od strategii i doboru influencerów po koordynację kampanii i analizę efektów.',
+          'Influencer marketing pozwala markom budować wiarygodność, angażować odbiorców i\u00A0skutecznie docierać do nowych grup docelowych. Tworzymy kampanie dopasowane do celów biznesowych marki — od budowania świadomości, przez edukację, aż po wsparcie sprzedaży. Kompleksowo realizujemy działania z\u00A0twórcami internetowymi: od strategii i\u00A0doboru influencerów po koordynację kampanii i\u00A0analizę efektów.',
       },
       {
         kind: 'triptych',
@@ -859,17 +861,17 @@ export const SERVICES = [
           {
             icon: 'Users',
             title: 'Dobór twórców',
-            body: 'Dobieramy influencerów po dopasowaniu do marki i realnym zaangażowaniu społeczności — nie po samej liczbie obserwujących.',
+            body: 'Dobieramy influencerów po dopasowaniu do marki i\u00A0realnym zaangażowaniu społeczności — nie po samej liczbie obserwujących.',
           },
           {
             icon: 'Megaphone',
             title: 'Kampania',
-            body: 'Układamy strategię współpracy, briefujemy twórców i pilnujemy, by treści były autentyczne i spójne z marką.',
+            body: 'Układamy strategię współpracy, briefujemy twórców i\u00A0pilnujemy, by treści były autentyczne i\u00A0spójne z\u00A0marką.',
           },
           {
             icon: 'HeartHandshake',
             title: 'Relacje',
-            body: 'Budujemy długofalowe relacje z twórcami — powracające współprace działają lepiej niż jednorazowe akcje.',
+            body: 'Budujemy długofalowe relacje z\u00A0twórcami — powracające współprace działają lepiej niż jednorazowe akcje.',
           },
         ],
       },
@@ -879,7 +881,7 @@ export const SERVICES = [
         name: 'Folks',
         logo: '/assets/folks-logo-light.png',
         tagline: 'from creators to results',
-        copy: 'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z twórcą — dlatego połączyliśmy siły z Folks, agencją specjalizującą się w budowaniu autentycznych relacji między markami a odbiorcami. Obie należymy do Grupy Good One, więc kompetencje z obszaru social mediów, strategii, contentu i influencer marketingu spotykają się w jednym miejscu: szeroka sieć twórców, doświadczeni eksperci i kompleksowa obsługa kampanii — od pomysłu po raportowanie efektów. Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        copy: 'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z\u00A0twórcą — dlatego połączyliśmy siły z\u00A0Folks, agencją specjalizującą się w\u00A0budowaniu autentycznych relacji między markami a\u00A0odbiorcami. Obie należymy do Grupy Good One, więc kompetencje z\u00A0obszaru social mediów, strategii, contentu i\u00A0influencer marketingu spotykają się w\u00A0jednym miejscu: szeroka sieć twórców, doświadczeni eksperci i\u00A0kompleksowa obsługa kampanii — od pomysłu po raportowanie efektów. Jeden partner. Wiele kompetencji. BETTER WORKS.',
         href: '/kontakt',
         // Ambient creator footage (Pexels, free licence) — full-bleed cover.
         video: {
@@ -901,7 +903,7 @@ export const SERVICES = [
             logo: '/case-studies/pracuj-pl/pracuj-pl-logo.png',
             kicker: 'CASE STUDY',
             brand: 'Pracuj.pl',
-            title: 'Humor, twórcy i filtr AR na TikToku',
+            title: 'Humor, twórcy i\u00A0filtr AR na TikToku',
           },
         ],
       },

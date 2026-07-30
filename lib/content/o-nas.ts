@@ -33,7 +33,7 @@ export const oNasHero = {
 export const oNasAbout = {
   headingLead: 'COŚ',
   headingRest: 'O LAMIE',
-  body: 'Social Lama to agencja social media zajmująca się kompleksową obsługą komunikacji marki w mediach społecznościowych oraz prowadzeniem efektywnej reklamy na Facebooku, Instagramie i pozostałych mediach społecznościowych. Przygotujemy skuteczną strategię, opracujemy kreatywną komunikację, zajmiemy się Twoją społecznością i stworzymy efektywną kampanię reklamową.',
+  body: 'Social Lama to agencja social media zajmująca się kompleksową obsługą komunikacji marki w\u00A0mediach społecznościowych oraz prowadzeniem efektywnej reklamy na Facebooku, Instagramie i\u00A0pozostałych mediach społecznościowych. Przygotujemy skuteczną strategię, opracujemy kreatywną komunikację, zajmiemy się Twoją społecznością i\u00A0stworzymy efektywną kampanię reklamową.',
   cta: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '#zespol' },
   imageAlt: 'Ilustracja stadka lam Social Lamy w drewnianej ramce',
 } as const
@@ -47,31 +47,31 @@ export const oNasValues = {
   items: [
     {
       title: 'Partnerstwo strategiczne',
-      body: 'Nie realizujemy działań „dla obecności w social mediach”. Najpierw rozumiemy Twój biznes – jego cele, model działania, wyzwania i kontekst rynkowy – a dopiero potem projektujemy strategię. Dzięki temu możesz mieć pewność, że działania w social mediach realnie wspierają sprzedaż, generowanie leadów, rozpoznawalność czy budowanie marki.\n\nOtrzymujesz partnera, który myśli o Twoim wyniku, a nie tylko o publikacjach.',
+      body: 'Nie realizujemy działań „dla obecności w\u00A0social mediach”. Najpierw rozumiemy Twój biznes – jego cele, model działania, wyzwania i\u00A0kontekst rynkowy – a\u00A0dopiero potem projektujemy strategię. Dzięki temu możesz mieć pewność, że działania w\u00A0social mediach realnie wspierają sprzedaż, generowanie leadów, rozpoznawalność czy budowanie marki.\n\nOtrzymujesz partnera, który myśli o\u00A0Twoim wyniku, a\u00A0nie tylko o\u00A0publikacjach.',
     },
     {
       title: 'Proaktywne podejście',
-      body: 'Nie czekamy na brief ani przypomnienie. Regularnie analizujemy wyniki, trendy i zmiany w algorytmach, aby proponować nowe kierunki i usprawnienia. Dla Ciebie oznacza to komfort współpracy i poczucie, że projekt jest pod stałą opieką.\n\nZyskujesz zespół, który myśli o rozwoju Twojej marki nawet wtedy, gdy Ty skupiasz się na innych obszarach biznesu.',
+      body: 'Nie czekamy na brief ani przypomnienie. Regularnie analizujemy wyniki, trendy i\u00A0zmiany w\u00A0algorytmach, aby proponować nowe kierunki i\u00A0usprawnienia. Dla Ciebie oznacza to komfort współpracy i\u00A0poczucie, że projekt jest pod stałą opieką.\n\nZyskujesz zespół, który myśli o\u00A0rozwoju Twojej marki nawet wtedy, gdy Ty skupiasz się na innych obszarach biznesu.',
     },
     {
       title: 'Skupienie na efektach',
-      body: 'Estetyka jest ważna, ale nie jest celem samym w sobie. Każde działanie ma określony cel i mierzalne wskaźniki sukcesu. Dzięki temu możesz raportować zarządowi lub właścicielom konkretne wyniki, a nie tylko zasięgi.\n\nNasze działania są projektowane tak, aby przekładały się na realną wartość biznesową.',
+      body: 'Estetyka jest ważna, ale nie jest celem samym w\u00A0sobie. Każde działanie ma określony cel i\u00A0mierzalne wskaźniki sukcesu. Dzięki temu możesz raportować zarządowi lub właścicielom konkretne wyniki, a\u00A0nie tylko zasięgi.\n\nNasze działania są projektowane tak, aby przekładały się na realną wartość biznesową.',
     },
     {
       title: 'Eksperckość, która daje Ci przewagę',
-      body: 'Specjalizujemy się w social mediach i marketingu digital. Śledzimy trendy, narzędzia, zmiany technologiczne i wykorzystujemy je w praktyce. Współpracując z nami, zyskujesz dostęp do aktualnej wiedzy i sprawdzonych rozwiązań bez konieczności budowania wewnętrznego zespołu specjalistów.',
+      body: 'Specjalizujemy się w\u00A0social mediach i\u00A0marketingu digital. Śledzimy trendy, narzędzia, zmiany technologiczne i\u00A0wykorzystujemy je w\u00A0praktyce. Współpracując z\u00A0nami, zyskujesz dostęp do aktualnej wiedzy i\u00A0sprawdzonych rozwiązań bez konieczności budowania wewnętrznego zespołu specjalistów.',
     },
     {
       title: 'Indywidualne podejście',
-      body: 'Nie kopiujemy rozwiązań między klientami. Każda strategia powstaje w oparciu o specyfikę Twojej branży, odbiorców i etapu rozwoju firmy. To oznacza komunikację dopasowaną do Twojej marki, a nie „uniwersalny model działania”. Twoje cele są punktem wyjścia do wszystkich rekomendacji.',
+      body: 'Nie kopiujemy rozwiązań między klientami. Każda strategia powstaje w\u00A0oparciu o\u00A0specyfikę Twojej branży, odbiorców i\u00A0etapu rozwoju firmy. To oznacza komunikację dopasowaną do Twojej marki, a\u00A0nie „uniwersalny model działania”. Twoje cele są punktem wyjścia do wszystkich rekomendacji.',
     },
     {
       title: 'Kompleksowość',
-      body: 'Jesteśmy częścią grupy marketingowo-doradczej Good One, co pozwala nam działać szerzej niż tylko w obszarze social media.\n\nDla Ciebie oznacza to jeden spójny kierunek działań i dostęp do szerokiego zaplecza kompetencji bez konieczności koordynowania wielu podmiotów.',
+      body: 'Jesteśmy częścią grupy marketingowo-doradczej Good One, co pozwala nam działać szerzej niż tylko w\u00A0obszarze social media.\n\nDla Ciebie oznacza to jeden spójny kierunek działań i\u00A0dostęp do szerokiego zaplecza kompetencji bez konieczności koordynowania wielu podmiotów.',
     },
     {
       title: 'Transparentność',
-      body: 'Nie stosujemy drobnego druczku i nie ukrywamy zasad współpracy. To jawność i uczciwość działania.',
+      body: 'Nie stosujemy drobnego druczku i\u00A0nie ukrywamy zasad współpracy. To jawność i\u00A0uczciwość działania.',
     },
   ],
 } as const
@@ -89,7 +89,7 @@ export const oNasProjects = {
   cta: 'Zobacz',
   items: [
     {
-      name: 'Jak połączyć humor z edukacją w social mediach?',
+      name: 'Jak połączyć humor z\u00A0edukacją w\u00A0social mediach?',
       year: '2024',
       client: 'iRobot',
       logo: '/case-studies/irobot/irobot-logo.png',
@@ -109,7 +109,7 @@ export const oNasProjects = {
       href: '/case-studies/pracuj-pl',
     },
     {
-      name: 'Jak budować marki w social mediach?',
+      name: 'Jak budować marki w\u00A0social mediach?',
       year: '2025',
       client: 'Volvo Car Warszawa',
       logo: '/case-studies/volvo/volvo-logo.png',
@@ -127,7 +127,7 @@ export const oNasProjects = {
 export const oNasGoodOne = {
   heading: 'JESTEŚMY CZĘŚCIĄ',
   headingAccent: 'GOOD ONE',
-  body: 'Agencja Social Lama jest częścią grupy marketingowej Good One, dzięki czemu zapewnia kompleksowość usług poprzez dostęp do specjalistów z pozostałych obszarów komunikacji, takich jak: digital, social media, design, SEO i SEM, influencer marketing.',
+  body: 'Agencja Social Lama jest częścią grupy marketingowej Good One, dzięki czemu zapewnia kompleksowość usług poprzez dostęp do specjalistów z\u00A0pozostałych obszarów komunikacji, takich jak: digital, social media, design, SEO i\u00A0SEM, influencer marketing.',
   center: 'GOOD ONE',
   wheelAlt:
     'Grupa Good One: Good One PR, SEOFLY, Folks, TymKor media, Diea i Social Lama',
@@ -217,35 +217,35 @@ export const oNasTeam = {
       surname: 'OZGA',
       role: 'Head of Social Media',
       certs: ['dimaq'],
-      bio: 'Od 2017 roku związana z Social Lamą, gdzie łączy strategiczne myślenie z codzienną pracą z klientami i zespołem. Tworzy i wdraża strategie komunikacyjne dla polskich i międzynarodowych marek, a największą satysfakcję daje jej rozwijanie projektów, które realnie wpływają na wyniki biznesowe.',
+      bio: 'Od 2017 roku związana z\u00A0Social Lamą, gdzie łączy strategiczne myślenie z\u00A0codzienną pracą z\u00A0klientami i\u00A0zespołem. Tworzy i\u00A0wdraża strategie komunikacyjne dla polskich i\u00A0międzynarodowych marek, a\u00A0największą satysfakcję daje jej rozwijanie projektów, które realnie wpływają na wyniki biznesowe.',
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
-      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej w reklamie, dzięki czemu odnajduje się w tworzeniu contentu i nieszablonowych koncepcji. Doświadczenie zdobywała w branży hotelarskiej, gastronomicznej, beauty i lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i wyważonego szaleństwa. No i oczywiście analityki.',
+      bio: 'Od 5 lat związana z\u00A0marketingiem i\u00A0mediami społecznościowymi. Łączy pasję do fotografii z\u00A0wykształceniem z\u00A0zakresu zarządzania i\u00A0grafiki komputerowej w\u00A0reklamie, dzięki czemu odnajduje się w\u00A0tworzeniu contentu i\u00A0nieszablonowych koncepcji. Doświadczenie zdobywała w\u00A0branży hotelarskiej, gastronomicznej, beauty i\u00A0lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i\u00A0wyważonego szaleństwa. No i\u00A0oczywiście analityki.',
       photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
-      bio: 'W Social Lamie od 2019 roku. Odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i treści tekstowych, wspierając w tych obszarach cały zespół. Łączy wykształcenie marketingowe i filologiczne z doświadczeniem w pracy dla marek z branż takich jak FMCG, automotive, OZE, elektronika i nieruchomości. Stawia na słowo, które realnie buduje komunikację. Prywatnie fan szeroko pojętego sportu i internetowych memów.',
+      bio: 'W\u00A0Social Lamie od 2019 roku. Odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i\u00A0treści tekstowych, wspierając w\u00A0tych obszarach cały zespół. Łączy wykształcenie marketingowe i\u00A0filologiczne z\u00A0doświadczeniem w\u00A0pracy dla marek z\u00A0branż takich jak FMCG, automotive, OZE, elektronika i\u00A0nieruchomości. Stawia na słowo, które realnie buduje komunikację. Prywatnie fan szeroko pojętego sportu i\u00A0internetowych memów.',
       photo: '/o-nas/slider/piotr-zach.png',
     },
     {
       given: 'EMILIA',
       surname: 'METRYKA',
       role: 'Social Media Manager',
-      bio: 'Zaczynała w Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w Social Lamie prowadzi zespół, koordynuje komórkę wideo oraz odpowiada za strategie i kampanie dla marek z wielu branż — od FMCG i beauty po energetykę i nieruchomości. Łączy doświadczenie z wywiadów, premier i planów zdjęciowych z biznesowym podejściem do digitalu.',
+      bio: 'Zaczynała w\u00A0Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w\u00A0Social Lamie prowadzi zespół, koordynuje komórkę wideo oraz odpowiada za strategie i\u00A0kampanie dla marek z\u00A0wielu branż — od FMCG i\u00A0beauty po energetykę i\u00A0nieruchomości. Łączy doświadczenie z\u00A0wywiadów, premier i\u00A0planów zdjęciowych z\u00A0biznesowym podejściem do digitalu.',
       photo: '/o-nas/slider/emilia-metryka.png',
     },
     {
       given: 'PAULINA',
       surname: 'HILDEBRAND',
       role: 'Social Media Manager',
-      bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, dzięki czemu tworzy komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii i koncepcji kreatywnych, przez koordynację działań, po relacje z klientami. Obsługiwała klientów z FMCG, logistyki, gastronomii, RTV i AGD, motoryzacji i HVAC. Prywatnie szczęśliwa mama i miłośniczka kotów.',
+      bio: 'Łączy humanistyczną wrażliwość na słowo z\u00A0analitycznym podejściem do danych, dzięki czemu tworzy komunikację, która naprawdę działa w\u00A0social mediach. Specjalizuje się w\u00A0kompleksowym prowadzeniu profili marek — od strategii i\u00A0koncepcji kreatywnych, przez koordynację działań, po relacje z\u00A0klientami. Obsługiwała klientów z\u00A0FMCG, logistyki, gastronomii, RTV i\u00A0AGD, motoryzacji i\u00A0HVAC. Prywatnie szczęśliwa mama i\u00A0miłośniczka kotów.',
       photo: '/o-nas/slider/paulina-hildebrand.png',
     },
     {
@@ -255,49 +255,49 @@ export const oNasTeam = {
       certs: ['dimaq'],
       // The DIMAQ sentence that used to close this bio is now the chip above —
       // stating it twice is the redundancy the chip exists to remove.
-      bio: 'Od ponad 12 lat pracuje w branży marketingowej. Specjalizuje się w strategii komunikacji, social mediach, moderacji, content marketingu oraz podcastach. Ma doświadczenie w pracy z markami z branży beauty, retail, FMCG, motoryzacyjnej, nieruchomości, farmaceutycznej oraz e-commerce. Po godzinach aktywnie działa na rzecz edukacji branży — prowadzi szkolenia, tworzy eksperckie publikacje i dzieli się wiedzą w autorskim podcaście.',
+      bio: 'Od ponad 12 lat pracuje w\u00A0branży marketingowej. Specjalizuje się w\u00A0strategii komunikacji, social mediach, moderacji, content marketingu oraz podcastach. Ma doświadczenie w\u00A0pracy z\u00A0markami z\u00A0branży beauty, retail, FMCG, motoryzacyjnej, nieruchomości, farmaceutycznej oraz e-commerce. Po godzinach aktywnie działa na rzecz edukacji branży — prowadzi szkolenia, tworzy eksperckie publikacje i\u00A0dzieli się wiedzą w\u00A0autorskim podcaście.',
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
       given: 'KORNELIA',
       surname: 'ORLIK',
       role: 'Social Media Expert',
-      bio: 'Specjalizuje się w komunikacji marek z obszaru B2B oraz branży medycznej. Łączy podejście strategiczne z kompetencjami z zakresu zarządzania, dzięki czemu działania w social mediach są ściśle powiązane z celami biznesowymi klientów. Odpowiada za planowanie i koordynację komunikacji oraz przekładanie strategii na mierzalne efekty. Tworzy również materiały wizualne — grafiki, wideo i treści UGC — zgodne z regulacjami branżowymi.',
+      bio: 'Specjalizuje się w\u00A0komunikacji marek z\u00A0obszaru B2B oraz branży medycznej. Łączy podejście strategiczne z\u00A0kompetencjami z\u00A0zakresu zarządzania, dzięki czemu działania w\u00A0social mediach są ściśle powiązane z\u00A0celami biznesowymi klientów. Odpowiada za planowanie i\u00A0koordynację komunikacji oraz przekładanie strategii na mierzalne efekty. Tworzy również materiały wizualne — grafiki, wideo i\u00A0treści UGC — zgodne z\u00A0regulacjami branżowymi.',
       photo: '/o-nas/slider/kornelia-orlik.png',
     },
     {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
-      bio: 'Od ponad 4 lat działa w marketingu, a w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
+      bio: 'Od ponad 4 lat działa w\u00A0marketingu, a\u00A0w\u00A0Social Lamie tworzy angażujące treści i\u00A0wspiera marki w\u00A0budowaniu spójnej, silnej obecności online. Łączy wykształcenie z\u00A0zakresu Communication Management z\u00A0kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
       photo: '/o-nas/slider/katarzyna-kaptur.png',
     },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
       role: 'Social Media Specialist',
-      bio: 'Od ponad 10 lat odpowiada za komunikację marek w social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z obszaru beauty, FMCG, AGD i lifestyle. Tworzy długofalowe strategie i angażujący content, stawiając na autentyczność, emocje i budowanie trwałych relacji między marką a jej odbiorcami.',
+      bio: 'Od ponad 10 lat odpowiada za komunikację marek w\u00A0social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z\u00A0obszaru beauty, FMCG, AGD i\u00A0lifestyle. Tworzy długofalowe strategie i\u00A0angażujący content, stawiając na autentyczność, emocje i\u00A0budowanie trwałych relacji między marką a\u00A0jej odbiorcami.',
       photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
       given: 'KAROLINA',
       surname: 'MARCINOWSKA',
       role: 'Wideo Content Creator',
-      bio: 'W Social Lamie odpowiada przede wszystkim za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i dopasowanie do strategii marki. Łączy doświadczenie w prowadzeniu komunikacji w różnych branżach z wyczuciem trendów i estetyki, tworząc materiały wideo, które przyciągają uwagę i budują zaangażowanie.',
+      bio: 'W\u00A0Social Lamie odpowiada przede wszystkim za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i\u00A0dopasowanie do strategii marki. Łączy doświadczenie w\u00A0prowadzeniu komunikacji w\u00A0różnych branżach z\u00A0wyczuciem trendów i\u00A0estetyki, tworząc materiały wideo, które przyciągają uwagę i\u00A0budują zaangażowanie.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
     {
       given: 'MARTYNA',
       surname: 'BOROWIK',
       role: 'Senior Social Media Specialist',
-      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu, podchodząc do komunikacji kompleksowo — od strategii, przez angażujący content, po analizę wyników. Ważne są dla niej relacje: współpraca oparta na otwartości i zrozumieniu jest efektywna i długofalowa. Szczególnie ceni pracę dla branż HoReCa, podróże i parenting.',
+      bio: 'Łączy strategiczne spojrzenie z\u00A0intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w\u00A0marketingu i\u00A0digitalu, podchodząc do komunikacji kompleksowo — od strategii, przez angażujący content, po analizę wyników. Ważne są dla niej relacje: współpraca oparta na otwartości i\u00A0zrozumieniu jest efektywna i\u00A0długofalowa. Szczególnie ceni pracę dla branż HoReCa, podróże i\u00A0parenting.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
     {
       given: 'PRZEMYSŁAW',
       surname: 'ŚWIERCZ',
       role: 'Fullstack Developer',
-      bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Buduje też narzędzia wewnętrzne i automatyzacje, które skracają zespołowi drogę od pomysłu do wdrożenia. Po godzinach prowadzi blog techniczny. Prywatnie lubi być w ruchu — rower, bieganie, kiedyś sztuki walki.',
+      bio: 'Odpowiada za rozwój i\u00A0utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i\u00A0wdrożenia. Buduje też narzędzia wewnętrzne i\u00A0automatyzacje, które skracają zespołowi drogę od pomysłu do wdrożenia. Po godzinach prowadzi blog techniczny. Prywatnie lubi być w\u00A0ruchu — rower, bieganie, kiedyś sztuki walki.',
       // The blog the bio just mentioned. An external personal site, so the
       // label is the domain — it says where the link goes before it is clicked.
       link: { label: 'imcurious.how', href: 'https://imcurious.how' },
