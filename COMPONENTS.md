@@ -44,6 +44,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Header | `@/components/layout/header` | Client |
 | Lenis | `@/components/layout/lenis` | Client |
 | LocaleToggle | `@/components/layout/locale-toggle` | Client |
+| RouteLoading | `@/components/layout/route-loading` | Server |
 | ScrollReset | `@/components/layout/scroll-reset` | Client |
 | Theme | `@/components/layout/theme` | Client |
 | Wrapper | `@/components/layout/wrapper` | Client |
