@@ -34,7 +34,8 @@
       "!app/(payload)",
       "!payload-types.ts",
       "!migrations",
-      "!content/case-studies/**/draft.*.json"
+      "!content/case-studies/**/draft.*.json",
+      "!content/media/image-audit.json"
     ]
   },
 
