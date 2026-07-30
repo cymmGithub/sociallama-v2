@@ -4,10 +4,18 @@ import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
+import { Consent } from '@/components/consent'
 import { ChromeProvider } from '@/components/layout/chrome-provider'
 import { OrganizationJsonLd } from '@/components/seo/structured-data'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
+import { ConsentInit } from '@/lib/consent/consent-init'
+import { GoogleAnalytics } from '@/lib/consent/google-analytics'
+import {
+  consentBanner,
+  consentCategories,
+  consentSettings,
+} from '@/lib/content/consent.en'
 import { footer, menu, nav } from '@/lib/content/home.en'
 import {
   APP_DEFAULT_TITLE,
@@ -100,6 +108,12 @@ export default function Layout({ children }: PropsWithChildren) {
       data-theme="plum"
       suppressHydrationWarning
     >
+      {/* Mirrors the Polish layout — consent defaults before the Google tag.
+          See the comment there (design.md Decision 3). */}
+      <head>
+        <ConsentInit />
+        <GoogleAnalytics />
+      </head>
       <body>
         <OrganizationJsonLd description={APP_DESCRIPTION} />
         <Suspense fallback={null}>
@@ -125,7 +139,15 @@ export default function Layout({ children }: PropsWithChildren) {
         <Suspense fallback={null}>
           <TempusPatch />
         </Suspense>
+        {/* Unconditional — no device storage, so no consent obligation. */}
         <Analytics />
+        <Consent
+          copy={{
+            banner: consentBanner,
+            settings: consentSettings,
+            categories: consentCategories,
+          }}
+        />
       </body>
     </html>
   )

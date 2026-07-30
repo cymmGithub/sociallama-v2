@@ -25,11 +25,18 @@ The consent banner SHALL present acceptance and refusal as controls of equal vis
 
 The banner SHALL NOT offer a dismissal control that neither accepts nor refuses, and SHALL NOT treat scrolling, navigation, or continued browsing as consent.
 
+Equal weight SHALL be structural rather than a consequence of similar label lengths, so that translating a label cannot make refusal the smaller target.
+
 #### Scenario: Both choices are one click away at the same level
 
 - **WHEN** the banner is shown to a visitor with no stored decision
 - **THEN** an accept-all control and a refuse-all control are both directly present
 - **AND** they are rendered at the same size and prominence, differing only in fill
+
+#### Scenario: A longer translation does not shrink refusal
+
+- **WHEN** the banner is rendered in any locale
+- **THEN** the accept and refuse controls have identical width, height, padding, font size, font weight and letter spacing, whatever their labels say
 
 #### Scenario: There is no ambiguous exit
 
@@ -37,28 +44,31 @@ The banner SHALL NOT offer a dismissal control that neither accepts nor refuses,
 - **THEN** it offers no close, dismiss or X control
 - **AND** scrolling or navigating to another page leaves the banner shown and no consent recorded
 
-### Requirement: Consent is category-level and honestly labelled
+### Requirement: Consent is category-level and every category is real
 
-Consent SHALL be collected against three categories: necessary, analytics, and marketing. Optional categories SHALL default to off in the settings panel until the visitor turns them on.
+Consent SHALL be collected against a necessary category plus one category for each class of optional vendor the site actually operates. Optional categories SHALL default to off in the settings panel until the visitor turns them on.
 
 The necessary category SHALL be presented as a statement that these are required, not as a disabled or pre-checked interactive control, because it offers no choice.
 
-Each optional category SHALL disclose the vendors it covers. A category with no active vendors SHALL say so explicitly rather than render an empty list.
+Each optional category SHALL disclose the vendors it covers. A category that covers no vendors SHALL NOT be presented at all: a control that changes nothing misrepresents itself, and explaining that it currently does nothing does not repair it.
+
+Introducing a new category SHALL be accompanied by a vendor-list version increment, per the versioning requirement below.
 
 #### Scenario: Optional categories start off
 
 - **WHEN** a visitor with no stored decision opens the settings panel
-- **THEN** the analytics and marketing toggles are off
+- **THEN** every optional category's toggle is off
 
 #### Scenario: The necessary category presents no false choice
 
 - **WHEN** the settings panel is rendered
 - **THEN** the necessary category carries no switch, checkbox or other interactive control
 
-#### Scenario: An empty category is labelled as empty
+#### Scenario: No category without a vendor behind it
 
-- **WHEN** a category currently covers no vendors
-- **THEN** its detail row states that no tools are currently active, rather than showing a blank list
+- **WHEN** the settings panel is rendered
+- **THEN** every category shown covers at least one named vendor
+- **AND** no toggle is present that does not gate a vendor
 
 ### Requirement: Consent is recorded, versioned, and re-sought when vendors change
 
@@ -129,6 +139,14 @@ The banner SHALL NOT be rendered while consent state is still unresolved, so tha
 ### Requirement: Consent copy ships in both locales
 
 Every string in the banner, the settings panel and the withdrawal control SHALL exist in Polish and English, under the same locale-parity enforcement used elsewhere in the repo. The vendor list, including each vendor's purpose and the cookies it sets, SHALL be maintained as data in a single module serving both locales.
+
+Where an icon stands in for a word in visible copy, the word it replaces SHALL still be available to assistive technology, so that the sentence is complete when read aloud.
+
+#### Scenario: An icon standing in for a word is still spoken
+
+- **WHEN** the banner heading substitutes an icon for a noun
+- **THEN** the icon is hidden from assistive technology
+- **AND** the noun is present in the accessible text of the heading
 
 #### Scenario: The English tree is protected too
 

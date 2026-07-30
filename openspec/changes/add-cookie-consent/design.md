@@ -78,6 +78,16 @@ Head order, both layouts:
 
 The inline script is emitted via `dangerouslySetInnerHTML` from a server component rather than `next/script`. `beforeInteractive` would work, but raw ordering in `<head>` is more predictable than a strategy hint, the payload is a few hundred bytes, and ordering is the entire value here. No nonce is needed — the CSP carries no `script-src`. **If a `script-src` directive is ever added to `next.config.ts`, this script breaks silently and analytics quietly stops working.** Noted in the spec as a constraint, not left to memory.
 
+### Amendment, 2026-07-30 — the Google tag is hand-rolled, and it is `defer`
+
+Two findings during implementation, both measured rather than reasoned:
+
+**`@next/third-parties` was dropped** (owner decision). Its `<GoogleAnalytics>` renders through `next/script` at `afterInteractive`, which in the App Router emits **no script at all** into the served HTML — only a `<link rel="preload">` — and injects both tags from a `useEffect` after hydration (`next/dist/client/script.js`, the `appDir` branch). Correctness would have survived, because `dataLayer` order is what Google acts on and the defaults are queued before anything else. But the `web-analytics` spec requires the consent script to precede the Google tag *in the document*, and a tag that is absent from the document cannot be asserted against — only reasoned about. Rendering the two tags ourselves costs seven lines in `lib/consent/google-analytics.tsx` and removes a dependency.
+
+**The loader is `defer`, not `async`.** React 19 treats `<script async src>` as a hoistable resource and lifts it to the *top* of `<head>` — above the consent defaults. Measured in the build: loader at byte 1998, consent script at 3915. The guarantee still held (both *inline* scripts keep their relative position, so `default` still precedes `config`), but it converts a guarantee into a race. React leaves `defer` scripts where they are written. Re-measured after the change: consent 3825 → loader 4705 → config 4769, in all four prerendered locale roots.
+
+The general lesson is worth keeping: **what protects the visitor here is `dataLayer` command order, not script-tag order.** Script order is the thing that can be asserted, which is why the spec asks for it.
+
 ## Decision 4 — Consent state is client-only, and the banner is fixed-position
 
 Following from Decision 3: nothing about consent is read on the server, ever. React reads the same cookie after hydration purely to drive the UI.
@@ -128,13 +138,26 @@ Necessary / Analytics / Marketing.
 
 Per-vendor granularity is a CMP feature for publishers juggling dozens of ad partners. With at most four vendors ever, categories are the right altitude.
 
-## Decision 9 — Marketing ships visible with zero vendors
+## Decision 9 — Marketing does not ship at all ~~ships visible with zero vendors~~
 
-The Marketing row renders from day one with its vendor list reading "Brak aktywnych narzędzi" / "No active tools".
+**REVERSED at implementation, 2026-07-30 (owner decision).** The original text is kept below the line because the reasoning still applies the day a pixel arrives.
 
-Hiding it until a pixel exists was the alternative. Shipping it visible means adding a pixel later is a **data change plus a version bump**, not a UI change — the banner, the settings panel and the privacy-policy table all pick it up from one array. It is also the more transparent position: the site is stating what categories it operates, including empty ones.
+**What ships:** two categories, necessary and analytics. There is no Marketing row, no marketing toggle, and no `marketing` field in the consent cookie.
 
-The cost is a switch that presently controls nothing, which is why the copy says so explicitly rather than leaving the row blank.
+The deciding argument against the original: a switch that controls nothing is not transparency, it is a control that lies about having an effect. "Brak aktywnych narzędzi" explains the lie rather than removing it.
+
+The cost the original was trying to avoid — that adding a pixel later becomes a UI change — turns out to be small, because **the version bump already forces the expensive part**. Adding a marketing vendor requires bumping `CONSENT_VERSION`, which discards every stored decision and re-prompts the entire audience regardless. Against that, adding one entry to `consentCategories` and one field to the cookie is noise. Nothing was actually saved by pre-building the empty category.
+
+Two things keep the door open, and both are load-bearing:
+
+- The settings panel branches on `required`, and `consentCategories` is an array. A second optional category is a data change plus one id-keyed binding in `CategoryRow` — the component does not assume there is exactly one.
+- `lib/consent/cookie.ts` documents the bump requirement at `CONSENT_VERSION` in the loudest terms in the file, because it is the step that will be forgotten.
+
+> ~~The Marketing row renders from day one with its vendor list reading "Brak aktywnych narzędzi" / "No active tools".~~
+>
+> ~~Hiding it until a pixel exists was the alternative. Shipping it visible means adding a pixel later is a **data change plus a version bump**, not a UI change — the banner, the settings panel and the privacy-policy table all pick it up from one array. It is also the more transparent position: the site is stating what categories it operates, including empty ones.~~
+>
+> ~~The cost is a switch that presently controls nothing, which is why the copy says so explicitly rather than leaving the row blank.~~
 
 ## Decision 10 — No geo-gating
 
@@ -142,7 +165,9 @@ Suppressing the banner for non-EEA visitors was considered. Traffic to a Polish 
 
 ## Decision 11 — GA is gated by environment, not by code
 
-`NEXT_PUBLIC_GA_ID` is set **only** on Vercel Production. `<GoogleAnalytics>` renders only when the id is present.
+**Amended 2026-07-30: the variable is `NEXT_PUBLIC_GOOGLE_ANALYTICS`, not a new `NEXT_PUBLIC_GA_ID`.** The proposal did not notice that the starter already ships that name in four places — `lib/env.ts`, `analyticsEnvSchema` in `lib/utils/validation.ts`, the `analytics` entry in `lib/integrations/registry.ts`, and its tests. Nothing rendered it, so it was dead config. Adding a second GA id beside it would have left a reader to work out which one was live; reusing it instead makes `isConfigured('analytics')` and its existing tests mean something for the first time.
+
+`NEXT_PUBLIC_GOOGLE_ANALYTICS` is set **only** on Vercel Production. `<GoogleAnalytics>` renders only when the id is present.
 
 One condition, no environment branching, no `VERCEL_ENV` checks scattered around, and no way for a preview deployment or a local dev server to pollute the property. The banner still renders everywhere so it remains developable and testable without a real property.
 
@@ -158,10 +183,21 @@ The rewrite drops the browser-settings clause (dead since *Planet49*, C-673/17),
 
 ## Decision 13 — Banner UX: equal weight, no dismissal
 
-A fixed bottom bar, not a blocking modal. It does not obstruct reading, and a modal that traps a first-time visitor is both hostile and unnecessary.
+**Form settled at mock review, 2026-07-30.** Three treatments were built at full fidelity and reviewed live; the owner chose "Karteczka" — a cream note pinned to the **bottom-left corner**, not a full-width bar. It reads as something placed on the page rather than a strip of chrome, and it leaves the whole bottom edge of the viewport free. Fixed-position either way, so Decision 4's CLS argument is untouched.
 
-Three actions: **Akceptuj wszystkie** / **Odrzuć wszystkie** / **Ustawienia**. The first two at genuinely equal visual weight — same size, same prominence, differing only in fill. This is the single most-enforced point in European banner enforcement; everything else on this page is negotiable and that is not.
+Not a blocking modal. It does not obstruct reading, and a modal that traps a first-time visitor is both hostile and unnecessary.
+
+Three actions: **Akceptuję** / **Odrzucam** / **Ustawienia**. The first two at genuinely equal visual weight — same size, same prominence, differing only in fill. This is the single most-enforced point in European banner enforcement; everything else here is negotiable and that is not.
+
+**Equality is structural, not a matter of matched labels.** The two choices sit in a `grid-template-columns: 1fr 1fr`, so they are exactly the same width by construction. The original plan — matched padding plus labels "kept close in length" — silently fails the moment a locale disagrees, and English does: "Reject all" is longer than "Odrzucam". The e2e suite compares the two computed boxes and every property that carries visual weight against *each other* rather than against a literal, so a restyle may change the type scale but never for only one of them.
+
+Two implementation notes that are decisions, not styling:
+
+- **The tilt is desktop-only.** At mobile widths the card is nearly the full viewport, so rotating it pushes its corners past the edge and can force a horizontal scrollbar. Verified at 390px: zero horizontal overflow.
+- **The card carries a hairline ring as well as a drop shadow.** It is fixed, so it floats over every scroll chapter in turn — plum, then the sand client-logos band, then plum-dark. Cream on sand is nearly the same value and the shadow alone does not separate them.
 
 **No close/X control.** Dismissal without a choice is legally ambiguous — it is neither consent nor refusal, and treating it as either is indefensible. Since the bar does not obstruct the page, leaving it until a choice is made costs the visitor nothing. The alternative (X behaves as refusal) is defensible but adds a control whose meaning must then be explained.
 
-The settings panel is a `@base-ui/react` Dialog, which handles focus trapping and escape. The bar itself is **not** modal: `role="region"` with an accessible name, no focus trap, no scroll lock.
+**The heading's noun is an icon.** "A może trochę 🍪?" carries a lucide `Cookie` where the word would be. The icon is `aria-hidden` and the word is rendered visually-hidden beside it, so the heading is complete when spoken — an icon-only heading would read aloud as "A może trochę?", a different and worse sentence. The body spells "ciasteczek" out in full; only the heading leans on the icon.
+
+The settings panel is a `@base-ui/react` Dialog, which handles focus trapping and escape. The card itself is **not** modal: `role="region"` with an accessible name, no focus trap, no scroll lock.

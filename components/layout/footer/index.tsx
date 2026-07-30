@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRight, CornerDownRight } from 'lucide-react'
+import { ConsentSettingsLink } from '@/components/consent/consent-settings-link'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
@@ -116,6 +117,12 @@ export function Footer() {
               </Link>
             </li>
           ))}
+          {/* Withdrawal control. A button, not a link — it opens the consent
+              panel rather than navigating, and it must be reachable from every
+              page, which is what puts it in the footer rather than the policy. */}
+          <li>
+            <ConsentSettingsLink className={s.legalLink} />
+          </li>
         </ul>
         <p className={s.copyright}>{footer.copyright}</p>
         <LocaleToggle linkClassName={s.legalLink} />

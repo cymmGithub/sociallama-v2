@@ -1,7 +1,14 @@
 import type { Metadata } from 'next'
 import s from '@/app/(frontend)/[slug]/post.module.css'
+import { CookieTable } from '@/components/consent/cookie-table'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import { CONSENT_COOKIE_NAME } from '@/lib/consent/cookie'
+import {
+  consentCategories,
+  consentTable,
+  consentTrigger,
+} from '@/lib/content/consent.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 /*
@@ -293,33 +300,83 @@ export default function EnPrivacyPolicyPage() {
               (“Cookies”).
             </li>
             <li>
-              Pursuant to Art. 173(1) of the Telecommunications Law Act of 16
-              July 2004 (Journal of Laws of 2021, item 576), the Controller
-              hereby informs that:
+              Under the Electronic Communications Law Act of 12 July 2024,
+              storing information on, or gaining access to information already
+              stored on, a User's end device requires that User's prior consent.
+              The only exception is Cookies strictly necessary to deliver the
+              service the User has requested.
             </li>
             <li>
-              Cookies are used on the Website to make it easier to use, allow
-              the content available on the Website to be tailored to users'
-              individual needs and preferences, and serve to compile general
-              statistics on the use of the Website.
-            </li>
-            <li>
-              personal data collected using Cookies is gathered solely to
-              perform certain functions for users and is encrypted in a way that
-              prevents access by unauthorized persons.
-            </li>
-            <li>
-              the Website user may consent to the use of Cookies by adjusting
-              their web browser settings accordingly (in particular, enabling or
-              blocking the use of “cookies”).
-            </li>
-            <li>
-              the Website user may change their Cookie settings at any time –
-              detailed information on the options and ways of handling Cookies
-              is available in the software (web browser) settings. Example
-              options for editing settings in popular browsers:
+              The Controller groups the Cookies it uses into two categories:
             </li>
           </ol>
+          <ul>
+            <li>
+              <strong>Necessary</strong> – required for the Website to work and
+              to remember the User's decision about Cookies. Used without
+              consent, under the exception described above.
+            </li>
+            <li>
+              <strong>Analytics</strong> – used to compile aggregate visit
+              statistics. Used only once the User has given consent, and only
+              until that consent is withdrawn.
+            </li>
+          </ul>
+          <p>
+            The full list of Cookies used, together with the parties the
+            corresponding data is shared with, the purpose of each Cookie and
+            how long it is stored:
+          </p>
+
+          {/* Rendered from lib/content/consent.en.ts — the same array that
+              drives the consent settings panel, so the two cannot drift. */}
+          <CookieTable categories={consentCategories} labels={consentTable} />
+
+          <h3>Consent and its withdrawal</h3>
+          <ol>
+            <li>
+              On a first visit the User is shown a banner offering to accept or
+              reject all Cookies other than the necessary ones. Rejecting is
+              exactly as easy as accepting and sits in the same place. No
+              analytics Cookie is written until a choice is made.
+            </li>
+            <li>
+              Consent may be withdrawn or changed at any time, without giving a
+              reason, using the “{consentTrigger}” control in the footer of
+              every page. Withdrawal does not affect the lawfulness of
+              processing carried out before it.
+            </li>
+            <li>
+              The User's decision is stored in the{' '}
+              <code>{CONSENT_COOKIE_NAME}</code> Cookie for 12 months — for a
+              refusal as well as for consent. After that the question is asked
+              again. It is also asked again whenever the list of parties named
+              in the table above changes.
+            </li>
+          </ol>
+
+          <h3>Statistics without Cookies</h3>
+          <p>
+            The Website uses Vercel Web Analytics (Vercel Inc.), which writes no
+            Cookies and no other data to the User's device and reads nothing
+            back from it. Visitors are distinguished solely by a hash computed
+            server-side from the incoming request and discarded after 24 hours.
+            Because the tool never reaches the end device, the consent
+            requirement described in point 2 does not apply to it — it therefore
+            runs regardless of the choice made in the banner. The legal basis is
+            the Controller's legitimate interest (Art. 6(1)(f) GDPR) in
+            measuring Website traffic.
+          </p>
+
+          <h3>Browser settings</h3>
+          <p>
+            Separately from the above, the User may manage Cookies in their
+            browser settings — deleting and blocking them. This is supporting
+            information only:{' '}
+            <strong>browser settings do not constitute consent</strong> to the
+            use of Cookies and do not replace the choice made in the banner.
+            Example options for editing settings in popular browsers:
+          </p>
           <ul>
             <li>
               Mozilla Firefox:{' '}

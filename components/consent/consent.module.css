@@ -1,0 +1,393 @@
+/* Cookie consent — banner bar + settings panel (add-cookie-consent).
+   Fixed brand colours rather than the theme tokens: both surfaces float over
+   whichever scroll chapter happens to be behind them, and a bar that changed
+   ground colour mid-scroll would read as a rendering bug. */
+
+/* —— Banner: the corner note ——————————————————————————————————————————————
+   Variant A from the 2026-07-30 mock review. A cream note pinned bottom-left,
+   not a full-width bar: it reads as something placed on the page rather than a
+   strip of chrome, and it leaves the whole bottom edge free. */
+
+/* position: fixed is load-bearing, not styling.
+   Consent resolves after hydration (design.md Decision 4), so the card always
+   appears a beat after first paint. In document flow that is a layout shift on
+   every first visit, on a site whose CWV numbers were fought for. Out of flow,
+   CLS stays at zero no matter when it arrives. */
+.banner {
+  position: fixed;
+  bottom: var(--safe);
+  left: var(--safe);
+  z-index: 9990;
+  width: min(23.5rem, calc(100vw - var(--safe) * 2));
+  padding: 1.05rem 1.15rem 1.1rem;
+  border-radius: 0.15rem;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  /* Two layers, and the hairline is not decoration. The card is fixed, so it
+     floats over whichever chapter happens to be behind it — plum, then the
+     sand client-logos band, then plum-dark. Cream on sand is nearly the same
+     value and the drop shadow alone does not separate them; the ring does.
+     Verified against the sand band, not just the plum hero. */
+  box-shadow:
+    0 0.8rem 1.6rem -0.6rem rgba(22, 18, 22, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 12%, transparent);
+
+  animation: consent-rise var(--duration) var(--ease-out-expo) both;
+
+  /* The tilt is desktop-only. At mobile widths the card is nearly the full
+     viewport, so rotating it pushes its corners past the edge and can force a
+     horizontal scrollbar — the charm is not worth a sideways-scrolling page. */
+  @media (--desktop) {
+    transform: rotate(-1.2deg);
+  }
+}
+
+/* The folded corner. One triangle, no skeuomorphic shadow. */
+.banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: linear-gradient(225deg, var(--color-orange) 50%, transparent 50%);
+}
+
+@keyframes consent-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-plum);
+  /* Clear the folded corner. */
+  padding-right: 1.4rem;
+}
+
+/* Sized off the font, not a fixed px value: the icon stands in for a word, so
+   it has to scale and sit on the baseline like one. */
+.headingIcon {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.19em;
+  stroke-width: 2;
+}
+
+.body {
+  margin-top: 0.35em;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+.heart {
+  display: inline-block;
+  width: 0.92em;
+  height: 0.92em;
+  vertical-align: -0.1em;
+  fill: var(--color-orange);
+  stroke: var(--color-orange);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.95rem;
+}
+
+/* Settings sits apart from the choice pair. Opening a panel is not a consent
+   decision, so it carries no equal-weight obligation — only accept and refuse
+   do. It stays a real, full-size target rather than a small text link. */
+.settings {
+  border-radius: 999px;
+  padding: 0.62em 0.9em;
+  background-color: color-mix(in srgb, var(--color-ink) 7%, transparent);
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      background-color: color-mix(in srgb, var(--color-ink) 12%, transparent);
+    }
+  }
+}
+
+/* An equal-track grid, NOT flex with a min-width. This makes the two pills
+   exactly the same width by construction, so a longer label in one locale
+   ("Reject all" vs "Odrzucam") cannot quietly make refusal the smaller target.
+   Equal-weight refusal is the most-enforced point in European banner
+   decisions, and "same padding, different label length" is exactly how it
+   stops being true without anyone noticing. */
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+/* Every box property lives here; .accept and .reject set fill and nothing else. */
+.choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.62em 0.9em;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      opacity: 0.86;
+    }
+  }
+}
+
+.accept {
+  background-color: var(--color-plum);
+  color: var(--color-cream);
+}
+
+.reject {
+  background-color: transparent;
+  color: var(--color-plum);
+  box-shadow: inset 0 0 0 1px var(--color-plum);
+}
+
+/* —— Settings panel ———————————————————————————————————————————————————————— */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background-color: color-mix(in srgb, var(--color-ink-deep) 62%, transparent);
+  backdrop-filter: blur(3px);
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.popup {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(46rem, calc(100vw - var(--safe) * 2));
+  max-height: min(42rem, calc(100dvh - var(--safe) * 2));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 1rem;
+  padding: calc(var(--safe) * 1.25);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  transition:
+    opacity var(--duration-fast) var(--ease-out-expo),
+    scale var(--duration-fast) var(--ease-out-expo);
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    scale: 0.97;
+  }
+}
+
+.panelHead {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  color: var(--color-ink);
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      background-color: color-mix(in srgb, var(--color-ink) 8%, transparent);
+    }
+  }
+}
+
+.intro {
+  margin-top: 0.6em;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: calc(var(--gap) * 1.1);
+}
+
+.category {
+  border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+  border-radius: 0.75rem;
+  padding: 1rem 1.1rem;
+}
+
+.categoryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+}
+
+.categoryName {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* The necessary row's counterpart to a switch. A permanently-checked disabled
+   control presents a choice that does not exist (design.md Decision 8), so this
+   is a statement instead — no control, nothing focusable, nothing to click. */
+.alwaysOn {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
+}
+
+.categoryPurpose {
+  margin-top: 0.5em;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+.vendors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+}
+
+.vendorName {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.vendorProvider {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+}
+
+.vendorPurpose {
+  margin-top: 0.25em;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+.cookies {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin-top: 0.55em;
+}
+
+.cookie {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+}
+
+.cookieName {
+  color: var(--color-plum);
+  font-weight: 700;
+}
+
+.vendorPolicy {
+  display: inline-block;
+  margin-top: 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  color: var(--color-plum);
+}
+
+.panelActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: calc(var(--gap) * 1.1);
+}
+
+.save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.85em 1.75em;
+  background-color: var(--color-plum);
+  color: var(--color-cream);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      opacity: 0.86;
+    }
+  }
+}
+
+@media (--reduced-motion) {
+  .banner {
+    animation: none;
+  }
+
+  .choice,
+  .settings,
+  .close,
+  .save,
+  .backdrop,
+  .popup {
+    transition: none;
+  }
+}

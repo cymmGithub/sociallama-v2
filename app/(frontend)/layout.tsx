@@ -4,10 +4,18 @@ import type { Metadata, Viewport } from 'next'
 import { draftMode } from 'next/headers'
 import { type PropsWithChildren, Suspense } from 'react'
 import { ReactTempus } from 'tempus/react'
+import { Consent } from '@/components/consent'
 import { ChromeProvider } from '@/components/layout/chrome-provider'
 import { OrganizationJsonLd } from '@/components/seo/structured-data'
 import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
+import { ConsentInit } from '@/lib/consent/consent-init'
+import { GoogleAnalytics } from '@/lib/consent/google-analytics'
+import {
+  consentBanner,
+  consentCategories,
+  consentSettings,
+} from '@/lib/content/consent'
 import { footer, menu, nav } from '@/lib/content/home'
 import {
   APP_DEFAULT_TITLE,
@@ -102,6 +110,15 @@ export default function Layout({ children }: PropsWithChildren) {
       // otherwise trip a hydration warning.
       suppressHydrationWarning
     >
+      {/* Order in <head> is the entire point (design.md Decision 3): the denied
+          Consent Mode defaults — and a returning visitor's synchronous upgrade
+          from the cookie — must be queued into dataLayer before the Google tag
+          queues its `config`. Do not reorder these two, and do not move them
+          into <body>. */}
+      <head>
+        <ConsentInit />
+        <GoogleAnalytics />
+      </head>
       <body>
         <OrganizationJsonLd description={APP_DESCRIPTION} />
         {/* Skip link for keyboard navigation accessibility */}
@@ -132,7 +149,17 @@ export default function Layout({ children }: PropsWithChildren) {
         <Suspense fallback={null}>
           <TempusPatch />
         </Suspense>
+        {/* Unconditional by design: Vercel Analytics touches no device storage,
+            so the ePrivacy consent obligation never fires for it (design.md
+            Decision 1). Do not move it behind the consent gate. */}
         <Analytics />
+        <Consent
+          copy={{
+            banner: consentBanner,
+            settings: consentSettings,
+            categories: consentCategories,
+          }}
+        />
       </body>
     </html>
   )

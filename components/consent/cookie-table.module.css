@@ -1,0 +1,70 @@
+/* Cookie disclosure table for the privacy policy (add-cookie-consent).
+   The policy pages reuse the post template's long-form surface, which styles
+   headings, lists and links but has no table rules — these are them. */
+
+.scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  /* The reset strips borders; a table needs its own box back. */
+  border: 1px solid var(--line-strong);
+  border-radius: 0.5rem;
+}
+
+.table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+  vertical-align: top;
+
+  & th,
+  & td {
+    display: table-cell;
+    padding: 0.7rem 0.85rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  & thead th {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  & tbody th {
+    font-weight: 700;
+    white-space: nowrap;
+    border-right: 1px solid var(--line);
+  }
+
+  & tr:last-child td,
+  & tr:last-child th {
+    border-bottom: none;
+  }
+}
+
+.provider,
+.policy {
+  display: block;
+  font-size: 0.78rem;
+}
+
+.provider {
+  color: color-mix(in srgb, currentcolor 65%, transparent);
+}
+
+.policy {
+  margin-top: 0.2em;
+  overflow-wrap: anywhere;
+}
+
+.cookieName {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}

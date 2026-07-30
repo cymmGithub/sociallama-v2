@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
+import { CookieTable } from '@/components/consent/cookie-table'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import { CONSENT_COOKIE_NAME } from '@/lib/consent/cookie'
+import {
+  consentCategories,
+  consentTable,
+  consentTrigger,
+} from '@/lib/content/consent'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import s from '../[slug]/post.module.css'
 
@@ -325,38 +332,94 @@ export default function PrivacyPolicyPage() {
               unikalny numer („Cookies”).
             </li>
             <li>
-              Na podstawie art. 173 ust. 1 ustawy Prawo telekomunikacyjne
-              z&nbsp;dnia 16 lipca 2004 r. (Dz. U. z&nbsp;2021 r. poz. 576)
-              Administrator niniejszym informuje, że:
+              Zgodnie z&nbsp;ustawą z&nbsp;dnia 12 lipca 2024 r. – Prawo
+              komunikacji elektronicznej, przechowywanie informacji
+              w&nbsp;urządzeniu końcowym Użytkownika oraz uzyskiwanie do nich
+              dostępu wymaga jego uprzedniej zgody. Wyjątkiem są wyłącznie te
+              pliki Cookies, które są niezbędne do świadczenia usługi żądanej
+              przez Użytkownika.
             </li>
             <li>
-              pliki Cookies są stosowane w&nbsp;Serwisie w&nbsp;celu ułatwienia
-              korzystania z&nbsp;Serwisu, pozwalają dostosowywać treści dostępne
-              w&nbsp;Serwisie do indywidualnych potrzeb i&nbsp;preferencji
-              użytkowników Serwisu, jak również służą do opracowywania ogólnych
-              statystyk dotyczących korzystania z&nbsp;Serwisu.
-            </li>
-            <li>
-              dane osobowe gromadzone przy użyciu plików Cookies są zbierane
-              wyłącznie w&nbsp;celu wykonywania określonych funkcji na rzecz
-              użytkowników i&nbsp;są zaszyfrowane w&nbsp;sposób uniemożliwiający
-              dostęp do nich osobom nieuprawnionym.
-            </li>
-            <li>
-              użytkownik Serwisu ma możliwość wyrażenia zgody na stosowanie
-              Cookies poprzez dokonanie odpowiednich ustawień w&nbsp;swojej
-              przeglądarce internetowej (w&nbsp;szczególności umożliwienie lub
-              zablokowanie stosowania plików „cookies”).
-            </li>
-            <li>
-              użytkownik Serwisu może dokonać w&nbsp;każdym czasie zmiany
-              ustawień dotyczących Cookies – szczegółowe informacje
-              o&nbsp;możliwości i&nbsp;sposobach obsługi plików Cookies dostępne
-              są w&nbsp;ustawieniach oprogramowania (przeglądarki internetowej).
-              Przykładowe opcje edytowania ustawień w&nbsp;popularnych
-              przeglądarkach:
+              Administrator dzieli stosowane pliki Cookies na dwie kategorie:
             </li>
           </ol>
+          <ul>
+            <li>
+              <strong>Niezbędne</strong> – konieczne do działania Serwisu
+              i&nbsp;do zapamiętania decyzji Użytkownika w&nbsp;sprawie plików
+              Cookies. Stosowane bez zgody, na podstawie wyjątku, o&nbsp;którym
+              mowa powyżej.
+            </li>
+            <li>
+              <strong>Analityczne</strong> – służą do tworzenia zbiorczych
+              statystyk odwiedzin. Stosowane wyłącznie po wyrażeniu zgody przez
+              Użytkownika i&nbsp;wyłącznie do czasu jej cofnięcia.
+            </li>
+          </ul>
+          <p>
+            Pełny wykaz stosowanych plików Cookies, wraz z&nbsp;podmiotami,
+            którym odpowiadające im dane są udostępniane, celem ich stosowania
+            oraz okresem przechowywania:
+          </p>
+
+          {/* Rendered from lib/content/consent.ts — the same array that drives
+              the consent settings panel, so the two cannot drift. */}
+          <CookieTable categories={consentCategories} labels={consentTable} />
+
+          <h3>Zgoda i&nbsp;jej cofnięcie</h3>
+          <ol>
+            <li>
+              Przy pierwszej wizycie w&nbsp;Serwisie Użytkownik otrzymuje baner,
+              w&nbsp;którym może przyjąć lub odrzucić pliki Cookies inne niż
+              niezbędne. Odrzucenie jest równie łatwe jak wyrażenie zgody
+              i&nbsp;dostępne w&nbsp;tym samym miejscu. Do czasu dokonania
+              wyboru żaden analityczny plik Cookie nie jest zapisywany.
+            </li>
+            <li>
+              Zgodę można cofnąć lub zmienić w&nbsp;każdej chwili, bez podawania
+              przyczyny, korzystając z&nbsp;odnośnika „{consentTrigger}”
+              w&nbsp;stopce każdej podstrony. Cofnięcie zgody nie wpływa na
+              zgodność z&nbsp;prawem przetwarzania, którego dokonano przed jej
+              cofnięciem.
+            </li>
+            <li>
+              Decyzja Użytkownika zapisywana jest w&nbsp;pliku Cookie{' '}
+              <code>{CONSENT_COOKIE_NAME}</code> przez 12&nbsp;miesięcy –&nbsp;
+              zarówno w&nbsp;przypadku wyrażenia zgody, jak i&nbsp;odmowy. Po
+              tym czasie pytanie pojawia się ponownie. Pytanie pojawia się
+              ponownie także wtedy, gdy zmieni się lista podmiotów wskazanych
+              w&nbsp;tabeli powyżej.
+            </li>
+          </ol>
+
+          <h3>Statystyki bez plików Cookies</h3>
+          <p>
+            Serwis korzysta z&nbsp;narzędzia Vercel Web Analytics (Vercel Inc.),
+            które nie zapisuje żadnych plików Cookies ani innych danych
+            w&nbsp;urządzeniu Użytkownika i&nbsp;niczego z&nbsp;niego nie
+            odczytuje. Użytkownicy rozróżniani są wyłącznie na podstawie skrótu
+            (hasza) wyliczanego po stronie serwera z&nbsp;danych przychodzącego
+            żądania, usuwanego po 24&nbsp;godzinach. Ponieważ narzędzie nie
+            sięga do urządzenia końcowego, obowiązek uzyskania zgody,
+            o&nbsp;którym mowa w&nbsp;pkt&nbsp;2, go nie dotyczy –&nbsp;działa
+            więc niezależnie od decyzji podjętej w&nbsp;banerze. Podstawą
+            przetwarzania jest prawnie uzasadniony interes Administratora
+            (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;f&nbsp;RODO) polegający na
+            badaniu oglądalności Serwisu.
+          </p>
+
+          <h3>Ustawienia przeglądarki</h3>
+          <p>
+            Niezależnie od powyższego Użytkownik może zarządzać plikami Cookies
+            w&nbsp;ustawieniach swojej przeglądarki –&nbsp;usuwać je
+            i&nbsp;blokować. Jest to informacja pomocnicza:{' '}
+            <strong>
+              ustawienia przeglądarki nie stanowią wyrażenia zgody
+            </strong>{' '}
+            na stosowanie plików Cookies i&nbsp;nie zastępują wyboru dokonanego
+            w&nbsp;banerze. Przykładowe opcje edytowania ustawień
+            w&nbsp;popularnych przeglądarkach:
+          </p>
           <ul>
             <li>
               Mozilla FireFox:{' '}
