@@ -69,6 +69,12 @@ INNER_W, INNER_H = BOX_W - 2 * PAD_X, BOX_H - 2 * PAD_Y
 CLEAR_TOL = 45
 CONNECT_TOL = 72
 
+# How far off the white->plate blend line a pixel may sit and still count as
+# knockout ink (see `ink_from_plate`). Summed absolute RGB distance, same unit as
+# the tolerances above. Generous enough for the anti-aliased fringe along a glyph
+# edge, far below POLOmarket's yellow sun at 211.
+INK_LINE_TOL = 90
+
 # The resting contrast floor is a CSS filter (`grayscale(1) brightness(0.8)` on
 # .logo), not an asset edit — at rest the belt is grayscaled, so that is a
 # luminance problem, and correcting it in CSS costs nothing on hover. Only ink
@@ -185,12 +191,24 @@ def load(path):
     return Image.open(path).convert("RGBA")
 
 
-def dematte(im, connect_tol=CONNECT_TOL):
+def dematte(im, connect_tol=CONNECT_TOL, global_key=False):
     """Strip a uniform plate by flooding inward from the image border.
 
     A pixel is cleared only if it is within tolerance of the border colour *and*
     connected to the border, so interior negative space inside glyphs is left
     alone rather than punched out by a plain colour key.
+
+    `global_key` drops the connectivity requirement and clears plate-coloured
+    pixels wherever they occur. That is only correct for knockout artwork, where
+    the ink is reversed *out* of the plate and the enclosed counters of `p`, `o`
+    or `R` are therefore filled with the plate colour rather than with ink. On
+    those marks the border flood leaves the counters opaque, and `ink_from_plate`
+    then paints the surrounding glyph the same colour — merging glyph and counter
+    into one silhouette. On positive artwork the same key would punch holes in
+    interior detail that is genuine opaque ink, so it stays behind the flag.
+
+    Feathering is unaffected: the alpha ramp below is applied either way, so a
+    globally keyed edge is as soft as a flooded one.
 
     Returns the image, whether a plate was cut, and the plate's colour — which
     `ink_from_plate` needs for knockout marks.
@@ -204,10 +222,13 @@ def dematte(im, connect_tol=CONNECT_TOL):
     bg = np.median(border, axis=0)
     dist = np.abs(rgb - bg).sum(axis=2)
 
-    labels, _ = ndimage.label(dist < connect_tol)
-    touching = set(labels[0]) | set(labels[-1]) | set(labels[:, 0]) | set(labels[:, -1])
-    touching.discard(0)
-    plate = np.isin(labels, list(touching))
+    if global_key:
+        plate = dist < connect_tol
+    else:
+        labels, _ = ndimage.label(dist < connect_tol)
+        touching = set(labels[0]) | set(labels[-1]) | set(labels[:, 0]) | set(labels[:, -1])
+        touching.discard(0)
+        plate = np.isin(labels, list(touching))
 
     ramp = np.clip((dist - CLEAR_TOL) / (connect_tol - CLEAR_TOL), 0, 1)
     out = a.copy()
@@ -227,13 +248,26 @@ def ink_from_plate(im, plate):
     also kills the coloured fringe left along the glyph edges, which now matches
     the ink instead of contradicting it.
 
-    Only near-white pixels are repainted, so POLOmarket keeps its yellow sun.
+    A pixel counts as ink only if it lies close to the white->plate blend line,
+    which is where knockout ink and its anti-aliased fringe necessarily sit. A
+    luminance threshold cannot express that: luminance weights green at 0.587, so
+    POLOmarket's yellow sun (#F9D000) reads as 199 — brighter than the cutoff —
+    and was being repainted red, losing the only non-plate colour in the mark.
+    The sun sits 211 off the line, the fringe sits on it, so the line distance
+    separates them and a brightness test never can.
     """
     a = np.array(im).astype(np.float32)
-    lum = 0.299 * a[..., 0] + 0.587 * a[..., 1] + 0.114 * a[..., 2]
-    white = lum > 170
+    rgb = a[..., :3]
+    white_rgb = np.array([255.0, 255.0, 255.0])
+    axis = np.array(plate, dtype=np.float32) - white_rgb
+    # Project each pixel onto the white->plate segment, then measure how far it
+    # missed. t is clamped so colours beyond either end fold back onto it.
+    t = np.clip(((rgb - white_rgb) @ axis) / float(axis @ axis), 0.0, 1.0)
+    off_line = np.abs(rgb - (white_rgb + t[..., None] * axis)).sum(axis=2)
+    lum = 0.299 * rgb[..., 0] + 0.587 * rgb[..., 1] + 0.114 * rgb[..., 2]
+    ink = (lum > 170) & (off_line < INK_LINE_TOL)
     for channel, value in enumerate(plate):
-        a[..., channel] = np.where(white, value, a[..., channel])
+        a[..., channel] = np.where(ink, value, a[..., channel])
     return Image.fromarray(a.astype(np.uint8), "RGBA")
 
 
@@ -356,7 +390,12 @@ def build_belt():
     prepared = []
     for key, name, src, slug, opts in BRANDS:
         mark = load(src)
-        mark, cut, plate = dematte(mark, opts.get("tol", CONNECT_TOL))
+        # Knockout marks key the plate globally — see `dematte`. `plate_ink` is
+        # the only route to that behaviour, and `CS_INHERIT_OPTS` deliberately
+        # does not carry it, so the case-study pass below is unreachable from here.
+        mark, cut, plate = dematte(
+            mark, opts.get("tol", CONNECT_TOL), global_key=opts.get("plate_ink", False)
+        )
         if opts.get("plate_ink"):
             if plate is None:
                 sys.exit(f"{key}: plate_ink needs a plate to sample, none found")

@@ -316,6 +316,19 @@
   }
 }
 
+/* One sentence saying what the two marks cover, so they are not presented
+   without explanation. Sits inside `.certs`, whose column gap spaces it. */
+.certsCaption {
+  max-width: 46ch;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, currentcolor 70%, transparent);
+
+  @media (--mobile) {
+    text-align: center;
+  }
+}
+
 /* White chip presenting a credential mark unmodified; the two stack in a column
    under the grid (centered on mobile). */
 .cert {

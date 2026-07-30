@@ -39,13 +39,19 @@
   }
 }
 
+/* The 6.1vw term is measured, not chosen: the rotator's widest token
+   (`NA INSTAGRAMIE?`, 795px at 1440) has to clear the post card's column with a
+   gutter at every width, and the binding case is 1024px, which allows at most
+   0.943 of the previous 6.5vw. Raising it puts glyphs back over the card — and
+   because all seven tokens share one grid cell, a layout that fits the *active*
+   word breaks 2.6 seconds later. Re-measure every token before touching this. */
 .heading {
   font-family: var(--font-display);
   font-weight: 800;
   text-transform: uppercase;
   line-height: 0.95;
   letter-spacing: -0.02em;
-  font-size: clamp(2.5rem, 6.5vw, 6.75rem);
+  font-size: clamp(2.5rem, 6.1vw, 6.75rem);
 }
 
 /* —— Locative token rotator (hero's masked-slide recipe) ————————————————
@@ -186,7 +192,7 @@
    White post card wraps the mascot — the CTA becomes the ad we'd run. Fixed
    light palette on purpose: the card reads as a foreign artifact (a post),
    not as part of the chapter theme. `position: relative` anchors the toast
-   and the options sheet, both of which cover the card. */
+   and the options dropdown, both of which sit above the card. */
 .card {
   position: relative;
   display: flex;
@@ -206,7 +212,10 @@
   }
 }
 
+/* Positioned so the options dropdown, which follows the ⋯ trigger in the DOM
+   (for tab order), can anchor to the header's lower edge. */
 .cardHeader {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -227,14 +236,22 @@
   }
 }
 
-/* Llama logomark on the chapter plum — brand avatar, no extra asset. */
+/* Llama logomark on deep plum — brand avatar, no extra asset.
+
+   The ground is pinned to the token's value rather than read from
+   `--color-primary`, which is the *chapter* theme and not the card's. The card
+   is deliberately a fixed light artifact (see `.card`), so letting one part of
+   it follow the page theme is a leak: this section is reused on `/o-nas` under
+   `data-theme="cream"`, where `--color-primary` resolves to sand #e0ddd3 and
+   the white logomark all but disappeared. The mark needs a dark ground on every
+   page that hosts the section. */
 .avatar {
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background:
-    var(--color-primary) url("/assets/logo.svg") center / 65% auto no-repeat;
+    var(--color-plum-dark) url("/assets/logo.svg") center / 65% auto no-repeat;
 }
 
 .cardIdentity {
@@ -674,36 +691,31 @@
   }
 }
 
-/* —— Options sheet ————————————————————————————————————————————————————— */
+/* —— Options dropdown ————————————————————————————————————————————————— */
 
-.sheet {
+/* Dropdown anchored under the ⋯ trigger. No scrim and no inset: it is not
+   modal, so it covers only what it needs to and the card stays visible. */
+.menu {
   position: absolute;
-  inset: 0;
+  top: calc(100% - 6px);
+  right: 8px;
   z-index: 3;
-  display: flex;
-  align-items: flex-end;
-  background-color: rgb(0 0 0 / 0.45);
-}
-
-.sheetPanel {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 8px;
-  border-radius: 16px 16px 20px 20px;
+  width: min(280px, calc(100vw - 48px));
+  padding: 6px;
+  border-radius: 14px;
   background-color: #fff;
-  animation: sheet-in 320ms var(--ease-out-expo);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.22);
+  animation: menu-in 200ms var(--ease-out-expo);
 }
 
-.sheetList {
+.menuList {
   display: flex;
   flex-direction: column;
 }
 
-.sheetItem,
-.sheetClose {
+.menuItem {
   width: 100%;
-  padding: 12px;
+  padding: 11px 12px;
   border-radius: 10px;
   text-align: left;
   font-size: 0.875rem;
@@ -721,36 +733,39 @@
   }
 }
 
-.sheetClose {
-  border-top: 1px solid rgb(0 0 0 / 0.1);
-  border-radius: 0 0 10px 10px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.sheetAnswer {
+/* The answer opens *beneath* its option; the list above it stays mounted, so
+   the control that was activated keeps focus. */
+.menuAnswer {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  padding: 12px;
-  font-size: 0.875rem;
-  line-height: 1.4;
+  padding: 4px 12px 12px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  animation: menu-answer-in 200ms var(--ease-out-expo);
 }
 
-.sheetCta {
-  padding: 0.65em 1.4em;
+.menuCta {
+  padding: 0.6em 1.3em;
   border-radius: 999px;
   background-color: var(--color-primary);
   color: #fff;
   font-weight: 700;
   letter-spacing: 0.04em;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
 }
 
-@keyframes sheet-in {
+@keyframes menu-in {
   from {
-    transform: translateY(100%);
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes menu-answer-in {
+  from {
+    opacity: 0;
   }
 }
 
@@ -759,7 +774,7 @@
    animation here outranks it — hence this block, the same way the header,
    footer and testimonial modules each carry their own. Each effect collapses
    to its END state, never to a withheld one: the cube is simply already
-   there, the heart is already filled, the sheet is already up. The bloom is
+   there, the heart is already filled, the dropdown is already open. The bloom is
    the exception only in appearance — its end state is "gone", so not drawing
    it at all is the correct collapse, not a suppression of content. */
 @media (--reduced-motion) {
@@ -774,7 +789,8 @@
   .heartBeatB,
   .flyA,
   .flyB,
-  .sheetPanel,
+  .menu,
+  .menuAnswer,
   .toast {
     animation: none;
   }

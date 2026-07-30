@@ -331,7 +331,8 @@ export const whyThatWorks = {
   // CTA card filling the last grid slot — jumps to the "OUR LAMAS" team slider.
   teamCta: { label: 'Learn more', href: '/en/about-us#zespol' },
   teamLabel: 'Social Lama team',
-  certsLabel: 'Certificates',
+  certsLabel:
+    'DIMAQ Professional and Meta Small Business Academy — certified skills in digital marketing and advertising across the Meta ecosystem.',
   certAlt: {
     dimaq: 'DIMAQ professional certificate',
     meta: 'Meta Small Business Academy certificate',
@@ -843,25 +844,24 @@ export const joinCta = {
       },
     ],
     menu: 'More options',
-    menuTitle: 'Post options',
     menuItems: [
       {
         label: 'Why am I seeing this ad?',
         answer:
-          "Because it isn't an ad — it's a section on our own site. But if we ran the campaign, it would look exactly like this.",
+          "Because it isn't an ad — it's a section on our own site. But admit it, for a second there it looked real. That's the kind we make for clients.",
       },
       {
         label: 'Hide this ad',
         answer:
-          "We can. That leaves just the content — which happens to be what we make for clients.",
+          'Sure, we can hide it. That leaves just a llama in a suit — and honestly, he outperforms a lot of campaigns.',
       },
       {
         label: 'Report',
-        answer: 'Reported. To ourselves. Resolved in our favor.',
+        answer:
+          'Your report went straight to the department sitting at the next desk. They promised to look into it over coffee.',
       },
     ],
     menuCta: { label: 'WRITE TO US', href: '/en/contact' },
-    menuClose: 'Close',
   },
   button: { label: 'WRITE TO US', href: '/en/contact' },
 } satisfies LocalizedHome['joinCta']

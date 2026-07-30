@@ -4,7 +4,8 @@
  * Team slider ("NASZE LAMY" / "ZESPÓŁ SOCIAL LAMA") — plum band, id="zespol"
  * (anchor for the about-intro CTA). One featured member shown whole, circular
  * prev/next arrows stepping oNasTeam.members with wrap-around, and the member's
- * name (surname over big orange given name) + role + bio on the right.
+ * name (small orange given name over big cream surname) + role + certificate
+ * chips + bio on the right.
  *
  * Photos are transparent portrait cutouts (public/o-nas/slider) that drop
  * straight onto the plum band. Entrance uses the house reveal primitive; the
@@ -20,7 +21,8 @@ import {
   useState,
 } from 'react'
 import { Image } from '@/components/ui/image'
-import { type LocalizedONas, oNasTeam } from '@/lib/content/o-nas'
+import { Link } from '@/components/ui/link'
+import { type CertKey, type LocalizedONas, oNasTeam } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
 
@@ -28,6 +30,16 @@ import s from './team.module.css'
 // team.module.css so the outgoing layer is always fully faded before we prune
 // it (no snap on unmount).
 const FADE_MS = 340
+
+// Key -> mark, at its own intrinsic dimensions. Certificate marks are
+// trademarks: the chip sizes them but never recolours, crops or stretches them,
+// which is why the ratios are the artwork's own and the chip ground is light.
+// The homepage keeps its own copy of this registry (design non-goal: two
+// entries do not justify lifting a working surface into a shared module).
+const CERT_MARKS = {
+  dimaq: { src: '/assets/certs/dimaq.png', width: 347, height: 143 },
+  meta: { src: '/assets/certs/meta.png', width: 627, height: 345 },
+} as const
 
 type Member = LocalizedONas['oNasTeam']['members'][number]
 
@@ -201,6 +213,7 @@ export function Team({
             <Details
               key={`txt-out-${prev}`}
               member={outgoing.featured}
+              certLabels={content.certLabels}
               className={cn(s.details, s.exit)}
               hidden
             />
@@ -208,6 +221,7 @@ export function Team({
           <Details
             key={`txt-in-${index}`}
             member={current.featured}
+            certLabels={content.certLabels}
             className={cn(s.details, prev !== null && s.enter)}
           />
         </div>
@@ -295,22 +309,58 @@ function Trio({
   )
 }
 
-// The name / role / bio block for the active member.
+// The name / role / certs / bio block for the active member.
 function Details({
   member,
+  certLabels,
   className,
   hidden,
 }: {
   member: Member
+  certLabels: LocalizedONas['oNasTeam']['certLabels']
   className?: string
   hidden?: boolean
 }) {
+  const certs = 'certs' in member ? member.certs : undefined
+  const link = 'link' in member ? member.link : undefined
   return (
     <div className={className} aria-hidden={hidden || undefined}>
-      <p className={s.surname}>{member.surname}</p>
-      <p className={cn('h2', s.given)}>{member.given}</p>
+      <p className={s.nameSmall}>{member.given}</p>
+      <p className={cn('h2', s.nameBig)}>{member.surname}</p>
       <p className={s.role}>{member.role}</p>
+      {certs && certs.length > 0 && (
+        <ul className={s.certs}>
+          {certs.map((raw) => {
+            // `Localized` widens content string literals to `string` so the EN
+            // module can carry real translations. A cert key is an identifier
+            // rather than copy, so this is the one place that has to be undone.
+            const key = raw as CertKey
+            const mark = CERT_MARKS[key]
+            return (
+              <li key={key} className={s.cert}>
+                <Image
+                  src={mark.src}
+                  alt={certLabels[key]}
+                  width={mark.width}
+                  height={mark.height}
+                  objectFit="contain"
+                />
+              </li>
+            )
+          })}
+        </ul>
+      )}
       <p className={s.bio}>{member.bio}</p>
+      {link && (
+        // The outgoing layer is inert (aria-hidden) but still in the DOM during
+        // the crossfade, so its link must leave the tab order too — otherwise
+        // Tab can land on a control that is fading out.
+        <p className={s.link}>
+          <Link href={link.href} tabIndex={hidden ? -1 : undefined}>
+            {link.label}
+          </Link>
+        </p>
+      )}
     </div>
   )
 }

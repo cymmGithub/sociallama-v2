@@ -23,25 +23,31 @@ The same primary wording SHALL be used by the closing CTA on service pages and i
 - **WHEN** the closing CTA renders on a service page or an industry page, in either locale
 - **THEN** its primary action carries the same wording as the case-study one
 
-### Requirement: Body prose is justified with hyphenation
-Case-study body copy — the rich-text sections and the approach-pillar bodies — SHALL be set justified, and SHALL enable automatic hyphenation. Hyphenation is normative rather than optional: the pillar body sits in a narrow column and Polish carries long words, so justification without hyphenation opens rivers of whitespace.
+### Requirement: Body prose is justified on desktop
+Case-study body copy — the rich-text sections and the approach-pillar bodies — SHALL be set justified from the desktop breakpoint upward, and SHALL remain ragged-right below it.
 
-The lead paragraph, headings, tags and metric tiles SHALL remain ragged-right. Justification artefacts scale with type size, so the largest text is where a bad line is most visible.
+The threshold exists because **hyphenation cannot be relied on for the primary locale.** Chromium ships no Polish hyphenation dictionary (it ships Czech, Slovak and Hungarian, but not Polish), so `hyphens: auto` is a permanent no-op for Polish in Chrome, Edge, Brave and Opera; Firefox and Safari do hyphenate it. Automatic hyphenation SHALL still be requested, so the locales and engines that have a dictionary use it — but the layout SHALL NOT depend on it.
 
-Hyphenation SHALL rely on the document language already declared by the page, so each locale gets its own dictionary without a per-element attribute.
+With no dictionary, justification buys flush edges by stretching the word spaces, and the cost is set by the measure. Measured as widest space against the natural space on a representative page: 3.29x at a 357px column, 1.83x at 549px, and 1.2–1.8x at every column from 700px up. Only the mobile layout degrades, so only the mobile layout stays ragged.
 
-#### Scenario: Body copy is justified
-- **WHEN** a case-study rich-text section or approach-pillar body renders
-- **THEN** its lines are flush on both edges and long words break with hyphens rather than leaving large inter-word gaps
+The lead paragraph, headings, tags and metric tiles SHALL remain ragged-right at every viewport. Justification artefacts scale with type size, so the largest text is where a bad line is most visible.
+
+#### Scenario: Body copy is justified on desktop
+- **WHEN** a case-study rich-text section or approach-pillar body renders at or above the desktop breakpoint
+- **THEN** its lines are flush on both edges
+
+#### Scenario: Narrow layouts stay ragged
+- **WHEN** the same body copy renders below the desktop breakpoint
+- **THEN** it is ragged-right, so a measure too narrow to justify without hyphenation is never justified
 
 #### Scenario: Lead and headings stay ragged
-- **WHEN** the same page renders its lead paragraph and section headings
+- **WHEN** the same page renders its lead paragraph and section headings, at any viewport
 - **THEN** they are not justified
 
 #### Scenario: Narrow column holds up
 - **WHEN** an approach pillar renders its body in the two-column layout at its narrowest
 - **THEN** the justified text shows no river of whitespace spanning three or more lines
 
-#### Scenario: Both locales hyphenate
-- **WHEN** a case study renders in Polish and in English
-- **THEN** each uses its own hyphenation dictionary, inherited from the page's declared language
+#### Scenario: Hyphenation is requested, not depended on
+- **WHEN** a case study renders in a browser and locale whose engine has a matching hyphenation dictionary
+- **THEN** long words break with hyphens, inherited from the page's declared language — and where no dictionary exists the layout still holds, because justification is gated on measure rather than on hyphenation

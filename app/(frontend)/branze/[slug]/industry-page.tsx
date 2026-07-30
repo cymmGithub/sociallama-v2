@@ -297,12 +297,11 @@ function IndustryHero({
 }
 
 /** Duotone photo strip — sits directly under the brief, sharing its cream band. */
-/** Closing CTA — the case-study CTA card, minus its secondary action. */
+/** Closing CTA — the case-study CTA card: one title, one line, one action. */
 function CtaBand({ headline, chrome }: { headline: string; chrome: Chrome }) {
   return (
     <section className={s.ctaBand} data-theme="cream">
       <div className={s.cta}>
-        <p className={s.ctaEyebrow}>{chrome.ctaEyebrow}</p>
         <h2 className={s.ctaTitle}>{headline}</h2>
         <p className={s.ctaText}>{chrome.ctaText}</p>
         <div className={s.ctaActions}>

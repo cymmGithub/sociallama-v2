@@ -50,6 +50,31 @@ The certificates declared SHALL be true of that member. DIMAQ Professional SHALL
 - **WHEN** a member carries a certificate chip
 - **THEN** that member's bio text does not also name the certificate
 
+### Requirement: A member may carry one personal link
+A member entry MAY declare a single personal link — a blog, portfolio or profile of their own — and the slider SHALL render it beneath the bio. Members that declare none render nothing.
+
+The link's visible text SHALL name its destination (a domain rather than "click here"), so the reader knows where it goes before following it. Because it leaves the site, it SHALL open in a new tab with `rel="noopener noreferrer"`.
+
+The link SHALL meet WCAG AA contrast **for normal-size text** against the plum band — at least 4.5:1. The band's orange accent measures ≈3.4:1 and therefore SHALL NOT be used as the link's text colour; orange clears AA only under the large-text allowance the name slot relies on. Orange MAY carry the underline, which is decoration rather than text.
+
+While a member's layer is the outgoing half of a crossfade it is hidden from assistive technology, so its link SHALL also leave the tab order — a control that is fading out may not be focusable.
+
+#### Scenario: Link renders for a member who declares one
+- **WHEN** the slider features a member carrying a personal link
+- **THEN** it appears beneath the bio, labelled with its destination, and opens in a new tab with `rel="noopener noreferrer"`
+
+#### Scenario: No link for members without one
+- **WHEN** the slider features a member who declares no link
+- **THEN** no link row renders
+
+#### Scenario: Link text meets AA at its own size
+- **WHEN** the link's computed colour, size and weight are measured against the band
+- **THEN** the contrast ratio is at or above the threshold for that size and weight — 4.5:1 at normal body size
+
+#### Scenario: The outgoing layer is not focusable
+- **WHEN** a step is mid-crossfade and both layers are mounted
+- **THEN** the outgoing layer's link is out of the tab order
+
 ## MODIFIED Requirements
 
 ### Requirement: Both surfaces carry the same roster

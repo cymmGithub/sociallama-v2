@@ -314,15 +314,11 @@ export function CaseStudyArticle({
         )}
 
         <aside className={s.cta}>
-          <p className={s.ctaEyebrow}>{chrome.cta.eyebrow}</p>
           <p className={s.ctaTitle}>{chrome.cta.title}</p>
           <p className={s.ctaText}>{chrome.cta.text}</p>
           <div className={s.ctaActions}>
             <Link className={s.ctaPrimary} href={contactHref}>
               {chrome.cta.primary}
-            </Link>
-            <Link className={s.ctaSecondary} href={basePath}>
-              {chrome.cta.secondary}
             </Link>
           </div>
         </aside>

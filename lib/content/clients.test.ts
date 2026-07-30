@@ -23,6 +23,24 @@ describe('client roster', () => {
     }
   })
 
+  test('every brand carries an industry tag', () => {
+    for (const brand of CLIENT_ROSTER) {
+      expect(brand.industry).toBeTruthy()
+    }
+  })
+
+  // The order is no longer alphabetical, so nothing about the file's shape
+  // signals that two entries were placed deliberately. This is that signal:
+  // re-sorting the roster reintroduces the clusters and fails here. The belt
+  // repeats its track, so the last→first seam is an adjacency like any other.
+  test('no two adjacent brands share an industry, including the seam', () => {
+    const collisions = CLIENT_ROSTER.filter((brand, i) => {
+      const next = CLIENT_ROSTER[(i + 1) % CLIENT_ROSTER.length]
+      return brand.industry === next?.industry
+    }).map((brand) => brand.key)
+    expect(collisions).toEqual([])
+  })
+
   // The testimonial slider carries its own entries, independent of the belt
   // roster, so retiring a brand from the belt must not take its logo with it.
   test('logos referenced by the testimonial slider survive', () => {

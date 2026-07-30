@@ -54,11 +54,11 @@ export const chrome = {
     heading: 'CASE STUDIES Z TEJ BRANŻY',
     cta: 'ZOBACZ CASE STUDY',
   },
-  // CTA card mirrors the case-study one (minus its secondary action), so the
-  // eyebrow/lead copy and sentence casing match `case-studies.ts` chrome.
-  ctaEyebrow: 'Twój ruch',
+  // CTA card mirrors the case-study one, so the lead copy and sentence casing
+  // match `case-studies.ts` chrome — including the button, which carries the
+  // header CTA's wording (`nav.cta` in home.ts).
   ctaText: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
-  ctaButton: 'Bezpłatna konsultacja',
+  ctaButton: 'Porozmawiajmy o Twoim biznesie',
   ctaHref: '/kontakt',
   // `/branze` index chrome. Cards reuse each industry's `tagline`, so this is
   // the only copy the index page adds.

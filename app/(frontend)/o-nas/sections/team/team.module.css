@@ -332,20 +332,28 @@
   }
 }
 
-.surname {
+/* The classes name the *slot*, not the word: the small slot carries the given
+   name and the big one the surname. Colour travels with the word, so the small
+   slot is orange.
+
+   The clamp floor is normative, not taste: orange on plum measures ≈3.41:1,
+   which clears WCAG AA only under the large-text allowance — ≥18.66px when
+   bold. At 700 weight the 1.5rem floor is 24px, so the grade holds at every
+   viewport. Do not drop this floor while the slot is orange. */
+.nameSmall {
   font-family: var(--font-display);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   line-height: 1;
   font-size: clamp(1.5rem, 2.6vw, 2.4rem);
-  color: var(--color-secondary);
+  color: var(--color-orange);
 }
 
 /* Pairs with the `h2` display utility on the element; this only recolors it. */
-.given {
+.nameBig {
   margin-top: 0.06em;
-  color: var(--color-orange);
+  color: var(--color-secondary);
 }
 
 .role {
@@ -356,6 +364,32 @@
   letter-spacing: 0.14em;
   font-size: clamp(0.72rem, 1vw, 0.85rem);
   color: color-mix(in srgb, var(--color-secondary) 85%, transparent);
+}
+
+/* Certificate chips sit between the role line and the bio's top border. Light
+   ground rather than tinting the mark onto plum: the mark is a trademark and is
+   never recoloured — the homepage cert cards set the same precedent. */
+.certs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: clamp(12px, 1.2vw, 16px);
+}
+
+.cert {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background-color: var(--color-cream);
+
+  /* Height, not width: the two marks have different aspect ratios (DIMAQ is
+     wide, Meta nearly square), so sizing by height keeps them optically equal
+     and lets each keep its own proportions. */
+  img {
+    height: 22px;
+    width: auto;
+  }
 }
 
 .bio {
@@ -369,9 +403,57 @@
   color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
 }
 
+/* Optional personal link under the bio — only members who declare one get it.
+
+   Cream rather than the band's orange accent, and that is a contrast
+   requirement, not a preference: orange on plum measures 3.43:1, which clears
+   WCAG AA only under the large-text allowance (>=18.66px bold — see
+   `.nameSmall`). This link is ~14px at normal weight, so it owes the full
+   4.5:1, and cream gives 7.22:1. What marks it as a link is the underline plus
+   full-strength cream against the bio's 72% mix, not a hue.
+
+   The hover state stays on cream for the same reason — dropping to orange on
+   hover would put the text below AA exactly while the reader is aiming at it. */
+.link {
+  margin-top: clamp(10px, 1vw, 14px);
+  font-family: var(--font-mono);
+  font-size: clamp(0.82rem, 0.9vw, 0.9rem);
+
+  a {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-orange);
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 2px;
+    transition: text-decoration-color var(--duration-fast);
+
+    &:hover {
+      text-decoration-color: var(--color-secondary);
+    }
+  }
+}
+
 /* —— Mobile ——————————————————————————————————————————————————————————————— */
 
 @media (--mobile) {
+  /* Reserve the tallest member's height so stepping the slider does not shift
+     the page under the reader.
+
+     Only mobile needs it. On desktop the photo stage governs the section height
+     and it measured identical across all twelve members; on mobile the column
+     alone sets it, and the members span 190px between the shortest and longest
+     bio. `.details.exit` is an absolute overlay, so the container takes its
+     height from the incoming member only — nothing in CSS can size it to the
+     tallest, hence the reserved floor.
+
+     25.5rem is measured, not guessed: the tallest member is 406px at a 360px
+     viewport, and the maximum barely moves across mobile widths (361-406px)
+     because `.bio` stops widening at its 44ch measure. Re-measure before
+     changing a bio, the chip row, or the bio's type scale. */
+  .text {
+    min-height: 25.5rem;
+  }
+
   .head {
     flex-direction: column;
     gap: calc(var(--gap) * 0.75);

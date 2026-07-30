@@ -27,7 +27,7 @@ function fill(node: HTMLSpanElement, active: boolean) {
 const TEAM = [
   {
     cut: 'anna-ozga.png',
-    name: 'Ania Ozga',
+    name: 'Anna Ozga',
     role: 'Head of Social Media',
   },
   {
@@ -203,6 +203,7 @@ export function WhyThatWorks({
                 </div>
               ))}
             </div>
+            <p className={s.certsCaption}>{content.certsLabel}</p>
           </div>
         </div>
       </div>

@@ -246,20 +246,25 @@ export const menu = {
 } as const
 
 // Canonical, ordered social set — rendered identically everywhere social icons
-// appear (header overlay, footer, hero, o-nas hero). Order is Meta-first:
-// IG, FB, TikTok, X, LinkedIn, YouTube, Pinterest. Real profile destinations —
-// no `#` placeholders. External http(s) hrefs make <Link> open a new tab with
-// rel="noopener noreferrer" automatically (see components/ui/link).
+// appear (header overlay, footer, hero, o-nas hero). Order is:
+// Facebook, Instagram, LinkedIn, TikTok, X, YouTube, Pinterest. Real profile
+// destinations — no `#` placeholders. External http(s) hrefs make <Link> open a
+// new tab with rel="noopener noreferrer" automatically (see components/ui/link).
 export const socials: SocialLink[] = [
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/agencjasociallama/',
+    icon: '/assets/icon-facebook.svg',
+  },
   {
     label: 'Instagram',
     href: 'https://www.instagram.com/social.lama/',
     icon: '/assets/icon-instagram.svg',
   },
   {
-    label: 'Facebook',
-    href: 'https://www.facebook.com/agencjasociallama/',
-    icon: '/assets/icon-facebook.svg',
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/sociallama/',
+    icon: '/assets/icon-linkedin.svg',
   },
   {
     label: 'TikTok',
@@ -270,11 +275,6 @@ export const socials: SocialLink[] = [
     label: 'X',
     href: 'https://x.com/SocialLamaPL',
     icon: '/assets/icon-x.svg',
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/sociallama/',
-    icon: '/assets/icon-linkedin.svg',
   },
   {
     label: 'YouTube',
@@ -561,7 +561,10 @@ export const whyThatWorks = {
   // CTA card filling the last grid slot — jumps to the "NASZE LAMY" team slider.
   teamCta: { label: 'Dowiedz się więcej', href: '/o-nas#zespol' },
   teamLabel: 'Zespół Social Lama',
-  certsLabel: 'Certyfikaty',
+  // Caption under the two cert cards. The marks are not self-explanatory — one
+  // sentence saying what they cover beats presenting them without comment.
+  certsLabel:
+    'DIMAQ Professional i Meta Small Business Academy — potwierdzone kompetencje w marketingu cyfrowym i reklamie w ekosystemie Meta.',
   certAlt: {
     dimaq: 'Certyfikat DIMAQ professional',
     meta: 'Certyfikat Meta Small Business Academy',
@@ -1063,7 +1066,10 @@ export const joinCta = {
       ],
     },
     {
-      token: 'NA X (TWITTERZE)?',
+      // Un-inflected, matching the form `home.en.ts` already uses
+      // (`ON X (TWITTER)?`). The locative "Twitterze" made this the widest
+      // token by a margin and pushed the heading over the post card.
+      token: 'NA X (TWITTER)?',
       cube: '/assets/cube-x-5d9863.png',
       services: [
         'szybka, reaktywna komunikacja',
@@ -1124,27 +1130,28 @@ export const joinCta = {
           'Nie ma nudnych branż, są nudne treści. Mamy case studies z branż „bez potencjału”.',
       },
     ],
-    /* The "⋯" sheet. One option answers honestly what this section is. */
+    /* The "⋯" dropdown. Each option opens its own answer beneath it; the first
+       one answers honestly what this section is (required by the capability —
+       it is the joke's punchline and the reason the mock is not a lie). */
     menu: 'Więcej opcji',
-    menuTitle: 'Opcje posta',
     menuItems: [
       {
         label: 'Dlaczego widzę tę reklamę?',
         answer:
-          'Bo to nie jest reklama, tylko sekcja na naszej stronie. Ale gdybyśmy odpalili kampanię, wyglądałaby dokładnie tak.',
+          'Bo to nie reklama, tylko sekcja na naszej stronie. Ale przyznaj — przez chwilę wyglądała jak prawdziwa. Właśnie takie robimy dla klientów.',
       },
       {
         label: 'Ukryj reklamę',
         answer:
-          'Możemy. Zostanie sama treść — a treść to akurat to, co robimy dla klientów.',
+          'Jasne, możemy schować. Zostanie sam llama w garniturze — i szczerze, on radzi sobie lepiej niż niejedna kampania.',
       },
       {
         label: 'Zgłoś',
-        answer: 'Zgłoszone. Sami sobie. Rozpatrzone po naszej myśli.',
+        answer:
+          'Przyjęliśmy zgłoszenie i przekazaliśmy je do działu, który siedzi biurko obok. Obiecali się temu przyjrzeć przy kawie.',
       },
     ],
     menuCta: { label: 'NAPISZ DO NAS', href: '/kontakt' },
-    menuClose: 'Zamknij',
   },
   button: { label: 'NAPISZ DO NAS', href: '/kontakt' },
 } as const

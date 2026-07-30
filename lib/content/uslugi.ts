@@ -47,10 +47,11 @@ export const chrome = {
   proofCta: 'ZOBACZ CASE STUDY',
   partnerKicker: 'CZĘŚĆ GRUPY GOOD ONE',
   // Closing CTA card mirrors the branze one so casing/lead match across pages.
-  ctaEyebrow: 'Twój ruch',
+  // The button carries the header CTA's wording (`nav.cta` in home.ts) — one
+  // phrasing for one action, everywhere on the site.
   ctaHeadline: 'Zróbmy to razem',
   ctaText: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
-  ctaButton: 'Bezpłatna konsultacja',
+  ctaButton: 'Porozmawiajmy o Twoim biznesie',
   ctaHref: '/kontakt',
   // `/uslugi` index chrome.
   index: {
@@ -113,7 +114,13 @@ interface ShowreelClip {
 interface ProofCase {
   slug: string
   kicker: string
+  /** Does NOT name the client — the logo does that. See `brand`. */
   title: string
+  /** The client's name. Required: the whole card is one link, so its accessible
+   *  name is built from its contents, and since the title no longer carries the
+   *  brand this is what the logo's `alt` contributes. Without it the card is a
+   *  link to a case study that never says whose. */
+  brand: string
   logo?: string
 }
 
@@ -567,8 +574,8 @@ export const SERVICES = [
             slug: 'irobot',
             logo: '/case-studies/irobot/irobot-logo.png',
             kicker: 'CASE STUDY',
-            title:
-              'iRobot — humor i edukacja, które budują markę na YouTube i TikToku',
+            brand: 'iRobot',
+            title: 'Humor i edukacja, które budują markę na YouTube i TikToku',
           },
         ],
       },
@@ -814,7 +821,11 @@ export const SERVICES = [
             slug: 'volvo',
             logo: '/case-studies/volvo/volvo-logo.png',
             kicker: 'CASE STUDY',
-            title: 'Budowa marek Volvo na LinkedInie, Facebooku i Instagramie',
+            brand: 'Volvo',
+            // Not a prefix strip: the brand was embedded in the sentence, so it
+            // is rewritten rather than deleted. "marek" (plural) still points at
+            // the two Volvo marks the study covers, which the logo names.
+            title: 'Budowa marek na LinkedInie, Facebooku i Instagramie',
           },
         ],
       },
@@ -889,7 +900,8 @@ export const SERVICES = [
             slug: 'pracuj-pl',
             logo: '/case-studies/pracuj-pl/pracuj-pl-logo.png',
             kicker: 'CASE STUDY',
-            title: 'Pracuj.pl — humor, twórcy i filtr AR na TikToku',
+            brand: 'Pracuj.pl',
+            title: 'Humor, twórcy i filtr AR na TikToku',
           },
         ],
       },

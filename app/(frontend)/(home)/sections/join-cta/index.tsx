@@ -11,9 +11,9 @@ import {
 } from 'lucide-react'
 import {
   type CSSProperties,
-  type KeyboardEvent,
   type PointerEvent,
   useEffect,
+  useId,
   useRef,
   useState,
 } from 'react'
@@ -75,6 +75,7 @@ export function JoinCta({
 
   const menuRef = useRef<HTMLDivElement>(null)
   const menuTriggerRef = useRef<HTMLButtonElement>(null)
+  const menuId = useId()
   const lastTap = useRef(0)
 
   // Types out the newest answer. Under reduced motion it lands complete —
@@ -121,38 +122,39 @@ export function JoinCta({
     return () => clearTimeout(id)
   }, [burst])
 
-  // Focus moves into the sheet on open, and again when picking an option
-  // swaps the list for an answer — the button that held focus unmounts with
-  // the list, and without this focus lands on <body>, outside the dialog,
-  // where neither the Tab trap nor a container-level Escape can reach it.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: menuItem is a re-run trigger, not a read — dropping it strands focus on <body> when the list swaps for an answer
-  useEffect(() => {
-    if (!menuOpen) return
-    menuRef.current?.querySelector<HTMLElement>('button, a[href]')?.focus()
-  }, [menuOpen, menuItem])
-
-  // Escape is bound to the document, not to the dialog: clicking the scrim
-  // also drops focus to <body>, and the key has to keep working there. The
+  // Escape and outside-pointer dismissal. Both are bound to the document
+  // because the dropdown is non-modal: the rest of the page stays reachable,
+  // so the press that should close it usually lands outside the panel. The
   // close is spelled out rather than calling closeMenu, whose identity would
-  // re-bind the listener on every render (and the lint rule's suggested
+  // re-bind the listeners on every render (and the lint rule's suggested
   // useCallback is banned by AGENTS.md — setters and refs are stable).
+  //
+  // There is no focus-moving effect here on purpose. Selecting an option now
+  // expands its answer in place instead of replacing the list, so nothing
+  // unmounts under focus and there is nothing to restore.
   useEffect(() => {
     if (!menuOpen) return
-    function onKey(event: globalThis.KeyboardEvent) {
-      if (event.key !== 'Escape') return
+    function close() {
       setMenuOpen(false)
       setMenuItem(null)
       menuTriggerRef.current?.focus()
     }
+    function onKey(event: globalThis.KeyboardEvent) {
+      if (event.key === 'Escape') close()
+    }
+    function onPointerDown(event: globalThis.PointerEvent) {
+      const target = event.target as Node
+      if (menuRef.current?.contains(target)) return
+      if (menuTriggerRef.current?.contains(target)) return
+      close()
+    }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onPointerDown)
+    }
   }, [menuOpen])
-
-  function closeMenu() {
-    setMenuOpen(false)
-    setMenuItem(null)
-    menuTriggerRef.current?.focus()
-  }
 
   // The burst fires on the activation that COMPLETES the fill, and only that
   // one — it is the payoff for four deliberate presses, so it must not repeat
@@ -216,28 +218,6 @@ export function JoinCta({
     }
     lastTap.current = now
   }
-
-  // Escape lives on the document (above); this only keeps Tab inside.
-  function onSheetKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    if (event.key !== 'Tab') return
-    const focusable =
-      menuRef.current?.querySelectorAll<HTMLElement>('button, a[href]')
-    if (!focusable?.length) return
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault()
-      last?.focus()
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault()
-      first?.focus()
-    }
-  }
-
-  const menuAnswer =
-    menuItem === null
-      ? null
-      : (content.post.menuItems[menuItem]?.answer ?? null)
 
   return (
     <section ref={rotatorRef} className={s.section}>
@@ -329,12 +309,54 @@ export function JoinCta({
               type="button"
               className={cn(s.action, s.cardMore)}
               aria-label={content.post.menu}
-              aria-haspopup="dialog"
               aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(true)}
+              aria-controls={menuId}
+              onClick={() => {
+                setMenuOpen((was) => !was)
+                setMenuItem(null)
+              }}
             >
               <MoreHorizontal aria-hidden="true" />
             </button>
+            {/* Non-modal dropdown: no scrim, no aria-modal, no Tab trap — the
+                page behind it stays reachable. It sits directly after its
+                trigger in the DOM so Tab reaches the options next rather than
+                walking the card's other controls first, and each option is a
+                disclosure whose answer opens beneath it with the list still
+                mounted. Nothing unmounts under focus, which is what removes the
+                Safari/iOS failure rather than compensating for it. */}
+            {menuOpen && (
+              <div ref={menuRef} id={menuId} className={s.menu}>
+                <ul className={s.menuList}>
+                  {content.post.menuItems.map((item, index) => {
+                    const open = menuItem === index
+                    return (
+                      <li key={item.label}>
+                        <button
+                          type="button"
+                          className={s.menuItem}
+                          aria-expanded={open}
+                          onClick={() => setMenuItem(open ? null : index)}
+                        >
+                          {item.label}
+                        </button>
+                        {open && (
+                          <div className={s.menuAnswer}>
+                            <p>{item.answer}</p>
+                            <Link
+                              className={s.menuCta}
+                              href={content.post.menuCta.href}
+                            >
+                              {content.post.menuCta.label}
+                            </Link>
+                          </div>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
           {/* biome-ignore lint/a11y/noStaticElementInteractions: the double-tap is a gesture shortcut to the like button's state, which stays the keyboard route */}
           <div
@@ -499,51 +521,6 @@ export function JoinCta({
               </ul>
             )}
           </div>
-          {menuOpen && (
-            <div
-              ref={menuRef}
-              className={s.sheet}
-              role="dialog"
-              aria-modal="true"
-              aria-label={content.post.menuTitle}
-              onKeyDown={onSheetKeyDown}
-            >
-              <div className={s.sheetPanel}>
-                {menuAnswer === null ? (
-                  <ul className={s.sheetList}>
-                    {content.post.menuItems.map((item, index) => (
-                      <li key={item.label}>
-                        <button
-                          type="button"
-                          className={s.sheetItem}
-                          onClick={() => setMenuItem(index)}
-                        >
-                          {item.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className={s.sheetAnswer}>
-                    <p>{menuAnswer}</p>
-                    <Link
-                      className={s.sheetCta}
-                      href={content.post.menuCta.href}
-                    >
-                      {content.post.menuCta.label}
-                    </Link>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  className={s.sheetClose}
-                  onClick={closeMenu}
-                >
-                  {content.post.menuClose}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>

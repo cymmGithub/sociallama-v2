@@ -32,12 +32,14 @@ export const caseStudyChrome = {
     results: 'Wyniki',
     gallery: 'Galeria',
   },
+  // One action, worded exactly like the header CTA (`nav.cta` in home.ts), so a
+  // visitor meets one phrasing for one action across the site. The route back to
+  // the listing is the breadcrumb at the top of the page, not a second button
+  // competing with the conversion one.
   cta: {
-    eyebrow: 'Twój ruch',
     title: 'Zbudujmy coś podobnego dla Twojej marki',
     text: 'Opowiedz nam o swoim wyzwaniu — pokażemy, jak możemy pomóc.',
-    primary: 'Bezpłatna konsultacja',
-    secondary: 'Zobacz inne case studies',
+    primary: 'Porozmawiajmy o Twoim biznesie',
   },
 } as const
 

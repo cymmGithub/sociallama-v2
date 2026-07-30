@@ -143,6 +143,15 @@
   gap: calc(var(--gap) * 0.75);
   font-size: 1.0625rem;
   line-height: 1.7;
+  /* Hyphenation is requested for every locale that has a dictionary, but it
+     cannot be relied on: Chromium ships 53 hyphenation dictionaries and Polish
+     is not one of them (cs, sk and hu are), so `hyphens: auto` is a permanent
+     no-op for the primary locale in Chrome, Edge, Brave and Opera. Firefox and
+     Safari do hyphenate Polish.
+
+     Justification is therefore gated on measure rather than applied
+     unconditionally — see `--justify-from` below. */
+  hyphens: auto;
 
   h2,
   h3 {
@@ -152,6 +161,10 @@
     line-height: 1.15;
     margin-top: calc(var(--gap) * 0.5);
     text-wrap: balance;
+    /* Justification artefacts scale with type size, so the headings — the
+       largest text here — stay ragged, where `text-wrap: balance` governs. */
+    text-align: left;
+    hyphens: none;
   }
 
   h3 {
@@ -180,6 +193,27 @@
 
   strong {
     font-weight: 700;
+  }
+}
+
+/* Both body surfaces flip to justified together, and only on desktop.
+
+   Without a hyphenation dictionary, justification buys flush edges by
+   stretching the word spaces, and how far it has to stretch depends on the
+   measure. Measured on this page, widest space against the natural one:
+
+     390px  prose 3.29x  pillar 2.12x   <- reads as holes
+     600px  prose 1.83x  pillar 1.74x
+     768px  prose 1.68x  pillar 1.21x
+     >=900  prose 1.52x  pillar 1.24-1.84x
+
+   The mobile layout is the only place it breaks down, so that is where the cut
+   goes. Raising it further buys nothing: above the breakpoint the ratio is flat
+   and ordinary for justified text. */
+@media (--desktop) {
+  .prose,
+  .pillarBody {
+    text-align: justify;
   }
 }
 
@@ -247,6 +281,9 @@
   gap: calc(var(--gap) * 0.6);
   font-size: 1rem;
   line-height: 1.7;
+  /* The narrowest measure on the page, so the first place loose spacing shows
+     — justified only from `--justify-from` up (see `.article`). */
+  hyphens: auto;
 
   strong {
     font-weight: 700;
@@ -449,15 +486,6 @@
   position: relative;
 }
 
-.ctaEyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--color-orange);
-}
-
 .ctaTitle {
   font-family: var(--font-display);
   font-weight: 800;
@@ -494,23 +522,5 @@
 
   &:hover {
     opacity: 0.9;
-  }
-}
-
-.ctaSecondary {
-  padding: 0.9em 2em;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--color-cream) 38%, transparent);
-  color: var(--color-cream);
-  font-weight: 700;
-  font-size: 0.9375rem;
-  letter-spacing: 0.04em;
-  transition:
-    border-color var(--duration-fast),
-    color var(--duration-fast);
-
-  &:hover {
-    border-color: var(--color-orange);
-    color: var(--color-orange);
   }
 }

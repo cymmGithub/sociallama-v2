@@ -135,6 +135,8 @@ interface ProofData {
     slug: string
     kicker: string
     title: string
+    /** Carried by the logo's `alt` — the title no longer names the client. */
+    brand: string
     logo?: string
   }[]
 }
@@ -582,10 +584,13 @@ function Proof({
               <span className={s.caseCardTitle}>{item.title}</span>
               {item.logo && (
                 <span className={s.caseCardLogo}>
-                  {/* Logos are locale-independent public assets, not prefixed. */}
+                  {/* Logos are locale-independent public assets, not prefixed.
+                      The card is a single link, so its accessible name is built
+                      from its contents — and the title no longer names the
+                      client. This `alt` is what keeps the client in that name. */}
                   <Image
                     src={item.logo}
-                    alt=""
+                    alt={item.brand}
                     width={140}
                     height={44}
                     objectFit="contain"
@@ -800,7 +805,6 @@ function CtaBand({ chrome }: { chrome: Chrome }) {
   return (
     <section className={s.ctaBand} data-theme="cream">
       <div className={s.cta}>
-        <p className={s.ctaEyebrow}>{chrome.ctaEyebrow}</p>
         <h2 className={s.ctaTitle}>{chrome.ctaHeadline}</h2>
         <p className={s.ctaText}>{chrome.ctaText}</p>
         <div className={s.ctaActions}>

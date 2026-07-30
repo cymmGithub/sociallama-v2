@@ -185,13 +185,18 @@ export const oNasGoodOne = {
 } as const
 
 // —— Team slider ("ZESPÓŁ SOCIAL LAMA" / "NASZE LAMY") — plum band ——————————————
-// Slider: one featured member (cutout portrait + name/role/bio), prev/next
-// arrows, teammates peeking behind. `surname` is the small label over the big
-// orange `given` name (mock treatment). Slider photos are transparent portrait
-// cutouts in /public/o-nas/slider (kept apart from the webp team grid). Order
-// mirrors the homepage `why-that-works` TEAM grid (leadership first); roles
-// follow the site wording where the bio doc disagrees (design D4). Bios are the
-// client doc's, trimmed to a consistent slider length.
+// Slider: one featured member (cutout portrait + name/role/certs/bio), prev/next
+// arrows, teammates peeking behind. `given` is the small orange label over the
+// big cream `surname` — colour travels with the word, not with the slot. Slider
+// photos are transparent portrait cutouts in /public/o-nas/slider (kept apart
+// from the webp team grid). Order mirrors the homepage `why-that-works` TEAM
+// grid (leadership first); roles follow the site wording where the bio doc
+// disagrees (design D4). Bios are the client doc's, trimmed to a consistent
+// slider length.
+
+/** Professional certificates a member may hold. Both marks ship in
+ *  `/public/assets/certs`; the slider maps the key to the mark. */
+export type CertKey = 'dimaq' | 'meta'
 
 export const oNasTeam = {
   kickerLead: 'NASZE',
@@ -199,89 +204,103 @@ export const oNasTeam = {
   heading: 'ZESPÓŁ SOCIAL LAMA',
   prevLabel: 'Poprzednia osoba',
   nextLabel: 'Następna osoba',
+  /** Accessible name for each certificate chip — the mark is a picture, so the
+   *  chip needs words. Lives here rather than reading `home.ts`'s `certAlt`,
+   *  which would couple two content modules for one string. */
+  certLabels: {
+    dimaq: 'Certyfikat DIMAQ Professional',
+    meta: 'Certyfikat Meta',
+  } satisfies Record<CertKey, string>,
   members: [
     {
-      given: 'ANIA',
+      given: 'ANNA',
       surname: 'OZGA',
       role: 'Head of Social Media',
-      bio: 'Od 2017 roku związana z Social Lamą, gdzie łączy strategiczne myślenie z codzienną pracą z klientami i zespołem. Tworzy strategie komunikacyjne dla polskich i międzynarodowych marek, które realnie wpływają na wyniki biznesowe.',
+      certs: ['dimaq'],
+      bio: 'Od 2017 roku związana z Social Lamą, gdzie łączy strategiczne myślenie z codzienną pracą z klientami i zespołem. Tworzy i wdraża strategie komunikacyjne dla polskich i międzynarodowych marek, a największą satysfakcję daje jej rozwijanie projektów, które realnie wpływają na wyniki biznesowe.',
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
-      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej, wiedząc, że dobre social media to estetyka, psychologia, humor i odrobina szaleństwa.',
+      bio: 'Od 5 lat związana z marketingiem i mediami społecznościowymi. Łączy pasję do fotografii z wykształceniem z zakresu zarządzania i grafiki komputerowej w reklamie, dzięki czemu odnajduje się w tworzeniu contentu i nieszablonowych koncepcji. Doświadczenie zdobywała w branży hotelarskiej, gastronomicznej, beauty i lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i wyważonego szaleństwa. No i oczywiście analityki.',
       photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'PIOTREK',
       surname: 'ZACH',
       role: 'Project Manager',
-      bio: 'W Social Lamie od 2019 roku odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i treści tekstowych. Łączy wykształcenie marketingowe i filologiczne, stawiając na słowo, które realnie buduje komunikację.',
+      bio: 'W Social Lamie od 2019 roku. Odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i treści tekstowych, wspierając w tych obszarach cały zespół. Łączy wykształcenie marketingowe i filologiczne z doświadczeniem w pracy dla marek z branż takich jak FMCG, automotive, OZE, elektronika i nieruchomości. Stawia na słowo, które realnie buduje komunikację. Prywatnie fan szeroko pojętego sportu i internetowych memów.',
       photo: '/o-nas/slider/piotr-zach.png',
     },
     {
       given: 'EMILIA',
       surname: 'METRYKA',
       role: 'Social Media Manager',
-      bio: 'Zaczynała w Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w Social Lamie prowadzi zespół, koordynuje komórkę wideo i odpowiada za strategie oraz kampanie dla marek z wielu branż.',
+      bio: 'Zaczynała w Warner Bros. Discovery, tworząc komunikację dla marek takich jak player.pl, TVN czy HBO Max. Dziś w Social Lamie prowadzi zespół, koordynuje komórkę wideo oraz odpowiada za strategie i kampanie dla marek z wielu branż — od FMCG i beauty po energetykę i nieruchomości. Łączy doświadczenie z wywiadów, premier i planów zdjęciowych z biznesowym podejściem do digitalu.',
       photo: '/o-nas/slider/emilia-metryka.png',
     },
     {
       given: 'PAULINA',
       surname: 'HILDEBRAND',
       role: 'Social Media Manager',
-      bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, tworząc komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii po relacje z klientami.',
+      bio: 'Łączy humanistyczną wrażliwość na słowo z analitycznym podejściem do danych, dzięki czemu tworzy komunikację, która naprawdę działa w social mediach. Specjalizuje się w kompleksowym prowadzeniu profili marek — od strategii i koncepcji kreatywnych, przez koordynację działań, po relacje z klientami. Obsługiwała klientów z FMCG, logistyki, gastronomii, RTV i AGD, motoryzacji i HVAC. Prywatnie szczęśliwa mama i miłośniczka kotów.',
       photo: '/o-nas/slider/paulina-hildebrand.png',
     },
     {
       given: 'MAGDA',
       surname: 'ROKICKA',
       role: 'Social Media Manager',
-      bio: 'Od ponad 12 lat w branży marketingowej — specjalizuje się w strategii komunikacji, social mediach, content marketingu i podcastach. Po godzinach edukuje branżę: prowadzi szkolenia i autorski podcast. Posiadaczka certyfikatu DIMAQ Professional.',
+      certs: ['dimaq'],
+      // The DIMAQ sentence that used to close this bio is now the chip above —
+      // stating it twice is the redundancy the chip exists to remove.
+      bio: 'Od ponad 12 lat pracuje w branży marketingowej. Specjalizuje się w strategii komunikacji, social mediach, moderacji, content marketingu oraz podcastach. Ma doświadczenie w pracy z markami z branży beauty, retail, FMCG, motoryzacyjnej, nieruchomości, farmaceutycznej oraz e-commerce. Po godzinach aktywnie działa na rzecz edukacji branży — prowadzi szkolenia, tworzy eksperckie publikacje i dzieli się wiedzą w autorskim podcaście.',
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
       given: 'KORNELIA',
       surname: 'ORLIK',
       role: 'Social Media Expert',
-      bio: 'Specjalizuje się w komunikacji marek z obszaru B2B oraz branży medycznej, łącząc podejście strategiczne z kompetencjami z zakresu zarządzania. Tworzy również materiały wizualne — grafiki, wideo i treści UGC.',
+      bio: 'Specjalizuje się w komunikacji marek z obszaru B2B oraz branży medycznej. Łączy podejście strategiczne z kompetencjami z zakresu zarządzania, dzięki czemu działania w social mediach są ściśle powiązane z celami biznesowymi klientów. Odpowiada za planowanie i koordynację komunikacji oraz przekładanie strategii na mierzalne efekty. Tworzy również materiały wizualne — grafiki, wideo i treści UGC — zgodne z regulacjami branżowymi.',
       photo: '/o-nas/slider/kornelia-orlik.png',
     },
     {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
-      bio: 'Od ponad 4 lat działa w marketingu — w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu.',
+      bio: 'Od ponad 4 lat działa w marketingu, a w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
       photo: '/o-nas/slider/katarzyna-kaptur.png',
     },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
       role: 'Social Media Specialist',
-      bio: 'Od ponad 10 lat odpowiada za komunikację marek w social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z beauty, FMCG, AGD i lifestyle. Stawia na autentyczność, emocje i trwałe relacje między marką a odbiorcami.',
+      bio: 'Od ponad 10 lat odpowiada za komunikację marek w social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z obszaru beauty, FMCG, AGD i lifestyle. Tworzy długofalowe strategie i angażujący content, stawiając na autentyczność, emocje i budowanie trwałych relacji między marką a jej odbiorcami.',
       photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
       given: 'KAROLINA',
       surname: 'MARCINOWSKA',
       role: 'Wideo Content Creator',
-      bio: 'W Social Lamie odpowiada za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i dopasowanie do strategii marki. Łączy wyczucie trendów i estetyki, tworząc materiały, które przyciągają uwagę i budują zaangażowanie.',
+      bio: 'W Social Lamie odpowiada przede wszystkim za tworzenie wideo contentu — od koncepcji, przez nagrania, po montaż i dopasowanie do strategii marki. Łączy doświadczenie w prowadzeniu komunikacji w różnych branżach z wyczuciem trendów i estetyki, tworząc materiały wideo, które przyciągają uwagę i budują zaangażowanie.',
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
     {
       given: 'MARTYNA',
       surname: 'BOROWIK',
       role: 'Senior Social Media Specialist',
-      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu — od strategii, przez angażujący content, po analizę wyników.',
+      bio: 'Łączy strategiczne spojrzenie z intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w marketingu i digitalu, podchodząc do komunikacji kompleksowo — od strategii, przez angażujący content, po analizę wyników. Ważne są dla niej relacje: współpraca oparta na otwartości i zrozumieniu jest efektywna i długofalowa. Szczególnie ceni pracę dla branż HoReCa, podróże i parenting.',
       photo: '/o-nas/slider/martyna-borowik.png',
     },
     {
       given: 'PRZEMYSŁAW',
       surname: 'ŚWIERCZ',
       role: 'Fullstack Developer',
-      bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Dba, żeby całość działała szybko i niezawodnie.',
+      bio: 'Odpowiada za rozwój i utrzymanie strony Social Lamy — od frontendu, przez backend, po wydajność i wdrożenia. Buduje też narzędzia wewnętrzne i automatyzacje, które skracają zespołowi drogę od pomysłu do wdrożenia. Po godzinach prowadzi blog techniczny. Prywatnie lubi być w ruchu — rower, bieganie, kiedyś sztuki walki.',
+      // The blog the bio just mentioned. An external personal site, so the
+      // label is the domain — it says where the link goes before it is clicked.
+      link: { label: 'imcurious.how', href: 'https://imcurious.how' },
       photo: '/o-nas/slider/przemyslaw-swiercz.png',
     },
   ],

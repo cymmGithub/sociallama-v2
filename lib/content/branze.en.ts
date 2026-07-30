@@ -32,9 +32,8 @@ export const chrome = {
     heading: 'CASE STUDIES FROM THIS INDUSTRY',
     cta: 'VIEW CASE STUDY',
   },
-  ctaEyebrow: 'Your move',
   ctaText: "Tell us about your challenge — we'll show you how we can help.",
-  ctaButton: 'Free consultation',
+  ctaButton: "Let's talk about your business",
   ctaHref: '/en/contact',
   index: {
     title: 'Industries',

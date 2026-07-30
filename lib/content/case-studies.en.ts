@@ -29,10 +29,8 @@ export const caseStudyChrome = {
     gallery: 'Gallery',
   },
   cta: {
-    eyebrow: 'Your move',
     title: "Let's build something like this for your brand",
     text: "Tell us about your challenge — we'll show you how we can help.",
-    primary: 'Free consultation',
-    secondary: 'See other case studies',
+    primary: "Let's talk about your business",
   },
 } satisfies LocalizedCaseStudies['caseStudyChrome']
