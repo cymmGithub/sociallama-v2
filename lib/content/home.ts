@@ -558,8 +558,11 @@ export const whyThatWorks = {
       'Zadbamy o\u00A0Twoją markę na każdym etapie, od pierwszego audytu, przez tworzenie contentu, aż po finalne raporty ze wspólnie osiągniętych sukcesów.',
   },
   link: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '/case-studies' },
-  // CTA card filling the last grid slot — jumps to the "NASZE LAMY" team slider.
-  teamCta: { label: 'Dowiedz się więcej', href: '/o-nas#zespol' },
+  // Per-tile deep link into the "NASZE LAMY" slider. The tile shows only an
+  // arrow, so `label` is never displayed — it exists to lead the link's
+  // accessible name ("Więcej: Anna Ozga"), hence sentence case. `hrefBase` is
+  // the locale's about page; the component appends `?lama=<slug>#zespol`.
+  memberLink: { label: 'Więcej', hrefBase: '/o-nas' },
   teamLabel: 'Zespół Social Lama',
   // Caption under the two cert cards. The marks are not self-explanatory — one
   // sentence saying what they cover beats presenting them without comment.

@@ -14,8 +14,10 @@
 
 import cn from 'clsx'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 import {
   type TouchEvent as ReactTouchEvent,
+  Suspense,
   useEffect,
   useRef,
   useState,
@@ -43,6 +45,35 @@ const CERT_MARKS = {
 
 type Member = LocalizedONas['oNasTeam']['members'][number]
 
+// The cutout filename stem ('/o-nas/slider/anna-ozga.png' -> 'anna-ozga') — the
+// only key this slider and the homepage team grid already share. The homepage
+// deep links by it rather than by position, because the two surfaces are
+// deliberately ordered differently (see the onas-team spec).
+function slugOf(photo: string) {
+  return (
+    photo
+      .split('/')
+      .pop()
+      ?.replace(/\.[^.]+$/, '') ?? ''
+  )
+}
+
+/**
+ * Reads `?lama=` and hands it up. It exists as its own component purely so the
+ * Suspense boundary `useSearchParams` demands can wrap *nothing visible*:
+ * reading the param inside <Team> would put the boundary around the whole team
+ * section, and its fallback would punch a hole in the prerendered HTML.
+ */
+function LamaParam({ onSlug }: { onSlug: (slug: string | null) => void }) {
+  const lama = useSearchParams().get('lama')
+
+  useEffect(() => {
+    onSlug(lama)
+  }, [lama, onSlug])
+
+  return null
+}
+
 export function Team({
   content = oNasTeam,
 }: {
@@ -69,6 +100,21 @@ export function Team({
     },
     []
   )
+
+  // Deep link from the homepage grid: feature the named member on arrival. An
+  // instant swap — no crossfade layer, no arrow lock — because there is nothing
+  // to fade *from*. Keyed on the slug value rather than on mount, so it re-fires
+  // when Next keeps this page alive across navigations and the visitor comes
+  // back with a different member. Unknown or absent slug changes nothing.
+  const [lama, setLama] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!lama) return
+    const target = members.findIndex((m) => slugOf(m.photo) === lama)
+    if (target < 0) return
+    setPrev(null)
+    setIndex(target)
+  }, [lama, members])
 
   // `first` is the guaranteed fallback — members is non-empty by design, and the
   // guard narrows away the widened-array `undefined`. index/prev are always
@@ -142,6 +188,10 @@ export function Team({
       data-onas-section="team"
       className={s.section}
     >
+      <Suspense fallback={null}>
+        <LamaParam onSlug={setLama} />
+      </Suspense>
+
       <header className={s.head}>
         {/* Homepage "Usługi" pattern: small white eyebrow over a big orange word. */}
         <div className={s.label}>

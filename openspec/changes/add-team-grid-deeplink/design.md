@@ -68,22 +68,39 @@ Unknown or absent slug → no-op (slider stays where it is; first member on a
 fresh mount). Known edge, accepted: same member clicked twice with manual
 stepping in between won't re-fire (param value unchanged).
 
-**D5 — Homepage link is a discrete `<Link>` in the caption, revealed on
-hover/focus on pointer devices, always visible on touch.** The tile itself
-stays a plain `<li>` (user decision: discrete link, not whole-tile link).
-Reveal via `.tile:hover` / `.tile:focus-within` opacity transition; a
-`@media (hover: none)` override keeps it always visible where hover doesn't
-exist. Arrow is lucide `ArrowRight` (house rule: never glyph arrows). Each
-link's accessible name includes the member ("Więcej: Anna Ozga") — twelve
-identical "WIĘCEJ" names with different destinations would fail link-purpose
-and could trip the homepage a11y gate.
+**D5 — The whole tile is the link; a bottom-right lucide arrow is the only
+affordance** (user decision 2026-07-30, revising the earlier "discrete link,
+not whole-tile link" call made the same day). The `<Link>` is an
+`inset: 0` overlay *sibling* of the caption, not a wrapper around it: wrapping
+would compute the accessible name from the tile's text ("Anna Ozga Head of
+Social Media") and nest copy inside an anchor for no reason, while an overlay
+gets the same click target and leaves the caption's layout untouched — the
+name and role do not move by a pixel. `.caption` is already
+`pointer-events: none`, so the overlay above it captures cleanly.
+
+Reveal via `.tile:hover` / `.tile:focus-within` opacity transition, inside
+`@media (hover: hover)` so touch devices get it always-visible by default —
+with no label, the arrow is the tile's only cue that it leads somewhere. Arrow
+is lucide `ArrowRight` (house rule: never glyph arrows). Each link's accessible
+name carries the member ("Więcej: Anna Ozga") — twelve unlabelled arrows with
+different destinations would otherwise be indistinguishable and trip the
+homepage a11y gate.
+
+Dropping the visible label also settles the contrast question the label version
+could not: measured over the twelve cutouts, brand orange runs 3.20–8.90:1
+against the composited caption scrim. As 9.6px copy that failed AA (4.5:1) on
+seven tiles; as a graphical object it answers to WCAG 1.4.11's 3:1, and
+measured across the pixels the arrow actually paints it holds 3.88:1 at worst.
+Brand orange stays.
 
 **D6 — Copy and hrefs live in content, `teamCta` dies.** New key under
-`whyThatWorks` (e.g. `memberLink: { label, hrefBase }`; PL `/o-nas`, EN
+`whyThatWorks` (`memberLink: { label, hrefBase }`; PL `/o-nas`, EN
 `/en/about-us`); the component assembles `${hrefBase}?lama=${slug}#zespol`.
-The orphaned `teamCta` is removed from both locales in the same commit — this
-feature is its successor. `LocalizedHome` derives from the PL const, so the
-type updates itself; EN must satisfy it or the build fails.
+`label` is sentence case ("Więcej" / "More") because after D5 it is never
+displayed — it exists only to lead the accessible name. The orphaned `teamCta`
+is removed from both locales in the same commit — this feature is its
+successor. `LocalizedHome` derives from the PL const, so the type updates
+itself; EN must satisfy it or the build fails.
 
 ## Risks / Trade-offs
 

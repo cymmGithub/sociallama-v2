@@ -2,48 +2,60 @@
 
 ### Requirement: Homepage tiles deep-link to the member's slider profile
 
-Each homepage `why-that-works` team tile SHALL carry a discrete "WIĘCEJ" link
-(EN: "MORE") below the always-visible name + role caption, targeting the team
-slider with that member preselected: `/o-nas?lama=<slug>#zespol` on the Polish
-homepage, `/en/about-us?lama=<slug>#zespol` on the English one. `<slug>` SHALL
-be the member's cutout filename stem (e.g. `martyna-borowik`) — the key the two
+Each homepage `why-that-works` team tile SHALL be a link in its entirety,
+targeting the team slider with that member preselected:
+`/o-nas?lama=<slug>#zespol` on the Polish homepage,
+`/en/about-us?lama=<slug>#zespol` on the English one. `<slug>` SHALL be the
+member's cutout filename stem (e.g. `martyna-borowik`) — the key the two
 surfaces already share — never a positional index, because the surfaces'
 orders deliberately differ.
 
-The link label and locale base href SHALL come from the content modules
-(`home.ts` / `home.en.ts`), not be hardcoded in the component. The arrow SHALL
-be a lucide icon, not a text glyph. Each link's accessible name SHALL include
-the member's name, so the twelve links are distinguishable out of context.
+The tile's only visible affordance SHALL be a lucide arrow icon in the tile's
+bottom-right corner, aligned to the caption's text edge; there is no visible
+link label. The locale base href SHALL come from the content modules
+(`home.ts` / `home.en.ts`), not be hardcoded in the component. Each link's
+accessible name SHALL name the member (locale word for "more" + the member's
+name), so the twelve links are distinguishable out of context.
 
-On devices with hover, the link SHALL be hidden at rest and revealed by
+On devices with hover, the arrow SHALL be hidden at rest and revealed by
 hovering the tile or by keyboard focus; on devices without hover it SHALL be
-always visible. The caption's name and role are unaffected in every state.
+always visible — with no label it is the only cue that the tile leads
+somewhere. The caption's name and role are unaffected in every state, and
+adding the link SHALL NOT shift their position.
 
 #### Scenario: Link targets the member by slug
 
 - **WHEN** the tile for Martyna Borowik (grid position 2, slider position 11)
   is rendered on the Polish homepage
-- **THEN** its link href is `/o-nas?lama=martyna-borowik#zespol`, and following
-  it features Martyna in the slider — not the member at slider position 2
+- **THEN** its link href is `/o-nas?lama=martyna-borowik#zespol`, and clicking
+  anywhere on the tile features Martyna in the slider — not the member at
+  slider position 2
 
 #### Scenario: EN tile links to the EN page
 
 - **WHEN** the same tile renders on `/en`
-- **THEN** the link reads "MORE", and its href is
+- **THEN** its accessible name is "More: Martyna Borowik", and its href is
   `/en/about-us?lama=martyna-borowik#zespol`
 
 #### Scenario: Hover and focus reveal on pointer devices
 
 - **WHEN** on a hover-capable device the tile is neither hovered nor contains
   focus
-- **THEN** the link is not visible; hovering the tile or moving keyboard focus
-  to the link makes it visible, and the name + role caption is visible in both
-  states
+- **THEN** the arrow is not visible; hovering the tile or moving keyboard focus
+  to it makes the arrow visible, and the name + role caption is visible and in
+  the same position in both states
 
 #### Scenario: Always visible on touch
 
 - **WHEN** the grid renders on a device without hover (`hover: none`)
-- **THEN** every tile's link is visible without interaction
+- **THEN** every tile's arrow is visible without interaction
+
+#### Scenario: Arrow meets non-text contrast
+
+- **WHEN** the arrow is rendered over any of the twelve cutouts and their
+  caption scrim
+- **THEN** the pixels it paints meet WCAG 1.4.11's 3:1 non-text contrast
+  minimum against the composited background beneath them
 
 #### Scenario: Links are distinguishable to assistive technology
 

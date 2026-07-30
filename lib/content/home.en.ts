@@ -328,8 +328,7 @@ export const whyThatWorks = {
       'We look after your brand at every stage — from the first audit, through content creation, to the final reports on the wins we rack up together.',
   },
   link: { label: 'DISCOVER OUR EXPERIENCE', href: '/en/case-studies' },
-  // CTA card filling the last grid slot — jumps to the "OUR LAMAS" team slider.
-  teamCta: { label: 'Learn more', href: '/en/about-us#zespol' },
+  memberLink: { label: 'More', hrefBase: '/en/about-us' },
   teamLabel: 'Social Lama team',
   certsLabel:
     'DIMAQ Professional and Meta Small Business Academy — certified skills in digital marketing and advertising across the Meta ecosystem.',

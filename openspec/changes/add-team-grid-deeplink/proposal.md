@@ -10,10 +10,11 @@ exactly this jump but never rendered.
 
 ## What Changes
 
-- Each homepage team tile gains a discrete "WIĘCEJ" link (lucide arrow, not a
-  glyph) below the existing name + role caption. Captions stay always visible
-  exactly as today; only the link is hover/focus-revealed on desktop and always
-  visible on touch devices (no hover exists there).
+- Each homepage team tile becomes a link in its entirety, with a lucide arrow
+  (not a glyph) in its bottom-right corner as the only visible affordance —
+  there is no text label. Captions stay always visible and in exactly the
+  position they occupy today; only the arrow is hover/focus-revealed on
+  desktop, and always visible on touch devices (no hover exists there).
 - The link targets `/o-nas?lama=<slug>#zespol` (EN: `/en/about-us?lama=<slug>#zespol`),
   where `<slug>` is the shared cutout filename (e.g. `martyna-borowik`).
   Matching is by slug, never by index — the two surfaces deliberately disagree
@@ -22,8 +23,9 @@ exactly this jump but never rendered.
 - The `/o-nas` team slider reads `?lama=` and opens with that member featured;
   the page scrolls to the `#zespol` section. Unknown or absent slugs fall back
   to the current behavior (first member, no scroll).
-- New copy keys in `lib/content/home.ts` / `home.en.ts` for the link label and
-  locale-aware base href; the unused `teamCta` key is removed from both locales.
+- New copy keys in `lib/content/home.ts` / `home.en.ts` for the locale-aware
+  base href and the word leading each link's accessible name ("Więcej: Anna
+  Ozga"); the unused `teamCta` key is removed from both locales.
 
 ## Capabilities
 

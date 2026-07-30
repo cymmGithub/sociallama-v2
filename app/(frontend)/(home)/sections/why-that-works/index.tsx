@@ -1,6 +1,7 @@
 'use client'
 
 import cn from 'clsx'
+import { ArrowRight } from 'lucide-react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -157,6 +158,20 @@ export function WhyThatWorks({
                   <span className={s.captionName}>{member.name}</span>
                   <span className={s.captionRole}>{member.role}</span>
                 </div>
+                {/* Deep link into the /o-nas slider, keyed by the cutout slug
+                    the two surfaces share — never by index, since the grid and
+                    the slider are deliberately ordered differently. The whole
+                    tile is the target: an inset overlay rather than a wrapper
+                    around the caption, so the caption keeps its own layout and
+                    the link's accessible name stays the member, not the tile's
+                    text. */}
+                <Link
+                  className={s.tileLink}
+                  href={`${content.memberLink.hrefBase}?lama=${member.cut.replace('.png', '')}#zespol`}
+                  aria-label={`${content.memberLink.label}: ${member.name}`}
+                >
+                  <ArrowRight className={s.tileArrow} aria-hidden="true" />
+                </Link>
               </li>
             ))}
           </ul>

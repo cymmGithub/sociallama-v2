@@ -235,6 +235,66 @@
   color: color-mix(in srgb, var(--color-cream) 78%, transparent);
 }
 
+/* Deep link into the member's slider profile: the whole tile is the target, so
+   the link is an inset overlay rather than something inside the caption — the
+   name + role keep their own layout and never shift. `.caption` is
+   pointer-events: none (it's a scrim, not a target), so it doesn't matter that
+   the overlay sits above it.
+
+   The arrow is the only affordance; it carries no visible text, so the member's
+   name rides on the link's aria-label. As a graphical object it answers to
+   WCAG 1.4.11 (3:1) rather than text contrast — orange measures 3.20:1 at its
+   worst tile over the scrim, where it would have failed as 9.6px copy. */
+.tileLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* Matches .caption's padding so the arrow lines up with the text block's
+     right edge rather than floating in the corner on its own. */
+  padding: 10px 10px 9px;
+}
+
+.tileArrow {
+  width: clamp(15px, 1.9cqw, 22px);
+  height: auto;
+  flex-shrink: 0;
+  color: var(--color-orange);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+
+/* Hidden at rest only where hover exists; everywhere else (touch, and any UA
+   that doesn't resolve the query) it stays visible, since there is no gesture
+   that could reveal it — and with no visible label it is the tile's only cue
+   that it leads somewhere. Keyboard focus reveals it via :focus-within. */
+@media (hover: hover) {
+  .tileArrow {
+    opacity: 0;
+  }
+
+  .tile:hover .tileArrow,
+  .tile:focus-within .tileArrow {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+}
+
+@media (--reduced-motion) {
+  .tileArrow {
+    transition: none;
+    transform: none;
+  }
+
+  .tile:hover .tileArrow,
+  .tile:focus-within .tileArrow {
+    transform: none;
+  }
+}
+
 /* CTA card filling the final grid slot: an orange accent tile linking to the
    /o-nas team slider. Matches the portrait tiles' shape; stands out by colour. */
 .ctaTile {
