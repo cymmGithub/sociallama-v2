@@ -22,7 +22,7 @@
  */
 
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { relative } from 'node:path'
+import { join, relative } from 'node:path'
 import { Node, Project, type SourceFile, SyntaxKind } from 'ts-morph'
 import {
   classify,
@@ -34,7 +34,12 @@ import {
   type Tier,
 } from '@/lib/typography/orphan-rules'
 
-const ROOT = process.cwd()
+/**
+ * Repo root from this file's own location, not `process.cwd()`. The scanner is
+ * imported by `lib/content/orphan-coverage.test.ts`, and a test runner's cwd is
+ * not a promise worth relying on.
+ */
+const ROOT = join(import.meta.dir, '..', '..')
 
 /**
  * Directories are walked, not globbed. `app/(frontend)/**` matches nothing:
@@ -365,7 +370,10 @@ interface Edit {
 function scanPaths(): string[] {
   const out: string[] = []
   for (const { dir, ext } of SCAN) {
-    const found = readdirSync(dir, { recursive: true, encoding: 'utf8' })
+    const found = readdirSync(join(ROOT, dir), {
+      recursive: true,
+      encoding: 'utf8',
+    })
       .filter((entry) => entry.endsWith(ext))
       .map((entry) => `${dir}/${entry}`)
       .filter((path) => !EXCLUDE.test(path))
@@ -374,16 +382,25 @@ function scanPaths(): string[] {
         `no ${ext} files under ${dir} — the scan would silently pass`
       )
     }
-    out.push(...found)
+    out.push(...found.map((path) => join(ROOT, path)))
   }
   return out
 }
 
-function main(): void {
-  const apply = process.argv.includes('--apply')
-  const jsonAt = process.argv.indexOf('--json')
-  const jsonPath = jsonAt === -1 ? undefined : process.argv[jsonAt + 1]
+export interface Scan {
+  findings: Finding[]
+  /** Byte edits `--apply` would write, keyed by the file that owns them. */
+  editsByFile: Map<SourceFile, Edit[]>
+  scanned: number
+}
 
+/**
+ * Reads every file in scope and reports every gap, writing nothing. Split out
+ * from the CLI so the coverage test can assert the invariant this tool exists to
+ * maintain — that no bindable T1 gap is left in the copy — using exactly the
+ * same rule and the same file list, rather than a second implementation of both.
+ */
+export function scanOrphans(): Scan {
   const project = new Project({
     skipAddingFilesFromTsConfig: true,
     skipFileDependencyResolution: true,
@@ -441,7 +458,7 @@ function main(): void {
           actionable: !held,
           ...(held ? { held } : {}),
         })
-        if (held || !apply) {
+        if (held) {
           continue
         }
         const from = starts[hit.index]
@@ -460,6 +477,16 @@ function main(): void {
       }
     }
   }
+
+  return { findings, editsByFile, scanned }
+}
+
+function main(): void {
+  const apply = process.argv.includes('--apply')
+  const jsonAt = process.argv.indexOf('--json')
+  const jsonPath = jsonAt === -1 ? undefined : process.argv[jsonAt + 1]
+
+  const { findings, editsByFile, scanned } = scanOrphans()
 
   if (apply) {
     write(editsByFile)
@@ -562,4 +589,7 @@ function report(findings: Finding[], scanned: number, applied: boolean): void {
   }
 }
 
-main()
+// Importing this module must not run the audit — the coverage test does that.
+if (import.meta.main) {
+  main()
+}
