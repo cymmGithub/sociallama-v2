@@ -262,6 +262,10 @@
   height: auto;
   flex-shrink: 0;
   color: var(--color-orange);
+  /* Lifts the arrow clear of the caption's last line (user request,
+     2026-07-30) — it no longer sits on the baseline `.tileLink`'s padding
+     matches. */
+  margin-bottom: 0.8rem;
   transition:
     opacity 0.28s ease,
     transform 0.28s ease;
