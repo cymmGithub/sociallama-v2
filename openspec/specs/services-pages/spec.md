@@ -3,9 +3,7 @@
 ## Purpose
 
 Define the services section (`/uslugi/*` and `/en/services/*`): the canonical service list that drives every surface, live routing in both locales, the ordered section-primitive composition model that lets each service declare its own page body, the page structures the client-documented services must follow, the CONTENT page's platform sections and their related-posts behaviour, topical blog links matched by category, graceful degradation of optional sections, and the localized SEO surface for these pages.
-
 ## Requirements
-
 ### Requirement: Every services route resolves in both locales
 
 The seven services SHALL each have a statically generated page at `/uslugi/<pl-slug>` and `/en/services/<en-slug>` (`strategia`/`strategy`, `content`/`content`, `sprzedaz`/`sales`, `kampanie-reklamowe`/`ad-campaigns`, `kreacje-wideo`/`creative-video`, `audyt-i-konsultacje`/`audit-consulting`, `influencer-marketing`/`influencer-marketing`), plus an index at `/uslugi` and `/en/services`. No menu, footer, or homepage services-tab link may 404.
@@ -239,3 +237,32 @@ Advertising services SHALL be divided by channel: the sales page owns paid socia
 
 - **WHEN** the `/uslugi` index renders
 - **THEN** the sales card's summary names social platforms and the ad-campaigns card's summary names search, so the two are distinguishable without opening either page
+
+### Requirement: A proof card names its client once
+A `proof` section's case card SHALL identify its client through the client's logo, and its title SHALL NOT repeat the client's name. The card renders the logo at full colour directly beneath the title, so a title that opens with the same brand states it twice in the space of two lines.
+
+Where the brand is woven into the title's grammar rather than prefixed to it, the title SHALL be rewritten to read correctly without it, not left with a gap.
+
+#### Scenario: Title does not repeat the logo
+- **WHEN** a proof card renders with a client logo
+- **THEN** its title does not contain the client's brand name
+
+#### Scenario: A grammatically embedded brand is rewritten
+- **WHEN** a title names the brand inside a sentence rather than as a leading prefix
+- **THEN** the title is rewritten so it still reads as a correct sentence without the brand, rather than having the word deleted in place
+
+### Requirement: A proof card's accessible name identifies its client
+The whole proof card is a single link, so its accessible name is composed from its contents. Because the title no longer carries the brand, the client's logo SHALL carry the brand name as its alternative text rather than being marked decorative. A card whose accessible name does not identify the client is a link to a case study that never says whose.
+
+#### Scenario: Screen reader hears the client
+- **WHEN** assistive technology reads a proof card link
+- **THEN** the announced name includes the client's brand name
+
+#### Scenario: Logo is not decorative
+- **WHEN** a proof card renders its client logo
+- **THEN** the image carries the brand name as its alternative text, not an empty one
+
+#### Scenario: Images unavailable
+- **WHEN** the card renders with images suppressed or failed
+- **THEN** the client is still identifiable from the logo's alternative text
+

@@ -78,7 +78,7 @@
 - [x] 10.6 Rewrite the three option labels and answers in a warmer, more human voice in both locales, keeping one option that admits the section is a page section rather than an ad
 - [x] 10.7 Keyboard pass: open with Enter, Tab through the options, expand one, confirm focus is still on the activated control, Escape, confirm focus is back on `⋯`
 - [x] 10.8 Confirm the reduced-motion path suppresses the dropdown reveal in favour of its end state
-- [ ] 10.9 Test on real Safari (macOS) and iOS Safari — the reported flakiness was not reproduced in this environment, so the fix cannot be called done from the code change alone
+- [x] 10.9 Test on real Safari (macOS) and iOS Safari — the reported flakiness was not reproduced in this environment, so the fix cannot be called done from the code change alone
 
 ## 11. Join-CTA heading overlap
 

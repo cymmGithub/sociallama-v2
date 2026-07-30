@@ -5,9 +5,7 @@ The visual contract every homepage client-belt logo satisfies — transparency,
 optical-mass normalisation, resting contrast, crop-to-primary-mark and output
 geometry — and the repeatable pipeline that produces them from a per-brand
 chosen source. Created by archiving change rebuild-client-marquee.
-
 ## Requirements
-
 ### Requirement: Source selection precedence
 Every belt logo SHALL be produced from an explicitly recorded source. Where the repository already holds a clean asset at `public/case-studies/<slug>/<slug>-logo.png`, that asset SHALL be preferred. The gDrive `TOP MARKI na strone główną` file SHALL be used only where the repository asset is absent, is a solid-background plate, is lower resolution than the belt output geometry requires, or is a crop out of a larger layout that carries artwork belonging to neighbouring elements. The per-brand choice SHALL be recorded in the pipeline source so it is reviewable and repeatable.
 
@@ -32,7 +30,14 @@ Every belt logo SHALL be produced from an explicitly recorded source. Where the 
 - **THEN** the gDrive file `film skrzat.webp` is never used, because it is a film poster rather than the client's mark
 
 ### Requirement: Logos render without a background plate
-Every emitted logo SHALL have a genuinely transparent background. Solid or near-solid background plates SHALL be removed by clearing only those pixels that both fall within tolerance of the border colour and are connected to the image border, so that enclosed counters and interior negative space inside glyphs survive. Edges SHALL be feathered rather than hard-keyed.
+Every emitted logo SHALL have a genuinely transparent background, and enclosed counters and interior negative space inside glyphs SHALL survive. Edges SHALL be feathered rather than hard-keyed.
+
+Plate removal SHALL be chosen to fit the artwork, because one keying rule cannot serve both kinds of source:
+
+- **Positive artwork** (coloured ink on a plate) SHALL have the plate removed by clearing only those pixels that both fall within tolerance of the border colour and are connected to the image border. Interior negative space in this artwork is genuine opaque ink, and a global colour key would punch holes in it.
+- **Knockout artwork** (white or light ink reversed out of a solid brand-colour plate, which the pipeline then repaints in that plate colour) SHALL have plate-coloured pixels cleared **wherever they occur, connected to the border or not.** In a knockout mark the counters are filled with the plate colour and are enclosed by the glyph, so border-connected keying leaves them opaque; repainting the ink in the plate colour then merges glyph and counter into one silhouette. This SHALL apply at minimum to POLOmarket and Mercator Medical.
+
+Ink that is not the plate colour SHALL survive a knockout key — POLOmarket's yellow sun sits on its red plate and is not part of the plate.
 
 #### Scenario: Logo delivered on a white plate
 - **WHEN** a source logo arrives as opaque artwork on a white rectangle
@@ -41,6 +46,18 @@ Every emitted logo SHALL have a genuinely transparent background. Solid or near-
 #### Scenario: Glyph with an enclosed counter
 - **WHEN** a source logo contains a letter with an enclosed counter whose fill matches the background colour
 - **THEN** that counter remains cleared while the surrounding glyph strokes are preserved
+
+#### Scenario: Knockout wordmark with enclosed counters
+- **WHEN** POLOmarket or Mercator Medical is emitted for the belt
+- **THEN** the counters of `p`, `o`, `o` and of `R`, `A`, `O` read as holes rather than as solid brand colour, at belt size and under the belt's resting grayscale treatment
+
+#### Scenario: Non-plate colour survives a knockout key
+- **WHEN** POLOmarket is emitted
+- **THEN** its yellow sun is still present and still yellow, because only plate-coloured pixels were cleared
+
+#### Scenario: Positive artwork is not globally keyed
+- **WHEN** a mark whose interior detail is opaque ink of roughly the background's colour is emitted
+- **THEN** that interior detail survives, because global keying is applied only to marks declared as knockout artwork
 
 #### Scenario: Background is a gradient or watermark
 - **WHEN** automated plate removal leaves visible residue because the background was not flat
@@ -122,3 +139,4 @@ The pipeline SHALL produce a contact sheet rendering every emitted logo under th
 #### Scenario: Asset fails review
 - **WHEN** the contact sheet shows a logo with a visible plate, residue, or unreadable ink
 - **THEN** that asset is corrected and the pipeline re-run before the change is considered complete
+
