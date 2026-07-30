@@ -65,9 +65,16 @@ if (process.argv.includes('--prod')) {
  */
 type Op = {
   slug: string
-  /** Filename of the media document to detach from `approach[].media`. */
+  /** Filename of the media document to detach. */
   file: string
   why: string
+  /**
+   * Which field holds it. Omitted means `approach[].media`, which is localized
+   * and so written per locale. `cover` is NOT localized — one write, and it is
+   * always a swap rather than a detach, because a study with no cover would
+   * render an empty card on the listing.
+   */
+  target?: 'cover'
   /** Replacement drawn from the same client's own deck, or null to just detach. */
   replace: { file: string; altPl: string; altEn: string } | null
 }
@@ -184,6 +191,177 @@ const PLAN: Op[] = [
     file: 'foodsaver-cover.jpg',
     why: 'Same file as the study cover — duplicate use; cover keeps it',
     replace: null,
+  },
+  {
+    // The old cover is an American novelty signpost — New York City, Seattle,
+    // "P Town Fire Station" — on a brand that sells tailor-made travel. Not
+    // merely generic: it contradicts the positioning, and the place names stay
+    // legible even in the 418x199 listing card.
+    //
+    // The replacement is a frame from Getaway's own published post, cropped past
+    // the Instagram header. It qualifies on provenance rather than on what it
+    // shows — the spec counts "its own social-media communication" — and it is
+    // the only option in the pool that reads well at card size. Hero upscales
+    // 2.5x from a 468x262 source, which is accepted: soft, not broken.
+    slug: 'getaway',
+    file: 'getaway-cover.jpg',
+    why: 'American roadside signpost on a tailor-made travel brand',
+    target: 'cover',
+    replace: {
+      file: 'getaway-cover-2.jpg',
+      altPl:
+        'Kadr z posta Getaway — meander rzeki Kolorado w kanionie Horseshoe Bend',
+      altEn:
+        'Frame from a Getaway post — the Colorado River meander at Horseshoe Bend',
+    },
+  },
+
+  /**
+   * —— re-crops ——
+   *
+   * These ten covers were never the wrong SUBJECT, so the imagery audit passed
+   * every one of them. They fail a different test: the listing card is 418x199
+   * and the hero 1150x646, both landscape, while the sources are portrait or
+   * square. `objectFit: cover` then crops wherever it lands — through a headline
+   * on Bioagris, through the Facebook group bar on Kontigo, past the face
+   * entirely on Adamed.
+   *
+   * Each replacement is the SAME image recropped to ~1.9:1, deliberately between
+   * the card's 2.10 and the hero's 1.78 so neither box eats anything that
+   * matters. Crop boxes were set from measured row-brightness profiles, not by
+   * eye — three of the first attempts cut exactly what they were meant to save.
+   *
+   * `n-energia` and `volvo` are knowingly left alone: cropping cannot fix them
+   * (Energia's sharp sunflower sits where the black band begins; Volvo's frame is
+   * dark and abstract throughout) and neither pool holds a single landscape
+   * photograph to swap in. Those two need client-supplied material.
+   */
+  {
+    slug: 'bioagris',
+    file: 'bioagris-cover.jpg',
+    why: 'Card crop sliced the “PRZYWRÓĆ ŻYCIE” headline in half',
+    target: 'cover',
+    replace: {
+      file: 'bioagris-cover-2.jpg',
+      altPl:
+        'Dłonie przesypujące żyzną, ciemną glebę w świetle zachodzącego słońca',
+      altEn: 'Hands sifting rich dark soil in the light of the setting sun',
+    },
+  },
+  {
+    slug: 'kontigo',
+    file: 'kontigo-cover.jpg',
+    why: 'Facebook group bar was cut through, leaving a clipped “ontigoCLUB”',
+    target: 'cover',
+    replace: {
+      file: 'kontigo-cover-2.jpg',
+      altPl:
+        'Dwie kobiety w turbanach z ręczników nakładają sobie maseczki kosmetyczne — kadr z okładki grupy KontigoCLUB',
+      altEn:
+        'Two women in towel turbans applying face masks to each other — from the KontigoCLUB group cover',
+    },
+  },
+  {
+    slug: 'produkty-cukiernicze-brzesc',
+    file: 'produkty-cukiernicze-brzesc-cover.jpg',
+    why: 'Crop clipped the “Wygraj iPhone 11” panel and the corner logo flash',
+    target: 'cover',
+    replace: {
+      file: 'produkty-cukiernicze-brzesc-cover-2.jpg',
+      altPl:
+        'Opakowanie słomki ptysiowej Pano obok miski pełnej słomki na drewnianym blacie',
+      altEn:
+        'A pack of Pano choux straws beside a bowl of them on a wooden counter',
+    },
+  },
+  {
+    slug: 'galeria-rondo-wiatraczna',
+    file: 'galeria-rondo-wiatraczna-cover.jpg',
+    why: 'Crop landed on the crowd edge rather than the event itself',
+    target: 'cover',
+    replace: {
+      file: 'galeria-rondo-wiatraczna-cover-2.jpg',
+      altPl:
+        'Rodziny przy kolorowych stanowiskach warsztatowych podczas eventu w Galerii Rondo Wiatraczna',
+      altEn:
+        'Families at colourful workshop stations during an event at Galeria Rondo Wiatraczna',
+    },
+  },
+  {
+    slug: 'vistula',
+    file: 'vistula-cover.jpg',
+    why: 'Crop cut through the campaign headline',
+    target: 'cover',
+    replace: {
+      file: 'vistula-cover-2.jpg',
+      altPl:
+        'Czterech studentów Uczelni Vistula w kreacji kampanii „Why Vistula?”',
+      altEn:
+        'Four Vistula University students in the “Why Vistula?” campaign creative',
+    },
+  },
+  {
+    slug: 'entelo',
+    file: 'entelo-cover.jpg',
+    why: 'Portrait screenshot letterboxed to a sliver between white bars',
+    target: 'cover',
+    replace: {
+      file: 'entelo-cover-2.jpg',
+      altPl:
+        'Strona Entelo — Dobre Krzesło na Facebooku z hasłem „Produkujemy meble. Tworzymy przestrzenie. Dbamy o zdrowie.”',
+      altEn:
+        'The Entelo — Dobre Krzesło Facebook page, headlined “We make furniture. We create spaces. We care about health.”',
+    },
+  },
+  {
+    slug: 'adamed',
+    file: 'adamed-cover.jpg',
+    why: 'Crop landed on a jaw and an ear — the face was outside the frame',
+    target: 'cover',
+    replace: {
+      file: 'adamed-cover-2.jpg',
+      altPl:
+        'Kobieta z zamkniętymi oczami wdycha powietrze na tle zieleni — kreacja kampanii Adamed „Głęboki oddech”',
+      altEn:
+        'A woman breathing in with her eyes closed against greenery — from Adamed’s “Głęboki oddech” campaign',
+    },
+  },
+  {
+    slug: 'personal-effect',
+    file: 'personal-effect-cover.jpg',
+    why: 'Crop cut the face off, leaving a torso',
+    target: 'cover',
+    replace: {
+      file: 'personal-effect-cover-2.jpg',
+      altPl:
+        'Kobieta przy biurku w jasnym wnętrzu — kadr z materiałów Personal Effect',
+      altEn:
+        'A woman at a desk in a bright interior — from Personal Effect’s own material',
+    },
+  },
+  {
+    slug: 'vobis',
+    file: 'vobis-cover.jpg',
+    why: 'Saw floated over a stadium with the “Krótka piłka” line cropped away, so the pun lost its punchline',
+    target: 'cover',
+    replace: {
+      file: 'vobis-cover-2.jpg',
+      altPl:
+        'Kreacja Vobis „Krótka piłka” — składana piła Fiskars na tle stadionu piłkarskiego',
+      altEn:
+        'Vobis “Krótka piłka” creative — a folding Fiskars saw against a football stadium',
+    },
+  },
+  {
+    slug: 'asus',
+    file: 'asus-cover.jpg',
+    why: 'Crop showed a corner of the lid with no context',
+    target: 'cover',
+    replace: {
+      file: 'asus-cover-2.jpg',
+      altPl: 'Otwarty laptop ASUS Zenbook S 16 na jasnym tle',
+      altEn: 'An open ASUS Zenbook S 16 laptop on a light background',
+    },
   },
 ]
 
@@ -338,6 +516,42 @@ for (const op of PLAN) {
         console.log(`  + uploaded ${op.replace.file} -> media ${newId}`)
       }
     }
+  }
+
+  // `cover` is a plain unlocalized upload field, so it takes one write and no
+  // locale loop. It is always a swap: dropping a cover would leave a blank card
+  // on the listing, which is worse than the image being replaced.
+  if (op.target === 'cover') {
+    if (idOf(base.cover) !== mediaId) {
+      console.log(`  = ${op.slug} [cover]: ${op.file} already replaced`)
+    } else if (!op.replace) {
+      throw new Error(
+        `${op.slug}: a cover op needs a replacement, not a detach`
+      )
+    } else {
+      changes++
+      touchedSlugs.add(op.slug)
+      const verb = newId === null ? `upload ${op.replace.file}` : String(newId)
+      console.log(
+        `  ${APPLY ? '~' : 'would'} ${op.slug} [cover]: ${op.file} -> ${verb}`
+      )
+      if (APPLY) {
+        if (newId === null) {
+          throw new Error(
+            `${op.slug}: replacement ${op.replace.file} has no media id — aborting rather than blanking the cover`
+          )
+        }
+        await payload.update({
+          collection: 'case-studies',
+          id: base.id,
+          data: { cover: newId },
+        })
+      }
+    }
+    if (!detached.some((d) => d.mediaId === mediaId)) {
+      detached.push({ slug: op.slug, mediaId, file: op.file })
+    }
+    continue
   }
 
   for (const locale of LOCALES) {
