@@ -109,6 +109,25 @@ render as a plain `<Image>` in `app/(frontend)/blog/post-card.tsx:39`); ~20 cove
 clean background plates cut, since text cannot be overlaid on a card that already has
 text; and the overlay must survive four aspect ratios in two languages.
 
+> **Resolved 2026-07-31 by `redesign-blog-covers` — and by neither option above.**
+>
+> D4a deferred a localized `cover` relation; D4b proposed rendering the headline from the
+> translated fields. The change that shipped did a third thing: it removed the text from
+> the artwork entirely. All 22 text-bearing covers — the 5 blocked here plus the 17 this
+> audit `accept`ed — now carry language-agnostic llama art with no written language in it,
+> the sole exception being the LAMÓWKA wordmark on the series cover, which localized titles
+> keep verbatim.
+>
+> That resolves both halves at once. The three roundups (28, 29, 31) no longer bake Polish
+> news headlines into pixels, and ids 179/180 — which D4b correctly noted *only* a localized
+> relation could reach — are simply no longer Polish screenshots. **Localizing `cover` is
+> explicitly rejected:** an image containing no language is correct to share across locales,
+> so the unlocalized field is the intended design rather than a debt.
+>
+> D4b's cost analysis still stands for any future headline-in-image work, and none of it was
+> paid: no OG template system was built, no background plates were cut. See
+> `openspec/changes/redesign-blog-covers/` and the `blog-cover-art` spec.
+
 ### D5 — Any replaced image needs its `alt` re-checked
 
 `media.alt` is localized per-locale. Replacing the file makes both locales' alt text potentially wrong — the Polish alt now describes an English screenshot on the Polish page, since the media row is shared. Every `replace` or `recreate` therefore carries an alt review for **both** locales, not just English.

@@ -68,7 +68,10 @@
     "worktree:new": "bun ./lib/scripts/worktree.ts new",
     "worktree:rm": "bun ./lib/scripts/worktree.ts rm",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "payload:upload:cover-art": "bun ./lib/payload/upload-cover-art.ts",
+    "payload:repoint:covers": "bun ./lib/payload/repoint-covers.ts",
+    "payload:relink:cover-art": "bun ./lib/payload/relink-cover-art.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

@@ -75,13 +75,28 @@ least consistency — the Webflow look is a system, not 22 one-offs); programmat
 templates (cheapest and perfectly consistent, but the user chose llama artwork, and the
 brand already has a proven generative pipeline).
 
-**D2 — Style anchor = the repo's hero-llama assets.**
-Generation runs as nano_banana_pro image-edits against a fixed reference (hero llama matte
-/ o-nas cutouts), varying motif and category accent per piece, brand plum #913155 family.
-This is the recipe that already produced consistent llama assets for the site. Note: the
-user pointed at "the llamas from sociallama.pl" — that domain still serves the old
-WordPress site whose only llama is the logo; the intended reading (confirmed in
-exploration) is the new site's hero assets, which live in this repo.
+**D2 — Style anchor = the painted mascot cast on sociallama.pl.** *(revised 2026-07-31)*
+Generation runs as nano_banana_pro image-edits against a fixed reference, varying motif and
+category accent per piece.
+
+> **Correction.** The original D2 read the user's "the llamas from sociallama.pl" as meaning
+> the repo's photoreal hero-llama assets, on the stated grounds that "that domain's only
+> llama is the logo". **That is false and was never checked.** sociallama.pl's WordPress
+> media library is open (`/wp-json/wp/v2/media?search=lama`) and holds a full painted mascot
+> cast — `seo_lama`, `lama_szkolenie`, `lama_kontakt`, `lama_maratonczyk`, `lama_klient`,
+> `zostan_lama`, `lamy_stadko`, and more. The user confirmed these are what they meant. The
+> repo's `lama-fotograf.png` / `lama-manifest.png` / `lama-dolacz.png` belong to this same
+> family and are its highest-resolution members.
+>
+> Cost of the error: 14 Higgsfield credits spent on four photoreal pieces, now off-style.
+
+The anchors are painterly digital illustration — expressive cartoon llamas in a warm
+saturated cast (yellow, orange, pink, purple, magenta), hand-painted fleece, props with
+personality. **Not** the photoreal anthropomorphic treatment used by the hero and o-nas.
+
+Constraint this introduces: the mascot files top out at 500×500, far under the 2560×1600
+master. They are style *anchors* for generation, not source art to composite — the same
+image-edit mechanism as before, pointed at the right references.
 
 **D3 — One text exception: the LAMÓWKA wordmark.**
 "LAMÓWKA" is a brand name the English titles keep verbatim, so it may appear in the series

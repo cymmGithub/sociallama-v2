@@ -1,0 +1,347 @@
+{
+  "$comment": [
+    "Assignment map for redesign-blog-covers: 22 posts -> 11 library pieces.",
+    "Keyed by the OLD cover media id, which is also the content/media/image-audit.json",
+    "entry key — so the repoint script can assert the post's current cover before writing,",
+    "and the audit supersession record has a stable anchor.",
+    "`library[*].mediaId` is filled by the upload step (task 4.1); it is null until then.",
+    "Briefs, reference assets and generation settings live in cover-library-brief.md."
+  ],
+  "library": {
+    "seo-a": {
+      "category": "seo",
+      "mediaId": 794,
+      "file": "content/media/cover-art/seo-a.jpg",
+      "altPl": "Lama w kamizelce przygląda się czemuś przez wielkie szkło powiększające",
+      "altEn": "A llama in a waistcoat peering at something through a large magnifying glass",
+      "note": "Depicts the author Łukasz Płociński; he writes every seo post.",
+      "unused": true
+    },
+    "seo-b": {
+      "category": "seo",
+      "mediaId": 795,
+      "file": "content/media/cover-art/seo-b.jpg",
+      "altPl": "Lama w kamizelce wspina się po kolejnych stopniach",
+      "altEn": "A llama in a waistcoat climbing a short flight of steps",
+      "note": "Depicts the author Łukasz Płociński; he writes every seo post.",
+      "unused": true
+    },
+    "mkt-a": {
+      "category": "marketing",
+      "mediaId": 805,
+      "file": "content/media/cover-art/mkt-a.jpg",
+      "altPl": "Żółta lama woła coś przez pomarańczowy megafon",
+      "altEn": "A yellow llama calling out through an orange megaphone",
+      "revision": 2
+    },
+    "mkt-b": {
+      "category": "marketing",
+      "mediaId": 806,
+      "file": "content/media/cover-art/mkt-b.jpg",
+      "altPl": "Żółta lama opiera się o tarczę strzelniczą z lotką w środku",
+      "altEn": "A yellow llama leaning on a target board with a dart in the bullseye",
+      "revision": 2
+    },
+    "mkt-c": {
+      "category": "marketing",
+      "mediaId": 807,
+      "file": "content/media/cover-art/mkt-c.jpg",
+      "altPl": "Żółta lama biegnie z powiewającymi za nią serpentynami",
+      "altEn": "A yellow llama trotting along with paper streamers trailing behind",
+      "revision": 2
+    },
+    "rek-a": {
+      "category": "reklama",
+      "mediaId": 808,
+      "file": "content/media/cover-art/rek-a.jpg",
+      "altPl": "Fioletowa lama kłania się w świetle reflektora",
+      "altEn": "A purple llama taking a bow in a spotlight",
+      "revision": 2
+    },
+    "rek-b": {
+      "category": "reklama",
+      "mediaId": 800,
+      "file": "content/media/cover-art/rek-b.jpg",
+      "altPl": "Fioletowa lama wypuszcza z kopytka papierowe samoloty",
+      "altEn": "A purple llama launching a flock of paper aeroplanes",
+      "unused": true
+    },
+    "sm-a": {
+      "category": "social-media",
+      "mediaId": 809,
+      "file": "content/media/cover-art/sm-a.jpg",
+      "altPl": "Różowa lama robi sobie selfie telefonem",
+      "altEn": "A pink llama taking a selfie with a phone",
+      "revision": 2
+    },
+    "sm-b": {
+      "category": "social-media",
+      "mediaId": 810,
+      "file": "content/media/cover-art/sm-b.jpg",
+      "altPl": "Różowa lama wśród unoszących się serduszek i iskierek",
+      "altEn": "A pink llama surrounded by floating hearts and sparkles",
+      "revision": 2
+    },
+    "sm-c": {
+      "category": "social-media",
+      "mediaId": 811,
+      "file": "content/media/cover-art/sm-c.jpg",
+      "altPl": "Różowa lama w słuchawkach na tle świetlnego kręgu",
+      "altEn": "A pink llama in headphones against a glowing ring light",
+      "revision": 2
+    },
+    "lamowka": {
+      "category": "series",
+      "mediaId": 812,
+      "file": "content/media/cover-art/lamowka.jpg",
+      "altPl": "Cztery lamy z gazetą i wstęgą z napisem LAMÓWKA",
+      "altEn": "Four llamas with a newspaper and a ribbon reading LAMÓWKA",
+      "revision": 2
+    },
+    "mkt-d": {
+      "category": "marketing",
+      "mediaId": null,
+      "file": "content/media/cover-art/mkt-d.jpg",
+      "altPl": "Lama w kamizelce opiera się o tarczę strzelniczą z lotką w środku",
+      "altEn": "A llama in a waistcoat leaning on a target board with a dart in the bullseye",
+      "unused": true
+    },
+    "t-9": {
+      "category": "marketing",
+      "mediaId": 813,
+      "file": "content/media/cover-art/t-9.jpg",
+      "altPl": "Żółta lama porównuje złotą gwiazdkę i mały aparat",
+      "altEn": "A yellow llama comparing a gold star with a small camera",
+      "note": "Bespoke cover for a single post — hub rank 3 at migration.",
+      "revision": 2
+    },
+    "t-227": {
+      "category": "seo",
+      "mediaId": 814,
+      "file": "content/media/cover-art/t-227.jpg",
+      "altPl": "Lama w kamizelce łączy tablicę z serduszkami z tablicą z lupą",
+      "altEn": "A llama in a waistcoat linking a panel of hearts to a panel with a magnifying glass",
+      "note": "Bespoke cover for a single post — hub rank 1 at migration.",
+      "revision": 2
+    },
+    "t-231": {
+      "category": "seo",
+      "mediaId": 815,
+      "file": "content/media/cover-art/t-231.jpg",
+      "altPl": "Lama w garniturze waży w kopytku złotą monetę",
+      "altEn": "A llama in a suit weighing a gold coin in its hoof",
+      "note": "Bespoke cover for a single post — hub rank 2 at migration.",
+      "revision": 2
+    },
+    "t-233": {
+      "category": "seo",
+      "mediaId": 816,
+      "file": "content/media/cover-art/t-233.jpg",
+      "altPl": "Lama w kamizelce zagląda przez lupę na pustą kartę",
+      "altEn": "A llama in a waistcoat peering through a magnifying glass at an empty card",
+      "note": "Bespoke cover for a single post — hub rank 4 at migration.",
+      "revision": 2
+    },
+    "t-235": {
+      "category": "seo",
+      "mediaId": 817,
+      "file": "content/media/cover-art/t-235.jpg",
+      "altPl": "Lama w kamizelce przełącza pomarańczowy włącznik obok świecącej lupy",
+      "altEn": "A llama in a waistcoat flipping an orange switch beside a glowing magnifying glass",
+      "note": "Bespoke cover for a single post — hub rank 5 at migration.",
+      "revision": 2
+    },
+    "t-237": {
+      "category": "marketing",
+      "mediaId": 818,
+      "file": "content/media/cover-art/t-237.jpg",
+      "altPl": "Lama w kamizelce widziana wewnątrz wielkiej lupy",
+      "altEn": "A llama in a waistcoat seen inside a large magnifying glass",
+      "note": "Bespoke cover for a single post — hub rank 6 at migration.",
+      "revision": 2
+    },
+    "t-239": {
+      "category": "reklama",
+      "mediaId": 819,
+      "file": "content/media/cover-art/t-239.jpg",
+      "altPl": "Fioletowa lama na podium z sześcioma złotymi gwiazdkami",
+      "altEn": "A purple llama on a podium with six gold stars",
+      "note": "Bespoke cover for a single post — hub rank 7 at migration.",
+      "revision": 2
+    },
+    "t-241": {
+      "category": "reklama",
+      "mediaId": 820,
+      "file": "content/media/cover-art/t-241.jpg",
+      "altPl": "Trzy lamy z dymkami, w których są serduszka",
+      "altEn": "Three llamas with speech bubbles containing hearts",
+      "note": "Bespoke cover for a single post — hub rank 8 at migration.",
+      "revision": 2
+    }
+  },
+  "assignments": {
+    "9": {
+      "piece": "t-9",
+      "slug": "influencer-vs-tworca-ugc-na-czym-polega-roznica",
+      "category": "marketing",
+      "hubRank": 3,
+      "group": "title-card"
+    },
+    "21": {
+      "piece": "mkt-a",
+      "slug": "jak-stworzyc-biogram-na-instagramie",
+      "category": "marketing",
+      "hubRank": 13,
+      "group": "title-card"
+    },
+    "23": {
+      "piece": "mkt-b",
+      "slug": "jak-dostosowac-profil-do-nowego-formatu-zdjec-na-instagramie",
+      "category": "marketing",
+      "hubRank": 14,
+      "group": "title-card"
+    },
+    "25": {
+      "piece": "sm-b",
+      "slug": "jak-dodac-rolke-probna-na-instagramie",
+      "category": "social-media",
+      "hubRank": 15,
+      "group": "title-card"
+    },
+    "28": {
+      "piece": "lamowka",
+      "slug": "lamowka-strasznie-fajne-kreacje-na-halloween",
+      "category": "reklama",
+      "hubRank": 18,
+      "group": "lamowka-roundup",
+      "note": "Audit verdict `recreate`, blockedBy cover-relation-not-localized."
+    },
+    "29": {
+      "piece": "lamowka",
+      "slug": "lamowka-instagramowe-rewolucje-w-dm-ach",
+      "category": "reklama",
+      "hubRank": 19,
+      "group": "lamowka-roundup",
+      "note": "Audit verdict `recreate`, blockedBy cover-relation-not-localized."
+    },
+    "31": {
+      "piece": "lamowka",
+      "slug": "lamowka-jan-matejko-x-lady-gaga-tego-crossoveru-nikt-sie-nie-spodziewal",
+      "category": "social-media",
+      "hubRank": 21,
+      "group": "lamowka-roundup",
+      "note": "Audit verdict `recreate`, blockedBy cover-relation-not-localized."
+    },
+    "128": {
+      "piece": "sm-a",
+      "slug": "jak-zrobic-instagramowe-zdjecie",
+      "category": "social-media",
+      "hubRank": 49,
+      "group": "title-card"
+    },
+    "179": {
+      "piece": "sm-b",
+      "slug": "zaobserwuje-na-instagramie-hasztag",
+      "category": "social-media",
+      "hubRank": 68,
+      "group": "ig-screenshot",
+      "note": "Audit verdict `replace`, blockedBy cover-relation-not-localized. Category art is the default; the platform-news motif alternative is the open call at the contact-sheet gate."
+    },
+    "180": {
+      "piece": "sm-c",
+      "slug": "instagram-cenzuruje-zdjecia-ze-zwierzetami",
+      "category": "social-media",
+      "hubRank": 69,
+      "group": "ig-screenshot",
+      "note": "Audit verdict `replace`, blockedBy cover-relation-not-localized. Same open call as 179."
+    },
+    "227": {
+      "piece": "t-227",
+      "slug": "google-polaczylo-social-media-z-seo",
+      "category": "seo",
+      "hubRank": 1,
+      "group": "title-card",
+      "note": "Hub lead (blog-hub curation is empty, so featured = newest). Only cover in the set that renders at 16/9."
+    },
+    "231": {
+      "piece": "t-231",
+      "slug": "linkedin-premium-czy-warto",
+      "category": "seo",
+      "hubRank": 2,
+      "group": "title-card"
+    },
+    "233": {
+      "piece": "t-233",
+      "slug": "dlaczego-moj-instagram-nie-jest-indeksowany-przez-google",
+      "category": "seo",
+      "hubRank": 4,
+      "group": "title-card"
+    },
+    "235": {
+      "piece": "t-235",
+      "slug": "jak-skonfigurowac-profil-na-instagramie-do-indeksowania-w-google-poradnik",
+      "category": "seo",
+      "hubRank": 5,
+      "group": "title-card"
+    },
+    "237": {
+      "piece": "t-237",
+      "slug": "czy-twoje-posty-na-instagramie-moga-pojawic-sie-w-wynikach-google",
+      "category": "marketing",
+      "hubRank": 6,
+      "group": "title-card",
+      "note": "Author piece — Łukasz Płociński. Moved off the shared mkt-b so his likeness does not land on post 23, which is not his."
+    },
+    "239": {
+      "piece": "t-239",
+      "slug": "top-6-branz-dla-influencer-marketingu",
+      "category": "reklama",
+      "hubRank": 7,
+      "group": "title-card"
+    },
+    "241": {
+      "piece": "t-241",
+      "slug": "employee-advocacy-jak-mowic-o-pracy-po-swojemu-i-dlaczego-warto",
+      "category": "reklama",
+      "hubRank": 8,
+      "group": "title-card"
+    },
+    "250": {
+      "piece": "mkt-c",
+      "slug": "najlepsze-hasztagi-insta",
+      "category": "marketing",
+      "hubRank": 10,
+      "group": "title-card"
+    },
+    "252": {
+      "piece": "sm-a",
+      "slug": "czy-warto-zaczynac-od-zera-jak-algorytm-traktuje-nowe-i-istniejace-profile-w-social-mediach",
+      "category": "social-media",
+      "hubRank": 11,
+      "group": "title-card"
+    },
+    "256": {
+      "piece": "rek-a",
+      "slug": "jak-stworzyc-brief-marketingowy",
+      "category": "reklama",
+      "hubRank": 12,
+      "group": "title-card"
+    },
+    "259": {
+      "piece": "sm-c",
+      "slug": "jak-social-lama-widzi-social-media-w-2025",
+      "category": "social-media",
+      "hubRank": 16,
+      "group": "series-brand",
+      "note": "Card reads OKIEM SOCIAL LAMY — a different series brand from LAMÓWKA, and the slug/title carry no `lamowka` marker, so by design's membership rule this is a category post. Confirm at the contact-sheet gate."
+    },
+    "265": {
+      "piece": "lamowka",
+      "slug": "lamowka-twoje-zrodlo-najswiezszych-newsow-ze-swiata-social-mediow",
+      "category": "marketing",
+      "hubRank": 22,
+      "group": "series-brand",
+      "note": "The LAMÓWKA series announcement — series cover, not marketing art."
+    }
+  }
+}

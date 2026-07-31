@@ -46,7 +46,12 @@
       "altPl": "Influencer vs. Twórca UGC – na czym polega różnica?",
       "altEn": "Influencer vs. UGC creator – what is the difference?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 813,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-9",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "19": {
       "filename": "2020-08-Screenshot_20250320-163845.png",
@@ -96,7 +101,12 @@
       "altPl": "Jak stworzyć skuteczny biogram na Instagramie, który przyciągnie uwagę użytkowników?",
       "altEn": "How to create an effective Instagram bio that will grab users' attention?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 805,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "mkt-a",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "22": {
       "filename": "2025-02-Projekt-bez-nazwy-8.png",
@@ -129,7 +139,12 @@
       "altPl": "Jak dostosować profil do nowego formatu zdjęć na Instagramie?",
       "altEn": "How to adapt your profile to Instagram's new photo format?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 806,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "mkt-b",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "24": {
       "filename": "2025-02-Projekt-bez-nazwy.png",
@@ -161,7 +176,12 @@
       "altPl": "Jak dodać rolkę próbną na Instagramie?",
       "altEn": "How to add a trial reel on Instagram?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 810,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-b",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "28": {
       "filename": "2024-11-lamowka.png",
@@ -176,9 +196,13 @@
       ],
       "altPl": "LAMÓWKA – STRASZNIE FAJNE KREACJE NA HALLOWEEN",
       "altEn": "LAMÓWKA – SPOOKILY COOL CREATIVES FOR HALLOWEEN",
-      "verdict": "recreate",
+      "verdict": "resolved",
       "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
-      "blockedBy": "cover-relation-not-localized"
+      "supersededBy": 812,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "lamowka",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "29": {
       "filename": "2024-10-lamowka-2.png",
@@ -193,9 +217,13 @@
       ],
       "altPl": "LAMÓWKA – instagramowe rewolucje w dm-ach",
       "altEn": "LAMÓWKA – Instagram revolutions in DMs",
-      "verdict": "recreate",
+      "verdict": "resolved",
       "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
-      "blockedBy": "cover-relation-not-localized"
+      "supersededBy": 812,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "lamowka",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "31": {
       "filename": "2024-10-lamowka.png",
@@ -210,9 +238,13 @@
       ],
       "altPl": "LAMÓWKA – Jan Matejko x Lady Gaga, tego crossoveru nikt się nie spodziewał",
       "altEn": "LAMÓWKA – Jan Matejko x Lady Gaga, the crossover nobody saw coming",
-      "verdict": "recreate",
+      "verdict": "resolved",
       "reason": "Roundup card whose three Polish news headlines are content found nowhere else on the page; an English reader loses the whole payload.",
-      "blockedBy": "cover-relation-not-localized"
+      "supersededBy": 812,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "lamowka",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "33": {
       "filename": "2024-03-Zrzut-ekranu-2024-03-05-120846.png",
@@ -1509,7 +1541,12 @@
       "altPl": "JAK ZROBIĆ INSTAGRAMOWE ZDJĘCIE?",
       "altEn": "HOW TO TAKE AN INSTAGRAM PHOTO?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 809,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-a",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "129": {
       "filename": "2020-03-1.png",
@@ -2347,9 +2384,13 @@
       ],
       "altPl": "Zaobserwuje na Instagramie… hasztag!",
       "altEn": "On Instagram, I'll follow… a hashtag!",
-      "verdict": "replace",
+      "verdict": "resolved",
       "reason": "Full-screen Polish Instagram dialog (\"Nowość! Obserwuj hasztagi\") is the entire image; its meaning is carried wholly by Polish prose.",
-      "blockedBy": "cover-relation-not-localized"
+      "supersededBy": 810,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-b",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "180": {
       "filename": "2017-12-25346403_1509949519112444_423142800_o.png",
@@ -2364,9 +2405,13 @@
       ],
       "altPl": "Instagram cenzuruje zdjęcia ze zwierzętami!",
       "altEn": "Instagram censors photos with animals!",
-      "verdict": "replace",
+      "verdict": "resolved",
       "reason": "The documented case: full-screen Polish Instagram warning, heading + body + both buttons (\"Anuluj\" / \"Wyświetl posty\"), and the post exists to explain what it says.",
-      "blockedBy": "cover-relation-not-localized"
+      "supersededBy": 811,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-c",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "181": {
       "filename": "2017-12-aaa.png",
@@ -3071,7 +3116,12 @@
       "altPl": "Google oficjalnie połączyło social media z SEO. Co to oznacza dla Twojego biznesu?",
       "altEn": "Google has officially connected social media with SEO. What does this mean for your business?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 814,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-227",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "228": {
       "filename": "2025-12-AdobeStock_1655658519-scaled.jpeg",
@@ -3135,7 +3185,12 @@
       "altPl": "LinkedIn Premium – Czy warto zainwestować w płatną wersję?",
       "altEn": "LinkedIn Premium – Is it worth investing in the paid version?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 815,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-231",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "232": {
       "filename": "2025-08-AdobeStock_1307231344.jpeg",
@@ -3167,7 +3222,12 @@
       "altPl": "Dlaczego mój Instagram nie jest indeksowany przez Google?",
       "altEn": "Why isn't my Instagram indexed by Google?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 816,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-233",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "234": {
       "filename": "2025-08-AdobeStock_595206667_Editorial_Use_Only.jpeg",
@@ -3199,7 +3259,12 @@
       "altPl": "Jak skonfigurować profil na Instagramie do indeksowania w Google? – PORADNIK",
       "altEn": "How to set up an Instagram profile for indexing in Google? – GUIDE",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 817,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-235",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "236": {
       "filename": "2025-07-AdobeStock_1258731838.jpeg",
@@ -3231,7 +3296,12 @@
       "altPl": "Czy Twoje posty na Instagramie mogą pojawić się w wynikach Google?",
       "altEn": "Can your Instagram posts show up in Google results?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 818,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-237",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "238": {
       "filename": "2025-07-AdobeStock_378217656.jpeg",
@@ -3263,7 +3333,12 @@
       "altPl": "TOP 6 branż dla influencer marketingu",
       "altEn": "TOP 6 industries for influencer marketing",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 819,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-239",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "240": {
       "filename": "2025-07-AdobeStock_1300192890.jpeg",
@@ -3295,7 +3370,12 @@
       "altPl": "Employee advocacy – jak mówić o pracy po swojemu (i dlaczego warto)",
       "altEn": "Employee advocacy – how to talk about your work in your own way (and why it's worth it)",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 820,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "t-241",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "242": {
       "filename": "2025-06-Za-co-odpowiada-social-media-manager-budowanie-swiadomosci-marki.jpeg",
@@ -3440,7 +3520,12 @@
       "altPl": "Najlepsze hashtagi insta, które zwiększą Twoje zasięgi w social mediach",
       "altEn": "The best insta hashtags that will boost your reach on social media",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 807,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "mkt-c",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "251": {
       "filename": "2025-05-AdobeStock_509908812.jpeg",
@@ -3472,7 +3557,12 @@
       "altPl": "Czy warto zaczynać od zera? Jak algorytm traktuje nowe i istniejące profile w social mediach?",
       "altEn": "Is it worth starting from scratch? How does the algorithm treat new and existing social media profiles?",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 809,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-a",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "253": {
       "filename": "2025-04-AdobeStock_1364148925.jpeg",
@@ -3536,7 +3626,12 @@
       "altPl": "Jak stworzyć skuteczny brief marketingowy? Przewodnik krok po kroku",
       "altEn": "How to create an effective marketing brief? A step-by-step guide",
       "verdict": "accept",
-      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss."
+      "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
+      "supersededBy": 808,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "rek-a",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "257": {
       "filename": "2025-01-Image_20250115_180242_334-1.jpeg",
@@ -3584,7 +3679,12 @@
       "altPl": "Jak Social Lama widzi social media w 2025?",
       "altEn": "How does Social Lama see social media in 2025?",
       "verdict": "accept",
-      "reason": "\"OKIEM SOCIAL LAMY\" is a series label beside the readable \"SOCIAL MEDIA 2025\"; no content is locked in Polish."
+      "reason": "\"OKIEM SOCIAL LAMY\" is a series label beside the readable \"SOCIAL MEDIA 2025\"; no content is locked in Polish.",
+      "supersededBy": 811,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "sm-c",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "260": {
       "filename": "2024-11-AdobeStock_270048773.jpeg",
@@ -3680,7 +3780,12 @@
       "altPl": "„Lamówka” – Twoje źródło najświeższych newsów ze świata social mediów",
       "altEn": "“Lamówka” – Your source for the freshest news from the world of social media",
       "verdict": "accept",
-      "reason": "Series announcement card; \"LAMÓWKA\" is the series name and carries no information the post lacks."
+      "reason": "Series announcement card; \"LAMÓWKA\" is the series name and carries no information the post lacks.",
+      "supersededBy": 812,
+      "supersededOn": "2026-07-31",
+      "supersededBy_piece": "lamowka",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "stale": true
     },
     "266": {
       "filename": "2024-03-AdobeStock_510343953_Editorial_Use_Only.jpeg",
@@ -4241,6 +4346,268 @@
       "altEn": "From the life of a Content Designer, or a few words about looking for inspiration",
       "verdict": "accept",
       "reason": "No Polish text in the image; nothing an English reader could misread."
+    },
+    "805": {
+      "filename": "mkt-a-v2.jpg",
+      "url": "/api/media/file/mkt-a-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-stworzyc-biogram-na-instagramie"
+      ],
+      "altPl": "Żółta lama woła coś przez pomarańczowy megafon",
+      "altEn": "A yellow llama calling out through an orange megaphone",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (mkt-a), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "806": {
+      "filename": "mkt-b-v2.jpg",
+      "url": "/api/media/file/mkt-b-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-dostosowac-profil-do-nowego-formatu-zdjec-na-instagramie"
+      ],
+      "altPl": "Żółta lama opiera się o tarczę strzelniczą z lotką w środku",
+      "altEn": "A yellow llama leaning on a target board with a dart in the bullseye",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (mkt-b), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "807": {
+      "filename": "mkt-c-v2.jpg",
+      "url": "/api/media/file/mkt-c-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "najlepsze-hasztagi-insta"
+      ],
+      "altPl": "Żółta lama biegnie z powiewającymi za nią serpentynami",
+      "altEn": "A yellow llama trotting along with paper streamers trailing behind",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (mkt-c), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "808": {
+      "filename": "rek-a-v2.jpg",
+      "url": "/api/media/file/rek-a-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-stworzyc-brief-marketingowy"
+      ],
+      "altPl": "Fioletowa lama kłania się w świetle reflektora",
+      "altEn": "A purple llama taking a bow in a spotlight",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (rek-a), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "809": {
+      "filename": "sm-a-v2.jpg",
+      "url": "/api/media/file/sm-a-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "czy-warto-zaczynac-od-zera-jak-algorytm-traktuje-nowe-i-istniejace-profile-w-social-mediach",
+        "jak-zrobic-instagramowe-zdjecie"
+      ],
+      "altPl": "Różowa lama robi sobie selfie telefonem",
+      "altEn": "A pink llama taking a selfie with a phone",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (sm-a), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "810": {
+      "filename": "sm-b-v2.jpg",
+      "url": "/api/media/file/sm-b-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-dodac-rolke-probna-na-instagramie",
+        "zaobserwuje-na-instagramie-hasztag"
+      ],
+      "altPl": "Różowa lama wśród unoszących się serduszek i iskierek",
+      "altEn": "A pink llama surrounded by floating hearts and sparkles",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (sm-b), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "811": {
+      "filename": "sm-c-v2.jpg",
+      "url": "/api/media/file/sm-c-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "instagram-cenzuruje-zdjecia-ze-zwierzetami",
+        "jak-social-lama-widzi-social-media-w-2025"
+      ],
+      "altPl": "Różowa lama w słuchawkach na tle świetlnego kręgu",
+      "altEn": "A pink llama in headphones against a glowing ring light",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (sm-c), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "812": {
+      "filename": "lamowka-v2.jpg",
+      "url": "/api/media/file/lamowka-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "lamowka-instagramowe-rewolucje-w-dm-ach",
+        "lamowka-jan-matejko-x-lady-gaga-tego-crossoveru-nikt-sie-nie-spodziewal",
+        "lamowka-strasznie-fajne-kreacje-na-halloween",
+        "lamowka-twoje-zrodlo-najswiezszych-newsow-ze-swiata-social-mediow"
+      ],
+      "altPl": "Cztery lamy z gazetą i wstęgą z napisem LAMÓWKA",
+      "altEn": "Four llamas with a newspaper and a ribbon reading LAMÓWKA",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (lamowka), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "813": {
+      "filename": "t-9-v2.jpg",
+      "url": "/api/media/file/t-9-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "influencer-vs-tworca-ugc-na-czym-polega-roznica"
+      ],
+      "altPl": "Żółta lama porównuje złotą gwiazdkę i mały aparat",
+      "altEn": "A yellow llama comparing a gold star with a small camera",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-9), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "814": {
+      "filename": "t-227-v2.jpg",
+      "url": "/api/media/file/t-227-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "google-polaczylo-social-media-z-seo"
+      ],
+      "altPl": "Lama w kamizelce łączy tablicę z serduszkami z tablicą z lupą",
+      "altEn": "A llama in a waistcoat linking a panel of hearts to a panel with a magnifying glass",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-227), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "815": {
+      "filename": "t-231-v2.jpg",
+      "url": "/api/media/file/t-231-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "linkedin-premium-czy-warto"
+      ],
+      "altPl": "Lama w garniturze waży w kopytku złotą monetę",
+      "altEn": "A llama in a suit weighing a gold coin in its hoof",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-231), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "816": {
+      "filename": "t-233-v2.jpg",
+      "url": "/api/media/file/t-233-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "dlaczego-moj-instagram-nie-jest-indeksowany-przez-google"
+      ],
+      "altPl": "Lama w kamizelce zagląda przez lupę na pustą kartę",
+      "altEn": "A llama in a waistcoat peering through a magnifying glass at an empty card",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-233), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "817": {
+      "filename": "t-235-v2.jpg",
+      "url": "/api/media/file/t-235-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "jak-skonfigurowac-profil-na-instagramie-do-indeksowania-w-google-poradnik"
+      ],
+      "altPl": "Lama w kamizelce przełącza pomarańczowy włącznik obok świecącej lupy",
+      "altEn": "A llama in a waistcoat flipping an orange switch beside a glowing magnifying glass",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-235), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "818": {
+      "filename": "t-237-v2.jpg",
+      "url": "/api/media/file/t-237-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "czy-twoje-posty-na-instagramie-moga-pojawic-sie-w-wynikach-google"
+      ],
+      "altPl": "Lama w kamizelce widziana wewnątrz wielkiej lupy",
+      "altEn": "A llama in a waistcoat seen inside a large magnifying glass",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-237), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "819": {
+      "filename": "t-239-v2.jpg",
+      "url": "/api/media/file/t-239-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "top-6-branz-dla-influencer-marketingu"
+      ],
+      "altPl": "Fioletowa lama na podium z sześcioma złotymi gwiazdkami",
+      "altEn": "A purple llama on a podium with six gold stars",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-239), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
+    },
+    "820": {
+      "filename": "t-241-v2.jpg",
+      "url": "/api/media/file/t-241-v2.jpg",
+      "width": 2560,
+      "height": 1600,
+      "roles": [
+        "cover"
+      ],
+      "posts": [
+        "employee-advocacy-jak-mowic-o-pracy-po-swojemu-i-dlaczego-warto"
+      ],
+      "altPl": "Trzy lamy z dymkami, w których są serduszka",
+      "altEn": "Three llamas with speech bubbles containing hearts",
+      "verdict": "accept",
+      "reason": "Cover-art library piece (t-241), change redesign-blog-covers. Language-agnostic by construction: no written language in the artwork except the LAMÓWKA wordmark on the series cover, which localized titles keep verbatim. Correct to share across locales; alt is written per locale."
     }
   }
 }

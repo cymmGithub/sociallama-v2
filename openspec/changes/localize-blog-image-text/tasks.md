@@ -71,18 +71,36 @@ services images are not touched**, even when they carry Polish text.
 
 ## 3. Fix the covers
 
-**BLOCKED — all five, by schema, not by capture availability.** `cover` is shared across
-locales, so any English cover also lands on the Polish post. Recorded as
-`blockedBy: "cover-relation-not-localized"` with the verdicts left honest; see design D4a/D4b.
-Task 3.1's "downgrade and record why" escape hatch is deliberately **not** used: it is scoped
-to *no genuine capture possible*, and here capture is possible while application is not.
-Downgrading would make the artifact claim these pages are fine when they are not.
+**RESOLVED by `redesign-blog-covers` (2026-07-31), not by this change.**
 
-- [ ] 3.1 ~~For each cover marked `replace`, obtain a genuine English-locale capture.~~ Blocked (ids 179, 180).
+This phase was blocked by schema, not by capture availability: `cover` is shared across
+locales, so any English cover also lands on the Polish post. Design D5 concluded the fix
+was to localize the `cover` relation, and deferred it.
+
+`redesign-blog-covers` dissolved the blocker instead of paying it. It replaced all five of
+these covers — and 17 more that this audit had `accept`ed — with language-agnostic llama
+artwork containing no written language at all. A cover with no text in it is *correct* to
+share across locales, which turns the non-localized `cover` field from a defect into the
+intended design. **D5 is therefore explicitly rejected: `cover` stays unlocalized.**
+
+All five `blockedBy: "cover-relation-not-localized"` markers are cleared in
+`content/media/image-audit.json`, each entry recording the media id that superseded it.
+Verified on production in both locales.
+
+- [x] 3.1 ~~For each cover marked `replace`, obtain a genuine English-locale capture.~~
+      Superseded — ids 179, 180 now carry library art (`sm-b`, `sm-c`). No English capture
+      was needed, because there is no longer any text to translate.
 - [x] 3.2 No cover was marked `crop`. Nothing to do.
-- [ ] 3.3 ~~For each cover marked `recreate`, brief and produce new artwork.~~ Blocked (ids 28, 29, 31). Design D4b argues the durable fix is un-baking the text, not new Polish-shaped artwork.
-- [ ] 3.4 ~~Upload replacements, replacing the file on the existing row.~~ Blocked, and **the instruction is wrong for phase 4** — see D4a.
-- [ ] 3.5 ~~Re-check `alt` in BOTH locales for every replaced row.~~ Nothing replaced yet.
+- [x] 3.3 ~~For each cover marked `recreate`, brief and produce new artwork.~~ Superseded —
+      ids 28, 29, 31 are LAMÓWKA roundups and now share the dedicated series cover. Design
+      D4b's instinct was right (un-bake the text rather than redraw it in Polish shape);
+      `redesign-blog-covers` carried it out.
+- [x] 3.4 ~~Upload replacements, replacing the file on the existing row.~~ Superseded, and
+      the instruction was indeed wrong — see D4a. The replacement change uploaded new rows
+      and repointed the relation, leaving every original row intact and the rollback path open.
+- [x] 3.5 ~~Re-check `alt` in BOTH locales for every replaced row.~~ Done by the replacement
+      change: every new row was written and read back in both locales with
+      `fallbackLocale: false`, the shape the blog actually queries.
 
 ## 4. Fix the in-body images
 

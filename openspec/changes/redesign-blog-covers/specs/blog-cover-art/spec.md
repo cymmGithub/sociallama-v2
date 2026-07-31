@@ -52,9 +52,10 @@ master file — before it is applied to any post.
 
 The library SHALL consist of a small fixed set of pieces sharing one style anchor
 (playful llama artwork in the brand plum palette): multiple variants per blog category,
-each carrying that category's accent, plus one dedicated LAMÓWKA series cover. A post
-SHALL be assigned a variant of its own category, except posts of the LAMÓWKA series,
-which SHALL all use the series cover.
+plus one dedicated LAMÓWKA series cover. Category SHALL be carried by which llama of the
+mascot cast appears — one cast member per category — rather than by an accent colour, so
+the coding survives at card size. A post SHALL be assigned a variant of its own category,
+except posts of the LAMÓWKA series, which SHALL all use the series cover.
 
 #### Scenario: Category post gets category art
 
@@ -68,6 +69,39 @@ which SHALL all use the series cover.
 - **WHEN** a post whose slug identifies it as part of the LAMÓWKA series is assigned a
   library cover
 - **THEN** it receives the dedicated series cover regardless of its category
+
+### Requirement: A post may be given bespoke art instead of a library piece
+
+Artwork drawn for a single post's own subject SHALL be permitted in place of a shared
+library piece, and SHALL obey every rule that governs library art — no written language,
+the same style anchor and mascot cast, the same crop guarantees, alt text in both locales,
+and the same new-row-and-repoint application. Bespoke art SHALL be recorded in the
+assignment map as a single-use piece, so the map remains the complete record of what
+every post carries.
+
+The library SHALL remain the default: a post with no bespoke piece assigned to it receives
+a category variant by the rule above. Bespoke art is therefore a per-post decision, not a
+property of a category, a series, or an author — a second post by the same author, or a
+later post in the same category, receives library art unless someone commissions art for
+it specifically.
+
+#### Scenario: A post carries art drawn for its own subject
+
+- **WHEN** a post is assigned a bespoke piece
+- **THEN** that piece serves only that post, is listed in the assignment map like any
+  other, and satisfies the language, crop and alt requirements identically
+
+#### Scenario: A new post does not inherit bespoke art
+
+- **WHEN** a post is published and no bespoke piece has been assigned to it
+- **THEN** it receives a variant of its own category from the library, even where another
+  post by the same author or in the same category carries bespoke art
+
+#### Scenario: A library piece with no posts is not published
+
+- **WHEN** a library piece exists but the assignment map gives it no posts
+- **THEN** it remains part of the library for future use and no media row is created for
+  it, so the media library gains no rows that nothing references
 
 ### Requirement: Applying a library cover never destroys prior artwork
 
