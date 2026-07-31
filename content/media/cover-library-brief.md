@@ -208,8 +208,10 @@ grid cell and keyed out with a despill pass — zero measurable green spill on a
 The cut set is committed at `content/media/cover-art/icons/` so future covers reuse it
 instead of regenerating.
 
-Placement is computed, never hand-tuned (`bake-icons.py`): build a mask of "is this pixel
-the flat ground", then accept only a slot whose whole footprint **plus a margin** is ground.
+Placement is computed, never hand-tuned (`lib/scripts/bake-icons.py` — committed, because
+the first version lived in the gitignored staging directory and was lost with it): build a
+mask of "is this pixel the flat ground", then accept only a slot whose whole footprint
+**plus a margin** is ground.
 An icon therefore cannot land on a llama, a prop or the ribbon. Slots are scored by
 *proximity to the subject centroid* — scoring by distance from centre instead pins every
 icon to a safe-box corner and reads as UI chrome bolted on. Where a busy composition leaves
@@ -265,7 +267,18 @@ w = (1.0 - (t * t * (3.0 - 2.0 * t)))[..., None]
 out = np.clip(a + w * (TARGET - src), 0, 255)
 ```
 
-**Publishing a revision:** `payload:relink:cover-art --prod --only t-227,t-235 --apply`.
+- **A redraw is not finished until the icons are re-baked.** Every piece carries one or two
+  social motifs composited *after* generation, so a freshly generated master is missing
+  them and reads as the odd tile out in the hub grid. Both redraws shipped once without
+  them before this was caught. Re-bake with the same icons the piece carried before:
+  `python3 lib/scripts/bake-icons.py content/media/cover-art/t-227.jpg share star`.
+
+**Publishing a revision:** `payload:relink:cover-art --prod --only t-227,t-235 --apply`,
+then `POST /api/revalidate?tag=blog-hub&tag=posts&tag=post:<slug>` with
+`x-revalidate-secret` — a script writing straight to the production database runs outside
+any Next request scope, so the pages keep serving the old cache until the tags are
+expired. The first request after expiry still serves stale (SWR); check twice.
+
 Without `--only` the script re-uploads every in-use piece, which is right for the first
 publish and wrong for a revision — it would mint sixteen new media rows and repoint every
 post at art that did not change.
