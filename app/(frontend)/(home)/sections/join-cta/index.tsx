@@ -366,8 +366,7 @@ export function JoinCta({
           >
             {/* Stage = the llama's own bounding box, so the cube slot is a
                 percentage of the mascot rather than of the card and stays on
-                the raised paw at every width. The crop is driven by the cube
-                (the top of the composition), not by the head. */}
+                the raised paw at every width. */}
             <div className={s.stage}>
               <Image
                 src={content.llama}

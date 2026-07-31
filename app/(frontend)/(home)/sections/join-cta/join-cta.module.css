@@ -315,9 +315,7 @@
 
 /* The stage is the llama's own bounding box. Expressing the cube slot as a
    percentage of THIS rather than of the card is what keeps the cube on the
-   raised paw at every width, with no breakpoint-specific offsets. The crop
-   is driven by the cube — it is the top of the composition, and framing on
-   the head instead pushes the cube out of the well.
+   raised paw at every width, with no breakpoint-specific offsets.
 
    Height 100% at top 4% (user call 2026-07-29: more air in the post). The
    cube shrinks with the stage, which is the price of the slot being anchored
@@ -342,17 +340,23 @@
   height: 100%;
 }
 
+/* Brings the cube down out of the corner toward the raised paw (user call
+   2026-08-01), while keeping clear air between the two — resting it on the
+   fingertips (~18%) was tried and read as too low. Both offsets are percentages
+   of the stage, the mascot's own box, so the gap holds at every width. */
 .slot {
   position: absolute;
   left: 0.6%;
-  top: 2.4%;
+  top: 10.4%;
   width: 20.2%;
   aspect-ratio: 1;
 }
 
-/* Every cube is in the DOM; only the active one is visible. The square box
-   plus object-fit normalises seven different native ratios to one visual
-   weight, so the swap reads as a substitution and not as a resize.
+/* Every cube is in the DOM; only the active one is visible. All seven share one
+   780×663 canvas with the cube body at a fixed size and position within it
+   (scripts/platform-cubes), so the swap reads as a substitution and not as a
+   resize. Contain-fitting alone never gave that: it equalises the canvas, and
+   the cube used to occupy anywhere from 0.62 to 0.96 of its own file.
 
    The box overshoots the slot (165%, centred by the negative offsets) so the
    icons floating around each cube have room. Width and height are explicit
