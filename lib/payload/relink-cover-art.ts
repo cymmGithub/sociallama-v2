@@ -37,6 +37,26 @@ const ALTS_EN_PATH = 'content/media/alts.en.json'
 const STAGING = '.cover-art-staging'
 const APPLY = process.argv.includes('--apply')
 
+// `--only t-227,t-235` restricts the run to the named pieces. Without it every
+// in-use piece is re-uploaded, which is right for the first publish and wrong
+// for a revision: redrawing one piece would otherwise mint a fresh media row
+// for all sixteen and repoint every post at art that did not change.
+const onlyArg = process.argv.find((a) => a.startsWith('--only'))
+const ONLY = onlyArg
+  ? new Set(
+      (onlyArg.includes('=')
+        ? onlyArg.slice(onlyArg.indexOf('=') + 1)
+        : (process.argv[process.argv.indexOf(onlyArg) + 1] ?? '')
+      )
+        .split(',')
+        .map((k) => k.trim())
+        .filter(Boolean)
+    )
+  : null
+if (ONLY?.size === 0) {
+  throw new Error('--only needs a comma-separated list of library piece keys')
+}
+
 if (!process.argv.includes('--prod')) {
   throw new Error(
     'payload:relink:cover-art requires --prod: the library serves posts that only ' +
@@ -144,9 +164,28 @@ for (const [, a] of assignments) {
 // there for a future post — but uploading it would create a media row that
 // nothing references. Skip it; it publishes when something first uses it.
 const toUpload = Object.entries(map.library).filter(
-  ([key]) => (uses.get(key) ?? 0) > 0
+  ([key]) => (uses.get(key) ?? 0) > 0 && (ONLY?.has(key) ?? true)
 )
 const idle = Object.keys(map.library).filter((key) => !uses.get(key))
+
+if (ONLY) {
+  const unknown = [...ONLY].filter((key) => !map.library[key])
+  if (unknown.length > 0) {
+    throw new Error(
+      `--only names pieces not in the library: ${unknown.join(', ')}`
+    )
+  }
+  const noPosts = [...ONLY].filter((key) => !uses.get(key))
+  if (noPosts.length > 0) {
+    throw new Error(
+      `--only names pieces no post uses: ${noPosts.join(', ')} — uploading them ` +
+        'would create media rows nothing references'
+    )
+  }
+  console.log(
+    `--only ${[...ONLY].join(', ')} — every other piece is left alone.\n`
+  )
+}
 
 console.log(
   `${published.docs.length} published posts scanned, all 22 assignments resolved.\n`
@@ -225,6 +264,10 @@ for (const [key, piece] of toUpload) {
 console.log('')
 let moved = 0
 for (const [, a] of assignments) {
+  // A restricted run leaves every other post on the cover it already carries.
+  if (ONLY && !ONLY.has(a.piece)) {
+    continue
+  }
   const post = bySlug.get(a.slug)
   const want = newIds.get(a.piece)
   // Both were proven above — every assigned slug resolved, every assigned piece

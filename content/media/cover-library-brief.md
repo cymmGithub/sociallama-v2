@@ -224,6 +224,52 @@ because loosening it is exactly what would let an icon land on a pale part of th
 - **Composition scale cannot be prompted.** Explicit "leave 15% empty above the ear tips"
   instructions were ignored twice. It is free to fix in post and pointless to pay for.
 
+### Revising a piece — the character and anatomy rules (added 2026-07-31)
+
+`t-227` and `t-235` shipped defective and were redrawn. Both failures trace to the same
+root: the SCENE block was the only thing that varied between the four bespoke `seo` pieces,
+and it was carrying weight it could not hold.
+
+- **A recurring character arrives as pixels too.** The face was specified only in words
+  ("neat dark brown beard … long muzzle") against a *generic* llama crop plus a photoreal
+  photo of the author. Two of four pieces drifted off-model — `t-227` came back with a
+  short bulbous muzzle and a big lash-heavy eye instead of the slender muzzle and browed
+  brown eye of its siblings. **Fix: pass an already-correct piece as the character
+  reference** (`t-233` was used) and drop the human photo, whose interpretation varies per
+  generation. Add "copy ONLY the character — not its props or composition", or the
+  reference's magnifying glass follows the character into the new scene.
+- **Limb count must be stated explicitly.** Nothing in the original prompts constrained
+  stance. `t-235`'s "reaches up with one hoof" left the model free to keep a quadruped on
+  all fours *and* grow an arm for the switch — six limbs. The pieces that came out right
+  did so by luck of their phrasing ("holds up", "both front hooves pressed"). Every prompt
+  now carries:
+
+  > ANATOMY, STRICTLY: exactly four limbs and no more — two hind legs and two front legs.
+  > It stands UPRIGHT ON ITS TWO HIND LEGS like a person; its two front legs are its arms.
+  > Do NOT draw a fifth or sixth limb. Do NOT draw it standing on four legs while also
+  > reaching up with an arm.
+
+- **A reference carries its ground drift too.** `t-233`'s own ground is `#A54B6E`, well off
+  brand plum, so both redraws inherited it. The masked shift in post (below) corrects it;
+  measure the corners rather than trusting the plum swatch to win.
+
+Ground correction as used on both redraws — colour only, never geometry. Sample the ground
+from a border ring, then shift toward `#913155` with a smoothstep weight on distance from
+that sampled colour, so the subject is untouched (measured: ground moved ~27 levels,
+subject mean change 0.1):
+
+```python
+dist = np.sqrt(((a - src) ** 2).sum(axis=2))
+t = np.clip((dist - 38.0) / (78.0 - 38.0), 0.0, 1.0)
+w = (1.0 - (t * t * (3.0 - 2.0 * t)))[..., None]
+out = np.clip(a + w * (TARGET - src), 0, 255)
+```
+
+**Publishing a revision:** `payload:relink:cover-art --prod --only t-227,t-235 --apply`.
+Without `--only` the script re-uploads every in-use piece, which is right for the first
+publish and wrong for a revision — it would mint sixteen new media rows and repoint every
+post at art that did not change.
+
 ## Spend log
 
 | Batch | Direction | Pieces | Credits | Outcome |
@@ -240,10 +286,13 @@ because loosening it is exactly what would let an icon land on a pale part of th
 | 2026-07-31 hybrid | topic-specific concepts | 6 more @2k | 12 | **KEEP** — hub ranks 1–8 |
 | 2026-07-31 retry | topic-specific concepts | `t-237` @2k | 2 | **KEEP** — v1 built on a blank card |
 | | | | **76 spent** | balance 101.01 → **25.01** |
+| 2026-07-31 redraw | `t-233` as character ref + anatomy clause | `t-227`, `t-235` @2k | 4 | **KEEP** — both first time, no retry |
+| | | | **80 spent** | balance 49.01 → **45.01** |
 
-Of the 76, **20 bought nothing**: 14 on the wrong style anchor and 6 on topic pieces that
-fell below the hybrid line. Both were the cost of finding out, and both are recorded above
-rather than quietly rounded off.
+Of the first 76, **20 bought nothing**: 14 on the wrong style anchor and 6 on topic pieces
+that fell below the hybrid line. Both were the cost of finding out, and both are recorded
+above rather than quietly rounded off. The redraw batch wasted nothing: swapping the
+character reference to an already-correct piece fixed both defects on the first attempt.
 
 ### Final shape — 20 pieces, 16 in use
 

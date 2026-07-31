@@ -3117,10 +3117,10 @@
       "altEn": "Google has officially connected social media with SEO. What does this mean for your business?",
       "verdict": "accept",
       "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
-      "supersededBy": 814,
+      "supersededBy": 821,
       "supersededOn": "2026-07-31",
       "supersededBy_piece": "t-227",
-      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers); the piece was redrawn on 2026-07-31 to fix the artwork, so this points at the current row. Every earlier row is untouched; rollback is repointing back.",
       "stale": true
     },
     "228": {
@@ -3260,10 +3260,10 @@
       "altEn": "How to set up an Instagram profile for indexing in Google? – GUIDE",
       "verdict": "accept",
       "reason": "Title card repeating the post headline in Polish; the English H1 sits directly above it, so nothing is lost — needs an alt gloss.",
-      "supersededBy": 817,
+      "supersededBy": 822,
       "supersededOn": "2026-07-31",
       "supersededBy_piece": "t-235",
-      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers). The old row is untouched; rollback is repointing back.",
+      "resolution": "Repointed to the language-agnostic cover-art library (change redesign-blog-covers); the piece was redrawn on 2026-07-31 to fix the artwork, so this points at the current row. Every earlier row is untouched; rollback is repointing back.",
       "stale": true
     },
     "236": {
