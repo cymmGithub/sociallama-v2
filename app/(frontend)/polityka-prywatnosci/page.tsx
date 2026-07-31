@@ -1,3 +1,4 @@
+import cn from 'clsx'
 import type { Metadata } from 'next'
 import { CookieTable } from '@/components/consent/cookie-table'
 import { Wrapper } from '@/components/layout/wrapper'
@@ -14,12 +15,22 @@ import s from '../[slug]/post.module.css'
 /*
  * Privacy policy — static page migrated from the WordPress page
  * `/polityka-prywatnosci/` (migrate-wp-content, page disposition: keep).
- * Reuses the post template's CSS module: same long-form article surface.
+ * Reuses the post template's CSS module: same long-form article surface, on
+ * the `.headerPlain` variant because there is no plum stage behind the title.
  *
  * Content follows the group template (matching diea.pl/polityka-prywatnosci):
- * Good One sp. z o.o. is the controller, and Artykuł 7 names this site. The
- * WP original's restarting list numbering is preserved; its osiedle-rozalin.pl
- * reference in Artykuł 7 was a copy-paste error and has been corrected.
+ * Good One sp. z o.o. is the controller, and Artykuł 7 names this site. Its
+ * osiedle-rozalin.pl reference in Artykuł 7 was a copy-paste error and has
+ * been corrected.
+ *
+ * The WP original's restarting list numbering is NOT preserved: rendered, it
+ * put seven consecutive items at "1." in Artykuł 5, because each gloss
+ * paragraph closed the <ol> and the next right opened a fresh one. Those
+ * glosses and sub-lists now sit inside the item they belong to, so each
+ * article numbers continuously. Wording is unchanged by that move — nothing in
+ * the document cross-references those numbers (the one "pkt" reference, in
+ * Artykuł 7, points at a list this leaves alone).
+ *
  * Keep in sync with the EN twin at `/en/privacy-policy`.
  */
 
@@ -34,7 +45,7 @@ export default function PrivacyPolicyPage() {
   return (
     <Wrapper theme="cream">
       <article className={s.article}>
-        <header className={s.header}>
+        <header className={cn(s.header, s.headerPlain)}>
           <h1 className={s.title}>Polityka prywatności</h1>
           <p className={s.lead}>
             Polityka prywatności i&nbsp;informacja o&nbsp;sposobie ochrony
@@ -49,13 +60,10 @@ export default function PrivacyPolicyPage() {
               Administratorem danych osobowych jest Good One sp. z&nbsp;o.o.
               z&nbsp;siedzibą we Wrocławiu, ul. Januszowicka 5/121;
               53-135&nbsp;Wrocław, NIP: 525-287-21-79; KRS: 0000914751; REGON:
-              389646858
-            </li>
-            <li>
-              (dalej „<strong>Administrator</strong>”), który przykłada dużą
-              wagę do ochrony prywatności i&nbsp;poufności danych osobowych
-              swoich Klientów i&nbsp;innych osób fizycznych, których dane są
-              przez Administratora przetwarzane (zwanych dalej „
+              389646858 (dalej „<strong>Administrator</strong>”), który
+              przykłada dużą wagę do ochrony prywatności i&nbsp;poufności danych
+              osobowych swoich Klientów i&nbsp;innych osób fizycznych, których
+              dane są przez Administratora przetwarzane (zwanych dalej „
               <strong>Użytkownikami</strong>”).
             </li>
             <li>
@@ -117,36 +125,34 @@ export default function PrivacyPolicyPage() {
               spowoduje, że zawarcie i&nbsp;realizacja umowy, przesłanie
               zapytania lub wykonanie wnioskowanych czynności będzie niemożliwe.
             </li>
-            <li>Podstawą przetwarzania danych osobowych jest:</li>
-          </ol>
-          <ul>
             <li>
-              6 ust. 1 lit. a&nbsp;RODO – w&nbsp;zakresie danych osobowych
-              uzyskanych za pomocą zgody, na warunkach określonych w&nbsp;art. 7
-              RODO;
+              Podstawą przetwarzania danych osobowych jest:
+              <ul>
+                <li>
+                  art. 6 ust. 1 lit. a&nbsp;RODO – w&nbsp;zakresie danych
+                  osobowych uzyskanych za pomocą zgody, na warunkach określonych
+                  w&nbsp;art. 7 RODO;
+                </li>
+                <li>
+                  art. 6 ust. 1 lit. b RODO – w&nbsp;zakresie danych podawanych
+                  dobrowolnie w&nbsp;celu udzielania odpowiedzi na wszelkie
+                  skierowane zapytania lub wnioski oraz prowadzenie dalszej
+                  korespondencji czy kontaktu przed zawarciem umowy, jak również
+                  przygotowania i&nbsp;realizacji Umowy pomiędzy Użytkownikiem
+                  a&nbsp;Administratorem lub podmiotem, któremu Administrator
+                  zleca wykonanie Umowy;
+                </li>
+                <li>
+                  art. 6 ust. 1 lit. f RODO – w&nbsp;zakresie danych
+                  przetwarzanych w&nbsp;związku z&nbsp;realizacją prawnie
+                  uzasadnionych celów Administratora.
+                </li>
+              </ul>
+              <p>
+                Podanie danych jest dobrowolne, jednak niezbędne do realizacji
+                Umowy lub prowadzenia korespondencji z&nbsp;Administratorem.
+              </p>
             </li>
-            <li>
-              6 ust. 1 lit. b RODO – w&nbsp;zakresie danych podawanych
-              dobrowolnie w&nbsp;celu udzielania odpowiedzi na wszelkie
-              skierowane zapytania lub wnioski oraz prowadzenie dalszej
-              korespondencji czy kontaktu przed zawarciem umowy, jak również
-              przygotowania i&nbsp;realizacji Umowy pomiędzy Użytkownikiem
-              a&nbsp;Administratorem lub podmiotem, któremu Administrator zleca
-              wykonanie Umowy.
-            </li>
-          </ul>
-          <p>
-            Podanie danych jest dobrowolne, jednak niezbędne do realizacji Umowy
-            lub prowadzenia korespondencji z&nbsp;Administratorem.
-          </p>
-          <ul>
-            <li>
-              6 ust. 1 lit. f RODO – w&nbsp;zakresie danych przetwarzanych
-              w&nbsp;związku z&nbsp;realizacją prawnie uzasadnionych celów
-              Administratora.
-            </li>
-          </ul>
-          <ol>
             <li>
               Administrator może przetwarzać dane osób trzecich udostępnione
               przez Użytkowników w&nbsp;celu lub w&nbsp;związku ze świadczeniem
@@ -178,7 +184,7 @@ export default function PrivacyPolicyPage() {
               przechowywane przez okres niezbędny do obsługi zapytania, tj.
               okres trwania korespondencji uzasadniony rodzajem zapytania
               (jednak nie dłużej niż przez okres 6 miesięcy od daty zakończenia
-              korespondencji).
+              korespondencji);
             </li>
             <li>
               w&nbsp;zakresie wykonania umowy – do czasu zakończenia realizacji
@@ -211,77 +217,83 @@ export default function PrivacyPolicyPage() {
             <li>
               W&nbsp;związku z&nbsp;przetwarzaniem danych osobowych przez
               Administratora, Użytkownik ma prawo do:
+              <ul>
+                <li>
+                  żądania dostępu do danych osobowych – art. 15 RODO;
+                  <p>
+                    Na żądanie Użytkownika dotyczące dostępu do jego danych
+                    Administrator informuje Użytkownika, czy przetwarza jego
+                    dane, oraz informuje Użytkownika o&nbsp;szczegółach
+                    przetwarzania zgodnie z&nbsp;RODO, a&nbsp;także udziela
+                    Użytkownikowi dostępu do danych go dotyczących. Dostęp do
+                    danych będzie zrealizowany przez przesłanie kopii danych
+                    drogą elektroniczną. W&nbsp;przypadku żądania dostarczenia
+                    kolejnej kopii danych w&nbsp;formie papierowej Administrator
+                    ma prawo obciążyć Użytkownika kosztami związanymi z&nbsp;ich
+                    przygotowaniem w&nbsp;takiej formie i&nbsp;wysłaniem zgodnie
+                    z&nbsp;art. 15 ust. 3 RODO.
+                  </p>
+                </li>
+                <li>
+                  sprostowania danych osobowych – art. 16 RODO;
+                  <p>
+                    Administrator dokonuje sprostowania nieprawidłowych danych
+                    na żądanie Użytkownika.
+                  </p>
+                </li>
+                <li>
+                  żądania usunięcia danych osobowych – art. 17 RODO;
+                  <p>
+                    Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim usunięcie
+                    danych nie stoi w&nbsp;sprzeczności z&nbsp;obowiązującymi
+                    Administratora przepisami.
+                  </p>
+                </li>
+                <li>
+                  ograniczenia przetwarzania danych – art. 18 RODO;
+                  <p>
+                    Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim
+                    Administrator może ograniczyć przetwarzanie danych osobowych
+                    w&nbsp;kontekście obowiązujących go przepisów oraz
+                    w&nbsp;jakim nie narusza to prawa Administratora do
+                    dochodzenia swoich roszczeń od Użytkownika.
+                  </p>
+                </li>
+                <li>
+                  przenoszenia danych – art. 20 RODO;
+                  <p>
+                    Na żądanie Użytkownika Administrator wydaje
+                    w&nbsp;ustrukturyzowanym, powszechnie używanym formacie
+                    nadającym się do odczytu maszynowego lub przekazuje innemu
+                    podmiotowi, jeśli jest to możliwe, dane dotyczące
+                    Użytkownika, który dostarczył je w&nbsp;celu zawarcia lub
+                    wykonania Umowy lub które przetwarzane są na podstawie
+                    zgody.
+                  </p>
+                </li>
+                <li>
+                  wniesienia sprzeciwu wobec przetwarzania – art. 21 RODO;
+                  <p>
+                    Jeżeli Użytkownik zgłosi umotywowany jego szczególną
+                    sytuacją sprzeciw względem przetwarzania jego danych
+                    a&nbsp;dane są przetwarzane przez Administratora
+                    w&nbsp;oparciu o&nbsp;uzasadniony interes Administratora,
+                    Administrator uwzględni sprzeciw, o&nbsp;ile nie zachodzą po
+                    stronie Administratora ważne prawnie uzasadnione podstawy do
+                    przetwarzania, nadrzędne wobec interesów, praw
+                    i&nbsp;wolności osoby zgłaszającej sprzeciw, lub podstawy do
+                    ustalenia, dochodzenia lub obrony roszczeń.
+                  </p>
+                </li>
+                <li>
+                  cofnięcia zgody na przetwarzanie danych, bez wpływu na
+                  zgodność z&nbsp;prawem przetwarzania, którego dokonano na
+                  podstawie zgody przed jej cofnięciem&nbsp;–
+                  art.&nbsp;7&nbsp;ust.&nbsp;3&nbsp;RODO;
+                </li>
+                <li>wniesienia skargi do organu nadzorczego – art. 77 RODO.</li>
+              </ul>
             </li>
-            <li>żądania dostępu do danych osobowych – art. 15;</li>
-          </ol>
-          <p>
-            Na żądanie Użytkownika dotyczące dostępu do jego danych
-            Administrator informuje Użytkownika, czy przetwarza jego dane, oraz
-            informuje Użytkownika o&nbsp;szczegółach przetwarzania zgodnie
-            z&nbsp;RODO, a&nbsp;także udziela Użytkownikowi dostępu do danych go
-            dotyczących. Dostęp do danych będzie zrealizowany przez przesłanie
-            kopii danych drogą elektroniczną. W&nbsp;przypadku żądania
-            dostarczenia kolejnej kopii danych w&nbsp;formie papierowej
-            Administrator ma prawo obciążyć Użytkownika kosztami związanymi
-            z&nbsp;ich przygotowaniem w&nbsp;takiej formie i&nbsp;wysłaniem
-            zgodnie z&nbsp;art. 15 ust. 3 RODO.
-          </p>
-          <ol>
-            <li>prawo do sprostowania danych osobowych – 16 RODO;</li>
-          </ol>
-          <p>
-            Administrator dokonuje sprostowania nieprawidłowych danych na
-            żądanie Użytkownika.
-          </p>
-          <ol>
-            <li>prawo do żądania usunięcia danych osobowych – art. 17 RODO;</li>
-          </ol>
-          <p>
-            Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim usunięcie danych
-            nie stoi w&nbsp;sprzeczności z&nbsp;obowiązującymi Administratora
-            przepisami,
-          </p>
-          <ol>
-            <li>prawo do ograniczenia przetwarzania danych – art. 18 RODO;</li>
-          </ol>
-          <p>
-            Prawo to obowiązuje w&nbsp;zakresie, w&nbsp;jakim Administrator może
-            ograniczyć przetwarzanie danych osobowych w&nbsp;kontekście
-            obowiązujących go przepisów oraz w&nbsp;jakim nie narusza to prawa
-            Administratora do dochodzenia swoich roszczeń od Użytkownika.
-          </p>
-          <ol>
-            <li>przenoszenia danych – art. 20 RODO;</li>
-          </ol>
-          <p>
-            Na żądanie Użytkownika Administrator wydaje
-            w&nbsp;ustrukturyzowanym, powszechnie używanym formacie nadającym
-            się do odczytu maszynowego lub przekazuje innemu podmiotowi, jeśli
-            jest to możliwe, dane dotyczące Użytkownika, który dostarczył je
-            w&nbsp;celu zawarcia lub wykonania Umowy lub które przetwarzane są
-            na podstawie zgody.
-          </p>
-          <ol>
-            <li>wniesienia sprzeciwu wobec przetwarzania – art. 21 RODO;</li>
-          </ol>
-          <p>
-            Jeżeli Użytkownik zgłosi umotywowany jego szczególną sytuacją
-            sprzeciw względem przetwarzania jego danych a&nbsp;dane są
-            przetwarzane przez Administratora w&nbsp;oparciu o&nbsp;uzasadniony
-            interes Administratora, Administrator uwzględni sprzeciw, o&nbsp;ile
-            nie zachodzą po stronie Administratora ważne prawnie uzasadnione
-            podstawy do przetwarzania, nadrzędne wobec interesów, praw
-            i&nbsp;wolności osoby zgłaszającej sprzeciw, lub podstawy do
-            ustalenia, dochodzenia lub obrony roszczeń.
-          </p>
-          <ol>
-            <li>
-              cofnięcia zgody na przewarzanie danych, bez wpływu na zgodność
-              z&nbsp;prawem przetwarzania, którego dokonano na postawie zgody
-              przed jej cofnięciem&nbsp;–
-              art.&nbsp;7&nbsp;ust.&nbsp;3&nbsp;RODO;
-            </li>
-            <li>wniesienia skargi do organu nadzorczego – art. 77 RODO.</li>
             <li>
               Jeżeli Administrator nie będzie w&nbsp;stanie ustalić treści
               żądania lub zidentyfikować osoby realizującej ww. uprawnienia
@@ -304,8 +316,8 @@ export default function PrivacyPolicyPage() {
               działającym z&nbsp;upoważnienia Administratora, oraz innym
               podmiotom upoważnionym do odbioru danych Użytkownika na podstawie
               odpowiednich przepisów prawa, jak również podmiotom świadczącym
-              usługi na rzecz Administratora usług IT. Dane osobowe Użytkowników
-              mogą być przekazywane innym podmiotom – w&nbsp;przypadkach
+              usługi IT na rzecz Administratora. Dane osobowe Użytkowników mogą
+              być przekazywane innym podmiotom – w&nbsp;przypadkach
               niewskazanych przez Administratora bądź przepisy prawa – tylko za
               zgodą Użytkownika.
             </li>
@@ -341,21 +353,33 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               Administrator dzieli stosowane pliki Cookies na dwie kategorie:
+              {/*
+                The `&#32;` after each </strong> is load-bearing — it IS the
+                space, written as an entity. SWC trims the leading whitespace of
+                a multi-line JSX text child that contains an HTML entity, and
+                these sentences carry &nbsp; from the orphan-binding pass, so a
+                plain space here compiled away and the page shipped
+                "Niezbędne– konieczne". Babel keeps it; this is an SWC
+                divergence, and it is why only the Polish copy is affected.
+                `{' '}` is not a fix: Biome collapses it straight back into the
+                literal space that loses. Same treatment on the <code> below.
+              */}
+              <ul>
+                <li>
+                  <strong>Niezbędne</strong>&#32;– konieczne do działania
+                  Serwisu i&nbsp;do zapamiętania decyzji Użytkownika
+                  w&nbsp;sprawie plików Cookies. Stosowane bez zgody, na
+                  podstawie wyjątku, o&nbsp;którym mowa powyżej.
+                </li>
+                <li>
+                  <strong>Analityczne</strong>&#32;– służą do tworzenia
+                  zbiorczych statystyk odwiedzin. Stosowane wyłącznie po
+                  wyrażeniu zgody przez Użytkownika i&nbsp;wyłącznie do czasu
+                  jej cofnięcia.
+                </li>
+              </ul>
             </li>
           </ol>
-          <ul>
-            <li>
-              <strong>Niezbędne</strong> – konieczne do działania Serwisu
-              i&nbsp;do zapamiętania decyzji Użytkownika w&nbsp;sprawie plików
-              Cookies. Stosowane bez zgody, na podstawie wyjątku, o&nbsp;którym
-              mowa powyżej.
-            </li>
-            <li>
-              <strong>Analityczne</strong> – służą do tworzenia zbiorczych
-              statystyk odwiedzin. Stosowane wyłącznie po wyrażeniu zgody przez
-              Użytkownika i&nbsp;wyłącznie do czasu jej cofnięcia.
-            </li>
-          </ul>
           <p>
             Pełny wykaz stosowanych plików Cookies, wraz z&nbsp;podmiotami,
             którym odpowiadające im dane są udostępniane, celem ich stosowania
@@ -384,11 +408,11 @@ export default function PrivacyPolicyPage() {
             </li>
             <li>
               Decyzja Użytkownika zapisywana jest w&nbsp;pliku Cookie{' '}
-              <code>{CONSENT_COOKIE_NAME}</code> przez 12&nbsp;miesięcy –&nbsp;
-              zarówno w&nbsp;przypadku wyrażenia zgody, jak i&nbsp;odmowy. Po
-              tym czasie pytanie pojawia się ponownie. Pytanie pojawia się
-              ponownie także wtedy, gdy zmieni się lista podmiotów wskazanych
-              w&nbsp;tabeli powyżej.
+              <code>{CONSENT_COOKIE_NAME}</code>&#32;przez 12&nbsp;miesięcy
+              –&nbsp;zarówno w&nbsp;przypadku wyrażenia zgody, jak
+              i&nbsp;odmowy. Po tym czasie pytanie pojawia się ponownie. Pytanie
+              pojawia się ponownie także wtedy, gdy zmieni się lista podmiotów
+              wskazanych w&nbsp;tabeli powyżej.
             </li>
           </ol>
 
@@ -401,11 +425,11 @@ export default function PrivacyPolicyPage() {
             (hasza) wyliczanego po stronie serwera z&nbsp;danych przychodzącego
             żądania, usuwanego po 24&nbsp;godzinach. Ponieważ narzędzie nie
             sięga do urządzenia końcowego, obowiązek uzyskania zgody,
-            o&nbsp;którym mowa w&nbsp;pkt&nbsp;2, go nie dotyczy –&nbsp;działa
-            więc niezależnie od decyzji podjętej w&nbsp;banerze. Podstawą
-            przetwarzania jest prawnie uzasadniony interes Administratora
-            (art.&nbsp;6 ust.&nbsp;1 lit.&nbsp;f&nbsp;RODO) polegający na
-            badaniu oglądalności Serwisu.
+            o&nbsp;którym mowa w&nbsp;pkt&nbsp;2 niniejszego artykułu, go nie
+            dotyczy –&nbsp;działa więc niezależnie od decyzji podjętej
+            w&nbsp;banerze. Podstawą przetwarzania jest prawnie uzasadniony
+            interes Administratora (art.&nbsp;6 ust.&nbsp;1
+            lit.&nbsp;f&nbsp;RODO) polegający na badaniu oglądalności Serwisu.
           </p>
 
           <h3>Ustawienia przeglądarki</h3>
@@ -420,17 +444,11 @@ export default function PrivacyPolicyPage() {
             w&nbsp;banerze. Przykładowe opcje edytowania ustawień
             w&nbsp;popularnych przeglądarkach:
           </p>
-          <ul>
+          <ul className={s.urlList}>
             <li>
-              Mozilla FireFox:{' '}
+              Mozilla Firefox:{' '}
               <Link href="https://support.mozilla.org/pl/kb/ciasteczka">
                 https://support.mozilla.org/pl/kb/ciasteczka
-              </Link>
-            </li>
-            <li>
-              Internet Explorer:{' '}
-              <Link href="http://www.support.microsoft.com/kb/278835/pl">
-                http://www.support.microsoft.com/kb/278835/pl
               </Link>
             </li>
             <li>

@@ -145,6 +145,44 @@
   text-wrap: pretty;
 }
 
+/*
+ * Header variant for the static long-form pages that reuse this template
+ * *without* the plum stage — the privacy policies, and the careers pages.
+ *
+ * `.title`/`.lead` are cream because every blog post pairs `.header` with
+ * `.stage`; dropped straight onto the cream Wrapper they render at 1.3:1
+ * against the page, i.e. invisible. This variant restates both colours against
+ * the page surface (--color-secondary is exactly what the body's headings
+ * inherit, so the h1 and the h2s below it match), and narrows the header from
+ * the cover grid's 85rem to the body measure so the two share one left edge.
+ */
+.headerPlain {
+  /*
+   * `--post-measure` is 68 *ch*, so it resolves against whatever font-size the
+   * element using it happens to have. .body sets 1.0625rem and lands on 705px;
+   * inheriting 1rem here landed on 664px and left the h1 21px inside the text
+   * it heads. Matching .body's font-size makes the same token mean the same
+   * width. .title and .lead set their own sizes, so nothing else moves.
+   */
+  font-size: 1.0625rem;
+  width: min(100%, var(--post-measure));
+  padding-inline: 0;
+  padding-bottom: calc(var(--gap) * 1.25);
+
+  .title {
+    color: var(--color-secondary);
+  }
+
+  .lead {
+    /* Same 72% floor as .railLabel: the lightest tint still clearing 4.5:1
+       on cream. Measured 5.4:1. */
+    color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+    /* The 44ch cap balances the header grid's two columns; with no cover
+       beside it the lead should use the same measure as the body. */
+    max-width: none;
+  }
+}
+
 .meta {
   display: flex;
   align-items: center;
@@ -545,6 +583,13 @@
     gap: 0.375em;
   }
 
+  /* Blocks nested inside a list item — a sub-list, or a paragraph glossing the
+     item, as the privacy policies use throughout. The `gap` above is on the
+     list, so it only separates the items themselves and never reaches these. */
+  li > :is(ul, ol, p) {
+    margin-top: 0.5em;
+  }
+
   ul {
     list-style: disc;
   }
@@ -577,6 +622,17 @@
     border-top: 1px solid var(--line-strong);
     margin-block: var(--gap);
   }
+}
+
+/*
+ * Lists that print URLs in full as their own link text — the privacy policies'
+ * browser-settings list, which a legal page should keep readable on paper.
+ * Chrome's help URL is one 445px-wide unbreakable token, and it was the reason
+ * the policy was the only page on the site that scrolled sideways on a 390px
+ * viewport (55px over). Same treatment as .policy in cookie-table.module.css.
+ */
+.urlList a {
+  overflow-wrap: anywhere;
 }
 
 /* —— In-article CTA ————————————————————————————————————————————————————

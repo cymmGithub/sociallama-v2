@@ -1,3 +1,4 @@
+import cn from 'clsx'
 import type { Metadata } from 'next'
 import s from '@/app/(frontend)/[slug]/post.module.css'
 import { CookieTable } from '@/components/consent/cookie-table'
@@ -13,10 +14,16 @@ import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 /*
  * English privacy policy — EN twin of `/polityka-prywatnosci`, a faithful
- * translation of the static Polish page. The WP original's restarting list
- * numbering is preserved; its osiedle-rozalin.pl reference in Article 7 was a
- * copy-paste error and has been corrected. Controller details follow the group
- * template (see the PL page). Keep the two pages in sync.
+ * translation of the static Polish page. Its osiedle-rozalin.pl reference in
+ * Article 7 was a copy-paste error and has been corrected. Controller details
+ * follow the group template (see the PL page).
+ *
+ * The WP original's restarting list numbering is NOT preserved — see the PL
+ * page for why. Glosses and sub-lists sit inside the item they belong to, so
+ * each Article numbers continuously. Uses the post template's `.headerPlain`
+ * variant: there is no plum stage behind the title here.
+ *
+ * Keep the two pages in sync.
  */
 
 export const metadata: Metadata = {
@@ -30,7 +37,7 @@ export default function EnPrivacyPolicyPage() {
   return (
     <Wrapper theme="cream">
       <article className={s.article}>
-        <header className={s.header}>
+        <header className={cn(s.header, s.headerPlain)}>
           <h1 className={s.title}>Privacy Policy</h1>
           <p className={s.lead}>
             Privacy policy and information on how the personal data of website
@@ -45,8 +52,6 @@ export default function EnPrivacyPolicyPage() {
               The controller of personal data is Good One sp. z o.o., with its
               registered office in Wrocław, ul. Januszowicka 5/121, 53-135
               Wrocław, NIP: 525-287-21-79; KRS: 0000914751; REGON: 389646858
-            </li>
-            <li>
               (hereinafter the “<strong>Controller</strong>”), who attaches
               great importance to protecting the privacy and confidentiality of
               the personal data of its Clients and other natural persons whose
@@ -104,33 +109,31 @@ export default function EnPrivacyPolicyPage() {
               it will make it impossible to conclude and perform a contract,
               send an inquiry, or carry out the requested actions.
             </li>
-            <li>The legal basis for processing personal data is:</li>
-          </ol>
-          <ul>
             <li>
-              Art. 6(1)(a) GDPR – for personal data obtained on the basis of
-              consent, on the terms set out in Art. 7 GDPR;
+              The legal basis for processing personal data is:
+              <ul>
+                <li>
+                  Art. 6(1)(a) GDPR – for personal data obtained on the basis of
+                  consent, on the terms set out in Art. 7 GDPR;
+                </li>
+                <li>
+                  Art. 6(1)(b) GDPR – for data provided voluntarily in order to
+                  respond to any inquiries or requests submitted, and to conduct
+                  further correspondence or contact before concluding a
+                  contract, as well as to prepare and perform a Contract between
+                  the User and the Controller or an entity the Controller
+                  commissions to perform the Contract;
+                </li>
+                <li>
+                  Art. 6(1)(f) GDPR – for data processed in connection with the
+                  pursuit of the Controller's legitimate interests.
+                </li>
+              </ul>
+              <p>
+                Providing data is voluntary but necessary to perform the
+                Contract or to conduct correspondence with the Controller.
+              </p>
             </li>
-            <li>
-              Art. 6(1)(b) GDPR – for data provided voluntarily in order to
-              respond to any inquiries or requests submitted, and to conduct
-              further correspondence or contact before concluding a contract, as
-              well as to prepare and perform a Contract between the User and the
-              Controller or an entity the Controller commissions to perform the
-              Contract.
-            </li>
-          </ul>
-          <p>
-            Providing data is voluntary but necessary to perform the Contract or
-            to conduct correspondence with the Controller.
-          </p>
-          <ul>
-            <li>
-              Art. 6(1)(f) GDPR – for data processed in connection with the
-              pursuit of the Controller's legitimate interests.
-            </li>
-          </ul>
-          <ol>
             <li>
               The Controller may process third-party data made available by
               Users for the purpose of, or in connection with, the Controller's
@@ -157,7 +160,7 @@ export default function EnPrivacyPolicyPage() {
               for correspondence – personal data will be stored for the period
               necessary to handle the inquiry, i.e. the duration of the
               correspondence justified by the type of inquiry (but no longer
-              than 6 months from the end of the correspondence).
+              than 6 months from the end of the correspondence);
             </li>
             <li>
               for performance of a contract – until the contract is completed,
@@ -187,71 +190,79 @@ export default function EnPrivacyPolicyPage() {
             <li>
               In connection with the Controller's processing of personal data,
               the User has the right to:
-            </li>
-            <li>request access to personal data – Art. 15;</li>
-          </ol>
-          <p>
-            At the User's request regarding access to their data, the Controller
-            informs the User whether it processes their data and informs the
-            User of the processing details in accordance with the GDPR, and also
-            grants the User access to the data concerning them. Access to the
-            data will be provided by sending a copy of the data electronically.
-            Should a further copy of the data be requested in paper form, the
-            Controller has the right to charge the User the costs of preparing
-            it in that form and sending it, in accordance with Art. 15(3) GDPR.
-          </p>
-          <ol>
-            <li>the right to rectify personal data – Art. 16 GDPR;</li>
-          </ol>
-          <p>The Controller rectifies incorrect data at the User's request.</p>
-          <ol>
-            <li>
-              the right to request erasure of personal data – Art. 17 GDPR;
-            </li>
-          </ol>
-          <p>
-            This right applies insofar as erasure of the data does not conflict
-            with regulations binding on the Controller,
-          </p>
-          <ol>
-            <li>the right to restrict processing – Art. 18 GDPR;</li>
-          </ol>
-          <p>
-            This right applies insofar as the Controller may restrict the
-            processing of personal data in the context of the regulations
-            binding on it and insofar as it does not infringe the Controller's
-            right to pursue its claims against the User.
-          </p>
-          <ol>
-            <li>data portability – Art. 20 GDPR;</li>
-          </ol>
-          <p>
-            At the User's request, the Controller provides – in a structured,
-            commonly used, machine-readable format – or transfers to another
-            entity, where possible, the data concerning the User that they
-            provided in order to conclude or perform a Contract, or that is
-            processed on the basis of consent.
-          </p>
-          <ol>
-            <li>to object to processing – Art. 21 GDPR;</li>
-          </ol>
-          <p>
-            If the User raises an objection to the processing of their data
-            justified by their particular situation, and the data is processed
-            by the Controller on the basis of the Controller's legitimate
-            interest, the Controller will uphold the objection unless it has
-            compelling legitimate grounds for the processing that override the
-            interests, rights, and freedoms of the person raising the objection,
-            or grounds for the establishment, exercise, or defense of claims.
-          </p>
-          <ol>
-            <li>
-              to withdraw consent to the processing of data, without affecting
-              the lawfulness of processing carried out on the basis of consent
-              before its withdrawal – Art. 7(3) GDPR;
-            </li>
-            <li>
-              to lodge a complaint with a supervisory authority – Art. 77 GDPR.
+              <ul>
+                <li>
+                  request access to personal data – Art. 15 GDPR;
+                  <p>
+                    At the User's request regarding access to their data, the
+                    Controller informs the User whether it processes their data
+                    and informs the User of the processing details in accordance
+                    with the GDPR, and also grants the User access to the data
+                    concerning them. Access to the data will be provided by
+                    sending a copy of the data electronically. Should a further
+                    copy of the data be requested in paper form, the Controller
+                    has the right to charge the User the costs of preparing it
+                    in that form and sending it, in accordance with Art. 15(3)
+                    GDPR.
+                  </p>
+                </li>
+                <li>
+                  rectify personal data – Art. 16 GDPR;
+                  <p>
+                    The Controller rectifies incorrect data at the User's
+                    request.
+                  </p>
+                </li>
+                <li>
+                  request erasure of personal data – Art. 17 GDPR;
+                  <p>
+                    This right applies insofar as erasure of the data does not
+                    conflict with regulations binding on the Controller.
+                  </p>
+                </li>
+                <li>
+                  restrict processing – Art. 18 GDPR;
+                  <p>
+                    This right applies insofar as the Controller may restrict
+                    the processing of personal data in the context of the
+                    regulations binding on it and insofar as it does not
+                    infringe the Controller's right to pursue its claims against
+                    the User.
+                  </p>
+                </li>
+                <li>
+                  data portability – Art. 20 GDPR;
+                  <p>
+                    At the User's request, the Controller provides – in a
+                    structured, commonly used, machine-readable format – or
+                    transfers to another entity, where possible, the data
+                    concerning the User that they provided in order to conclude
+                    or perform a Contract, or that is processed on the basis of
+                    consent.
+                  </p>
+                </li>
+                <li>
+                  object to processing – Art. 21 GDPR;
+                  <p>
+                    If the User raises an objection to the processing of their
+                    data justified by their particular situation, and the data
+                    is processed by the Controller on the basis of the
+                    Controller's legitimate interest, the Controller will uphold
+                    the objection unless it has compelling legitimate grounds
+                    for the processing that override the interests, rights, and
+                    freedoms of the person raising the objection, or grounds for
+                    the establishment, exercise, or defense of claims.
+                  </p>
+                </li>
+                <li>
+                  withdraw consent to the processing of data, without affecting
+                  the lawfulness of processing carried out on the basis of
+                  consent before its withdrawal – Art. 7(3) GDPR;
+                </li>
+                <li>
+                  lodge a complaint with a supervisory authority – Art. 77 GDPR.
+                </li>
+              </ul>
             </li>
             <li>
               If the Controller is unable to establish the content of the
@@ -308,20 +319,20 @@ export default function EnPrivacyPolicyPage() {
             </li>
             <li>
               The Controller groups the Cookies it uses into two categories:
+              <ul>
+                <li>
+                  <strong>Necessary</strong> – required for the Website to work
+                  and to remember the User's decision about Cookies. Used
+                  without consent, under the exception described above.
+                </li>
+                <li>
+                  <strong>Analytics</strong> – used to compile aggregate visit
+                  statistics. Used only once the User has given consent, and
+                  only until that consent is withdrawn.
+                </li>
+              </ul>
             </li>
           </ol>
-          <ul>
-            <li>
-              <strong>Necessary</strong> – required for the Website to work and
-              to remember the User's decision about Cookies. Used without
-              consent, under the exception described above.
-            </li>
-            <li>
-              <strong>Analytics</strong> – used to compile aggregate visit
-              statistics. Used only once the User has given consent, and only
-              until that consent is withdrawn.
-            </li>
-          </ul>
           <p>
             The full list of Cookies used, together with the parties the
             corresponding data is shared with, the purpose of each Cookie and
@@ -362,10 +373,10 @@ export default function EnPrivacyPolicyPage() {
             back from it. Visitors are distinguished solely by a hash computed
             server-side from the incoming request and discarded after 24 hours.
             Because the tool never reaches the end device, the consent
-            requirement described in point 2 does not apply to it — it therefore
-            runs regardless of the choice made in the banner. The legal basis is
-            the Controller's legitimate interest (Art. 6(1)(f) GDPR) in
-            measuring Website traffic.
+            requirement described in point 2 of this Article does not apply to
+            it — it therefore runs regardless of the choice made in the banner.
+            The legal basis is the Controller's legitimate interest (Art.
+            6(1)(f) GDPR) in measuring Website traffic.
           </p>
 
           <h3>Browser settings</h3>
@@ -377,17 +388,11 @@ export default function EnPrivacyPolicyPage() {
             use of Cookies and do not replace the choice made in the banner.
             Example options for editing settings in popular browsers:
           </p>
-          <ul>
+          <ul className={s.urlList}>
             <li>
               Mozilla Firefox:{' '}
               <Link href="https://support.mozilla.org/kb/cookies">
                 https://support.mozilla.org/kb/cookies
-              </Link>
-            </li>
-            <li>
-              Internet Explorer:{' '}
-              <Link href="http://www.support.microsoft.com/kb/278835">
-                http://www.support.microsoft.com/kb/278835
               </Link>
             </li>
             <li>
