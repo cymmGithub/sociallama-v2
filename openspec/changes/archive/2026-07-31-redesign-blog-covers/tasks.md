@@ -103,13 +103,21 @@ empty runs). Higgsfield generation requires explicit per-batch user OK.
       **22/22 records survived, 0 reverted.** The re-run flagged the 16 new library rows
       as `unreviewed` (it flags every id it has not seen); they are now recorded `accept`
       with the reason that they are language-agnostic by construction. **0 unreviewed.**
-- [ ] 4.6 Run `payload:translate:alt` and confirm zero unexplained diffs on the new rows.
-      **Not applied.** The dry run reports **724 rows would be written** — essentially the
-      whole media library. That is pre-existing drift between `alts.en.json` and the
-      production database, not caused by this change, and applying it would rewrite far
-      beyond these 16 rows. Our rows are verified correct in both locales directly against
-      the database and on the rendered pages, so the gate was left untouched. Resolving
-      the 724-row drift belongs to its own change.
+- [x] 4.6 Run `payload:translate:alt` and confirm zero unexplained diffs on the new rows.
+      **Clean — zero diffs, on the new rows and everywhere else.**
+
+      The dry run reports "724 would be written, 0 skipped, 0 with warnings". That was
+      first read here as 724 rows of drift; it is not. `translate-media-alt.ts` does not
+      diff against the database — it projects **every** valid entry in `alts.en.json`
+      unconditionally, so the number is simply the file's entry count (708 before this
+      change, 724 after its 16 rows were appended). The meaningful figure is
+      **`0 skipped`**: no missing media row, no source drift, no stub, no stray Polish
+      diacritic.
+
+      Confirmed directly rather than inferred — comparing every file entry against the
+      production database in the `en` locale with `fallbackLocale: false`:
+      **724 identical, 0 different, 0 empty, 0 absent.** The file and the database already
+      agree, so `--apply` would be a no-op and was not run.
 - [ ] 4.4 Update `content/media/image-audit.json`: supersession record on all 22 entries,
       clear the 5 `blockedBy` markers (ids 28, 29, 31, 179, 180), and commit.
 - [ ] 4.5 Re-run `payload:audit:blog-images --prod` and confirm the supersession records
@@ -160,11 +168,14 @@ empty runs). Higgsfield generation requires explicit per-batch user OK.
 
 ## 7. Follow-ups this change created
 
-- [ ] 7.1 `alts.en.json` has drifted from production by **724 rows** — pre-existing, not
-      caused here, and deliberately not applied (task 4.6). Needs its own change.
-- [ ] 7.2 The white blog-hub card (`app/(frontend)/blog/blog.module.css`) was requested
-      mid-change and is unrelated to covers. Commit it separately or move it to the
-      quick-fixes lane. It also creates a hand-sync obligation with the case-study card.
+- [x] 7.1 ~~`alts.en.json` has drifted from production by 724 rows.~~ **Withdrawn — there is
+      no drift.** This follow-up existed only because "724 would be written" was misread as
+      a diff count; the script projects the whole file unconditionally. Verified against
+      production: 724/724 entries identical, 0 different. See task 4.6.
+- [x] 7.2 The white blog-hub card (`app/(frontend)/blog/blog.module.css`) was requested
+      mid-change and is unrelated to covers. Committed separately as
+      `style(blog): give hub cards a white body, matching case studies`. It does create a
+      hand-sync obligation with the case-study card, noted in the CSS comment.
 - [ ] 7.3 Consider whether bespoke art should follow an **author** rather than a post. Today
       a new post by Łukasz Płociński gets library art; the spec now says so explicitly, but
       it is a product decision worth revisiting.
