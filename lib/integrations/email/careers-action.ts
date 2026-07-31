@@ -79,7 +79,17 @@ export async function sendCareersApplication(
     formData,
     run: async (input) => {
       const transport = getEmailTransport()
-      const inbox = env.CONTACT_INBOX
+      // Applications go to their own inbox (client decision): a CV is a
+      // candidate's personal document and does not belong in the shared
+      // sales-lead mailbox. Falls back rather than failing, so a missing value
+      // never costs an application — but says so, because a fallback that
+      // stays quiet is a fallback nobody notices for months.
+      const inbox = env.CAREERS_INBOX ?? env.CONTACT_INBOX
+      if (!env.CAREERS_INBOX && env.CONTACT_INBOX) {
+        console.warn(
+          '[email] CAREERS_INBOX not set — delivering the application to CONTACT_INBOX'
+        )
+      }
       // Fail-soft SMTP means an unconfigured environment would otherwise
       // accept applications and deliver nothing (design: Risks).
       if (!(transport && inbox)) {

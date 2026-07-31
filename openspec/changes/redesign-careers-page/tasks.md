@@ -114,5 +114,8 @@
       — superseded: the client supplied both clauses verbatim (required
       contact-back consent + optional marketing consent). The drafted wording
       was replaced, not reviewed.
-- [ ] 9.2 Decide whether applications copy a second recipient or go to
+- [x] 9.2 Decide whether applications copy a second recipient or go to
       `CONTACT_INBOX` alone (design: Open Questions)
+      — resolved: a separate `CAREERS_INBOX`, not a copy (design D14). The
+      value still has to be set in Vercel; unset falls back to CONTACT_INBOX
+      with a warning.

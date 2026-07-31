@@ -249,6 +249,22 @@ own, and `/kontakt`'s orange metrics band is flat for the same reason.
 
 Anything reintroducing a page-level overlay must re-check the header edge.
 
+### D14 — Applications go to their own inbox
+
+**Decided during implementation (client decision).** `CAREERS_INBOX` receives
+applications; `CONTACT_INBOX` keeps the sales leads. A CV is a candidate's
+personal document and does not belong in a shared mailbox that several people
+watch for new business.
+
+A second recipient (cc) was the other option on the table and was not taken: it
+would duplicate every attachment into the inbox the separation exists to keep
+them out of.
+
+Unset `CAREERS_INBOX` falls back to `CONTACT_INBOX` with a `console.warn`
+rather than failing. Failing would cost real applications over a missing
+setting; falling back silently would hide the misconfiguration for as long as
+nobody compared the two mailboxes.
+
 ## Risks / Trade-offs
 
 - **Raising `bodySizeLimit` is global** → every server action can now receive
@@ -302,7 +318,8 @@ persisted state is created.
 
 - Final wording of the recruitment consent clause — needs sign-off, not
   drafting.
-- Whether applications should also copy a second recipient, or whether
-  `CONTACT_INBOX` alone is right for candidate CVs.
+- ~~Whether applications should also copy a second recipient, or whether
+  `CONTACT_INBOX` alone is right for candidate CVs.~~ **Resolved (client):** a
+  separate recruitment address, not a copy. See D14.
 - Whether `JobPosting` structured data lands here after all. It is scoped out,
   but both roles are open now, which is exactly when it would pay off.

@@ -57,6 +57,10 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   CONTACT_INBOX: z.string().optional(),
+  // Careers applications go to their own inbox, separate from the sales leads
+  // that land in CONTACT_INBOX (client decision). Falls back to CONTACT_INBOX
+  // when unset, so a missing value never silently drops an application.
+  CAREERS_INBOX: z.string().optional(),
 
   // Analytics
   NEXT_PUBLIC_GOOGLE_ANALYTICS: z.string().optional(),

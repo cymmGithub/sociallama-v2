@@ -141,19 +141,34 @@ matching the contact form.
 - **WHEN** the careers rate limit is exhausted from one IP
 - **THEN** the contact form remains submittable from that IP
 
-### Requirement: Accepted applications are delivered to the contact inbox
+### Requirement: Accepted applications are delivered to the careers inbox
 
-An accepted application SHALL be sent to the configured contact inbox with the
-applicant's address as reply-to, the selected role identified in the message,
-and the CV carried as a file attachment. The CV SHALL NOT be persisted to
-storage.
+An accepted application SHALL be sent to a configured careers inbox, separate
+from the inbox the contact form delivers to, with the applicant's address as
+reply-to, the selected role identified in the message, and the CV carried as a
+file attachment. The CV SHALL NOT be persisted to storage.
+
+When no careers inbox is configured the application SHALL still be delivered,
+to the contact inbox, and the substitution SHALL be logged — a missing setting
+must never cost an application, and must never pass unnoticed.
 
 #### Scenario: The application arrives with its attachment
 
 - **WHEN** an application with a CV is accepted
-- **THEN** a message is sent to the contact inbox carrying the applicant's
+- **THEN** a message is sent to the careers inbox carrying the applicant's
   details, the selected role, and the CV as an attachment
 - **AND** replying to that message addresses the applicant
+
+#### Scenario: Candidate documents stay out of the sales-lead inbox
+
+- **WHEN** a careers inbox is configured
+- **THEN** applications are delivered there and not to the contact form's inbox
+
+#### Scenario: A missing careers inbox does not drop the application
+
+- **WHEN** an application is accepted while no careers inbox is configured
+- **THEN** it is delivered to the contact inbox
+- **AND** the substitution is logged server-side
 
 #### Scenario: No CV is retained
 
