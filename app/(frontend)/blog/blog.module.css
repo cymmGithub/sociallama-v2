@@ -67,13 +67,24 @@
   }
 }
 
-/* Card — same language as the homepage NewsLAMA card */
+/* Card — same language as the homepage NewsLAMA card.
+
+   White card body, matching the case-study listing. The hub renders inside
+   `theme="cream"`, where --color-primary is sand and --color-contrast is orange,
+   which is too weak on white for the category pill and hover accents. So the
+   card overrides the three theme colours locally rather than adding a global
+   token — the same trick as case-studies.module.css, header.module.css and
+   kontakt.module.css. Keep it in sync with the case-study card. */
 .card {
+  --color-primary: var(--color-white);
+  --color-secondary: var(--color-ink);
+  --color-contrast: var(--color-plum);
+
   display: flex;
   flex-direction: column;
   border-radius: 18px;
   overflow: hidden;
-  background-color: var(--surface-2);
+  background-color: var(--color-primary);
   border: 1px solid var(--line);
   transition: border-color var(--duration-fast);
 
