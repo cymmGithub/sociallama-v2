@@ -7,13 +7,13 @@ action. The `mailto:` call to action SHALL be removed as the primary
 application path.
 
 The form SHALL collect the applicant's name, email address, the role applied
-for, a free-text message, an optional CV attachment, and an explicit
-recruitment-consent acknowledgement.
+for, a free-text message, a CV attachment, and an explicit recruitment-consent
+acknowledgement. Every one of them is required.
 
 #### Scenario: A complete application is accepted
 
 - **WHEN** a visitor submits the form with a name, a valid email, a selected
-  role, a message, and consent granted
+  role, a message, a CV, and consent granted
 - **THEN** the submission is accepted and a success state is shown
 
 #### Scenario: Missing required fields are reported per field
@@ -40,7 +40,10 @@ role fits the applicant.
   spontaneous option
 - **THEN** the submission is rejected
 
-### Requirement: CV attachments are constrained by type and size
+### Requirement: A CV is required, and constrained by type and size
+
+An application SHALL carry a CV. A submission without one SHALL be rejected,
+with the error attributed to the attachment control.
 
 An attached CV SHALL be accepted only when it is a PDF or DOCX document of at
 most 5 MB. The constraint SHALL be enforced in the server action's schema, and
@@ -50,6 +53,13 @@ file produces a readable message rather than a runtime rejection.
 The application server action's request body limit SHALL be configured above the
 attachment cap, so a file within the cap is never rejected before the action
 runs.
+
+#### Scenario: An application without a CV is rejected
+
+- **WHEN** a visitor submits the form with no file attached
+- **THEN** the submission is rejected
+- **AND** the error is attributed to the attachment control in the submitter's
+  locale
 
 #### Scenario: A valid CV is attached
 
@@ -78,23 +88,40 @@ runs.
 - **THEN** the request reaches the server action and is validated there, rather
   than failing with an untargeted request-size error
 
-### Requirement: Recruitment consent is required and explicit
+### Requirement: Consent is explicit, and marketing consent is separate
 
-The form SHALL require an unchecked-by-default consent acknowledgement covering
-the processing of the applicant's personal data for recruitment. A submission
-without it SHALL be rejected. The consent text SHALL be sourced from the locale
-content file.
+The form SHALL present two independent, unchecked-by-default consent controls:
 
-#### Scenario: Consent defaults to unchecked
+- a **required** acknowledgement covering the storage and processing of the
+  applicant's personal data so the agency can reply. A submission without it
+  SHALL be rejected.
+- an **optional** marketing consent, referencing the privacy policy. Declining
+  it SHALL NOT affect whether the application is accepted.
+
+The marketing permission SHALL NOT be bundled into the required consent: a
+permission the applicant must grant in order to apply is not freely given.
+
+Both consent texts SHALL be sourced from the locale content file, and the
+recorded state of each SHALL be carried in the delivered application.
+
+#### Scenario: Both consents default to unchecked
 
 - **WHEN** the form renders
-- **THEN** the consent control is not pre-selected
+- **THEN** neither consent control is pre-selected
 
-#### Scenario: Submission without consent is rejected
+#### Scenario: Submission without the required consent is rejected
 
-- **WHEN** a visitor submits without granting consent
-- **THEN** the submission is rejected and the error is attributed to the consent
+- **WHEN** a visitor submits without granting the required consent
+- **THEN** the submission is rejected and the error is attributed to that
   control
+
+#### Scenario: Declining marketing consent still submits
+
+- **WHEN** a visitor completes the form, grants the required consent and leaves
+  the marketing consent unchecked
+- **THEN** the submission is accepted
+- **AND** the delivered application records the marketing consent as not
+  granted
 
 ### Requirement: Submissions are verified and rate limited
 

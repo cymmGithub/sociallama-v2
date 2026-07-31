@@ -12,9 +12,12 @@ The footer SHALL render an invite block followed by three link columns sourced f
 The USŁUGI column SHALL sit between NAWIGACJA and OFERTA.
 
 The careers link SHALL sit between CASE STUDIES and KONTAKT in the NAWIGACJA
-column. The footer is the only site chrome that links the careers page: it SHALL
-NOT be added to the header or the overlay menu, whose columns enumerate service
-and industry pages.
+column.
+
+The overlay menu SHALL also link the careers page, in its utility list,
+immediately after CASE STUDIES. The menu's service and industry columns are
+unaffected — careers belongs with the utility destinations, not among the
+canonical service or industry lists.
 
 #### Scenario: Both locales render four columns
 
@@ -38,7 +41,9 @@ and industry pages.
 - **THEN** the NAWIGACJA/NAVIGATION column contains a careers link resolving to
   `/zostan-lama` in Polish and `/en/become-a-lama` in English
 
-#### Scenario: Careers is not duplicated into the menus
+#### Scenario: The overlay menu links the careers page
 
-- **WHEN** the header and the overlay menu render in either locale
-- **THEN** neither links the careers page
+- **WHEN** the overlay menu renders in either locale
+- **THEN** its utility list contains a careers link, directly after CASE
+  STUDIES, resolving to `/zostan-lama` in Polish and `/en/become-a-lama` in
+  English

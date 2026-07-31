@@ -1,0 +1,734 @@
+/*
+ * Scoped styling for /zostan-lama and its EN twin (redesign-careers-page,
+ * direction C) — built from the approved mock (zostan-lama-mocks.html, mock C)
+ * on /kontakt's grammar.
+ *
+ * This module exists to REPLACE an import of `app/(frontend)/[slug]/post.module.css`
+ * (design D1). That module's `.header` is written to compose with `.stage`, and
+ * the careers pages applied it alone, so `.lead` rendered cream-on-cream and the
+ * page's entire hook paragraph was invisible in both locales. Nothing here may
+ * import another route's module; the page owns its surface.
+ *
+ * Band order (design D2): ink-deep hero + roles → orange benefits → plum-deep
+ * form. The page ends on the submit button (design D3) — the footer is the next
+ * element, and that is site chrome, not this page.
+ */
+
+.page {
+  /* Mock palette — page-local values; accents reuse global tokens. */
+  --ground: var(--color-ink-deep);
+  --muted: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  --line: color-mix(in srgb, var(--color-cream) 22%, transparent);
+  --line-strong: color-mix(in srgb, var(--color-cream) 34%, transparent);
+  --band-ink: #2b1a08;
+  /* Error accent — warm coral, distinct from the orange CTA, tuned to the dark
+     page (replaces the kit's default cool #dc2626). Same value as /kontakt. */
+  --field-error: #ff6b5b;
+
+  position: relative;
+  overflow: hidden;
+  background-color: var(--ground);
+  color: var(--color-cream);
+  /* Entrance: fade + rise on mount, matching /kontakt. `both` holds the
+     from-state during any delay (no flash). */
+  animation: careers-enter 600ms var(--ease-out-expo) both;
+}
+
+/* The ground is FLAT — no glow, no grain (user decision; design D13).
+   Mock C had a plum radial light behind the marquee, an orange one in the form
+   band, and a grain overlay across the page. All three are gone:
+
+   - the glows were the only light sources on an otherwise even canvas, and
+     /kontakt sets the house treatment for a dark page without them;
+   - the grain covered the page but NOT the fixed header, which paints the
+     identical colour (rgb(22,18,22)) — so the same colour carried two
+     different textures and a seam ran across the top of every screen.
+
+   Do not reintroduce either without re-checking the header edge. */
+
+.page > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Chrome adopts the page ground: header + footer paint --color-primary. The
+   attribute is set by <DarkChrome/> only while this page is ACTIVE — a
+   :has() rule on the page node leaks onto the next route, because Next 16
+   keeps the previous segment mounted (Activity cache). See dark-chrome.tsx. */
+:global(html[data-chrome="zostan-lama"]) {
+  --color-primary: var(--color-ink-deep);
+}
+
+@keyframes careers-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Shared measure — matches /kontakt's container. */
+.inner {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--safe);
+}
+
+/* —— Marquee hero ———————————————————————————————————————————————————————— */
+
+.hero {
+  padding-block: calc(var(--safe) * 3) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  /* Deliberately NOT `overflow: hidden`. The outline row is pulled up to its
+     baseline (see .outline), so what sits below the baseline hangs outside the
+     row's box: the ogonek of "Ą" and the 1-2px overshoot every round letter
+     has (O, S, C, and the apex of A). Clipping here shaves them off — the
+     glyphs then read as sitting on a cut edge. <Marquee/> already clips the
+     horizontal axis with `overflow-x: clip`, which, unlike `hidden`, leaves
+     the vertical axis genuinely visible rather than making it a scroll
+     container. */
+}
+
+.row {
+  width: 100%;
+}
+
+.fill,
+.outline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: clamp(3.5rem, 14vw, 12rem);
+  white-space: nowrap;
+}
+
+.fill {
+  color: var(--color-orange);
+}
+
+/* Outline row is a single merged-union SVG (lib/wordmark-paths.ts): the glyphs
+   are boolean-unioned, so tight tracking shows no crossing/doubled strokes
+   where Ń, L and A meet. The generator frames both locales identically
+   (0.98em above the baseline, 1.25em tall) so this one height is correct for
+   Polish diacritics and plain English caps alike: caps occupy 690/1250 of the
+   box, and 1.25em × 0.552 = 0.69em — the fill row's cap height. */
+.outline {
+  display: block;
+  height: 1.25em;
+  width: auto;
+  overflow: visible;
+  /* The generated frame reserves a constant 270/1250 of its height below the
+     baseline so Polish "Ą" has room for its ogonek. That reservation must not
+     become layout: without this pull-up the empty allowance spaces the lede
+     off differently per locale — 49px of dead box under "BECOME A LAMA",
+     which has no descenders, versus 11px under "ZOSTAŃ LAMĄ". Pulling the box
+     back to the baseline makes descenders HANG, which is what a descender
+     does in ordinary text, and leaves both locales spaced identically. */
+  margin-bottom: -0.27em;
+  /* And a little off the top, so the two rows sit closer than the frame's
+     accent allowance would leave them. em-relative, so it scales with the
+     marquee rather than opening up again at mobile sizes. */
+  margin-top: -0.08em;
+}
+
+.outline path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  stroke-width: 2px;
+}
+
+/* —— Lede ————————————————————————————————————————————————————————————————— */
+
+.lede {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding-block: 52px clamp(40px, 5vw, 70px);
+}
+
+.ledeArrow {
+  color: var(--color-orange);
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* The defect this redesign exists to remove was an invisible lede. Cream at
+   84% on the near-black ground measures ~13:1 — well past AA. */
+.ledeText {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.9vw, 22px);
+  line-height: 1.45;
+  max-width: 64ch;
+  text-wrap: pretty;
+  color: color-mix(in srgb, var(--color-cream) 84%, transparent);
+}
+
+/* —— Role panels —————————————————————————————————————————————————————————— */
+
+.roles {
+  padding-bottom: clamp(50px, 6vw, 84px);
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.tab {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.96rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  padding: 13px 22px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-cream);
+  border: 1px solid var(--line);
+  transition:
+    color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo),
+    background-color 200ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .tab[aria-selected="false"]:hover {
+    border-color: var(--color-cream);
+  }
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+.tab[aria-selected="true"] {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--band-ink);
+}
+
+.panelGrid {
+  display: grid;
+  gap: 30px;
+  padding-top: 8px;
+}
+
+@media (width >= 900px) {
+  .panelGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+}
+
+.panelHead {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 0 15px;
+  color: var(--color-orange);
+}
+
+.panelList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+}
+
+.panelList li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.panelList li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  margin-top: 8px;
+  margin-left: 4px;
+}
+
+/* —— Benefits band ———————————————————————————————————————————————————————— */
+
+/* Hard ink→orange edge, the /o-nas band idiom. This is the page's only light
+   break and it sits immediately before the form: what you get, then apply. */
+.benefits {
+  background: var(--color-orange);
+  color: var(--band-ink);
+  padding-block: clamp(46px, 5.4vw, 78px);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrow::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  max-width: 120px;
+  background: currentColor;
+  opacity: 0.32;
+}
+
+.benefitsHeading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  margin-top: 14px;
+  max-width: 18ch;
+}
+
+/* 2px gaps over a translucent ink backdrop draw the grid rules — no borders to
+   double up at the cell seams. */
+.benefitsGrid {
+  display: grid;
+  gap: 2px;
+  margin-top: 30px;
+  background: color-mix(in srgb, var(--band-ink) 16%, transparent);
+  list-style: none;
+  padding: 0;
+}
+
+@media (width >= 700px) {
+  .benefitsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (width >= 1040px) {
+  .benefitsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.benefit {
+  background: var(--color-orange);
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.benefitIcon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.7;
+}
+
+.benefitTitle {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.benefitText {
+  font-size: 0.83rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+/* —— Application form ————————————————————————————————————————————————————— */
+
+.formBand {
+  background: var(--color-plum-dark);
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(52px, 6vw, 88px);
+}
+
+/* No glow here either (user decision) — the whole page ground is flat. */
+
+.formBand > * {
+  position: relative;
+  z-index: 1;
+}
+
+.formGrid {
+  display: grid;
+  gap: 34px;
+}
+
+@media (width >= 940px) {
+  .formGrid {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px;
+  }
+}
+
+.formEyebrow {
+  color: var(--color-orange);
+}
+
+.formHeading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  margin-top: 16px;
+  /* The content string carries the intended line break. */
+  white-space: pre-line;
+}
+
+.formLede {
+  margin-top: 20px;
+  max-width: 42ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
+}
+
+/* The kit only forwards className onto the field wrapper, so the controls are
+   re-skinned through descendant selectors — same approach as /kontakt. */
+.formShell {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.formShell .field {
+  gap: 7px;
+}
+
+@media (width >= 640px) {
+  .formShell .half {
+    grid-column: span 1;
+  }
+
+  .fieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+.formShell label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+}
+
+/* Required-field asterisk (the kit renders it as a bare aria-hidden span). */
+.formShell .field > label span:not([class]) {
+  color: var(--color-orange);
+}
+
+.formShell input:not([type="hidden"], [type="file"], [type="checkbox"]),
+.formShell textarea,
+.formShell select {
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--color-cream);
+  /* `background-color`, NOT the `background` shorthand: the shorthand resets
+     background-image/position/size, which would throw the select's chevron
+     into the top-left corner at full size. */
+  background-color: rgb(0 0 0 / 0.22);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 15px;
+  width: 100%;
+  transition:
+    border-color 200ms var(--ease-out-expo),
+    background-color 200ms var(--ease-out-expo);
+}
+
+.formShell textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.formShell input::placeholder,
+.formShell textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.formShell input:focus,
+.formShell textarea:focus,
+.formShell select:focus {
+  outline: none;
+  border-color: var(--color-orange);
+  background-color: rgb(0 0 0 / 0.34);
+}
+
+.formShell input:focus-visible,
+.formShell textarea:focus-visible,
+.formShell select:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+/* The select is the one control the OS would otherwise draw itself, which put
+   a system-chrome dropdown in the middle of a designed dark band. `appearance:
+   none` strips it back to the same box as the inputs; the arrow is redrawn as
+   a background SVG matching lucide's chevron-down, so it belongs to the same
+   icon set as everything else on the page. Right padding clears the arrow so a
+   long role title never runs under it. */
+.formShell select {
+  appearance: none;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23c8b6bf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 18px 18px;
+  cursor: pointer;
+}
+
+.formShell select:focus {
+  /* Keep the arrow visible against the darkened focus fill. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23f09b39' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* The open option list is still painted by the OS — it cannot be styled — so
+   give it a readable pairing instead of inheriting cream-on-cream. */
+.formShell select option {
+  background: var(--color-ink-deep);
+  color: var(--color-cream);
+}
+
+/* CV drop-zone: the file control is clipped by the kit, its label is the card. */
+.cvField label {
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  background: rgb(0 0 0 / 0.14);
+  text-transform: none;
+  letter-spacing: normal;
+  transition:
+    border-color 200ms var(--ease-out-expo),
+    background-color 200ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .cvField label:hover {
+    border-color: var(--color-orange);
+    background: rgb(0 0 0 / 0.26);
+  }
+}
+
+/* Title row — the lucide icon rides inside it, so the card needs no extra
+   column and the hint below stays aligned to the text. */
+.cvField label > span:first-of-type {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-cream);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.cvField label > span:first-of-type svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-orange);
+  flex-shrink: 0;
+}
+
+.cvField label > span:last-of-type {
+  padding-left: 38px;
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Two consents: required first, optional marketing second. Grouped so they read
+   as one block and sit tighter than the form's field rhythm. */
+.consentGroup {
+  display: grid;
+  gap: 12px;
+}
+
+/* Consent row — a real checkbox, not a styled span, so it announces itself. */
+.consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+/* The global reset applies `all: unset` to every element outside a small
+   allowlist, which strips a checkbox's appearance down to nothing — it renders
+   as an invisible 0-size box. `revert` puts the UA control back, the same fix
+   the reset itself uses for <meter>. */
+.consentBox {
+  -webkit-appearance: revert;
+  appearance: revert;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-orange);
+  cursor: pointer;
+}
+
+.consentBox:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* Two classes, so it out-specifies `.formShell label`'s uppercase mono
+   treatment — this is a sentence of legal copy, not a field label. */
+.formShell .consentLabel {
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.consentError {
+  grid-column: 2;
+  font-size: 0.75rem;
+  color: var(--field-error);
+}
+
+/* Privacy-policy link inside the marketing consent. */
+.formShell .consentLabel a {
+  color: var(--color-cream);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 180ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .formShell .consentLabel a:hover {
+    color: var(--color-orange);
+  }
+}
+
+.formShell .consentLabel a:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+.send {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 6px;
+}
+
+.send button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  padding: 16px 34px;
+  border: 1.5px solid var(--color-orange);
+  border-radius: 999px;
+  background: var(--color-orange);
+  color: var(--band-ink);
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo);
+}
+
+/* Neutralise the kit's black clip-path "ripple" ::before — built for the kit's
+   light default button, it turns this orange CTA black on hover. */
+.send button[type="submit"]::before {
+  content: none;
+}
+
+@media (--hover) {
+  .send button[type="submit"]:hover {
+    background: #d9812a;
+    border-color: #d9812a;
+    color: var(--band-ink);
+  }
+}
+
+.send button[type="submit"] svg {
+  width: 18px;
+  height: 18px;
+}
+
+.send button[type="submit"][aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.send button[type="submit"]:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+/* —— Responsive ——————————————————————————————————————————————————————————— */
+
+@media (--mobile) {
+  /* Clear the fixed header explicitly. At mobile font sizes the marquee's
+     glyph bearing no longer covers the bar (it does on desktop, where the caps
+     are ~192px tall), so the first row rides under the header — key the top
+     clearance to the real header height instead. Same rule as /kontakt. */
+  .hero {
+    padding-block-start: calc(var(--header-height) + var(--safe));
+  }
+}
+
+/* —— Reduced motion ——————————————————————————————————————————————————————— */
+
+@media (--reduced-motion) {
+  .page {
+    animation: none;
+  }
+
+  .tab,
+  .formShell input,
+  .formShell textarea,
+  .formShell select,
+  .cvField label,
+  .send button[type="submit"],
+  .consentLabel a {
+    transition: none;
+  }
+}

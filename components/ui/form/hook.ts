@@ -12,6 +12,7 @@ import { emailSchema, phoneSchema, zodToValidator } from '@/utils/validation'
 import type {
   FieldError,
   FormAction,
+  FormControlElement,
   FormState,
   UseFormOptions,
   UseFormReturn,
@@ -49,9 +50,7 @@ export function useForm<T = unknown>({
   const [isActive, setIsActive] = useState<Record<string, boolean>>({})
   const [isValid, setIsValid] = useState<Record<string, boolean>>({})
   const [errors, setErrors] = useState<Record<string, FieldError>>({})
-  const inputsRefs = useRef<
-    Record<string, HTMLInputElement | HTMLTextAreaElement | null>
-  >({})
+  const inputsRefs = useRef<Record<string, FormControlElement | null>>({})
   // Fields already seeded by initializeInput. Ref callbacks still re-fire on
   // remounts (StrictMode double-invoke, form reset via key); guarding on the
   // field name initializes exactly once per form instance.
@@ -61,10 +60,7 @@ export function useForm<T = unknown>({
   // Hidden fields are always auto-valid. Otherwise, seed by requiredness:
   // required fields start invalid (must be filled to become valid), optional
   // fields start valid (an untouched optional field must not block isReady).
-  function initializeInput(
-    name: string,
-    input: HTMLInputElement | HTMLTextAreaElement | null
-  ) {
+  function initializeInput(name: string, input: FormControlElement | null) {
     setIsActive((prev) => ({ ...prev, [name]: false }))
     setIsValid((prev) => {
       const isHidden =
@@ -91,6 +87,21 @@ export function useForm<T = unknown>({
       return next
     })
   }
+
+  // Escape hatch for controls whose `value` does not describe their state — a
+  // checkbox reads "on" whether or not it is checked, so `validate()` can never
+  // tell a granted consent from a refused one. Writes both maps directly, which
+  // is what `isReady` and the blocked-submit reveal read.
+  const setFieldValidity = useCallback(
+    (name: string, valid: boolean, message = '') => {
+      setIsValid((prev) => ({ ...prev, [name]: valid }))
+      setErrors((prev) => ({
+        ...prev,
+        [name]: { state: !valid && message !== '', message },
+      }))
+    },
+    []
+  )
 
   const isReady =
     Object.values(isValid).length > 0 &&
@@ -132,8 +143,12 @@ export function useForm<T = unknown>({
     const element = inputsRefs.current[name]
     if (!element) return
 
-    const elementType =
-      element instanceof HTMLInputElement ? element.type : 'textarea'
+    let elementType = 'textarea'
+    if (element instanceof HTMLInputElement) {
+      elementType = element.type
+    } else if (element instanceof HTMLSelectElement) {
+      elementType = 'select'
+    }
     const validator = resolveValidator(validators, {
       name: element.name,
       id: element.id,
@@ -180,7 +195,7 @@ export function useForm<T = unknown>({
     if (existing) return existing
 
     const registration = {
-      ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => {
+      ref: (node: FormControlElement | null) => {
         inputsRefs.current[name] = node
         if (node && !initializedRefs.current.has(name)) {
           initializedRefs.current.add(name)
@@ -189,9 +204,7 @@ export function useForm<T = unknown>({
       },
       onChange: ({
         target,
-      }: Parameters<
-        ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-      >[0]) => {
+      }: Parameters<ChangeEventHandler<FormControlElement>>[0]) => {
         handlersRef.current.setToActiveInput(target.value, name)
         if (!handlersRef.current.onBlur) {
           handlersRef.current.validate(target.value, name)
@@ -199,9 +212,7 @@ export function useForm<T = unknown>({
       },
       onBlur: ({
         target,
-      }: Parameters<
-        FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
-      >[0]) => {
+      }: Parameters<FocusEventHandler<FormControlElement>>[0]) => {
         if (handlersRef.current.onBlur) {
           handlersRef.current.validate(target.value, name)
         }
@@ -216,6 +227,7 @@ export function useForm<T = unknown>({
     formAction,
     onSubmit,
     register,
+    setFieldValidity,
     isActive,
     isValid,
     isPending,

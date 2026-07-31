@@ -81,16 +81,21 @@ form or omitting the band:
 - It orders the argument correctly — requirements, then what you get, then
   apply — so the last thing before the form is the reason to fill it in.
 
-Band edges stay hard, matching the `/o-nas` idiom. The band inherits the page's
-grain overlay because it is a direct child of the page ground, which keeps it
-from reading as a slab pasted in from another design.
+Band edges stay hard, matching the `/o-nas` idiom. (The grain overlay that was
+to unify the band with the page ground was removed — see D13.)
 
 ### D3 — The page ends on the submit button
 
 No sections follow the form. The "what happens next" strip and team belt shown
-in the original mock were cut. The response-time promise they carried survives
-in the hero lede, and nothing after a form does anything but push the CTA up the
-page.
+in the original mock were cut. Nothing after a form does anything but push the
+CTA up the page.
+
+**Revised during implementation:** the response-time promise does not survive
+anywhere on the page (client decision). The hero carries the WordPress page's
+own copy verbatim (D12), which ends on its call to action, and the "Odpowiadamy
+w 7 dni" line beside the submit button was removed. Nothing now states a
+response time — which is the honest position, since no SLA was agreed. If one is
+wanted later, the submit row is where it goes.
 
 ### D4 — CV travels as an email attachment; nothing is stored
 
@@ -179,12 +184,70 @@ the first of many that will want a select.
 `-webkit-text-stroke` was used in the mock and visibly doubles strokes where
 glyphs cross — the exact problem the generator was written to solve.
 
-### D10 — Footer link in the NAWIGACJA column
+### D10 — Footer link in the NAWIGACJA column, plus the overlay menu
 
-Added to `lib/content/home.ts` and `home.en.ts`. The overlay menu and mega-menu
-are left alone: careers is a footer-tier destination on this site, and the
-existing menu columns are canonical service/industry lists that a careers entry
-does not belong in.
+Added to `lib/content/home.ts` and `home.en.ts`.
+
+**Revised during implementation (user decision):** the careers link also goes in
+the overlay menu, in its `utility` list directly after CASE STUDIES. The
+original decision kept careers out of the menu on the grounds that its columns
+are canonical service/industry lists — that argument holds for the *columns* and
+does not apply to `utility`, which is already the O NAS / BLOG / CASE STUDIES
+row. Two roles are open now, and a recruitment page reachable only from the
+footer is under-advertised.
+
+### D11 — The CV is required
+
+**Decided during implementation (user decision).** The form was specified with
+an optional attachment; it is now required, in the browser (`FileField
+required`) and in the schema (`cvRequired`).
+
+This is the one field whose requiredness the kit's default path cannot enforce:
+a file input's `value` is a fake path that stays non-empty after a rejected file
+has been cleared from `files`, so the registered-value check would read the
+field as satisfied by a file that is no longer attached. `FileField` therefore
+drives `setFieldValidity` directly — the same escape hatch the consent checkbox
+needs, and for the same underlying reason (a control whose `value` does not
+describe its state).
+
+### D12 — The hero keeps the WordPress copy; no copy about the rebuild
+
+**Decided during implementation (client decision).** The hero lede is the
+original page's copy, verbatim, including its closing "Aplikuj śmiało
+i kreatywnie" / "Apply — boldly and creatively".
+
+The drafted replacements were rejected for a specific reason worth recording:
+they described the change rather than the offer. The form heading read "Wyślij
+CV **bez maila**" and its lede "**Bez maila, bez formularzy w PDF-ie**" — both
+only mean anything to someone who saw the `mailto:` page this replaces. A
+visitor has not. Copy on this site states what the visitor does, never what the
+previous implementation made them do. The form heading is now the neutral
+"Twoja kolej" / "Your turn", so the original call to action is not duplicated
+between the hero and the form.
+
+The consent clauses are client-supplied text for the same reason, and must not
+be reworded without asking.
+
+### D13 — The ground is flat: no glows, no grain
+
+**Decided during implementation (client decision).** Mock C carried three
+surface effects. All three are gone.
+
+- **Plum glow behind the marquee** and **orange glow in the application band** —
+  cut. `/kontakt` sets the house treatment for a dark canvas and has no light
+  sources on it.
+- **Grain overlay** — cut, and this one was a defect rather than a taste call.
+  The overlay covered the page but not the fixed header, which paints the
+  *identical* colour (`rgb(22,18,22)`, verified in the browser). Same colour,
+  two textures: a seam ran across the top of every screen, and it read as the
+  header being a slightly different shade. `/kontakt` has no overlay, which is
+  why it shows no seam.
+
+Consequence for D2: the orange band no longer "inherits the page's grain". It
+does not need to — the hard ink→orange edge is the `/o-nas` band idiom on its
+own, and `/kontakt`'s orange metrics band is flat for the same reason.
+
+Anything reintroducing a page-level overlay must re-check the header edge.
 
 ## Risks / Trade-offs
 

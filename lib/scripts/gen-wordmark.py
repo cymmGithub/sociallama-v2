@@ -113,6 +113,41 @@ CONTACT_MARQUEE = {
     "pl": "O TWOIM BIZNESIE  ·  ",
     "en": "ABOUT YOUR BUSINESS  ·  ",
 }
+# Careers hero marquee outline rows (localized), same treatment as the contact
+# marquee above: uppercase display form + trailing "  ·  " separator, viewBox
+# width = full advance so the tile repeats seamlessly.
+CAREERS_MARQUEE = {
+    "pl": "ZOSTAŃ LAMĄ  ·  ",
+    "en": "BECOME A LAMA  ·  ",
+}
+
+
+def marquee_rows(texts):
+    """Localized marquee tiles framed IDENTICALLY across locales.
+
+    The contact rows above frame to their own ink, which is fine when every
+    locale's string is plain caps. It is not fine here: Polish "ZOSTAŃ LAMĄ"
+    carries an acute above and an ogonek below, so ink-framing makes the PL
+    viewBox 60% taller than the EN one — and a CSS height keyed to the em would
+    then render the two locales at different sizes. A constant frame (0.98em
+    above the baseline, 1.25em tall) clears the tallest accent and the deepest
+    tail in both, so ONE height value in CSS scales both correctly. Width is
+    still exactly the advance, so the tile keeps repeating seamlessly.
+    """
+    rows = []
+    for _loc, _text in texts.items():
+        _m = merged(_text)
+        _top = 0.98 * _m["upm"]
+        _h = 1.25 * _m["upm"]
+        _vb = f'0 {n(-_top)} {n(_m["advance"])} {n(_h)}'
+        rows.append(
+            f"  {_loc}: {{\n    viewBox: '{_vb}',\n    d: '{_m['d']}',\n  }},"
+        )
+    return "\n".join(rows)
+
+
+careers_ts = marquee_rows(CAREERS_MARQUEE)
+
 contact_rows = []
 for _loc, _text in CONTACT_MARQUEE.items():
     _m = merged(_text)
@@ -178,6 +213,16 @@ export const contactMarqueeOutlinePaths: Record<
   {{ viewBox: string; d: string }}
 > = {{
 {contact_ts}
+}}
+
+// Careers hero marquee outline row, per locale — "ZOSTAŃ LAMĄ" / "BECOME A
+// LAMA". Same reason as the contact rows: -webkit-text-stroke doubles the
+// strokes where tight tracking makes glyphs touch (Ń/L/A here).
+export const careersMarqueeOutlinePaths: Record<
+  'pl' | 'en',
+  {{ viewBox: string; d: string }}
+> = {{
+{careers_ts}
 }}
 '''
 with open(OUT, "w") as fh:

@@ -17,6 +17,16 @@ export type FieldError = {
 }
 
 /**
+ * Every element the kit can register. `HTMLSelectElement` joined the union with
+ * `SelectField` — a select carries `value`/`required` like the other controls,
+ * so the hook's validity logic needed no branch beyond naming its type.
+ */
+export type FormControlElement =
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement
+
+/**
  * Formats the client-side validation message for an invalid field, keyed by
  * its registration name. Lets a localized form override the default English
  * `Invalid <field>` text without touching the kit.
@@ -38,14 +48,17 @@ export interface UseFormReturn<T = unknown> {
   formAction: (formData: FormData) => void
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   register: (name: string) => {
-    ref: (node: HTMLInputElement | HTMLTextAreaElement | null) => void
-    onChange: (
-      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void
-    onBlur: (
-      e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void
+    ref: (node: FormControlElement | null) => void
+    onChange: (e: React.ChangeEvent<FormControlElement>) => void
+    onBlur: (e: React.FocusEvent<FormControlElement>) => void
   }
+  /**
+   * Set a field's validity from outside the registered-control path, so a
+   * control whose `value` does not describe its state can still gate `isReady`.
+   * A checkbox is the case that forces this: its `value` is `"on"` whether or
+   * not it is checked, so `validate()` reads every consent box as filled in.
+   */
+  setFieldValidity: (name: string, valid: boolean, message?: string) => void
   isActive: Record<string, boolean>
   isValid: Record<string, boolean>
   isPending: boolean
@@ -78,6 +91,7 @@ export interface FormContextState<T = unknown> {
 // Context actions
 export interface FormContextActions<T = unknown> {
   register: UseFormReturn<T>['register']
+  setFieldValidity: UseFormReturn<T>['setFieldValidity']
   resetForm: () => void
 }
 

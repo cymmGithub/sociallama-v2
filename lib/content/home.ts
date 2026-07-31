@@ -245,6 +245,7 @@ export const menu = {
     { label: 'O NAS', href: '/o-nas' },
     { label: 'BLOG', href: '/blog' },
     { label: 'CASE STUDIES', href: '/case-studies' },
+    { label: 'ZOSTAŃ LAMĄ', href: '/zostan-lama' },
     { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
   ] satisfies MenuItem[],
 } as const
@@ -1183,6 +1184,7 @@ export const footer = {
         // { label: 'SZKOLENIA I KURSY', href: '/szkolenia' }, // delayed launch — no page yet, keep out of nav
         { label: 'BLOG', href: '/blog' },
         { label: 'CASE STUDIES', href: '/case-studies' },
+        { label: 'ZOSTAŃ LAMĄ', href: '/zostan-lama' },
         { label: 'KONTAKT', href: '/kontakt' },
       ],
     },

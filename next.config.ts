@@ -102,6 +102,14 @@ const nextConfig: NextConfig = {
     taint: true,
     cachedNavigations: true,
     prefetchInlining: true,
+    /* The careers form invites a CV of up to 5 MB. The Next.js default body
+       limit for Server Actions is 1 MB, enforced during body decoding — the
+       request throws ApiError(413) BEFORE the action function is entered, so
+       there is no field to attribute the failure to and no schema to catch it.
+       6 MB clears the file cap plus the other fields and multipart boundaries.
+       The limit is global to every server action; each one is bounded by its
+       own Zod schema, so none relies on this value for correctness. */
+    serverActions: { bodySizeLimit: '6mb' },
     /* No SRI: Vercel's skew protection injects the deployment id into chunk
        bytes at deploy time, so build-time integrity hashes never match what's
        served — the browser blocks the chunks and all client JS dies

@@ -99,6 +99,7 @@ export function Form<T = unknown>({
     isValid,
     errors,
     register,
+    setFieldValidity,
   } = useForm({
     action: action as FormAction<unknown>,
     ...(formId && { formId }),
@@ -147,6 +148,7 @@ export function Form<T = unknown>({
       },
       actions: {
         register,
+        setFieldValidity,
         resetForm,
       },
       meta: {
@@ -161,6 +163,7 @@ export function Form<T = unknown>({
       isValid,
       errors,
       register,
+      setFieldValidity,
       resetForm,
       formId,
     ]

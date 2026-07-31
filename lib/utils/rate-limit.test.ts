@@ -44,6 +44,20 @@ describe('rateLimit', () => {
     expect(r3.remaining).toBe(2)
   })
 
+  it('should keep separate budgets per prefix for the same client IP', () => {
+    // Two forms, one visitor: exhausting the careers limit must not lock the
+    // same IP out of the contact form (careers spec, "Submissions are verified
+    // and rate limited"). `runFormAction` keys the store as `<prefix>:<ip>`.
+    const ip = uniqueId()
+    const config = { limit: 2, windowSeconds: 60 }
+
+    rateLimit(`careers-application:${ip}`, config)
+    rateLimit(`careers-application:${ip}`, config)
+    expect(rateLimit(`careers-application:${ip}`, config).success).toBe(false)
+
+    expect(rateLimit(`contact-email:${ip}`, config).success).toBe(true)
+  })
+
   it('should block requests after limit is reached', () => {
     const id = uniqueId()
     const config = { limit: 3, windowSeconds: 60 }

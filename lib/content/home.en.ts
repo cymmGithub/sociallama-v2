@@ -86,6 +86,7 @@ export const menu = {
     { label: 'ABOUT US', href: '/en/about-us' },
     { label: 'BLOG', href: '/en/blog' },
     { label: 'CASE STUDIES', href: '/en/case-studies' },
+    { label: 'BECOME A LAMA', href: '/en/become-a-lama' },
     { label: 'halohalo@sociallama.pl', href: 'mailto:halohalo@sociallama.pl' },
   ],
 } satisfies LocalizedHome['menu']
@@ -881,6 +882,7 @@ export const footer = {
         // { label: 'TRAINING & COURSES', href: '/en/training' }, // delayed launch — no page yet, keep out of nav
         { label: 'BLOG', href: '/en/blog' },
         { label: 'CASE STUDIES', href: '/en/case-studies' },
+        { label: 'BECOME A LAMA', href: '/en/become-a-lama' },
         { label: 'CONTACT', href: '/en/contact' },
       ],
     },
