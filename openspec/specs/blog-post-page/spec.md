@@ -153,16 +153,12 @@ Each post page SHALL display an estimated reading time in minutes, derived from 
 - **WHEN** an editor substantially lengthens a published post
 - **THEN** the displayed reading time reflects the new length without any additional editor action
 
-### Requirement: In-article call to action and newsletter block
-The post page SHALL render a call-to-action block within the article and a newsletter sign-up block after the article, both using the plum grain stage treatment. The newsletter block SHALL submit through the site's existing Mailchimp subscription action and SHALL report success and failure to the reader.
+### Requirement: In-article call to action
+The post page SHALL render a call-to-action block within the article, using the plum grain stage treatment.
 
-#### Scenario: Newsletter sign-up succeeds
-- **WHEN** a visitor submits a valid address to the post page's newsletter block
-- **THEN** the address is submitted through the existing subscription action and the visitor sees a confirmation
-
-#### Scenario: Newsletter sign-up fails
-- **WHEN** the subscription action returns an error
-- **THEN** the visitor sees a message explaining what went wrong, and the entered address is preserved
+#### Scenario: CTA placement
+- **WHEN** a visitor reads a post long enough to carry several sections
+- **THEN** a call-to-action block appears between sections rather than interrupting one, and links to the contact page for the rendering locale
 
 ### Requirement: Related posts
 The post page SHALL end with up to three related published posts, excluding the current post. Selection SHALL prefer posts sharing the current post's category and SHALL top up with the newest published posts when the category yields fewer than three.

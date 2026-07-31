@@ -14,23 +14,6 @@ export const postCta = {
   href: '/kontakt',
 } as const
 
-export const postNewsletter = {
-  title: 'NewsLAMA raz w miesiącu',
-  text: 'Jeden mail, trzy rzeczy, które faktycznie zmieniły się w\u00A0social mediach. Bez „10 trendów, które musisz znać”.',
-  placeholder: 'Twój adres e-mail',
-  label: 'Zapisz się',
-  note: 'Możesz wypisać się jednym kliknięciem. Nie wysyłamy nic poza newsletterem.',
-  /**
-   * The subscription action returns untranslated placeholder keys (the satus
-   * `foo_` convention), so the reader-facing wording is mapped here.
-   */
-  messages: {
-    success: 'Jesteś na liście. Sprawdź skrzynkę i\u00A0potwierdź zapis.',
-    invalidEmail: 'Ten adres e-mail wygląda na niepoprawny.',
-    failure: 'Nie udało się zapisać. Spróbuj ponownie za chwilę.',
-  },
-} as const
-
 export const postRelated = {
   title: 'Czytaj dalej',
   allLabel: 'Wszystkie wpisy',
@@ -171,7 +154,6 @@ export const postArticle = {
   toc: postToc,
   share: postShare,
   author: postAuthor,
-  newsletter: postNewsletter,
   related: postRelated,
   postCard,
 } as const
@@ -185,7 +167,6 @@ export const hubView = {
   hub,
   promo: hubPromo,
   video: hubVideo,
-  newsletter: postNewsletter,
   postCard,
   pagination,
   emptyTitle: listing.emptyTitle,

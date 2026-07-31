@@ -1,18 +1,13 @@
 /*
  * Blog post template. Three regions: a plum grain stage carrying the header,
- * a rail + body article column, and the closing blocks (newsletter, related).
+ * a rail + body article column, and the closing related block.
  *
  * The stage recipe appears once here and is applied to two elements (header,
  * in-article CTA). House convention duplicates that recipe across section
  * modules — services.module.css, why-that-works.module.css,
- * how-it-works.module.css, blog.module.css, newsletter.module.css — and this
- * module is one more copy. It is NOT duplicated a second time *within* the
- * module (design D5). Keep the gradient, blob, and grain values in sync with
- * those by hand.
- *
- * The newsletter slab is no longer here: it moved to
- * components/blog/newsletter.module.css when the /blog hub needed the same
- * block. Only its placement (`.newsletterLayout`) stayed behind.
+ * how-it-works.module.css, blog.module.css — and this module is one more copy.
+ * It is NOT duplicated a second time *within* the module (design D5). Keep the
+ * gradient, blob, and grain values in sync with those by hand.
  */
 
 .article {
@@ -740,14 +735,6 @@
     width: 0.95em;
     height: 0.95em;
   }
-}
-
-/* —— Newsletter ————————————————————————————————————————————————————
-   The slab itself lives in components/blog/newsletter.module.css, shared with
-   the /blog hub. This only places it in the article column. */
-.newsletterLayout {
-  width: min(100%, 85rem);
-  margin-top: calc(var(--safe) * 4);
 }
 
 /* —— Related posts ————————————————————————————————————————————————————— */

@@ -19,19 +19,6 @@ export const postCta = {
   href: '/en/contact',
 } satisfies Localized<typeof pl.postCta>
 
-export const postNewsletter = {
-  title: 'NewsLAMA, once a month',
-  text: 'One email, three things that actually changed in social media. No "10 trends you need to know."',
-  placeholder: 'Your email address',
-  label: 'Subscribe',
-  note: 'One click to unsubscribe. We never send anything but the newsletter.',
-  messages: {
-    success: "You're on the list. Check your inbox to confirm.",
-    invalidEmail: 'That email address looks off.',
-    failure: "That didn't go through. Try again in a moment.",
-  },
-} satisfies Localized<typeof pl.postNewsletter>
-
 export const postRelated = {
   title: 'Read next',
   allLabel: 'All posts',
@@ -125,7 +112,6 @@ export const postArticle = {
   toc: postToc,
   share: postShare,
   author: postAuthor,
-  newsletter: postNewsletter,
   related: postRelated,
   postCard,
 } satisfies Localized<typeof pl.postArticle>
@@ -134,7 +120,6 @@ export const hubView = {
   hub,
   promo: hubPromo,
   video: hubVideo,
-  newsletter: postNewsletter,
   postCard,
   pagination,
   emptyTitle: listing.emptyTitle,

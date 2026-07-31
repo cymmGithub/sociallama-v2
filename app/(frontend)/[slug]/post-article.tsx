@@ -7,7 +7,6 @@ import {
   Mail,
 } from 'lucide-react'
 import { PostCard } from '@/app/(frontend)/blog/post-card'
-import { BlogNewsletter } from '@/components/blog/newsletter'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolvePostAuthor } from '@/lib/blog/author'
@@ -43,8 +42,8 @@ const MIN_TOC_ENTRIES = 3
 /**
  * The full post article, shared by the Polish (`/{slug}`) and English
  * (`/en/blog/{slug}`) post pages. The post comes from Payload (locale-resolved
- * by the page); the page furniture — breadcrumb, CTA, share row, newsletter,
- * related header — comes from `content`, and the three path props localize
+ * by the page); the page furniture — breadcrumb, CTA, share row, related
+ * header — comes from `content`, and the three path props localize
  * every internal link.
  *
  * Related posts are read here rather than in the page: the query depends on
@@ -233,11 +232,6 @@ export async function PostArticle({
             />
           </div>
         </div>
-
-        <BlogNewsletter
-          className={s.newsletterLayout}
-          content={content.newsletter}
-        />
 
         {related.length > 0 && (
           <section className={s.related}>

@@ -189,65 +189,19 @@ export const INTEGRATION_BUNDLES = defineBundles({
     dependencies: [],
     devDependencies: [],
     folders: ['lib/integrations/mailchimp'],
-    // The NewsLAMA sign-up slab is Mailchimp's only consumer: it calls
-    // `mailchimpSubscriptionAction` through `useActionState`, so without the
-    // integration there is no action to submit to and the form is furniture.
-    // `lib/blog/newsletter.ts` only translates that action's FormState, and
-    // nothing else imports either file.
-    files: [
-      'components/blog/newsletter.tsx',
-      'components/blog/newsletter.module.css',
-      'lib/blog/newsletter.ts',
-    ],
+    // The NewsLAMA sign-up slab used to be Mailchimp's only consumer, which is
+    // why this bundle also carried the slab's files and the transforms that
+    // unmounted it from the two shared blog views. The newsletter is postponed
+    // and the slab is gone, so the integration now stands alone: nothing
+    // outside `lib/integrations/mailchimp` imports it.
+    files: [],
     envVars: [
       'MAILCHIMP_API_KEY',
       'MAILCHIMP_SERVER_PREFIX',
       'MAILCHIMP_AUDIENCE_ID',
     ],
     barrelExports: [],
-    // The two shared blog views (each rendered by both locales' routes) are
-    // SHARED core files that no other bundle touches; stripping Mailchimp must
-    // remove exactly its own import + mount.
-    codeTransforms: [
-      {
-        file: 'app/(frontend)/blog/hub-view.tsx',
-        ops: [
-          { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
-          // Sibling, not the point of its expression: in the hub it sits inside
-          // `{hub.featured && (<HubCurated>…)}`, and the default walk would take
-          // that whole block.
-          {
-            kind: 'removeJsxElement',
-            tagName: 'BlogNewsletter',
-            keepEnclosingExpression: true,
-          },
-        ],
-      },
-      {
-        file: 'app/(frontend)/[slug]/post-article.tsx',
-        ops: [
-          { kind: 'removeImport', specifier: '@/components/blog/newsletter' },
-          // Sibling, not the point of its expression: in the hub it sits inside
-          // `{hub.featured && (<HubCurated>…)}`, and the default walk would take
-          // that whole block.
-          {
-            kind: 'removeJsxElement',
-            tagName: 'BlogNewsletter',
-            keepEnclosingExpression: true,
-          },
-        ],
-      },
-    ],
-    // `<BlogNewsletter />` sits mid-list in both parents — before `<HubVideo>`
-    // in the hub, before the related-posts section in the post template — and
-    // `addJsxChild` only appends, so it would come back in the wrong place.
-    // Both files are restored wholesale instead, guarded by the lean-state
-    // comparison documented on `overwriteFiles` (same reasoning as Shopify's
-    // revalidate route).
-    overwriteFiles: [
-      'app/(frontend)/blog/hub-view.tsx',
-      'app/(frontend)/[slug]/post-article.tsx',
-    ],
+    codeTransforms: [],
   },
 
   webgl: {

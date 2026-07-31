@@ -4,7 +4,7 @@
 TBD - created by archiving change add-payload-blog. Update Purpose after archive.
 ## Requirements
 ### Requirement: Blog hub at /blog
-A `/blog` page SHALL present published posts as a curated hub rather than a flat chronological list. It SHALL compose, in order: a statement header with category filters and search; the featured post alongside the editors' picks; the most-read post alongside a short list of further posts; a newsletter sign-up block; the video spotlight when one is set; and the complete archive of published posts as a paginated grid, newest-first.
+A `/blog` page SHALL present published posts as a curated hub rather than a flat chronological list. It SHALL compose, in order: a statement header with category filters and search; the featured post alongside the editors' picks; the most-read post alongside a short list of further posts; the video spotlight when one is set; and the complete archive of published posts as a paginated grid, newest-first.
 
 Every post card SHALL show cover, category, locale-formatted date, title, excerpt, and author byline, and SHALL link to the post URL for the rendering locale. The hub SHALL be styled with the design system (brand tokens, existing card language) and be indexable (no `noindex`), mirroring the live site's indexed `sociallama.pl/blog/` hub.
 
@@ -21,10 +21,6 @@ Posts occupying curation slots SHALL also appear in the archive grid; the grid S
 #### Scenario: No posts yet
 - **WHEN** `/blog` is opened with zero published posts
 - **THEN** the page renders an intentional empty state (no crash, no broken layout) and no curated sections
-
-#### Scenario: Newsletter sign-up on the hub
-- **WHEN** a visitor submits a valid address to the hub's newsletter block
-- **THEN** the address is submitted through the site's existing subscription action and the visitor sees a confirmation
 
 ### Requirement: Hub pagination
 The hub SHALL paginate its archive grid with a fixed page size, exposing further pages at crawlable URLs. Out-of-range page numbers SHALL return 404. Page 1 SHALL be canonical at the hub URL (not `/page/1`).

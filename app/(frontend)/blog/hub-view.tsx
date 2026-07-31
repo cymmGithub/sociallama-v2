@@ -1,4 +1,3 @@
-import { BlogNewsletter } from '@/components/blog/newsletter'
 import { Wrapper } from '@/components/layout/wrapper'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
@@ -29,7 +28,6 @@ interface HubViewCopy {
     label: string
     posterLabel: (title: string) => string
   }
-  newsletter: Localized<typeof pl.postNewsletter>
   postCard: Localized<typeof pl.postCard>
   pagination: Localized<typeof pl.pagination>
   emptyTitle: string
@@ -103,7 +101,6 @@ export function BlogHubView({
                 popular={data.popular}
                 shortList={data.shortList}
               />
-              <BlogNewsletter content={content.newsletter} />
               {/* Absent video = no section at all, not an empty frame. */}
               {data.video && (
                 <HubVideo content={content.video} video={data.video} />
