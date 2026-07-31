@@ -125,7 +125,7 @@ export function Footer() {
           </li>
         </ul>
         <p className={s.copyright}>{footer.copyright}</p>
-        <LocaleToggle linkClassName={s.legalLink} />
+        <LocaleToggle className={s.locale} linkClassName={s.legalLink} />
       </div>
     </footer>
   )
