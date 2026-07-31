@@ -842,6 +842,18 @@
   }
 }
 
+/* The <li> stretches to the row, but the card inside it does not, so a card
+   with a shorter title or excerpt stopped short of its neighbours. The other
+   two PostCard grids (/blog, /category) make the card the grid item directly
+   and never had this; only the list markup here needs the extra cell. Grid, not
+   flex: the card must fill the li on both axes, and a row-flex li would size it
+   to its content width. `align-content` keeps the card from being the one to
+   absorb the leftover height — .cardBody already owns that via flex-grow. */
+.relatedGrid > li {
+  display: grid;
+  align-content: stretch;
+}
+
 .figure {
   display: block;
   margin-block: calc(var(--gap) / 2);
