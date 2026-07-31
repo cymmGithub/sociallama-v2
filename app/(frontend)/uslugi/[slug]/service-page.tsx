@@ -250,12 +250,12 @@ function Hero({ data, chrome }: { data: HeroData; chrome: Chrome }) {
 function PlatformMedia({ item }: { item: PlatformData }) {
   if (item.cube) {
     return (
-      <div className={s.platformCube} data-cube={item.cube}>
+      <div className={s.platformCube}>
         <Image
           src={item.cube}
           alt=""
-          width={520}
-          height={520}
+          width={780}
+          height={663}
           objectFit="contain"
           desktopSize="34vw"
           mobileSize="60vw"

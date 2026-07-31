@@ -1,0 +1,3 @@
+# Review artefacts from the bake (rebuild: python3 scripts/platform-cubes/pipeline.py).
+# Committed: raw/ exports, README. The emitted PNGs land in public/assets.
+.work/

@@ -237,15 +237,15 @@
   justify-content: center;
 }
 
+/* One width for all seven: the art is baked to a shared 780×663 canvas with the
+   cube body always 477px wide in the same spot (scripts/platform-cubes), so
+   sizing the canvas sizes the cube. Sizing the box only equalises the cube while
+   that stays true — the previous per-file exception here was a fixed rem cap,
+   which stopped tracking the others the moment they hit the 100% branch and
+   made the mismatch worse on mobile than on desktop. */
 .platformCube {
-  width: min(100%, 25rem);
+  width: min(100%, 27rem);
   filter: drop-shadow(0 40px 60px rgb(43 31 36 / 22%));
-}
-
-/* The TikTok art is portrait (564×720) where the others are landscape, so at a
-   uniform width its cube body reads oversized. Cap it narrower to match. */
-.platformCube[data-cube$="cube-tiktok.png"] {
-  width: min(100%, 21rem);
 }
 
 .platformDashboard {
