@@ -56,6 +56,13 @@ export function NewsLama({
       </h2>
 
       <Link data-reveal-item className={s.card} href={post.href}>
+        {/* Bias the crop toward the top of the cover. On desktop `.media` keeps
+            a 340px floor while its column widens with the viewport, so the box
+            grows steadily wider than the 16/10 art and discards over 40% of its
+            height by 1920 — centred, that takes the llama's ears off on most of
+            the cover library. The base of these illustrations is mostly ground
+            and empty plum, so the height is cheaper to spend there. No-op on
+            mobile, where `.media` is 16/10 and matches the art exactly. */}
         <div className={s.media}>
           {post.cover && (
             <Image
@@ -63,6 +70,7 @@ export function NewsLama({
               alt={post.coverAlt}
               fill
               objectFit="cover"
+              style={{ objectPosition: '50% 25%' }}
               mobileSize="100vw"
               desktopSize="50vw"
             />
