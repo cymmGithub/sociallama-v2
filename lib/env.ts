@@ -73,7 +73,24 @@ type Env = z.infer<typeof envSchema>
  * via the registry's `isConfigured()`. This object provides type-safe access
  * without runtime validation overhead (parsing happens once at import).
  */
-export const env: Env = envSchema.parse(process.env)
+export const env: Env = envSchema.parse({
+  ...process.env,
+  // Every NEXT_PUBLIC_* var must be spelled out as a literal
+  // `process.env.NEXT_PUBLIC_…` member expression: that exact form is the only
+  // thing the bundler substitutes at build time. Spreading `process.env` alone
+  // leaves nothing to substitute, so in the browser every one of them reads as
+  // `undefined` — which silently disables anything gated on them client-side
+  // (and, when the server rendered it and the client did not, throws a
+  // hydration mismatch). Server code is unaffected either way.
+  NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  NEXT_PUBLIC_HUBSPOT_PORTAL_ID: process.env.NEXT_PUBLIC_HUBSPOT_PORTAL_ID,
+  NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY:
+    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY,
+  NEXT_PUBLIC_GOOGLE_ANALYTICS: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
+  NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID:
+    process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
+  NEXT_PUBLIC_FACEBOOK_APP_ID: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID,
+})
 
 /**
  * Canonical base URL for the application.
