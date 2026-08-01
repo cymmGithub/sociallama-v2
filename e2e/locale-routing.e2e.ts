@@ -40,7 +40,9 @@ function internalPaths(hrefs: string[]): string[] {
   return [...new Set(paths)]
 }
 
-test.describe('Locale routing — chrome links resolve', () => {
+test.describe('Locale routing — chrome links resolve', {
+  tag: '@monitor',
+}, () => {
   for (const { locale, path } of [
     { locale: 'PL', path: '/' },
     { locale: 'EN', path: '/en' },
@@ -87,7 +89,7 @@ test.describe('Locale routing — chrome links resolve', () => {
   })
 })
 
-test.describe('Locale routing — header logo', () => {
+test.describe('Locale routing — header logo', { tag: '@monitor' }, () => {
   test('the logo points at the active locale home', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
 
@@ -110,7 +112,7 @@ test.describe('Locale routing — header logo', () => {
   })
 })
 
-test.describe('Locale routing — language toggle', () => {
+test.describe('Locale routing — language toggle', { tag: '@monitor' }, () => {
   // One representative of each shape, plus the two whose slugs are translated
   // (the case the old prefix-swap logic could not express).
   const CASES = [

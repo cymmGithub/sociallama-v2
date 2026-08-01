@@ -1,0 +1,81 @@
+# Daily live-site monitoring (openspec: add-e2e-monitoring)
+#
+# Runs the @monitor subset of the Playwright suite against the LIVE deployment
+# (vars.MONITOR_BASE_URL — the vercel.app production domain until the
+# sociallama.pl cutover; changing the target is a Settings → Variables edit,
+# not a commit). playwright.config.ts detects the external URL and drops its
+# webServer, so nothing is built or booted here — no database, no migrations.
+#
+# Alerting: GitHub emails the workflow author on failed scheduled runs, and the
+# GitHub → Slack integration forwards failures once the channel subscribes:
+#   /github subscribe <owner>/<repo> workflows:{name:"Monitor"}
+#
+# Triage rule for a red run right after a deploy: main is checked out here and
+# the specs import repo content modules, so in the minutes between an ff-push
+# and the Vercel build going live, assertions can mismatch the old deployment.
+# Re-run via workflow_dispatch before treating it as an incident.
+#
+# Note: this repo is PUBLIC, so Actions minutes are free — but GitHub also
+# auto-disables cron workflows in public repos after 60 days without repo
+# activity. Any commit resets the clock; if pushes ever pause for weeks,
+# re-enable under Actions → Monitor or push a commit.
+
+name: Monitor
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # UTC, deliberately off the top of the hour (Actions cron congestion).
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Override target URL (defaults to vars.MONITOR_BASE_URL). Point at an unreachable host to rehearse the failure/alerting path.'
+        required: false
+        type: string
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    # The sitemap crawl alone visits every published URL (333 at setup time,
+    # growing with content) at a few seconds each, serially.
+    timeout-minutes: 60
+
+    steps:
+      - name: Require a monitoring target
+        run: |
+          if [ -z "${{ inputs.target || vars.MONITOR_BASE_URL }}" ]; then
+            echo "::error::Repository variable MONITOR_BASE_URL is not set (Settings → Secrets and variables → Actions → Variables)."
+            exit 1
+          fi
+          echo "Target: ${{ inputs.target || vars.MONITOR_BASE_URL }}"
+
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      # The specs import repo modules (client roster, consent copy, theme
+      # tokens), so dependencies are needed even though no app is built.
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run @monitor suite against the live deployment
+        run: bunx playwright test --grep @monitor
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ inputs.target || vars.MONITOR_BASE_URL }}
+          CI: 1
+
+      - name: Upload traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-traces
+          path: test-results/
+          retention-days: 7

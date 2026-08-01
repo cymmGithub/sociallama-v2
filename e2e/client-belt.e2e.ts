@@ -4,7 +4,7 @@ import { gotoHydrated, HYDRATED } from './helpers'
 
 const withCaseStudy = CLIENT_ROSTER.filter((brand) => brand.caseStudySlug)
 
-test.describe('Client belt', () => {
+test.describe('Client belt', { tag: '@monitor' }, () => {
   // The roster's slugs are the one part of the belt that fails silently: a wrong
   // `caseStudySlug` type-checks and 404s at runtime. Only the running app knows
   // which studies are published, so the check lives here rather than in a unit

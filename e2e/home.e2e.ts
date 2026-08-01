@@ -7,7 +7,7 @@ import {
   hexToRgb,
 } from './helpers'
 
-test.describe('Home page smoke', () => {
+test.describe('Home page smoke', { tag: '@monitor' }, () => {
   test('hero has its own opaque plum ground (no morph-layer bleed)', async ({
     page,
   }) => {

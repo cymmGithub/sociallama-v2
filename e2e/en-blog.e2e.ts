@@ -47,7 +47,7 @@ async function hubLinks(page: import('@playwright/test').Page) {
   }
 }
 
-test.describe('English blog tree', () => {
+test.describe('English blog tree', { tag: '@monitor' }, () => {
   test('the hub resolves and is served as English', async ({ page }) => {
     const response = await page.goto('/en/blog')
     expect(response?.status()).toBe(200)

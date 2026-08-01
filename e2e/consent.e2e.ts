@@ -105,9 +105,9 @@ test.describe('Cookie consent', () => {
     categories,
   } of LOCALES) {
     test.describe(`${locale.toUpperCase()} locale`, () => {
-      test('a first-time visitor sees the banner and is not tracked', async ({
-        page,
-      }) => {
+      test('a first-time visitor sees the banner and is not tracked', {
+        tag: '@monitor',
+      }, async ({ page }) => {
         test.setTimeout(120_000)
         await gotoHydrated(page, path)
 
@@ -123,9 +123,9 @@ test.describe('Cookie consent', () => {
         expect(await consentCookie(page)).toBeUndefined()
       })
 
-      test('refusal and acceptance are equally reachable and equally sized', async ({
-        page,
-      }) => {
+      test('refusal and acceptance are equally reachable and equally sized', {
+        tag: '@monitor',
+      }, async ({ page }) => {
         test.setTimeout(120_000)
         await gotoHydrated(page, path)
 
@@ -177,7 +177,9 @@ test.describe('Cookie consent', () => {
         }
       })
 
-      test('there is no ambiguous exit', async ({ page }) => {
+      test('there is no ambiguous exit', { tag: '@monitor' }, async ({
+        page,
+      }) => {
         test.setTimeout(120_000)
         await gotoHydrated(page, path)
 
@@ -191,9 +193,9 @@ test.describe('Cookie consent', () => {
         expect(await consentCookie(page)).toBeUndefined()
       })
 
-      test('refusal is recorded and honoured across a reload', async ({
-        page,
-      }) => {
+      test('refusal is recorded and honoured across a reload', {
+        tag: '@monitor',
+      }, async ({ page }) => {
         test.setTimeout(120_000)
         await gotoHydrated(page, path)
 
@@ -290,7 +292,9 @@ test.describe('Cookie consent', () => {
         expect(await storedDecision(page)).toMatchObject({ analytics: false })
       })
 
-      test('the banner does not displace page content', async ({ page }) => {
+      test('the banner does not displace page content', {
+        tag: '@monitor',
+      }, async ({ page }) => {
         test.setTimeout(120_000)
 
         // Measured against the same page in the same state, with and without
@@ -323,9 +327,9 @@ test.describe('Cookie consent', () => {
     })
   }
 
-  test('consent defaults are the first thing queued, before any tag config', async ({
-    page,
-  }) => {
+  test('consent defaults are the first thing queued, before any tag config', {
+    tag: '@monitor',
+  }, async ({ page }) => {
     test.setTimeout(120_000)
     await page.goto('/', { waitUntil: 'domcontentloaded' })
 
@@ -345,9 +349,9 @@ test.describe('Cookie consent', () => {
     if (configIndex !== -1) expect(configIndex).toBeGreaterThan(0)
   })
 
-  test('the consent-default script precedes the Google tag in the document', async ({
-    page,
-  }) => {
+  test('the consent-default script precedes the Google tag in the document', {
+    tag: '@monitor',
+  }, async ({ page }) => {
     test.setTimeout(120_000)
     const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
     const html = (await response?.text()) ?? ''
