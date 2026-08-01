@@ -456,12 +456,29 @@ function PartnerCover({
           {chrome.partnerKicker}
         </p>
         {data.logo ? (
-          <span className={s.partnerLogo} data-reveal-item>
+          <span
+            className={s.partnerLockup}
+            data-reveal-item
+            role="img"
+            aria-label={`${data.name} × Social Lama`}
+          >
             <Image
+              className={s.lockupPartner}
               src={data.logo}
-              alt={data.name}
+              alt=""
               width={319}
               height={104}
+              objectFit="contain"
+            />
+            <span className={s.lockupX} aria-hidden="true">
+              ×
+            </span>
+            <Image
+              className={s.lockupLama}
+              src="/assets/sociallama-logo-light.svg"
+              alt=""
+              width={105}
+              height={73}
               objectFit="contain"
             />
           </span>

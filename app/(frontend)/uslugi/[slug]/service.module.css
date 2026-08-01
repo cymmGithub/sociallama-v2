@@ -522,16 +522,35 @@
   color: color-mix(in srgb, var(--color-cream) 85%, transparent);
 }
 
-.partnerLogo {
-  display: block;
-  width: clamp(150px, 24vw, 240px);
+.partnerLockup {
+  /* Shared optical line: logos size by height, not width, so SEOFly's wide
+     wordmark and DIEA's compact one hold the same visual scale. */
+  --lockup-h: clamp(32px, 4.5vw, 40px);
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(0.8rem, 1.8vw, 1.4rem);
   margin-bottom: 0.2rem;
 }
 
-.partnerLogo img {
-  width: 100%;
-  height: auto;
-  display: block;
+.lockupPartner {
+  width: auto;
+  height: var(--lockup-h);
+}
+
+.lockupLama {
+  width: auto;
+  /* Stacked lockup needs extra height to match the wordmarks' optical
+     weight, and its visual mass sits low when geometrically centred. */
+  height: calc(var(--lockup-h) * 1.2);
+  transform: translateY(calc(var(--lockup-h) * -0.13));
+}
+
+.lockupX {
+  font-size: calc(var(--lockup-h) * 0.52);
+  line-height: 1;
+  color: var(--color-cream);
 }
 
 /* —— Showreel (Video primitive grid) —————————————————————————————————————————— */
