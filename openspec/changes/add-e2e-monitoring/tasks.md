@@ -30,4 +30,4 @@
 ## 5. Close out
 
 - [x] 5.1 `bun run check` clean (biome + tsc + 653 unit tests + manifest); committed with the CI-runtime note in the body
-- [ ] 5.2 After the first scheduled run completes on its own (next morning), confirm the green run in Actions and archive the change
+- [x] 5.2 AMENDED (user decision 2026-08-01): the daily cron is commented out in monitor.yml — the workflow is manual-dispatch-only until the user re-enables the schedule (uncomment the `schedule:` block and push). Both dispatch modes verified (green 30691806528, red 30692064840), so the change is complete without a scheduled-run soak; archive at will

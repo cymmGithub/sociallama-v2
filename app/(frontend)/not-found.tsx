@@ -7,15 +7,14 @@ export default function NotFound() {
     <Wrapper theme="plum">
       <section className={s.section}>
         <div className={s.panel}>
-          <div className={s.label}>Error</div>
+          <div className={s.label}>Błąd</div>
           <h1 className={s.code}>404</h1>
-          <p className={s.message}>Page not found</p>
+          <p className={s.message}>Nie znaleziono strony</p>
           <p className={s.description}>
-            The page you&apos;re looking for doesn&apos;t exist or has been
-            moved.
+            Strona, której szukasz, nie istnieje albo została przeniesiona.
           </p>
           <Link href="/" className={s.cta}>
-            Go Home
+            Wróć na stronę główną
           </Link>
         </div>
       </section>

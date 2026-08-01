@@ -1,4 +1,5 @@
-# Daily live-site monitoring (openspec: add-e2e-monitoring)
+# Live-site monitoring (openspec: add-e2e-monitoring) — MANUAL-ONLY for now,
+# the daily schedule is commented out below (user decision 2026-08-01).
 #
 # Runs the @monitor subset of the Playwright suite against the LIVE deployment
 # (vars.MONITOR_BASE_URL — the vercel.app production domain until the
@@ -26,9 +27,12 @@ permissions:
   contents: read
 
 on:
-  schedule:
-    # UTC, deliberately off the top of the hour (Actions cron congestion).
-    - cron: '17 5 * * *'
+  # To enable the daily run: uncomment the two `schedule` lines and push to
+  # main. The cron expression is UTC ('17 5 * * *' = 05:17 UTC, deliberately
+  # off the top of the hour — Actions cron congestion). Manual runs stay
+  # available either way under Actions → Monitor → Run workflow.
+  # schedule:
+  #   - cron: '17 5 * * *'
   workflow_dispatch:
     inputs:
       target:
