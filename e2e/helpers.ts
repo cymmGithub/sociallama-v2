@@ -6,6 +6,13 @@ import { expect, type Page } from '@playwright/test'
  * Playwright's 5s default. */
 export const HYDRATED = { timeout: 20_000 } as const
 
+/** CI without an external target is the only environment where an empty CMS
+ * is legitimate: the workflow's ephemeral Postgres is migrated but unseeded.
+ * The monitor workflow sets PLAYWRIGHT_BASE_URL, so live runs stay strict
+ * even though they also run under CI=1. Content-dependent specs use this to
+ * skip (with a reason) instead of failing there — and ONLY there. */
+export const EMPTY_CMS_OK = !!process.env.CI && !process.env.PLAYWRIGHT_BASE_URL
+
 /** `#rrggbb` → `rgb(r, g, b)` as Playwright's `toHaveCSS` reports colors —
  * lets specs assert theme tokens from `lib/styles/colors` instead of
  * hand-copied literals. */

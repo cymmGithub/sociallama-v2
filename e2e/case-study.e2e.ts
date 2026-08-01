@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { collectPageErrors, gotoHydrated } from './helpers'
+import { collectPageErrors, EMPTY_CMS_OK, gotoHydrated } from './helpers'
 
 /**
  * Case-study detail render coverage (add-e2e-monitoring). The client-belt
@@ -26,14 +26,12 @@ test.describe('Case-study detail', { tag: '@monitor' }, () => {
       await gotoHydrated(page, hub)
 
       // The hub must list at least one study — an empty listing is a
-      // regression everywhere content exists (seeded local dev DB, live).
-      // CI's ephemeral Postgres is migrated but unseeded, so only there an
-      // empty hub is legitimate; the monitor workflow sets
-      // PLAYWRIGHT_BASE_URL, keeping live runs strict under CI=1.
+      // regression everywhere content exists (seeded local dev DB, live);
+      // only CI's unseeded ephemeral DB legitimately renders none.
       const cards = page.locator(`main a[href^="${prefix}"]`)
       const count = await cards.count()
       test.skip(
-        count === 0 && !!process.env.CI && !process.env.PLAYWRIGHT_BASE_URL,
+        count === 0 && EMPTY_CMS_OK,
         'CI ephemeral DB is unseeded — no case studies to render'
       )
       expect(count).toBeGreaterThan(0)

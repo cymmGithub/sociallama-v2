@@ -1,7 +1,7 @@
 import { expect, type Page, test } from '@playwright/test'
 import { STATIC_ROUTES } from '../lib/static-routes'
 
-import { gotoHydrated } from './helpers'
+import { EMPTY_CMS_OK, gotoHydrated } from './helpers'
 
 /**
  * Polish blog tree coverage (add-e2e-monitoring). Mirrors en-blog.e2e.ts —
@@ -21,11 +21,6 @@ import { gotoHydrated } from './helpers'
  *   and the live target. CI's ephemeral Postgres is migrated but unseeded,
  *   so there (and only there) the content-dependent cases skip.
  */
-
-/** CI without an external target is the only environment where an empty CMS
- * is legitimate. The monitor workflow sets PLAYWRIGHT_BASE_URL, so live runs
- * stay strict even though they also run under CI=1. */
-const EMPTY_CMS_OK = !!process.env.CI && !process.env.PLAYWRIGHT_BASE_URL
 
 const APP_PATHS = new Set([
   ...STATIC_ROUTES.map((route) => route.path),
