@@ -8,7 +8,7 @@ The coverage floor the e2e suite must hold: PL blog journey, case-study detail r
 
 
 ### Requirement: PL blog journey coverage
-A PL blog spec SHALL cover the Polish blog tree by sampling the rendered site (links read from the hub, mirroring the `en-blog.e2e.ts` approach): the `/blog` hub resolves with `lang="pl"`; hub-linked posts resolve at their root-level `/{slug}` URLs and render an article; hub-linked category pages resolve; pagination links the hub offers resolve, and a page beyond the set (e.g. `/blog/page/999`) renders the 404 state. Unlike the English tree, an empty PL hub SHALL be a failure — there is no legitimate zero-post state for the Polish blog.
+A PL blog spec SHALL cover the Polish blog tree by sampling the rendered site (links read from the hub, mirroring the `en-blog.e2e.ts` approach): the `/blog` hub resolves with `lang="pl"`; hub-linked posts resolve at their root-level `/{slug}` URLs and render an article; hub-linked category pages resolve; pagination links the hub offers resolve, and a page beyond the set (e.g. `/blog/page/999`) renders the 404 state. Unlike the English tree, an empty PL hub SHALL be a failure — there is no legitimate zero-post state for the Polish blog — with one environment exception: on CI's unseeded ephemeral database (detected as `CI` set with no external `PLAYWRIGHT_BASE_URL`), the content-dependent cases SHALL skip with an explicit reason instead of failing. External-target runs stay strict even under CI.
 
 #### Scenario: Hub to post
 - **WHEN** the PL blog hub renders and its first linked post is visited
@@ -23,7 +23,7 @@ A PL blog spec SHALL cover the Polish blog tree by sampling the rendered site (l
 - **THEN** every offered page resolves, and `/blog/page/999` renders the not-found state
 
 ### Requirement: Case-study detail render coverage
-A case-study spec SHALL navigate from the `/case-studies` hub to a detail page and assert real content rendering — not merely HTTP 200: the hub lists at least one study, the detail page renders a non-empty `h1` and its content/media sections, and the visit produces zero console errors and zero page errors. Both the PL and EN hubs SHALL be covered.
+A case-study spec SHALL navigate from the `/case-studies` hub to a detail page and assert real content rendering — not merely HTTP 200: the hub lists at least one study, the detail page renders a non-empty `h1` and its content/media sections, and the visit produces zero console errors and zero page errors. Both the PL and EN hubs SHALL be covered. The same CI-unseeded-database exception as the PL blog applies: empty hubs skip (never fail) only when `CI` is set with no external `PLAYWRIGHT_BASE_URL`. Body-rendered assertions are the point: streamed routes with `loading.tsx` commit HTTP 200 before `notFound()` throws, so status codes alone cannot catch a missing study.
 
 #### Scenario: Hub to detail, PL
 - **WHEN** the first study linked from `/case-studies` is visited

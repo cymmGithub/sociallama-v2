@@ -15,9 +15,17 @@ import { gotoHydrated } from './helpers'
  *   <main> that are not app routes — RESERVED_SLUGS guarantees a post slug
  *   can never collide with one, so the exclusion list is exactly
  *   STATIC_ROUTES plus the locale root.
- * - There is NO legitimate empty state. The Polish blog always has published
- *   posts; a hub rendering zero post links is a failure, never a skip.
+ * - There is NO legitimate empty state — with one environment exception. The
+ *   Polish blog always has published posts, so a hub rendering zero post
+ *   links is a failure everywhere content exists: the seeded local dev DB
+ *   and the live target. CI's ephemeral Postgres is migrated but unseeded,
+ *   so there (and only there) the content-dependent cases skip.
  */
+
+/** CI without an external target is the only environment where an empty CMS
+ * is legitimate. The monitor workflow sets PLAYWRIGHT_BASE_URL, so live runs
+ * stay strict even though they also run under CI=1. */
+const EMPTY_CMS_OK = !!process.env.CI && !process.env.PLAYWRIGHT_BASE_URL
 
 const APP_PATHS = new Set([
   ...STATIC_ROUTES.map((route) => route.path),
@@ -52,6 +60,10 @@ test.describe('Polish blog tree', { tag: '@monitor' }, () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'pl')
 
     const { posts } = await hubLinks(page)
+    test.skip(
+      posts.length === 0 && EMPTY_CMS_OK,
+      'CI ephemeral DB is unseeded — no PL posts to assert on'
+    )
     // Unlike /en/blog there is no zero-translation fixture here: the Polish
     // blog is the primary tree and always has content.
     expect(posts, 'the PL hub must link at least one post').not.toEqual([])
@@ -62,6 +74,10 @@ test.describe('Polish blog tree', { tag: '@monitor' }, () => {
   }) => {
     await gotoHydrated(page, '/blog')
     const { posts } = await hubLinks(page)
+    test.skip(
+      posts.length === 0 && EMPTY_CMS_OK,
+      'CI ephemeral DB is unseeded — no PL posts to assert on'
+    )
     expect(posts).not.toEqual([])
 
     const href = posts[0] as string
@@ -80,7 +96,11 @@ test.describe('Polish blog tree', { tag: '@monitor' }, () => {
   test('every category the hub links to resolves', async ({ page }) => {
     test.setTimeout(120_000)
     await gotoHydrated(page, '/blog')
-    const { categories } = await hubLinks(page)
+    const { posts, categories } = await hubLinks(page)
+    test.skip(
+      posts.length === 0 && EMPTY_CMS_OK,
+      'CI ephemeral DB is unseeded — no categories to assert on'
+    )
     // Four fixed categories, seeded with the WordPress import — a hub with
     // posts but no category rows is incoherent.
     expect(categories).not.toEqual([])

@@ -14,14 +14,18 @@ export default function GlobalError({
   reset: () => void
 }) {
   return (
-    <html lang="en">
+    // Polish, matching the site's primary locale (x-default): global-error
+    // renders outside the router, so the visitor's locale is unknowable here.
+    <html lang="pl">
       <body>
         <Wrapper theme="cream" className="font-mono">
           <ErrorView
             error={error}
             reset={reset}
-            title="Critical Error"
-            description="A critical error occurred. Please refresh the page or contact support if the problem persists."
+            title="Błąd krytyczny"
+            description="Wystąpił krytyczny błąd. Odśwież stronę, a jeśli problem się powtarza — daj nam znać."
+            retryLabel="Spróbuj ponownie"
+            homeLabel="Wróć na stronę główną"
           />
         </Wrapper>
       </body>

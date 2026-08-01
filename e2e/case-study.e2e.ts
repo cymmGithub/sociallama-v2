@@ -26,9 +26,17 @@ test.describe('Case-study detail', { tag: '@monitor' }, () => {
       await gotoHydrated(page, hub)
 
       // The hub must list at least one study — an empty listing is a
-      // regression (the CMS is seeded in every environment this runs in).
+      // regression everywhere content exists (seeded local dev DB, live).
+      // CI's ephemeral Postgres is migrated but unseeded, so only there an
+      // empty hub is legitimate; the monitor workflow sets
+      // PLAYWRIGHT_BASE_URL, keeping live runs strict under CI=1.
       const cards = page.locator(`main a[href^="${prefix}"]`)
-      expect(await cards.count()).toBeGreaterThan(0)
+      const count = await cards.count()
+      test.skip(
+        count === 0 && !!process.env.CI && !process.env.PLAYWRIGHT_BASE_URL,
+        'CI ephemeral DB is unseeded — no case studies to render'
+      )
+      expect(count).toBeGreaterThan(0)
 
       const href = await cards.first().getAttribute('href')
       await gotoHydrated(page, href as string)
