@@ -24,8 +24,8 @@
 - [x] 4.1 Set the repo variable `MONITOR_BASE_URL=https://sociallama-v2.vercel.app` via `gh variable set` (stable production alias, 200 + live sitemap with 333 URLs verified)
 - [x] 4.2 Verify Deployment Protection status for that URL: the vercel.app production alias serves 200 unauthenticated — no bypass needed (the team-scoped `*-cymmgithubs-projects` URL 302s to SSO, but it is not the monitoring target)
 - [x] 4.3 Write `.github/workflows/monitor.yml`: `schedule: '17 5 * * *'` + `workflow_dispatch`; guard step failing fast if `vars.MONITOR_BASE_URL` is empty; checkout, setup-bun (version from package.json), `bun install --frozen-lockfile`, `bunx playwright install --with-deps chromium`, `bunx playwright test --grep @monitor` with `PLAYWRIGHT_BASE_URL` + `CI=1`; `actions/upload-artifact` of `test-results/` on `failure()`; header comment documenting the Slack subscription command and the deploy-window triage rule (design D5/Risks); 60-min job timeout for the 333-URL crawl
-- [ ] 4.4 Trigger via `workflow_dispatch` against the live URL and confirm a green run with no webServer and no DB service in the logs
-- [ ] 4.5 Force a red run (e.g. dispatch with a deliberately wrong `PLAYWRIGHT_BASE_URL` override or a temporary failing assertion on a branch) and confirm: traces artifact uploads, the failure notification reaches Slack (`/github subscribe … workflows:{name:"Monitor"}` done)
+- [x] 4.4 Triggered via `workflow_dispatch` against the live URL — run 30691806528 green in 7 min (all @monitor tests incl. the 333-URL crawl), no webServer, no DB service
+- [x] 4.5 Forced a red run via the dispatch `target` input pointed at an unreachable host — run 30692064840 concluded `failure` and uploaded the `monitor-traces` artifact (2.2 MB). Slack leg pending the one-time `/github subscribe cymmGithub/sociallama-v2 workflows:{name:"Monitor"}` in the target channel (user action; GitHub failure emails work regardless)
 
 ## 5. Close out
 
