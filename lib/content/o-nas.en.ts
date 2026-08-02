@@ -18,7 +18,7 @@ export const oNasMeta = {
 
 export const oNasHero = {
   kicker: 'SOCIAL LAMA',
-  heading: 'ABOUT THE AGENCY',
+  heading: 'ABOUT US',
   llamaAlt: 'The Social Lama llama in a beige coat, waving at the camera',
 } satisfies LocalizedONas['oNasHero']
 
