@@ -186,10 +186,21 @@ export function HowItWorks({
 
   // Same scroll-trigger mechanism <Fold> is built on, driving both the pin
   // range and sequential step activation. Progress 0→1 maps to steps 01–05.
+  // Out-of-range events must be ignored: hamo wraps the scroll offset by
+  // lenis.limit (infinite-scroll support), so anywhere ABOVE the section
+  // reports clamped progress 1 — without the `isActive` gate every scroll
+  // event before the pin highlights step 05.
   const [setRectRef] = useScrollTrigger({
     start: 'top top',
     end: 'bottom bottom',
-    onProgress: ({ progress }: { progress: number }) => {
+    onProgress: ({
+      progress,
+      isActive,
+    }: {
+      progress: number
+      isActive: boolean
+    }) => {
+      if (!isActive) return
       const index = Math.min(stepCount - 1, Math.floor(progress * stepCount))
       setActive(index)
     },
