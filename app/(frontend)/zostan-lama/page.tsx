@@ -17,10 +17,9 @@ import s from './zostan-lama.module.css'
  * Careers page (redesign-careers-page, direction C). Dark conversion layout
  * served at /zostan-lama — the legacy WP /zostan-lama/ URL redirects here.
  *
- * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + Lenis for
- * the marquee's scroll-velocity coupling); the near-black ground, the orange
- * benefits band and the plum application band are painted by the scoped
- * zostan-lama.module.css.
+ * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + smooth
+ * scrolling); the near-black ground, the orange benefits band and the plum
+ * application band are painted by the scoped zostan-lama.module.css.
  *
  * Band order is ink-deep → orange → plum-deep, and the page ENDS on the form
  * (design D3): nothing may be added below <CareersApply/> — the next element is

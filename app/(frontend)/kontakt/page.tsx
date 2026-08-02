@@ -14,9 +14,9 @@ import s from './kontakt.module.css'
 /*
  * Contact page (add-contact-page). Dark-canvas contact page served at /kontakt
  * — the header CTA target and the legacy WP /kontakt URL both resolve here.
- * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + Lenis for
- * the marquee's scroll-velocity coupling); the near-black ground and orange
- * accent band are painted by the scoped kontakt.module.css.
+ * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + smooth
+ * scrolling); the near-black ground and orange accent band are painted by the
+ * scoped kontakt.module.css.
  */
 
 export const metadata: Metadata = {

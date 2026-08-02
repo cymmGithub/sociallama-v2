@@ -2,7 +2,6 @@
 
 import cn from 'clsx'
 import { useIntersectionObserver, useResizeObserver } from 'hamo'
-import { useLenis } from 'lenis/react'
 import { type HTMLAttributes, useId, useRef } from 'react'
 import { useTempus } from 'tempus/react'
 import { modulo } from '@/utils/math'
@@ -21,7 +20,6 @@ function getHash(input: string) {
 interface MarqueeProps extends HTMLAttributes<HTMLElement> {
   repeat?: number
   speed?: number
-  scrollVelocity?: boolean
   reversed?: boolean
   pauseOnHover?: boolean
 }
@@ -31,7 +29,6 @@ export function Marquee({
   className,
   repeat = 2,
   speed = 1,
-  scrollVelocity = true,
   reversed = false,
   pauseOnHover = false,
   onMouseEnter,
@@ -50,8 +47,6 @@ export function Marquee({
 
   const [setIntersectionRef, intersection] = useIntersectionObserver()
 
-  const lenis = useLenis()
-
   useTempus(({ deltaTime }) => {
     const entry = getEntry()
 
@@ -60,13 +55,7 @@ export function Marquee({
 
     if (!entry?.borderBoxSize[0]?.inlineSize) return
 
-    let velocity = lenis?.velocity ?? 0
-    if (!scrollVelocity) {
-      velocity = 0
-    }
-    velocity = 1 + Math.abs(velocity / 5)
-
-    const offset = deltaTime * (speed * 0.1 * velocity)
+    const offset = deltaTime * (speed * 0.1)
 
     if (reversed) {
       transformRef.current -= offset

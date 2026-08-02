@@ -18,9 +18,9 @@ import s from './zostan-lama.module.css'
  * carries the meaning — and, unlike the page this replaces, it is legible: cream
  * at 84% on the near-black ground, not cream on cream.
  *
- * Motion: <Marquee/> animates on rAF via tempus and couples to Lenis scroll
- * velocity; it self-disables under `prefers-reduced-motion`, so the rows sit
- * still rather than needing a duplicate static branch here.
+ * Motion: <Marquee/> animates on rAF via tempus at a constant speed; it
+ * self-disables under `prefers-reduced-motion`, so the rows sit still rather
+ * than needing a duplicate static branch here.
  */
 export function CareersHero({
   meta = careersMetaDefault,
