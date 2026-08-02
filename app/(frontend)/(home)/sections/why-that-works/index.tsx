@@ -132,9 +132,9 @@ export function WhyThatWorks({
       </p>
 
       {/* Claim → evidence → invitation: the manifesto states it, the team
-          grid on the plum stage proves it, the closing copy + CTA invite. */}
+          grid proves it, the closing copy + CTA invite. */}
       <div ref={bottomRef} className={s.bottom}>
-        {/* Team grid on the shared plum grain stage. Each tile fills its
+        {/* Team grid straight on the sand ground. Each tile fills its
             gradient container with the member's transparent head+torso cutout
             (shared with the /o-nas slider) and a standing name + role label. */}
         <div

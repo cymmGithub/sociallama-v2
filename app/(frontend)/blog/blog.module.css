@@ -253,8 +253,8 @@
    still serves /category/{slug} and /blog/page/{n} unchanged. */
 
 /* —— The plum grain stage ——————————————————————————————————————————————
-   Fifth copy of the recipe, per house convention (services.module.css,
-   why-that-works, how-it-works, post.module.css are the others). Keep the
+   Fourth copy of the recipe, per house convention (services.module.css,
+   how-it-works, post.module.css are the others). Keep the
    gradient, blob, and grain values in sync with those by hand. */
 .stage {
   position: relative;

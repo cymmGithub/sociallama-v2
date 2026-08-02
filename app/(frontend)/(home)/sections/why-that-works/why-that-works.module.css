@@ -67,63 +67,12 @@
 }
 
 /* —— Team stage ————————————————————————————————————————————————————
-   Plum grain-gradient stage recipe, duplicated per house convention — the
-   same backdrop as services.module.css (.backdrop/.blobOrange/.grain) and
-   how-it-works.module.css (.stage) and case-studies.module.css (.cardMedia).
-   Keep the four modules in sync by hand.
-   Full-width panel holding the team grid mosaic. */
+   Bare wrapper for the team grid mosaic — the plum panel it used to paint
+   duplicated the tiles' own plum gradients and was removed (2026-08-02).
+   The element stays as a size container so the mosaic gaps and caption type
+   keep their cqw sizing. */
 .stage {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  padding: clamp(16px, 2.5vw, 36px);
-  /* Size container so mosaic gaps and cert media track the panel width. */
   container-type: inline-size;
-  background: linear-gradient(
-    160deg,
-    var(--color-plum-dark),
-    var(--color-plum) 65%
-  );
-  /* Pure-noise film grain tile — same data-URI as the how-it-works .stage. */
-  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
-
-  /* Orange glow blob, top-right (services-stage recipe). */
-  &::before {
-    content: "";
-    position: absolute;
-    width: 45%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    top: -30%;
-    right: -8%;
-    background: radial-gradient(
-      closest-side,
-      color-mix(in srgb, var(--color-orange) 70%, transparent),
-      transparent 72%
-    );
-    pointer-events: none;
-  }
-
-  /* Grain overlay over the whole panel. */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: var(--grain);
-    /* 1:1 with the SVG's own 700px canvas and the sibling stages' grain, so
-       all three panels carry identical noise density and scale. */
-    background-size: 700px 700px;
-    opacity: 0.38;
-    mix-blend-mode: soft-light;
-    pointer-events: none;
-  }
-
-  /* Lift stage contents above the ::after grain (tree order paints the
-     pseudo-element over the children otherwise). */
-  & > * {
-    position: relative;
-    z-index: 1;
-  }
 }
 
 /* Team grid: portrait tiles, each filling its gradient container with the
