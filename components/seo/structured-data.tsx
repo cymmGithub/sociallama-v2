@@ -41,13 +41,20 @@ const sameAs = socials.filter((s) => s.label !== 'YouTube').map((s) => s.href)
 /**
  * The one place JSON-LD becomes markup. Takes a single node or an array of
  * nodes (pages that emit several use one script carrying all of them).
+ *
+ * CMS free text (post titles, excerpts, client names) reaches this sink and
+ * `JSON.stringify` leaves `<` literal, so a stored `</script>` would close the
+ * tag and turn the rest into markup. The escaped form is valid JSON that parses
+ * back to `<`, so consumers see identical data.
  */
 export function jsonLdScript(node: object) {
   return (
     <script
       type="application/ld+json"
       // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be inline script content
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(node) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(node).replace(/</g, '\\u003c'),
+      }}
     />
   )
 }

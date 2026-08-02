@@ -14,7 +14,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const path = searchParams.get('path')
 
-  if (!(path && path.startsWith('/'))) {
+  // `path` lands verbatim in the `Location` header, so a bare `startsWith('/')`
+  // would admit `//evil.com` and `/\evil.com` — both scheme-relative, both
+  // sending the browser to another origin.
+  if (!(path && /^\/(?![/\\])/.test(path))) {
     return new Response('Missing or invalid ?path', { status: 400 })
   }
 
