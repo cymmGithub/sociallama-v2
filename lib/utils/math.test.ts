@@ -5,17 +5,7 @@
  */
 
 import { describe, expect, it } from 'bun:test'
-import {
-  clamp,
-  degToRad,
-  distance,
-  lerp,
-  mapRange,
-  modulo,
-  radToDeg,
-  roundTo,
-  truncate,
-} from './math'
+import { clamp, distance, lerp, mapRange, modulo } from './math'
 
 describe('clamp', () => {
   it('should return input when within bounds', () => {
@@ -94,24 +84,6 @@ describe('mapRange', () => {
   })
 })
 
-describe('truncate', () => {
-  it('should truncate to specified decimal places', () => {
-    expect(truncate(1.23456789, 2)).toBe(1.23)
-    expect(truncate(1.23456789, 3)).toBe(1.235)
-    expect(truncate(1.23456789, 4)).toBe(1.2346)
-  })
-
-  it('should handle 0 decimal places', () => {
-    expect(truncate(1.23456789, 0)).toBe(1)
-    expect(truncate(3.9, 0)).toBe(4)
-  })
-
-  it('should handle already truncated numbers', () => {
-    expect(truncate(3.14, 2)).toBe(3.14)
-    expect(truncate(5, 2)).toBe(5)
-  })
-})
-
 describe('modulo', () => {
   it('should work like JavaScript % for positive numbers', () => {
     expect(modulo(5, 3)).toBe(2)
@@ -138,50 +110,6 @@ describe('modulo', () => {
     expect(modulo(-1, length)).toBe(4)
     expect(modulo(5, length)).toBe(0)
     expect(modulo(7, length)).toBe(2)
-  })
-})
-
-describe('roundTo', () => {
-  it('should round to the nearest multiple', () => {
-    expect(roundTo(23, 10)).toBe(20)
-    expect(roundTo(27, 10)).toBe(30)
-    expect(roundTo(25, 10)).toBe(30)
-  })
-
-  it('should handle decimal multiples', () => {
-    expect(roundTo(0.23, 0.1)).toBeCloseTo(0.2, 10)
-    expect(roundTo(0.27, 0.1)).toBeCloseTo(0.3, 10)
-  })
-
-  it('should handle exact multiples', () => {
-    expect(roundTo(20, 10)).toBe(20)
-    expect(roundTo(0.5, 0.5)).toBe(0.5)
-  })
-})
-
-describe('degToRad', () => {
-  it('should convert degrees to radians', () => {
-    expect(degToRad(0)).toBe(0)
-    expect(degToRad(180)).toBeCloseTo(Math.PI, 10)
-    expect(degToRad(90)).toBeCloseTo(Math.PI / 2, 10)
-    expect(degToRad(360)).toBeCloseTo(Math.PI * 2, 10)
-  })
-
-  it('should handle negative degrees', () => {
-    expect(degToRad(-90)).toBeCloseTo(-Math.PI / 2, 10)
-  })
-})
-
-describe('radToDeg', () => {
-  it('should convert radians to degrees', () => {
-    expect(radToDeg(0)).toBe(0)
-    expect(radToDeg(Math.PI)).toBeCloseTo(180, 10)
-    expect(radToDeg(Math.PI / 2)).toBeCloseTo(90, 10)
-    expect(radToDeg(Math.PI * 2)).toBeCloseTo(360, 10)
-  })
-
-  it('should handle negative radians', () => {
-    expect(radToDeg(-Math.PI / 2)).toBeCloseTo(-90, 10)
   })
 })
 

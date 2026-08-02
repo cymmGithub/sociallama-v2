@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { type LocalizedONas, oNasValues } from '@/lib/content/o-nas'
+import type { LocalizedONas } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './values-grid.module.css'
 
@@ -29,9 +29,9 @@ function Value({ title, body }: ValueContent) {
 }
 
 export function ValuesGrid({
-  content = oNasValues,
+  content,
 }: {
-  content?: LocalizedONas['oNasValues']
+  content: LocalizedONas['oNasValues']
 }) {
   const gridRef = useReveal<HTMLDivElement>()
 

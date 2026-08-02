@@ -1,6 +1,6 @@
 'use client'
 
-import { faq, type LocalizedHome } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './faq.module.css'
 
@@ -18,7 +18,7 @@ import s from './faq.module.css'
  * Grouping them would auto-close a row above the one being opened and yank the
  * page under the reader's cursor.
  */
-export function Faq({ content = faq }: { content?: LocalizedHome['faq'] }) {
+export function Faq({ content }: { content: LocalizedHome['faq'] }) {
   const ref = useReveal<HTMLElement>()
 
   return (

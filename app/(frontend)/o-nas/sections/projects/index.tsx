@@ -4,7 +4,7 @@ import cn from 'clsx'
 import { ArrowRight } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { type LocalizedONas, oNasProjects } from '@/lib/content/o-nas'
+import type { LocalizedONas } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './projects.module.css'
 
@@ -19,9 +19,9 @@ import s from './projects.module.css'
  * staggered).
  */
 export function Projects({
-  content = oNasProjects,
+  content,
 }: {
-  content?: LocalizedONas['oNasProjects']
+  content: LocalizedONas['oNasProjects']
 }) {
   const revealRef = useReveal<HTMLDivElement>()
 

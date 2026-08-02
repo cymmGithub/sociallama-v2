@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
-import { OG_BASE } from '@/lib/content/site'
 import { chrome, findService, SERVICES } from '@/lib/content/uslugi'
 import {
   buildRelatedByPlatform,
   buildTopicalPosts,
 } from '@/lib/payload/related-posts'
+import { pairMetadata } from '@/lib/utils/metadata'
 import { ServicePage } from './service-page'
 
 interface PageProps {
@@ -25,27 +25,8 @@ export async function generateMetadata({
   if (!service) {
     return {}
   }
-  const plPath = `/uslugi/${service.slug}`
-  const enPath = `/en/services/${service.pairSlug}`
-  const { title, description } = service.meta
 
-  return {
-    title,
-    description,
-    // Hreflang pair per the canonical slug mapping, x-default → PL.
-    alternates: {
-      canonical: plPath,
-      languages: { pl: plPath, en: enPath, 'x-default': plPath },
-    },
-    openGraph: {
-      type: 'website',
-      ...OG_BASE,
-      title,
-      description,
-      url: plPath,
-    },
-    twitter: { card: 'summary_large_image', title, description },
-  }
+  return pairMetadata({ ...service.meta, path: `/uslugi/${service.slug}` })
 }
 
 export default async function UslugaPage({ params }: PageProps) {

@@ -101,23 +101,6 @@ export function mapRange(
 }
 
 /**
- * Truncates a number to a specified number of decimal places.
- *
- * @param value - Number to truncate
- * @param decimals - Number of decimal places
- * @returns The truncated number
- *
- * @example
- * ```ts
- * truncate(3.14159, 2) // 3.14
- * truncate(3.14159, 0) // 3
- * ```
- */
-export function truncate(value: number, decimals: number): number {
-  return Number.parseFloat(value.toFixed(decimals))
-}
-
-/**
  * True modulo operation (handles negative numbers correctly).
  *
  * JavaScript's % operator is remainder, not modulo.
@@ -141,56 +124,6 @@ export function modulo(n: number, d: number): number {
   if (d === 0) return n
   if (d < 0) return Number.NaN
   return ((n % d) + d) % d
-}
-
-/**
- * Rounds a number to the nearest multiple.
- *
- * @param value - Number to round
- * @param multiple - Multiple to round to
- * @returns The rounded value
- *
- * @example
- * ```ts
- * roundTo(23, 10)  // 20
- * roundTo(27, 10)  // 30
- * roundTo(0.23, 0.1) // 0.2
- * ```
- */
-export function roundTo(value: number, multiple: number): number {
-  return Math.round(value / multiple) * multiple
-}
-
-/**
- * Converts degrees to radians.
- *
- * @param degrees - Angle in degrees
- * @returns Angle in radians
- *
- * @example
- * ```ts
- * degToRad(180) // Math.PI
- * degToRad(90)  // Math.PI / 2
- * ```
- */
-export function degToRad(degrees: number): number {
-  return (degrees * Math.PI) / 180
-}
-
-/**
- * Converts radians to degrees.
- *
- * @param radians - Angle in radians
- * @returns Angle in degrees
- *
- * @example
- * ```ts
- * radToDeg(Math.PI)     // 180
- * radToDeg(Math.PI / 2) // 90
- * ```
- */
-export function radToDeg(radians: number): number {
-  return (radians * 180) / Math.PI
 }
 
 /**

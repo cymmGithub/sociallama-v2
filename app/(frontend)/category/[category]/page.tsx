@@ -8,7 +8,9 @@ import {
   getCategoryBySlug,
   getCategorySlugInLocale,
   getPostsPage,
+  staticParamsOrPlaceholder,
 } from '@/lib/payload/queries'
+import { categoryMetadata } from '@/lib/utils/metadata'
 
 /*
  * Category listings at /category/{slug} — exact URL parity with the live
@@ -21,12 +23,11 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const categories = await getCategories()
-  // Cache Components requires a non-empty result; on an empty CMS prerender
-  // one guaranteed-404 path so the build succeeds.
-  if (categories.length === 0) {
-    return [{ category: 'placeholder-bez-tresci' }]
-  }
-  return categories.map((category) => ({ category: category.slug }))
+  return staticParamsOrPlaceholder(
+    'category',
+    categories.map((category) => category.slug),
+    'placeholder-bez-tresci'
+  )
 }
 
 export async function generateMetadata({
@@ -40,25 +41,12 @@ export async function generateMetadata({
 
   const counterSlug = await getCategorySlugInLocale(category.id, 'en')
 
-  return {
+  return categoryMetadata({
     title: `${category.title} — Blog`,
     description: `Wpisy w kategorii ${category.title} na blogu Social Lama.`,
-    // Resolved from the document: a category's slug differs per locale, so the
-    // literal path table cannot map it (design D11). Absent when the category
-    // has no row in the other locale.
-    alternates: {
-      canonical: `/category/${category.slug}`,
-      ...(counterSlug
-        ? {
-            languages: {
-              pl: `/category/${category.slug}`,
-              en: `/en/blog/category/${counterSlug}`,
-              'x-default': `/category/${category.slug}`,
-            },
-          }
-        : {}),
-    },
-  }
+    path: `/category/${category.slug}`,
+    counterpartUrl: counterSlug ? `/en/blog/category/${counterSlug}` : null,
+  })
 }
 
 export default async function CategoryPage({ params }: PageProps) {

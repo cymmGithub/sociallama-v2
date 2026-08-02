@@ -3,6 +3,7 @@ import type {
   CollectionAfterChangeHook,
   CollectionAfterDeleteHook,
   GlobalAfterChangeHook,
+  TypeWithID,
 } from 'payload'
 import type {
   Author,
@@ -33,99 +34,77 @@ function safeRevalidate(...tags: string[]) {
   }
 }
 
-export const revalidatePostAfterChange: CollectionAfterChangeHook<Post> = ({
-  doc,
-  previousDoc,
-}) => {
-  // Draft-only saves don't affect public pages; skip until something
-  // published (or previously published) changes.
-  const touchesPublished =
-    doc._status === 'published' || previousDoc?._status === 'published'
-  if (!touchesPublished) {
+/**
+ * Hook pair for slug-routed collections: expire the list tag and the
+ * document's own `<prefix>:<slug>` tag. Draft-only saves don't affect public
+ * pages; changes are skipped until something published (or previously
+ * published) changes. A slug rename also expires the old slug's tag.
+ */
+function slugScopedHooks<
+  T extends TypeWithID & {
+    slug: string
+    _status?: ('draft' | 'published') | null
+  },
+>(listTag: string, slugPrefix: string) {
+  const afterChange: CollectionAfterChangeHook<T> = ({ doc, previousDoc }) => {
+    const touchesPublished =
+      doc._status === 'published' || previousDoc?._status === 'published'
+    if (!touchesPublished) {
+      return doc
+    }
+
+    safeRevalidate(listTag, `${slugPrefix}:${doc.slug}`)
+    if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
+      safeRevalidate(`${slugPrefix}:${previousDoc.slug}`)
+    }
     return doc
   }
 
-  safeRevalidate('posts', `post:${doc.slug}`)
-  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
-    safeRevalidate(`post:${previousDoc.slug}`)
-  }
-  return doc
-}
-
-export const revalidatePostAfterDelete: CollectionAfterDeleteHook<Post> = ({
-  doc,
-}) => {
-  safeRevalidate('posts', `post:${doc.slug}`)
-  return doc
-}
-
-export const revalidateCaseStudyAfterChange: CollectionAfterChangeHook<
-  CaseStudy
-> = ({ doc, previousDoc }) => {
-  const touchesPublished =
-    doc._status === 'published' || previousDoc?._status === 'published'
-  if (!touchesPublished) {
+  const afterDelete: CollectionAfterDeleteHook<T> = ({ doc }) => {
+    safeRevalidate(listTag, `${slugPrefix}:${doc.slug}`)
     return doc
   }
 
-  safeRevalidate('case-studies', `case-study:${doc.slug}`)
-  if (previousDoc?.slug && previousDoc.slug !== doc.slug) {
-    safeRevalidate(`case-study:${previousDoc.slug}`)
+  return { afterChange, afterDelete }
+}
+
+/** Hook pair for collections whose edits expire fixed tags unconditionally. */
+function tagOnlyHooks<T extends TypeWithID>(...tags: string[]) {
+  const afterChange: CollectionAfterChangeHook<T> = ({ doc }) => {
+    safeRevalidate(...tags)
+    return doc
   }
-  return doc
+
+  const afterDelete: CollectionAfterDeleteHook<T> = ({ doc }) => {
+    safeRevalidate(...tags)
+    return doc
+  }
+
+  return { afterChange, afterDelete }
 }
 
-export const revalidateCaseStudyAfterDelete: CollectionAfterDeleteHook<
-  CaseStudy
-> = ({ doc }) => {
-  safeRevalidate('case-studies', `case-study:${doc.slug}`)
-  return doc
-}
+const postHooks = slugScopedHooks<Post>('posts', 'post')
+export const revalidatePostAfterChange = postHooks.afterChange
+export const revalidatePostAfterDelete = postHooks.afterDelete
 
-export const revalidatePlatformAfterChange: CollectionAfterChangeHook<
-  SocialPlatform
-> = ({ doc }) => {
-  safeRevalidate('social-platforms')
-  return doc
-}
+const caseStudyHooks = slugScopedHooks<CaseStudy>('case-studies', 'case-study')
+export const revalidateCaseStudyAfterChange = caseStudyHooks.afterChange
+export const revalidateCaseStudyAfterDelete = caseStudyHooks.afterDelete
 
-export const revalidatePlatformAfterDelete: CollectionAfterDeleteHook<
-  SocialPlatform
-> = ({ doc }) => {
-  safeRevalidate('social-platforms')
-  return doc
-}
+const platformHooks = tagOnlyHooks<SocialPlatform>('social-platforms')
+export const revalidatePlatformAfterChange = platformHooks.afterChange
+export const revalidatePlatformAfterDelete = platformHooks.afterDelete
 
-export const revalidateCategoryAfterChange: CollectionAfterChangeHook<
-  Category
-> = ({ doc }) => {
-  safeRevalidate('categories', 'posts')
-  return doc
-}
-
-export const revalidateCategoryAfterDelete: CollectionAfterDeleteHook<
-  Category
-> = ({ doc }) => {
-  safeRevalidate('categories', 'posts')
-  return doc
-}
+const categoryHooks = tagOnlyHooks<Category>('categories', 'posts')
+export const revalidateCategoryAfterChange = categoryHooks.afterChange
+export const revalidateCategoryAfterDelete = categoryHooks.afterDelete
 
 // An author's name/avatar/bio is rendered inside post pages and listing cards,
 // so an edit has to expire the whole `posts` tag — there is no author route of
 // its own to invalidate.
-export const revalidateAuthorAfterChange: CollectionAfterChangeHook<Author> = ({
-  doc,
-}) => {
-  safeRevalidate('posts')
-  return doc
-}
-
-export const revalidateAuthorAfterDelete: CollectionAfterDeleteHook<Author> = ({
-  doc,
-}) => {
-  safeRevalidate('posts')
-  return doc
-}
+const authorHooks = tagOnlyHooks<Author>('posts')
+export const revalidateAuthorAfterChange = authorHooks.afterChange
+export const revalidateAuthorAfterDelete = authorHooks.afterDelete
 
 // Curation only affects the /blog hub, so it gets its own tag rather than
 // expiring `posts` — reordering the editors' picks should not invalidate 79

@@ -4,14 +4,14 @@ import { notFound } from 'next/navigation'
 import { LocaleCounterpart } from '@/components/layout/chrome-provider'
 import { Wrapper } from '@/components/layout/wrapper'
 import { postArticle } from '@/lib/content/blog'
-import { OG_BASE } from '@/lib/content/site'
 import {
   getDraftPostBySlug,
   getPostBySlug,
   getPostSlugInLocale,
   getPublishedPostSlugs,
-  resolveMedia,
+  staticParamsOrPlaceholder,
 } from '@/lib/payload/queries'
+import { postMetadata } from '@/lib/utils/metadata'
 import type { Post } from '@/payload-types'
 import { PostArticle } from './post-article'
 
@@ -32,13 +32,7 @@ const BASE_PATH = ''
 
 export async function generateStaticParams() {
   const slugs = await getPublishedPostSlugs()
-  // Cache Components requires generateStaticParams to be non-empty; on an
-  // empty CMS (fresh deploy before seeding) prerender one guaranteed-404 path
-  // so the build succeeds.
-  if (slugs.length === 0) {
-    return [{ slug: 'placeholder-bez-tresci' }]
-  }
-  return slugs.map((slug) => ({ slug }))
+  return staticParamsOrPlaceholder('slug', slugs, 'placeholder-bez-tresci')
 }
 
 async function loadPost(slug: string): Promise<Post | null> {
@@ -55,49 +49,14 @@ export async function generateMetadata({
     return {}
   }
 
-  const title = post.seo?.metaTitle || post.title
-  const description = post.seo?.metaDescription || post.excerpt || undefined
-  const ogMedia = resolveMedia(post.seo?.ogImage) ?? resolveMedia(post.cover)
-  const ogUrl = ogMedia?.sizes?.og?.url ?? ogMedia?.url
-  // Built from BASE_PATH, like the article's own share and breadcrumb URLs, so
-  // the canonical can never disagree with what the page renders.
-  const pageUrl = `${BASE_PATH}/${post.slug}`
   const enSlug = await getPostSlugInLocale(post.id, 'en')
 
-  return {
-    title,
-    ...(description ? { description } : {}),
-    // hreflang is resolved here rather than through `alternatesForPath`,
-    // which is built on the synchronous literal table and cannot know a
-    // per-post English slug (design D11). No English row means no `languages`
-    // at all — an untranslated post must not claim a counterpart.
-    alternates: {
-      canonical: pageUrl,
-      ...(enSlug
-        ? {
-            languages: {
-              pl: pageUrl,
-              en: `/en/blog/${enSlug}`,
-              'x-default': pageUrl,
-            },
-          }
-        : {}),
-    },
-    openGraph: {
-      type: 'article',
-      ...OG_BASE,
-      title,
-      ...(description ? { description } : {}),
-      url: pageUrl,
-      ...(ogUrl ? { images: [{ url: ogUrl, width: 1200, height: 630 }] } : {}),
-      ...(post.publishedAt ? { publishedTime: post.publishedAt } : {}),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      ...(description ? { description } : {}),
-    },
-  }
+  return postMetadata(post, {
+    // Built from BASE_PATH, like the article's own share and breadcrumb URLs,
+    // so the canonical can never disagree with what the page renders.
+    path: `${BASE_PATH}/${post.slug}`,
+    counterpartUrl: enSlug ? `/en/blog/${enSlug}` : null,
+  })
 }
 
 export default async function PostPage({ params }: PageProps) {

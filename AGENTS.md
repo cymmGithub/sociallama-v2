@@ -187,8 +187,8 @@ import cn from 'clsx'
 
 Shared contexts (theme, cart, form) use a typed `createContext` with a
 `{ state, actions, meta? }` value shape, plus a hook that throws when used
-outside the provider. See `components/layout/theme/index.tsx` for the
-reference implementation.
+outside the provider. See `lib/integrations/shopify/cart/cart-store-context.ts`
+for the reference implementation.
 
 ```tsx
 interface MyState { count: number }

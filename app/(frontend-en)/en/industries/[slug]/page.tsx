@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { IndustryPage } from '@/app/(frontend)/branze/[slug]/industry-page'
 import { Wrapper } from '@/components/layout/wrapper'
 import { chrome, findIndustry, INDUSTRIES } from '@/lib/content/branze.en'
-import { OG_BASE } from '@/lib/content/site.en'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -21,27 +21,11 @@ export async function generateMetadata({
   if (!industry) {
     return {}
   }
-  const enPath = `/en/industries/${industry.slug}`
-  const plPath = `/branze/${industry.pairSlug}`
-  const { title, description } = industry.meta
 
-  return {
-    title,
-    description,
-    // Hreflang pair per the canonical slug mapping, x-default → PL (design D6).
-    alternates: {
-      canonical: enPath,
-      languages: { pl: plPath, en: enPath, 'x-default': plPath },
-    },
-    openGraph: {
-      type: 'website',
-      ...OG_BASE,
-      title,
-      description,
-      url: enPath,
-    },
-    twitter: { card: 'summary_large_image', title, description },
-  }
+  return pairMetadata({
+    ...industry.meta,
+    path: `/en/industries/${industry.slug}`,
+  })
 }
 
 export default async function EnIndustryPage({ params }: PageProps) {

@@ -2,15 +2,10 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
-import { faq, news } from '@/lib/content/home'
+import * as pl from '@/lib/content/home'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
-import {
-  getLatestPost,
-  resolveCategory,
-  resolveMedia,
-} from '@/lib/payload/queries'
-import type { Post } from '@/payload-types'
+import { getLatestPost } from '@/lib/payload/queries'
 import { Chapters } from './chapters'
 import { BigMarquee } from './sections/big-marquee'
 import { ClientLogos } from './sections/client-logos'
@@ -19,8 +14,9 @@ import { Hero } from './sections/hero'
 import heroStyles from './sections/hero/hero.module.css'
 import { HowItWorks } from './sections/how-it-works'
 import { JoinCta } from './sections/join-cta'
-import { NewsLama, type NewsLamaPost } from './sections/news-lama'
+import { NewsLama } from './sections/news-lama'
 import { NewsLamaSkeleton } from './sections/news-lama/skeleton'
+import { toNewsLamaPost } from './sections/news-lama/to-news-lama-post'
 import { Services } from './sections/services'
 import { Testimonial } from './sections/testimonial'
 import { WhyThatWorks } from './sections/why-that-works'
@@ -54,30 +50,17 @@ async function HomeNews() {
   // Latest published post for NewsLAMA; the section is omitted entirely
   // when no post exists.
   const latestPost = await getLatestPost()
-  const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
+  const newsPost = latestPost ? toNewsLamaPost(latestPost, '') : null
   return newsPost ? (
-    <NewsLama content={news} locale="pl" post={newsPost} />
+    <NewsLama content={pl.news} locale="pl" post={newsPost} />
   ) : null
-}
-
-function toNewsLamaPost(post: Post): NewsLamaPost {
-  const cover = resolveMedia(post.cover)
-  return {
-    title: post.title,
-    excerpt: post.excerpt ?? '',
-    category: resolveCategory(post.category)?.title ?? '',
-    date: post.publishedAt ?? post.createdAt,
-    href: `/${post.slug}`,
-    cover: cover?.sizes?.card?.url ?? cover?.url ?? '',
-    coverAlt: cover?.alt ?? '',
-  }
 }
 
 export default function HomePage() {
   return (
     <>
       <WebSiteJsonLd />
-      <FaqJsonLd items={faq.items} path="/" />
+      <FaqJsonLd items={pl.faq.items} path="/" />
       <Wrapper theme="plum">
         <Chapters>
           {/* Chapter 1 — plum. Hero + logo belt compose the first viewport as
@@ -85,24 +68,31 @@ export default function HomePage() {
             On short viewports the column grows past 100svh (hero keeps its
             min-height floor) and the belt drops below the fold. */}
           <div className={heroStyles.column}>
-            <Hero />
-            <ClientLogos />
+            <Hero content={pl.hero} />
+            <ClientLogos
+              clients={pl.clients}
+              heading={pl.clientsHeading}
+              cardCta={pl.clientCardCta}
+            />
           </div>
           {/* Chapter 2 — cream */}
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
           <>
-            <WhyThatWorks />
-            <Services />
-            <HowItWorks />
+            <WhyThatWorks content={pl.whyThatWorks} />
+            <Services content={pl.services} />
+            <HowItWorks content={pl.howItWorks} />
             <BigMarquee />
           </>
           {/* Chapter 3 — plum-deep */}
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
           <>
-            <Testimonial />
-            <Faq />
-            <JoinCta />
-            <Suspense fallback={<NewsLamaSkeleton heading={news.heading} />}>
+            <Testimonial
+              content={pl.testimonials}
+              labels={pl.testimonialLabels}
+            />
+            <Faq content={pl.faq} />
+            <JoinCta content={pl.joinCta} />
+            <Suspense fallback={<NewsLamaSkeleton heading={pl.news.heading} />}>
               <HomeNews />
             </Suspense>
           </>

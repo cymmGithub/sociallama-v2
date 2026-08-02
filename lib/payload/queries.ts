@@ -819,6 +819,22 @@ export const getCaseStudiesForSitemap = cache(findCaseStudiesForSitemap)
 export const getSocialPlatforms = cache(findSocialPlatforms)
 
 /**
+ * Static params for a CMS-driven dynamic route, with a fallback entry.
+ *
+ * Cache Components requires `generateStaticParams` to return a non-empty set.
+ * On an empty CMS — a fresh deploy before seeding, or a locale with nothing
+ * translated yet — prerendering one guaranteed-404 path keeps the build green.
+ */
+export function staticParamsOrPlaceholder<Key extends string>(
+  key: Key,
+  slugs: string[],
+  placeholder: string
+): Record<Key, string>[] {
+  const values = slugs.length > 0 ? slugs : [placeholder]
+  return values.map((value) => ({ [key]: value }) as Record<Key, string>)
+}
+
+/**
  * Display headline for a case study: strips the leading "Client — " from the
  * title, since the client already appears as the logo/name in the hero and on
  * the card. The full title is kept for the SEO <title> and JSON-LD.

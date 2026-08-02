@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { type LocalizedHome, whyThatWorks } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
@@ -97,9 +97,9 @@ const CERTS = [
 ] as const
 
 export function WhyThatWorks({
-  content = whyThatWorks,
+  content,
 }: {
-  content?: LocalizedHome['whyThatWorks']
+  content: LocalizedHome['whyThatWorks']
 }) {
   const bottomRef = useReveal<HTMLDivElement>()
 

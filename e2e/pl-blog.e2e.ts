@@ -1,5 +1,5 @@
 import { expect, type Page, test } from '@playwright/test'
-import { STATIC_ROUTES } from '../lib/static-routes'
+import { STATIC_PAGES } from '../lib/static-routes'
 
 import { EMPTY_CMS_OK, gotoHydrated } from './helpers'
 
@@ -14,7 +14,7 @@ import { EMPTY_CMS_OK, gotoHydrated } from './helpers'
  *   cannot be recognized by prefix. They are the single-segment hrefs in
  *   <main> that are not app routes — RESERVED_SLUGS guarantees a post slug
  *   can never collide with one, so the exclusion list is exactly
- *   STATIC_ROUTES plus the locale root.
+ *   the STATIC_PAGES PL paths plus the locale root.
  * - There is NO legitimate empty state — with one environment exception. The
  *   Polish blog always has published posts, so a hub rendering zero post
  *   links is a failure everywhere content exists: the seeded local dev DB
@@ -23,9 +23,8 @@ import { EMPTY_CMS_OK, gotoHydrated } from './helpers'
  */
 
 const APP_PATHS = new Set([
-  ...STATIC_ROUTES.map((route) => route.path),
+  ...STATIC_PAGES.map((page) => page.pl),
   '/en',
-  '/o-nas',
   '/uslugi',
   '/branze',
 ])

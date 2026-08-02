@@ -3,15 +3,14 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
 import { caseStudyChrome } from '@/lib/content/case-studies'
-import { OG_BASE } from '@/lib/content/site'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getCaseStudyBySlug,
   getDraftCaseStudyBySlug,
   getPublishedCaseStudySlugs,
   getSocialPlatforms,
-  resolveMedia,
+  staticParamsOrPlaceholder,
 } from '@/lib/payload/queries'
+import { caseStudyMetadata } from '@/lib/utils/metadata'
 import type { CaseStudy } from '@/payload-types'
 import { CaseStudyArticle } from './case-study-article'
 
@@ -21,12 +20,7 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const slugs = await getPublishedCaseStudySlugs()
-  // Cache Components requires a non-empty param set; on an empty CMS prerender
-  // one guaranteed-404 path so the build succeeds before seeding.
-  if (slugs.length === 0) {
-    return [{ slug: 'placeholder-bez-tresci' }]
-  }
-  return slugs.map((slug) => ({ slug }))
+  return staticParamsOrPlaceholder('slug', slugs, 'placeholder-bez-tresci')
 }
 
 async function loadCaseStudy(slug: string): Promise<CaseStudy | null> {
@@ -43,36 +37,7 @@ export async function generateMetadata({
     return {}
   }
 
-  const title = study.seo?.metaTitle || study.title
-  const description = study.seo?.metaDescription || study.excerpt || undefined
-  const ogMedia = resolveMedia(study.seo?.ogImage) ?? resolveMedia(study.cover)
-  const ogUrl = ogMedia?.sizes?.og?.url ?? ogMedia?.url
-
-  return {
-    title,
-    ...(description ? { description } : {}),
-    alternates: alternatesForPath(`/case-studies/${study.slug}`),
-    openGraph: {
-      type: 'article',
-      ...OG_BASE,
-      title,
-      ...(description ? { description } : {}),
-      url: `/case-studies/${study.slug}`,
-      ...(ogUrl
-        ? {
-            images: [
-              { url: ogUrl, width: 1200, height: 630, alt: ogMedia?.alt },
-            ],
-          }
-        : {}),
-      ...(study.publishedAt ? { publishedTime: study.publishedAt } : {}),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      ...(description ? { description } : {}),
-    },
-  }
+  return caseStudyMetadata(study, `/case-studies/${study.slug}`)
 }
 
 export default async function CaseStudyPage({ params }: PageProps) {

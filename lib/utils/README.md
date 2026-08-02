@@ -15,10 +15,10 @@ import { generateSanityMetadata } from '@/utils/metadata'
 
 | Module | Functions |
 |--------|-----------|
-| `math` | `clamp`, `lerp`, `mapRange`, `truncate`, `modulo`, `roundTo`, `degToRad`, `radToDeg`, `distance` |
+| `math` | `clamp`, `lerp`, `mapRange`, `modulo`, `distance` |
 | `raf` | `mutate` (DOM write batching) |
-| `fetch` | `fetchWithTimeout`, `fetchJSON` |
-| `strings` | `slugify`, `lowerFirstChar`, `capitalizeFirstLetter`, `isEmptyArray`, `stripHtmlTags` |
+| `fetch` | `fetchWithTimeout` |
+| `strings` | `slugify`, `stripHtmlTags` |
 | `metadata` | `generatePageMetadata`, `generateSanityMetadata` |
 | `validation` | `emailSchema`, `phoneSchema`, `sanityEnvSchema`, `shopifyEnvSchema`, `hubspotEnvSchema`, `mailchimpEnvSchema`, `turnstileEnvSchema`, `analyticsEnvSchema`, `coreEnvSchema`, `parseFormData`, `zodToValidator` |
 | `rate-limit` | `rateLimit`, `getClientIP`, `rateLimiters` |

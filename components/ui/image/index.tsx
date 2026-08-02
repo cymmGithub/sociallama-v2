@@ -65,8 +65,6 @@ export type ImageProps = Omit<
 > & {
   /** CSS object-fit property for image positioning */
   objectFit?: CSSProperties['objectFit']
-  /** Display as block element (adds display: block) */
-  block?: boolean
   /** Size on mobile devices (e.g., "100vw", "50vw") */
   mobileSize?: `${number}vw`
   /** Size on desktop devices (e.g., "33vw", "25vw") */
@@ -118,45 +116,6 @@ function derivePlaceholderDimensions(aspectRatio: number) {
       }
 }
 
-// Helper to determine if blur placeholder should be used
-function shouldUseBlurPlaceholder(
-  src: NextImageProps['src'],
-  placeholder: string,
-  blurDataURL: string | undefined
-): boolean {
-  if (!src) return false
-  const isSvg = typeof src === 'string' && src.includes('.svg')
-  return !isSvg && placeholder === 'blur' && !blurDataURL
-}
-
-// Helper to generate blur data URL
-function generateBlurDataURL(
-  shouldUse: boolean,
-  aspectRatio: number | undefined,
-  existingBlurDataURL: string | undefined
-): string | undefined {
-  if (!(shouldUse && aspectRatio)) return existingBlurDataURL
-
-  const shimmerSvg = generateShimmer(700, Math.round(700 / aspectRatio))
-  return `data:image/svg+xml;base64,${toBase64(shimmerSvg)}`
-}
-
-// Helper to determine final placeholder value
-function getFinalPlaceholder(
-  shouldUse: boolean,
-  aspectRatio: number | undefined,
-  blurDataURL: string | undefined,
-  originalPlaceholder: NextImageProps['placeholder']
-): NextImageProps['placeholder'] {
-  if (!shouldUse) {
-    return originalPlaceholder === 'blur' && !blurDataURL
-      ? 'empty'
-      : originalPlaceholder
-  }
-
-  return aspectRatio || blurDataURL ? 'blur' : 'empty'
-}
-
 /**
  * Enhanced Image component with responsive sizing and automatic optimizations.
  *
@@ -170,7 +129,6 @@ function getFinalPlaceholder(
  * @param props.aspectRatio - Aspect ratio for layout stability and blur placeholder
  * @param props.mobileSize - Size on mobile (e.g., "100vw")
  * @param props.desktopSize - Size on desktop (e.g., "50vw")
- * @param props.block - Display as block element
  * @param props.preload - Ergonomic alias for next/image's native `preload` prop
  *   (the modern replacement for the deprecated `priority` prop). Also sets
  *   `loading="eager"` unless `loading` is explicitly provided.
@@ -216,7 +174,6 @@ export function Image({
   quality = 90,
   alt = '',
   fill,
-  block = !fill,
   width,
   height,
   mobileSize = '100vw',
@@ -233,6 +190,9 @@ export function Image({
   // Determine loading strategy
   const finalLoading = loading ?? (preload ? 'eager' : 'lazy')
 
+  // Non-fill images render as block elements with their aspect ratio applied.
+  const isBlock = !fill
+
   // Generate responsive sizes if not provided
   const finalSizes =
     sizes || `(max-width: ${breakpoints.dt}px) ${mobileSize}, ${desktopSize}`
@@ -240,24 +200,18 @@ export function Image({
   // Early return after hooks
   if (!src) return null
 
-  // Determine SVG status and placeholder logic
+  // Stand in for a missing blurDataURL with a generated shimmer, but only when
+  // the aspect ratio is known (it sets the shimmer's proportions) and the
+  // source can actually blur — an SVG cannot. Without a data URL to show,
+  // `placeholder="blur"` downgrades to 'empty'.
   const isSvg = typeof src === 'string' && src.includes('.svg')
-  const shouldUsePlaceholder = shouldUseBlurPlaceholder(
-    src,
-    placeholder,
-    props.blurDataURL
-  )
-  const blurDataURL = generateBlurDataURL(
-    shouldUsePlaceholder,
-    aspectRatio,
-    props.blurDataURL
-  )
-  const finalPlaceholder = getFinalPlaceholder(
-    shouldUsePlaceholder,
-    aspectRatio,
-    props.blurDataURL,
-    placeholder
-  )
+  const needsShimmer =
+    !isSvg && placeholder === 'blur' && !props.blurDataURL && aspectRatio
+  const blurDataURL = needsShimmer
+    ? `data:image/svg+xml;base64,${toBase64(generateShimmer(700, Math.round(700 / aspectRatio)))}`
+    : props.blurDataURL
+  const finalPlaceholder =
+    placeholder === 'blur' && !blurDataURL ? 'empty' : placeholder
 
   // Derive placeholder dimensions from aspectRatio when no explicit
   // width/height were supplied (the aspectRatio-only sizing variant).
@@ -273,7 +227,7 @@ export function Image({
   return (
     <NextImage
       ref={ref}
-      fill={!block}
+      fill={fill ?? false}
       {...(finalWidth !== undefined && { width: finalWidth })}
       {...(finalHeight !== undefined && { height: finalHeight })}
       loading={finalLoading}
@@ -281,10 +235,10 @@ export function Image({
       alt={alt}
       style={{
         objectFit,
-        ...(block && aspectRatio ? { aspectRatio } : {}),
+        ...(isBlock && aspectRatio ? { aspectRatio } : {}),
         ...style,
       }}
-      className={cn(className, block && s.block)}
+      className={cn(className, isBlock && s.block)}
       sizes={finalSizes}
       src={src}
       unoptimized={unoptimized || isSvg}

@@ -27,9 +27,10 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
-import { type LocalizedHome, services } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import { breakpoints } from '@/styles/config'
 import s from './services.module.css'
 
 // The localized (widened) item type — `content` may be the PL const or its EN
@@ -40,11 +41,7 @@ function stageId(service: ServiceItem) {
   return `uslugi-stage-${service.id}`
 }
 
-export function Services({
-  content = services,
-}: {
-  content?: LocalizedHome['services']
-}) {
+export function Services({ content }: { content: LocalizedHome['services'] }) {
   const sectionRef = useRef<HTMLElement | null>(null)
   const revealRef = useReveal<HTMLDivElement>()
   const stackRevealRef = useReveal<HTMLUListElement>()
@@ -58,7 +55,7 @@ export function Services({
   const [inView, setInView] = useState(false)
 
   const reducedMotion = usePreferredReducedMotion()
-  const isDesktop = useMediaQuery('(min-width: 800px)')
+  const isDesktop = useMediaQuery(`(min-width: ${breakpoints.dt}px)`)
   const autoplay = isDesktop === true && !reducedMotion
 
   useEffect(() => {

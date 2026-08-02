@@ -1,124 +1,247 @@
 import type { Metadata } from 'next'
+import * as sitePl from '@/lib/content/site'
+import * as siteEn from '@/lib/content/site.en'
 import { APP_BASE_URL, env } from '@/lib/env'
+import type { Locale } from '@/lib/i18n/slug-map'
+import { alternatesForPath, localeOf } from '@/lib/i18n/slug-map'
+import { resolveMedia } from '@/lib/payload/queries'
+import type { CaseStudy, Post } from '@/payload-types'
 
 /**
- * Metadata Generation Utilities
+ * `generateMetadata` builders shared by the two locales of a route pair, plus
+ * the root-layout metadata both documents start from.
  *
- * Helpers to generate consistent metadata across pages,
- * reducing duplication and ensuring SEO best practices.
+ * Each builder owns one content type's whole metadata shape, so the PL and EN
+ * routes cannot drift apart. The locale is derived from `path` rather than
+ * passed alongside it, so the OG locale can never disagree with the URL the
+ * page is actually emitting.
  */
 
-interface GenerateMetadataOptions {
-  title?: string
-  description?: string
-  keywords?: string[]
-  image?: {
-    url?: string
-    width?: number
-    height?: number
-    alt?: string
-  }
-  url?: string
-  siteName?: string
-  noIndex?: boolean
-  type?: 'website' | 'article'
-  publishedTime?: string
-  modifiedTime?: string
-  authors?: string[]
+/** The brand identity of each locale — `site.ts` and its English twin. */
+const SITE = { pl: sitePl, en: siteEn } as const
+
+/** The locale root's canonical path and its absolute `og:url`. */
+const ROOT_URL = {
+  pl: { canonical: '/', og: APP_BASE_URL },
+  en: { canonical: '/en', og: `${APP_BASE_URL}/en` },
+} as const
+
+/**
+ * Page-level `openGraph` replaces the layout's whole og object (no deep merge),
+ * so every builder restates the brand identity — see `lib/content/site.ts`.
+ */
+function ogBase(locale: Locale): { siteName: string; locale: string } {
+  return SITE[locale].OG_BASE
 }
 
 /**
- * Generate complete metadata object for pages
- *
- * @example
- * ```ts
- * export async function generateMetadata({ params }) {
- *   const page = await fetchPage(params.slug)
- *
- *   return generatePageMetadata({
- *     title: page.metadata?.title || page.title,
- *     description: page.metadata?.description,
- *     image: { url: page.metadata?.image?.asset?.url },
- *     url: `/page/${params.slug}`,
- *     noIndex: page.metadata?.noIndex,
- *   })
- * }
- * ```
+ * The metadata each root layout exports — the base every page's own metadata
+ * merges into. Written once so the two documents cannot drift.
  */
-export function generatePageMetadata(
-  options: GenerateMetadataOptions
-): Metadata {
-  const {
-    title,
-    description,
-    keywords,
-    image,
-    url,
-    siteName = 'Social Lama',
-    noIndex = false,
-    type = 'website',
-    publishedTime,
-    modifiedTime,
-    authors,
-  } = options
+export function rootMetadata(locale: Locale): Metadata {
+  const site = SITE[locale]
+  const url = ROOT_URL[locale]
+  const title = {
+    default: site.APP_DEFAULT_TITLE,
+    template: site.APP_TITLE_TEMPLATE,
+  }
 
-  const fullUrl = url ? `${APP_BASE_URL}${url}` : APP_BASE_URL
-  const imageUrl = image?.url ?? '/opengraph-image.jpg'
-  const imageWidth = image?.width ?? 1200
-  const imageHeight = image?.height ?? 630
-  const imageAlt = image?.alt ?? title ?? siteName
-
-  const metadata: Metadata = {
+  return {
     metadataBase: new URL(APP_BASE_URL),
+    applicationName: site.APP_NAME,
     title,
-    description,
-    keywords,
+    description: site.APP_DESCRIPTION,
     alternates: {
-      canonical: url ?? '/',
+      canonical: url.canonical,
     },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: site.APP_DEFAULT_TITLE,
+    },
+    formatDetection: { telephone: false },
     openGraph: {
+      type: 'website',
+      ...site.OG_BASE,
       title,
-      description,
-      url: fullUrl,
-      siteName,
-      locale: 'pl_PL',
-      type,
+      description: site.APP_DESCRIPTION,
+      url: url.og,
       images: [
         {
-          url: imageUrl,
-          width: imageWidth,
-          height: imageHeight,
-          alt: imageAlt,
+          url: '/opengraph-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: site.APP_DEFAULT_TITLE,
         },
       ],
-      ...(publishedTime && { publishedTime }),
-      ...(modifiedTime && { modifiedTime }),
-      ...(authors && { authors }),
     },
     twitter: {
       card: 'summary_large_image',
       title,
-      description,
-      images: [
-        {
-          url: imageUrl,
-          width: imageWidth,
-          height: imageHeight,
-          alt: imageAlt,
-        },
-      ],
+      description: site.APP_DESCRIPTION,
     },
     ...(env.NEXT_PUBLIC_FACEBOOK_APP_ID
       ? { other: { 'fb:app_id': env.NEXT_PUBLIC_FACEBOOK_APP_ID } }
       : {}),
   }
+}
 
-  if (noIndex) {
-    metadata.robots = {
-      index: false,
-      follow: false,
-    }
+interface DocumentPaths {
+  /** The page's own URL — canonical and `og:url`. */
+  path: string
+  /** The other locale's URL, or null when the document has no counterpart. */
+  counterpartUrl: string | null
+}
+
+/**
+ * `alternates` for a document whose slug differs per locale and lives in the
+ * database. The literal path table in `slug-map.ts` cannot map those (design
+ * D11), so the route — which already loaded the document — reads the
+ * counterpart slug and passes the URL in. A null counterpart means no
+ * `languages` at all: an untranslated document must not claim one.
+ */
+function documentAlternates(
+  path: string,
+  counterpartUrl: string | null
+): Metadata['alternates'] {
+  return counterpartUrl
+    ? alternatesForPath(path, counterpartUrl)
+    : { canonical: path }
+}
+
+interface ArticleSeo {
+  title: string
+  description: string | undefined
+  ogUrl: string | null | undefined
+  ogAlt: string | undefined
+}
+
+/**
+ * The SEO overrides an editor may set, each falling back to the document's own
+ * field.
+ *
+ * `||`, not `??`: Payload stores a cleared text field as an empty string, and
+ * an empty override has to fall through to the document rather than blank the
+ * tag out.
+ */
+function articleSeo(doc: CaseStudy | Post): ArticleSeo {
+  const ogMedia = resolveMedia(doc.seo?.ogImage) ?? resolveMedia(doc.cover)
+  return {
+    title: doc.seo?.metaTitle || doc.title,
+    description: doc.seo?.metaDescription || doc.excerpt || undefined,
+    ogUrl: ogMedia?.sizes?.og?.url ?? ogMedia?.url,
+    ogAlt: ogMedia?.alt,
   }
+}
 
-  return metadata
+/** Blog post detail pages — `/{slug}` (PL) and `/en/blog/{slug}` (EN). */
+export function postMetadata(
+  post: Post,
+  { path, counterpartUrl }: DocumentPaths
+): Metadata {
+  const { title, description, ogUrl } = articleSeo(post)
+
+  return {
+    title,
+    ...(description ? { description } : {}),
+    alternates: documentAlternates(path, counterpartUrl),
+    openGraph: {
+      type: 'article',
+      ...ogBase(localeOf(path)),
+      title,
+      ...(description ? { description } : {}),
+      url: path,
+      ...(ogUrl ? { images: [{ url: ogUrl, width: 1200, height: 630 }] } : {}),
+      ...(post.publishedAt ? { publishedTime: post.publishedAt } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      ...(description ? { description } : {}),
+    },
+  }
+}
+
+/**
+ * Case-study detail pages. Their slug is a brand name shared across locales,
+ * so unlike posts and categories the path table resolves the pair on its own.
+ */
+export function caseStudyMetadata(study: CaseStudy, path: string): Metadata {
+  const { title, description, ogUrl, ogAlt } = articleSeo(study)
+
+  return {
+    title,
+    ...(description ? { description } : {}),
+    alternates: alternatesForPath(path),
+    openGraph: {
+      type: 'article',
+      ...ogBase(localeOf(path)),
+      title,
+      ...(description ? { description } : {}),
+      url: path,
+      ...(ogUrl
+        ? { images: [{ url: ogUrl, width: 1200, height: 630, alt: ogAlt }] }
+        : {}),
+      ...(study.publishedAt ? { publishedTime: study.publishedAt } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      ...(description ? { description } : {}),
+    },
+  }
+}
+
+interface CategoryMetadataOptions extends DocumentPaths {
+  title: string
+  description: string
+}
+
+/**
+ * Blog category listings. No `openGraph`/`twitter` block by design: these are
+ * paginated indexes, not shareable documents.
+ */
+export function categoryMetadata({
+  title,
+  description,
+  path,
+  counterpartUrl,
+}: CategoryMetadataOptions): Metadata {
+  return {
+    title,
+    description,
+    alternates: documentAlternates(path, counterpartUrl),
+  }
+}
+
+interface PairMetadataOptions {
+  title: string
+  description: string
+  /** The page's own URL — canonical and `og:url`. */
+  path: string
+}
+
+/**
+ * Static PL↔EN pages whose slugs live in the content modules (services,
+ * industries). `alternatesForPath` resolves the hreflang pair from the literal
+ * slug table, with `x-default` → PL.
+ */
+export function pairMetadata({
+  title,
+  description,
+  path,
+}: PairMetadataOptions): Metadata {
+  return {
+    title,
+    description,
+    alternates: alternatesForPath(path),
+    openGraph: {
+      type: 'website',
+      ...ogBase(localeOf(path)),
+      title,
+      description,
+      url: path,
+    },
+    twitter: { card: 'summary_large_image', title, description },
+  }
 }

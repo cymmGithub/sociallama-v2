@@ -273,7 +273,7 @@ export const SERVICES = [
     pairSlug: 'strategy',
     label: 'Strategia',
     meta: {
-      title: 'Strategia social media | Social Lama',
+      title: 'Strategia social media',
       description:
         'Budujemy strategię komunikacji w social mediach opartą na danych — od audytu i grupy docelowej po mierzalne cele i wdrożenie.',
     },
@@ -385,7 +385,7 @@ export const SERVICES = [
     pairSlug: 'content',
     label: 'Content',
     meta: {
-      title: 'Content i prowadzenie social media | Social Lama',
+      title: 'Content i prowadzenie social media',
       description:
         'Prowadzimy social media marek na siedmiu platformach — Facebook, Instagram, TikTok, X, LinkedIn, Pinterest, YouTube. Content dopasowany do każdego kanału.',
     },
@@ -456,7 +456,7 @@ export const SERVICES = [
     pairSlug: 'sales',
     label: 'Sprzedaż',
     meta: {
-      title: 'Social media, które sprzedają | Social Lama',
+      title: 'Social media, które sprzedają',
       description:
         'Prowadzimy social media nastawione na sprzedaż. Skuteczność mierzymy nie lajkami, a wynikami Twojego biznesu — z twardymi danymi z kampanii.',
     },
@@ -607,7 +607,7 @@ export const SERVICES = [
     meta: {
       // D5: the label carries no term anyone searches this offer with, so the
       // title names SEO and Google Ads instead.
-      title: 'SEO i Google Ads — kampanie reklamowe | Social Lama',
+      title: 'SEO i Google Ads — kampanie reklamowe',
       description:
         'Pozycjonowanie, kampanie Google Ads, audyty SEO, strony WWW oraz analityka i raportowanie. Obszar search i performance prowadzimy z SEOFly — agencją z Grupy Good One.',
     },
@@ -696,7 +696,7 @@ export const SERVICES = [
     pairSlug: 'creative-video',
     label: 'Kreacje & Wideo',
     meta: {
-      title: 'Kreacje graficzne i wideo | Social Lama',
+      title: 'Kreacje graficzne i wideo',
       description:
         'Grafiki, wideo, rolki i animacje — pełne spektrum kreacji w social mediach. Głębokie zaplecze wideograficzne i copywriterskie, dopasowane do trendów.',
     },
@@ -757,7 +757,7 @@ export const SERVICES = [
     pairSlug: 'audit-consulting',
     label: 'Audyt i konsultacje',
     meta: {
-      title: 'Audyt i konsultacje social media | Social Lama',
+      title: 'Audyt i konsultacje social media',
       description:
         'Audyt Waszej obecności w social mediach i konsultacje strategiczne. Konkretne wnioski i rekomendacje, które możecie wdrożyć od razu.',
     },
@@ -841,7 +841,7 @@ export const SERVICES = [
     pairSlug: 'influencer-marketing',
     label: 'Influencer marketing',
     meta: {
-      title: 'Influencer marketing | Social Lama',
+      title: 'Influencer marketing',
       description:
         'Kampanie influencer marketingowe — dobór twórców, strategia współpracy i realizacja. Autentyczne treści, które budują zasięg i zaufanie.',
     },

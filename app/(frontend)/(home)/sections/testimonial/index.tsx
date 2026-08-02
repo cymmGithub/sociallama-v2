@@ -22,16 +22,11 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
-import {
-  type LocalizedHome,
-  testimonialLabels,
-  testimonials,
-} from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { useMediaQuery, usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './testimonial.module.css'
 
-const COUNT = testimonials.length
 const CYCLE = 7000
 // Below this horizontal travel a touch reads as a tap/scroll, not a swipe.
 const SWIPE_THRESHOLD = 40
@@ -39,21 +34,23 @@ const SWIPE_THRESHOLD = 40
 // animates out to the left instead of snapping (see the CSS).
 const LEAVE_MS = 500
 
-// Wrap-around slot of entry `i` relative to `anchor`: 0 = centered/active,
-// ±1 = full band, ±2 = receded, +3 = hidden (styled per slot in the CSS).
-// Also doubles as the signed shortest distance between two indices.
-const slotOf = (i: number, anchor: number) => {
-  const offset = (((i - anchor) % COUNT) + COUNT) % COUNT
-  return offset > COUNT / 2 ? offset - COUNT : offset
+// Wrap-around slot of entry `i` relative to `anchor`, in a set of `count`:
+// 0 = centered/active, ±1 = full band, ±2 = receded, +3 = hidden (styled per
+// slot in the CSS). Also doubles as the signed shortest distance between two
+// indices.
+const slotOf = (i: number, anchor: number, count: number) => {
+  const offset = (((i - anchor) % count) + count) % count
+  return offset > count / 2 ? offset - count : offset
 }
 
 export function Testimonial({
-  content = testimonials,
-  labels = testimonialLabels,
+  content,
+  labels,
 }: {
-  content?: LocalizedHome['testimonials']
-  labels?: LocalizedHome['testimonialLabels']
+  content: LocalizedHome['testimonials']
+  labels: LocalizedHome['testimonialLabels']
 }) {
+  const count = content.length
   const ref = useReveal<HTMLElement>()
   const labelId = useId()
   const reducedMotion = usePreferredReducedMotion()
@@ -95,11 +92,11 @@ export function Testimonial({
       clearTimer()
       if (!autoplayRef.current) return
       timerRef.current = setTimeout(() => {
-        select((activeRef.current + 1) % COUNT)
+        select((activeRef.current + 1) % count)
         schedule(CYCLE)
       }, ms)
     },
-    [clearTimer, select]
+    [clearTimer, select, count]
   )
 
   // Start (or tear down) the loop whenever eligibility flips — reduced-motion
@@ -144,7 +141,7 @@ export function Testimonial({
     if (start === null) return
     const dx = (e.changedTouches[0]?.clientX ?? start) - start
     if (Math.abs(dx) > SWIPE_THRESHOLD) {
-      pick((activeRef.current + (dx < 0 ? 1 : COUNT - 1)) % COUNT)
+      pick((activeRef.current + (dx < 0 ? 1 : count - 1)) % count)
     }
     touchStartX.current = null
   }
@@ -198,13 +195,13 @@ export function Testimonial({
             role="tablist" over a plain container is the right ARIA, not a nav. */}
         <div className={s.rail} role="tablist" aria-label={labels.railLabel}>
           {content.map((t, i) => {
-            const slot = slotOf(i, active)
+            const slot = slotOf(i, active, count)
             // While a change is in flight (`leaving` holds the previous
             // active), a row whose slot didn't move by the window's signed
             // delta must have wrapped through the hidden slot — flag it so
             // the CSS repositions it without a visible glide across the rail.
-            const prevSlot = leaving === null ? slot : slotOf(i, leaving)
-            const delta = leaving === null ? 0 : slotOf(active, leaving)
+            const prevSlot = leaving === null ? slot : slotOf(i, leaving, count)
+            const delta = leaving === null ? 0 : slotOf(active, leaving, count)
             const wrapped = prevSlot - delta !== slot
             return (
               <button

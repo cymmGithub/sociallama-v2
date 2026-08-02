@@ -5,14 +5,14 @@ import { PostArticle } from '@/app/(frontend)/[slug]/post-article'
 import { LocaleCounterpart } from '@/components/layout/chrome-provider'
 import { Wrapper } from '@/components/layout/wrapper'
 import { postArticle } from '@/lib/content/blog.en'
-import { OG_BASE } from '@/lib/content/site.en'
 import {
   getDraftPostBySlug,
   getPostBySlug,
   getPostSlugInLocale,
   getPublishedPostSlugs,
-  resolveMedia,
+  staticParamsOrPlaceholder,
 } from '@/lib/payload/queries'
+import { postMetadata } from '@/lib/utils/metadata'
 import type { Post } from '@/payload-types'
 
 /*
@@ -33,13 +33,7 @@ const BASE_PATH = '/en/blog'
 
 export async function generateStaticParams() {
   const slugs = await getPublishedPostSlugs('en')
-  // Cache Components requires generateStaticParams to be non-empty; with no
-  // post translated yet, prerender one guaranteed-404 path so the build
-  // succeeds.
-  if (slugs.length === 0) {
-    return [{ slug: 'placeholder-no-content' }]
-  }
-  return slugs.map((slug) => ({ slug }))
+  return staticParamsOrPlaceholder('slug', slugs, 'placeholder-no-content')
 }
 
 /** Resolves by ENGLISH slug: the slug predicate is scoped to the read locale,
@@ -58,48 +52,17 @@ export async function generateMetadata({
     return {}
   }
 
-  const title = post.seo?.metaTitle || post.title
-  const description = post.seo?.metaDescription || post.excerpt || undefined
-  const ogMedia = resolveMedia(post.seo?.ogImage) ?? resolveMedia(post.cover)
-  const ogUrl = ogMedia?.sizes?.og?.url ?? ogMedia?.url
-  // Built from BASE_PATH, like the article's own share and breadcrumb URLs, so
-  // the canonical can never disagree with what the page renders.
-  const pageUrl = `${BASE_PATH}/${post.slug}`
+  // Every English post is the translation of a Polish one, so the Polish
+  // counterpart always exists — but it is still read rather than assumed, and
+  // omitted if it somehow does not.
   const plSlug = await getPostSlugInLocale(post.id, 'pl')
 
-  return {
-    title,
-    ...(description ? { description } : {}),
-    // Every English post is the translation of a Polish one, so the Polish
-    // counterpart always exists — but it is still read rather than assumed,
-    // and omitted if it somehow does not.
-    alternates: {
-      canonical: pageUrl,
-      ...(plSlug
-        ? {
-            languages: {
-              pl: `/${plSlug}`,
-              en: pageUrl,
-              'x-default': `/${plSlug}`,
-            },
-          }
-        : {}),
-    },
-    openGraph: {
-      type: 'article',
-      ...OG_BASE,
-      title,
-      ...(description ? { description } : {}),
-      url: pageUrl,
-      ...(ogUrl ? { images: [{ url: ogUrl, width: 1200, height: 630 }] } : {}),
-      ...(post.publishedAt ? { publishedTime: post.publishedAt } : {}),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      ...(description ? { description } : {}),
-    },
-  }
+  return postMetadata(post, {
+    // Built from BASE_PATH, like the article's own share and breadcrumb URLs,
+    // so the canonical can never disagree with what the page renders.
+    path: `${BASE_PATH}/${post.slug}`,
+    counterpartUrl: plSlug ? `/${plSlug}` : null,
+  })
 }
 
 export default async function EnPostPage({ params }: PageProps) {

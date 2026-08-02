@@ -1,14 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import {
-  createContext,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { createContext, use, useEffect, useMemo, useState } from 'react'
 import { mutate } from '@/utils/raf'
 import s from './form.module.css'
 import { useForm } from './hook'
@@ -17,7 +10,6 @@ import type {
   FormContextStandard,
   FormProps,
   FormState,
-  MessagesProps,
   SubmitButtonProps,
 } from './types'
 
@@ -53,19 +45,17 @@ import type {
  * ```
  */
 
-// Context with standard { state, actions, meta } structure
+// Context with standard { state, actions } structure
 const FormContext = createContext<FormContextStandard | null>(null)
 
 /**
  * Hook to access the form context with standard structure.
- * Returns { state, actions, meta } for new implementations.
  *
  * @example
  * ```tsx
- * const { state, actions, meta } = useFormContext()
+ * const { state, actions } = useFormContext()
  * const { isPending, formState, errors } = state
- * const { register, resetForm } = actions
- * const { formId } = meta
+ * const { register, setFieldValidity } = actions
  * ```
  */
 export function useFormContext(): FormContextStandard {
@@ -129,11 +119,6 @@ export function Form<T = unknown>({
     }
   }, [formState, onSuccess, onError])
 
-  // Reset form function for actions
-  const resetForm = useCallback(() => {
-    setKey(crypto.randomUUID())
-  }, [])
-
   // Memoized so context consumers re-render when form state changes, not on
   // every Form render.
   const contextValue: FormContextStandard = useMemo(
@@ -149,10 +134,6 @@ export function Form<T = unknown>({
       actions: {
         register,
         setFieldValidity,
-        resetForm,
-      },
-      meta: {
-        formId: formId ?? '',
       },
     }),
     [
@@ -164,8 +145,6 @@ export function Form<T = unknown>({
       errors,
       register,
       setFieldValidity,
-      resetForm,
-      formId,
     ]
   )
 
@@ -241,36 +220,10 @@ export function SubmitButton({
   )
 }
 
-// Messages (error display)
-export function Messages({ className, ...props }: MessagesProps) {
-  const { state } = useFormContext()
-  const { formState } = state
-
-  // Only surface server-level outcomes here (submission failed, rate limit,
-  // security). Per-field validation is shown inline under each field, so
-  // aggregating those into a list here would be redundant.
-  const allErrors =
-    formState?.status && formState.status >= 400 ? [formState.message] : []
-
-  if (allErrors.length === 0) return null
-
-  return (
-    <div className={cn(s.messages, className)} {...props}>
-      {allErrors.map((message) => (
-        <p className={cn('p-xs', s.error)} key={message}>
-          {message}
-        </p>
-      ))}
-    </div>
-  )
-}
-
-export { useForm } from './hook'
 // Re-export types
 export type {
   FormAction,
   FormContextActions,
-  FormContextMeta,
   FormContextStandard,
   FormContextState,
   FormState,

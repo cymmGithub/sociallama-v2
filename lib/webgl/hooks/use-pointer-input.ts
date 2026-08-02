@@ -53,12 +53,14 @@ export function usePointerInput(
     const handleMouseMove = (event: MouseEvent) => handlePointer(event)
     const handleTouchMove = (event: TouchEvent) => handlePointer(event)
 
-    window.addEventListener('mousemove', handleMouseMove, false)
-    window.addEventListener('touchmove', handleTouchMove, false)
+    // Passive: the handlers never preventDefault, and a non-passive touchmove
+    // would block every scroll step on touch devices while JS runs.
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove, false)
-      window.removeEventListener('touchmove', handleTouchMove, false)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [])
 }

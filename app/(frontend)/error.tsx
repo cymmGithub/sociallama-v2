@@ -2,6 +2,7 @@
 
 import { Wrapper } from '@/components/layout/wrapper'
 import { ErrorView } from '@/components/ui/error-view'
+import { errorView } from '@/lib/content/site'
 
 interface ErrorPageProps {
   error: Error & { digest?: string }
@@ -11,14 +12,7 @@ interface ErrorPageProps {
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Wrapper theme="cream" className="font-mono">
-      <ErrorView
-        error={error}
-        reset={reset}
-        title="Coś poszło nie tak"
-        description="Przepraszamy — wystąpił nieoczekiwany błąd po naszej stronie."
-        retryLabel="Spróbuj ponownie"
-        homeLabel="Wróć na stronę główną"
-      />
+      <ErrorView error={error} reset={reset} {...errorView.boundary} />
     </Wrapper>
   )
 }

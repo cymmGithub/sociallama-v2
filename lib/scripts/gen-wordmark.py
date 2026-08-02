@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate merged-outline wordmark paths -> lib/wordmark-paths.ts
+"""Generate merged-outline wordmark paths -> lib/wordmark-paths.ts + lib/wordmark-footer.ts
 
 WHY: the display wordmarks (footer "SOCIAL LAMA", the marquee "WITH SOCIAL LAMA"
 outline row) are drawn as an OUTLINE stroke at tight tracking. Rendered as plain
@@ -15,7 +15,7 @@ REGENERATE (nothing here is committed except this script + the output .ts):
     python3 -m venv .wm-venv && . .wm-venv/bin/activate
     pip install fonttools skia-pathops
     curl -fsSL 'https://github.com/google/fonts/raw/main/ofl/exo2/Exo2%5Bwght%5D.ttf' -o Exo2.ttf
-    python gen-wordmark.py          # writes ../wordmark-paths.ts
+    python gen-wordmark.py          # writes ../wordmark-paths.ts + ../wordmark-footer.ts
     rm -rf .wm-venv Exo2.ttf        # clean up (both are gitignored / transient)
 
 Exo 2 is the site's --font-display (loaded via next/font/google at runtime; this
@@ -34,6 +34,10 @@ import pathops
 HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(HERE, "Exo2.ttf")
 OUT = os.path.join(HERE, "..", "wordmark-paths.ts")
+# The footer renders on every route, so its path lives in its own module —
+# importing it from wordmark-paths.ts would pull that file's page-specific
+# marquee paths into every bundle.
+OUT_FOOTER = os.path.join(HERE, "..", "wordmark-footer.ts")
 WEIGHT = 800
 TRACKING_EM = -0.02
 
@@ -71,39 +75,6 @@ def merged(text):
 
 def n(v):
     return f"{v:.1f}"
-
-
-def ink_vb(m):
-    """Tight ink-bounds viewBox (+3% pad), like the footer wordmark."""
-    pad = 0.03 * m["upm"]
-    return (f'{n(m["xMin"] - pad)} {n(-m["yMax"] - pad)} '
-            f'{n((m["xMax"] - m["xMin"]) + 2 * pad)} '
-            f'{n((m["yMax"] - m["yMin"]) + 2 * pad)}')
-
-
-# Industry hero wordmarks (editorial /branze pages) — one merged-union path per
-# label, keyed by industry id (matches lib/content/branze.ts). Labels are the
-# uppercase display forms (CSS uppercases them). Proof pages use solid text, so
-# only the 10 editorial labels need outline paths.
-INDUSTRY_LABELS = {
-    "beauty": "BEAUTY",
-    "health": "HEALTH",
-    "finanse": "FINANSE",
-    "petcare": "PETCARE",
-    "alkohole": "ALKOHOLE",
-    "fashion": "FASHION",
-    "horeca": "HORECA",
-    "hotele-i-miejsca-wypoczynkowe": "HOTELE I MIEJSCA WYPOCZYNKOWE",
-    "nieruchomosci-i-deweloperzy": "NIERUCHOMOŚCI I DEWELOPERZY",
-    "rozrywka": "ROZRYWKA",
-}
-industry_rows = []
-for _iid, _label in INDUSTRY_LABELS.items():
-    _m = merged(_label)
-    industry_rows.append(
-        f"  '{_iid}': {{\n    viewBox: '{ink_vb(_m)}',\n    d: '{_m['d']}',\n  }},"
-    )
-industry_ts = "\n".join(industry_rows)
 
 
 # Contact hero marquee outline rows (localized). Uppercase display forms + the
@@ -176,10 +147,14 @@ fvb = (f'{n(fw["xMin"] - padF)} {n(-fw["yMax"] - padF)} '
 mw = merged("WITH SOCIAL LAMA  ·  ")
 mvb = f'0 {n(-mw["yMax"])} {n(mw["advance"])} {n(mw["yMax"])}'
 
-ts = f'''// AUTO-GENERATED — merged-outline wordmark paths (Exo 2, wght {WEIGHT}, tracking {TRACKING_EM}em).
-// Each path is the boolean-UNION of the glyph outlines (skia-pathops), so a single
+footer_ts = f'''// AUTO-GENERATED — merged-outline footer wordmark (Exo 2, wght {WEIGHT}, tracking {TRACKING_EM}em).
+// The path is the boolean-UNION of the glyph outlines (skia-pathops), so a single
 // stroke draws only the merged silhouette — no crossing lines where letters overlap
 // (the reason plain outlined <text> looked "sloppy" at tight tracking).
+//
+// Its own module because the footer renders on every route: importing it from
+// wordmark-paths.ts would pull that file's page-specific marquee paths — tens of
+// kilobytes of path data — into every bundle.
 //
 // Regenerate with lib/scripts/gen-wordmark.py (see that file's header). If the
 // copy changes, the path must be regenerated — it is not live text.
@@ -188,6 +163,15 @@ export const footerWordmarkPath = {{
   viewBox: '{fvb}',
   d: '{fw["d"]}',
 }} as const
+'''
+
+ts = f'''// AUTO-GENERATED — merged-outline wordmark paths (Exo 2, wght {WEIGHT}, tracking {TRACKING_EM}em).
+// Each path is the boolean-UNION of the glyph outlines (skia-pathops), so a single
+// stroke draws only the merged silhouette — no crossing lines where letters overlap
+// (the reason plain outlined <text> looked "sloppy" at tight tracking).
+//
+// Regenerate with lib/scripts/gen-wordmark.py (see that file's header). If the
+// copy changes, the path must be regenerated — it is not live text.
 
 // Tile for the scrolling marquee outline row. viewBox width is the full advance
 // width (incl. the trailing "  ·  " separator) so the Marquee repeats seamlessly.
@@ -195,16 +179,6 @@ export const marqueeOutlinePath = {{
   viewBox: '{mvb}',
   d: '{mw["d"]}',
 }} as const
-
-// Industry hero wordmarks (editorial /branze pages), keyed by industry id.
-// Rendered as a single stroked <path> — the merged union dissolves the crossing
-// strokes plain outlined <text> shows on chars like A/K/H/E.
-export const industryWordmarkPaths: Record<
-  string,
-  {{ viewBox: string; d: string }}
-> = {{
-{industry_ts}
-}}
 
 // Contact hero marquee outline row, per locale — replaces -webkit-text-stroke
 // (which crossed/doubled strokes on chars like E/M/B) with the merged union.
@@ -227,6 +201,8 @@ export const careersMarqueeOutlinePaths: Record<
 '''
 with open(OUT, "w") as fh:
     fh.write(ts)
-print("wrote", os.path.normpath(OUT))
+with open(OUT_FOOTER, "w") as fh:
+    fh.write(footer_ts)
+print("wrote", os.path.normpath(OUT), "+", os.path.normpath(OUT_FOOTER))
 print("footer viewBox:", fvb)
 print("marquee viewBox:", mvb)

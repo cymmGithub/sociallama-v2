@@ -2,12 +2,13 @@
 
 import cn from 'clsx'
 import { Link } from '@/components/ui/link'
-import { hero, type LocalizedHome, socials } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
+import { socials } from '@/lib/content/socials'
 import { useRotator } from '@/lib/hooks/use-rotator'
 import s from './hero.module.css'
 import { HeroLooks } from './outfit-stack'
 
-export function Hero({ content = hero }: { content?: LocalizedHome['hero'] }) {
+export function Hero({ content }: { content: LocalizedHome['hero'] }) {
   // Timer-based word rotator (hero-outfit-swap), same mechanism as JoinCta:
   // paused off-screen, static first word under reduced motion. The rotator
   // index also drives the llama's outfit (static front pose, wardrobe swap)

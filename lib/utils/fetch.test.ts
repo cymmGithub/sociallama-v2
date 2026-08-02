@@ -1,15 +1,14 @@
 /**
  * Unit tests for fetch utilities
  *
- * Tests fetchWithTimeout and fetchJSON -- wrapper functions that add
- * timeout protection and JSON parsing to the native fetch API.
+ * Tests fetchWithTimeout -- a wrapper function that adds timeout protection
+ * to the native fetch API.
  *
  * Run with: bun test lib/utils/fetch.test.ts
  */
 
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test'
-import { z } from 'zod'
-import { fetchJSON, fetchWithTimeout } from './fetch'
+import { fetchWithTimeout } from './fetch'
 
 /**
  * A minimal local HTTP server for testing fetch behavior without mocks.
@@ -55,13 +54,6 @@ beforeAll(() => {
         return new Response('Internal Server Error', {
           status: 500,
           statusText: 'Internal Server Error',
-        })
-      }
-
-      if (url.pathname === '/error-404') {
-        return new Response('Not Found', {
-          status: 404,
-          statusText: 'Not Found',
         })
       }
 
@@ -136,75 +128,5 @@ describe('fetchWithTimeout', () => {
     const response = await fetchWithTimeout(`${baseURL}/error-500`)
     expect(response.ok).toBe(false)
     expect(response.status).toBe(500)
-  })
-})
-
-describe('fetchJSON — unvalidated overload (no schema)', () => {
-  it('should return unknown and parse JSON response', async () => {
-    const data = await fetchJSON(`${baseURL}/json`)
-    // Without a schema the return type is unknown; narrow before use
-    expect(data).toEqual({ message: 'hello', count: 42 })
-  })
-
-  it('should throw on non-ok HTTP status', async () => {
-    await expect(fetchJSON(`${baseURL}/error-500`)).rejects.toThrow(
-      'HTTP 500: Internal Server Error'
-    )
-  })
-
-  it('should throw on 404 status', async () => {
-    await expect(fetchJSON(`${baseURL}/error-404`)).rejects.toThrow(
-      'HTTP 404: Not Found'
-    )
-  })
-
-  it('should respect timeout option', async () => {
-    await expect(
-      fetchJSON(`${baseURL}/slow`, { timeout: 100 })
-    ).rejects.toThrow()
-  })
-
-  it('should pass through fetch options', async () => {
-    const data = await fetchJSON(`${baseURL}/echo-method`, { method: 'POST' })
-    expect(data).toEqual({ method: 'POST' })
-  })
-})
-
-describe('fetchJSON — validated overload (with schema)', () => {
-  const ResponseSchema = z.object({
-    message: z.string(),
-    count: z.number(),
-  })
-
-  it('should return typed data when response matches schema', async () => {
-    const data = await fetchJSON(`${baseURL}/json`, {}, ResponseSchema)
-    // TypeScript knows data.message is string and data.count is number
-    expect(data.message).toBe('hello')
-    expect(data.count).toBe(42)
-  })
-
-  it('should throw a descriptive error when response does not match schema', async () => {
-    const StrictSchema = z.object({
-      nonExistentField: z.string(),
-    })
-    await expect(
-      fetchJSON(`${baseURL}/json`, {}, StrictSchema)
-    ).rejects.toThrow('Invalid API response')
-  })
-
-  it('should throw on non-ok HTTP status even with schema', async () => {
-    await expect(
-      fetchJSON(`${baseURL}/error-500`, {}, ResponseSchema)
-    ).rejects.toThrow('HTTP 500: Internal Server Error')
-  })
-
-  it('should pass through fetch options with schema', async () => {
-    const MethodSchema = z.object({ method: z.string() })
-    const data = await fetchJSON(
-      `${baseURL}/echo-method`,
-      { method: 'POST' },
-      MethodSchema
-    )
-    expect(data.method).toBe('POST')
   })
 })

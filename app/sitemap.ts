@@ -2,23 +2,52 @@ import type { MetadataRoute } from 'next'
 import { INDUSTRIES } from '@/lib/content/branze'
 import { SERVICES } from '@/lib/content/uslugi'
 import { APP_BASE_URL } from '@/lib/env'
-import { pathPairs } from '@/lib/i18n/slug-map'
 import {
   getCaseStudiesForSitemap,
   getCategories,
   getPostsForSitemap,
   getPostsPage,
 } from '@/lib/payload/queries'
-import { STATIC_ROUTES } from '@/lib/static-routes'
+import { STATIC_PAGES } from '@/lib/static-routes'
+
+type SitemapEntry = MetadataRoute.Sitemap[number]
+type ChangeFrequency = SitemapEntry['changeFrequency']
+
+function entry(
+  path: string,
+  changeFrequency: ChangeFrequency,
+  priority: number,
+  lastModified: Date = new Date()
+): SitemapEntry {
+  return {
+    url: path === '/' ? APP_BASE_URL : `${APP_BASE_URL}${path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+  }
+}
+
+/** hreflang for a pair, `x-default` on Polish (design D8). */
+const languagesFor = (pl: string, en: string) => ({
+  languages: {
+    pl: `${APP_BASE_URL}${pl}`,
+    en: `${APP_BASE_URL}${en}`,
+    'x-default': `${APP_BASE_URL}${pl}`,
+  },
+})
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseRoutes: MetadataRoute.Sitemap = STATIC_ROUTES.map(
-    ({ path, changeFrequency, priority }) => ({
-      url: path === '/' ? APP_BASE_URL : `${APP_BASE_URL}${path}`,
-      lastModified: new Date(),
-      changeFrequency,
-      priority,
-    })
+  // Static pages, both locales, from the shared PL↔EN registry
+  // (lib/static-routes.ts, derived from pathPairs). The PL entry carries the
+  // pair's hreflang alternates; the EN half keeps its flat monthly cadence.
+  const staticRoutes: MetadataRoute.Sitemap = STATIC_PAGES.flatMap(
+    ({ pl, en, changeFrequency, priority }) => [
+      {
+        ...entry(pl, changeFrequency, priority),
+        alternates: languagesFor(pl, en),
+      },
+      entry(en, 'monthly', en === '/en' ? 0.9 : 0.6),
+    ]
   )
 
   // Published only — every query constrains _status; drafts never appear here.
@@ -44,49 +73,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     enCategories.map((category) => [category.id, category.slug])
   )
 
-  /** hreflang for a pair, `x-default` on Polish (design D8). */
-  const languagesFor = (pl: string, en: string) => ({
-    languages: {
-      pl: `${APP_BASE_URL}${pl}`,
-      en: `${APP_BASE_URL}${en}`,
-      'x-default': `${APP_BASE_URL}${pl}`,
-    },
-  })
-
   const postRoutes: MetadataRoute.Sitemap = posts.map((post) => {
     const enSlug = enSlugByPostId.get(post.id)
     return {
-      url: `${APP_BASE_URL}/${post.slug}`,
-      lastModified: new Date(post.updatedAt),
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      ...entry(`/${post.slug}`, 'monthly', 0.7, new Date(post.updatedAt)),
       ...(enSlug
         ? { alternates: languagesFor(`/${post.slug}`, `/en/blog/${enSlug}`) }
         : {}),
     }
   })
 
-  const enPostRoutes: MetadataRoute.Sitemap = enPosts.map((post) => ({
-    url: `${APP_BASE_URL}/en/blog/${post.slug}`,
-    lastModified: new Date(post.updatedAt),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
+  const enPostRoutes: MetadataRoute.Sitemap = enPosts.map((post) =>
+    entry(`/en/blog/${post.slug}`, 'monthly', 0.7, new Date(post.updatedAt))
+  )
 
-  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${APP_BASE_URL}/case-studies/${study.slug}`,
-    lastModified: new Date(study.updatedAt),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
+  // Case-study details exist at the same slug in both locales (same docs,
+  // same updatedAt).
+  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudies.flatMap(
+    (study) => [
+      entry(
+        `/case-studies/${study.slug}`,
+        'monthly',
+        0.7,
+        new Date(study.updatedAt)
+      ),
+      entry(
+        `/en/case-studies/${study.slug}`,
+        'monthly',
+        0.7,
+        new Date(study.updatedAt)
+      ),
+    ]
+  )
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => {
     const enSlug = enSlugByCategoryId.get(category.id)
     return {
-      url: `${APP_BASE_URL}/category/${category.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      ...entry(`/category/${category.slug}`, 'weekly', 0.6),
       ...(enSlug
         ? {
             alternates: languagesFor(
@@ -98,13 +121,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   })
 
-  const enCategoryRoutes: MetadataRoute.Sitemap = enCategories.map(
-    (category) => ({
-      url: `${APP_BASE_URL}/en/blog/category/${category.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    })
+  const enCategoryRoutes: MetadataRoute.Sitemap = enCategories.map((category) =>
+    entry(`/en/blog/category/${category.slug}`, 'weekly', 0.6)
   )
 
   /**
@@ -114,84 +132,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
    * /blog/page/2 and /en/blog/page/2 are different sets of posts (task 7.4).
    * Page 1 is omitted because it is canonical at the hub itself.
    */
-  const paginationRoutes: MetadataRoute.Sitemap = [
-    ...Array.from({ length: Math.max(plHub.totalPages - 1, 0) }, (_, i) => ({
-      url: `${APP_BASE_URL}/blog/page/${i + 2}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.4,
-    })),
-    ...Array.from({ length: Math.max(enHub.totalPages - 1, 0) }, (_, i) => ({
-      url: `${APP_BASE_URL}/en/blog/page/${i + 2}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.4,
-    })),
-  ]
+  const paginationRoutes: MetadataRoute.Sitemap = (
+    [
+      ['/blog', plHub],
+      ['/en/blog', enHub],
+    ] as const
+  ).flatMap(([base, hub]) =>
+    Array.from({ length: Math.max(hub.totalPages - 1, 0) }, (_, i) =>
+      entry(`${base}/page/${i + 2}`, 'weekly', 0.4)
+    )
+  )
 
-  // English marketing/legal pages (translated-slug URLs from the slug map) plus
-  // the EN case-study details (same slugs + updatedAt as the Polish docs).
-  const enStaticRoutes: MetadataRoute.Sitemap = pathPairs
-    .map(([, en]) => en)
-    .map((en) => ({
-      url: `${APP_BASE_URL}${en}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: en === '/en' ? 0.9 : 0.6,
-    }))
-
-  const enCaseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${APP_BASE_URL}/en/case-studies/${study.slug}`,
-    lastModified: new Date(study.updatedAt),
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
-
-  // Industry pages — the index + all 24 detail URLs (12 PL + 12 EN) from the
-  // canonical list (design D6). Each PL entry carries its EN counterpart slug
-  // (`pairSlug`). The two index URLs are listed here even though desktop chrome
-  // no longer links them (design D4), so they stay crawlable.
-  const industryRoutes: MetadataRoute.Sitemap = [
-    { path: '/branze', priority: 0.8 },
-    { path: '/en/industries', priority: 0.8 },
-    ...INDUSTRIES.flatMap((industry) => [
-      { path: `/branze/${industry.slug}`, priority: 0.7 },
-      { path: `/en/industries/${industry.pairSlug}`, priority: 0.7 },
+  // Section pages — index + every detail URL in both locales, from the
+  // canonical content lists (design D6). Each PL entry carries its EN
+  // counterpart slug (`pairSlug`). The index URLs are listed even though
+  // desktop chrome no longer links them (design D4), so they stay crawlable.
+  const sectionRoutes: MetadataRoute.Sitemap = [
+    { pl: '/branze', en: '/en/industries', items: INDUSTRIES },
+    { pl: '/uslugi', en: '/en/services', items: SERVICES },
+  ].flatMap(({ pl, en, items }) => [
+    entry(pl, 'monthly', 0.8),
+    entry(en, 'monthly', 0.8),
+    ...items.flatMap((item) => [
+      entry(`${pl}/${item.slug}`, 'monthly', 0.7),
+      entry(`${en}/${item.pairSlug}`, 'monthly', 0.7),
     ]),
-  ].map(({ path, priority }) => ({
-    url: `${APP_BASE_URL}${path}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority,
-  }))
-
-  // Service pages — the index + six services in both locales. Each PL entry
-  // carries its EN counterpart slug (`pairSlug`), mirroring the industry block.
-  const serviceRoutes: MetadataRoute.Sitemap = [
-    { path: '/uslugi', priority: 0.8 },
-    { path: '/en/services', priority: 0.8 },
-    ...SERVICES.flatMap((service) => [
-      { path: `/uslugi/${service.slug}`, priority: 0.7 },
-      { path: `/en/services/${service.pairSlug}`, priority: 0.7 },
-    ]),
-  ].map(({ path, priority }) => ({
-    url: `${APP_BASE_URL}${path}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority,
-  }))
+  ])
 
   return [
-    ...baseRoutes,
+    ...staticRoutes,
     ...postRoutes,
     ...enPostRoutes,
     ...caseStudyRoutes,
     ...categoryRoutes,
     ...enCategoryRoutes,
     ...paginationRoutes,
-    ...enStaticRoutes,
-    ...enCaseStudyRoutes,
-    ...industryRoutes,
-    ...serviceRoutes,
+    ...sectionRoutes,
   ]
 }

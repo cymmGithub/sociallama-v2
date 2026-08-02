@@ -19,7 +19,7 @@ import {
 } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { joinCta, type LocalizedHome } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { usePreferredReducedMotion, useRotator } from '@/lib/hooks'
 import s from './join-cta.module.css'
 
@@ -36,11 +36,7 @@ const BURST_MS = 620
    four deliberate activations, not a firework. */
 const BURST_ANGLES = [0, 60, 120, 180, 240, 300]
 
-export function JoinCta({
-  content = joinCta,
-}: {
-  content?: LocalizedHome['joinCta']
-}) {
+export function JoinCta({ content }: { content: LocalizedHome['joinCta'] }) {
   // Rotates the locative token through the offer. Static under reduced
   // motion (shows the first entry only); paused while off screen. The cube
   // reads the same index, so word and cube can never drift apart.

@@ -3,22 +3,19 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { chrome, INDUSTRIES } from '@/lib/content/branze.en'
 import { OG_BASE } from '@/lib/content/site.en'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 const EN_PATH = '/en/industries'
-const PL_PATH = '/branze'
 
 export const metadata: Metadata = {
-  title: 'Industries | Social Lama',
+  title: 'Industries',
   description:
     'Automotive, beauty, health, finance, pet care and more — social media run by people who know how each industry actually works. Pick yours.',
-  alternates: {
-    canonical: EN_PATH,
-    languages: { pl: PL_PATH, en: EN_PATH, 'x-default': PL_PATH },
-  },
+  alternates: alternatesForPath(EN_PATH),
   openGraph: {
     type: 'website',
     ...OG_BASE,
-    title: 'Industries | Social Lama',
+    title: 'Industries',
     url: EN_PATH,
   },
 }

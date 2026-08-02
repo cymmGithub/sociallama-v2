@@ -42,14 +42,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     * - Public assets (images, fonts, etc.)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot)$).*)',
-  ],
+  // The body only ever acts on /api/* (rate limiting) — matching page routes
+  // would bill a proxy invocation per HTML request just to NextResponse.next().
+  // Widen the matcher if auth/logging/CORS concerns are added above.
+  matcher: ['/api/:path*'],
 }

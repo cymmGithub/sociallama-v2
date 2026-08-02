@@ -6,11 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { CLIENT_ROSTER } from '@/lib/content/clients'
-import {
-  howItWorks,
-  type LocalizedHome,
-  type SayPart,
-} from '@/lib/content/home'
+import type { LocalizedHome, SayPart } from '@/lib/content/home'
 import s from './how-it-works.module.css'
 
 type HowItWorksContent = LocalizedHome['howItWorks']
@@ -177,10 +173,10 @@ function Panel({
 }
 
 export function HowItWorks({
-  content = howItWorks,
+  content,
   caseStudyBase = '/case-studies',
 }: {
-  content?: HowItWorksContent
+  content: HowItWorksContent
   /** Case-study route prefix for the current locale; slugs are shared. */
   caseStudyBase?: string
 }) {

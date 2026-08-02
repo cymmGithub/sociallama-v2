@@ -6,12 +6,7 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
 import { CLIENT_ROSTER, type ClientCopy } from '@/lib/content/clients'
-import {
-  clientCardCta as clientCardCtaDefault,
-  clients as clientsDefault,
-  clientsHeading as clientsHeadingDefault,
-  type LocalizedHome,
-} from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import s from './client-logos.module.css'
 
 /* Keep the hover card on screen: cards are centred on their logo, so near the
@@ -43,15 +38,15 @@ function keepCardOnScreen(e: React.MouseEvent<HTMLLIElement>) {
 }
 
 export function ClientLogos({
-  clients = clientsDefault,
-  heading = clientsHeadingDefault,
-  cardCta = clientCardCtaDefault,
+  clients,
+  heading,
+  cardCta,
   caseStudyBase = '/case-studies',
 }: {
   /** Per-locale card copy, keyed by roster key. The roster itself is shared. */
-  clients?: ClientCopy
-  heading?: LocalizedHome['clientsHeading']
-  cardCta?: LocalizedHome['clientCardCta']
+  clients: ClientCopy
+  heading: LocalizedHome['clientsHeading']
+  cardCta: LocalizedHome['clientCardCta']
   /** Case-study route prefix for the current locale. */
   caseStudyBase?: string
 }) {

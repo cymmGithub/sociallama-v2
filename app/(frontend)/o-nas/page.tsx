@@ -1,18 +1,14 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
-import { news } from '@/lib/content/home'
-import { oNasMeta } from '@/lib/content/o-nas'
+import * as home from '@/lib/content/home'
+import * as pl from '@/lib/content/o-nas'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
-import {
-  getLatestPost,
-  resolveCategory,
-  resolveMedia,
-} from '@/lib/payload/queries'
-import type { Post } from '@/payload-types'
+import { getLatestPost } from '@/lib/payload/queries'
 import { BigMarquee } from '../(home)/sections/big-marquee'
 import { ClientLogos } from '../(home)/sections/client-logos'
 import { JoinCta } from '../(home)/sections/join-cta'
-import { NewsLama, type NewsLamaPost } from '../(home)/sections/news-lama'
+import { NewsLama } from '../(home)/sections/news-lama'
+import { toNewsLamaPost } from '../(home)/sections/news-lama/to-news-lama-post'
 import { AboutIntro } from './sections/about-intro'
 import { GoodOne } from './sections/good-one'
 import { OnasHero } from './sections/hero'
@@ -35,29 +31,14 @@ import { ValuesGrid } from './sections/values-grid'
  */
 
 export const metadata: Metadata = {
-  title: oNasMeta.title,
-  description: oNasMeta.description,
+  title: pl.oNasMeta.title,
+  description: pl.oNasMeta.description,
   alternates: alternatesForPath('/o-nas'),
-}
-
-// Latest-post view-model for the reused NewsLama section (mirrors the homepage
-// helper; kept local like the original rather than shared).
-function toNewsLamaPost(post: Post): NewsLamaPost {
-  const cover = resolveMedia(post.cover)
-  return {
-    title: post.title,
-    excerpt: post.excerpt ?? '',
-    category: resolveCategory(post.category)?.title ?? '',
-    date: post.publishedAt ?? post.createdAt,
-    href: `/${post.slug}`,
-    cover: cover?.sizes?.card?.url ?? cover?.url ?? '',
-    coverAlt: cover?.alt ?? '',
-  }
 }
 
 export default async function ONasPage() {
   const latestPost = await getLatestPost()
-  const newsPost = latestPost ? toNewsLamaPost(latestPost) : null
+  const newsPost = latestPost ? toNewsLamaPost(latestPost, '') : null
 
   return (
     <Wrapper theme="plum">
@@ -67,19 +48,23 @@ export default async function ONasPage() {
           resolves the plum tokens like the homepage. */}
       <div className={heroStyles.column}>
         <OnasHero />
-        <ClientLogos />
+        <ClientLogos
+          clients={home.clients}
+          heading={home.clientsHeading}
+          cardCta={home.clientCardCta}
+        />
       </div>
-      <AboutIntro />
-      <ValuesGrid />
-      <Projects />
+      <AboutIntro content={pl.oNasAbout} />
+      <ValuesGrid content={pl.oNasValues} />
+      <Projects content={pl.oNasProjects} />
       {/* reused — on the sand light ground with cream tokens (ink outline),
           exactly as on the homepage's cream chapter: no distinct plum band,
           continuous with the projects / GOOD ONE sand sections around it. */}
       <div data-theme="cream" style={{ backgroundColor: 'var(--color-sand)' }}>
         <BigMarquee />
       </div>
-      <GoodOne />
-      <Team />
+      <GoodOne content={pl.oNasGoodOne} />
+      <Team content={pl.oNasTeam} />
       {/* reused — JoinCta sits on the same sand ground as the BigMarquee /
           GOOD ONE sand sections above, per request; NewsLama keeps the native
           plum-deep look. */}
@@ -90,10 +75,12 @@ export default async function ONasPage() {
           color: 'var(--color-ink)',
         }}
       >
-        <JoinCta />
+        <JoinCta content={home.joinCta} />
       </div>
       <div data-theme="plum-deep">
-        {newsPost && <NewsLama content={news} locale="pl" post={newsPost} />}
+        {newsPost && (
+          <NewsLama content={home.news} locale="pl" post={newsPost} />
+        )}
       </div>
     </Wrapper>
   )

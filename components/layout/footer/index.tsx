@@ -5,8 +5,8 @@ import { ConsentSettingsLink } from '@/components/consent/consent-settings-link'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
-import { socials } from '@/lib/content/home'
-import { footerWordmarkPath } from '@/lib/wordmark-paths'
+import { socials } from '@/lib/content/socials'
+import { footerWordmarkPath } from '@/lib/wordmark-footer'
 import s from './footer.module.css'
 
 export function Footer() {

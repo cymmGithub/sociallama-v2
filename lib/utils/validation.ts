@@ -205,9 +205,8 @@ export function parseFormData<T>(
  * @example
  * ```ts
  * import { emailSchema, zodToValidator } from '@/utils/validation'
- * import { addValidator } from '@/components/ui/form/hook'
  *
- * addValidator('email', zodToValidator(emailSchema))
+ * const isValidEmail = zodToValidator(emailSchema)
  * ```
  */
 export function zodToValidator(schema: z.ZodType): (value: string) => boolean {

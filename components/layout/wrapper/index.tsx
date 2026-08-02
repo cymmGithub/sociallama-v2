@@ -104,7 +104,7 @@ export function Wrapper({
   ...props
 }: WrapperProps) {
   return (
-    <Theme theme={theme} global>
+    <Theme theme={theme}>
       {/* Header is rendered here - do NOT add another in layout.tsx */}
       <Header />
       <Canvas root={webgl}>

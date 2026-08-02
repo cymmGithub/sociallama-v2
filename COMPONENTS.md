@@ -44,6 +44,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Header | `@/components/layout/header` | Client |
 | Lenis | `@/components/layout/lenis` | Client |
 | LocaleToggle | `@/components/layout/locale-toggle` | Client |
+| RootDocument | `@/components/layout/root-document` | Server |
 | RouteLoading | `@/components/layout/route-loading` | Server |
 | ScrollReset | `@/components/layout/scroll-reset` | Client |
 | Theme | `@/components/layout/theme` | Client |
@@ -65,13 +66,9 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Hook | Import | Signature |
 |------|--------|-----------|
 | useDeviceDetection | `@/hooks/use-device-detection` | `()` |
-| usePrefetch | `@/hooks/use-prefetch` | `(href: Route | null | undefined, options?: IntersectionObserverInit)` |
 | useReveal | `@/hooks/use-reveal` | `({ threshold = 0, rootMargin = '0px 0px -25% 0px', once = true, }: UseRevealOptions = {})` |
 | useRotator | `@/hooks/use-rotator` | `(length: number) => { ref: RefObject<T | null>; rotation: RotationState }` |
-| useOnlineStatus | `@/hooks/use-sync-external` | `() => boolean` |
-| usePreferredColorScheme | `@/hooks/use-sync-external` | `() => 'light' | 'dark'` |
 | usePreferredReducedMotion | `@/hooks/use-sync-external` | `() => boolean` |
-| useDocumentVisibility | `@/hooks/use-sync-external` | `() => DocumentVisibilityState` |
 
 ---
 
@@ -82,7 +79,6 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Export | Signature |
 |--------|-----------|
 | fetchWithTimeout | `(url: string, options: FetchWithTimeoutOptions = {}) => Promise<Response>` |
-| fetchJSON | `(url: string, options?: FetchWithTimeoutOptions) => Promise<unknown>` |
 | FetchWithTimeoutOptions |  |
 
 ### Form-action (`@/utils/form-action`)
@@ -104,18 +100,18 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | clamp | `(min: number, input: number, max: number) => number` |
 | lerp | `(start: number, end: number, amount: number) => number` |
 | mapRange | `(inMin: number, inMax: number, input: number, outMin: number, outMax: number, shouldClamp = false) => number` |
-| truncate | `(value: number, decimals: number) => number` |
 | modulo | `(n: number, d: number) => number` |
-| roundTo | `(value: number, multiple: number) => number` |
-| degToRad | `(degrees: number) => number` |
-| radToDeg | `(radians: number) => number` |
 | distance | `(x1: number, y1: number, x2: number, y2: number) => number` |
 
 ### Metadata (`@/utils/metadata`)
 
 | Export | Signature |
 |--------|-----------|
-| generatePageMetadata | `(options: GenerateMetadataOptions) => Metadata` |
+| rootMetadata | `(locale: Locale) => Metadata` |
+| postMetadata | `(post: Post, { path, counterpartUrl }: DocumentPaths) => Metadata` |
+| caseStudyMetadata | `(study: CaseStudy, path: string) => Metadata` |
+| categoryMetadata | `({ title, description, path, counterpartUrl, }: CategoryMetadataOptions) => Metadata` |
+| pairMetadata | `({ title, description, path, }: PairMetadataOptions) => Metadata` |
 
 ### Raf (`@/utils/raf`)
 
@@ -139,9 +135,6 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Export | Signature |
 |--------|-----------|
 | slugify | `(text: { toString: () => string })` |
-| lowerFirstChar | `(inputString: string)` |
-| capitalizeFirstLetter | `(inputString: string)` |
-| isEmptyArray | `(arr: string | unknown[])` |
 | stripHtmlTags | `(input: string) => string` |
 
 ### Validation (`@/utils/validation`)

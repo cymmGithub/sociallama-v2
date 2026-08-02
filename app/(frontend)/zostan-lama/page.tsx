@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
-import { careersMeta } from '@/lib/content/zostan-lama'
+import {
+  careersMeta,
+  careersRoles,
+  careersRolesLabel,
+} from '@/lib/content/zostan-lama'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { CareersApply } from './careers-apply'
 import { CareersBenefits } from './careers-benefits'
@@ -35,7 +39,7 @@ export default function JoinPage() {
       <div className={s.page}>
         <DarkChrome />
         <CareersHero />
-        <CareersRoles />
+        <CareersRoles roles={careersRoles} label={careersRolesLabel} />
         <CareersBenefits />
         <CareersApply />
       </div>

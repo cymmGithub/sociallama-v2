@@ -29,6 +29,68 @@ import s from './fields.module.css'
  * ```
  */
 
+type FieldShellProps = {
+  id: string
+  /** Registration key — the field's `name` attribute, see `InputField`. */
+  fieldName: string
+  label?: ReactNode
+  required: boolean
+  disabled: boolean
+  className?: string | undefined
+  /** The field's own `<Field.Control>`. */
+  children: ReactNode
+}
+
+/**
+ * Root, label and error chrome shared by the input, textarea and select fields.
+ * Each of them supplies only its own control; everything around it — the active
+ * / error state classes, the required asterisk, the error message — lives here.
+ *
+ * `FileField` is not built on this: its label carries the visible affordance for
+ * a hidden input and its error state is local, not the registered one.
+ */
+function FieldShell({
+  id,
+  fieldName,
+  label,
+  required,
+  disabled,
+  className,
+  children,
+}: FieldShellProps) {
+  const { state } = useFormContext()
+  const { errors, isActive } = state
+  const error = errors[fieldName]
+
+  return (
+    <Field.Root
+      className={cn(
+        s.field,
+        isActive[fieldName] && s.active,
+        error?.state && s.error,
+        className
+      )}
+      disabled={disabled}
+    >
+      {label && (
+        <Field.Label htmlFor={id} className={s.label}>
+          {label}
+          {required && <span aria-hidden="true"> *</span>}
+        </Field.Label>
+      )}
+      {children}
+      {/* Plain element, not Base UI <Field.Error> — the latter renders only
+          from Base UI's own validity, so our custom validation state never
+          surfaced through it. */}
+      {error?.state && error.message && (
+        <span className={s.errorMessage} role="alert">
+          {error.message}
+        </span>
+      )}
+    </Field.Root>
+  )
+}
+
 type InputFieldProps = {
   className?: string
   type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'
@@ -50,48 +112,31 @@ export function InputField({
   required = false,
   disabled = false,
 }: InputFieldProps) {
-  const { state, actions } = useFormContext()
-  const { errors, isActive } = state
+  const { actions } = useFormContext()
   const { register } = actions
   // Use name (or id as fallback) as the registration key — matches the input's name attribute
   const fieldName = name ?? id
-  const error = errors[fieldName]
 
   return (
-    <Field.Root
-      className={cn(
-        s.field,
-        isActive[fieldName] && s.active,
-        error?.state && s.error,
-        className
-      )}
+    <FieldShell
+      id={id}
+      fieldName={fieldName}
+      label={label}
+      required={required}
       disabled={disabled}
+      className={className}
     >
-      {label && (
-        <Field.Label htmlFor={id} className={cn(s.label)}>
-          {label}
-          {required && <span aria-hidden="true"> *</span>}
-        </Field.Label>
-      )}
       <Field.Control
         type={type}
         id={id}
         name={fieldName}
         required={required}
         placeholder={placeholder}
-        className={cn(s.input)}
+        className={s.input}
         {...register(fieldName)}
         render={<input />}
       />
-      {/* Plain element, not Base UI <Field.Error> — the latter renders only
-          from Base UI's own validity, so our custom validation state never
-          surfaced through it. */}
-      {error?.state && error.message && (
-        <span className={cn(s.errorMessage)} role="alert">
-          {error.message}
-        </span>
-      )}
-    </Field.Root>
+    </FieldShell>
   )
 }
 
@@ -116,47 +161,29 @@ export function TextareaField({
   disabled = false,
   rows = 4,
 }: TextareaFieldProps) {
-  const { state, actions } = useFormContext()
-  const { errors, isActive } = state
+  const { actions } = useFormContext()
   const { register } = actions
   const fieldName = name ?? id
-  const error = errors[fieldName]
-  const reg = register(fieldName)
 
   return (
-    <Field.Root
-      className={cn(
-        s.field,
-        isActive[fieldName] && s.active,
-        error?.state && s.error,
-        className
-      )}
+    <FieldShell
+      id={id}
+      fieldName={fieldName}
+      label={label}
+      required={required}
       disabled={disabled}
+      className={className}
     >
-      {label && (
-        <Field.Label htmlFor={id} className={cn(s.label)}>
-          {label}
-          {required && <span aria-hidden="true"> *</span>}
-        </Field.Label>
-      )}
       <Field.Control
         id={id}
         name={fieldName}
         required={required}
         placeholder={placeholder}
         className={s.textarea}
-        {...reg}
+        {...register(fieldName)}
         render={<textarea rows={rows} />}
       />
-      {/* Plain element, not Base UI <Field.Error> — the latter renders only
-          from Base UI's own validity, so our custom validation state never
-          surfaced through it. */}
-      {error?.state && error.message && (
-        <span className={cn(s.errorMessage)} role="alert">
-          {error.message}
-        </span>
-      )}
-    </Field.Root>
+    </FieldShell>
   )
 }
 
@@ -188,34 +215,25 @@ export function SelectField({
   required = false,
   disabled = false,
 }: SelectFieldProps) {
-  const { state, actions } = useFormContext()
-  const { errors, isActive } = state
+  const { actions } = useFormContext()
   const { register } = actions
   const fieldName = name ?? id
-  const error = errors[fieldName]
 
   return (
-    <Field.Root
-      className={cn(
-        s.field,
-        isActive[fieldName] && s.active,
-        error?.state && s.error,
-        className
-      )}
+    <FieldShell
+      id={id}
+      fieldName={fieldName}
+      label={label}
+      required={required}
       disabled={disabled}
+      className={className}
     >
-      {label && (
-        <Field.Label htmlFor={id} className={cn(s.label)}>
-          {label}
-          {required && <span aria-hidden="true"> *</span>}
-        </Field.Label>
-      )}
       <Field.Control
         id={id}
         name={fieldName}
         required={required}
         defaultValue={defaultValue}
-        className={cn(s.select)}
+        className={s.select}
         {...register(fieldName)}
         render={
           <select>
@@ -227,12 +245,7 @@ export function SelectField({
           </select>
         }
       />
-      {error?.state && error.message && (
-        <span className={cn(s.errorMessage)} role="alert">
-          {error.message}
-        </span>
-      )}
-    </Field.Root>
+    </FieldShell>
   )
 }
 

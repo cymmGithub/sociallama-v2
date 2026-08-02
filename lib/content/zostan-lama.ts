@@ -234,7 +234,8 @@ export const careersForm = {
     declined: 'nieudzielona',
     none: '—',
   },
-  // FormState.message returned by the server action (surfaced by <Messages/>).
+  // FormState.message returned by the server action; the form's
+  // onSuccess/onError callbacks surface it as a toast.
   messages: {
     success: 'Dzięki! Odezwiemy się w\u00A0ciągu 7 dni.',
     error: 'Nie udało się wysłać aplikacji. Spróbuj ponownie za chwilę.',

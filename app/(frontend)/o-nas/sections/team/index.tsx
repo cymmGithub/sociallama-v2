@@ -24,7 +24,8 @@ import {
 } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { type CertKey, type LocalizedONas, oNasTeam } from '@/lib/content/o-nas'
+import type { CertKey, LocalizedONas } from '@/lib/content/o-nas'
+import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
 
@@ -74,12 +75,9 @@ function LamaParam({ onSlug }: { onSlug: (slug: string | null) => void }) {
   return null
 }
 
-export function Team({
-  content = oNasTeam,
-}: {
-  content?: LocalizedONas['oNasTeam']
-}) {
+export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
   const revealRef = useReveal<HTMLDivElement>()
+  const reducedMotion = usePreferredReducedMotion()
   const members = content.members
   const count = members.length
 
@@ -139,10 +137,7 @@ export function Team({
   function go(dir: 1 | -1) {
     if (busyRef.current) return
 
-    const reduce =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
+    if (reducedMotion) {
       setIndex((i) => (i + dir + count) % count)
       return
     }

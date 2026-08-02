@@ -3,22 +3,19 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { OG_BASE } from '@/lib/content/site.en'
 import { chrome, SERVICES } from '@/lib/content/uslugi.en'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 const EN_PATH = '/en/services'
-const PL_PATH = '/uslugi'
 
 export const metadata: Metadata = {
-  title: 'Services | Social Lama',
+  title: 'Services',
   description:
     'From strategy to sales — the full spectrum of social media work. Strategy, content, sales, creative & video, audit, and influencer marketing.',
-  alternates: {
-    canonical: EN_PATH,
-    languages: { pl: PL_PATH, en: EN_PATH, 'x-default': PL_PATH },
-  },
+  alternates: alternatesForPath(EN_PATH),
   openGraph: {
     type: 'website',
     ...OG_BASE,
-    title: 'Services | Social Lama',
+    title: 'Services',
     url: EN_PATH,
   },
 }

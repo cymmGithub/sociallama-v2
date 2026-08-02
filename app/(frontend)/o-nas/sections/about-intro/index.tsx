@@ -4,7 +4,7 @@ import cn from 'clsx'
 import { ArrowUpRight } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { type LocalizedONas, oNasAbout } from '@/lib/content/o-nas'
+import type { LocalizedONas } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './about-intro.module.css'
 
@@ -24,9 +24,9 @@ import s from './about-intro.module.css'
  * the figure/heading/body/CTA carry data-reveal-item to stagger in.
  */
 export function AboutIntro({
-  content = oNasAbout,
+  content,
 }: {
-  content?: LocalizedONas['oNasAbout']
+  content: LocalizedONas['oNasAbout']
 }) {
   const revealRef = useReveal<HTMLElement>()
 
@@ -45,7 +45,6 @@ export function AboutIntro({
             src="/o-nas/cos-o-lamie.png"
             alt={content.imageAlt}
             aspectRatio={749 / 802}
-            block
             desktopSize="40vw"
             mobileSize="80vw"
           />

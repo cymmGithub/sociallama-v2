@@ -1,3 +1,4 @@
+import { jsonLdScript } from '@/components/seo/structured-data'
 import { APP_NAME } from '@/lib/content/site'
 import { APP_BASE_URL } from '@/lib/env'
 import type { Locale } from '@/lib/i18n/slug-map'
@@ -25,7 +26,7 @@ export function CaseStudiesListingJsonLd({
 }) {
   const pageUrl = `${APP_BASE_URL}${basePath}`
 
-  const collectionPage = {
+  return jsonLdScript({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     inLanguage: locale,
@@ -47,13 +48,5 @@ export function CaseStudiesListingJsonLd({
         name: study.client.name,
       })),
     },
-  }
-
-  return (
-    <script
-      type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be inline script content
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPage) }}
-    />
-  )
+  })
 }

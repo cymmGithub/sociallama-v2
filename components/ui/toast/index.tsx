@@ -25,7 +25,7 @@ import s from './toast.module.css'
  *   const { toast } = useToast()
  *
  *   return (
- *     <button onClick={() => toast('Item saved!')}>
+ *     <button onClick={() => toast.success('Item saved!')}>
  *       Save
  *     </button>
  *   )
@@ -33,17 +33,10 @@ import s from './toast.module.css'
  * ```
  */
 
-type ToastType = 'default' | 'success' | 'error' | 'info'
-
-type ToastOptions = {
-  type?: ToastType
-}
-
 type ToastContextValue = {
-  toast: ((message: string, options?: ToastOptions) => void) & {
+  toast: {
     success: (message: string) => void
     error: (message: string) => void
-    info: (message: string) => void
   }
 }
 
@@ -69,25 +62,14 @@ function Provider({ children }: { children: ReactNode }) {
 function ToastContextWrapper({ children }: { children: ReactNode }) {
   const toastManager = BaseToast.useToastManager()
 
-  const toast = Object.assign(
-    (message: string, options?: ToastOptions) => {
-      toastManager.add({
-        title: message,
-        type: options?.type ?? 'default',
-      })
+  const toast = {
+    success: (message: string) => {
+      toastManager.add({ title: message, type: 'success' })
     },
-    {
-      success: (message: string) => {
-        toastManager.add({ title: message, type: 'success' })
-      },
-      error: (message: string) => {
-        toastManager.add({ title: message, type: 'error' })
-      },
-      info: (message: string) => {
-        toastManager.add({ title: message, type: 'info' })
-      },
-    }
-  )
+    error: (message: string) => {
+      toastManager.add({ title: message, type: 'error' })
+    },
+  }
 
   return (
     <ToastContext.Provider value={{ toast }}>{children}</ToastContext.Provider>
@@ -127,42 +109,7 @@ function ToastList() {
   ))
 }
 
-function Root({ className, ...props }: ComponentProps<typeof BaseToast.Root>) {
-  return <BaseToast.Root className={cn(s.root, className)} {...props} />
-}
-
-function Title({
-  className,
-  ...props
-}: ComponentProps<typeof BaseToast.Title>) {
-  return <BaseToast.Title className={cn(s.title, className)} {...props} />
-}
-
-function Description({
-  className,
-  ...props
-}: ComponentProps<typeof BaseToast.Description>) {
-  return (
-    <BaseToast.Description
-      className={cn(s.description, className)}
-      {...props}
-    />
-  )
-}
-
-function Close({
-  className,
-  ...props
-}: ComponentProps<typeof BaseToast.Close>) {
-  return <BaseToast.Close className={cn(s.close, className)} {...props} />
-}
-
 export const Toast = {
   Provider,
-  Portal: BaseToast.Portal,
   Viewport,
-  Root,
-  Title,
-  Description,
-  Close,
 }

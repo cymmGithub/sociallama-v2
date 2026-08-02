@@ -1,7 +1,7 @@
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import { socials } from '@/lib/content/home'
 import { type LocalizedONas, oNasHero } from '@/lib/content/o-nas'
+import { socials } from '@/lib/content/socials'
 import s from './hero.module.css'
 
 /*

@@ -7,6 +7,7 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
 import type { Industry, LocalizedBranze } from '@/lib/content/branze'
+import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './industry.module.css'
 
@@ -208,20 +209,21 @@ const HERO_MEDIA = new Set<string>([
 function HeroMedia({ id }: { id: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [playing, setPlaying] = useState(false)
+  const reducedMotion = usePreferredReducedMotion()
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) {
       return
     }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (reducedMotion) {
       return
     }
     video.preload = 'auto'
     video.play().catch(() => {
       // Autoplay refused (e.g. Low Power Mode) — the poster is the fallback.
     })
-  }, [])
+  }, [reducedMotion])
 
   const poster = `/branze/${id}/hero.jpg`
 
@@ -366,6 +368,7 @@ function IndustryBrief({
   const ref = useReveal<HTMLDivElement>()
   const orbitRef = useRef<HTMLDivElement>(null)
   const [spinning, setSpinning] = useState(false)
+  const reducedMotion = usePreferredReducedMotion()
 
   // Spin only while on screen, never under reduced motion (the CSS also
   // disables it — this just avoids running a pointless observer).
@@ -374,7 +377,7 @@ function IndustryBrief({
     if (!el) {
       return
     }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (reducedMotion) {
       return
     }
     const observer = new IntersectionObserver(
@@ -383,7 +386,7 @@ function IndustryBrief({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [reducedMotion])
 
   const pillars = industry.brief.pillars
   const step = 360 / Math.max(pillars.length, 1)

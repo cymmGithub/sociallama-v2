@@ -11,7 +11,7 @@ import s from './news-lama.module.css'
 
 /**
  * Serializable view-model built server-side from the latest published
- * Payload post (see app/(frontend)/(home)/page.tsx). Static labels arrive as
+ * Payload post (see `./to-news-lama-post`). Static labels arrive as
  * a `content` prop: this is a 'use client' module, so a module-scope import
  * of the Polish copy would render Polish on the English homepage no matter
  * which locale the route is.

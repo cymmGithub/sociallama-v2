@@ -8,7 +8,9 @@ import {
   getCategoryBySlug,
   getCategorySlugInLocale,
   getPostsPage,
+  staticParamsOrPlaceholder,
 } from '@/lib/payload/queries'
+import { categoryMetadata } from '@/lib/utils/metadata'
 
 /*
  * English category listings at /en/blog/category/{en-slug}. Category slugs are
@@ -22,12 +24,11 @@ interface PageProps {
 
 export async function generateStaticParams() {
   const categories = await getCategories('en')
-  // Cache Components requires a non-empty result; with no category translated
-  // yet, prerender one guaranteed-404 path so the build succeeds.
-  if (categories.length === 0) {
-    return [{ category: 'placeholder-no-content' }]
-  }
-  return categories.map((category) => ({ category: category.slug }))
+  return staticParamsOrPlaceholder(
+    'category',
+    categories.map((category) => category.slug),
+    'placeholder-no-content'
+  )
 }
 
 export async function generateMetadata({
@@ -41,25 +42,12 @@ export async function generateMetadata({
 
   const counterSlug = await getCategorySlugInLocale(category.id, 'pl')
 
-  return {
+  return categoryMetadata({
     title: `${category.title} — Blog`,
     description: `Posts in the ${category.title} category on the Social Lama blog.`,
-    // Resolved from the document: a category's slug differs per locale, so the
-    // literal path table cannot map it (design D11). Absent when the category
-    // has no row in the other locale.
-    alternates: {
-      canonical: `/en/blog/category/${category.slug}`,
-      ...(counterSlug
-        ? {
-            languages: {
-              pl: `/category/${counterSlug}`,
-              en: `/en/blog/category/${category.slug}`,
-              'x-default': `/category/${counterSlug}`,
-            },
-          }
-        : {}),
-    },
-  }
+    path: `/en/blog/category/${category.slug}`,
+    counterpartUrl: counterSlug ? `/category/${counterSlug}` : null,
+  })
 }
 
 export default async function EnCategoryPage({ params }: PageProps) {

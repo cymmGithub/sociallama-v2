@@ -1,5 +1,6 @@
-import { type LocalizedHome, socials } from '@/lib/content/home'
+import type { LocalizedHome } from '@/lib/content/home'
 import { APP_NAME } from '@/lib/content/site'
+import { socials } from '@/lib/content/socials'
 import { APP_BASE_URL } from '@/lib/env'
 import { localeOf } from '@/lib/i18n/slug-map'
 
@@ -37,7 +38,11 @@ export function organizationRef() {
 const groupYouTube = socials.find((s) => s.label === 'YouTube')?.href
 const sameAs = socials.filter((s) => s.label !== 'YouTube').map((s) => s.href)
 
-function jsonLdScript(node: object) {
+/**
+ * The one place JSON-LD becomes markup. Takes a single node or an array of
+ * nodes (pages that emit several use one script carrying all of them).
+ */
+export function jsonLdScript(node: object) {
   return (
     <script
       type="application/ld+json"
@@ -45,6 +50,33 @@ function jsonLdScript(node: object) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(node) }}
     />
   )
+}
+
+/** Absolute-ify a Payload media URL (local dev uploads are relative). */
+export function absoluteUrl(
+  url: string | null | undefined
+): string | undefined {
+  if (!url) {
+    return undefined
+  }
+  return url.startsWith('http') ? url : `${APP_BASE_URL}${url}`
+}
+
+/**
+ * `BreadcrumbList` node. Pass the trail in visible order — positions are
+ * derived, so they cannot drift from the on-page breadcrumb.
+ */
+export function breadcrumbList(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  }
 }
 
 /** `Organization` entity. `description` differs per locale (PL vs EN copy). */

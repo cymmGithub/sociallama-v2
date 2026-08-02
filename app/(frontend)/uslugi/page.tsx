@@ -3,22 +3,19 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { OG_BASE } from '@/lib/content/site'
 import { chrome, SERVICES } from '@/lib/content/uslugi'
+import { alternatesForPath } from '@/lib/i18n/slug-map'
 
 const PL_PATH = '/uslugi'
-const EN_PATH = '/en/services'
 
 export const metadata: Metadata = {
-  title: 'Usługi | Social Lama',
+  title: 'Usługi',
   description:
     'Od strategii po sprzedaż — pełne spektrum działań w social mediach. Strategia, content, sprzedaż, kreacje i wideo, audyt i influencer marketing.',
-  alternates: {
-    canonical: PL_PATH,
-    languages: { pl: PL_PATH, en: EN_PATH, 'x-default': PL_PATH },
-  },
+  alternates: alternatesForPath(PL_PATH),
   openGraph: {
     type: 'website',
     ...OG_BASE,
-    title: 'Usługi | Social Lama',
+    title: 'Usługi',
     url: PL_PATH,
   },
 }

@@ -153,17 +153,6 @@ export function counterpartPath(path: string, override?: string): string {
   return localeOf(p) === 'en' ? PL_HOME : EN_HOME
 }
 
-/** True when `path` has an explicit counterpart (not a home-fallback). */
-export function hasCounterpart(path: string): boolean {
-  const p = normalize(path)
-  return (
-    caseStudyDetailCounterpart(p) !== null ||
-    sectionCounterpart(p) !== null ||
-    PL_TO_EN.has(p) ||
-    EN_TO_PL.has(p)
-  )
-}
-
 /** The PL and EN URLs for the same content — for hreflang pairs. */
 export function hreflangPairsForPath(
   path: string,

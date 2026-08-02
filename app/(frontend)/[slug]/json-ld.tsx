@@ -1,16 +1,13 @@
-import { organizationRef } from '@/components/seo/structured-data'
+import {
+  absoluteUrl,
+  breadcrumbList,
+  jsonLdScript,
+  organizationRef,
+} from '@/components/seo/structured-data'
 import type { ResolvedAuthor } from '@/lib/blog/author'
 import { APP_BASE_URL } from '@/lib/env'
 import type { Locale } from '@/lib/i18n/slug-map'
 import type { Post } from '@/payload-types'
-
-/** Absolute-ify a Payload media URL (local dev uploads are relative). */
-function absolute(url: string | null | undefined): string | undefined {
-  if (!url) {
-    return undefined
-  }
-  return url.startsWith('http') ? url : `${APP_BASE_URL}${url}`
-}
 
 /**
  * Author node for the post. A named human is an inline `Person`; the Social
@@ -54,7 +51,7 @@ export function BlogPostJsonLd({
   locale: Locale
 }) {
   const pageUrl = `${APP_BASE_URL}${basePath}/${post.slug}`
-  const image = absolute(imageUrl)
+  const image = absoluteUrl(imageUrl)
   const description = post.seo?.metaDescription || post.excerpt || undefined
 
   const blogPosting = {
@@ -74,32 +71,10 @@ export function BlogPostJsonLd({
     },
   }
 
-  const breadcrumbs = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: hubLabel,
-        item: `${APP_BASE_URL}${hubPath}`,
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: post.title,
-        item: pageUrl,
-      },
-    ],
-  }
+  const breadcrumbs = breadcrumbList([
+    { name: hubLabel, url: `${APP_BASE_URL}${hubPath}` },
+    { name: post.title, url: pageUrl },
+  ])
 
-  return (
-    <script
-      type="application/ld+json"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be inline script content
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify([blogPosting, breadcrumbs]),
-      }}
-    />
-  )
+  return jsonLdScript([blogPosting, breadcrumbs])
 }

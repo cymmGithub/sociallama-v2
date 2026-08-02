@@ -13,11 +13,7 @@ import { useMediaQuery } from 'hamo'
 |------|---------|
 | `useReveal` | Reveal-on-scroll via IntersectionObserver — CSS-driven, compositor-thread; reduced-motion + no-JS safe |
 | `useDeviceDetection` | Detect screen size, input, motion preference, WebGL support |
-| `usePrefetch` | Prefetch routes on visibility |
-| `useOnlineStatus` | Network online/offline status |
-| `usePreferredColorScheme` | System theme preference |
 | `usePreferredReducedMotion` | Reduced motion preference |
-| `useDocumentVisibility` | Tab visibility state |
 
 ## useReveal
 
@@ -55,38 +51,6 @@ function ResponsiveComponent() {
 }
 ```
 
-### useOnlineStatus
-
-Detect network connectivity:
-
-```tsx
-import { useOnlineStatus } from '@/hooks'
-
-function NetworkAwareComponent() {
-  const isOnline = useOnlineStatus()
-
-  if (!isOnline) {
-    return <OfflineBanner />
-  }
-
-  return <App />
-}
-```
-
-### usePreferredColorScheme
-
-Get system color scheme preference:
-
-```tsx
-import { usePreferredColorScheme } from '@/hooks'
-
-function ThemeProvider({ children }) {
-  const colorScheme = usePreferredColorScheme() // 'light' | 'dark'
-
-  return <div data-theme={colorScheme}>{children}</div>
-}
-```
-
 ### usePreferredReducedMotion
 
 Respect user's motion preferences for accessibility:
@@ -106,27 +70,6 @@ function AnimatedComponent() {
       {/* children animate via CSS transition using var(--duration) */}
     </div>
   )
-}
-```
-
-### useDocumentVisibility
-
-React to tab visibility changes:
-
-```tsx
-import { useDocumentVisibility } from '@/hooks'
-
-function VideoPlayer() {
-  const visibility = useDocumentVisibility() // 'visible' | 'hidden'
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    if (visibility === 'hidden') {
-      videoRef.current?.pause()
-    }
-  }, [visibility])
-
-  return <video ref={videoRef} />
 }
 ```
 

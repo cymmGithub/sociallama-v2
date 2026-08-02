@@ -45,7 +45,7 @@ export const SERVICES = [
     pairSlug: 'strategia',
     label: 'Strategy',
     meta: {
-      title: 'Social media strategy | Social Lama',
+      title: 'Social media strategy',
       description:
         'We build a data-driven social media communication strategy — from the audit and target audience to measurable goals and rollout.',
     },
@@ -145,7 +145,7 @@ export const SERVICES = [
     pairSlug: 'content',
     label: 'Content',
     meta: {
-      title: 'Content & social media management | Social Lama',
+      title: 'Content & social media management',
       description:
         'We run brands on seven platforms — Facebook, Instagram, TikTok, X, LinkedIn, Pinterest, YouTube. Content tailored to every channel.',
     },
@@ -215,7 +215,7 @@ export const SERVICES = [
     pairSlug: 'sprzedaz',
     label: 'Sales',
     meta: {
-      title: 'Social media that sells | Social Lama',
+      title: 'Social media that sells',
       description:
         'We run social media built for sales. We measure success not in likes but in your business results — backed by hard campaign data.',
     },
@@ -354,7 +354,7 @@ export const SERVICES = [
     pairSlug: 'kampanie-reklamowe',
     label: 'Ad campaigns',
     meta: {
-      title: 'SEO and Google Ads — ad campaigns | Social Lama',
+      title: 'SEO and Google Ads — ad campaigns',
       description:
         'SEO, Google Ads campaigns, SEO audits, websites, and analytics & reporting. We run search and performance with SEOFly — an agency in the Good One Group.',
     },
@@ -428,7 +428,7 @@ export const SERVICES = [
     pairSlug: 'kreacje-wideo',
     label: 'Creative & Video',
     meta: {
-      title: 'Graphic creative & video | Social Lama',
+      title: 'Graphic creative & video',
       description:
         'Graphics, video, reels, and animation — the full spectrum of social media creative. Deep video and copywriting resources, tuned to the trends.',
     },
@@ -487,7 +487,7 @@ export const SERVICES = [
     pairSlug: 'audyt-i-konsultacje',
     label: 'Audit & consulting',
     meta: {
-      title: 'Social media audit & consulting | Social Lama',
+      title: 'Social media audit & consulting',
       description:
         'An audit of your social media presence and strategic consulting. Concrete findings and recommendations you can put to work right away.',
     },
@@ -558,7 +558,7 @@ export const SERVICES = [
     pairSlug: 'influencer-marketing',
     label: 'Influencer marketing',
     meta: {
-      title: 'Influencer marketing | Social Lama',
+      title: 'Influencer marketing',
       description:
         'Influencer marketing campaigns — creator selection, partnership strategy, and delivery. Authentic content that builds reach and trust.',
     },

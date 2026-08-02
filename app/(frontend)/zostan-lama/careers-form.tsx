@@ -31,8 +31,6 @@ import { Toast, useToast } from '@/components/ui/toast'
 import {
   CAREERS_CV_MAX_BYTES,
   CAREERS_SPONTANEOUS_VALUE,
-  careersForm as careersFormDefault,
-  careersRoles as careersRolesDefault,
   type LocalizedCareers,
 } from '@/lib/content/zostan-lama'
 import { env } from '@/lib/env'
@@ -45,9 +43,9 @@ type CareersFormCopy = LocalizedCareers['careersForm']
 type CareersRoles = LocalizedCareers['careersRoles']
 
 interface CareersFormProps {
-  form?: CareersFormCopy
-  roles?: CareersRoles
-  locale?: Locale
+  form: CareersFormCopy
+  roles: CareersRoles
+  locale: Locale
 }
 
 /**
@@ -56,11 +54,7 @@ interface CareersFormProps {
  * /kontakt's pipeline end to end: Turnstile widget, form kit, rate-limited
  * server action, SMTP transport.
  */
-export function CareersForm({
-  form = careersFormDefault,
-  roles = careersRolesDefault,
-  locale = 'pl',
-}: CareersFormProps) {
+export function CareersForm({ form, roles, locale }: CareersFormProps) {
   // Toast.Provider must live inside a client component — it's a compound-
   // component object and can't be resolved across the RSC boundary from the
   // server page. The Viewport (top-right) is portaled to <body>.
@@ -140,11 +134,7 @@ function ConsentField({
   )
 }
 
-function CareersFormFields({
-  form,
-  roles,
-  locale,
-}: Required<CareersFormProps>) {
+function CareersFormFields({ form, roles, locale }: CareersFormProps) {
   const siteKey = env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY
   const consentId = useId()
   // The toast context value isn't memoised, so read it through a ref and keep

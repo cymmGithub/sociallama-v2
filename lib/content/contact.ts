@@ -105,7 +105,8 @@ export const contactForm = {
     message: 'Wiadomość',
     none: '—',
   },
-  // FormState.message returned by the server action (surfaced by <Messages/>).
+  // FormState.message returned by the server action; the form's
+  // onSuccess/onError callbacks surface it as a toast.
   messages: {
     success: 'Dzięki! Odezwiemy się najszybciej, jak to możliwe.',
     error: 'Nie udało się wysłać wiadomości. Spróbuj ponownie za chwilę.',

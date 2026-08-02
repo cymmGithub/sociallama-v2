@@ -1,6 +1,5 @@
 import {
   type ChangeEventHandler,
-  type FocusEventHandler,
   type FormEvent,
   useActionState,
   useCallback,
@@ -38,7 +37,6 @@ import type {
 export function useForm<T = unknown>({
   action,
   initialState = null,
-  onBlur = false,
   formId = '',
   invalidMessage = (name: string) => `Invalid ${name}`,
 }: UseFormOptions<T>): UseFormReturn<T> {
@@ -182,13 +180,8 @@ export function useForm<T = unknown>({
   const registrationsRef = useRef<
     Record<string, ReturnType<UseFormReturn['register']>>
   >({})
-  const handlersRef = useRef({
-    initializeInput,
-    setToActiveInput,
-    validate,
-    onBlur,
-  })
-  handlersRef.current = { initializeInput, setToActiveInput, validate, onBlur }
+  const handlersRef = useRef({ initializeInput, setToActiveInput, validate })
+  handlersRef.current = { initializeInput, setToActiveInput, validate }
 
   const register = useCallback((name: string) => {
     const existing = registrationsRef.current[name]
@@ -206,16 +199,7 @@ export function useForm<T = unknown>({
         target,
       }: Parameters<ChangeEventHandler<FormControlElement>>[0]) => {
         handlersRef.current.setToActiveInput(target.value, name)
-        if (!handlersRef.current.onBlur) {
-          handlersRef.current.validate(target.value, name)
-        }
-      },
-      onBlur: ({
-        target,
-      }: Parameters<FocusEventHandler<FormControlElement>>[0]) => {
-        if (handlersRef.current.onBlur) {
-          handlersRef.current.validate(target.value, name)
-        }
+        handlersRef.current.validate(target.value, name)
       },
     }
     registrationsRef.current[name] = registration
@@ -240,11 +224,6 @@ export function useForm<T = unknown>({
 const validators: Record<string, (value: string) => boolean> = {
   email: zodToValidator(emailSchema),
   phone: zodToValidator(phoneSchema),
-}
-
-// Allow extending validators
-export function addValidator(id: string, fn: (value: string) => boolean) {
-  validators[id] = fn
 }
 
 /**

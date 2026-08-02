@@ -8,11 +8,9 @@ import { Hero } from '@/app/(frontend)/(home)/sections/hero'
 import heroStyles from '@/app/(frontend)/(home)/sections/hero/hero.module.css'
 import { HowItWorks } from '@/app/(frontend)/(home)/sections/how-it-works'
 import { JoinCta } from '@/app/(frontend)/(home)/sections/join-cta'
-import {
-  NewsLama,
-  type NewsLamaPost,
-} from '@/app/(frontend)/(home)/sections/news-lama'
+import { NewsLama } from '@/app/(frontend)/(home)/sections/news-lama'
 import { NewsLamaSkeleton } from '@/app/(frontend)/(home)/sections/news-lama/skeleton'
+import { toNewsLamaPost } from '@/app/(frontend)/(home)/sections/news-lama/to-news-lama-post'
 import { Services } from '@/app/(frontend)/(home)/sections/services'
 import { Testimonial } from '@/app/(frontend)/(home)/sections/testimonial'
 import { WhyThatWorks } from '@/app/(frontend)/(home)/sections/why-that-works'
@@ -21,12 +19,7 @@ import { FaqJsonLd } from '@/components/seo/structured-data'
 import * as en from '@/lib/content/home.en'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
-import {
-  getLatestPost,
-  resolveCategory,
-  resolveMedia,
-} from '@/lib/payload/queries'
-import type { Post } from '@/payload-types'
+import { getLatestPost } from '@/lib/payload/queries'
 
 export const metadata: Metadata = {
   title: 'Strategy that works',
@@ -42,24 +35,6 @@ export const metadata: Metadata = {
 }
 
 /**
- * English view-model. The Polish builder hardcodes `/${post.slug}`, the
- * root-level shape English does not use, so the href is built here instead of
- * being shared.
- */
-function toEnNewsLamaPost(post: Post): NewsLamaPost {
-  const cover = resolveMedia(post.cover)
-  return {
-    title: post.title,
-    excerpt: post.excerpt ?? '',
-    category: resolveCategory(post.category)?.title ?? '',
-    date: post.publishedAt ?? post.createdAt,
-    href: `/en/blog/${post.slug}`,
-    cover: cover?.sizes?.card?.url ?? cover?.url ?? '',
-    coverAlt: cover?.alt ?? '',
-  }
-}
-
-/**
  * The only CMS-dependent slice, Suspense-isolated exactly like the Polish
  * homepage's HomeNews so the hero prerenders into the static shell (see the
  * comment there for the LCP numbers behind this).
@@ -71,7 +46,7 @@ async function EnHomeNews() {
   // section is omitted entirely until at least one post exists in English —
   // rather than showing a Polish one under English chrome.
   const latestPost = await getLatestPost('en')
-  const newsPost = latestPost ? toEnNewsLamaPost(latestPost) : null
+  const newsPost = latestPost ? toNewsLamaPost(latestPost, '/en/blog') : null
   return newsPost ? (
     <NewsLama content={en.news} locale="en" post={newsPost} />
   ) : null

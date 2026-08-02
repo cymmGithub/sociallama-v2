@@ -1,11 +1,7 @@
 'use client'
 
 import { useId, useRef, useState } from 'react'
-import {
-  careersRoles as careersRolesDefault,
-  careersRolesLabel as careersRolesLabelDefault,
-  type LocalizedCareers,
-} from '@/lib/content/zostan-lama'
+import type { LocalizedCareers } from '@/lib/content/zostan-lama'
 import s from './zostan-lama.module.css'
 
 /**
@@ -19,11 +15,11 @@ import s from './zostan-lama.module.css'
  * rendered, so selecting on arrow costs nothing).
  */
 export function CareersRoles({
-  roles = careersRolesDefault,
-  label = careersRolesLabelDefault,
+  roles,
+  label,
 }: {
-  roles?: LocalizedCareers['careersRoles']
-  label?: LocalizedCareers['careersRolesLabel']
+  roles: LocalizedCareers['careersRoles']
+  label: LocalizedCareers['careersRolesLabel']
 }) {
   const [active, setActive] = useState(0)
   const baseId = useId()

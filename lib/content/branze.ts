@@ -215,7 +215,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży automotive | Social Lama',
+      title: 'Social media dla branży automotive',
       description:
         'Prowadzimy social media marek motoryzacyjnych — od salonów premium po elektromobilność. Zobacz, jak zbudowaliśmy społeczność Volvo Car Warszawa i Domu Volvo.',
     },
@@ -332,7 +332,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży elektronika i AGD | Social Lama',
+      title: 'Social media dla branży elektronika i AGD',
       description:
         'Prowadzimy social media marek elektroniki i AGD — od edukacji produktowej po viralowy content. Zobacz, jak iRobot podbił TikToka i YouTube.',
     },
@@ -460,7 +460,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży beauty | Social Lama',
+      title: 'Social media dla branży beauty',
       description:
         'Prowadzimy social media marek beauty — skincare, makijaż, pielęgnacja. Estetyczny content, siła UGC i kampanie, które realnie sprzedają.',
     },
@@ -588,7 +588,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży health | Social Lama',
+      title: 'Social media dla branży health',
       description:
         'Prowadzimy social media marek z branży zdrowia i wellbeingu. Rzetelna edukacja, autorytet ekspertów i komunikacja, która buduje zaufanie.',
     },
@@ -645,7 +645,7 @@ export const INDUSTRIES = [
     pairSlug: 'finance',
     label: 'Finanse',
     meta: {
-      title: 'Social media dla branży finanse | Social Lama',
+      title: 'Social media dla branży finanse',
       description:
         'Prowadzimy social media marek finansowych i fintech. Edukacja bez żargonu, autorytet i komunikacja, której odbiorca powierza swoje pieniądze.',
     },
@@ -751,7 +751,7 @@ export const INDUSTRIES = [
     },
     relatedCaseStudies: [],
     meta: {
-      title: 'Social media dla branży petcare | Social Lama',
+      title: 'Social media dla branży petcare',
       description:
         'Prowadzimy social media marek zoologicznych i petcare. Lojalne społeczności właścicieli, poradnikowy content i realna sprzedaż.',
     },
@@ -861,7 +861,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży alkoholowej | Social Lama',
+      title: 'Social media dla branży alkoholowej',
       description:
         'Prowadzimy social media marek alkoholowych — wino, piwo craft, spirytualia. Aspiracyjny wizerunek zgodny z regulacjami i odpowiedzialną konsumpcją.',
     },
@@ -918,7 +918,7 @@ export const INDUSTRIES = [
     pairSlug: 'fashion',
     label: 'Fashion',
     meta: {
-      title: 'Social media dla branży fashion | Social Lama',
+      title: 'Social media dla branży fashion',
       description:
         'Prowadzimy social media marek modowych. Budujemy pożądanie wokół dropów i kolekcji, łączymy lookbooki z UGC i zamieniamy obserwujących w klientów.',
     },
@@ -1017,7 +1017,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży HoReCa | Social Lama',
+      title: 'Social media dla branży HoReCa',
       description:
         'Prowadzimy social media restauracji, kawiarni i barów. Apetyczny food content, budowanie atmosfery miejsca i komunikacja, która zapełnia stoliki.',
     },
@@ -1130,7 +1130,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla hoteli i miejsc wypoczynkowych | Social Lama',
+      title: 'Social media dla hoteli i miejsc wypoczynkowych',
       description:
         'Prowadzimy social media hoteli, resortów i SPA. Aspiracyjny travel content i komunikacja, która zamienia scroll w rezerwację.',
     },
@@ -1245,7 +1245,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży nieruchomości | Social Lama',
+      title: 'Social media dla branży nieruchomości',
       description:
         'Prowadzimy social media deweloperów i marek nieruchomości. Prezentacja inwestycji, budowanie zaufania i komunikacja, która generuje leady.',
     },
@@ -1352,7 +1352,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży rozrywkowej | Social Lama',
+      title: 'Social media dla branży rozrywkowej',
       description:
         'Prowadzimy social media marek rozrywkowych — eventy, kultura, premiery. Budujemy hype, aktywujemy społeczność i tworzymy content, który żyje w komentarzach.',
     },

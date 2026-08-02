@@ -1,6 +1,9 @@
 import s from '@/app/(frontend)/not-found.module.css'
 import { Wrapper } from '@/components/layout/wrapper'
 import { Link } from '@/components/ui/link'
+import { errorView } from '@/lib/content/site.en'
+
+const { label, message, description, cta } = errorView.notFound
 
 /**
  * English 404 boundary for the `(frontend-en)` root-layout tree. Without it, an
@@ -13,15 +16,12 @@ export default function NotFound() {
     <Wrapper theme="plum">
       <section className={s.section}>
         <div className={s.panel}>
-          <div className={s.label}>Error</div>
+          <div className={s.label}>{label}</div>
           <h1 className={s.code}>404</h1>
-          <p className={s.message}>Page not found</p>
-          <p className={s.description}>
-            The page you&apos;re looking for doesn&apos;t exist or has been
-            moved.
-          </p>
+          <p className={s.message}>{message}</p>
+          <p className={s.description}>{description}</p>
           <Link href="/en" className={s.cta}>
-            Go Home
+            {cta}
           </Link>
         </div>
       </section>

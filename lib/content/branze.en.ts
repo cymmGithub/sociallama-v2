@@ -74,7 +74,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the automotive industry | Social Lama',
+      title: 'Social media for the automotive industry',
       description:
         'We run social media for automotive brands — from premium showrooms to electric mobility. See how we built the Volvo Car Warszawa and Dom Volvo communities.',
     },
@@ -190,8 +190,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title:
-        'Social media for the electronics & appliances industry | Social Lama',
+      title: 'Social media for the electronics & appliances industry',
       description:
         'We run social media for electronics and home-appliance brands — from product education to viral content. See how iRobot took over TikTok and YouTube.',
     },
@@ -316,7 +315,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the beauty industry | Social Lama',
+      title: 'Social media for the beauty industry',
       description:
         'We run social media for beauty brands — skincare, makeup, care. Aesthetic content, the power of UGC, and campaigns that actually sell.',
     },
@@ -438,7 +437,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the health industry | Social Lama',
+      title: 'Social media for the health industry',
       description:
         'We run social media for health and wellbeing brands. Solid education, expert authority, and communication that builds trust.',
     },
@@ -494,7 +493,7 @@ export const INDUSTRIES = [
     pairSlug: 'finanse',
     label: 'Finance',
     meta: {
-      title: 'Social media for the finance industry | Social Lama',
+      title: 'Social media for the finance industry',
       description:
         'We run social media for finance and fintech brands. Jargon-free education, authority, and communication people trust with their money.',
     },
@@ -599,7 +598,7 @@ export const INDUSTRIES = [
     },
     relatedCaseStudies: [],
     meta: {
-      title: 'Social media for the pet industry | Social Lama',
+      title: 'Social media for the pet industry',
       description:
         'We run social media for pet and petcare brands. Loyal owner communities, how-to content, and real sales.',
     },
@@ -705,7 +704,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the alcohol industry | Social Lama',
+      title: 'Social media for the alcohol industry',
       description:
         'We run social media for alcohol brands — wine, craft beer, spirits. An aspirational image that respects regulations and responsible drinking.',
     },
@@ -761,7 +760,7 @@ export const INDUSTRIES = [
     pairSlug: 'fashion',
     label: 'Fashion',
     meta: {
-      title: 'Social media for the fashion industry | Social Lama',
+      title: 'Social media for the fashion industry',
       description:
         'We run social media for fashion brands. We build desire around drops and collections, pair lookbooks with UGC, and turn followers into customers.',
     },
@@ -867,7 +866,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the HoReCa industry | Social Lama',
+      title: 'Social media for the HoReCa industry',
       description:
         'We run social media for restaurants, cafés, and bars. Mouth-watering food content, building a sense of place, and communication that fills tables.',
     },
@@ -979,7 +978,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for hotels and resorts | Social Lama',
+      title: 'Social media for hotels and resorts',
       description:
         'We run social media for hotels, resorts, and spas. Aspirational travel content and communication that turns a scroll into a booking.',
     },
@@ -1089,7 +1088,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the real estate industry | Social Lama',
+      title: 'Social media for the real estate industry',
       description:
         'We run social media for developers and real-estate brands. Presenting investments, building trust, and communication that generates leads.',
     },
@@ -1195,7 +1194,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the entertainment industry | Social Lama',
+      title: 'Social media for the entertainment industry',
       description:
         'We run social media for entertainment brands — events, culture, premieres. We build hype, activate the community, and create content that lives in the comments.',
     },

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePreferredReducedMotion } from '@/lib/hooks'
 import type { Locale } from '@/lib/i18n/slug-map'
 
 /**
@@ -77,6 +78,7 @@ export function CountUp({
 }) {
   const ref = useRef<HTMLSpanElement>(null)
   const [display, setDisplay] = useState(value)
+  const reducedMotion = usePreferredReducedMotion()
 
   useEffect(() => {
     const parsed = parseValue(value, locale)
@@ -84,10 +86,11 @@ export function CountUp({
     if (!(parsed && node)) {
       return
     }
-    if (
-      typeof IntersectionObserver === 'undefined' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
+    if (typeof IntersectionObserver === 'undefined' || reducedMotion) {
+      // Also the landing point when the preference is switched on mid-count:
+      // the effect re-runs, so settle on the final value rather than leaving
+      // the tile frozen partway through.
+      setDisplay(value)
       return
     }
 
@@ -130,7 +133,7 @@ export function CountUp({
       observer.disconnect()
       cancelAnimationFrame(raf)
     }
-  }, [value, locale])
+  }, [value, locale, reducedMotion])
 
   return (
     <span ref={ref} className={className}>

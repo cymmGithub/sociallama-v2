@@ -2,7 +2,8 @@
 
 import { type CSSProperties, useEffect, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
-import { type LocalizedONas, oNasGoodOne } from '@/lib/content/o-nas'
+import type { LocalizedONas } from '@/lib/content/o-nas'
+import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './good-one.module.css'
 
@@ -26,13 +27,14 @@ import s from './good-one.module.css'
  * cream ground (the section sits between two plum bands on the page).
  */
 export function GoodOne({
-  content = oNasGoodOne,
+  content,
 }: {
-  content?: LocalizedONas['oNasGoodOne']
+  content: LocalizedONas['oNasGoodOne']
 }) {
   const ref = useReveal<HTMLDivElement>()
   const orbitRef = useRef<HTMLDivElement>(null)
   const [playing, setPlaying] = useState(false)
+  const reducedMotion = usePreferredReducedMotion()
 
   // Run the perpetual spin only while the orbit is on screen; never under
   // reduced motion (CSS also disables the animation there — this just avoids a
@@ -41,7 +43,7 @@ export function GoodOne({
   useEffect(() => {
     const el = orbitRef.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (reducedMotion) return
 
     const observer = new IntersectionObserver(
       (entries) => setPlaying(entries[0]?.isIntersecting ?? false),
@@ -49,7 +51,7 @@ export function GoodOne({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [reducedMotion])
 
   return (
     <section
@@ -97,7 +99,6 @@ export function GoodOne({
                   width={company.w}
                   height={company.h}
                   objectFit="contain"
-                  block
                   desktopSize="18vw"
                   unoptimized
                 />
@@ -114,7 +115,6 @@ export function GoodOne({
                 width={275}
                 height={129}
                 objectFit="contain"
-                block
                 desktopSize="14vw"
                 unoptimized
               />
@@ -127,7 +127,6 @@ export function GoodOne({
             src="/o-nas/good-one-wheel.png"
             alt={content.wheelAlt}
             aspectRatio={971 / 831}
-            block
             mobileSize="90vw"
             unoptimized
           />

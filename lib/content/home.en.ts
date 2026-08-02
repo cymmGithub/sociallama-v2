@@ -3,8 +3,8 @@
  *
  * Each block `satisfies LocalizedHome['<key>']`, so a missing or mis-shaped
  * translation fails the build (design D2). Structural notes mirror the Polish
- * module; only strings and hrefs differ. `socials` is locale-independent
- * (real profile URLs) and stays imported from `home.ts` — not re-exported here.
+ * module; only strings and hrefs differ. `socials` is locale-independent (real
+ * profile URLs) and lives in `socials.ts` — neither locale module owns it.
  *
  * Voice: playful but clean, American spelling (user-approved 2026-07-22).
  */

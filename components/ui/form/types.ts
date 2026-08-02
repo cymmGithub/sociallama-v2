@@ -37,7 +37,6 @@ export type InvalidMessageFn = (fieldName: string) => string
 export interface UseFormOptions<T = unknown> {
   action: FormAction<T>
   initialState?: FormState<T> | null
-  onBlur?: boolean
   formId?: string
   invalidMessage?: InvalidMessageFn
 }
@@ -50,7 +49,6 @@ export interface UseFormReturn<T = unknown> {
   register: (name: string) => {
     ref: (node: FormControlElement | null) => void
     onChange: (e: React.ChangeEvent<FormControlElement>) => void
-    onBlur: (e: React.FocusEvent<FormControlElement>) => void
   }
   /**
    * Set a field's validity from outside the registered-control path, so a
@@ -92,19 +90,12 @@ export interface FormContextState<T = unknown> {
 export interface FormContextActions<T = unknown> {
   register: UseFormReturn<T>['register']
   setFieldValidity: UseFormReturn<T>['setFieldValidity']
-  resetForm: () => void
-}
-
-// Context meta
-export interface FormContextMeta {
-  formId: string
 }
 
 // Context value shape
 export type FormContextStandard<T = unknown> = {
   state: FormContextState<T>
   actions: FormContextActions<T>
-  meta?: FormContextMeta
 }
 
 // Submit button props
@@ -118,36 +109,4 @@ export interface SubmitButtonProps
   errorText?: string
   /** Optional trailing icon (e.g. a Lucide glyph) rendered after the label. */
   icon?: ReactNode
-}
-
-// Messages component props
-export interface MessagesProps extends ComponentPropsWithoutRef<'div'> {
-  className?: string
-}
-
-// Field base props
-export interface BaseFieldProps {
-  className?: string
-  id: string
-  name?: string
-  label?: ReactNode
-  defaultValue?: string
-  placeholder?: string
-  required?: boolean
-  disabled?: boolean
-  validation?: (value: string) => boolean
-}
-
-export interface InputProps extends BaseFieldProps {
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'
-}
-
-export interface TextareaProps extends BaseFieldProps {
-  rows?: number
-}
-
-export interface CheckboxFieldProps
-  extends Omit<BaseFieldProps, 'placeholder'> {
-  checked?: boolean
-  onCheckedChange?: (checked: boolean) => void
 }
