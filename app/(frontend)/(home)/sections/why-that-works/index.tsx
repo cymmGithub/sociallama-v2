@@ -32,11 +32,6 @@ const TEAM = [
     role: 'Head of Social Media',
   },
   {
-    cut: 'martyna-borowik.png',
-    name: 'Martyna Borowik',
-    role: 'Senior Social Media Specialist',
-  },
-  {
     cut: 'agnieszka-klajbert.png',
     name: 'Agnieszka Klajbert',
     role: 'Senior Social Media Specialist',
@@ -62,11 +57,6 @@ const TEAM = [
     role: 'Social Media Manager',
   },
   {
-    cut: 'kornelia-orlik.png',
-    name: 'Kornelia Orlik',
-    role: 'Social Media Expert',
-  },
-  {
     cut: 'katarzyna-kaptur.png',
     name: 'Katarzyna Kaptur',
     role: 'Social Media Expert',
@@ -80,6 +70,16 @@ const TEAM = [
     cut: 'karolina-marcinowska.png',
     name: 'Karolina Marcinowska',
     role: 'Wideo Content Creator',
+  },
+  {
+    cut: 'kamil-mazuruk.png',
+    name: 'Kamil Mazuruk',
+    role: 'Founder, Good One Group',
+  },
+  {
+    cut: 'robert-sawicki.png',
+    name: 'Robert Sawicki',
+    role: 'Art & Creative Director',
   },
   {
     cut: 'przemyslaw-swiercz.png',

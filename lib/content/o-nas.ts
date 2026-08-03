@@ -259,13 +259,6 @@ export const oNasTeam = {
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
-      given: 'KORNELIA',
-      surname: 'ORLIK',
-      role: 'Social Media Expert',
-      bio: 'Specjalizuje się w\u00A0komunikacji marek z\u00A0obszaru B2B oraz branży medycznej. Łączy podejście strategiczne z\u00A0kompetencjami z\u00A0zakresu zarządzania, dzięki czemu działania w\u00A0social mediach są ściśle powiązane z\u00A0celami biznesowymi klientów. Odpowiada za planowanie i\u00A0koordynację komunikacji oraz przekładanie strategii na mierzalne efekty. Tworzy również materiały wizualne — grafiki, wideo i\u00A0treści UGC — zgodne z\u00A0regulacjami branżowymi.',
-      photo: '/o-nas/slider/kornelia-orlik.png',
-    },
-    {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
@@ -287,11 +280,22 @@ export const oNasTeam = {
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
     {
-      given: 'MARTYNA',
-      surname: 'BOROWIK',
-      role: 'Senior Social Media Specialist',
-      bio: 'Łączy strategiczne spojrzenie z\u00A0intuicją komunikacyjną, pomagając markom odnaleźć własny, spójny kierunek. Od ponad 10 lat działa w\u00A0marketingu i\u00A0digitalu, podchodząc do komunikacji kompleksowo — od strategii, przez angażujący content, po analizę wyników. Ważne są dla niej relacje: współpraca oparta na otwartości i\u00A0zrozumieniu jest efektywna i\u00A0długofalowa. Szczególnie ceni pracę dla branż HoReCa, podróże i\u00A0parenting.',
-      photo: '/o-nas/slider/martyna-borowik.png',
+      given: 'KAMIL',
+      surname: 'MAZURUK',
+      role: 'Founder, Good One Group',
+      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
+      // The group the bio just introduced — an external site, so the label is
+      // the domain (same convention as Przemysław's imcurious.how below).
+      link: { label: 'goodone.co', href: 'https://goodone.co' },
+      photo: '/o-nas/slider/kamil-mazuruk.png',
+    },
+    {
+      given: 'ROBERT',
+      surname: 'SAWICKI',
+      role: 'Art & Creative Director',
+      bio: 'Art & Creative Director związany z\u00A0agencją kreatywną Diea, specjalizującą się w\u00A0brandingu, projektowaniu graficznym, produkcji wideo i\u00A0animacji. Łączy zmysł estetyczny z\u00A0myśleniem strategicznym — od identyfikacji wizualnej, przez key visuale kampanii, po materiały digitalowe. Dba o\u00A0to, by kreacja nie tylko dobrze wyglądała, ale przede wszystkim realnie pracowała na cele marki.',
+      link: { label: 'diea.pl', href: 'https://www.diea.pl' },
+      photo: '/o-nas/slider/robert-sawicki.png',
     },
     {
       given: 'PRZEMYSŁAW',
