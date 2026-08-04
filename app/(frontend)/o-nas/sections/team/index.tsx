@@ -21,12 +21,11 @@ import {
   useEffect,
   useRef,
   useState,
-  ViewTransition,
 } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { CertKey, LocalizedONas } from '@/lib/content/o-nas'
-import { useIsDesktop, usePreferredReducedMotion } from '@/lib/hooks'
+import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
 
@@ -135,19 +134,8 @@ function Slider({
    *  fallback, where a URL param can never influence static markup). */
   slug: string | null
 }) {
-  // On a morphing arrival the tile→slot morph IS the entrance, so the wipe
-  // must sit this one out (team-morph-transition spec); direct visits and
-  // unsupported browsers have no running transition and keep the wipe.
-  const revealRef = useReveal<HTMLDivElement>({
-    skipDuringViewTransition: true,
-  })
+  const revealRef = useReveal<HTMLDivElement>()
   const reducedMotion = usePreferredReducedMotion()
-  // The morph runs on the grid presentation only (>= dt, mirroring the
-  // homepage tiles' gate): on mobile no slot is named, no transition
-  // activates, and the wipe stays the entrance (user call, 2026-08-04).
-  // Snapshot-synchronous hook, not hamo's useMediaQuery — the slot must be
-  // named in the very commit the navigation paints (see useIsDesktop).
-  const isDesktop = useIsDesktop()
   const members = content.members
   const count = members.length
 
@@ -278,12 +266,6 @@ function Slider({
             // Enter animation only on a real step — never on first mount,
             // where the wipe reveal already owns the entrance.
             className={cn(s.figures, prev !== null && s.enter)}
-            // The live featured slot is the morph target for the homepage
-            // grid tile carrying the same `team-<slug>` name. Only this
-            // layer is named: the outgoing crossfade layer above would
-            // duplicate the name, and peers would collide with other
-            // members' live tiles (team-morph-transition spec).
-            morphSlug={isDesktop ? slugOf(current.featured.photo) : undefined}
           />
         </div>
 
@@ -340,17 +322,12 @@ function Trio({
   rightPeer,
   className,
   hidden,
-  morphSlug,
 }: {
   featured: Member
   leftPeer: Member
   rightPeer: Member
   className?: string
   hidden?: boolean
-  /** Names the featured cutout `team-<slug>` for the grid-tile morph; only
-   *  the live (incoming) trio gets one — and only on desktop — so the name
-   *  is unique in the DOM and mobile never activates a transition. */
-  morphSlug?: string | undefined
 }) {
   return (
     <div className={className} aria-hidden={hidden || undefined}>
@@ -383,31 +360,14 @@ function Trio({
         />
       </span>
       <span className={cn(s.photo, s.featured)}>
-        {morphSlug ? (
-          <ViewTransition
-            name={`team-${morphSlug}`}
-            share="auto"
-            default="none"
-          >
-            <Image
-              src={featured.photo}
-              alt=""
-              fill
-              objectFit="contain"
-              mobileSize="60vw"
-              desktopSize="30vw"
-            />
-          </ViewTransition>
-        ) : (
-          <Image
-            src={featured.photo}
-            alt=""
-            fill
-            objectFit="contain"
-            mobileSize="60vw"
-            desktopSize="30vw"
-          />
-        )}
+        <Image
+          src={featured.photo}
+          alt=""
+          fill
+          objectFit="contain"
+          mobileSize="60vw"
+          desktopSize="30vw"
+        />
       </span>
     </div>
   )

@@ -2,13 +2,11 @@
 
 import cn from 'clsx'
 import { ArrowRight, ChevronsRight } from 'lucide-react'
-import { ViewTransition } from 'react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { LocalizedHome } from '@/lib/content/home'
 import type { TeamGridMember } from '@/lib/content/o-nas'
-import { useIsDesktop } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
@@ -42,14 +40,6 @@ export function WhyThatWorks({
   team: readonly TeamGridMember[]
 }) {
   const bottomRef = useReveal<HTMLDivElement>()
-
-  // The tile → featured-slot morph runs on the grid presentation only
-  // (>= dt, matching --desktop): on the mobile rail the flight geometry
-  // reads as noise (user call, 2026-08-04). Below the breakpoint no
-  // ViewTransition renders, so no transition activates and the slider
-  // keeps its wipe entrance. Snapshot-synchronous hook on purpose (see
-  // useIsDesktop) so both sides of the pair agree in the paint commit.
-  const isDesktop = useIsDesktop()
 
   return (
     <section className={s.section} id="o-nas">
@@ -93,12 +83,6 @@ export function WhyThatWorks({
         >
           <ul className={s.faces}>
             {team.map((member) => {
-              // `team-<slug>` pairs this cutout with the /o-nas slider's
-              // featured slot: on view-transition-capable browsers the
-              // clicked member morphs from the tile into the slider
-              // (team-morph-transition spec). share falls back to `default`,
-              // so it is pinned to "auto" explicitly — with default "none"
-              // alone the morph itself would be disabled.
               const cutout = (
                 <Image
                   src={`/o-nas/slider/${member.cut}`}
@@ -111,17 +95,7 @@ export function WhyThatWorks({
               )
               return (
                 <li key={member.cut} className={s.tile}>
-                  {isDesktop ? (
-                    <ViewTransition
-                      name={`team-${member.cut.replace('.png', '')}`}
-                      share="auto"
-                      default="none"
-                    >
-                      {cutout}
-                    </ViewTransition>
-                  ) : (
-                    cutout
-                  )}
+                  {cutout}
                   <div className={s.caption}>
                     <span className={s.captionName}>{member.name}</span>
                     <span className={s.captionRole}>{member.role}</span>
