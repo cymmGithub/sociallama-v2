@@ -283,7 +283,7 @@ export const oNasTeam = {
       given: 'KAMIL',
       surname: 'MAZURUK',
       role: 'Founder, Good One Group',
-      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
+      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Zespół Social Lamy wspiera strategicznym doradztwem i\u00A0doświadczeniem biznesowym całej grupy. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
       // The group the bio just introduced — an external site, so the label is
       // the domain (same convention as Przemysław's imcurious.how below).
       link: { label: 'goodone.co', href: 'https://goodone.co' },
@@ -293,7 +293,7 @@ export const oNasTeam = {
       given: 'ROBERT',
       surname: 'SAWICKI',
       role: 'Art & Creative Director',
-      bio: 'Art & Creative Director związany z\u00A0agencją kreatywną Diea, specjalizującą się w\u00A0brandingu, projektowaniu graficznym, produkcji wideo i\u00A0animacji. Łączy zmysł estetyczny z\u00A0myśleniem strategicznym — od identyfikacji wizualnej, przez key visuale kampanii, po materiały digitalowe. Dba o\u00A0to, by kreacja nie tylko dobrze wyglądała, ale przede wszystkim realnie pracowała na cele marki.',
+      bio: 'Art & Creative Director związany z\u00A0agencją kreatywną Diea, specjalizującą się w\u00A0brandingu, projektowaniu graficznym, produkcji wideo i\u00A0animacji. Łączy zmysł estetyczny z\u00A0myśleniem strategicznym — od identyfikacji wizualnej, przez key visuale kampanii, po materiały digitalowe. Zespół Social Lamy wspiera przy koncepcjach kreatywnych, brandingu i\u00A0designie. Dba o\u00A0to, by kreacja nie tylko dobrze wyglądała, ale przede wszystkim realnie pracowała na cele marki.',
       link: { label: 'diea.pl', href: 'https://www.diea.pl' },
       photo: '/o-nas/slider/robert-sawicki.png',
     },
