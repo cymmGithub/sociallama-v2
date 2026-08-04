@@ -26,6 +26,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | RealViewport | `@/components/ui/real-viewport` | Client |
 | Scrollbar | `@/components/ui/scrollbar` | Client |
 | Select | `@/components/ui/select` | Client |
+| SocialGlyph | `@/components/ui/social-glyph` | Server |
 | Switch | `@/components/ui/switch` | Client |
 | Tabs | `@/components/ui/tabs` | Client |
 | Toast | `@/components/ui/toast` | Client |

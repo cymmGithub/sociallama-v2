@@ -45,7 +45,7 @@ Below the desktop breakpoint the section SHALL render no tab machinery: all thre
 - **THEN** the three visible frames keep the same size and spacing as today's three-clip layout, with no gap or offset left by the hidden fourth frame
 
 ### Requirement: Real web-ready assets
-The stage assets SHALL be served from `public/`: the CONTENT tab's seven brand creatives as optimized JPEGs at `public/assets/content-<brand>.jpg` (≤1080px on the long edge, re-encoded from the marketing exports; the low-res Kohersen source is not upscaled) with descriptive Polish alts in `lib/content/home.ts` and English alts in `home.en.ts`; and the four rail clips as H.264 MP4s (~600×1066, `faststart`, target ≤3 MB each, tight ~12s loops) with extracted poster frames and explicit bt709 color tags — the new fourth clip SHALL be transcoded from its HEVC source accordingly (HEVC and VP9 sources SHALL NOT ship as-is). The replaced CONTENT panel sources under `public/case-studies/` SHALL remain untouched — they are live case-study gallery files.
+The stage assets SHALL be served from `public/`: the CONTENT tab's seven brand creatives as optimized JPEGs at `public/assets/content-<brand>.jpg` (≤1080px wide, re-encoded from the marketing exports; the low-res Kohersen source is not upscaled) with descriptive Polish alts in `lib/content/home.ts` and English alts in `home.en.ts`; and the four rail clips as H.264 MP4s (~600×1066, `faststart`, target ≤3 MB each, tight ~12s loops) with extracted poster frames and explicit bt709 color tags — the new fourth clip SHALL be transcoded from its HEVC source accordingly (HEVC and VP9 sources SHALL NOT ship as-is). The replaced CONTENT panel sources under `public/case-studies/` SHALL remain untouched — they are live case-study gallery files.
 
 #### Scenario: Video payload
 - **WHEN** a Kreacje clip is requested by the browser
@@ -53,7 +53,7 @@ The stage assets SHALL be served from `public/`: the CONTENT tab's seven brand c
 
 #### Scenario: Panel image payload
 - **WHEN** a CONTENT panel image is requested
-- **THEN** it is a JPEG no larger than 1080px on its long edge served from `public/assets/content-*.jpg`, and its declared `width`/`height` in the content data match the file's true aspect ratio
+- **THEN** it is a JPEG no wider than 1080px served from `public/assets/content-*.jpg`, and its declared `width`/`height` in the content data match the file's true aspect ratio
 
 #### Scenario: Replaced sources stay
 - **WHEN** the change is implemented

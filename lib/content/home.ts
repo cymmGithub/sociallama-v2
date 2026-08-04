@@ -482,65 +482,59 @@ export const services = {
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/content' },
       stage: {
         kind: 'panels',
-        // Eight case-study creatives, one per brand (wariant B of the 2026-07-30
-        // panel reduction: the 12-creative roster dropped the second Volvo,
-        // Stadler Form, and Julius Meinl plus O, ZGASŁ?, and every panel grew).
-        // All eight render at every desktop width — there is no wide-screen-only
-        // tier anymore. Mobile shows only the first three (existing rule), so
-        // 1–3 read as a trio: Volvo, Mercator, Julius Meinl.
+        // Seven marketing creatives (2026-08 refresh), all 4:5 social-post
+        // exports under /assets/content-*. Slot geometry in the CSS is tuned
+        // for this uniform ratio: Burger King holds the center hero, the
+        // low-res Kohersen (576×720) sits in the smallest slot. Mobile shows
+        // only the first three (existing rule), so 1–3 read as a trio:
+        // Burger King, DPD, Breville.
         //
         // Each slot's geometry is height-driven, so width follows the source
-        // aspect ratio: swaps stay near the ratio the slot was tuned for, and
-        // every source is a bare screenshot (no baked-in device bezel) so the
-        // panel's own border/radius/shadow reads as the only frame.
+        // aspect ratio, and every source is a bare social export (no baked-in
+        // device bezel) so the panel's own border/radius/shadow reads as the
+        // only frame.
         panels: [
           {
-            src: '/case-studies/volvo/volvo-vcw-post.jpg',
-            alt: 'Post Volvo Car Warszawa na Instagramie prezentujący samochód Volvo',
-            width: 351,
-            height: 760,
+            src: '/assets/content-burger-king.jpg',
+            alt: 'Kreacja Burger King „Wyjście na medal” — frytki na tle ośnieżonych szczytów',
+            width: 1081,
+            height: 1351,
           },
           {
-            src: '/case-studies/mercator/mercator-gallery-2.jpg',
-            alt: 'Rolka Mercator Medical z neonowymi rękawicami ogrodniczymi „gogrip green”',
-            width: 471,
-            height: 1023,
+            src: '/assets/content-dpd.jpg',
+            alt: 'Kreacja Social Lama × DPD — lama z paczką w andyjskiej scenerii',
+            width: 1080,
+            height: 1350,
           },
           {
-            src: '/case-studies/julius-meinl/julius-meinl-gallery-3.jpg',
-            alt: 'Kreacja Julius Meinl „3 błędy w latte art” — czerwona filiżanka z latte',
-            width: 320,
-            height: 524,
+            src: '/assets/content-breville.jpg',
+            alt: 'Kreacja Breville „Jaką kawę piłby Grinch?” — zielony kubek w czapce Grincha',
+            width: 1080,
+            height: 1350,
           },
           {
-            src: '/case-studies/skibooking/skibooking-gallery-2.jpg',
-            alt: 'Post SkiBooking.pl „O czym pamiętać przed wyjazdem na narty?” z narciarskim ekwipunkiem',
-            width: 468,
-            height: 1013,
+            src: '/assets/content-walentynki.jpg',
+            alt: 'Walentynkowa kreacja pracuj.pl, iRobot i Vobis — zakochana lama i hasło „To nie chwilowe zauroczenie”',
+            width: 1080,
+            height: 1350,
           },
           {
-            src: '/case-studies/kohersen/kohersen-gallery-4.jpg',
-            alt: 'Kadr z filmu Kohersen — burger przełamany na pół nad talerzem',
-            width: 788,
-            height: 1400,
+            src: '/assets/content-laurastar.jpg',
+            alt: 'Kreacja Laurastar „Asystentka, na której możesz polegać” — parownica obok czerwonej szpilki',
+            width: 1080,
+            height: 1350,
           },
           {
-            src: '/case-studies/stadler-form/stadler-form-gallery-2.jpg',
-            alt: 'Kadr Stadler Form — nawilżacz powietrza wnoszony do mieszkania',
-            width: 677,
-            height: 1400,
+            src: '/assets/content-easy-egg.jpg',
+            alt: 'Kreacja Easy Egg — tost-rakieta odbijająca jajko i hasło „Każdy wielki dzień zaczyna się od śniadania”',
+            width: 1081,
+            height: 1351,
           },
           {
-            src: '/case-studies/ariadna/ariadna-gallery-4.jpg',
-            alt: 'Kadr z filmu dla panelu Ariadna — dziewczyna z telefonem i podpisem „Ja: rozwiązuję ankiety”',
-            width: 774,
-            height: 1400,
-          },
-          {
-            src: '/case-studies/riviera/riviera-gallery-3.jpg',
-            alt: 'Rolka Galerii Riviera o dwumetrowej pisance w centrum handlowym',
-            width: 824,
-            height: 1400,
+            src: '/assets/content-kohersen.jpg',
+            alt: 'Kreacja Kohersen „Moje imię gaaa…” — garnek Black Cube na koncertowej scenie',
+            width: 576,
+            height: 720,
           },
         ],
       },
@@ -624,6 +618,11 @@ export const services = {
             src: '/clips/kreacje-volvo.mp4',
             poster: '/clips/kreacje-volvo-poster.jpg',
             alt: 'Relacja z eventu Dom Volvo',
+          },
+          {
+            src: '/clips/kreacje-pracuj.mp4',
+            poster: '/clips/kreacje-pracuj-poster.jpg',
+            alt: 'Spot aplikacji pracuj.pl',
           },
         ],
       },
