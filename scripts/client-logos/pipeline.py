@@ -115,9 +115,10 @@ def gd(name):
 # outline runs the full height — where it has to be set by eye and verified.
 # `tol` overrides CONNECT_TOL for a plate that needs a wider reach, and
 # `plate_ink` repaints a white knockout in its plate colour. `boost` multiplies
-# the optical-mass correction (still clamped at contain-fit), for a mark whose
-# solid plate inflates its measured mass — belt pass only, verified by eye on
-# the contact sheet. `punch` keys the plate colour globally rather than by
+# the optical-mass correction and raises its clamp ceiling with it, so a value
+# above 1.0 lets a contain-fit-bound mark spend the canvas safety padding —
+# trading a little edge-row weight at the downscale (see PAD_X/PAD_Y) for size.
+# Belt pass only, verified by eye on the contact sheet. `punch` keys the plate colour globally rather than by
 # border connectivity, without the `plate_ink` repaint: for positive artwork
 # whose enclosed glyph counters are background showing through, not ink, and
 # would otherwise ship as opaque plate-coloured boxes. `dy` nudges the placed
@@ -135,8 +136,15 @@ BRANDS = [
     # the "RESTAURACJA" strap line — unreadable at belt height — and keeps the
     # crown with the wordmark. `punch` clears the white counters of B, D and R
     # (and the crown's enclosed whites), which the border flood cannot reach.
-    ("belvedere", "Belvedere", gd("belvedere.png"), "belvedere", {"gap": 2, "punch": True}),
-    ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {}),
+    # The up-nudge counters the bottom-heavy lockup reading low (ink centroid
+    # 56.4 against the 43.5 canvas middle); -4 is the most the height-bound
+    # mark can move before the cross tip leaves the canvas.
+    ("belvedere", "Belvedere", gd("belvedere.png"), "belvedere", {"gap": 2, "punch": True, "dy": -4}),
+    # A compact badge among wide wordmarks: height-bound at contain-fit with
+    # its mass correction pinned at the clamp, so the normaliser has no room
+    # left. The boost spends the vertical padding — the bun arcs touch the
+    # canvas edge only at tangent points, so nothing is lost to the downscale.
+    ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {"boost": 1.1}),
     ("dpd", "DPD", gd("DPD_logo_(2015).svg.webp"), None, {}),
     ("engie", "ENGIE", gd("ENGIE_logotype_2018.png"), "engie", {}),
     ("fm-logistics", "FM Logistic", repo("fm-logistics"), "fm-logistics", {}),
@@ -437,7 +445,8 @@ def build_belt():
 
     marks, rows = [], []
     for key, name, slug, mark, fit, cut, dark, opts in prepared:
-        correction = min(1.0, max(0.5, (median / masses[key]) ** 0.5) * opts.get("boost", 1.0))
+        boost = opts.get("boost", 1.0)
+        correction = min(boost, max(0.5, (median / masses[key]) ** 0.5) * boost)
         placed = place(mark, fit * correction, opts.get("dy", 0))
         placed.save(os.path.join(OUT, f"{key}.png"))
         marks.append((key, placed))
