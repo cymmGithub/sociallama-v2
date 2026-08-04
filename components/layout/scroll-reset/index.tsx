@@ -3,6 +3,7 @@
 import { useLenis } from 'lenis/react'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
+import { scrollToHashTarget } from './scroll-to-hash-target'
 
 /**
  * Reset scroll to the top on client navigation.
@@ -16,11 +17,14 @@ import { useEffect } from 'react'
  * `scrollTo(0, { immediate: true })` sets Lenis's target and clears momentum,
  * so it wins over any in-flight scroll animation.
  *
- * Cross-page hash navigations (e.g. the homepage team CTA → /o-nas#zespol) need
- * handling too: the target page mounts via client nav, so the browser never
- * scrolls to the anchor and Lenis keeps the old offset — landing at the top.
- * We jump to the target ourselves, deferred a frame so the new page has laid
- * out and Lenis has remeasured. Same-page anchors (#o-nas, #uslugi) don't
+ * Cross-page hash navigations (e.g. the homepage team tiles → /o-nas#zespol)
+ * need handling too: the target page mounts via client nav, so the browser
+ * never scrolls to the anchor and Lenis keeps the old offset — landing at the
+ * top. The destination may also still be streaming when the pathname commits
+ * (production /o-nas shows its loading shell first), so the jump watches for
+ * the anchor per frame via `scrollToHashTarget` instead of sampling the DOM
+ * once — a one-shot lookup missed streamed sections and silently never
+ * scrolled (bug, 2026-08-04). Same-page anchors (#o-nas, #uslugi) don't
  * change `pathname`, so this effect never fires for them — the browser handles
  * those.
  */
@@ -45,16 +49,13 @@ export function ScrollReset() {
       return
     }
 
-    const raf = requestAnimationFrame(() => {
-      const el = document.querySelector<HTMLElement>(hash)
-      if (!el) return
+    return scrollToHashTarget(hash, (el) => {
       if (lenis) {
         lenis.scrollTo(el, { immediate: true, force: true })
       } else {
         el.scrollIntoView()
       }
     })
-    return () => cancelAnimationFrame(raf)
   }, [pathname, lenis])
 
   return null
