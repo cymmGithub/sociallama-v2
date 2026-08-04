@@ -56,14 +56,12 @@
     width: 212px;
     height: 53px;
   }
-  background-color: var(--color-secondary);
-  mask-repeat: no-repeat;
-  mask-position: left center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: left center;
-  -webkit-mask-size: contain;
-  transition: background-color var(--duration-fast) var(--ease-out-expo);
+  /* Inline SVG riding currentColor, NOT mask-image + background-color: forced
+     dark modes (Samsung Internet's default web darkening) darken background
+     colours as surfaces but preserve foreground `color`, so a masked logo goes
+     near-black on the dark bar while this one stays legible. */
+  color: var(--color-secondary);
+  transition: color var(--duration-fast) var(--ease-out-expo);
 }
 
 .actions {

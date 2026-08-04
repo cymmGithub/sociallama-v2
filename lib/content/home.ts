@@ -157,7 +157,6 @@ export interface Testimonial {
 // the only navigation surface (design D9).
 export const nav = {
   logoAlt: 'Social Lama',
-  logo: '/assets/logo.svg',
   cta: {
     label: 'POROZMAWIAJMY O TWOIM BIZNESIE',
     labelShort: 'POROZMAWIAJMY',

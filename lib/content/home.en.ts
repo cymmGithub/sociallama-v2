@@ -15,7 +15,6 @@ import type { LocalizedHome } from '@/lib/content/home'
 
 export const nav = {
   logoAlt: 'Social Lama',
-  logo: '/assets/logo.svg',
   cta: {
     label: "LET'S TALK ABOUT YOUR BUSINESS",
     labelShort: "LET'S TALK",

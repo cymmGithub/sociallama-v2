@@ -5,6 +5,7 @@ import { useLenis } from 'lenis/react'
 import { ArrowRight, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useChrome } from '@/components/layout/chrome-provider'
+import { LogoMark } from '@/components/layout/header/logo-mark'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
 import { EN_HOME, PL_HOME } from '@/lib/i18n/slug-map'
@@ -150,14 +151,7 @@ export function Header() {
           aria-label={nav.logoAlt}
           onClick={close}
         >
-          <span
-            aria-hidden="true"
-            className={s.logoMark}
-            style={{
-              maskImage: `url(${nav.logo})`,
-              WebkitMaskImage: `url(${nav.logo})`,
-            }}
-          />
+          <LogoMark className={s.logoMark} />
         </Link>
 
         <div className={s.actions}>

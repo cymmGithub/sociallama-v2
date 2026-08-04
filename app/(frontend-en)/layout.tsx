@@ -16,7 +16,7 @@ export const metadata = rootMetadata('en')
 
 export const viewport: Viewport = {
   themeColor: themes.plum.primary,
-  colorScheme: 'normal',
+  colorScheme: 'light dark',
 }
 
 export default function Layout({ children }: PropsWithChildren) {
