@@ -246,12 +246,21 @@
    the white logomark all but disappeared. The mark needs a dark ground on every
    page that hosts the section. */
 .avatar {
+  display: grid;
+  place-items: center;
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background:
-    var(--color-plum-dark) url("/assets/logo.svg") center / 65% auto no-repeat;
+  background: var(--color-plum-dark);
+  /* Fixed cream, not a theme token — the avatar is Instagram-post chrome and
+     keeps its own ground whatever theme the section sits in. */
+  color: var(--color-cream);
+}
+
+.avatarMark {
+  width: 26px;
+  height: 18px;
 }
 
 .cardIdentity {

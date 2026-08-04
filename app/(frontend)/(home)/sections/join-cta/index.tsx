@@ -17,6 +17,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { LogoMark } from '@/components/layout/header/logo-mark'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { LocalizedHome } from '@/lib/content/home'
@@ -286,7 +287,9 @@ export function JoinCta({ content }: { content: LocalizedHome['joinCta'] }) {
               href={content.post.href}
               aria-label={`${content.post.handle} ${content.post.onInstagram}`}
             >
-              <span className={s.avatar} aria-hidden="true" />
+              <span className={s.avatar} aria-hidden="true">
+                <LogoMark className={s.avatarMark} />
+              </span>
               <span className={s.cardIdentity}>
                 <b>{content.post.handle}</b>
                 <span>
