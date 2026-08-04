@@ -118,12 +118,15 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
                 {item.morphName ? (
                   // Pairs the card's poster with the destination hero's
                   // poster image — only the image morphs; the scrim, copy
-                  // and card chrome crossfade with the page. share falls
-                  // back to `default`, so it is pinned to "auto" explicitly
-                  // (the team-grid pattern).
+                  // and card chrome crossfade with the page. share must not
+                  // fall back to `default` ("none"), so it carries the
+                  // `branza-poster` view-transition-class — which both
+                  // activates the morph and lets global.css cover-fit the
+                  // snapshots (the card and the hero crop the same photo
+                  // differently).
                   <ViewTransition
                     name={item.morphName}
-                    share="auto"
+                    share="branza-poster"
                     default="none"
                   >
                     {poster}

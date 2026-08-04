@@ -250,3 +250,16 @@ html.screenshot {
     animation-duration: 0.01ms;
   }
 }
+
+/* Branze poster morph (hub card ⇄ industry hero, `branza-poster` class from
+   the ViewTransition share prop): the two surfaces show different crops of
+   the same photo — the 3:2 card against the short, wide hero band — so the
+   default snapshot stretch squishes the image mid-flight. Cover-fitting both
+   snapshots inside the animating group box keeps every frame a true crop:
+   the morph reads as the crop window expanding, not the photo deforming. */
+::view-transition-old(.branza-poster),
+::view-transition-new(.branza-poster) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

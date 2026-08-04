@@ -153,6 +153,17 @@ dropping the entrance.
 - **Video handoff verified:** after a morph arrival the hero clip reaches
   `heroVideoReady` and fades in over the settled poster exactly as on a
   direct visit; the poster (the only named layer) stays stable throughout.
+- **Crop mismatch fixed with the pre-registered escape hatch** (user-reported
+  on live review: the full card image squished into the short hero band
+  mid-flight). The pair's `share` carries a `branza-poster`
+  view-transition-class instead of `"auto"` — still activating the morph —
+  and global.css cover-fits both snapshots
+  (`::view-transition-old/new(.branza-poster) { width/height: 100%;
+  object-fit: cover }`), so every frame is a true crop of the shared photo
+  and the morph reads as the crop window expanding. Verified frame-by-frame
+  at 2.5 s slow-mo. This is the object-fit pseudo recipe the team-morph
+  design named as the escape hatch, targeted by class so one rule covers all
+  12 pairs.
 - ~~Whether the first-row poster cards should be `preload` (LCP candidates)
   or whether the hub hero's copy remains the LCP — measure on the branch.~~
   **Resolved 2026-08-04:** measured with a PerformanceObserver on the branch —

@@ -242,10 +242,16 @@ function HeroMedia({ id }: { id: string }) {
           view-transition-capable browser the clicked card expands into this
           hero (branze-morph-transition spec). Only the poster is named — the
           scrim and the video stay out of the pair, so the clip's fade-in
-          after arrival composits over the settled shared layer. share falls
-          back to `default`, so it is pinned to "auto" explicitly (the
-          team-grid pattern). */}
-      <ViewTransition name={`branza-${id}`} share="auto" default="none">
+          after arrival composits over the settled shared layer. share must
+          not fall back to `default` ("none"); the `branza-poster`
+          view-transition-class activates the morph and lets global.css
+          cover-fit the snapshots (card and hero crop the same photo
+          differently). */}
+      <ViewTransition
+        name={`branza-${id}`}
+        share="branza-poster"
+        default="none"
+      >
         <Image
           className={s.heroPoster}
           src={poster}
