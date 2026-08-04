@@ -68,9 +68,10 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | Hook | Import | Signature |
 |------|--------|-----------|
 | useDeviceDetection | `@/hooks/use-device-detection` | `()` |
-| useReveal | `@/hooks/use-reveal` | `({ threshold = 0, rootMargin = '0px 0px -25% 0px', once = true, }: UseRevealOptions = {})` |
+| useReveal | `@/hooks/use-reveal` | `({ threshold = 0, rootMargin = '0px 0px -25% 0px', once = true, skipDuringViewTransition = false, }: UseRevealOptions = {})` |
 | useRotator | `@/hooks/use-rotator` | `(length: number) => { ref: RefObject<T | null>; rotation: RotationState }` |
 | usePreferredReducedMotion | `@/hooks/use-sync-external` | `() => boolean` |
+| useIsDesktop | `@/hooks/use-sync-external` | `() => boolean` |
 
 ---
 

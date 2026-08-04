@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import * as home from '@/lib/content/home'
 import * as pl from '@/lib/content/o-nas'
@@ -8,6 +9,7 @@ import { BigMarquee } from '../(home)/sections/big-marquee'
 import { ClientLogos } from '../(home)/sections/client-logos'
 import { JoinCta } from '../(home)/sections/join-cta'
 import { NewsLama } from '../(home)/sections/news-lama'
+import { NewsLamaSkeleton } from '../(home)/sections/news-lama/skeleton'
 import { toNewsLamaPost } from '../(home)/sections/news-lama/to-news-lama-post'
 import { AboutIntro } from './sections/about-intro'
 import { GoodOne } from './sections/good-one'
@@ -36,10 +38,23 @@ export const metadata: Metadata = {
   alternates: alternatesForPath('/o-nas'),
 }
 
-export default async function ONasPage() {
+/**
+ * The only CMS-dependent slice of the page, isolated behind Suspense so the
+ * whole section sequence — team slider included — prerenders into the static
+ * shell (HomeNews pattern, see home/page.tsx). With the fetch awaited at the
+ * page root instead, client navigation committed a loading shell without the
+ * `#zespol` anchor, and the cold render held every section hostage to the
+ * Payload→Neon roundtrip.
+ */
+async function ONasNews() {
   const latestPost = await getLatestPost()
   const newsPost = latestPost ? toNewsLamaPost(latestPost, '') : null
+  return newsPost ? (
+    <NewsLama content={home.news} locale="pl" post={newsPost} />
+  ) : null
+}
 
+export default function ONasPage() {
   return (
     <Wrapper theme="plum">
       {/* Hero + "ZAUFALI NAM" belt compose the first viewport as one plum
@@ -78,9 +93,9 @@ export default async function ONasPage() {
         <JoinCta content={home.joinCta} />
       </div>
       <div data-theme="plum-deep">
-        {newsPost && (
-          <NewsLama content={home.news} locale="pl" post={newsPost} />
-        )}
+        <Suspense fallback={<NewsLamaSkeleton heading={home.news.heading} />}>
+          <ONasNews />
+        </Suspense>
       </div>
     </Wrapper>
   )

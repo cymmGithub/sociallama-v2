@@ -5,6 +5,11 @@
 // reference with an empty `main`), so reference it explicitly here.
 /// <reference types="bun" />
 
+// React canary API surface (ViewTransition). Next's App Router vendors a React
+// canary at runtime, so the component exists — but @types/react only declares
+// it behind the canary entrypoint.
+/// <reference types="react/canary" />
+
 // React CSS custom properties support
 import 'react'
 

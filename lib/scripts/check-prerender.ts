@@ -16,7 +16,7 @@
  * as-is either way.
  */
 
-const GUARDED_ROUTES = ['/', '/en', '/o-nas']
+const GUARDED_ROUTES = ['/', '/en', '/o-nas', '/en/about-us']
 
 const manifestPath = new URL(
   '../../.next/prerender-manifest.json',

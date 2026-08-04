@@ -9,7 +9,7 @@
  *
  * Photos are transparent portrait cutouts (public/o-nas/slider) that drop
  * straight onto the plum band. Entrance uses the house reveal primitive; the
- * step-to-step swap is a true crossfade (see Team below).
+ * step-to-step swap is a true crossfade (see Slider below).
  */
 
 import cn from 'clsx'
@@ -21,11 +21,12 @@ import {
   useEffect,
   useRef,
   useState,
+  ViewTransition,
 } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { CertKey, LocalizedONas } from '@/lib/content/o-nas'
-import { usePreferredReducedMotion } from '@/lib/hooks'
+import { useIsDesktop, usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './team.module.css'
 
@@ -59,29 +60,103 @@ function slugOf(photo: string) {
   )
 }
 
-/**
- * Reads `?lama=` and hands it up. It exists as its own component purely so the
- * Suspense boundary `useSearchParams` demands can wrap *nothing visible*:
- * reading the param inside <Team> would put the boundary around the whole team
- * section, and its fallback would punch a hole in the prerendered HTML.
- */
-function LamaParam({ onSlug }: { onSlug: (slug: string | null) => void }) {
-  const lama = useSearchParams().get('lama')
+export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
+  // "ZESPÓŁ SOCIAL LAMA" → "ZESPÓŁ" / "SOCIAL LAMA" (two lines, per the mock).
+  const [headLead, ...headRest] = content.heading.split(' ')
 
-  useEffect(() => {
-    onSlug(lama)
-  }, [lama, onSlug])
+  return (
+    <section
+      id="zespol"
+      data-theme="plum"
+      data-onas-section="team"
+      className={s.section}
+    >
+      <header className={s.head}>
+        {/* Homepage "Usługi" pattern: small white eyebrow over a big orange word. */}
+        <div className={s.label}>
+          <p className={s.eyebrow}>{content.kickerLead}</p>
+          <p className={s.title}>{content.kickerRest}</p>
+        </div>
+        <p className={s.heading}>
+          <span>{headLead}</span>
+          <span>{headRest.join(' ')}</span>
+        </p>
+      </header>
 
-  return null
+      {/* The `?lama=` deep link must be applied in the same render commit the
+          navigation paints: the view-transition snapshot pairs the clicked
+          grid tile with whatever the committed featured slot shows, and any
+          post-commit swap (the old effect chain) both flashed member one and
+          made the snapshot pair the WRONG member's tile (spike, 2026-08-04).
+          So the param read wraps the slider itself. The Suspense boundary is
+          still what keeps `useSearchParams` from punching a CSR hole in the
+          prerendered page — but its fallback is the slider at member one,
+          byte-for-byte the markup a param-less render produces, so the team
+          section stays complete in the static shell (onas-team spec). */}
+      <Suspense fallback={<Slider content={content} slug={null} />}>
+        <DeepLinkedSlider content={content} />
+      </Suspense>
+
+      {/* Off-screen warmers: fetch every member once (below the fold, before the
+          first click) at the exact variant the coverflow renders, so stepping
+          the slider never waits on a network round-trip. ~32 KB WebP each. */}
+      <div className={s.preload} aria-hidden="true">
+        {content.members.map((m) => (
+          <Image
+            key={m.photo}
+            src={m.photo}
+            alt=""
+            fill
+            objectFit="contain"
+            mobileSize="60vw"
+            desktopSize="30vw"
+            loading="eager"
+          />
+        ))}
+      </div>
+    </section>
+  )
 }
 
-export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
-  const revealRef = useReveal<HTMLDivElement>()
+// Reads `?lama=` and renders the slider with it. During client-side
+// navigation renders the param is available synchronously, so the slider's
+// first committed frame already features the deep-linked member.
+function DeepLinkedSlider({ content }: { content: LocalizedONas['oNasTeam'] }) {
+  const slug = useSearchParams().get('lama')
+  return <Slider content={content} slug={slug} />
+}
+
+function Slider({
+  content,
+  slug,
+}: {
+  content: LocalizedONas['oNasTeam']
+  /** Cutout slug from `?lama=`, or null when absent (and in the prerendered
+   *  fallback, where a URL param can never influence static markup). */
+  slug: string | null
+}) {
+  // On a morphing arrival the tile→slot morph IS the entrance, so the wipe
+  // must sit this one out (team-morph-transition spec); direct visits and
+  // unsupported browsers have no running transition and keep the wipe.
+  const revealRef = useReveal<HTMLDivElement>({
+    skipDuringViewTransition: true,
+  })
   const reducedMotion = usePreferredReducedMotion()
+  // The morph runs on the grid presentation only (>= dt, mirroring the
+  // homepage tiles' gate): on mobile no slot is named, no transition
+  // activates, and the wipe stays the entrance (user call, 2026-08-04).
+  // Snapshot-synchronous hook, not hamo's useMediaQuery — the slot must be
+  // named in the very commit the navigation paints (see useIsDesktop).
+  const isDesktop = useIsDesktop()
   const members = content.members
   const count = members.length
 
-  const [index, setIndex] = useState(0)
+  // Unknown or absent slug changes nothing: -1 falls back to member one on
+  // mount and keeps the current member on a repeat visit.
+  const indexFor = (value: string | null) =>
+    value ? members.findIndex((m) => slugOf(m.photo) === value) : -1
+
+  const [index, setIndex] = useState(() => Math.max(0, indexFor(slug)))
   // `prev` is the outgoing member index during a step — non-null only while the
   // crossfade runs, so both slides are mounted and can dissolve past each other
   // (no blank frame). `busyRef` locks the arrows for that window so a fast
@@ -92,27 +167,27 @@ export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
   // Start point of an in-progress touch, for the swipe gesture (mobile).
   const touchStart = useRef<{ x: number; y: number } | null>(null)
 
+  // Deep link while the page stays mounted (Next keeps it alive across
+  // navigations): apply the changed param DURING render — the adjust-state-on-
+  // prop-change pattern — so the same commit the navigation paints already
+  // features the member. An instant swap — no crossfade layer, no arrow lock —
+  // because there is nothing to fade *from*.
+  const [appliedSlug, setAppliedSlug] = useState(slug)
+  if (slug !== appliedSlug) {
+    setAppliedSlug(slug)
+    const target = indexFor(slug)
+    if (target >= 0) {
+      setIndex(target)
+      setPrev(null)
+    }
+  }
+
   useEffect(
     () => () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     },
     []
   )
-
-  // Deep link from the homepage grid: feature the named member on arrival. An
-  // instant swap — no crossfade layer, no arrow lock — because there is nothing
-  // to fade *from*. Keyed on the slug value rather than on mount, so it re-fires
-  // when Next keeps this page alive across navigations and the visitor comes
-  // back with a different member. Unknown or absent slug changes nothing.
-  const [lama, setLama] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!lama) return
-    const target = members.findIndex((m) => slugOf(m.photo) === lama)
-    if (target < 0) return
-    setPrev(null)
-    setIndex(target)
-  }, [lama, members])
 
   // `first` is the guaranteed fallback — members is non-empty by design, and the
   // guard narrows away the widened-array `undefined`. index/prev are always
@@ -127,9 +202,6 @@ export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
     leftPeer: members[(i - 1 + count) % count] ?? first,
     rightPeer: members[(i + 1) % count] ?? first,
   })
-
-  // "ZESPÓŁ SOCIAL LAMA" → "ZESPÓŁ" / "SOCIAL LAMA" (two lines, per the mock).
-  const [headLead, ...headRest] = content.heading.split(' ')
 
   // Step the slider. Reduced-motion users get an instant swap (no second layer,
   // no delay); everyone else keeps the outgoing member mounted for one beat so
@@ -177,119 +249,84 @@ export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
   const outgoing = prev !== null ? trioAt(prev) : null
 
   return (
-    <section
-      id="zespol"
-      data-theme="plum"
-      data-onas-section="team"
-      className={s.section}
-    >
-      <Suspense fallback={null}>
-        <LamaParam onSlug={setLama} />
-      </Suspense>
-
-      <header className={s.head}>
-        {/* Homepage "Usługi" pattern: small white eyebrow over a big orange word. */}
-        <div className={s.label}>
-          <p className={s.eyebrow}>{content.kickerLead}</p>
-          <p className={s.title}>{content.kickerRest}</p>
-        </div>
-        <p className={s.heading}>
-          <span>{headLead}</span>
-          <span>{headRest.join(' ')}</span>
-        </p>
-      </header>
-
-      <div ref={revealRef} data-reveal-style="wipe" className={s.slider}>
-        {/* Coverflow stack: the featured cutout in front (full colour), the two
-            neighbours behind it plum-tinted and whole, flanked by the nav
-            arrows. During a step the outgoing trio (rendered first, so it sits
-            under) fades out while the incoming fades in on top. */}
-        {/* Wrapper owns sizing + the arrows; the reveal-clipped .stage inside
-            holds only the crossfading cutouts, so the arrows can straddle the
-            portrait edges on mobile without the wipe clip slicing them. Swipe
-            is bound here so it covers the arrows' area too. */}
-        <div
-          className={s.stageWrap}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
-          <div data-reveal-item className={s.stage}>
-            {outgoing && (
-              <Trio
-                key={`fig-out-${prev}`}
-                {...outgoing}
-                className={cn(s.figures, s.exit)}
-                hidden
-              />
-            )}
-            <Trio
-              key={`fig-in-${index}`}
-              {...current}
-              // Enter animation only on a real step — never on first mount,
-              // where the wipe reveal already owns the entrance.
-              className={cn(s.figures, prev !== null && s.enter)}
-            />
-          </div>
-
-          <button
-            type="button"
-            className={cn(s.nav, s.navPrev)}
-            onClick={() => go(-1)}
-            aria-label={content.prevLabel}
-          >
-            <ChevronLeft aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className={cn(s.nav, s.navNext)}
-            onClick={() => go(1)}
-            aria-label={content.nextLabel}
-          >
-            <ChevronRight aria-hidden="true" />
-          </button>
-        </div>
-
-        {/* Details for the active member. aria-live announces the switch; the
-            outgoing copy is aria-hidden so only the incoming is read. The
-            incoming layer stays in flow (it sizes the column); the outgoing is
-            an absolute overlay fading out on top of it. */}
-        <div data-reveal-item className={s.text} aria-live="polite">
+    <div ref={revealRef} data-reveal-style="wipe" className={s.slider}>
+      {/* Coverflow stack: the featured cutout in front (full colour), the two
+          neighbours behind it plum-tinted and whole, flanked by the nav
+          arrows. During a step the outgoing trio (rendered first, so it sits
+          under) fades out while the incoming fades in on top. */}
+      {/* Wrapper owns sizing + the arrows; the reveal-clipped .stage inside
+          holds only the crossfading cutouts, so the arrows can straddle the
+          portrait edges on mobile without the wipe clip slicing them. Swipe
+          is bound here so it covers the arrows' area too. */}
+      <div
+        className={s.stageWrap}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div data-reveal-item className={s.stage}>
           {outgoing && (
-            <Details
-              key={`txt-out-${prev}`}
-              member={outgoing.featured}
-              certLabels={content.certLabels}
-              className={cn(s.details, s.exit)}
+            <Trio
+              key={`fig-out-${prev}`}
+              {...outgoing}
+              className={cn(s.figures, s.exit)}
               hidden
             />
           )}
-          <Details
-            key={`txt-in-${index}`}
-            member={current.featured}
-            certLabels={content.certLabels}
-            className={cn(s.details, prev !== null && s.enter)}
+          <Trio
+            key={`fig-in-${index}`}
+            {...current}
+            // Enter animation only on a real step — never on first mount,
+            // where the wipe reveal already owns the entrance.
+            className={cn(s.figures, prev !== null && s.enter)}
+            // The live featured slot is the morph target for the homepage
+            // grid tile carrying the same `team-<slug>` name. Only this
+            // layer is named: the outgoing crossfade layer above would
+            // duplicate the name, and peers would collide with other
+            // members' live tiles (team-morph-transition spec).
+            morphSlug={isDesktop ? slugOf(current.featured.photo) : undefined}
           />
         </div>
+
+        <button
+          type="button"
+          className={cn(s.nav, s.navPrev)}
+          onClick={() => go(-1)}
+          aria-label={content.prevLabel}
+        >
+          <ChevronLeft aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className={cn(s.nav, s.navNext)}
+          onClick={() => go(1)}
+          aria-label={content.nextLabel}
+        >
+          <ChevronRight aria-hidden="true" />
+        </button>
       </div>
 
-      {/* Off-screen warmers: fetch every member once (below the fold, before the
-          first click) at the exact variant the coverflow renders, so stepping
-          the slider never waits on a network round-trip. ~32 KB WebP each. */}
-      <div className={s.preload} aria-hidden="true">
-        {members.map((m) => (
-          <Image
-            key={m.photo}
-            src={m.photo}
-            alt=""
-            fill
-            objectFit="contain"
-            mobileSize="60vw"
-            desktopSize="30vw"
-            loading="eager"
+      {/* Details for the active member. aria-live announces the switch; the
+          outgoing copy is aria-hidden so only the incoming is read. The
+          incoming layer stays in flow (it sizes the column); the outgoing is
+          an absolute overlay fading out on top of it. */}
+      <div data-reveal-item className={s.text} aria-live="polite">
+        {outgoing && (
+          <Details
+            key={`txt-out-${prev}`}
+            member={outgoing.featured}
+            certLabels={content.certLabels}
+            className={cn(s.details, s.exit)}
+            hidden
           />
-        ))}
+        )}
+        <Details
+          key={`txt-in-${index}`}
+          member={current.featured}
+          certLabels={content.certLabels}
+          className={cn(s.details, prev !== null && s.enter)}
+        />
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -303,12 +340,17 @@ function Trio({
   rightPeer,
   className,
   hidden,
+  morphSlug,
 }: {
   featured: Member
   leftPeer: Member
   rightPeer: Member
   className?: string
   hidden?: boolean
+  /** Names the featured cutout `team-<slug>` for the grid-tile morph; only
+   *  the live (incoming) trio gets one — and only on desktop — so the name
+   *  is unique in the DOM and mobile never activates a transition. */
+  morphSlug?: string | undefined
 }) {
   return (
     <div className={className} aria-hidden={hidden || undefined}>
@@ -341,14 +383,31 @@ function Trio({
         />
       </span>
       <span className={cn(s.photo, s.featured)}>
-        <Image
-          src={featured.photo}
-          alt=""
-          fill
-          objectFit="contain"
-          mobileSize="60vw"
-          desktopSize="30vw"
-        />
+        {morphSlug ? (
+          <ViewTransition
+            name={`team-${morphSlug}`}
+            share="auto"
+            default="none"
+          >
+            <Image
+              src={featured.photo}
+              alt=""
+              fill
+              objectFit="contain"
+              mobileSize="60vw"
+              desktopSize="30vw"
+            />
+          </ViewTransition>
+        ) : (
+          <Image
+            src={featured.photo}
+            alt=""
+            fill
+            objectFit="contain"
+            mobileSize="60vw"
+            desktopSize="30vw"
+          />
+        )}
       </span>
     </div>
   )

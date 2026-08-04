@@ -119,12 +119,18 @@ export function Link({
     return <div {...divProps}>{children}</div>
   }
 
+  // Same-page anchors: the app router mis-resolves a bare '#hash' href
+  // against a URL that already carries a hash — clicking the o-nas "#zespol"
+  // CTA on /o-nas?lama=x#zespol pushed …#zespol#zespol (2026-08-04). Anchor
+  // the href to the current pathname so the router replaces the fragment.
+  const resolvedHref = href.startsWith('#') ? `${pathname}${href}` : href
+
   // New-tab links (external or explicit `newTab`) ride the same NextLink —
   // it passes `target`/`rel` through to the anchor, skips client routing for
   // absolute URLs on its own, and prefetching a new-tab destination is waste.
   return (
     <NextLink
-      href={href as ComponentProps<typeof NextLink>['href']}
+      href={resolvedHref as ComponentProps<typeof NextLink>['href']}
       prefetch={opensNewTab ? false : shouldPrefetch}
       scroll={scroll}
       data-active={isActive || undefined}

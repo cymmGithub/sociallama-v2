@@ -3,6 +3,14 @@
   top: 0;
   left: 0;
   z-index: 100;
+  /* Own snapshot layer during the team-grid → /o-nas morph, so the page
+     crossfade never double-draws the fixed bar. A raw CSS name (not a React
+     <ViewTransition>) on purpose: the browser only reads it while a
+     transition is running, and only the team pair starts one — a React
+     share pair here would activate a transition on EVERY navigation
+     (non-goal: the wiring must not leak site-wide). The Activity-hidden
+     previous page's copy can't collide — display:none is never captured. */
+  view-transition-name: site-header;
   width: 100%;
   display: flex;
   align-items: center;

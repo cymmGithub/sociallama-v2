@@ -174,13 +174,75 @@ Activity-cached grid tile still carries its name — verified, not built.
   is already `use cache`/`cacheLife('max')` and built for home; no new
   concurrency (house rule: no parallel Payload queries at build).
 
-## Open Questions
+## Open Questions — answered (spike, 2026-08-04)
 
-- Does Next 16.2 still require `experimental.viewTransition` in
-  `next.config.ts`? (One-line check during the spike; docs excerpts show
-  none.)
-- Does the reverse morph (o-nas → home) come for free with acceptable
-  quality, or does it need explicit gating? Spike observation, not a
-  requirement.
-- EN surface parity: `/en/about-us` shares components, but the spike runs on
-  PL only; EN is wired in the build phase and verified, not re-spiked.
+- **Config flag: none.** Next 16.2.10 activates view transitions with no
+  `next.config.ts` change; `ViewTransition` imports from `react` (the vendored
+  canary) and compiles under `reactCompiler: true`. The only wiring needed was
+  a `/// <reference types="react/canary" />` in `lib/utils/types.d.ts` —
+  `@types/react` stable declares the component only behind its canary entry.
+- **Reverse morph: does NOT come for free.** Browser back from /o-nas to home
+  activates no view transition at all (verified: zero `startViewTransition`
+  calls on popstate). Back-nav behaves exactly as before the change — scroll
+  reset to top, instant. Accepted per D6 (absence = current experience); no
+  gating built.
+- **EN parity: verified live.** `/en` → `/en/about-us` morphs identically
+  (shared components; snapshot captured `team-robert-sawicki` paired with the
+  landed slot). `/en/about-us` needed no news split — it never had the news
+  band and was already a sync page; it is now covered by the
+  `check-prerender` guard alongside `/o-nas`.
+
+## Spike findings that reshaped the build
+
+- **Scroll inside the commit IS captured** by the new-state snapshot, and
+  Lenis `scrollTo(..., { immediate: true, force: true })` applies it
+  synchronously — no `window.scrollTo` + resync fallback needed. The
+  `ScrollReset` fast path is a client layout effect (D4 as designed).
+- **A layout-effect setState cascade is NOT captured.** The originally
+  sketched D3 (keep `LamaParam`, flush the param through layout effects)
+  paints the right member pre-paint but flushes AFTER the transition's update
+  callback — the snapshot still showed member one, so the clicked member
+  never paired and, worse, member one's live home tile paired with the slot
+  (wrong-member morph). The shipped D3: the param read wraps the slider
+  (`DeepLinkedSlider` inside the Suspense boundary), the initial `index`
+  derives from the slug in the `useState` initializer, and repeat visits
+  apply the changed slug with the render-phase adjust-state-on-prop-change
+  pattern — all inside the commit the navigation paints. The boundary's
+  fallback is the slider itself at member one, so the static shell still
+  contains the complete team section (onas-team spec holds).
+- **Header pin is a raw CSS `view-transition-name`** (header.module.css), not
+  a React `<ViewTransition>`: a React share pair on the always-present header
+  would activate a transition on every navigation site-wide (violating the
+  no-leak non-goal); a raw CSS name only participates when the team pair has
+  already started a transition, including on any future reverse morphs. The
+  Activity-hidden page's duplicate header is never captured (display:none).
+- **Wipe suppression keys on `document.activeViewTransition`** (opt-in
+  `skipDuringViewTransition` on `useReveal`), not on "lama param present on a
+  client nav": the reveal's layout effect runs inside the transition's update
+  callback, so the check is true exactly when a morph owns the entrance —
+  and stays false on unsupported browsers and hard loads, which keep the
+  wipe. This also covers the emergent no-param morph (the grid's "more" tile
+  → `#zespol` pairs the current featured member) for free.
+- **Crop pop: acceptable.** The default scale-crossfade between the cover
+  tile and the contain slot shows no visible squish at 2s slow-mo; no
+  `::view-transition-old/new` object-fit CSS shipped. Escape hatch if live
+  judgment differs: name the tile's image only, or add the object-fit pseudo
+  CSS from the Next view-transitions guide.
+- **Desktop-only morph (user decision, 2026-08-04).** On the mobile rail the
+  flight geometry reads as noise, so the morph is gated to the grid
+  presentation: both sides render their `<ViewTransition>` only at
+  `>= breakpoints.dt` (the `--desktop` custom-media line — portrait tablets
+  below it show the rail and are treated as mobile). Below the line no
+  transition activates at all, so mobile keeps the wipe entrance plus the
+  arrival fixes. The gate reads through a new `useIsDesktop`
+  (`useSyncExternalStore`-based, in use-sync-external.ts) — hamo's
+  effect-based `useMediaQuery` returns undefined on a component's first
+  render, which left the freshly-mounted slider's slot unnamed in the very
+  commit the navigation paints and silently killed the desktop morph.
+- **Custom `Image`/`Link` wrappers: no passthrough changes needed** —
+  `<ViewTransition>` wraps children and annotates the child DOM node.
+  Unrelated but adjacent fix shipped during verification: bare `#hash` hrefs
+  (the o-nas "POZNAJ NASZE DOŚWIADCZENIE" CTA) are now resolved against the
+  current pathname in `components/ui/link` — the router appended instead of
+  replacing the fragment when the URL already carried one
+  (`…#zespol#zespol`, user-reported).
