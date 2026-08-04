@@ -2,12 +2,12 @@
 
 ### Requirement: Both surfaces carry the same roster
 
-The `/o-nas` team slider and the homepage `why-that-works` `TEAM` grid SHALL present the same 14 people, with no member appearing on one surface and not the other. Membership parity is normative. Both surfaces SHALL also spell each person's name the same way — a name that differs between surfaces is a defect, not a presentational choice.
+The `/o-nas` team slider and the homepage `why-that-works` `TEAM` grid SHALL present the same 15 people, with no member appearing on one surface and not the other. Membership parity is normative. Both surfaces SHALL also spell each person's name the same way — a name that differs between surfaces is a defect, not a presentational choice.
 
 #### Scenario: Roster parity across surfaces
 
 - **WHEN** `oNasTeam.members` is compared to the homepage `TEAM` array
-- **THEN** both contain the same 14 people — Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Przemysław Świercz — with none omitted from either
+- **THEN** both contain the same 15 people — Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Przemysław Świercz — with none omitted from either
 
 #### Scenario: Names agree across surfaces
 
@@ -39,7 +39,7 @@ Bios SHALL be written in the third person throughout. The source document mixes 
 
 #### Scenario: Bios sit in a consistent band
 
-- **WHEN** the bios of all 14 members are measured
+- **WHEN** the bios of all 15 members are measured
 - **THEN** they fall in one length band, with no member carrying a bio several times another's length
 
 #### Scenario: One voice across the roster
@@ -54,7 +54,7 @@ Bios SHALL be written in the third person throughout. The source document mixes 
 
 ### Requirement: Every member has a transparent, crop-matched portrait cutout
 
-All 14 members SHALL have a transparent-background PNG cutout under `/public/o-nas/slider/`, consistent in framing (head+torso crop, orientation) and comparable in file weight (~300 KB target, optimized). The same cutouts fill the homepage grid's full-bleed portrait tiles, so a framing defect is visible on both surfaces. Robert Sawicki's cutout SHALL be produced from the client's 2026-08 replacement photo, under the existing `robert-sawicki.png` filename so deep links and both surfaces pick it up unchanged. The new members' cutouts SHALL be `wojtek-sochaczynski.png` and `aleksander-dyminski.png` (full-name kebab-case, diacritics stripped, matching the roster convention).
+All 15 members SHALL have a transparent-background PNG cutout under `/public/o-nas/slider/`, consistent in framing (head+torso crop, orientation) and comparable in file weight (~300 KB target, optimized). The same cutouts fill the homepage grid's full-bleed portrait tiles, so a framing defect is visible on both surfaces. Robert Sawicki's cutout SHALL be produced from the client's 2026-08 replacement photo, under the existing `robert-sawicki.png` filename so deep links and both surfaces pick it up unchanged. The new members' cutouts SHALL be `wojtek-sochaczynski.png`, `aleksander-dyminski.png`, and `iza-harmoza-sochon.png` (full-name kebab-case, diacritics stripped, matching the roster convention).
 
 #### Scenario: Cutouts exist and are transparent PNGs
 
@@ -63,7 +63,7 @@ All 14 members SHALL have a transparent-background PNG cutout under `/public/o-n
 
 #### Scenario: Framing is consistent across the roster
 
-- **WHEN** all 14 cutouts are viewed together
+- **WHEN** all 15 cutouts are viewed together
 - **THEN** crop, scale, and orientation read as one consistent set, with no member visibly mis-scaled or differently framed — in particular the two new members' heads are not visibly larger in-frame than their teammates'
 
 #### Scenario: Robert's portrait is the replacement photo
@@ -74,16 +74,16 @@ All 14 members SHALL have a transparent-background PNG cutout under `/public/o-n
 #### Scenario: No member is excluded for missing artwork
 
 - **WHEN** the slider renders
-- **THEN** all 14 members are present — no member is commented out or skipped pending a usable photo
+- **THEN** all 15 members are present — no member is commented out or skipped pending a usable photo
 
 ### Requirement: EN locale mirrors the team content
 
-`o-nas.en.ts` SHALL carry the same 14 members in the same slider order with English bios, satisfying the `LocalizedONas` shape so PL and EN stay structurally identical. English bios SHALL carry the same substance and sit in the same length band as their Polish counterparts, and SHALL declare the same certificates — a locale showing visibly thinner bios or missing a certificate chip is a defect.
+`o-nas.en.ts` SHALL carry the same 15 members in the same slider order with English bios, satisfying the `LocalizedONas` shape so PL and EN stay structurally identical. English bios SHALL carry the same substance and sit in the same length band as their Polish counterparts, and SHALL declare the same certificates — a locale showing visibly thinner bios or missing a certificate chip is a defect.
 
 #### Scenario: EN roster parity
 
 - **WHEN** `o-nas.en.ts` `oNasTeam.members` is compared to the PL version
-- **THEN** it has the same 14 members in the same order, each with a translated (non-`LOREM`) bio, and TypeScript compiles under `satisfies LocalizedONas`
+- **THEN** it has the same 15 members in the same order, each with a translated (non-`LOREM`) bio, and TypeScript compiles under `satisfies LocalizedONas`
 
 #### Scenario: EN bios match PL substance
 
@@ -106,12 +106,12 @@ All 14 members SHALL have a transparent-background PNG cutout under `/public/o-n
 
 ### Requirement: Client-curated order shared by both surfaces
 
-The homepage grid, the `/o-nas` slider, and the EN locale mirror SHALL all present the roster in the client's curated order: Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Przemysław Świercz. No surface deviates; a future reorder is a content change to this list, not a per-surface curation.
+The homepage grid, the `/o-nas` slider, and the EN locale mirror SHALL all present the roster in the client's curated order: Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Przemysław Świercz. No surface deviates; a future reorder is a content change to this list, not a per-surface curation.
 
 #### Scenario: Homepage grid order
 
 - **WHEN** the homepage `why-that-works` grid renders
-- **THEN** the 14 tiles appear in the curated order above
+- **THEN** the 15 tiles appear in the curated order above
 
 #### Scenario: Slider order matches the grid
 
@@ -120,9 +120,9 @@ The homepage grid, the `/o-nas` slider, and the EN locale mirror SHALL all prese
 
 ### Requirement: The longest surname still fits the slider display slot
 
-Because "SOCHACZYŃSKI" (12 characters) replaces "MARCINOWSKA" (11) as the roster's longest surname, the slider's large display slot SHALL render it complete — no clipping, truncation, or horizontal overflow — at every viewport, including above 1700px where the display scale is largest.
+Because "HARMOZA-SOCHOŃ" (14 characters) and "SOCHACZYŃSKI" (12) replace "MARCINOWSKA" (11) as the roster's longest surnames, the slider's large display slot SHALL render it complete — no clipping, truncation, or horizontal overflow — at every viewport, including above 1700px where the display scale is largest.
 
-#### Scenario: SOCHACZYŃSKI fits at all viewports
+#### Scenario: The longest surnames fit at all viewports
 
-- **WHEN** Wojtek Sochaczyński is the featured member at 390px, 768px, 1280px, 1920px, and above 1700px
+- **WHEN** Wojtek Sochaczyński or Iza Harmoza-Sochoń is the featured member at 390px, 768px, 1280px, 1920px, and above 1700px
 - **THEN** the surname renders complete in the large slot with no clipping or horizontal overflow

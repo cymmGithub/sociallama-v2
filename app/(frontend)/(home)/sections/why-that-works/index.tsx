@@ -21,10 +21,11 @@ function fill(node: HTMLSpanElement, active: boolean) {
   node.style.opacity = active ? '1' : '0.2'
 }
 
-// Team roster as a grid of full-bleed portrait tiles, in presentation order
-// (leadership first). Each tile fills its gradient container with the member's
-// transparent head+torso cutout (shared with the /o-nas slider) and carries a
-// standing name + role label. Adding or removing a member is a one-line edit.
+// Team roster as a grid of full-bleed portrait tiles, in the client-curated
+// presentation order shared verbatim with the /o-nas slider. Each tile fills
+// its gradient container with the member's transparent head+torso cutout
+// (shared with the /o-nas slider) and carries a standing name + role label.
+// Adding or removing a member is a one-line edit.
 const TEAM = [
   {
     cut: 'anna-ozga.png',
@@ -32,14 +33,14 @@ const TEAM = [
     role: 'Head of Social Media',
   },
   {
-    cut: 'agnieszka-klajbert.png',
-    name: 'Agnieszka Klajbert',
-    role: 'Senior Social Media Specialist',
+    cut: 'kamil-mazuruk.png',
+    name: 'Kamil Mazuruk',
+    role: 'Founder, Good One Group',
   },
   {
-    cut: 'piotr-zach.png',
-    name: 'Piotrek Zach',
-    role: 'Project Manager',
+    cut: 'robert-sawicki.png',
+    name: 'Robert Sawicki',
+    role: 'Art & Creative Director',
   },
   {
     cut: 'emilia-metryka.png',
@@ -57,6 +58,16 @@ const TEAM = [
     role: 'Social Media Manager',
   },
   {
+    cut: 'piotr-zach.png',
+    name: 'Piotrek Zach',
+    role: 'Project Manager',
+  },
+  {
+    cut: 'agnieszka-klajbert.png',
+    name: 'Agnieszka Klajbert',
+    role: 'Senior Social Media Specialist',
+  },
+  {
     cut: 'katarzyna-kaptur.png',
     name: 'Katarzyna Kaptur',
     role: 'Social Media Expert',
@@ -72,14 +83,19 @@ const TEAM = [
     role: 'Wideo Content Creator',
   },
   {
-    cut: 'kamil-mazuruk.png',
-    name: 'Kamil Mazuruk',
-    role: 'Founder, Good One Group',
+    cut: 'wojtek-sochaczynski.png',
+    name: 'Wojtek Sochaczyński',
+    role: 'Senior Videographer',
   },
   {
-    cut: 'robert-sawicki.png',
-    name: 'Robert Sawicki',
-    role: 'Art & Creative Director',
+    cut: 'aleksander-dyminski.png',
+    name: 'Aleksander Dymiński',
+    role: 'Videographer',
+  },
+  {
+    cut: 'iza-harmoza-sochon.png',
+    name: 'Iza Harmoza-Sochoń',
+    role: 'HR & Administration Manager',
   },
   {
     cut: 'przemyslaw-swiercz.png',
@@ -174,6 +190,19 @@ export function WhyThatWorks({
                 </Link>
               </li>
             ))}
+            {/* CTA tile closing the grid's rectangle (16 = 4x4 desktop,
+                8x2 mobile). Same tile shell as the members, copy instead of a
+                cutout; the arrow is part of the label, so unlike the member
+                tiles' hover-only affordance it stays visible on touch. */}
+            <li className={cn(s.tile, s.moreTile)}>
+              <Link
+                className={s.moreLink}
+                href={`${content.memberLink.hrefBase}${content.moreCard.anchor}`}
+              >
+                <span className={s.moreLabel}>{content.moreCard.label}</span>
+                <ArrowRight className={s.moreArrow} aria-hidden="true" />
+              </Link>
+            </li>
           </ul>
         </div>
         <div className={s.copy}>

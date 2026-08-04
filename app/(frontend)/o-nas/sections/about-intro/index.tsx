@@ -33,6 +33,7 @@ export function AboutIntro({
   return (
     <section
       ref={revealRef}
+      id="o-lamie"
       data-theme="cream"
       data-onas-section="about-intro"
       data-reveal-style="wipe"

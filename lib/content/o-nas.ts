@@ -189,10 +189,11 @@ export const oNasGoodOne = {
 // arrows, teammates peeking behind. `given` is the small orange label over the
 // big cream `surname` — colour travels with the word, not with the slot. Slider
 // photos are transparent portrait cutouts in /public/o-nas/slider (kept apart
-// from the webp team grid). Order mirrors the homepage `why-that-works` TEAM
-// grid (leadership first); roles follow the site wording where the bio doc
-// disagrees (design D4). Bios are the client doc's, trimmed to a consistent
-// slider length.
+// from the webp team grid). Order is the client-curated presentation order
+// (2026-08-04), carried verbatim by both this slider and the homepage
+// `why-that-works` TEAM grid — a reorder is an edit to this list, not a rule.
+// Roles follow the site wording where the bio doc disagrees (design D4). Bios
+// are the client doc's, trimmed to a consistent slider length.
 
 /** Professional certificates a member may hold. Both marks ship in
  *  `/public/assets/certs`; the slider maps the key to the mark. */
@@ -221,18 +222,22 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      given: 'AGNIESZKA',
-      surname: 'KLAJBERT',
-      role: 'Senior Social Media Specialist',
-      bio: 'Od 5 lat związana z\u00A0marketingiem i\u00A0mediami społecznościowymi. Łączy pasję do fotografii z\u00A0wykształceniem z\u00A0zakresu zarządzania i\u00A0grafiki komputerowej w\u00A0reklamie, dzięki czemu odnajduje się w\u00A0tworzeniu contentu i\u00A0nieszablonowych koncepcji. Doświadczenie zdobywała w\u00A0branży hotelarskiej, gastronomicznej, beauty i\u00A0lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i\u00A0wyważonego szaleństwa. No i\u00A0oczywiście analityki.',
-      photo: '/o-nas/slider/agnieszka-klajbert.png',
+      given: 'KAMIL',
+      surname: 'MAZURUK',
+      role: 'Founder, Good One Group',
+      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Zespół Social Lamy wspiera strategicznym doradztwem i\u00A0doświadczeniem biznesowym całej grupy. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
+      // The group the bio just introduced — an external site, so the label is
+      // the domain (same convention as Przemysław's imcurious.how below).
+      link: { label: 'goodone.co', href: 'https://goodone.co' },
+      photo: '/o-nas/slider/kamil-mazuruk.png',
     },
     {
-      given: 'PIOTREK',
-      surname: 'ZACH',
-      role: 'Project Manager',
-      bio: 'W\u00A0Social Lamie od 2019 roku. Odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i\u00A0treści tekstowych, wspierając w\u00A0tych obszarach cały zespół. Łączy wykształcenie marketingowe i\u00A0filologiczne z\u00A0doświadczeniem w\u00A0pracy dla marek z\u00A0branż takich jak FMCG, automotive, OZE, elektronika i\u00A0nieruchomości. Stawia na słowo, które realnie buduje komunikację. Prywatnie fan szeroko pojętego sportu i\u00A0internetowych memów.',
-      photo: '/o-nas/slider/piotr-zach.png',
+      given: 'ROBERT',
+      surname: 'SAWICKI',
+      role: 'Art & Creative Director',
+      bio: 'Art & Creative Director związany z\u00A0agencją kreatywną Diea, specjalizującą się w\u00A0brandingu, projektowaniu graficznym, produkcji wideo i\u00A0animacji. Łączy zmysł estetyczny z\u00A0myśleniem strategicznym — od identyfikacji wizualnej, przez key visuale kampanii, po materiały digitalowe. Zespół Social Lamy wspiera przy koncepcjach kreatywnych, brandingu i\u00A0designie. Dba o\u00A0to, by kreacja nie tylko dobrze wyglądała, ale przede wszystkim realnie pracowała na cele marki.',
+      link: { label: 'diea.pl', href: 'https://www.diea.pl' },
+      photo: '/o-nas/slider/robert-sawicki.png',
     },
     {
       given: 'EMILIA',
@@ -259,6 +264,20 @@ export const oNasTeam = {
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
+      given: 'PIOTREK',
+      surname: 'ZACH',
+      role: 'Project Manager',
+      bio: 'W\u00A0Social Lamie od 2019 roku. Odpowiada za kompleksową obsługę klientów oraz tworzenie koncepcji kreatywnych i\u00A0treści tekstowych, wspierając w\u00A0tych obszarach cały zespół. Łączy wykształcenie marketingowe i\u00A0filologiczne z\u00A0doświadczeniem w\u00A0pracy dla marek z\u00A0branż takich jak FMCG, automotive, OZE, elektronika i\u00A0nieruchomości. Stawia na słowo, które realnie buduje komunikację. Prywatnie fan szeroko pojętego sportu i\u00A0internetowych memów.',
+      photo: '/o-nas/slider/piotr-zach.png',
+    },
+    {
+      given: 'AGNIESZKA',
+      surname: 'KLAJBERT',
+      role: 'Senior Social Media Specialist',
+      bio: 'Od 5 lat związana z\u00A0marketingiem i\u00A0mediami społecznościowymi. Łączy pasję do fotografii z\u00A0wykształceniem z\u00A0zakresu zarządzania i\u00A0grafiki komputerowej w\u00A0reklamie, dzięki czemu odnajduje się w\u00A0tworzeniu contentu i\u00A0nieszablonowych koncepcji. Doświadczenie zdobywała w\u00A0branży hotelarskiej, gastronomicznej, beauty i\u00A0lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i\u00A0wyważonego szaleństwa. No i\u00A0oczywiście analityki.',
+      photo: '/o-nas/slider/agnieszka-klajbert.png',
+    },
+    {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
@@ -280,22 +299,25 @@ export const oNasTeam = {
       photo: '/o-nas/slider/karolina-marcinowska.png',
     },
     {
-      given: 'KAMIL',
-      surname: 'MAZURUK',
-      role: 'Founder, Good One Group',
-      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Zespół Social Lamy wspiera strategicznym doradztwem i\u00A0doświadczeniem biznesowym całej grupy. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
-      // The group the bio just introduced — an external site, so the label is
-      // the domain (same convention as Przemysław's imcurious.how below).
-      link: { label: 'goodone.co', href: 'https://goodone.co' },
-      photo: '/o-nas/slider/kamil-mazuruk.png',
+      given: 'WOJTEK',
+      surname: 'SOCHACZYŃSKI',
+      role: 'Senior Videographer',
+      bio: 'Wideo prowadzi od pomysłu po finalny eksport — koncepcja, plan zdjęciowy, montaż, kolor i\u00A0dźwięk. W\u00A0Social Lamie odpowiada za materiały, które mają pracować w\u00A0social mediach: zatrzymać kciuk w\u00A0pierwszych sekundach i\u00A0utrzymać uwagę do końca. Na planie stawia na dobre przygotowanie, w\u00A0montażu na rytm — tak, by historia niosła się sama, a\u00A0marka zostawała w\u00A0pamięci.',
+      photo: '/o-nas/slider/wojtek-sochaczynski.png',
     },
     {
-      given: 'ROBERT',
-      surname: 'SAWICKI',
-      role: 'Art & Creative Director',
-      bio: 'Art & Creative Director związany z\u00A0agencją kreatywną Diea, specjalizującą się w\u00A0brandingu, projektowaniu graficznym, produkcji wideo i\u00A0animacji. Łączy zmysł estetyczny z\u00A0myśleniem strategicznym — od identyfikacji wizualnej, przez key visuale kampanii, po materiały digitalowe. Zespół Social Lamy wspiera przy koncepcjach kreatywnych, brandingu i\u00A0designie. Dba o\u00A0to, by kreacja nie tylko dobrze wyglądała, ale przede wszystkim realnie pracowała na cele marki.',
-      link: { label: 'diea.pl', href: 'https://www.diea.pl' },
-      photo: '/o-nas/slider/robert-sawicki.png',
+      given: 'ALEKSANDER',
+      surname: 'DYMIŃSKI',
+      role: 'Videographer',
+      bio: 'Filmuje i\u00A0montuje treści, które napędzają komunikację marek w\u00A0social mediach — od dynamicznych, krótkich formatów po dłuższe materiały wizerunkowe. Dba o\u00A0każdy etap produkcji: światło, kadr i\u00A0dźwięk na planie, potem tempo, cięcie i\u00A0detale w\u00A0montażu. Wierzy, że dobre wideo to rzemiosło połączone z\u00A0wyczuciem tego, co naprawdę angażuje odbiorców.',
+      photo: '/o-nas/slider/aleksander-dyminski.png',
+    },
+    {
+      given: 'IZA',
+      surname: 'HARMOZA-SOCHOŃ',
+      role: 'HR & Administration Manager',
+      bio: 'Od 2020 roku dba o\u00A0sprawną organizację pracy, wspiera zespoły projektowe oraz buduje dobre relacje, które przekładają się na komfort współpracy zarówno pracowników, jak i\u00A0klientów.',
+      photo: '/o-nas/slider/iza-harmoza-sochon.png',
     },
     {
       given: 'PRZEMYSŁAW',
