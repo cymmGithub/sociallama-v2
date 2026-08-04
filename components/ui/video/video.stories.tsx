@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { useState } from 'react'
 import { Video } from './index'
 
 const meta = {
@@ -45,5 +46,24 @@ export const ResponsiveSource: Story = {
 export const ReducedMotion: Story = {
   args: {
     autoPlay: false,
+  },
+}
+
+/**
+ * Controlled freeze-frame via the `playing` prop: `false` pauses the mounted
+ * `<video>` on its current frame (no snap back to the poster), and flipping it
+ * back to `true` resumes from the retained position.
+ */
+export const ControlledFreezeFrame: Story = {
+  render: function Render(args) {
+    const [playing, setPlaying] = useState(true)
+    return (
+      <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+        <Video {...args} playing={playing} />
+        <button type="button" onClick={() => setPlaying((value) => !value)}>
+          {playing ? 'Freeze' : 'Resume'}
+        </button>
+      </div>
+    )
   },
 }

@@ -531,6 +531,8 @@ export const services = {
   eyebrow: 'CZYM SIĘ ZAJMUJE SOCIAL LAMA?',
   heading: 'Usługi',
   linkLabel: 'DOWIEDZ SIĘ WIĘCEJ',
+  // Aria-label prefix for the clip rail's play buttons ("Odtwórz: <clip alt>").
+  playLabel: 'Odtwórz',
   items: [
     {
       id: 'content',

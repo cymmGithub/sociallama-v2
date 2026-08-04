@@ -64,6 +64,9 @@
 
 .layer.isActive {
   opacity: 1;
+  /* Layers are pointer-inert while stacked; the active one must take clicks
+     again for the clip rail's play buttons. */
+  pointer-events: auto;
 }
 
 /* —— Grain-gradient backdrop (gggrain recipe, brand tokens) ————————— */
@@ -408,6 +411,7 @@
 }
 
 .phoneFrame {
+  position: relative;
   height: 82%;
   aspect-ratio: 9 / 16;
   border-radius: 20px;
@@ -432,6 +436,43 @@
 .phoneVideo {
   width: 100%;
   height: 100%;
+  transition: filter 400ms ease;
+}
+
+/* Non-playing cards read as deliberately paused, not broken: the media dims
+   behind a play badge, and the swap transitions like a focus shift. */
+.phoneDimmed .phoneVideo {
+  filter: brightness(0.55) saturate(0.6);
+}
+
+/* Full-card tap target over a paused clip. The frame clips overflow, so the
+   global focus-visible ring is pulled inward instead of drawn outside. */
+.playButton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  outline-offset: -4px;
+}
+
+.playBadge {
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 30%, 64px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--color-cream);
+  background-color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 35%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.playBadge svg {
+  width: 42%;
+  height: 42%;
+  fill: currentColor;
 }
 
 /* —— Tab columns ————————————————————————————————————————————————— */

@@ -90,10 +90,12 @@ circle (`color-mix` ink/cream tokens, backdrop blur) sized with `clamp()`.
 `Services` gains `const [engaged, setEngaged] = useState(false)`;
 `autoplay` becomes `isDesktop === true && !reducedMotion && !engaged`.
 `onEngage` threads through `StageMedia` → `ClipRail` and fires on every play
-button click. Permanent for the page view: a resume timer would steal the
-video back from someone still watching. The existing non-live dwell bar
-rendering already handles the `autoplay === false` state; on mobile the
-callback is harmless (no loop exists).
+button click; `select()` (tab-column click) clears it again. No timer-based
+resume — that would steal the video back from someone still watching — but a
+tab click is an explicit exit from clip-watching, so it revives the loop.
+Clicking the already-active tab stays a no-op (no steal mid-clip). The
+existing non-live dwell bar rendering already handles the `autoplay === false`
+state; on mobile the callback is harmless (no loop exists).
 
 ### 6. Reduced motion: today's rail, untouched
 

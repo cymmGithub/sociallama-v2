@@ -347,6 +347,7 @@ export const services = {
   eyebrow: 'WHAT DOES SOCIAL LAMA DO?',
   heading: 'Services',
   linkLabel: 'LEARN MORE',
+  playLabel: 'Play',
   items: [
     {
       id: 'content',

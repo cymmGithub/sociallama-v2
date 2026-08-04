@@ -18,8 +18,8 @@ with no tab gating at all.
 - A deselected card freezes in place (resumable) instead of snapping back to
   its poster — the `Video` primitive gains a controlled `playing` prop that
   pauses the element rather than unmounting it.
-- Tapping any clip permanently stops the services tab auto-rotation for the
-  rest of the page view. Tab-column clicks keep today's behavior (switch,
+- Tapping any clip stops the services tab auto-rotation until the user clicks
+  another tab column, which revives the loop with today's behavior (switch,
   restart dwell, keep rotating).
 - Same one-at-a-time model on the mobile stack (no rotation exists there).
 - Under `prefers-reduced-motion` the rail keeps today's behavior: three

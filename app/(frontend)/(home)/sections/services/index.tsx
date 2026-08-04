@@ -16,6 +16,10 @@
  * SVG feTurbulence grain blended `soft-light` above the media panels so all
  * screenshots share one film grain.
  *
+ * The kreacje clip rail plays one clip at a time (middle by default); dimmed
+ * neighbours are tap-to-play buttons. A clip tap stops the tab auto-advance;
+ * clicking any tab column revives the loop.
+ *
  * Mobile (<800px) renders a separate stacked variant with no tab machinery.
  * Reduced motion: autoplay disabled (first tab open, click to switch), bars
  * render full, gradient is static via the global animation neutralizer.
@@ -23,6 +27,7 @@
 
 import cn from 'clsx'
 import { useMediaQuery } from 'hamo'
+import { Play } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -54,9 +59,13 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
   // so the loop never runs while the section is below the fold.
   const [inView, setInView] = useState(false)
 
+  // A clip tap hands playback control to the user: the auto-advance loop
+  // stops (unlike the off-screen pause) until a tab-column click revives it.
+  const [engaged, setEngaged] = useState(false)
+
   const reducedMotion = usePreferredReducedMotion()
   const isDesktop = useMediaQuery(`(min-width: ${breakpoints.dt}px)`)
-  const autoplay = isDesktop === true && !reducedMotion
+  const autoplay = isDesktop === true && !reducedMotion && !engaged
 
   useEffect(() => {
     if (!autoplay) return
@@ -76,6 +85,8 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
     if (index === active) return
     setActive(index)
     setCycle((count) => count + 1)
+    // A tab click is an explicit exit from clip-watching — bring the loop back.
+    setEngaged(false)
   }
 
   function advance() {
@@ -110,7 +121,12 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
                 className={cn(s.layer, index === active && s.isActive)}
                 aria-hidden={index !== active}
               >
-                <StageMedia service={service} active={index === active} />
+                <StageMedia
+                  service={service}
+                  active={index === active}
+                  playLabel={content.playLabel}
+                  onEngage={() => setEngaged(true)}
+                />
               </div>
             ))}
             <Grain />
@@ -171,7 +187,12 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
             <li key={service.id} data-reveal-item className={s.stackItem}>
               <div className={s.stackStage}>
                 <Backdrop />
-                <StageMedia service={service} active />
+                <StageMedia
+                  service={service}
+                  active
+                  playLabel={content.playLabel}
+                  onEngage={() => setEngaged(true)}
+                />
                 <Grain />
               </div>
               <h3 className={s.title}>{service.title}</h3>
@@ -234,9 +255,13 @@ function Grain() {
 function StageMedia({
   service,
   active,
+  playLabel,
+  onEngage,
 }: {
   service: ServiceItem
   active: boolean
+  playLabel: string
+  onEngage: () => void
 }) {
   const { stage } = service
 
@@ -266,18 +291,74 @@ function StageMedia({
   }
 
   return (
+    <ClipRail
+      clips={stage.clips}
+      active={active}
+      playLabel={playLabel}
+      onEngage={onEngage}
+    />
+  )
+}
+
+/**
+ * One-clip-at-a-time phone rail: the middle clip plays by default, the others
+ * sit dimmed and frozen behind full-card play buttons. Extracted from
+ * `StageMedia` so the playing-index hook stays unconditional (the panels
+ * branch never mounts it). Frames must remain direct `.phone` children in
+ * data order — the `nth-child` tilt CSS depends on it.
+ */
+function ClipRail({
+  clips,
+  active,
+  playLabel,
+  onEngage,
+}: {
+  clips: Extract<ServiceItem['stage'], { clips: unknown }>['clips']
+  active: boolean
+  playLabel: string
+  onEngage: () => void
+}) {
+  const [playingIdx, setPlayingIdx] = useState(Math.floor(clips.length / 2))
+  // Reduced motion keeps today's rail: three undimmed posters, no buttons —
+  // `Video` renders no <video> there, so a play button would be a lie.
+  const reducedMotion = usePreferredReducedMotion()
+
+  return (
     <div className={s.phone}>
-      {stage.clips.map((clip) => (
-        <div key={clip.src} className={s.phoneFrame}>
-          <Video
-            src={clip.src}
-            poster={clip.poster}
-            alt={clip.alt}
-            autoPlay={active}
-            className={s.phoneVideo}
-          />
-        </div>
-      ))}
+      {clips.map((clip, index) => {
+        const isPlaying = index === playingIdx
+        const paused = !(reducedMotion || isPlaying)
+        return (
+          <div
+            key={clip.src}
+            className={cn(s.phoneFrame, paused && s.phoneDimmed)}
+          >
+            <Video
+              src={clip.src}
+              poster={clip.poster}
+              alt={clip.alt}
+              autoPlay={active}
+              playing={isPlaying}
+              className={s.phoneVideo}
+            />
+            {paused && (
+              <button
+                type="button"
+                className={s.playButton}
+                aria-label={`${playLabel}: ${clip.alt}`}
+                onClick={() => {
+                  setPlayingIdx(index)
+                  onEngage()
+                }}
+              >
+                <span className={s.playBadge}>
+                  <Play aria-hidden="true" />
+                </span>
+              </button>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

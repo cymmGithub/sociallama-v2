@@ -41,11 +41,15 @@ Below the desktop breakpoint the section SHALL render no tab machinery: all thre
 ## ADDED Requirements
 
 ### Requirement: Clip engagement stops auto-advance
-Tapping any clip's play button SHALL permanently disable the tab auto-advance loop for the remainder of the page view — unlike the off-screen pause, the loop SHALL NOT resume when the section re-enters the viewport or after a timeout. Tab-column clicks SHALL keep their existing behavior (switch immediately, restart the dwell, rotation continues).
+Tapping any clip's play button SHALL disable the tab auto-advance loop — unlike the off-screen pause, the loop SHALL NOT resume on its own (viewport re-entry or timeout). Clicking a different tab column SHALL revive the loop with its existing behavior (switch immediately, restart the dwell, rotation continues); clicking the already-active tab remains a no-op, so it does not steal a playing clip.
 
 #### Scenario: Play tap hands over control
 - **WHEN** the user taps a dimmed clip's play button while the auto-advance loop is running
-- **THEN** the dwell progress stops and no tab auto-advances for the rest of the page view, while manual tab switching keeps working
+- **THEN** the dwell progress stops and no tab auto-advances until the user clicks another tab column, while manual tab switching keeps working
+
+#### Scenario: Tab click revives the loop
+- **WHEN** the user clicks a different tab column after tapping a clip
+- **THEN** the tab switches, the dwell restarts from zero, and auto-advance resumes as before any clip engagement
 
 #### Scenario: Tab clicks do not stop the loop
 - **WHEN** the user clicks a tab column without ever tapping a clip
