@@ -5,8 +5,7 @@ import { ConsentSettingsLink } from '@/components/consent/consent-settings-link'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
-import { SocialGlyph } from '@/components/ui/social-glyph'
-import { socials } from '@/lib/content/socials'
+import { SocialLinks } from '@/components/ui/social-links'
 import { footerWordmarkPath } from '@/lib/wordmark-footer'
 import s from './footer.module.css'
 
@@ -86,19 +85,11 @@ export function Footer() {
             ))}
           </ul>
 
-          <ul className={s.socials}>
-            {socials.map((social) => (
-              <li key={social.label}>
-                <Link
-                  className={s.social}
-                  href={social.href}
-                  aria-label={social.label}
-                >
-                  <SocialGlyph name={social.icon} className={s.socialIcon} />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SocialLinks
+            className={s.socials}
+            linkClassName={s.social}
+            iconClassName={s.socialIcon}
+          />
         </div>
       </div>
 

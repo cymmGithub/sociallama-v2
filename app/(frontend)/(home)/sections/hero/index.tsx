@@ -1,10 +1,8 @@
 'use client'
 
 import cn from 'clsx'
-import { Link } from '@/components/ui/link'
-import { SocialGlyph } from '@/components/ui/social-glyph'
+import { SocialLinks } from '@/components/ui/social-links'
 import type { LocalizedHome } from '@/lib/content/home'
-import { socials } from '@/lib/content/socials'
 import { useRotator } from '@/lib/hooks/use-rotator'
 import s from './hero.module.css'
 import { HeroLooks } from './outfit-stack'
@@ -73,19 +71,11 @@ export function Hero({ content }: { content: LocalizedHome['hero'] }) {
             ))}
           </h1>
 
-          <ul className={s.socials}>
-            {socials.map((social) => (
-              <li key={social.label}>
-                <Link
-                  className={s.social}
-                  href={social.href}
-                  aria-label={social.label}
-                >
-                  <SocialGlyph name={social.icon} className={s.socialIcon} />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SocialLinks
+            className={s.socials}
+            linkClassName={s.social}
+            iconClassName={s.socialIcon}
+          />
         </div>
 
         {/* Mobile llama: the same index-driven outfit swap, full-bleed below

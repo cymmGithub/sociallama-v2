@@ -32,7 +32,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
-import type { LocalizedHome } from '@/lib/content/home'
+import type { LocalizedHome, StageClip } from '@/lib/content/home'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import { breakpoints } from '@/styles/config'
@@ -67,8 +67,11 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
   const isDesktop = useMediaQuery(`(min-width: ${breakpoints.dt}px)`)
   const autoplay = isDesktop === true && !reducedMotion && !engaged
 
+  // Mounted for the whole desktop tab-loop lifetime — deliberately not gated
+  // on `engaged`, so a clip tap doesn't tear the observer down and `inView`
+  // stays current for when a tab click revives the loop.
   useEffect(() => {
-    if (!autoplay) return
+    if (isDesktop !== true || reducedMotion) return
     const section = sectionRef.current
     if (!section) return
     const observer = new IntersectionObserver(
@@ -79,7 +82,7 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
     )
     observer.observe(section)
     return () => observer.disconnect()
-  }, [autoplay])
+  }, [isDesktop, reducedMotion])
 
   function select(index: number) {
     if (index === active) return
@@ -125,6 +128,7 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
                   service={service}
                   active={index === active}
                   playLabel={content.playLabel}
+                  reducedMotion={reducedMotion}
                   onEngage={() => setEngaged(true)}
                 />
               </div>
@@ -187,11 +191,15 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
             <li key={service.id} data-reveal-item className={s.stackItem}>
               <div className={s.stackStage}>
                 <Backdrop />
+                {/* Mobile shows only the first three media items — the smaller
+                    stage fits exactly a trio (slot geometry in the CSS). No
+                    `onEngage`: the tab loop it stops does not exist here. */}
                 <StageMedia
                   service={service}
                   active
                   playLabel={content.playLabel}
-                  onEngage={() => setEngaged(true)}
+                  reducedMotion={reducedMotion}
+                  limit={3}
                 />
                 <Grain />
               </div>
@@ -256,21 +264,27 @@ function StageMedia({
   service,
   active,
   playLabel,
+  reducedMotion,
+  limit,
   onEngage,
 }: {
   service: ServiceItem
   active: boolean
   playLabel: string
-  onEngage: () => void
+  reducedMotion: boolean
+  /** Render only the first N media items (the mobile stage fits a trio). */
+  limit?: number
+  onEngage?: () => void
 }) {
   const { stage } = service
 
   // `in`-narrowing, not `stage.kind === 'panels'`: Localized widens the `kind`
   // discriminant to `string`, so the property check is what narrows the union.
   if ('panels' in stage) {
+    const panels = limit ? stage.panels.slice(0, limit) : stage.panels
     return (
       <div className={s.panels} data-stage={service.id}>
-        {stage.panels.map((panel) => (
+        {panels.map((panel) => (
           <div
             key={panel.src}
             className={s.panel}
@@ -292,9 +306,10 @@ function StageMedia({
 
   return (
     <ClipRail
-      clips={stage.clips}
+      clips={limit ? stage.clips.slice(0, limit) : stage.clips}
       active={active}
       playLabel={playLabel}
+      reducedMotion={reducedMotion}
       onEngage={onEngage}
     />
   )
@@ -311,17 +326,18 @@ function ClipRail({
   clips,
   active,
   playLabel,
+  reducedMotion,
   onEngage,
 }: {
-  clips: Extract<ServiceItem['stage'], { clips: unknown }>['clips']
+  clips: readonly StageClip[]
   active: boolean
   playLabel: string
-  onEngage: () => void
+  // Reduced motion keeps today's rail: undimmed posters, no buttons —
+  // `Video` renders no <video> there, so a play button would be a lie.
+  reducedMotion: boolean
+  onEngage?: (() => void) | undefined
 }) {
   const [playingIdx, setPlayingIdx] = useState(Math.floor(clips.length / 2))
-  // Reduced motion keeps today's rail: three undimmed posters, no buttons —
-  // `Video` renders no <video> there, so a play button would be a lie.
-  const reducedMotion = usePreferredReducedMotion()
 
   return (
     <div className={s.phone}>
@@ -348,7 +364,7 @@ function ClipRail({
                 aria-label={`${playLabel}: ${clip.alt}`}
                 onClick={() => {
                   setPlayingIdx(index)
-                  onEngage()
+                  onEngage?.()
                 }}
               >
                 <span className={s.playBadge}>

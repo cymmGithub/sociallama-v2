@@ -6,6 +6,7 @@ import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { LocalizedHome } from '@/lib/content/home'
+import type { TeamGridMember } from '@/lib/content/o-nas'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './why-that-works.module.css'
 
@@ -21,89 +22,6 @@ function fill(node: HTMLSpanElement, active: boolean) {
   node.style.opacity = active ? '1' : '0.2'
 }
 
-// Team roster as a grid of full-bleed portrait tiles, in the client-curated
-// presentation order shared verbatim with the /o-nas slider. Each tile fills
-// its gradient container with the member's transparent head+torso cutout
-// (shared with the /o-nas slider) and carries a standing name + role label.
-// Adding or removing a member is a one-line edit.
-const TEAM = [
-  {
-    cut: 'anna-ozga.png',
-    name: 'Anna Ozga',
-    role: 'Head of Social Media',
-  },
-  {
-    cut: 'kamil-mazuruk.png',
-    name: 'Kamil Mazuruk',
-    role: 'Founder, Good One Group',
-  },
-  {
-    cut: 'robert-sawicki.png',
-    name: 'Robert Sawicki',
-    role: 'Art & Creative Director',
-  },
-  {
-    cut: 'emilia-metryka.png',
-    name: 'Emilia Metryka',
-    role: 'Social Media Manager',
-  },
-  {
-    cut: 'paulina-hildebrand.png',
-    name: 'Paulina Hildebrand',
-    role: 'Social Media Manager',
-  },
-  {
-    cut: 'magda-rokicka.png',
-    name: 'Magda Rokicka',
-    role: 'Social Media Manager',
-  },
-  {
-    cut: 'piotr-zach.png',
-    name: 'Piotrek Zach',
-    role: 'Project Manager',
-  },
-  {
-    cut: 'agnieszka-klajbert.png',
-    name: 'Agnieszka Klajbert',
-    role: 'Senior Social Media Specialist',
-  },
-  {
-    cut: 'katarzyna-kaptur.png',
-    name: 'Katarzyna Kaptur',
-    role: 'Social Media Expert',
-  },
-  {
-    cut: 'oliwia-witewska.png',
-    name: 'Oliwia Witewska',
-    role: 'Social Media Specialist',
-  },
-  {
-    cut: 'karolina-marcinowska.png',
-    name: 'Karolina Marcinowska',
-    role: 'Wideo Content Creator',
-  },
-  {
-    cut: 'wojtek-sochaczynski.png',
-    name: 'Wojtek Sochaczyński',
-    role: 'Senior Videographer',
-  },
-  {
-    cut: 'aleksander-dyminski.png',
-    name: 'Aleksander Dymiński',
-    role: 'Videographer',
-  },
-  {
-    cut: 'iza-harmoza-sochon.png',
-    name: 'Iza Harmoza-Sochoń',
-    role: 'HR & Administration Manager',
-  },
-  {
-    cut: 'przemyslaw-swiercz.png',
-    name: 'Przemysław Świercz',
-    role: 'Fullstack Developer',
-  },
-] as const
-
 // Credential cards sitting inline in the mosaic. Aspect ratios are the marks'
 // intrinsic pixel ratios so the cards frame them without distortion; marks
 // render unmodified (objectFit contain, no recolor or crop).
@@ -114,8 +32,12 @@ const CERTS = [
 
 export function WhyThatWorks({
   content,
+  team,
 }: {
   content: LocalizedHome['whyThatWorks']
+  /** Grid roster projected from the /o-nas slider (`oNasTeamGrid`) — one
+   *  member list, one client-curated order, two surfaces. */
+  team: readonly TeamGridMember[]
 }) {
   const bottomRef = useReveal<HTMLDivElement>()
 
@@ -160,7 +82,7 @@ export function WhyThatWorks({
           aria-label={content.teamLabel}
         >
           <ul className={s.faces}>
-            {TEAM.map((member) => (
+            {team.map((member) => (
               <li key={member.cut} className={s.tile}>
                 <Image
                   src={`/o-nas/slider/${member.cut}`}
@@ -175,12 +97,11 @@ export function WhyThatWorks({
                   <span className={s.captionRole}>{member.role}</span>
                 </div>
                 {/* Deep link into the /o-nas slider, keyed by the cutout slug
-                    the two surfaces share — never by index, since the grid and
-                    the slider are deliberately ordered differently. The whole
-                    tile is the target: an inset overlay rather than a wrapper
-                    around the caption, so the caption keeps its own layout and
-                    the link's accessible name stays the member, not the tile's
-                    text. */}
+                    the two surfaces share — never by index, so a reorder of
+                    either surface can't break the link. The whole tile is the
+                    target: an inset overlay rather than a wrapper around the
+                    caption, so the caption keeps its own layout and the link's
+                    accessible name stays the member, not the tile's text. */}
                 <Link
                   className={s.tileLink}
                   href={`${content.memberLink.hrefBase}?lama=${member.cut.replace('.png', '')}#zespol`}

@@ -17,6 +17,7 @@ import { WhyThatWorks } from '@/app/(frontend)/(home)/sections/why-that-works'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd } from '@/components/seo/structured-data'
 import * as en from '@/lib/content/home.en'
+import { oNasTeamGrid } from '@/lib/content/o-nas.en'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getLatestPost } from '@/lib/payload/queries'
@@ -69,7 +70,7 @@ export default function EnHomePage() {
           </div>
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
           <>
-            <WhyThatWorks content={en.whyThatWorks} />
+            <WhyThatWorks content={en.whyThatWorks} team={oNasTeamGrid} />
             <Services content={en.services} />
             <HowItWorks
               content={en.howItWorks}

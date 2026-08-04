@@ -190,8 +190,8 @@ export const oNasGoodOne = {
 // big cream `surname` — colour travels with the word, not with the slot. Slider
 // photos are transparent portrait cutouts in /public/o-nas/slider (kept apart
 // from the webp team grid). Order is the client-curated presentation order
-// (2026-08-04), carried verbatim by both this slider and the homepage
-// `why-that-works` TEAM grid — a reorder is an edit to this list, not a rule.
+// (2026-08-04); the homepage `why-that-works` grid derives from this list
+// (`oNasTeamGrid` below), so a reorder here reorders both surfaces.
 // Roles follow the site wording where the bio doc disagrees (design D4). Bios
 // are the client doc's, trimmed to a consistent slider length.
 
@@ -331,6 +331,43 @@ export const oNasTeam = {
     },
   ],
 } as const
+
+// —— Homepage team-grid projection ————————————————————————————————————————
+// The homepage `why-that-works` grid shows the same people, in the same
+// client-curated order, as the slider above — so it derives from `members`
+// instead of keeping a third hand-synced roster copy. `cut` is the slider
+// cutout's basename (the grid and the member deep-links key on it).
+
+export interface TeamGridMember {
+  cut: string
+  name: string
+  role: string
+}
+
+/** "IZA HARMOZA-SOCHOŃ" → "Iza Harmoza-Sochoń": the slider stores caps, the
+ *  grid captions read in title case — re-cased per word, hyphens included. */
+function displayName(caps: string) {
+  return caps
+    .toLocaleLowerCase('pl')
+    .replace(/(^|[ -])\p{L}/gu, (ch) => ch.toLocaleUpperCase('pl'))
+}
+
+export function toTeamGrid(
+  members: readonly {
+    given: string
+    surname: string
+    role: string
+    photo: string
+  }[]
+): TeamGridMember[] {
+  return members.map((member) => ({
+    cut: member.photo.split('/').at(-1) ?? '',
+    name: displayName(`${member.given} ${member.surname}`),
+    role: member.role,
+  }))
+}
+
+export const oNasTeamGrid = toTeamGrid(oNasTeam.members)
 
 /**
  * The shape of every `/o-nas` content export. `o-nas.en.ts` supplies the

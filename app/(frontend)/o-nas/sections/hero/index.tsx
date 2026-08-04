@@ -1,16 +1,14 @@
 import { Image } from '@/components/ui/image'
-import { Link } from '@/components/ui/link'
-import { SocialGlyph } from '@/components/ui/social-glyph'
+import { SocialLinks } from '@/components/ui/social-links'
 import { type LocalizedONas, oNasHero } from '@/lib/content/o-nas'
-import { socials } from '@/lib/content/socials'
 import s from './hero.module.css'
 
 /*
  * /o-nas hero — aligned to the homepage hero (user decision 2026-07-20): solid
  * plum ground (the plum theme primary, no gradient), the same display type
  * scale (small white line above a huge contrast/orange line), and the same
- * outline-circle social row — reusing the shared `socials` source + mask-image
- * recipe as the homepage and footer. The llama cutout bleeds to the band's
+ * outline-circle social row — reusing the shared `SocialLinks` row as the
+ * homepage and footer. The llama cutout bleeds to the band's
  * bottom-right edge in place of the homepage's scrubbed clip.
  */
 export function OnasHero({
@@ -27,19 +25,11 @@ export function OnasHero({
             <span className={s.lineBig}>{content.heading}</span>
           </h1>
 
-          <ul className={s.socials}>
-            {socials.map((social) => (
-              <li key={social.label}>
-                <Link
-                  className={s.social}
-                  href={social.href}
-                  aria-label={social.label}
-                >
-                  <SocialGlyph name={social.icon} className={s.socialIcon} />
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SocialLinks
+            className={s.socials}
+            linkClassName={s.social}
+            iconClassName={s.socialIcon}
+          />
         </div>
 
         <div className={s.llama}>

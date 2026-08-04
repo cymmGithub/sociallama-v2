@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
 import * as pl from '@/lib/content/home'
+import { oNasTeamGrid } from '@/lib/content/o-nas'
 import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getLatestPost } from '@/lib/payload/queries'
@@ -78,7 +79,7 @@ export default function HomePage() {
           {/* Chapter 2 — cream */}
           {/* biome-ignore lint/complexity/noUselessFragments: load-bearing — each fragment groups its sections into a single Chapters child (children[index] maps to a chapter) */}
           <>
-            <WhyThatWorks content={pl.whyThatWorks} />
+            <WhyThatWorks content={pl.whyThatWorks} team={oNasTeamGrid} />
             <Services content={pl.services} />
             <HowItWorks content={pl.howItWorks} />
             <BigMarquee />

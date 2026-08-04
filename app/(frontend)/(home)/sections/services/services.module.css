@@ -436,7 +436,7 @@
 /* Four frames outgrow the stage on narrow desktops — shorter frames and a
    tighter gap keep them side by side without overflow (width follows the
    9/16 aspect, so shrinking height is the non-distorting lever). */
-@media (800px <= width <= 1080px) {
+@media (--desktop) and (width <= 1080px) {
   .phoneFrame {
     height: 62%;
   }
@@ -632,9 +632,10 @@
 }
 
 /* Content trio in the smaller mobile stage — Burger King (the data hero)
-   centered with DPD / Breville flanking; only the first three render — more
-   would shrink them all past usefulness. Widths are tuned for the uniform
-   4:5 creatives, so the trio fits the 16:10 stage without cropping. */
+   centered with DPD / Breville flanking; the mobile variant renders only the
+   first three (StageMedia `limit`) — more would shrink them all past
+   usefulness. Widths are tuned for the uniform 4:5 creatives, so the trio
+   fits the 16:10 stage without cropping. */
 .stackStage .panel:nth-child(1) {
   width: 42%;
   left: 50%;
@@ -655,13 +656,9 @@
   top: 26%;
 }
 
-.stackStage .panel:nth-child(n + 4) {
-  display: none;
-}
-
 /* Sprzedaż device mockups are landscape (iPad / Mac), so size them by height
    (width follows the aspect) — Meta Ads iPad hero centered, X + TikTok Macs
-   flanking. Only the first three render on mobile (rule above). */
+   flanking. Only the first three render on mobile (StageMedia `limit`). */
 .stackStage .panels[data-stage="sprzedaz"] .panel {
   width: auto;
 }
@@ -694,13 +691,8 @@
 }
 
 /* Three clip frames must fit the narrower mobile stage side by side, so they
-   run shorter than the desktop pair. */
+   run shorter than the desktop pair. The fourth clip is desktop/tablet-only
+   (StageMedia `limit`, as with the panels). */
 .stackStage .phoneFrame {
   height: 76%;
-}
-
-/* The fourth clip is desktop/tablet-only: mobile keeps exactly the trio at
-   its existing size and spacing (mirrors the panel cap above). */
-.stackStage .phoneFrame:nth-child(n + 4) {
-  display: none;
 }

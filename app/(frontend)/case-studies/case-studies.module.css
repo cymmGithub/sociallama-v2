@@ -81,10 +81,9 @@
 }
 
 /* —— Card stage ——————————————————————————————————————————————————————
-   Plum grain-gradient stage recipe, duplicated per house convention — the same
-   backdrop as services.module.css (.backdrop/.blobOrange/.grain) and
-   how-it-works.module.css (.stage).
-   Keep the three modules in sync by hand.
+   Plum grain-gradient stage recipe — one of five copies, per house convention
+   (services, how-it-works, post, blog, case-studies modules). Keep the
+   gradient, blob, and grain values in sync across them by hand.
 
    The covers are 48 unrelated photographs with no shared geometry or grade.
    Rather than grade them into a family — a full-bleed plum duotone was mocked

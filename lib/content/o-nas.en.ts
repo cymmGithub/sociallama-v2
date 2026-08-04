@@ -8,7 +8,7 @@
  *
  * Voice: playful but clean, American spelling (user-approved 2026-07-22).
  */
-import type { LocalizedONas } from '@/lib/content/o-nas'
+import { type LocalizedONas, toTeamGrid } from '@/lib/content/o-nas'
 
 export const oNasMeta = {
   title: 'About us',
@@ -280,3 +280,6 @@ export const oNasTeam = {
     },
   ],
 } satisfies LocalizedONas['oNasTeam']
+
+/** EN homepage team-grid projection — same derivation as the PL module's. */
+export const oNasTeamGrid = toTeamGrid(oNasTeam.members)

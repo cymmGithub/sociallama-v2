@@ -22,8 +22,8 @@ import { scrollToHashTarget } from './scroll-to-hash-target'
  * never scrolls to the anchor and Lenis keeps the old offset — landing at the
  * top. The destination may also still be streaming when the pathname commits
  * (production /o-nas shows its loading shell first), so the jump watches for
- * the anchor per frame via `scrollToHashTarget` instead of sampling the DOM
- * once — a one-shot lookup missed streamed sections and silently never
+ * the anchor as content streams in via `scrollToHashTarget` instead of
+ * sampling the DOM once — a one-shot lookup missed streamed sections and never
  * scrolled (bug, 2026-08-04). Same-page anchors (#o-nas, #uslugi) don't
  * change `pathname`, so this effect never fires for them — the browser handles
  * those.

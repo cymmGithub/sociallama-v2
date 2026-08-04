@@ -253,9 +253,9 @@
    still serves /category/{slug} and /blog/page/{n} unchanged. */
 
 /* —— The plum grain stage ——————————————————————————————————————————————
-   Fourth copy of the recipe, per house convention (services.module.css,
-   how-it-works, post.module.css are the others). Keep the
-   gradient, blob, and grain values in sync with those by hand. */
+   One of five copies of the recipe, per house convention (services,
+   how-it-works, post, blog, case-studies modules). Keep the gradient, blob,
+   and grain values in sync across them by hand. */
 .stage {
   position: relative;
   overflow: hidden;

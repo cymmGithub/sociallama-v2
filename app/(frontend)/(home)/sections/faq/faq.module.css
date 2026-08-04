@@ -72,6 +72,13 @@
   /* Width of the 01–06 numeral column. */
   --num-col: 2.75rem;
 
+  /* Vertical padding of every ledger row — the .sign offset and the .answer
+     baseline math reference it. */
+  --row-pad: calc(var(--gap) * 1.25);
+
+  /* Square size of the +/− toggle — the .answer right padding clears it. */
+  --sign-size: 0.85rem;
+
   /* Shared by .question and the .answer baseline offset below — the desktop cap
      rose from 1.75rem to 2.25rem with the two-column ledger; 2.25vw reaches it
      at ~1600px (1440px lands at ~2.03rem) while every width under the 800px
@@ -101,7 +108,7 @@
   grid-template-columns: var(--num-col) 1fr auto;
   column-gap: var(--gap);
   align-items: start;
-  padding-block: calc(var(--gap) * 1.25);
+  padding-block: var(--row-pad);
   cursor: pointer;
 
   /* The sign leaves the flow (absolute, far right of the row) so the summary's
@@ -155,19 +162,19 @@
 /* +/− toggle: two bars, the vertical one rotating flat when the row opens. */
 .sign {
   position: relative;
-  inline-size: 0.85rem;
-  block-size: 0.85rem;
+  inline-size: var(--sign-size);
+  block-size: var(--sign-size);
   margin-top: 0.35em;
   color: var(--color-contrast);
 
   /* Out of the summary's grid, pinned to the row's right edge — over the answer
-     column. Top offset mirrors the summary's padding plus the old margin-top so
-     the bars sit where they always did. Still a summary child, so it stays part
-     of the click target. */
+     column. Top offset is the row padding plus the old margin-top so the bars
+     sit where they always did. Still a summary child, so it stays part of the
+     click target. */
   @media (--desktop) {
     position: absolute;
     inset-inline-end: 0;
-    top: calc(var(--gap) * 1.25 + 0.35em);
+    top: calc(var(--row-pad) + 0.35em);
     margin-top: 0;
   }
 }
@@ -227,20 +234,19 @@
      lives in its own column. */
 
   /* Align the answer's first baseline to the question's: both boxes start at
-     the grid row's top, so offset = summary padding-top + (question baseline
-     below its box top) − (answer baseline below its own top). With half-leading
+     the grid row's top, so offset = row padding + (question baseline below its
+     box top) − (answer baseline below its own top). With half-leading
      + ~0.8em ascent: 0.9 × question size − 1.1 × answer size (1.1em here).
      Tuned against 1728px screenshots. */
   @media (--desktop) {
     margin-block-start: calc(
-      var(--gap) *
-      1.25 +
+      var(--row-pad) +
       0.9 *
       var(--question-size) -
       1.1em
     );
     /* Keep clear of the absolutely positioned sign at the row's right edge. */
-    padding-inline-end: calc(0.85rem + var(--gap));
+    padding-inline-end: calc(var(--sign-size) + var(--gap));
   }
 }
 

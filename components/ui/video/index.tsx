@@ -23,7 +23,8 @@
  */
 
 import cn from 'clsx'
-import { useEffect, useState } from 'react'
+import { useIntersectionObserver } from 'hamo'
+import { useCallback, useEffect, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { breakpoints } from '@/styles/config'
 import s from './video.module.css'
@@ -68,15 +69,29 @@ export function Video({
   playing,
   className,
 }: VideoProps) {
-  // The <video> element lives in state (callback ref), not a ref: the observer
-  // and play/pause effects must re-run when it mounts or remounts, and only a
+  // The <video> element lives in state (callback ref), not a ref: the
+  // play/pause effect must re-run when it mounts or remounts, and only a
   // state-held element makes that an honest dependency.
   const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null)
   // Start "reduced" so SSR + first client render both emit the poster; the
   // effect below promotes to the <video> only when motion is allowed.
   const [reduced, setReduced] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
-  const [inViewport, setInViewport] = useState(false)
+
+  // Viewport visibility via hamo — the observer follows the element the ref
+  // below hands it, and a remount re-observes with a fresh entry.
+  const [setObserved, intersection] = useIntersectionObserver({
+    threshold: 0.1,
+  })
+  const inViewport = intersection?.isIntersecting ?? false
+
+  const setRefs = useCallback(
+    (el: HTMLVideoElement | null) => {
+      setVideoEl(el)
+      setObserved(el)
+    },
+    [setObserved]
+  )
 
   useEffect(() => {
     const mobileMql = window.matchMedia(
@@ -86,23 +101,6 @@ export function Video({
     setIsMobile(mobileMql.matches)
     setReduced(motionMql.matches || !autoPlay)
   }, [autoPlay])
-
-  // Track viewport visibility. The cleanup reset keeps the state honest
-  // across remounts (a stale `true` would skip the observer's initial
-  // same-value update and never trigger playback).
-  useEffect(() => {
-    if (!videoEl) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setInViewport(entry?.isIntersecting ?? false),
-      { threshold: 0.1 }
-    )
-    observer.observe(videoEl)
-    return () => {
-      observer.disconnect()
-      setInViewport(false)
-    }
-  }, [videoEl])
 
   // Play/pause derives from visibility plus the controlled `playing` prop.
   useEffect(() => {
@@ -127,7 +125,7 @@ export function Video({
         <Image src={activePoster} alt={alt} fill className={s.media} />
       ) : (
         <video
-          ref={setVideoEl}
+          ref={setRefs}
           className={s.media}
           src={activeSrc}
           poster={activePoster}
