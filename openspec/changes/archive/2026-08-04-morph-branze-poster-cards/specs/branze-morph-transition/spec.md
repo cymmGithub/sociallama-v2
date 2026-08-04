@@ -4,11 +4,11 @@
 
 ### Requirement: Card poster morphs into the industry hero
 
-On browsers supporting same-document view transitions, navigating from a
-`/branze` (or `/en/industries`) poster card to its industry page SHALL
-animate the card's poster into the page's hero poster as a shared-element
-morph — the two surfaces present the identical image file — while the rest
-of the viewport crossfades. The morph SHALL target the hero at its final
+Navigating from a poster card SHALL, on browsers supporting same-document
+view transitions, animate the card's poster into its industry page's hero
+poster as a shared-element morph — the two surfaces present the identical
+image file — while the rest of the viewport crossfades. This applies to
+`/branze` and `/en/industries` alike. The morph SHALL target the hero at its final
 on-screen position: the arriving page is at scroll position zero in the
 state the browser captures, regardless of how far down the hub was scrolled
 at click time.
@@ -53,10 +53,10 @@ throughout the transition.
 
 ### Requirement: Absence of the morph is an instant, correct navigation
 
-Where the morph cannot run — unsupported browsers,
+The navigation SHALL complete as an instant arrival at the top of the
+industry page wherever the morph cannot run — unsupported browsers,
 `prefers-reduced-motion`, or any state where the shared element cannot
-participate — the navigation SHALL complete as an instant arrival at the
-top of the industry page. A plain page crossfade without the element morph
+participate. A plain page crossfade without the element morph
 is an accepted degraded mode; a partial or misdirected animation is not.
 
 #### Scenario: Reduced motion gets no animation
