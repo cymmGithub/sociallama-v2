@@ -520,12 +520,12 @@ export const SERVICES = [
         kind: 'logoStrip',
         heading: 'We audit profiles on:',
         logos: [
-          { name: 'Facebook', icon: '/assets/icon-facebook.svg' },
-          { name: 'Instagram', icon: '/assets/icon-instagram.svg' },
-          { name: 'LinkedIn', icon: '/assets/icon-linkedin.svg' },
-          { name: 'TikTok', icon: '/assets/icon-tiktok.svg' },
-          { name: 'Pinterest', icon: '/assets/icon-pinterest.svg' },
-          { name: 'YouTube', icon: '/assets/icon-youtube.svg' },
+          { name: 'Facebook', icon: 'facebook' },
+          { name: 'Instagram', icon: 'instagram' },
+          { name: 'LinkedIn', icon: 'linkedin' },
+          { name: 'TikTok', icon: 'tiktok' },
+          { name: 'Pinterest', icon: 'pinterest' },
+          { name: 'YouTube', icon: 'youtube' },
         ],
       },
       {

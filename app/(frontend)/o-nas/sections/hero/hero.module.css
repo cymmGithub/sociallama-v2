@@ -119,13 +119,9 @@
 .socialIcon {
   width: 20px;
   height: 20px;
-  background-color: var(--color-secondary);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+  /* Inline SVG on currentColor, not mask + background-color — forced dark
+     modes darken background colours but keep foregrounds (see SocialGlyph). */
+  color: var(--color-secondary);
 }
 
 /* —— Llama cutout (bottom-right, bleeding off the band) ——————————————————————— */

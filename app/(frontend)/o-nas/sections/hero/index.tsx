@@ -1,5 +1,6 @@
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { SocialGlyph } from '@/components/ui/social-glyph'
 import { type LocalizedONas, oNasHero } from '@/lib/content/o-nas'
 import { socials } from '@/lib/content/socials'
 import s from './hero.module.css'
@@ -34,14 +35,7 @@ export function OnasHero({
                   href={social.href}
                   aria-label={social.label}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={s.socialIcon}
-                    style={{
-                      maskImage: `url(${social.icon})`,
-                      WebkitMaskImage: `url(${social.icon})`,
-                    }}
-                  />
+                  <SocialGlyph name={social.icon} className={s.socialIcon} />
                 </Link>
               </li>
             ))}

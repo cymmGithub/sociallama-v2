@@ -3,6 +3,7 @@
 import { Check, Link2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from '@/components/ui/link'
+import { SocialGlyph } from '@/components/ui/social-glyph'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import s from './post.module.css'
@@ -63,14 +64,7 @@ export function PostShare({
           href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
           newTab
         >
-          <span
-            aria-hidden="true"
-            className={s.shareBrandIcon}
-            style={{
-              maskImage: 'url(/assets/icon-linkedin.svg)',
-              WebkitMaskImage: 'url(/assets/icon-linkedin.svg)',
-            }}
-          />
+          <SocialGlyph name="linkedin" className={s.shareBrandIcon} />
         </Link>
         <Link
           aria-label={fillTitle(content.facebook, title)}
@@ -78,14 +72,7 @@ export function PostShare({
           href={`https://www.facebook.com/sharer/sharer.php?u=${encoded}`}
           newTab
         >
-          <span
-            aria-hidden="true"
-            className={s.shareBrandIcon}
-            style={{
-              maskImage: 'url(/assets/icon-facebook.svg)',
-              WebkitMaskImage: 'url(/assets/icon-facebook.svg)',
-            }}
-          />
+          <SocialGlyph name="facebook" className={s.shareBrandIcon} />
         </Link>
         <button
           aria-label={copied ? content.copied : content.copy}

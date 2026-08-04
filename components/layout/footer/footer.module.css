@@ -231,13 +231,9 @@
 .socialIcon {
   width: 17px;
   height: 17px;
-  background-color: var(--ink);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+  /* Inline SVG on currentColor, not mask + background-color — forced dark
+     modes darken background colours but keep foregrounds (see SocialGlyph). */
+  color: var(--ink);
 }
 
 /* —— Bottom bar ————————————————————————————————————————————————————————————— */

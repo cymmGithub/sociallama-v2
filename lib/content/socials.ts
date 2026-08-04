@@ -6,11 +6,21 @@
  * the whole content graph into the shared bundle.
  */
 
+/** Glyph keys for the inline `SocialGlyph` component (components/ui). */
+export type SocialIconName =
+  | 'facebook'
+  | 'instagram'
+  | 'linkedin'
+  | 'tiktok'
+  | 'x'
+  | 'youtube'
+  | 'pinterest'
+
 export interface SocialLink {
   label: string
   href: string
-  /** Path to the brand icon svg under /assets. */
-  icon: string
+  /** Brand glyph rendered by `SocialGlyph`. */
+  icon: SocialIconName
 }
 
 // Canonical, ordered social set — rendered identically everywhere social icons
@@ -22,36 +32,36 @@ export const socials: SocialLink[] = [
   {
     label: 'Facebook',
     href: 'https://www.facebook.com/agencjasociallama/',
-    icon: '/assets/icon-facebook.svg',
+    icon: 'facebook',
   },
   {
     label: 'Instagram',
     href: 'https://www.instagram.com/social.lama/',
-    icon: '/assets/icon-instagram.svg',
+    icon: 'instagram',
   },
   {
     label: 'LinkedIn',
     href: 'https://www.linkedin.com/company/sociallama/',
-    icon: '/assets/icon-linkedin.svg',
+    icon: 'linkedin',
   },
   {
     label: 'TikTok',
     href: 'https://www.tiktok.com/@social_lama',
-    icon: '/assets/icon-tiktok.svg',
+    icon: 'tiktok',
   },
   {
     label: 'X',
     href: 'https://x.com/SocialLamaPL',
-    icon: '/assets/icon-x.svg',
+    icon: 'x',
   },
   {
     label: 'YouTube',
     href: 'https://www.youtube.com/@GOODONEGROUP',
-    icon: '/assets/icon-youtube.svg',
+    icon: 'youtube',
   },
   {
     label: 'Pinterest',
     href: 'https://pl.pinterest.com/social__lama/',
-    icon: '/assets/icon-pinterest.svg',
+    icon: 'pinterest',
   },
 ]

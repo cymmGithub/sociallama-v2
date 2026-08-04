@@ -2,6 +2,7 @@
 
 import cn from 'clsx'
 import { Link } from '@/components/ui/link'
+import { SocialGlyph } from '@/components/ui/social-glyph'
 import type { LocalizedHome } from '@/lib/content/home'
 import { socials } from '@/lib/content/socials'
 import { useRotator } from '@/lib/hooks/use-rotator'
@@ -80,14 +81,7 @@ export function Hero({ content }: { content: LocalizedHome['hero'] }) {
                   href={social.href}
                   aria-label={social.label}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={s.socialIcon}
-                    style={{
-                      maskImage: `url(${social.icon})`,
-                      WebkitMaskImage: `url(${social.icon})`,
-                    }}
-                  />
+                  <SocialGlyph name={social.icon} className={s.socialIcon} />
                 </Link>
               </li>
             ))}

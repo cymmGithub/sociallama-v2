@@ -498,13 +498,8 @@
 .shareBrandIcon {
   width: 15px;
   height: 15px;
-  background-color: currentcolor;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+  /* Inline SVG inherits the button's colour via currentColor (see SocialGlyph);
+     the old mask + background-color paint washed out under forced dark modes. */
 }
 
 /* —— Body ————————————————————————————————————————————————————————————— */

@@ -35,6 +35,7 @@
  * rather than showing an empty frame.
  */
 
+import type { SocialIconName } from '@/lib/content/socials'
 import type { Localized } from '@/lib/i18n/parity'
 
 // —— Shared chrome copy (section-level, not per-service) ———————————————————————
@@ -136,11 +137,11 @@ interface TimelineStep {
   body: string
 }
 
-/** A platform mark in a `logoStrip`. `icon` is an existing monochrome SVG under
- *  `public/assets/icon-*.svg`, painted via `mask-image` like the footer set. */
+/** A platform mark in a `logoStrip`. `icon` names an inline `SocialGlyph`,
+ *  painted through `currentColor` like the footer set. */
 interface StripLogo {
   name: string
-  icon: string
+  icon: SocialIconName
 }
 
 /** A muted ambient loop painted behind a section, under a scrim. Decorative:
@@ -795,12 +796,12 @@ export const SERVICES = [
         // Existing monochrome marks only — no new artwork, and no separator
         // dots between them (explicit client direction).
         logos: [
-          { name: 'Facebook', icon: '/assets/icon-facebook.svg' },
-          { name: 'Instagram', icon: '/assets/icon-instagram.svg' },
-          { name: 'LinkedIn', icon: '/assets/icon-linkedin.svg' },
-          { name: 'TikTok', icon: '/assets/icon-tiktok.svg' },
-          { name: 'Pinterest', icon: '/assets/icon-pinterest.svg' },
-          { name: 'YouTube', icon: '/assets/icon-youtube.svg' },
+          { name: 'Facebook', icon: 'facebook' },
+          { name: 'Instagram', icon: 'instagram' },
+          { name: 'LinkedIn', icon: 'linkedin' },
+          { name: 'TikTok', icon: 'tiktok' },
+          { name: 'Pinterest', icon: 'pinterest' },
+          { name: 'YouTube', icon: 'youtube' },
         ],
       },
       {

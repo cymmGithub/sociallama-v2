@@ -1076,13 +1076,9 @@
   display: block;
   width: clamp(34px, 4.4vw, 46px);
   aspect-ratio: 1;
-  background-color: var(--color-plum);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
+  /* Inline SVG on currentColor, not mask + background-color — forced dark
+     modes darken background colours but keep foregrounds (see SocialGlyph). */
+  color: var(--color-plum);
 }
 
 /* —— Topical posts (blog links by category — design D5) ———————————————————————— */

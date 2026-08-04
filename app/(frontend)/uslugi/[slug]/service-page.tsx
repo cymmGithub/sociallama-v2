@@ -26,7 +26,9 @@ import {
 } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { SocialGlyph } from '@/components/ui/social-glyph'
 import { Video } from '@/components/ui/video'
+import type { SocialIconName } from '@/lib/content/socials'
 import type { LocalizedUslugi, ServiceSection } from '@/lib/content/uslugi'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import type { Localized } from '@/lib/i18n/parity'
@@ -160,7 +162,7 @@ interface BannerData {
 }
 interface LogoStripData {
   heading: string
-  logos: readonly { name: string; icon: string }[]
+  logos: readonly { name: string; icon: SocialIconName }[]
 }
 interface PostsData {
   kicker: string
@@ -754,16 +756,12 @@ function LogoStrip({ data }: { data: LogoStripData }) {
           {data.logos.map((logo) => (
             <li key={logo.name} data-reveal-item>
               {/* Marks only, no names and no separators (client direction).
-                  Painted through mask-image so they take the band's ink colour,
+                  Inline glyphs on currentColor take the band's ink colour,
                   exactly like the footer social set. */}
-              <span
+              <SocialGlyph
+                name={logo.icon}
+                label={logo.name}
                 className={s.logoMark}
-                role="img"
-                aria-label={logo.name}
-                style={{
-                  maskImage: `url(${logo.icon})`,
-                  WebkitMaskImage: `url(${logo.icon})`,
-                }}
               />
             </li>
           ))}
