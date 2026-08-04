@@ -926,7 +926,7 @@ export const faq = {
     },
     {
       question:
-        'Czym różni się agencja social media od freelancera lub in-house social media managera?',
+        'Czym różni się agencja social media od freelancera lub in-\u2060house social media managera?',
       answer:
         'Freelancer to jedna osoba — agencja to zespół stratega, copywritera, grafika, specjalisty od kampanii i\u00A0moderatora, dzięki czemu jakość i\u00A0tempo pracy są nieporównywalne. In-house social media manager zapewnia bliskość marki, ale jego zatrudnienie oznacza koszt kilkunastu tysięcy złotych miesięcznie plus narzędzia i\u00A0szkolenia. Agencja daje dostęp do kompetencji całego działu marketingu w\u00A0cenie jednego etatu, a\u00A0do tego korzysta z\u00A0profesjonalnych narzędzi analitycznych.',
     },

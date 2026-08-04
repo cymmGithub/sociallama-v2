@@ -704,7 +704,7 @@ export const faq = {
     },
     {
       question:
-        'How is an agency different from a freelancer or an in-house social media manager?',
+        'How is an agency different from a freelancer or an in-\u2060house social media manager?',
       answer:
         "A freelancer is one person — an agency is a strategist, a copywriter, a designer, a campaign specialist, and a moderator, which puts the quality and the pace in a different league. An in-house manager sits close to the brand, but hiring one runs to well over ten thousand złoty a month, plus tools and training. An agency gives you a whole marketing department's worth of skills for the price of one salary, and professional analytics tools on top.",
     },

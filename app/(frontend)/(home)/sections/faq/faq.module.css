@@ -69,15 +69,31 @@
 }
 
 .list {
-  /* Width of the 01–06 numeral column; the answer indents by the same amount so
-     it lines up under the question. */
+  /* Width of the 01–06 numeral column. */
   --num-col: 2.75rem;
+
+  /* Shared by .question and the .answer baseline offset below — the desktop cap
+     rose from 1.75rem to 2.25rem with the two-column ledger; 2.25vw reaches it
+     at ~1600px (1440px lands at ~2.03rem) while every width under the 800px
+     fold still resolves to the 1.15rem floor, exactly as the old 2.1vw did. */
+  --question-size: clamp(1.15rem, 2.25vw, 2.25rem);
 
   border-top: 1px solid var(--line);
 }
 
 .item {
   border-bottom: 1px solid var(--line);
+
+  /* Two-column open ledger: question left, answer right (::details-content is
+     element-backed and participates as a grid item), toggle at the row's far
+     edge. Mobile keeps the stacked flow untouched. */
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    column-gap: 4rem;
+    /* Positioning context for the absolutely placed .sign. */
+    position: relative;
+  }
 }
 
 .summary {
@@ -87,6 +103,12 @@
   align-items: start;
   padding-block: calc(var(--gap) * 1.25);
   cursor: pointer;
+
+  /* The sign leaves the flow (absolute, far right of the row) so the summary's
+     grid shrinks to numeral | question in the left column. */
+  @media (--desktop) {
+    grid-template-columns: var(--num-col) 1fr;
+  }
 }
 
 /* The global *:focus-visible ring sits 2px outside the row — on a full-bleed
@@ -118,7 +140,7 @@
   text-wrap: balance;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.15rem, 2.1vw, 1.75rem);
+  font-size: var(--question-size);
   line-height: 1.2;
   letter-spacing: -0.01em;
   transition: color var(--duration-fast) var(--ease-out-expo);
@@ -137,6 +159,17 @@
   block-size: 0.85rem;
   margin-top: 0.35em;
   color: var(--color-contrast);
+
+  /* Out of the summary's grid, pinned to the row's right edge — over the answer
+     column. Top offset mirrors the summary's padding plus the old margin-top so
+     the bars sit where they always did. Still a summary child, so it stays part
+     of the click target. */
+  @media (--desktop) {
+    position: absolute;
+    inset-inline-end: 0;
+    top: calc(var(--gap) * 1.25 + 0.35em);
+    margin-top: 0;
+  }
 }
 
 .sign::before,
@@ -168,6 +201,13 @@
   transition:
     block-size var(--duration) var(--ease-out-expo),
     content-visibility var(--duration) allow-discrete;
+
+  /* Beside the summary, not under it — the answer opens into the row's right
+     column. Explicit row 1 keeps it level with the question. */
+  @media (--desktop) {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }
 
 .item[open]::details-content {
@@ -175,7 +215,6 @@
 }
 
 .answer {
-  margin-inline-start: calc(var(--num-col) + var(--gap));
   margin-bottom: calc(var(--gap) * 1.5);
   font-family: var(--font-mono);
   font-size: 0.95rem;
@@ -183,9 +222,25 @@
   max-width: 74ch;
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 
-  /* Reading width beats column alignment on a narrow screen. */
-  @media (--mobile) {
-    margin-inline-start: 0;
+  /* No numeral indent anywhere any more: mobile never had one (reading width
+     beats column alignment on a narrow screen) and on desktop the answer now
+     lives in its own column. */
+
+  /* Align the answer's first baseline to the question's: both boxes start at
+     the grid row's top, so offset = summary padding-top + (question baseline
+     below its box top) − (answer baseline below its own top). With half-leading
+     + ~0.8em ascent: 0.9 × question size − 1.1 × answer size (1.1em here).
+     Tuned against 1728px screenshots. */
+  @media (--desktop) {
+    margin-block-start: calc(
+      var(--gap) *
+      1.25 +
+      0.9 *
+      var(--question-size) -
+      1.1em
+    );
+    /* Keep clear of the absolutely positioned sign at the row's right edge. */
+    padding-inline-end: calc(0.85rem + var(--gap));
   }
 }
 
