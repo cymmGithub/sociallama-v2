@@ -30,31 +30,31 @@
 
 ## 3. Morph wiring (gated on morph-team-grid-transition machinery + spike verdict)
 
-- [ ] 3.1 Confirm the team-morph change landed its machinery (config, header
+- [x] 3.1 Confirm the team-morph change landed its machinery (config, header
       pin, pre-paint scroll path, wrapper passthrough) and the spike verdict
       was go; if the verdict was no-go, strike groups 3–4 and close this
       change as the poster-card redesign only
-- [ ] 3.2 Name the poster media `branza-<id>` on both sides: the card image
+- [x] 3.2 Name the poster media `branza-<id>` on both sides: the card image
       in `SectionIndex`'s poster branch and the hero poster `Image` in
       `HeroMedia`; containers, scrims, copy and video stay unnamed
-- [ ] 3.3 Extend `ScrollReset`'s pre-paint path to no-hash navigations
+- [x] 3.3 Extend `ScrollReset`'s pre-paint path to no-hash navigations
       (scroll to 0 inside the commit, mechanism per the spike verdict),
       keeping the post-paint path as fallback
-- [ ] 3.4 Reduced-motion gate covers the new pair (shared `::view-transition`
+- [x] 3.4 Reduced-motion gate covers the new pair (shared `::view-transition`
       CSS from the team change — verify it applies, don't duplicate it)
 
 ## 4. Morph verification (gated with group 3)
 
-- [ ] 4.1 Playwright pass on PL + EN: card click from a scrolled hub morphs
+- [x] 4.1 Playwright pass on PL + EN: card click from a scrolled hub morphs
       the poster into the on-screen hero at scroll zero; reduced-motion
       emulation gets the instant arrival; screenshot settled states
-- [ ] 4.2 Regression sweep: hub ⇄ industry ⇄ hub round trips under the
+- [x] 4.2 Regression sweep: hub ⇄ industry ⇄ hub round trips under the
       Activity cache (reveal stagger on return, Lenis offset, reverse-morph
       quality — observe and note), hero video fade-in after a morph arrival,
       direct URL visit to an industry page unchanged
-- [ ] 4.3 Full `bun run check` + test suite green
+- [x] 4.3 Full `bun run check` + test suite green
 
 ## 5. Documentation
 
-- [ ] 5.1 Record in design.md: the inherited scroll mechanism, the LCP /
+- [x] 5.1 Record in design.md: the inherited scroll mechanism, the LCP /
       preload decision from 2.3, and the reverse-morph observation from 4.2

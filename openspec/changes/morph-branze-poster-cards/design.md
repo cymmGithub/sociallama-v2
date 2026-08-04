@@ -118,8 +118,41 @@ dropping the entrance.
 
 ## Open Questions
 
-- The exact pre-paint scroll mechanism is whatever the team-morph spike
-  validates (Lenis immediate vs native + resync) — inherited, not re-asked.
+- ~~The exact pre-paint scroll mechanism is whatever the team-morph spike
+  validates (Lenis immediate vs native + resync) — inherited, not re-asked.~~
+  **Resolved 2026-08-05:** the spike validated Lenis
+  `scrollTo(0, { immediate: true })` in a client layout effect, and the
+  landed `ScrollReset` already runs its no-hash branch inside that layout
+  effect — the generalization this change planned (task 3.3) shipped
+  upstream, so no code was needed here. Verified live: `viewTransition.ready`
+  reports `scrollY === 0`, i.e. the new-state snapshot captures the landed
+  page (spec: "arrival is at the top").
+
+## Build findings (2026-08-05)
+
+- **The industry routes' `loading.tsx` blocked the morph — removed.** With
+  the `RouteLoading` shell in place, a card click committed the shell first
+  and the industry content in a second commit; React never saw the poster
+  pair in a transition-marked commit and `startViewTransition` was never
+  called (measured 0 across PL/EN first navigations, while the shipped team
+  morph fired on its first navigation on the same server). Removing
+  `loading.tsx` from `/branze/[slug]` and `/en/industries/[slug]` makes the
+  navigation a single commit and the morph fires (measured 1). Same
+  precedent as the team change killing the `/o-nas` loading-shell path; the
+  destinations are fully static, so without the shell the hub simply holds
+  until the payload commits — no blank state.
+- **Reverse morph: none, as inherited.** Browser back from an industry page
+  activates no view transition (0 `startViewTransition` calls on popstate —
+  the team-spike finding reproduces for this pair). Back-nav is the
+  pre-change experience: instant, scroll reset to top, hub reveal replays
+  for the in-view row. Accepted per the risk note ("observed, not built").
+- **Reduced motion verified:** the shared `::view-transition` collapse from
+  the team change covers `branza-*` — under `prefers-reduced-motion:
+  reduce` a transition technically starts but frames 100 ms apart are
+  pixel-identical at arrival: instant, no visible morph or crossfade.
+- **Video handoff verified:** after a morph arrival the hero clip reaches
+  `heroVideoReady` and fades in over the settled poster exactly as on a
+  direct visit; the poster (the only named layer) stays stable throughout.
 - ~~Whether the first-row poster cards should be `preload` (LCP candidates)
   or whether the hub hero's copy remains the LCP — measure on the branch.~~
   **Resolved 2026-08-04:** measured with a PerformanceObserver on the branch —

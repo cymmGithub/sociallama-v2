@@ -2,7 +2,13 @@
 
 import cn from 'clsx'
 import { ArrowRight } from 'lucide-react'
-import { type CSSProperties, useEffect, useRef, useState } from 'react'
+import {
+  type CSSProperties,
+  useEffect,
+  useRef,
+  useState,
+  ViewTransition,
+} from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
@@ -232,16 +238,25 @@ function HeroMedia({ id }: { id: string }) {
 
   return (
     <div className={s.heroMedia} aria-hidden="true">
-      <Image
-        className={s.heroPoster}
-        src={poster}
-        alt=""
-        fill
-        objectFit="cover"
-        preload
-        desktopSize="100vw"
-        mobileSize="100vw"
-      />
+      {/* `branza-<id>` pairs the poster with the hub card's image: on a
+          view-transition-capable browser the clicked card expands into this
+          hero (branze-morph-transition spec). Only the poster is named — the
+          scrim and the video stay out of the pair, so the clip's fade-in
+          after arrival composits over the settled shared layer. share falls
+          back to `default`, so it is pinned to "auto" explicitly (the
+          team-grid pattern). */}
+      <ViewTransition name={`branza-${id}`} share="auto" default="none">
+        <Image
+          className={s.heroPoster}
+          src={poster}
+          alt=""
+          fill
+          objectFit="cover"
+          preload
+          desktopSize="100vw"
+          mobileSize="100vw"
+        />
+      </ViewTransition>
       <video
         ref={videoRef}
         className={cn(s.heroVideo, playing && s.heroVideoReady)}

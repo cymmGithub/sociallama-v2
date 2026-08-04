@@ -24,6 +24,7 @@ const cards = INDUSTRIES.map((industry) => ({
   slug: industry.slug,
   label: industry.label,
   image: `/branze/${industry.id}/hero.jpg`,
+  morphName: `branza-${industry.id}`,
 }))
 
 export default function EnIndustriesIndexPage() {

@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
+import { ViewTransition } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { useReveal } from '@/lib/hooks/use-reveal'
@@ -38,6 +39,13 @@ export interface SectionIndexItem {
   label: string
   summary?: string
   image?: string
+  /**
+   * View-transition pair name for the poster (e.g. `branza-<id>`) — the
+   * destination page names its hero poster identically, so the clicked
+   * card's image morphs into it on capable browsers. Only meaningful
+   * alongside `image`.
+   */
+  morphName?: string
 }
 
 export interface SectionIndexProps {
@@ -67,25 +75,62 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
 
       <section className={s.grid} data-theme="cream">
         <div ref={ref} className={s.gridInner}>
-          {items.map((item, i) =>
-            item.image ? (
+          {items.map((item, i) => {
+            if (!item.image) {
+              return (
+                <Link
+                  key={item.slug}
+                  data-reveal-item
+                  className={s.card}
+                  href={`${base}/${item.slug}`}
+                >
+                  <span className={s.cardLabel}>{item.label}</span>
+                  <span className={s.cardSummary}>{item.summary}</span>
+                  <span className={s.cardCta}>
+                    {chrome.index.cardCta}
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </span>
+                </Link>
+              )
+            }
+
+            const poster = (
+              <Image
+                src={item.image}
+                alt=""
+                fill
+                aspectRatio={3 / 2}
+                mobileSize="90vw"
+                desktopSize="33vw"
+                // The first desktop row peeks into the initial viewport and
+                // carries the hub's LCP (measured 2026-08-04) — eager-load it.
+                preload={i < 3}
+              />
+            )
+
+            return (
               <Link
                 key={item.slug}
                 data-reveal-item
                 className={s.posterCard}
                 href={`${base}/${item.slug}`}
               >
-                <Image
-                  src={item.image}
-                  alt=""
-                  fill
-                  aspectRatio={3 / 2}
-                  mobileSize="90vw"
-                  desktopSize="33vw"
-                  // The first desktop row peeks into the initial viewport and
-                  // carries the hub's LCP (measured 2026-08-04) — eager-load it.
-                  preload={i < 3}
-                />
+                {item.morphName ? (
+                  // Pairs the card's poster with the destination hero's
+                  // poster image — only the image morphs; the scrim, copy
+                  // and card chrome crossfade with the page. share falls
+                  // back to `default`, so it is pinned to "auto" explicitly
+                  // (the team-grid pattern).
+                  <ViewTransition
+                    name={item.morphName}
+                    share="auto"
+                    default="none"
+                  >
+                    {poster}
+                  </ViewTransition>
+                ) : (
+                  poster
+                )}
                 <span className={s.posterScrim} aria-hidden="true" />
                 <span className={s.posterLabel}>
                   {item.label}
@@ -98,22 +143,8 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
                   <ArrowRight size={18} aria-hidden="true" />
                 </span>
               </Link>
-            ) : (
-              <Link
-                key={item.slug}
-                data-reveal-item
-                className={s.card}
-                href={`${base}/${item.slug}`}
-              >
-                <span className={s.cardLabel}>{item.label}</span>
-                <span className={s.cardSummary}>{item.summary}</span>
-                <span className={s.cardCta}>
-                  {chrome.index.cardCta}
-                  <ArrowRight size={18} aria-hidden="true" />
-                </span>
-              </Link>
             )
-          )}
+          })}
         </div>
       </section>
     </>
