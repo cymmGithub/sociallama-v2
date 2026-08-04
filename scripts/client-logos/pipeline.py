@@ -114,7 +114,16 @@ def gd(name):
 # fraction and is only for marks with no blank row anywhere — a badge whose
 # outline runs the full height — where it has to be set by eye and verified.
 # `tol` overrides CONNECT_TOL for a plate that needs a wider reach, and
-# `plate_ink` repaints a white knockout in its plate colour.
+# `plate_ink` repaints a white knockout in its plate colour. `boost` multiplies
+# the optical-mass correction (still clamped at contain-fit), for a mark whose
+# solid plate inflates its measured mass — belt pass only, verified by eye on
+# the contact sheet. `punch` keys the plate colour globally rather than by
+# border connectivity, without the `plate_ink` repaint: for positive artwork
+# whose enclosed glyph counters are background showing through, not ink, and
+# would otherwise ship as opaque plate-coloured boxes. `dy` nudges the placed
+# mark down by that many canvas pixels (half that at belt size): geometric
+# centring is blind to where a mark's ink actually sits, so a top-heavy or
+# bottom-heavy neighbour can make a centred mark read as misaligned.
 #
 # Source precedence is repository-first: the case-study assets were curated
 # during their import and are already de-matted and tightly cropped, so Drive
@@ -124,8 +133,9 @@ BRANDS = [
     # gDrive over the repository asset, which is the BELVEDERE CATERING
     # sub-brand lockup; the Drive copy is the approved restaurant mark. Drops
     # the "RESTAURACJA" strap line — unreadable at belt height — and keeps the
-    # crown with the wordmark.
-    ("belvedere", "Belvedere", gd("belvedere.png"), "belvedere", {"gap": 2}),
+    # crown with the wordmark. `punch` clears the white counters of B, D and R
+    # (and the crown's enclosed whites), which the border flood cannot reach.
+    ("belvedere", "Belvedere", gd("belvedere.png"), "belvedere", {"gap": 2, "punch": True}),
     ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {}),
     ("dpd", "DPD", gd("DPD_logo_(2015).svg.webp"), None, {}),
     ("engie", "ENGIE", gd("ENGIE_logotype_2018.png"), "engie", {}),
@@ -135,7 +145,11 @@ BRANDS = [
     # bleeding in along the bottom edge, which survive de-matting because they
     # are real ink rather than plate. The Drive copy is the bare lockup.
     ("imid", "Instytut Matki i Dziecka", gd("imid.png"), "imid-cmv", {}),
-    ("irobot", "iRobot", repo("irobot"), "irobot", {}),
+    # Sits between two bottom-heavy marks (Belvedere's wordmark under its
+    # crown, Julius Meinl's roundel over its name) and geometric centring made
+    # it read high — ink centroid 44.7 against Belvedere's 56.4. The nudge
+    # lands it between its neighbours.
+    ("irobot", "iRobot", repo("irobot"), "irobot", {"dy": 6}),
     ("julius-meinl", "Julius Meinl", gd("Julius_Meinl_(2004).svg.png"), "julius-meinl", {}),
     ("jw-construction", "JW Construction", repo("jw-construction"), "jw-construction", {}),
     # Drops "Krajowe Centrum Przeciwdziałania Uzależnieniom".
@@ -154,7 +168,11 @@ BRANDS = [
     ("medicover", "Medicover", gd("medicover.png"), None, {}),
     # White wordmark on red, with a yellow sun the repaint leaves alone.
     ("polomarket", "POLOmarket", gd("Polomarket-logo.png"), "polomarket", {"plate_ink": True}),
-    ("pracuj-pl", "pracuj.pl", gd("pracuj.pl logo.webp"), "pracuj-pl", {}),
+    # The mark is a wordmark knocked out of a solid rounded plate, and the
+    # plate is real ink the normaliser counts — so the mass correction lands at
+    # 0.53, the set's strongest shrink, and the logo reads oddly small on the
+    # belt. `boost` re-approximates the wordmark, not the plate, as the mass.
+    ("pracuj-pl", "pracuj.pl", gd("pracuj.pl logo.webp"), "pracuj-pl", {"boost": 1.35}),
     ("produkty-cukiernicze-brzesc", "Brześć", repo("produkty-cukiernicze-brzesc"), "produkty-cukiernicze-brzesc", {}),
     # Drops the "Park Rozrywki" ribbon. The badge's white sticker outline inks
     # every row, so there is no seam to find — hence `keep`, cut just above the
@@ -343,13 +361,14 @@ def darken(im):
     return Image.fromarray(a.astype(np.uint8), "RGBA"), True
 
 
-def place(im, scale):
-    """Scale the mark and centre it on the fixed BOX_W x BOX_H canvas."""
+def place(im, scale, dy=0):
+    """Scale the mark and centre it on the fixed BOX_W x BOX_H canvas,
+    optionally nudged `dy` pixels down."""
     w = max(1, round(im.width * scale))
     h = max(1, round(im.height * scale))
     canvas = Image.new("RGBA", (BOX_W, BOX_H), (0, 0, 0, 0))
     resized = im.resize((w, h), Image.LANCZOS)
-    canvas.alpha_composite(resized, ((BOX_W - w) // 2, (BOX_H - h) // 2))
+    canvas.alpha_composite(resized, ((BOX_W - w) // 2, (BOX_H - h) // 2 + dy))
     return canvas
 
 
@@ -383,11 +402,14 @@ def build_belt():
     prepared = []
     for key, name, src, slug, opts in BRANDS:
         mark = load(src)
-        # Knockout marks key the plate globally — see `dematte`. `plate_ink` is
-        # the only route to that behaviour, and `CS_INHERIT_OPTS` deliberately
-        # does not carry it, so the case-study pass below is unreachable from here.
+        # Knockout marks key the plate globally — see `dematte`. Only
+        # `plate_ink` and `punch` reach that behaviour, and `CS_INHERIT_OPTS`
+        # deliberately carries neither, so the case-study pass below is
+        # unreachable from here (its `mono_ink` clears counters on its own).
         mark, cut, plate = dematte(
-            mark, opts.get("tol", CONNECT_TOL), global_key=opts.get("plate_ink", False)
+            mark,
+            opts.get("tol", CONNECT_TOL),
+            global_key=opts.get("plate_ink", False) or opts.get("punch", False),
         )
         if opts.get("plate_ink"):
             if plate is None:
@@ -402,7 +424,7 @@ def build_belt():
             mark = trim(crop_to_fraction(mark, opts["keep"]))
         mark, dark = darken(mark)
         fit = min(INNER_W / mark.width, INNER_H / mark.height)
-        prepared.append((key, name, slug, mark, fit, cut, dark))
+        prepared.append((key, name, slug, mark, fit, cut, dark, opts))
 
     # Pass 2 — normalise optical mass against the roster median. Contain-fit
     # equalises bounding boxes, not visual weight: a wide wordmark and a compact
@@ -410,13 +432,13 @@ def build_belt():
     # ink. Scaling by sqrt(median / own mass) evens that out; the clamp keeps
     # nothing larger than contain-fit (it would overflow the box) or smaller
     # than half of it (it would vanish).
-    masses = {key: ink_area(mark) * fit**2 for key, _, _, mark, fit, _, _ in prepared}
+    masses = {key: ink_area(mark) * fit**2 for key, _, _, mark, fit, _, _, _ in prepared}
     median = float(np.median(list(masses.values())))
 
     marks, rows = [], []
-    for key, name, slug, mark, fit, cut, dark in prepared:
-        correction = min(1.0, max(0.5, (median / masses[key]) ** 0.5))
-        placed = place(mark, fit * correction)
+    for key, name, slug, mark, fit, cut, dark, opts in prepared:
+        correction = min(1.0, max(0.5, (median / masses[key]) ** 0.5) * opts.get("boost", 1.0))
+        placed = place(mark, fit * correction, opts.get("dy", 0))
         placed.save(os.path.join(OUT, f"{key}.png"))
         marks.append((key, placed))
         rows.append((key, name, slug, mark.size, cut, dark, correction))
