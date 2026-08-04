@@ -23,13 +23,11 @@ import { join } from 'node:path'
 const WP_ORIGIN = 'https://sociallama.pl'
 const ROOT = join(import.meta.dir, '..', '..')
 const OUT_MODULE = join(ROOT, 'lib', 'wp-redirects.ts')
-const OUT_REPORT = join(
-  ROOT,
-  'openspec',
-  'changes',
-  'migrate-wp-content',
-  'page-disposition.md'
-)
+// Deliberately outside `openspec/changes/`: the report is the generator's
+// output, not a change's paperwork. Pointed at the change that happened to own
+// the current revision, it goes stale the moment that change is archived —
+// which is exactly how it came to point into an archived directory.
+const OUT_REPORT = join(ROOT, 'docs', 'wp-page-disposition.md')
 
 type Disposition =
   /** 301 to a v2 route or homepage anchor. */
@@ -50,8 +48,8 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
   '/': { kind: 'keep', note: 'v2 homepage' },
   '/oferta': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'offer overview → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: offer overview → services hub (fragment-free)',
   },
   '/oferta/facebook': {
     kind: 'redirect',
@@ -85,8 +83,8 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
   },
   '/z-lama-warto': {
     kind: 'redirect',
-    to: '/#o-nas',
-    note: 'why-us page → about section anchor',
+    to: '/o-nas',
+    note: 'board decision 2026-08-04: why-us page → about page (fragment-free)',
   },
   '/kontakt': {
     kind: 'keep',
@@ -98,8 +96,8 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
   },
   '/500-zl-na-reklame': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'user decision 2026-07-17: obsolete 2017 ad promo → services anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: obsolete 2017 ad promo → services hub (fragment-free)',
   },
   '/cookie-policy': {
     kind: 'redirect',

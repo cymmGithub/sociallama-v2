@@ -50,10 +50,28 @@ test.describe('Legacy /oferta redirects', () => {
     }
   })
 
-  // The bare /oferta overview keeps its existing target — it is the offer
-  // index, not a platform page, and the spec leaves it alone.
-  test('the bare /oferta overview is unchanged', () => {
+  // The bare /oferta overview goes to the hub, not the landing — it is the
+  // offer index, not a platform page, so the index is its successor.
+  test('the bare /oferta overview targets the hub', () => {
     const overview = wpRedirects.find((rule) => rule.source === '/oferta')
-    expect(overview?.destination).toBe('/#uslugi')
+    expect(overview?.destination).toBe('/uslugi')
+  })
+
+  /*
+   * The rule the whole map is now held to. A fragment in a redirect target is
+   * invisible to crawlers, so `/#uslugi` consolidated equity into `/` rather
+   * than the section it named — which is what every anchor destination in this
+   * file used to do.
+   */
+  test('no rule anywhere targets a fragment', () => {
+    const withFragment = wpRedirects
+      .filter((rule) => rule.destination.includes('#'))
+      .map((rule) => `${rule.source} → ${rule.destination}`)
+    expect(withFragment).toEqual([])
+  })
+
+  test('every rule is a 301, and there are still eleven', () => {
+    expect(wpRedirects.length).toBe(11)
+    expect(wpRedirects.filter((rule) => rule.statusCode !== 301)).toEqual([])
   })
 })
