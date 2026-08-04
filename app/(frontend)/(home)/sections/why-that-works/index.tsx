@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ChevronsRight } from 'lucide-react'
 import { ProgressText } from '@/components/effects/progress-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -190,10 +190,11 @@ export function WhyThatWorks({
                 </Link>
               </li>
             ))}
-            {/* CTA tile closing the grid's rectangle (16 = 4x4 desktop,
-                8x2 mobile). Same tile shell as the members, copy instead of a
-                cutout; the arrow is part of the label, so unlike the member
-                tiles' hover-only affordance it stays visible on touch. */}
+            {/* CTA tile closing the desktop grid's rectangle (16th cell of
+                4x4) and ending the mobile rail. Same tile shell as the
+                members, copy instead of a cutout; the arrow is part of the
+                label, so unlike the member tiles' hover-only affordance it
+                stays visible on touch. */}
             <li className={cn(s.tile, s.moreTile)}>
               <Link
                 className={s.moreLink}
@@ -204,6 +205,11 @@ export function WhyThatWorks({
               </Link>
             </li>
           </ul>
+          {/* Swipe hint for the mobile rail (user decision 2026-08-04):
+              passive chevrons below the tiles — outside them so they cannot
+              read as a tappable control — that CSS fades out once the rail is
+              actually swiped. Hidden on desktop with the grid presentation. */}
+          <ChevronsRight className={s.railHint} aria-hidden="true" />
         </div>
         <div className={s.copy}>
           <p className={s.para}>

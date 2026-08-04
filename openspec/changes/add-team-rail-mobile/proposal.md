@@ -4,7 +4,7 @@ The roster refresh (refine-team-roster, merged 2026-08-04) grew the homepage tea
 
 ## What Changes
 
-- On mobile viewports only, the `why-that-works` team grid becomes a single-row **horizontal scroll-snap rail**: `overflow-x` + `scroll-snap` on the existing `.faces` list, explicit tile width near the current two-column width so a partial next tile peeks at the viewport edge as the swipe affordance. CSS-only — no new component, no JS.
+- On mobile viewports only, the `why-that-works` team grid becomes a single-row **horizontal scroll-snap rail**: `overflow-x` + `scroll-snap` on the existing `.faces` list, running full-bleed past the section's `--safe` padding with 44vw tiles so a partial next tile peeks at the viewport edge as the swipe affordance. A passive chevron swipe hint sits under the rail and fades out on the first swipe (scroll-driven animation, progressive enhancement). CSS-only — no new component, no JS.
 - All 16 cells stay present and reachable by swiping: the 15 members in the client-curated order, the CTA tile last. Captions and per-member `?lama=<slug>#zespol` deep links are untouched.
 - Desktop keeps the four-column grid; the `/o-nas` slider is untouched on every viewport.
 - Rejected alternative, for the record: reusing the `/o-nas` Team slider on the homepage. It would drag profile-depth content (bio, certs, plum-band presentation, `?lama=` consumption, a duplicate `#zespol` id under Next's Activity cache) onto the homepage to show one member at a time — inverting the section's "evidence by mass" job. The swipe mechanic alone is free in CSS.

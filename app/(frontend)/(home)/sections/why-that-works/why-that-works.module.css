@@ -83,8 +83,9 @@
 }
 
 /* Team grid: portrait tiles, each filling its gradient container with the
-   member's head+torso cutout. Four across on desktop, two on mobile; an
-   incomplete final row left-aligns. */
+   member's head+torso cutout. Four across on desktop; on mobile a single-row
+   horizontal scroll-snap rail — 15 members plus the CTA tile stacked two-up
+   ran ~8 viewport-heights of faces mid-page. */
 .faces {
   list-style: none;
   margin: 0;
@@ -94,7 +95,82 @@
   gap: clamp(6px, 1.2cqw, 12px);
 
   @media (--mobile) {
-    grid-template-columns: repeat(2, 1fr);
+    /* Tile width stays near the old two-column width (~46vw) so the
+       `mobileSize="46vw"` image buckets keep fetching the same variant. The
+       rail breaks out of the section's --safe padding to run full-bleed:
+       two ~44vw tiles + gap fill ~91vw, so without the breakout the next
+       tile's peek — the whole swipe affordance — would be a few invisible
+       pixels. scroll-padding mirrors the inline padding so snapped tiles
+       align with the section's content edge. */
+    grid-auto-flow: column;
+    grid-auto-columns: 44vw;
+    grid-template-columns: none;
+    margin-inline: calc(-1 * var(--safe));
+    padding-inline: var(--safe);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--safe);
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none; /* older Safari — modern engines honor scrollbar-width */
+    }
+  }
+}
+
+/* Swipe hint for the mobile rail: passive chevrons under the tiles at the
+   content edge's right side, brand orange like the tiles' own arrows (user
+   call 2026-08-04 — the muted gray version was too subtle). Decorative only
+   (aria-hidden, not a control). Where scroll-driven animations are supported
+   the first real swipe fades it out; elsewhere it simply stays. */
+.railHint {
+  display: none;
+
+  @media (--mobile) {
+    display: block;
+    margin-left: auto;
+    margin-top: 4px;
+    width: 30px;
+    height: auto;
+    color: var(--color-orange);
+  }
+}
+
+/* The fade must stay behind the @supports gate: without scroll-timeline
+   support the animation would fall back to the document timeline (0s,
+   fill: both) and jump the hint straight to its invisible end state. */
+@supports (animation-timeline: scroll()) {
+  @media (--mobile) {
+    .stage {
+      timeline-scope: --team-rail;
+    }
+
+    .faces {
+      scroll-timeline: --team-rail x;
+    }
+
+    .railHint {
+      animation: rail-hint-out linear both;
+      animation-timeline: --team-rail;
+    }
+  }
+}
+
+/* Gone within the first ~1.5 tiles of swiping. Scroll-driven animations are
+   bidirectional, so swiping back to the very start re-reveals it — where the
+   hint is true again. */
+@keyframes rail-hint-out {
+  0% {
+    opacity: 1;
+  }
+
+  12% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 
@@ -116,6 +192,10 @@
   );
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-cream) 20%, transparent);
   transition: box-shadow 0.35s ease;
+
+  @media (--mobile) {
+    scroll-snap-align: start;
+  }
 
   /* Cutout sits head-up so the face reads; torso runs off the bottom edge.
      Anchored top so the hover zoom grows downward and keeps the face put. */
@@ -364,9 +444,10 @@
 }
 
 /* —— CTA tile ("Dowiedz się więcej") ————————————————————————————————
-   Closes the grid's rectangle (16th cell: 4x4 desktop, 8x2 mobile). Same tile
-   shell (radius, ring, hover glow via .tile), with the top glow warmed up so
-   it reads as an invitation rather than a missing member. */
+   Closes the grid's rectangle on desktop (16th cell of 4x4) and ends the
+   mobile rail. Same tile shell (radius, ring, hover glow via .tile), with the
+   top glow warmed up so it reads as an invitation rather than a missing
+   member. */
 .moreTile {
   background: radial-gradient(
     115% 90% at 50% 0%,

@@ -4,7 +4,7 @@
 
 On mobile viewports the homepage `why-that-works` team grid SHALL render as a single-row, horizontally swipeable scroll-snap rail instead of the two-column vertical grid — at 15 members the stacked grid ran roughly eight rows mid-page. All 16 cells — the 15 member tiles in the client-curated order followed by the CTA tile — SHALL remain present and reachable by swiping; membership, order, captions, and per-member deep links are unchanged by the presentation.
 
-Tile width SHALL stay close to the previous two-column width (~46vw) so the existing image size buckets keep fetching the same variant, and SHALL leave a partial next tile visible at the viewport edge as the swipe affordance. After a swipe settles, tiles SHALL align to the snap grid. The rail SHALL NOT capture vertical gestures — a mostly-vertical drag over it scrolls the page — and SHALL NOT chain into browser navigation gestures at its ends. Desktop SHALL keep the existing four-column grid; the rail is a mobile-only, CSS-only presentation with no new JS behavior.
+Tile width SHALL stay close to the previous two-column width (~46vw) so the existing image size buckets keep fetching the same variant, and SHALL leave a partial next tile visible at the viewport edge as the swipe affordance. A passive chevron swipe hint SHALL sit below the rail — decorative and non-interactive, never presented as a control — and SHALL fade out once the visitor swipes the rail, where scroll-driven animations are supported; elsewhere it remains visible. After a swipe settles, tiles SHALL align to the snap grid. The rail SHALL NOT capture vertical gestures — a mostly-vertical drag over it scrolls the page — and SHALL NOT chain into browser navigation gestures at its ends. Desktop SHALL keep the existing four-column grid; the rail is a mobile-only, CSS-only presentation with no new JS behavior.
 
 #### Scenario: Mobile rail replaces the long grid
 
@@ -20,6 +20,11 @@ Tile width SHALL stay close to the previous two-column width (~46vw) so the exis
 
 - **WHEN** a member tile in the rail is tapped
 - **THEN** it navigates to that member's `?lama=<slug>#zespol` target exactly as the grid tile did
+
+#### Scenario: Swipe hint teaches the gesture then leaves
+
+- **WHEN** the rail is at its start position, unswiped
+- **THEN** a brand-orange chevron hint is visible below the rail, and after the visitor swipes past roughly the first tile it fades out (in browsers with scroll-driven animation support)
 
 #### Scenario: Vertical scrolling is not hijacked
 
