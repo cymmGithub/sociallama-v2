@@ -184,6 +184,9 @@ function RelatedCaseStudies({
  * into the opening one), 1600x900, bt709. Video ids, in list order:
  * 6872095, 35999384, 7720885, 12866100, 11494044, 7802452,
  * 7592800, 7667424, 8626681, 32947362, 38630675, 13082773.
+ * Exception — automotive: Volvo "EX60: A new beginning" (youtu.be/fBo4I4c0How,
+ * 1:31.5-1:37.7), same loop treatment, 1600x680 (bars cropped, full width kept
+ * so `cover` decides the crop).
  */
 const HERO_MEDIA = new Set<string>([
   'automotive',
