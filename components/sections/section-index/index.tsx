@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
+import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './index.module.css'
@@ -28,12 +29,15 @@ export interface SectionIndexChrome {
 
 /**
  * One card. `summary` is the generic body slot — a service summary or an
- * industry tagline.
+ * industry tagline. `image` (a full-bleed poster, the destination's own hero
+ * asset) selects the poster-card presentation instead: label + CTA over the
+ * photograph, no body copy.
  */
 export interface SectionIndexItem {
   slug: string
   label: string
-  summary: string
+  summary?: string
+  image?: string
 }
 
 export interface SectionIndexProps {
@@ -63,21 +67,53 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
 
       <section className={s.grid} data-theme="cream">
         <div ref={ref} className={s.gridInner}>
-          {items.map((item) => (
-            <Link
-              key={item.slug}
-              data-reveal-item
-              className={s.card}
-              href={`${base}/${item.slug}`}
-            >
-              <span className={s.cardLabel}>{item.label}</span>
-              <span className={s.cardSummary}>{item.summary}</span>
-              <span className={s.cardCta}>
-                {chrome.index.cardCta}
-                <ArrowRight size={18} aria-hidden="true" />
-              </span>
-            </Link>
-          ))}
+          {items.map((item, i) =>
+            item.image ? (
+              <Link
+                key={item.slug}
+                data-reveal-item
+                className={s.posterCard}
+                href={`${base}/${item.slug}`}
+              >
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  aspectRatio={3 / 2}
+                  mobileSize="90vw"
+                  desktopSize="33vw"
+                  // The first desktop row peeks into the initial viewport and
+                  // carries the hub's LCP (measured 2026-08-04) — eager-load it.
+                  preload={i < 3}
+                />
+                <span className={s.posterScrim} aria-hidden="true" />
+                <span className={s.posterLabel}>
+                  {item.label}
+                  <span className={s.dot} aria-hidden="true">
+                    .
+                  </span>
+                </span>
+                <span className={s.posterCta}>
+                  {chrome.index.cardCta}
+                  <ArrowRight size={18} aria-hidden="true" />
+                </span>
+              </Link>
+            ) : (
+              <Link
+                key={item.slug}
+                data-reveal-item
+                className={s.card}
+                href={`${base}/${item.slug}`}
+              >
+                <span className={s.cardLabel}>{item.label}</span>
+                <span className={s.cardSummary}>{item.summary}</span>
+                <span className={s.cardCta}>
+                  {chrome.index.cardCta}
+                  <ArrowRight size={18} aria-hidden="true" />
+                </span>
+              </Link>
+            )
+          )}
         </div>
       </section>
     </>

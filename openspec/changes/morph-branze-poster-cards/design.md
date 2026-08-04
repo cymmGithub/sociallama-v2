@@ -120,5 +120,11 @@ dropping the entrance.
 
 - The exact pre-paint scroll mechanism is whatever the team-morph spike
   validates (Lenis immediate vs native + resync) — inherited, not re-asked.
-- Whether the first-row poster cards should be `preload` (LCP candidates)
-  or whether the hub hero's copy remains the LCP — measure on the branch.
+- ~~Whether the first-row poster cards should be `preload` (LCP candidates)
+  or whether the hub hero's copy remains the LCP — measure on the branch.~~
+  **Resolved 2026-08-04:** measured with a PerformanceObserver on the branch —
+  the hub LCP is a first-row poster on both viewports (desktop: automotive,
+  mobile: the first card in view), arriving well after the hero-lead text
+  candidate while lazy. The first three cards (the desktop first row, a
+  superset of mobile's) now get `preload`; the rest stay lazy. Cards serve
+  the `w=640` bucket (~14–24 KB each) — never the hero's 100vw variant.

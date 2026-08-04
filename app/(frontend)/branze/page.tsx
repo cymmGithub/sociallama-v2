@@ -20,12 +20,13 @@ export const metadata: Metadata = {
   },
 }
 
-// Card body reuses each industry's existing hero lead (design D2) — no new
-// per-industry copy is authored for the index.
+// Poster cards (Variant A, 2026-08-04): each card carries its destination's
+// own hero poster — no new per-industry copy or artwork is authored for the
+// index. The tagline stays on the industry page.
 const cards = INDUSTRIES.map((industry) => ({
   slug: industry.slug,
   label: industry.label,
-  summary: industry.tagline,
+  image: `/branze/${industry.id}/hero.jpg`,
 }))
 
 export default function BranzeIndexPage() {

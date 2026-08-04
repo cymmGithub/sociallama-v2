@@ -60,13 +60,13 @@ export const chrome = {
   ctaText: 'Opowiedz nam o\u00A0swoim wyzwaniu — pokażemy, jak możemy pomóc.',
   ctaButton: 'Porozmawiajmy o Twoim biznesie',
   ctaHref: '/kontakt',
-  // `/branze` index chrome. Cards reuse each industry's `tagline`, so this is
-  // the only copy the index page adds.
+  // `/branze` index chrome. Cards reuse each industry's hero poster and
+  // `label`, so this is the only copy the index page adds.
   index: {
     title: 'Branże',
     intro:
       'Każda branża ma swój język, swoje tempo i\u00A0swoich odbiorców. Znajdź swoją i\u00A0zobacz, jak prowadzimy w\u00A0niej social media.',
-    cardCta: 'Zobacz branżę',
+    cardCta: 'Więcej',
   },
 } as const
 

@@ -2,29 +2,29 @@
 
 ## 1. Poster cards (standalone — no morph dependency)
 
-- [ ] 1.1 Add the optional per-item `image` slot to `SectionIndex` and the
+- [x] 1.1 Add the optional per-item `image` slot to `SectionIndex` and the
       poster-card branch: full-bleed cover image (house `Image`, card-sized
       `sizes` ~33vw desktop / ~90vw mobile), 3:2 aspect, bottom scrim sized
       to the copy block, cream label with orange dot, CTA from
       `chrome.index.cardCta` with the lucide arrow — per the approved
       Variant A mock; items without an image render today's text card
       unchanged
-- [ ] 1.2 Pass poster paths (`/branze/<id>/hero.jpg`) from the PL and EN
+- [x] 1.2 Pass poster paths (`/branze/<id>/hero.jpg`) from the PL and EN
       branze hub pages; leave the services hub pages untouched
-- [ ] 1.3 Change `chrome.index.cardCta` to "Więcej" in `branze.ts` and
+- [x] 1.3 Change `chrome.index.cardCta` to "Więcej" in `branze.ts` and
       "More" in `branze.en.ts`
-- [ ] 1.4 Verify legibility: label + CTA contrast over the composited scrim
+- [x] 1.4 Verify legibility: label + CTA contrast over the composited scrim
       on all 12 cards in both locales (screenshot pass, both viewports);
       adjust the scrim, not the copy, where a poster fights it
 
 ## 2. Hub verification (standalone)
 
-- [ ] 2.1 Screenshot `/branze` and `/en/industries` at mobile + desktop:
+- [x] 2.1 Screenshot `/branze` and `/en/industries` at mobile + desktop:
       grid alignment, reveal stagger, hover lift, focus-visible state on
       poster cards
-- [ ] 2.2 Confirm `/uslugi` and `/en/services` render byte-identical text
+- [x] 2.2 Confirm `/uslugi` and `/en/services` render byte-identical text
       cards (locale-parity test + visual spot-check)
-- [ ] 2.3 Measure hub image weight and LCP (house PSI recipe): card-sized
+- [x] 2.3 Measure hub image weight and LCP (house PSI recipe): card-sized
       variants actually served (never the hero's 100vw variant), decide
       first-row `preload` per measurement; `bun run check` green
 

@@ -127,3 +127,68 @@
   font-size: 0.9rem;
   color: var(--color-plum);
 }
+
+/* —— Poster card ——————————————————————————————————————————————————————————————
+   The industries hub (Variant A, 2026-08-04): the destination's own hero
+   poster full-bleed under a bottom scrim, label + CTA only — the tagline
+   waits on the industry page. Items without an image keep the text card. */
+
+.posterCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  padding: calc(var(--safe) * 1.2);
+  border-radius: 22px;
+  box-shadow: 0 18px 40px -24px rgb(43 31 36 / 45%);
+  text-decoration: none;
+  color: var(--color-cream);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 50px -22px rgb(43 31 36 / 55%);
+  }
+}
+
+/* Sized to the copy block, not a full-card wash (the hero-scrim recipe: no
+   colour cast, densest under the CTA at the bottom edge so the orange holds
+   AA over any photograph). */
+.posterScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 92%) 0%,
+    rgb(0 0 0 / 84%) 22%,
+    rgb(0 0 0 / 66%) 45%,
+    transparent 78%
+  );
+}
+
+/* The copy sits above the fill image + scrim — static spans would paint
+   underneath the absolutely positioned layers. */
+.posterLabel {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.posterCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-orange);
+}

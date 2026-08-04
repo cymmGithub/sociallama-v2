@@ -39,7 +39,7 @@ export const chrome = {
     title: 'Industries',
     intro:
       'Every industry has its own language, its own pace, its own audience. Find yours and see how we run social there.',
-    cardCta: 'View industry',
+    cardCta: 'More',
   },
 } satisfies LocalizedBranze['chrome']
 

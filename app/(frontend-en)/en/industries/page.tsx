@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 const cards = INDUSTRIES.map((industry) => ({
   slug: industry.slug,
   label: industry.label,
-  summary: industry.tagline,
+  image: `/branze/${industry.id}/hero.jpg`,
 }))
 
 export default function EnIndustriesIndexPage() {
