@@ -125,3 +125,9 @@ __pycache__/
 scripts/case-studies/.remaining.txt
 scripts/case-studies/.extract.log
 .cover-art-staging/
+
+# Board-facing WP redirect map (kept out of the repo — lives in the main
+# worktree root, edited in LibreOffice; lib/wp-redirects.ts is the artifact
+# of record)
+wp-redirect-map.xlsx
+.~lock.*#

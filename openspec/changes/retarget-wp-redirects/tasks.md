@@ -1,17 +1,20 @@
 # Tasks — retarget-wp-redirects
 
-## 1. Retarget dispositions
+Scope note: revised 2026-08-04 — the board dropped the dedicated platform-pages
+idea the same day it was raised. The built page revision was removed from the
+branch; this change is the redirect retarget only.
 
-- [ ] 1.1 In `lib/scripts/generate-wp-redirects.ts` `PAGE_DISPOSITIONS`, change `to` for `/oferta`, `/oferta/facebook`, `/oferta/instagram`, `/oferta/linkedin`, `/oferta/tiktok`, `/oferta/twitter`, `/oferta/pinterest`, `/500-zl-na-reklame` from `/#uslugi` to `/uslugi`, and `/z-lama-warto` from `/#o-nas` to `/o-nas`; update each entry's `note` to record the 2026-08-04 decision (dedicated pages exist; fragments are invisible to crawlers)
-- [ ] 1.2 Check the script's disposition-report output path (`openspec/changes/migrate-wp-content/page-disposition.md`) — if that change is archived, point the report somewhere that doesn't resurrect the old change dir
+## 1. Source capture
 
-## 2. Regenerate the committed artifact
+- [x] 1.1 Scrape the six live WP pages (`/oferta/facebook` … `/oferta/pinterest`) into `copy-sources/<platform>.md` — the WP host disappears at cutover; kept as the only surviving copy of the source text
 
-- [ ] 2.1 Run `bun ./lib/scripts/generate-wp-redirects.ts` (WP host is still live pre-cutover); confirm it exits zero with no pending dispositions
-- [ ] 2.2 Diff `lib/wp-redirects.ts`: exactly the 9 destinations change, rule count stays 11, `statusCode: 301` throughout, no fragment appears in any `destination`; update the module's header comment if it still says "the WP host is gone after cutover" contradicts a re-run note
+## 2. Retarget redirects
 
-## 3. Verify
+- [x] 2.1 In `lib/scripts/generate-wp-redirects.ts` `PAGE_DISPOSITIONS`: `/oferta`, `/oferta/{platform}`, `/500-zl-na-reklame` → `/uslugi`; `/z-lama-warto` → `/o-nas`; each `note` carries the 2026-08-04 board decision
+- [x] 2.2 Repoint the script's report path from the archived `migrate-wp-content` change dir to this change's dir
+- [x] 2.3 Run `bun ./lib/scripts/generate-wp-redirects.ts`; diff `lib/wp-redirects.ts` — 9 destinations change, rule count stays 11, `statusCode: 301` throughout, no fragments
 
-- [ ] 3.1 Against the worktree dev server: each of `/oferta`, the six `/oferta/{platform}` paths, `/500-zl-na-reklame` returns 301 → `/uslugi`; `/z-lama-warto` returns 301 → `/o-nas`; `/tag/anything` → `/blog` and `/cookie-policy` → `/polityka-prywatnosci` unchanged; `/uslugi` and `/o-nas` return 200
-- [ ] 3.2 Grep the repo for remaining `/#uslugi` / `/#o-nas` redirect destinations (nav/menu anchors are fine — only redirect targets must be fragment-free)
-- [ ] 3.3 `bun run check` passes
+## 3. Verify end-to-end
+
+- [x] 3.1 curl each of the 11 redirect sources on the worktree dev server (restart required — `next.config.ts` reads the module at boot): 301 with the exact expected Location; every destination (`/uslugi`, `/o-nas`, `/blog`, `/polityka-prywatnosci`) returns 200 — verified 2026-08-04
+- [x] 3.2 `bun run check` passes (647 tests green); `wp-redirect-map.xlsx` refresh declined-pending — user call

@@ -23,11 +23,13 @@ import { join } from 'node:path'
 const WP_ORIGIN = 'https://sociallama.pl'
 const ROOT = join(import.meta.dir, '..', '..')
 const OUT_MODULE = join(ROOT, 'lib', 'wp-redirects.ts')
+// retarget-wp-redirects: migrate-wp-content is archived — the report follows
+// the change that owns the current disposition revision.
 const OUT_REPORT = join(
   ROOT,
   'openspec',
   'changes',
-  'migrate-wp-content',
+  'retarget-wp-redirects',
   'page-disposition.md'
 )
 
@@ -50,43 +52,43 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
   '/': { kind: 'keep', note: 'v2 homepage' },
   '/oferta': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'offer overview → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: offer overview → services hub (fragment-free)',
   },
   '/oferta/facebook': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/oferta/instagram': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/oferta/linkedin': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/oferta/tiktok': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/oferta/twitter': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/oferta/pinterest': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'platform offer page → services section anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: platform offer page → services hub (fragment-free; the dedicated platform-pages idea was dropped the same day)',
   },
   '/z-lama-warto': {
     kind: 'redirect',
-    to: '/#o-nas',
-    note: 'why-us page → about section anchor',
+    to: '/o-nas',
+    note: 'board decision 2026-08-04: why-us page → about page (fragment-free)',
   },
   '/kontakt': {
     kind: 'keep',
@@ -98,8 +100,8 @@ const PAGE_DISPOSITIONS: Record<string, Disposition> = {
   },
   '/500-zl-na-reklame': {
     kind: 'redirect',
-    to: '/#uslugi',
-    note: 'user decision 2026-07-17: obsolete 2017 ad promo → services anchor',
+    to: '/uslugi',
+    note: 'board decision 2026-08-04: obsolete 2017 ad promo → services hub (fragment-free)',
   },
   '/cookie-policy': {
     kind: 'redirect',
