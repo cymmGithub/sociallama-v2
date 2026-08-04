@@ -110,11 +110,7 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
                 className={cn(s.layer, index === active && s.isActive)}
                 aria-hidden={index !== active}
               >
-                <StageMedia
-                  service={service}
-                  active={index === active}
-                  soonLabel={content.soonLabel}
-                />
+                <StageMedia service={service} active={index === active} />
               </div>
             ))}
             <Grain />
@@ -175,11 +171,7 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
             <li key={service.id} data-reveal-item className={s.stackItem}>
               <div className={s.stackStage}>
                 <Backdrop />
-                <StageMedia
-                  service={service}
-                  active
-                  soonLabel={content.soonLabel}
-                />
+                <StageMedia service={service} active />
                 <Grain />
               </div>
               <h3 className={s.title}>{service.title}</h3>
@@ -242,11 +234,9 @@ function Grain() {
 function StageMedia({
   service,
   active,
-  soonLabel,
 }: {
   service: ServiceItem
   active: boolean
-  soonLabel: string
 }) {
   const { stage } = service
 
@@ -277,37 +267,17 @@ function StageMedia({
 
   return (
     <div className={s.phone}>
-      {stage.clips.map((clip) =>
-        'placeholder' in clip ? (
-          <div
-            key={clip.placeholder}
-            className={cn(s.phoneFrame, s.phonePlaceholder)}
-            role="img"
-            aria-label={clip.placeholder}
-          >
-            <div className={s.placeholderInner}>
-              <Image
-                src="/assets/clients/irobot.svg"
-                alt=""
-                width={1024}
-                height={203}
-                className={s.placeholderLogo}
-              />
-              <span className={s.placeholderTag}>{soonLabel}</span>
-            </div>
-          </div>
-        ) : (
-          <div key={clip.src} className={s.phoneFrame}>
-            <Video
-              src={clip.src}
-              poster={clip.poster}
-              alt={clip.alt}
-              autoPlay={active}
-              className={s.phoneVideo}
-            />
-          </div>
-        )
-      )}
+      {stage.clips.map((clip) => (
+        <div key={clip.src} className={s.phoneFrame}>
+          <Video
+            src={clip.src}
+            poster={clip.poster}
+            alt={clip.alt}
+            autoPlay={active}
+            className={s.phoneVideo}
+          />
+        </div>
+      ))}
     </div>
   )
 }

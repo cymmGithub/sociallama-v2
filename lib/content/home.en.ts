@@ -347,7 +347,6 @@ export const services = {
   eyebrow: 'WHAT DOES SOCIAL LAMA DO?',
   heading: 'Services',
   linkLabel: 'LEARN MORE',
-  soonLabel: 'Soon',
   items: [
     {
       id: 'content',
@@ -480,7 +479,11 @@ export const services = {
             poster: '/clips/kreacje-dpd-poster.jpg',
             alt: 'Coverage of a DPD event',
           },
-          { placeholder: 'waiting for iRobot video' },
+          {
+            src: '/clips/kreacje-volvo.mp4',
+            poster: '/clips/kreacje-volvo-poster.jpg',
+            alt: 'Coverage of the Dom Volvo event',
+          },
         ],
       },
     },

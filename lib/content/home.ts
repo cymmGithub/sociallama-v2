@@ -36,17 +36,13 @@ export interface StagePanel {
   height: number
 }
 
-export type StageClip =
-  | {
-      /** Clip path under /clips. */
-      src: string
-      /** Poster still path under /clips. */
-      poster: string
-      alt: string
-    }
-  /** Placeholder card shown in the phone rail until its clip exists — the
-   *  string is the label rendered inside the empty frame. */
-  | { placeholder: string }
+export interface StageClip {
+  /** Clip path under /clips. */
+  src: string
+  /** Poster still path under /clips. */
+  poster: string
+  alt: string
+}
 
 /**
  * Per-service stage media for the autoplay-tabs services section.
@@ -535,8 +531,6 @@ export const services = {
   eyebrow: 'CZYM SIĘ ZAJMUJE SOCIAL LAMA?',
   heading: 'Usługi',
   linkLabel: 'DOWIEDZ SIĘ WIĘCEJ',
-  // Tag shown inside a service's placeholder frame until its clip is delivered.
-  soonLabel: 'Wkrótce',
   items: [
     {
       id: 'content',
@@ -685,7 +679,11 @@ export const services = {
             poster: '/clips/kreacje-dpd-poster.jpg',
             alt: 'Relacja z eventu DPD',
           },
-          { placeholder: 'waiting for iRobot video' },
+          {
+            src: '/clips/kreacje-volvo.mp4',
+            poster: '/clips/kreacje-volvo-poster.jpg',
+            alt: 'Relacja z eventu Dom Volvo',
+          },
         ],
       },
     },
