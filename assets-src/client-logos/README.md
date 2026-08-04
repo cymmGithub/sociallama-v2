@@ -7,7 +7,7 @@ it lives at `scripts/client-logos/pipeline.py`; run it from the repo root:
 python3 scripts/client-logos/pipeline.py
 ```
 
-It writes `public/assets/clients/<brand>.png` for all 31 roster brands plus a
+It writes `public/assets/clients/<brand>.png` for all 23 roster brands plus a
 review contact sheet at `.work/contact-sheet.png` (gitignored) rendering every
 logo under the belt's resting treatment on the sand band. Review that sheet
 before committing the emitted assets — a plate, residue, or washed-out mark
@@ -25,9 +25,11 @@ of the roster and perfectly fine.
 
 ## Where the sources come from
 
-`raw/` holds the 32 loose files from the approved client set in gDrive,
-`TOP MARKI na strone główną`. They are committed so the pipeline is re-runnable
-without Drive access. To refresh them:
+`raw/` holds the loose files from the approved client set in gDrive,
+`TOP MARKI na strone główną` — including files for brands since retired from
+that set, which the case-study card pass still consumes. They are committed so
+the pipeline is re-runnable without Drive access. To refresh them (`rclone
+copy` only adds, so retired sources survive a refresh):
 
 ```sh
 rclone copy --drive-root-folder-id 1i3hOxAAUdlrh3zx-G-dgRXKR4pgrCRWZ --max-depth 1 goodone-gdrive: assets-src/client-logos/raw

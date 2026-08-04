@@ -6,7 +6,7 @@ import type { Testimonial } from './home'
  *
  * These fields are locale-invariant (design D6): a brand name is a proper noun,
  * the logo file is one asset, and a case-study slug is the same URL segment in
- * both locales. Duplicating 31 logo paths and 22 slugs across `home.ts` and
+ * both locales. Duplicating 23 logo paths and 16 slugs across `home.ts` and
  * `home.en.ts` would only create room for silent drift — and a wrong slug fails
  * as a 404, not as a type error. The per-locale copy that *does* differ (the
  * numbers sentence, the one testimonial) lives in the locale modules, keyed by
@@ -24,7 +24,6 @@ import type { Testimonial } from './home'
  */
 export type ClientIndustry =
   | 'agd'
-  | 'akwarystyka'
   | 'deweloper'
   | 'edukacja'
   | 'elektronika'
@@ -39,7 +38,6 @@ export type ClientIndustry =
   | 'logistyka'
   | 'motoryzacja'
   | 'rozrywka'
-  | 'turystyka'
   | 'zdrowie'
 
 export interface ClientBrand {
@@ -60,30 +58,13 @@ export interface ClientBrand {
 // re-exported through `ClientBrand[]` so consumers see one uniform shape rather
 // than a 31-member union in which the bare-logo brands lack `caseStudySlug`.
 //
-// Order is alphabetical by key *except* for two deliberate relocations —
-// `ed-invest` after `polomarket` and `mercator` after `riviera` — which break
-// the only two same-industry adjacencies the alphabetical order produced. Do
-// not re-sort: `clients.test.ts` fails if any two neighbours (including the
-// last→first seam, which the belt's repeated track makes real) share an
-// `industry`.
+// Order is alphabetical by key *except* for one deliberate relocation —
+// `belvedere` after `imid` — which breaks the only same-industry adjacency the
+// alphabetical order produced (it sat beside Burger King, the other
+// `gastronomia` brand). Do not re-sort: `clients.test.ts` fails if any two
+// neighbours (including the last→first seam, which the belt's repeated track
+// makes real) share an `industry`.
 const ROSTER = [
-  {
-    key: 'a1-karting',
-    name: 'A1 Karting',
-    logo: '/assets/clients/a1-karting.png',
-    industry: 'rozrywka',
-    caseStudySlug: 'a1-karting',
-  },
-  // Added after the Drive set was approved (user decision 2026-07-27), taking
-  // Manufaktura Czekolady's place: Aquael is one of the few brands carrying
-  // both a real testimonial and a published case study.
-  {
-    key: 'aquael',
-    name: 'Aquael',
-    logo: '/assets/clients/aquael.png',
-    industry: 'akwarystyka',
-    caseStudySlug: 'aquael',
-  },
   {
     key: 'asus',
     name: 'ASUS',
@@ -98,24 +79,10 @@ const ROSTER = [
     industry: 'gastronomia',
   },
   {
-    key: 'dolina-charlotty',
-    name: 'Dolina Charlotty',
-    logo: '/assets/clients/dolina-charlotty.png',
-    industry: 'turystyka',
-    caseStudySlug: 'dolina-charlotty',
-  },
-  {
     key: 'dpd',
     name: 'DPD',
     logo: '/assets/clients/dpd.png',
     industry: 'logistyka',
-  },
-  {
-    key: 'dynamic-development',
-    name: 'Dynamic Development',
-    logo: '/assets/clients/dynamic-development.png',
-    industry: 'deweloper',
-    caseStudySlug: 'dynamic-development',
   },
   {
     key: 'engie',
@@ -132,24 +99,20 @@ const ROSTER = [
     caseStudySlug: 'fm-logistics',
   },
   {
-    key: 'galeria-rondo-wiatraczna',
-    name: 'Galeria Rondo Wiatraczna',
-    logo: '/assets/clients/galeria-rondo-wiatraczna.png',
-    industry: 'handel',
-    caseStudySlug: 'galeria-rondo-wiatraczna',
-  },
-  {
-    key: 'home-invest',
-    name: 'Home Invest',
-    logo: '/assets/clients/home-invest.png',
-    industry: 'deweloper',
-  },
-  {
     key: 'imid',
     name: 'Instytut Matki i Dziecka',
     logo: '/assets/clients/imid.png',
     industry: 'zdrowie',
     caseStudySlug: 'imid-cmv',
+  },
+  // Moved off its alphabetical slot: it sat beside Burger King, the other
+  // restaurant brand. Here it is flanked by healthcare and home robotics.
+  {
+    key: 'belvedere',
+    name: 'Belvedere',
+    logo: '/assets/clients/belvedere.png',
+    industry: 'gastronomia',
+    caseStudySlug: 'belvedere',
   },
   {
     key: 'irobot',
@@ -184,6 +147,14 @@ const ROSTER = [
     logo: '/assets/clients/lg-electronics.png',
     industry: 'elektronika',
   },
+  // Chocolate Story — the mark the belt shows is the script wordmark, but the
+  // company name stays the accessible one.
+  {
+    key: 'manufaktura-czekolady',
+    name: 'Manufaktura Czekolady',
+    logo: '/assets/clients/manufaktura-czekolady.png',
+    industry: 'fmcg',
+  },
   {
     key: 'medicover',
     name: 'Medicover',
@@ -191,33 +162,11 @@ const ROSTER = [
     industry: 'zdrowie',
   },
   {
-    key: 'motointegrator',
-    name: 'Motointegrator',
-    logo: '/assets/clients/motointegrator.png',
-    industry: 'motoryzacja',
-    caseStudySlug: 'motointegrator',
-  },
-  {
-    key: 'oryginalny-sok',
-    name: 'Oryginalny Sok',
-    logo: '/assets/clients/oryginalny-sok.png',
-    industry: 'fmcg',
-  },
-  {
     key: 'polomarket',
     name: 'POLOmarket',
     logo: '/assets/clients/polomarket.png',
     industry: 'handel',
     caseStudySlug: 'polomarket',
-  },
-  // Moved off its alphabetical slot: it sat beside Dynamic Development, the
-  // other property developer. Here it is flanked by retail and HR.
-  {
-    key: 'ed-invest',
-    name: 'ED Invest',
-    logo: '/assets/clients/ed-invest.png',
-    industry: 'deweloper',
-    caseStudySlug: 'ed-invest',
   },
   {
     key: 'pracuj-pl',
@@ -246,15 +195,6 @@ const ROSTER = [
     logo: '/assets/clients/riviera.png',
     industry: 'handel',
     caseStudySlug: 'riviera',
-  },
-  // Moved off its alphabetical slot: it sat beside Medicover, the other
-  // healthcare brand. Here it is flanked by retail and publishing.
-  {
-    key: 'mercator',
-    name: 'Mercator Medical',
-    logo: '/assets/clients/mercator.png',
-    industry: 'zdrowie',
-    caseStudySlug: 'mercator',
   },
   {
     key: 'skrzat',

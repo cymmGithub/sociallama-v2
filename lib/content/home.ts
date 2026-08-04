@@ -281,28 +281,6 @@ export const clientCardCta = {
 // 2026-07-27) — a figure with a named channel reads as reporting rather than
 // rounding.
 export const clients = {
-  'a1-karting': {
-    numbers:
-      '3,7 mln wyświetleń na Facebooku i\u00A0o\u00A0397% więcej interakcji z\u00A0zawartością.',
-    metrics: [
-      { label: 'Wyświetlenia · TikTok', value: '767 tys.' },
-      { label: 'Wyświetlenia · Instagram', value: '552,1 tys.' },
-      { label: 'Kliknięcia linku · Facebook', value: '34 373' },
-    ],
-  },
-  // A quote card rather than a numbers card: Aquael is one of the four brands
-  // with a real testimonial, and it outweighs anything its study reports. The
-  // first two sentences of the slider quote verbatim — the card cannot hold
-  // the third.
-  aquael: {
-    testimonial: {
-      quote:
-        'Social Lama jest agencją, która w\u00A0pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o\u00A0kolejne projekty.',
-      author: 'Beata Nartowska',
-      company: 'Aquael',
-      image: '/assets/testimonial-nartowska.jpg',
-    },
-  },
   // The rest of ASUS's study reports production volume, so the sentence leads
   // on the one audience-scale figure it carries and the rows keep the volume.
   asus: {
@@ -314,29 +292,15 @@ export const clients = {
       { label: 'Posty i animacje · Facebook', value: '22' },
     ],
   },
-  'dolina-charlotty': {
+  // The study's headline figures are the monthly averages, so the sentence
+  // carries both and the rows keep the reach and engagement behind them.
+  belvedere: {
     numbers:
-      '15,5 mln wyświetleń na Facebooku i\u00A0wzrost wyświetleń na Instagramie o\u00A01706%.',
+      'Średnio 75 718 wyświetleń miesięcznie i\u00A092% rekomendacji na Facebooku.',
     metrics: [
-      { label: 'Kliknięcia linku · Facebook', value: '99 509' },
-      { label: 'Interakcje · Facebook', value: '51 278' },
-      { label: 'Nowi obserwujący · Facebook', value: '4 869' },
-    ],
-  },
-  'dynamic-development': {
-    numbers: '3,4 mln zasięgu na Facebooku i\u00A01,2 mln na Instagramie.',
-    metrics: [
-      { label: 'Kliknięcia linku · Facebook', value: '45 tys.' },
-      { label: 'Odwiedziny profilu · Facebook', value: '27 tys.' },
-      { label: 'Nowi obserwujący · Facebook', value: '6 050' },
-    ],
-  },
-  'ed-invest': {
-    numbers: '2,6 mln wyświetleń na Facebooku — o\u00A0180% więcej niż wcześniej.',
-    metrics: [
-      { label: 'Kliknięcia linku · Instagram', value: '+1073%' },
-      { label: 'Zasięg · Instagram', value: '94 tys.' },
-      { label: 'Odwiedziny profilu · Instagram', value: '1 466' },
+      { label: 'Zasięg / mies.', value: '28 959' },
+      { label: 'Zaangażowani / mies.', value: '1 530' },
+      { label: 'Opinie · Facebook', value: '612' },
     ],
   },
   engie: {
@@ -355,15 +319,6 @@ export const clients = {
       { label: 'Społeczność · LinkedIn', value: '6 894 → 9 005' },
       { label: 'Reakcje · LinkedIn', value: '+10,7 tys.' },
       { label: 'Odtworzenia wideo · LinkedIn', value: '317 000' },
-    ],
-  },
-  'galeria-rondo-wiatraczna': {
-    numbers:
-      'Po 2,5 mln wyświetleń na Facebooku i\u00A0Instagramie oraz 2,14 mln w\u00A0wyszukiwarce Google.',
-    metrics: [
-      { label: 'Widzów · Facebook', value: '750 tys.' },
-      { label: 'Widzów · Instagram', value: '280 tys.' },
-      { label: 'Kliknięcia · strona WWW', value: '26 559' },
     ],
   },
   imid: {
@@ -399,24 +354,6 @@ export const clients = {
     numbers: '27 tys. organicznych wyświetleń na LinkedInie i\u00A0819 reakcji.',
     metrics: [
       { label: 'Nowi obserwatorzy · LinkedIn', value: '186' },
-    ],
-  },
-  mercator: {
-    numbers:
-      '4 mln wyświetleń publikacji na Facebooku i\u00A0542 tys. na Instagramie.',
-    metrics: [
-      { label: 'Reakcje · Facebook', value: '2 968' },
-      { label: 'Reakcje · Instagram', value: '2 820' },
-      { label: 'Nowi obserwatorzy · Facebook', value: '113' },
-    ],
-  },
-  motointegrator: {
-    numbers:
-      '620% ROAS kampanii remarketingowej w\u00A0Niemczech, przy 0,08 € za kliknięcie.',
-    metrics: [
-      { label: 'Zasięg / mies. · Facebook', value: '554 320' },
-      { label: 'Komentarze / mies. · Facebook', value: '1 305' },
-      { label: 'Wizyty / mies. · Instagram', value: '1 431' },
     ],
   },
   polomarket: {

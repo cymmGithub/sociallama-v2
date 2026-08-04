@@ -122,25 +122,6 @@ export const clientCardCta = {
 // authored for the English reader rather than translated line-for-line: compact
 // M/k forms and comma grouping, matching the numbers elsewhere in this locale.
 export const clients = {
-  'a1-karting': {
-    numbers: '3.7M Facebook impressions and content interactions up 397%.',
-    metrics: [
-      { label: 'Views · TikTok', value: '767k' },
-      { label: 'Views · Instagram', value: '552.1k' },
-      { label: 'Link clicks · Facebook', value: '34,373' },
-    ],
-  },
-  // Quote card — see the note in home.ts. The first two sentences of the
-  // slider quote verbatim; the card cannot hold the third.
-  aquael: {
-    testimonial: {
-      quote:
-        "Social Lama is an agency that fully meets our expectations. The team's work proved satisfying enough that we decided to expand the collaboration to further projects.",
-      author: 'Beata Nartowska',
-      company: 'Aquael',
-      image: '/assets/testimonial-nartowska.jpg',
-    },
-  },
   asus: {
     numbers:
       '26,000,000 Facebook likes and 44 pieces on ASUS AI features in six weeks.',
@@ -150,28 +131,15 @@ export const clients = {
       { label: 'Posts & animations · Facebook', value: '22' },
     ],
   },
-  'dolina-charlotty': {
-    numbers: '15.5M Facebook impressions and Instagram views up 1,706%.',
+  // See the note in home.ts — the sentence carries the two headline monthly
+  // averages, the rows keep the reach and engagement behind them.
+  belvedere: {
+    numbers:
+      'An average of 75,718 monthly views and a 92% recommendation rate on Facebook.',
     metrics: [
-      { label: 'Link clicks · Facebook', value: '99,509' },
-      { label: 'Interactions · Facebook', value: '51,278' },
-      { label: 'New followers · Facebook', value: '4,869' },
-    ],
-  },
-  'dynamic-development': {
-    numbers: '3.4M reach on Facebook and 1.2M on Instagram.',
-    metrics: [
-      { label: 'Link clicks · Facebook', value: '45k' },
-      { label: 'Profile visits · Facebook', value: '27k' },
-      { label: 'New followers · Facebook', value: '6,050' },
-    ],
-  },
-  'ed-invest': {
-    numbers: '2.6M Facebook impressions — up 180% on where we started.',
-    metrics: [
-      { label: 'Link clicks · Instagram', value: '+1,073%' },
-      { label: 'Reach · Instagram', value: '94k' },
-      { label: 'Profile visits · Instagram', value: '1,466' },
+      { label: 'Reach / mo', value: '28,959' },
+      { label: 'Engaged accounts / mo', value: '1,530' },
+      { label: 'Reviews · Facebook', value: '612' },
     ],
   },
   engie: {
@@ -189,15 +157,6 @@ export const clients = {
       { label: 'Community · LinkedIn', value: '6,894 → 9,005' },
       { label: 'Reactions · LinkedIn', value: '+10.7k' },
       { label: 'Video plays · LinkedIn', value: '317,000' },
-    ],
-  },
-  'galeria-rondo-wiatraczna': {
-    numbers:
-      '2.5M impressions each on Facebook and Instagram, plus 2.14M in Google Search.',
-    metrics: [
-      { label: 'Viewers · Facebook', value: '750k' },
-      { label: 'Viewers · Instagram', value: '280k' },
-      { label: 'Clicks · website', value: '26,559' },
     ],
   },
   imid: {
@@ -229,23 +188,6 @@ export const clients = {
     numbers: '27k organic LinkedIn impressions and 819 reactions.',
     metrics: [
       { label: 'New followers · LinkedIn', value: '186' },
-    ],
-  },
-  mercator: {
-    numbers: '4M Facebook post impressions and 542k on Instagram.',
-    metrics: [
-      { label: 'Reactions · Facebook', value: '2,968' },
-      { label: 'Reactions · Instagram', value: '2,820' },
-      { label: 'New followers · Facebook', value: '113' },
-    ],
-  },
-  motointegrator: {
-    numbers:
-      '620% ROAS on the German remarketing campaign, at €0.08 a link click.',
-    metrics: [
-      { label: 'Reach / mo · Facebook', value: '554,320' },
-      { label: 'Comments / mo · Facebook', value: '1,305' },
-      { label: 'Visits / mo · Instagram', value: '1,431' },
     ],
   },
   polomarket: {

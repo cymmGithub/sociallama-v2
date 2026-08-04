@@ -7,7 +7,7 @@
 
 Two consumers, two contracts, one set of machinery:
 
-  belt         31 roster brands -> public/assets/clients/<brand>.png
+  belt         23 roster brands -> public/assets/clients/<brand>.png
                Full colour, centred. Hover reveals the brand's own colour, so
                ink is never darkened beyond the resting contrast floor.
 
@@ -120,24 +120,16 @@ def gd(name):
 # during their import and are already de-matted and tightly cropped, so Drive
 # only wins where the repository copy is a plate, too small, or absent.
 BRANDS = [
-    ("a1-karting", "A1 Karting", gd("a1.jpg"), "a1-karting", {}),
-    # Not in the Drive set — added to the belt after it was approved, so the
-    # case-study asset is the only source. It is a clean 418x97 de-matted mark.
-    ("aquael", "Aquael", repo("aquael"), "aquael", {}),
     ("asus", "ASUS", repo("asus"), "asus", {}),
+    # gDrive over the repository asset, which is the BELVEDERE CATERING
+    # sub-brand lockup; the Drive copy is the approved restaurant mark. Drops
+    # the "RESTAURACJA" strap line — unreadable at belt height — and keeps the
+    # crown with the wordmark.
+    ("belvedere", "Belvedere", gd("belvedere.png"), "belvedere", {"gap": 2}),
     ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {}),
-    # Drops "Resort & SPA" — unreadable at belt height.
-    ("dolina-charlotty", "Dolina Charlotty", repo("dolina-charlotty"), "dolina-charlotty", {"gap": 2}),
     ("dpd", "DPD", gd("DPD_logo_(2015).svg.webp"), None, {}),
-    ("dynamic-development", "Dynamic Development", repo("dynamic-development"), "dynamic-development", {}),
-    ("ed-invest", "ED Invest", repo("ed-invest"), "ed-invest", {}),
     ("engie", "ENGIE", gd("ENGIE_logotype_2018.png"), "engie", {}),
     ("fm-logistics", "FM Logistic", repo("fm-logistics"), "fm-logistics", {}),
-    # gDrive over the repository asset, which is a tight crop with 91 inked
-    # pixels sitting on its bottom row — the emblem's lower arc is cut off in the
-    # artwork itself. The Drive copy has the full roundel with clear margins.
-    ("galeria-rondo-wiatraczna", "Galeria Rondo Wiatraczna", gd("galeria rondo wiatraczna.png"), "galeria-rondo-wiatraczna", {}),
-    ("home-invest", "Home Invest", gd("HOME_INVEST_LOGO_TIFF-DR-2.png"), None, {}),
     # gDrive over the repository asset, which is a crop out of a larger layout:
     # it carries a faint watermark arc *and* the tops of a maroon heading
     # bleeding in along the bottom edge, which survive de-matting because they
@@ -149,16 +141,17 @@ BRANDS = [
     # Drops "Krajowe Centrum Przeciwdziałania Uzależnieniom".
     ("kcpu", "KCPU", gd("kcpu-logo-cmyk.png.webp"), None, {"gap": 1}),
     ("lg-electronics", "LG Electronics", gd("LG_Electronics_logo.png"), None, {}),
+    # Script only: the cocoa-bean roundel above and the "manufaktura czekolady"
+    # strap line below are both dropped. This is the roster's one hairline mark —
+    # 5% ink coverage against a 26% median — and optical-mass normalisation
+    # cannot lift it, because scale-up is clamped at contain-fit. Keeping the
+    # roundel also made the lockup height-bound, so it filled half the box and
+    # read as a gap in the belt. Alone, the script is width-bound, fills the box
+    # and roughly doubles its stroke weight (user decision 2026-07-27).
+    ("manufaktura-czekolady", "Manufaktura Czekolady", gd("manufaktura-czekolady-logo.webp"), None, {"band": (1, 2)}),
     # gDrive over the existing public/assets copy: 514x98 against 136x84, and
     # it is the horizontal lockup with no "SPORT" line to crop.
     ("medicover", "Medicover", gd("medicover.png"), None, {}),
-    # White wordmark on navy — repainted navy rather than darkened. See
-    # ink_from_plate.
-    ("mercator", "Mercator Medical", gd("mercator.png"), "mercator", {"plate_ink": True}),
-    ("motointegrator", "Motointegrator", repo("motointegrator"), "motointegrator", {}),
-    # gDrive over the existing public/assets copy, which carries a leftover box
-    # outline and a "100%" chip; this one is the clean single-line lockup.
-    ("oryginalny-sok", "Oryginalny Sok", gd("logo-oryginalny-sok.png"), None, {}),
     # White wordmark on red, with a yellow sun the repaint leaves alone.
     ("polomarket", "POLOmarket", gd("Polomarket-logo.png"), "polomarket", {"plate_ink": True}),
     ("pracuj-pl", "pracuj.pl", gd("pracuj.pl logo.webp"), "pracuj-pl", {}),
@@ -468,11 +461,22 @@ CS_INNER_W, CS_INNER_H = CS_BOX_W - 2 * CS_PAD, CS_BOX_H - 2 * CS_PAD
 # low-contrast source from being stretched into noise.
 CS_INK_FLOOR, CS_INK_CEIL_MIN, CS_INK_CEIL_PCT = 0.10, 0.35, 99.5
 
-# Skibooking is the only study with no logo asset at all, so its card falls back
-# to the client name as text. The source is a vector and cannot be uploaded as
-# one — Payload's media collection sniffs SVG as `application/xml`, which is not
-# in its allowed mime list — so rasterising here is mandatory, not a preference.
-CS_EXTRA_SOURCES = {"skibooking": gd("skibooking.svg")}
+# Studies whose source cannot be derived from BRANDS. Skibooking has no logo
+# asset at all, so its card falls back to the client name as text; the source is
+# a vector and cannot be uploaded as one — Payload's media collection sniffs SVG
+# as `application/xml`, which is not in its allowed mime list — so rasterising
+# here is mandatory, not a preference. The other three were retired from the
+# belt in the 2026-08 reconciliation, which removed them from BRANDS; their
+# Drive-over-repo source judgements still hold for the card pass, so they are
+# pinned here: a1-karting's Drive copy beats the repository crop, Galeria Rondo
+# Wiatraczna's repository asset has the emblem's lower arc cut off in the
+# artwork itself, and Mercator has no repository asset at all.
+CS_EXTRA_SOURCES = {
+    "skibooking": gd("skibooking.svg"),
+    "a1-karting": gd("a1.jpg"),
+    "galeria-rondo-wiatraczna": gd("galeria rondo wiatraczna.png"),
+    "mercator": gd("mercator.png"),
+}
 
 # Belt-only crop overrides that must NOT carry over. `gap`/`band`/`keep` drop
 # secondary lines that are unreadable at the belt's 44px logo height; the card
