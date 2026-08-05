@@ -1070,6 +1070,7 @@ export const footer = {
       links: [
         { label: 'O NAS', href: '/o-nas' },
         { label: 'BRANŻE', href: '/branze' },
+        { label: 'USŁUGI', href: '/uslugi' },
         // { label: 'SZKOLENIA I KURSY', href: '/szkolenia' }, // delayed launch — no page yet, keep out of nav
         { label: 'BLOG', href: '/blog' },
         { label: 'CASE STUDIES', href: '/case-studies' },
