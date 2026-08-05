@@ -24,6 +24,9 @@ import {
   Video as VideoIcon,
   Wallet,
 } from 'lucide-react'
+import { ViewTransition } from 'react'
+import { ServicePoster } from '@/components/sections/service-posters'
+import { isPosterId } from '@/components/sections/service-posters/ids'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { SocialGlyph } from '@/components/ui/social-glyph'
@@ -63,6 +66,12 @@ export interface RelatedPost {
 }
 
 export interface ServicePageProps {
+  /**
+   * Locale-neutral service id (`strategia`, `content`, …). Selects the hero's
+   * poster artwork and names its half of the `usluga-<id>` morph pair, so both
+   * locales pair against their own hub by construction.
+   */
+  serviceId: string
   /**
    * The service's ordered sections. Typed as the widened (`Localized`) element
    * so both the narrow PL data and the widened EN data are assignable — the
@@ -195,51 +204,66 @@ const ICONS: Record<string, LucideIcon> = {
 // —— Hero ——————————————————————————————————————————————————————————————————————
 
 /*
- * The shared multi-armed llama render is extracted from Figma once and shared by
- * every service page (design D3). Until it lands the hero renders llama-less on
- * flat plum (scaffold-with-omission). Flip this on and drop the PNG in when the
- * asset is delivered.
+ * The hero ground is the service's own line-art poster — the same artwork its
+ * hub card shows, which is what makes the card→hero morph possible. Poster
+ * only, by decision: four of these pages already carry an ambient clip a
+ * scroll below, so a second moving layer up here would fight it.
  */
-const HERO_LLAMA: string | null = null
+function Hero({
+  data,
+  chrome,
+  serviceId,
+}: {
+  data: HeroData
+  chrome: Chrome
+  serviceId: string
+}) {
+  const posterId = isPosterId(serviceId) ? serviceId : undefined
 
-function Hero({ data, chrome }: { data: HeroData; chrome: Chrome }) {
   return (
-    <section className={s.hero} data-theme="plum">
+    // With artwork behind it the header drops its ground (see the Header's
+    // `[data-transparent-header]` lookup) so the poster runs to the top edge.
+    <section
+      className={s.hero}
+      data-theme="plum"
+      {...(posterId && { 'data-transparent-header': '' })}
+    >
+      {posterId && (
+        <div className={s.heroMedia} aria-hidden="true">
+          {/* `usluga-<id>` pairs this with the hub card's poster: on a
+              view-transition-capable browser the clicked card expands into
+              this hero (uslugi-morph-transition spec). Only the poster is
+              named — the scrim, title and lead stay out of the pair and
+              crossfade with the page. share must not fall back to `default`
+              ("none"); the `poster-morph` view-transition-class activates the
+              morph and lets global.css cover-fit the snapshots (card and hero
+              frame the artwork differently). */}
+          <ViewTransition
+            name={`usluga-${posterId}`}
+            share="poster-morph"
+            default="none"
+          >
+            <ServicePoster id={posterId} variant="hero" />
+          </ViewTransition>
+          <div className={s.heroScrim} />
+        </div>
+      )}
       <div className={s.heroInner}>
         <p className={s.breadcrumb}>{chrome.sectionLabel}</p>
-        <div
-          className={s.heroBody}
-          data-has-llama={HERO_LLAMA ? '' : undefined}
-        >
-          <div className={s.heroCopy}>
-            <h1 className={s.heroTitle}>
-              {data.title}
-              <span className={s.dot} aria-hidden="true">
-                .
-              </span>
-            </h1>
-            <p className={s.heroLead}>{data.intro}</p>
-            {/* Optional — heroes declared without a CTA render exactly as before. */}
-            {data.cta && (
-              <Link className={s.heroCta} href={data.cta.href}>
-                {data.cta.label}
-                <ArrowRight size={18} aria-hidden="true" />
-              </Link>
-            )}
-          </div>
-          {HERO_LLAMA && (
-            <div className={s.heroLlama} aria-hidden="true">
-              <Image
-                src={HERO_LLAMA}
-                alt=""
-                width={640}
-                height={720}
-                objectFit="contain"
-                preload
-                desktopSize="40vw"
-                mobileSize="70vw"
-              />
-            </div>
+        <div className={s.heroCopy}>
+          <h1 className={s.heroTitle}>
+            {data.title}
+            <span className={s.dot} aria-hidden="true">
+              .
+            </span>
+          </h1>
+          <p className={s.heroLead}>{data.intro}</p>
+          {/* Optional — heroes declared without a CTA render exactly as before. */}
+          {data.cta && (
+            <Link className={s.heroCta} href={data.cta.href}>
+              {data.cta.label}
+              <ArrowRight size={18} aria-hidden="true" />
+            </Link>
           )}
         </div>
       </div>
@@ -841,6 +865,7 @@ export function ServicePage({
   postBase,
   relatedByPlatform,
   topicalPosts,
+  serviceId,
 }: ServicePageProps) {
   return (
     <>
@@ -851,7 +876,14 @@ export function ServicePage({
         // union for us — hence the per-branch casts, unchanged from before.
         switch (section.kind) {
           case 'hero':
-            return <Hero key={key} data={section as HeroData} chrome={chrome} />
+            return (
+              <Hero
+                key={key}
+                data={section as HeroData}
+                chrome={chrome}
+                serviceId={serviceId}
+              />
+            )
           case 'platforms':
             return (
               <Platforms

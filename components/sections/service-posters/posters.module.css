@@ -1,0 +1,236 @@
+/*
+ * Service posters — the seven line-art artworks behind the /uslugi hub cards
+ * and the service-page heroes (direction A "Kreska", mock of 2026-08-05).
+ *
+ * Paint: every fill/stroke resolves a brand token, so the posters follow the
+ * palette rather than carrying their own hexes (the mock hardcoded them).
+ *
+ * Motion contract — two attributes on the poster root, both set by
+ * `ServicePoster`, both absent server-side so the no-JS render is the settled
+ * artwork:
+ *   [data-animating="true"]  ambient loops run; anything else pauses them
+ *                            (play-state, not `animation: none` — resuming
+ *                            never restarts a cycle mid-flight)
+ *   [data-draw="armed"]      pre-draw state, set in a layout effect so the
+ *                            settled artwork never flashes before the draw
+ *   [data-draw="done"]       latched on first viewport entry; plays the
+ *                            draw-on once and holds the settled end state
+ */
+
+/* —— Paint ————————————————————————————————————————————————————————————————————— */
+
+.ground {
+  fill: var(--color-plum);
+}
+
+.vignetteStop {
+  stop-color: var(--color-plum-dark);
+}
+
+.deep {
+  fill: var(--color-plum-dark);
+}
+
+.line {
+  fill: none;
+  stroke: var(--color-cream);
+}
+
+.solid {
+  fill: var(--color-cream);
+}
+
+.accent {
+  fill: var(--color-orange);
+}
+
+.accentLine {
+  fill: none;
+  stroke: var(--color-orange);
+}
+
+/* —— Frame ————————————————————————————————————————————————————————————————————— */
+
+.poster {
+  position: absolute;
+  inset: 0;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* —— Ambient loops (one per poster, 3.4–22s, compositor properties only) ——————— */
+
+@keyframes dashTravel {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+
+@keyframes filmAdvance {
+  to {
+    stroke-dashoffset: -350;
+  }
+}
+
+@keyframes lensScan {
+  from {
+    transform: translate(-8px, 3px);
+  }
+
+  to {
+    transform: translate(10px, -5px);
+  }
+}
+
+@keyframes pingRing {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.85;
+  }
+
+  32%,
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+
+  78%,
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.dashTravel {
+  animation: dashTravel 10s linear infinite;
+}
+
+.signal {
+  animation: dashTravel 8s linear infinite;
+}
+
+.filmLine {
+  animation: filmAdvance 22s linear infinite;
+}
+
+.lensDots {
+  animation: lensScan 9s ease-in-out infinite alternate;
+}
+
+.ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pingRing 4.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+.rip {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ripple 3.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+.rip2 {
+  animation-delay: 1.7s;
+}
+
+/* Must come AFTER every `animation:` shorthand above — the shorthand resets
+   animation-play-state to `running`, so declaring the pause earlier silently
+   loses to it and off-screen posters keep ticking. */
+.dashTravel,
+.signal,
+.filmLine,
+.lensDots,
+.ping,
+.rip {
+  animation-play-state: paused;
+}
+
+.poster[data-animating="true"]
+  :is(.dashTravel, .signal, .filmLine, .lensDots, .ping, .rip) {
+  animation-play-state: running;
+}
+
+/* —— Draw-on accents (once, on viewport entry — never on hover) ———————————————— */
+
+@keyframes routeDraw {
+  from {
+    stroke-dashoffset: 240;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes barUp {
+  from {
+    transform: scaleY(0.18);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Settled by default: with JS off (or under reduced motion, where the effect
+   never arms) the route is drawn and the bars stand at full height. */
+.routeDraw {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 0;
+}
+
+.bar {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.poster[data-draw="armed"] .routeDraw {
+  stroke-dashoffset: 240;
+}
+
+.poster[data-draw="armed"] .bar {
+  transform: scaleY(0.18);
+}
+
+.poster[data-draw="done"] .routeDraw {
+  animation: routeDraw 1.5s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+.poster[data-draw="done"] .bar {
+  animation: barUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* —— Reduced motion ———————————————————————————————————————————————————————————
+   The global neutralizer already collapses durations, but it lands each loop on
+   its END keyframe — where the ping and ripple rings have faded to nothing.
+   Dropping the animations outright leaves the authored geometry instead, which
+   is what "the settled artwork" means for these posters. */
+
+@media (--reduced-motion) {
+  .poster
+    :is(
+      .dashTravel,
+      .signal,
+      .filmLine,
+      .lensDots,
+      .ping,
+      .rip,
+      .routeDraw,
+      .bar
+    ) {
+    animation: none;
+    transform: none;
+  }
+}

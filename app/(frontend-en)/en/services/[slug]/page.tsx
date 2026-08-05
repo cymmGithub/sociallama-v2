@@ -47,6 +47,7 @@ export default async function EnServicePage({ params }: PageProps) {
   return (
     <Wrapper theme="plum">
       <ServicePage
+        serviceId={service.id}
         sections={service.sections}
         chrome={chrome}
         caseStudyBase="/en/case-studies"

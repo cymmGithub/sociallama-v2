@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowRight } from 'lucide-react'
-import { ViewTransition } from 'react'
+import { type ReactNode, ViewTransition } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { useReveal } from '@/lib/hooks/use-reveal'
@@ -30,20 +30,30 @@ export interface SectionIndexChrome {
 
 /**
  * One card. `summary` is the generic body slot — a service summary or an
- * industry tagline. `image` (a full-bleed poster, the destination's own hero
- * asset) selects the poster-card presentation instead: label + CTA over the
- * photograph, no body copy.
+ * industry tagline. Either poster slot selects the poster-card presentation
+ * instead: label + CTA over full-bleed art, no body copy. `image` takes a
+ * photograph (the industries hub, whose posters are the destinations' own hero
+ * JPEGs); `artwork` takes rendered markup (the services hub, whose posters are
+ * inline line-art SVG that has to animate and morph). Exactly one applies —
+ * `artwork` wins if a caller sets both.
  */
 export interface SectionIndexItem {
   slug: string
   label: string
   summary?: string
   image?: string
+  artwork?: ReactNode
   /**
-   * View-transition pair name for the poster (e.g. `branza-<id>`) — the
-   * destination page names its hero poster identically, so the clicked
-   * card's image morphs into it on capable browsers. Only meaningful
-   * alongside `image`.
+   * Spans the card across the whole grid row. The services hub opens on a
+   * feature card so seven items close as 1 + 3 + 3 instead of leaving an
+   * orphan in the last row.
+   */
+  feature?: boolean
+  /**
+   * View-transition pair name for the poster (e.g. `branza-<id>`,
+   * `usluga-<id>`) — the destination page names its hero poster identically,
+   * so the clicked card's poster morphs into it on capable browsers. Only
+   * meaningful alongside `image` or `artwork`.
    */
   morphName?: string
 }
@@ -76,7 +86,7 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
       <section className={s.grid} data-theme="cream">
         <div ref={ref} className={s.gridInner}>
           {items.map((item, i) => {
-            if (!item.image) {
+            if (!(item.image || item.artwork)) {
               return (
                 <Link
                   key={item.slug}
@@ -94,39 +104,45 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
               )
             }
 
-            const poster = (
-              <Image
-                src={item.image}
-                alt=""
-                fill
-                aspectRatio={3 / 2}
-                mobileSize="90vw"
-                desktopSize="33vw"
-                // The first desktop row peeks into the initial viewport and
-                // carries the hub's LCP (measured 2026-08-04) — eager-load it.
-                preload={i < 3}
-              />
-            )
+            // Rendered artwork arrives ready to paint; a photograph still
+            // needs the image pipeline. Inline SVG takes no preload hint —
+            // there is no request to prioritise.
+            const poster =
+              item.artwork ??
+              (item.image === undefined ? null : (
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  aspectRatio={3 / 2}
+                  mobileSize="90vw"
+                  desktopSize="33vw"
+                  // The first desktop row peeks into the initial viewport and
+                  // carries the hub's LCP (measured 2026-08-04) — eager-load it.
+                  preload={i < 3}
+                />
+              ))
 
             return (
               <Link
                 key={item.slug}
                 data-reveal-item
+                data-feature={item.feature ? '' : undefined}
+                data-artwork={item.artwork ? '' : undefined}
                 className={s.posterCard}
                 href={`${base}/${item.slug}`}
               >
                 {item.morphName ? (
                   // Pairs the card's poster with the destination hero's
-                  // poster image — only the image morphs; the scrim, copy
-                  // and card chrome crossfade with the page. share must not
-                  // fall back to `default` ("none"), so it carries the
-                  // `branza-poster` view-transition-class — which both
-                  // activates the morph and lets global.css cover-fit the
-                  // snapshots (the card and the hero crop the same photo
-                  // differently).
+                  // poster — only the poster morphs; the scrim, copy and card
+                  // chrome crossfade with the page. share must not fall back
+                  // to `default` ("none"), so it carries the `poster-morph`
+                  // view-transition-class — which both activates the morph and
+                  // lets global.css cover-fit the snapshots (card and hero
+                  // frame the same artwork differently).
                   <ViewTransition
                     name={item.morphName}
-                    share="branza-poster"
+                    share="poster-morph"
                     default="none"
                   >
                     {poster}

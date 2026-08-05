@@ -28,33 +28,64 @@
   color: var(--color-plum);
 }
 
-/* —— Hero (flat plum, shared llama render — design D3) ————————————————————————— */
+/* —— Hero (the service's line-art poster behind the copy) ——————————————————————
+   The branze media-hero pattern minus the video: plum stays the base, the
+   poster covers the band, a scrim carries legibility, and the header renders
+   transparent over it — hence the top padding clearing --header-height. */
 
 .hero {
+  position: relative;
+  overflow: hidden;
   background: var(--color-plum);
   color: var(--color-cream);
 }
 
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+
+/* Plum-tinted rather than the black wash branze puts over photographs: line art
+   needs the ground to stay plum. The copy side is the dense end, holding ≥60%
+   out to 58% of the width — measured as the density a full-strength cream
+   stroke needs before cream body copy clears AA over it, since several motifs
+   (Strategia's route, Sprzedaż's trend line) do trail into the copy column. It
+   clears by 86%, so every motif's focal point keeps its full contrast. */
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-plum-dark) 88%, transparent) 0%,
+      color-mix(in srgb, var(--color-plum-dark) 78%, transparent) 30%,
+      color-mix(in srgb, var(--color-plum-dark) 62%, transparent) 58%,
+      color-mix(in srgb, var(--color-plum-dark) 28%, transparent) 72%,
+      transparent 86%
+    ),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-ink-deep) 45%, transparent),
+      transparent 40%
+    ),
+    /* Keeps the now-transparent header's logo and pills legible over the
+       artwork's bright strokes. */
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-ink-deep) 42%, transparent),
+      transparent 22%
+    );
+}
+
 .heroInner {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: calc(var(--safe) * 1.5);
   max-width: 1240px;
   margin-inline: auto;
-  padding: calc(var(--safe) * 3) var(--safe) calc(var(--safe) * 3.5);
-}
-
-.heroBody {
-  display: grid;
-  gap: calc(var(--safe) * 1.5);
-  align-items: center;
-
-  &[data-has-llama] {
-    @media (--desktop) {
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: calc(var(--gap) * 3);
-    }
-  }
+  padding: calc(var(--header-height) + var(--safe) * 1.5) var(--safe)
+    calc(var(--safe) * 3.5);
 }
 
 .heroCopy {
@@ -101,11 +132,6 @@
   font-weight: 700;
   font-size: 0.98rem;
   text-decoration: none;
-}
-
-.heroLlama {
-  position: relative;
-  justify-self: center;
 }
 
 /* —— Platforms (cubes on CONTENT, dashboards on Sprzedaż) —————————————————————— */

@@ -243,15 +243,12 @@ function HeroMedia({ id }: { id: string }) {
           hero (branze-morph-transition spec). Only the poster is named — the
           scrim and the video stay out of the pair, so the clip's fade-in
           after arrival composits over the settled shared layer. share must
-          not fall back to `default` ("none"); the `branza-poster`
+          not fall back to `default` ("none"); the `poster-morph`
           view-transition-class activates the morph and lets global.css
           cover-fit the snapshots (card and hero crop the same photo
-          differently). */}
-      <ViewTransition
-        name={`branza-${id}`}
-        share="branza-poster"
-        default="none"
-      >
+          differently). It is shared with the services hub — the names stay
+          section-prefixed, so ids can never collide. */}
+      <ViewTransition name={`branza-${id}`} share="poster-morph" default="none">
         <Image
           className={s.heroPoster}
           src={poster}

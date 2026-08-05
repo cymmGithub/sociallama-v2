@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
+import { ServicePoster } from '@/components/sections/service-posters'
+import { isPosterId } from '@/components/sections/service-posters/ids'
 import { OG_BASE } from '@/lib/content/site.en'
 import { chrome, SERVICES } from '@/lib/content/uslugi.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
@@ -20,11 +22,30 @@ export const metadata: Metadata = {
   },
 }
 
-const cards = SERVICES.map((service) => ({
-  slug: service.slug,
-  label: service.label,
-  summary: service.summary,
-}))
+/* Mirrors `/uslugi` — see the note there. Service ids are locale-neutral, so
+   both hubs build `usluga-<id>` pairs against their own locale's pages and the
+   morphs can never cross wires. */
+const cards = SERVICES.map((service) => {
+  if (!isPosterId(service.id)) {
+    return {
+      slug: service.slug,
+      label: service.label,
+      summary: service.summary,
+    }
+  }
+
+  const feature = service.id === 'strategia'
+
+  return {
+    slug: service.slug,
+    label: service.label,
+    feature,
+    morphName: `usluga-${service.id}`,
+    artwork: (
+      <ServicePoster id={service.id} variant={feature ? 'hero' : 'card'} />
+    ),
+  }
+})
 
 export default function EnServicesIndexPage() {
   return (

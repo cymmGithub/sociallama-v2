@@ -57,7 +57,54 @@ Inline SVG needs no preload/LCP hints; the branze-only `preload={i < 3}` logic s
 
 Single deploy, no data or schema involvement. Rollback = revert the commit; the branze class rename reverts with it. Visual sign-off on the dev server (both hubs, all seven heroes, morph on a capable browser, reduced-motion run) before merge, per house rules.
 
+## Build findings (2026-08-05)
+
+- **The service routes' `loading.tsx` blocked the morph — removed.** Identical
+  to the branze finding: with the `RouteLoading` shell in place a card click
+  commits the shell first and the service content second, React never sees the
+  poster pair in one transition-marked commit, and `startViewTransition` is
+  never called (measured 0 on `/uslugi` and `/en/services`, while branze fired
+  on the same server). Removing `loading.tsx` from `/uslugi/[slug]` and
+  `/en/services/[slug]` makes it a single commit and the morph fires (measured
+  1, 250ms). `RouteLoading`'s docstring, which still claimed service and
+  industry detail pages mount it, was corrected.
+- **Draw-on binds to the poster's own observer, not `useReveal`** (task 1.6
+  said the reveal system). The hero has no reveal container, so binding to it
+  would have needed a second, different trigger there; instead `ServicePoster`
+  arms the pre-draw state in a layout effect and latches `data-draw="done"` on
+  first intersection. Same mechanism class, same observable behaviour on both
+  surfaces — fires once on viewport entry, never on hover, never re-draws on
+  re-entry — and one trigger instead of two.
+- **The `animation` shorthand silently defeated the off-screen pause.**
+  `animation-play-state: paused` declared *before* the per-class `animation:`
+  shorthands was reset by them, so every loop ran regardless of
+  `data-animating` (measured 12 running with the grid scrolled away). Moving
+  the play-state rules below the shorthands fixed it (measured 0 running / 12
+  paused off-screen, and a paused animation's `currentTime` verifiably holds).
+- **Both scrims were retuned for line art.** Branze's photo scrim (92% black at
+  the base, still 66% at mid-card) crushed two thirds of every drawing. Cards
+  now use a shorter ramp, heroes a plum-tinted left gradient. Both were set by
+  measurement, not eye: sampling the composited pixels under the actual glyph
+  rects (Range-based, so the label's full-width element box doesn't judge
+  contrast against artwork the text never covers). All 7 cards × 2 locales pass
+  AA (worst 3.35 on a large label, 4.51 on a CTA); all 7 heroes × 2 locales
+  pass on breadcrumb, title and lead (worst 4.83).
+- **Influencer's hero motif moved right** (creator ring 830 → 940). It was the
+  one composition where scrim alone could not carry the Polish lead to AA
+  (4.21 against a 4.5 requirement). Moving it honours D2's "calm copy side"
+  rather than darkening the poster further to compensate.
+- **Hub LCP is unchanged and is text.** Inline SVG is not an LCP candidate, so
+  the hub's LCP element stays the plum hero's lead paragraph, exactly as with
+  text cards — 432ms median before, 492ms after (dev, 5 runs, both with a
+  noisy outlier), i.e. within run-to-run noise, and with zero image requests
+  where the branze hub preloads three JPEGs.
+- **O2 confirmed:** the Strategia feature card carries the hero composition, so
+  its morph is hero-to-hero. It holds 6.4/2 at desktop and 2/1 below, where a
+  centre-cover crop still keeps the orange terminal waypoint in frame.
+
 ## Open Questions
 
-- **O1 — Hub ambient motion on vs off** (see risk above): ship with loops on and decide at visual sign-off whether the hub keeps them or only heroes animate.
-- **O2 — Feature-card hero variant**: the Strategia feature card is wider than 3:2 (roughly 6.4:2 per the mock's grid sketch); its artwork likely reuses the hero composition rather than the card one. Confirm during implementation against the mock's proportions.
+Both resolved at the 2026-08-05 visual sign-off.
+
+- **O1 — Hub ambient motion on vs off** (see risk above): ship with loops on and decide at visual sign-off whether the hub keeps them or only heroes animate. **Resolved: loops stay on.** Signed off with all seven hub posters looping; the off-screen pause keeps the below-fold cards idle, so the density never exceeds the four cards actually in view.
+- **O2 — Feature-card hero variant**: the Strategia feature card is wider than 3:2 (roughly 6.4:2 per the mock's grid sketch); its artwork likely reuses the hero composition rather than the card one. Confirm during implementation against the mock's proportions. **Resolved: it uses the hero composition**, so its morph is hero-to-hero — see the build findings above.

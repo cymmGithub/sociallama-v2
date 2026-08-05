@@ -45,6 +45,7 @@ export default async function UslugaPage({ params }: PageProps) {
     // Plum chrome — the hero paints plum; sections paint their own bands.
     <Wrapper theme="plum">
       <ServicePage
+        serviceId={service.id}
         sections={service.sections}
         chrome={chrome}
         caseStudyBase="/case-studies"
