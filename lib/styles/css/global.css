@@ -239,10 +239,10 @@ html.screenshot {
     clip-path: none;
   }
 
-  /* View-transition pseudos (the team-grid → /o-nas morph) live on the root's
-     pseudo tree, out of reach of the `*` rule above. Collapsing the duration
-     completes the navigation as an instant, correctly-sequenced swap — no
-     morph, no crossfade (team-morph-transition spec). */
+  /* View-transition pseudos (the hub card ⇄ hero poster morphs) live on the
+     root's pseudo tree, out of reach of the `*` rule above. Collapsing the
+     duration completes the navigation as an instant, correctly-sequenced
+     swap — no morph, no crossfade. */
   ::view-transition-group(*),
   ::view-transition-image-pair(*),
   ::view-transition-old(*),

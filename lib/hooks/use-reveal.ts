@@ -62,23 +62,12 @@ interface UseRevealOptions {
   rootMargin?: string
   /** Reveal only once, then disconnect. Default true. */
   once?: boolean
-  /**
-   * Skip the entrance when a same-document view transition is running at
-   * mount: the element reveals immediately and is never observed. For
-   * surfaces whose arrival is animated by a view-transition morph (the
-   * /o-nas team slider) — the morph IS the entrance, and the wipe playing
-   * over it would double-animate. Direct visits and unsupported browsers
-   * have no active transition, so they keep the wipe unchanged. Default
-   * false.
-   */
-  skipDuringViewTransition?: boolean
 }
 
 export function useReveal<T extends HTMLElement = HTMLElement>({
   threshold = 0,
   rootMargin = '0px 0px -25% 0px',
   once = true,
-  skipDuringViewTransition = false,
 }: UseRevealOptions = {}) {
   const ref = useRef<T>(null)
 
@@ -94,19 +83,6 @@ export function useReveal<T extends HTMLElement = HTMLElement>({
 
     // Respect reduced motion: reveal immediately, never observe.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      element.dataset.reveal = 'visible'
-      return
-    }
-
-    // A running view transition owns this element's entrance (the layout
-    // effect fires inside the transition's update callback, so the check
-    // catches exactly the arrival that morphs): reveal immediately, never
-    // observe. `activeViewTransition` is absent from the DOM lib types.
-    if (
-      skipDuringViewTransition &&
-      (document as Document & { activeViewTransition?: unknown })
-        .activeViewTransition
-    ) {
       element.dataset.reveal = 'visible'
       return
     }
@@ -129,7 +105,7 @@ export function useReveal<T extends HTMLElement = HTMLElement>({
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [threshold, rootMargin, once, skipDuringViewTransition])
+  }, [threshold, rootMargin, once])
 
   return ref
 }

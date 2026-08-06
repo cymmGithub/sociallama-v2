@@ -9,7 +9,7 @@ import { scrollToHashTarget } from './scroll-to-hash-target'
 // same pattern as use-reveal.ts. The landing must happen inside the
 // navigation commit (pre-paint): the visitor never sees the page at the old
 // offset, and a view-transition snapshot captures the landed state, so the
-// team-grid morph targets its on-screen destination.
+// poster morphs (hub card ⇄ hero) target the hero at its on-screen position.
 const useIsomorphicLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect
 

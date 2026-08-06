@@ -83,10 +83,8 @@ export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
       </header>
 
       {/* The `?lama=` deep link must be applied in the same render commit the
-          navigation paints: the view-transition snapshot pairs the clicked
-          grid tile with whatever the committed featured slot shows, and any
-          post-commit swap (the old effect chain) both flashed member one and
-          made the snapshot pair the WRONG member's tile (spike, 2026-08-04).
+          navigation paints: a post-commit swap (the old effect chain) flashed
+          member one before the linked member appeared (spike, 2026-08-04).
           So the param read wraps the slider itself. The Suspense boundary is
           still what keeps `useSearchParams` from punching a CSR hole in the
           prerendered page — but its fallback is the slider at member one,
