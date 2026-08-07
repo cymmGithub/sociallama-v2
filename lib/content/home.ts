@@ -76,6 +76,9 @@ export type SayPart = string | { figure: string }
 
 export interface Step {
   number: string
+  /** Rail heading — the step's name from the client's process list. */
+  title: string
+  /** One-sentence description shown under the title in the rail. */
   text: string
   image: string
   /**
@@ -91,10 +94,10 @@ export interface Step {
     /**
      * Panel headline. Optional: the headline and the sentence now render at the
      * same size, so a step whose sentence already opens with its headline (PL
-     * 01 and 03) carries the sentence alone rather than saying it twice.
+     * 01) carries the sentence alone rather than saying it twice.
      */
     title?: string
-    /** One sentence, ~15–25 words, carrying one or two figures. */
+    /** The supporting copy, carrying one or two figures. */
     say: SayPart[]
     /**
      * The step's figures, restated at display scale beneath the sentence.
@@ -105,10 +108,10 @@ export interface Step {
      * row reads as a stray number, above three the figures stop being scannable
      * at the size that makes them worth lifting.
      *
-     * Steps whose sentence carries no digits (02, 05) take their figures from
-     * their own copy — `Dwa salony, trzy platformy, sześć strategii`, and the
-     * monthly/annual reporting cadence. Nothing here may be a measurement the
-     * copy does not already make.
+     * Steps whose sentence carries no digits (02, 04) take their figures from
+     * their own copy — the two dealership profiles, and the monthly/annual
+     * reporting cadence. Nothing here may be a measurement the copy does not
+     * already make.
      */
     stats: readonly { figure: string; label: string }[]
     /**
@@ -647,14 +650,14 @@ export const howItWorks = {
   steps: [
     {
       number: '01',
-      text: 'Określamy Twoje cele, potrzeby i\u00A0możliwości podczas warsztatów strategicznych.',
+      title: 'Warsztaty strategiczne z\u00A0klientem',
+      text: 'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości.',
       image: '/assets/step-1.png',
       proof: {
-        // No headline (user decision, 2026-07-30): the sentence absorbed it, and
-        // the trailing colon hands off to the figure row rather than the prose
-        // restating the same two numbers.
+        // No headline: the sentence absorbed it, and the trailing colon hands
+        // off to the figure row rather than the prose restating the numbers.
         say: [
-          'Mierzymy stan wyjściowy, żeby dało się udowodnić, że coś zadziałało. Zaczynaliśmy od 1\u00A0168 obserwujących, a\u00A0to są wyniki po 17 miesiącach:',
+          'Zaczęliśmy od analizy dotychczasowej komunikacji i\u00A0określenia kierunku dalszych działań. Początkowa liczba obserwujących wynosiła 1\u00A0168, a\u00A0po 17 miesiącach współpracy efekty są następujące:',
         ],
         stats: [
           { figure: '+5 054', label: 'obserwujących' },
@@ -667,12 +670,14 @@ export const howItWorks = {
     },
     {
       number: '02',
-      text: 'Przygotowujemy indywidualną strategię i\u00A0rozpoczynamy komunikację.',
+      title: 'Opracowanie strategii komunikacji oraz tworzenie treści',
+      text: 'Przekładamy ustalenia na plan działań w\u00A0formie strategii komunikacji, a\u00A0następnie realizujemy działania zgodnie z\u00A0założoną strategią.',
       image: '/assets/step-2.png',
       proof: {
-        title: 'Dwa salony, trzy platformy, sześć strategii',
+        title:
+          'Jedna współpraca, dwa profile i\u00A0indywidualne podejście do każdego z\u00A0nich',
         say: [
-          'Każdy profil dostał własny plan treści na Facebooka, Instagram i\u00A0LinkedIn — zamiast jednego skopiowanego na wszystkie.',
+          'Dla każdego z\u00A0salonów samochodowych marki VOLVO opracowaliśmy osobny kierunek komunikacji, dopasowany do jego specyfiki, odbiorców oraz charakteru Facebooka, Instagrama i\u00A0LinkedIna.',
         ],
         stats: [
           { figure: '2', label: 'salony' },
@@ -685,33 +690,15 @@ export const howItWorks = {
     },
     {
       number: '03',
-      text: 'Proaktywnie rekomendujemy nowe rozwiązania i\u00A0możliwości.',
-      image: '/assets/step-3.png',
-      proof: {
-        // No headline (user decision, 2026-07-30) — the sentence leads with the
-        // filter, so the old headline is its opening clause.
-        say: [
-          'Filtr AR, którego nie było w\u00A0briefie — sami go zaproponowaliśmy. Z\u00A0jego udziałem nagrali filmy użytkownicy, a\u00A0także influencerzy. Bez żadnej umowy!',
-        ],
-        stats: [
-          { figure: '6,79 mln', label: 'wyświetleń' },
-          { figure: '4 885', label: 'filmów użytkowników' },
-          { figure: '0', label: 'umów z influencerami' },
-        ],
-        client: 'pracuj-pl',
-        href: 'pracuj-pl#podejscie',
-      },
-    },
-    {
-      number: '04',
-      text: 'Analizujemy wyniki i\u00A0wprowadzamy niezbędne zmiany.',
+      title: 'Analiza wyników',
+      text: 'Analizujemy wyniki i\u00A0rekomendujemy wprowadzenie niezbędnych zmian.',
       image: '/assets/step-4.png',
       proof: {
-        title: 'Zmieniliśmy podejście — i\u00A0to widać',
+        title: 'Analiza wyników była podstawą skuteczniejszych działań',
         say: [
-          'Zanim przejęliśmy kanał, przybywało kilkuset subskrypcji rocznie. W\u00A0pierwszym roku naszej opieki ',
-          { figure: 'blisko dwudziestokrotnie' },
-          ' więcej.',
+          'Regularny monitoring wyników pozwolił nam zidentyfikować obszary wymagające optymalizacji i\u00A0wdrożyć działania, które przełożyły się na znaczący wzrost kanału. Przed rozpoczęciem współpracy liczba nowych subskrypcji wynosiła kilkaset rocznie, natomiast w\u00A0pierwszym roku naszych działań wzrosła niemal ',
+          { figure: '20-krotnie' },
+          '.',
         ],
         stats: [
           { figure: '~20×', label: 'więcej subskrypcji' },
@@ -722,20 +709,39 @@ export const howItWorks = {
       },
     },
     {
-      number: '05',
-      text: 'Raportujemy nasze działania.',
+      number: '04',
+      title: 'Raportowanie',
+      text: 'Opracowujemy raporty miesięczne oraz półroczne i\u00A0roczne.',
       image: '/assets/step-5.png',
       // No link: this step addresses the reader rather than a case, so it has
       // no call to action (decision, 2026-07-28).
       proof: {
-        title: 'Wszystko, co widziałeś, to prawdziwe liczby z\u00A0raportów',
+        title: 'Wszystko to prawdziwe liczby z\u00A0raportów',
         say: [
-          'Raport z\u00A0działań dostajesz co miesiąc, a\u00A0na koniec roku pełne podsumowanie — bez dopominania się.',
+          'Przygotowujemy raporty miesięczne, półroczne oraz roczne, w\u00A0których analizujemy dotychczasowe działania oraz uwzględniamy wnioski i\u00A0rekomendacje.',
         ],
         stats: [
           { figure: '12', label: 'raportów w roku' },
           { figure: '1', label: 'podsumowanie roczne' },
         ],
+      },
+    },
+    {
+      number: '05',
+      title: 'Proaktywność',
+      text: 'Rekomendujemy nowe możliwości i\u00A0rozwiązania.',
+      image: '/assets/step-3.png',
+      proof: {
+        title: 'Inicjatywa wykraczająca poza założenia briefu',
+        say: [
+          'Dla marki Pracuj.pl zaproponowaliśmy wdrożenie filtra AR jako dodatkowego narzędzia wspierającego cele komunikacyjne marki. Rozwiązanie zwiększyło potencjał organicznego zaangażowania. Z\u00A0filtra korzystali zarówno użytkownicy, jak i\u00A0influencerzy, tworząc własne treści wokół marki bez konieczności realizacji dodatkowych współprac płatnych.',
+        ],
+        stats: [
+          { figure: '6,79 mln', label: 'wyświetleń' },
+          { figure: '4 885', label: 'filmów użytkowników' },
+        ],
+        client: 'pracuj-pl',
+        href: 'pracuj-pl#podejscie',
       },
     },
   ] satisfies Step[],

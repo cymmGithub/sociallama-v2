@@ -226,17 +226,43 @@
   }
 }
 
-.stepText {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: var(--color-cream);
+.stepBody {
+  display: grid;
+  gap: 0.3rem;
   min-width: 0;
+}
+
+/* The step's name from the process list; the sentence under it steps down to a
+   supporting weight so the two read as heading + description, not two lines of
+   the same sentence. */
+.stepTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.92rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--color-cream);
 
   @media (--mobile) {
-    font-size: 0.76rem;
-    line-height: 1.35;
+    font-size: 0.78rem;
+    line-height: 1.12;
+  }
+}
+
+.stepText {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
+  min-width: 0;
+
+  /* Title only on the horizontal mobile rail: with the description the cards
+     run ~185px tall and push the pinned stage past the viewport (890px at
+     390×844, worse on shorter phones), so the description is desktop-only and
+     the rail keeps the scannable step names. */
+  @media (--mobile) {
+    display: none;
   }
 }
 
@@ -341,6 +367,7 @@
   text-transform: uppercase;
   letter-spacing: -0.02em;
   text-wrap: balance;
+  color: var(--color-orange);
 
   @media (--mobile) {
     /* Half the stage's spare height sits here — see `.panelText`. */
@@ -467,7 +494,7 @@
    is still content-sized and larger type would only push the section off screen.
    Tying the two to the same threshold keeps them from drifting apart. */
 @media (--mobile) and (min-height: 680px) {
-  .stepText {
+  .stepTitle {
     font-size: 0.84rem;
   }
 

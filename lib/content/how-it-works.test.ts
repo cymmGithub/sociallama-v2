@@ -103,18 +103,29 @@ describe('how-it-works proof content', () => {
      it is meant to be. */
   test('the Polish step sentences are verbatim', () => {
     expect(
+      plHowItWorks.steps.map((step) => step.title.replaceAll(NBSP, ' '))
+    ).toEqual([
+      'Warsztaty strategiczne z klientem',
+      'Opracowanie strategii komunikacji oraz tworzenie treści',
+      'Analiza wyników',
+      'Raportowanie',
+      'Proaktywność',
+    ])
+    expect(
       plHowItWorks.steps.map((step) => step.text.replaceAll(NBSP, ' '))
     ).toEqual([
-      'Określamy Twoje cele, potrzeby i możliwości podczas warsztatów strategicznych.',
-      'Przygotowujemy indywidualną strategię i rozpoczynamy komunikację.',
-      'Proaktywnie rekomendujemy nowe rozwiązania i możliwości.',
-      'Analizujemy wyniki i wprowadzamy niezbędne zmiany.',
-      'Raportujemy nasze działania.',
+      'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości.',
+      'Przekładamy ustalenia na plan działań w formie strategii komunikacji, a następnie realizujemy działania zgodnie z założoną strategią.',
+      'Analizujemy wyniki i rekomendujemy wprowadzenie niezbędnych zmian.',
+      'Opracowujemy raporty miesięczne oraz półroczne i roczne.',
+      'Rekomendujemy nowe możliwości i rozwiązania.',
     ])
   })
 
-  /* One headline, one sentence, one link — the budget is part of the spec,
-     because the density this replaced is what got cut. */
+  /* One headline, one supporting paragraph, one link — the budget is part of
+     the spec, because the density this replaced is what got cut. Raised from 25
+     to 40 words for the longer client-supplied copy (proaktywność and analiza
+     panels run two sentences each). */
   test.each(
     LOCALES
   )('%s: supporting sentences stay inside budget', (_, content) => {
@@ -122,23 +133,27 @@ describe('how-it-works proof content', () => {
       const say = step.proof.say
         .map((part) => (typeof part === 'string' ? part : part.figure))
         .join('')
-      expect(say.trim().split(/\s+/).length).toBeLessThanOrEqual(25)
+      expect(say.trim().split(/\s+/).length).toBeLessThanOrEqual(40)
     }
   })
 
   /* With the exhibits removed (user decision, 2026-07-29) the figures in the
      copy are the whole of the evidence, and the deep link is the only route
      back to the client report that holds them — so it is load-bearing rather
-     than decorative. Step 05 addresses the reader, so it carries neither. */
+     than decorative. Step 04 (raportowanie) addresses the reader, so it
+     carries neither. */
   test.each(
     LOCALES
   )('%s: client evidence is named and linked', (_, content) => {
-    for (const step of content.steps.slice(0, 4)) {
-      expect(step.proof.client).toBeString()
-      expect(step.proof.href).toBeString()
+    for (const [index, step] of content.steps.entries()) {
+      if (index === 3) {
+        expect(step.proof.client).toBeUndefined()
+        expect(step.proof.href).toBeUndefined()
+      } else {
+        expect(step.proof.client).toBeString()
+        expect(step.proof.href).toBeString()
+      }
     }
-    expect(content.steps[4]?.proof.client).toBeUndefined()
-    expect(content.steps[4]?.proof.href).toBeUndefined()
   })
 
   test('every proof card wordmark exists', () => {

@@ -254,7 +254,10 @@ export function HowItWorks({
                 onClick={() => setActive(index)}
               >
                 <span className={s.number}>{step.number}</span>
-                <span className={s.stepText}>{step.text}</span>
+                <span className={s.stepBody}>
+                  <span className={s.stepTitle}>{step.title}</span>
+                  <span className={s.stepText}>{step.text}</span>
+                </span>
               </button>
             ))}
           </div>

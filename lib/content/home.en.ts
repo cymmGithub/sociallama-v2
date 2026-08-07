@@ -445,13 +445,14 @@ export const howItWorks = {
   steps: [
     {
       number: '01',
-      text: 'We pin down your goals, needs, and possibilities in a strategy workshop.',
+      title: 'A strategy workshop with you',
+      text: 'Together we analyze your business needs, goals, challenges, and opportunities.',
       image: '/assets/step-1.png',
       proof: {
         // Mirrors PL 01: no headline, and the colon hands off to the figure row
         // rather than the prose restating the same two numbers.
         say: [
-          "We measure the baseline, because otherwise nobody can prove anything worked. We started at 1,168 followers — here's where seventeen months got us:",
+          "We started by analyzing the previous communication and setting the direction. The baseline was 1,168 followers, and after seventeen months of working together, here's where things stand:",
         ],
         stats: [
           { figure: '+5,054', label: 'followers' },
@@ -464,12 +465,13 @@ export const howItWorks = {
     },
     {
       number: '02',
-      text: 'We build a tailored strategy and kick your communication off.',
+      title: 'Communication strategy and content creation',
+      text: 'We turn what we agreed on into an action plan — a communication strategy — and then deliver on it.',
       image: '/assets/step-2.png',
       proof: {
-        title: 'Two dealerships, three platforms, six strategies',
+        title: 'One partnership, two profiles, and an individual approach to each',
         say: [
-          'Every profile got its own content plan for Facebook, Instagram, and LinkedIn — instead of one copied across all of them.',
+          'For each of the VOLVO dealerships we built a separate communication direction, tailored to its specifics, its audience, and the character of Facebook, Instagram, and LinkedIn.',
         ],
         stats: [
           { figure: '2', label: 'dealerships' },
@@ -482,32 +484,15 @@ export const howItWorks = {
     },
     {
       number: '03',
-      text: 'We proactively recommend new solutions and opportunities.',
-      image: '/assets/step-3.png',
-      proof: {
-        // Mirrors PL 03: no headline, because the sentence opens with it.
-        say: [
-          'The AR filter nobody briefed us on — we proposed it ourselves. Users shot videos with it, influencers too. Not one contract signed!',
-        ],
-        stats: [
-          { figure: '6.79M', label: 'views' },
-          { figure: '4,885', label: 'user videos' },
-          { figure: '0', label: 'influencer contracts' },
-        ],
-        client: 'pracuj-pl',
-        href: 'pracuj-pl#podejscie',
-      },
-    },
-    {
-      number: '04',
-      text: 'We analyze the results and make the changes that are needed.',
+      title: 'Results analysis',
+      text: 'We analyze the results and recommend the changes that are needed.',
       image: '/assets/step-4.png',
       proof: {
-        title: 'We changed the approach — and it shows',
+        title: 'Analyzing the results is what made the work more effective',
         say: [
-          'Before we took the channel over, it gained a few hundred subscribers a year. In our first year, ',
-          { figure: 'nearly twenty times' },
-          ' that.',
+          'Regular monitoring showed us what needed optimizing, and the changes translated into serious channel growth. Before we started, the channel gained a few hundred new subscribers a year — in our first year, that grew nearly ',
+          { figure: '20-fold' },
+          '.',
         ],
         stats: [
           { figure: '~20×', label: 'more subscribers' },
@@ -518,18 +503,39 @@ export const howItWorks = {
       },
     },
     {
-      number: '05',
-      text: 'We report on everything we do.',
+      number: '04',
+      title: 'Reporting',
+      text: 'We prepare monthly, semi-annual, and annual reports.',
       image: '/assets/step-5.png',
+      // No link: this step addresses the reader rather than a case, so it has
+      // no call to action (decision, 2026-07-28).
       proof: {
-        title: 'Everything you just saw is a real number from a real report',
+        title: 'Everything here is a real number from a real report',
         say: [
-          'You get a report on our work every month, and a full wrap-up at the end of the year — no chasing required.',
+          'Our monthly, semi-annual, and annual reports analyze the work to date and lay out conclusions and recommendations.',
         ],
         stats: [
           { figure: '12', label: 'reports a year' },
           { figure: '1', label: 'annual wrap-up' },
         ],
+      },
+    },
+    {
+      number: '05',
+      title: 'Proactivity',
+      text: 'We recommend new opportunities and solutions.',
+      image: '/assets/step-3.png',
+      proof: {
+        title: 'An initiative beyond the brief',
+        say: [
+          "For Pracuj.pl we proposed an AR filter — an extra tool for the brand's communication goals that raised its organic-engagement potential. Users and influencers alike made their own content with it, without a single paid partnership.",
+        ],
+        stats: [
+          { figure: '6.79M', label: 'views' },
+          { figure: '4,885', label: 'user videos' },
+        ],
+        client: 'pracuj-pl',
+        href: 'pracuj-pl#podejscie',
       },
     },
   ],
