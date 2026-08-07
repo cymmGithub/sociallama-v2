@@ -225,7 +225,12 @@
 .logo {
   height: 22px;
   width: auto;
-  aspect-ratio: auto;
+  /* No aspect-ratio override: the UA maps the img's width/height attributes to
+     `aspect-ratio: auto 180/56`, where the 180/56 fallback sizes the box ONLY
+     until the file loads — a loaded wordmark always uses its own intrinsic
+     ratio. Overriding to `auto` collapsed the not-yet-loaded lazy logo to
+     0×22px (no intrinsic size, no fallback), which both shifts layout on load
+     and broke the back-nav e2e guard. */
   filter: brightness(0) invert(1);
   opacity: 0.85;
   align-self: flex-start;
