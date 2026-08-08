@@ -208,6 +208,15 @@ const newWorktree = async (argv: string[]) => {
   step(4, 'Installing dependencies (bun install)')
   await run([bunExecutable, 'install'], { cwd: worktreePath })
 
+  // Bun auto-loads main's .env.local into THIS process, so process.env carries
+  // DATABASE_URL=…sociallama_dev. Children must not inherit it: real env vars
+  // shadow the worktree's own .env.local in Next/Payload env loading, which
+  // silently un-isolates the DB — and because sociallama_dev still carries a
+  // leftover dev-push marker (batch -1), `payload migrate` then stops on an
+  // interactive prompt and the bring-up hangs. (Same fix as tymkor-v2 9f426d7.)
+  const childEnv = { ...process.env }
+  delete childEnv.DATABASE_URL
+
   // 5. isolated DB: create + migrate + seed. Payload runs with `push: false`,
   //    so nothing builds the schema implicitly any more — without an explicit
   //    `payload migrate` the seeds below would hit an empty database and fail.
@@ -238,12 +247,13 @@ const newWorktree = async (argv: string[]) => {
     log('  payload migrate')
     await run([bunExecutable, 'run', 'payload', 'migrate'], {
       cwd: worktreePath,
+      env: childEnv,
     })
     // Seed uploads go to local disk (gitignored `media/`), not Vercel Blob:
     // every worktree shares one blob store, so the second isolated bootstrap
     // onward dies on "This blob already exists". Local files also keep the
     // isolated DB's media rows pointing at files only this worktree owns.
-    const seedEnv = { ...process.env, BLOB_READ_WRITE_TOKEN: '' }
+    const seedEnv = { ...childEnv, BLOB_READ_WRITE_TOKEN: '' }
     for (const s of [
       'payload:seed',
       'payload:seed:case-studies',
@@ -314,7 +324,7 @@ const newWorktree = async (argv: string[]) => {
   const fd = openSync(logPath, 'a')
   const child = nodeSpawn(bunExecutable, ['run', 'dev'], {
     cwd: worktreePath,
-    env: { ...process.env, PORT: String(port), FORCE_COLOR: '0' },
+    env: { ...childEnv, PORT: String(port), FORCE_COLOR: '0' },
     detached: true,
     stdio: ['ignore', fd, fd],
   })
