@@ -78,8 +78,10 @@ export interface Step {
   number: string
   /** Rail heading — the step's name from the client's process list. */
   title: string
-  /** One-sentence description shown under the title in the rail. */
-  text: string
+  /* The rail carried a one-sentence description under each title until
+     2026-08-09. Every one of them moved: 01–03 became their panel's headline,
+     04–05 were dropped as duplicates of the panel's own copy. The rail is
+     title-only now, so the field is gone rather than left unused. */
   image: string
   /**
    * Proof copy (see the `how-it-works-proof` capability). Each step carries one
@@ -92,9 +94,9 @@ export interface Step {
    */
   proof: {
     /**
-     * Panel headline. Optional: the headline and the sentence now render at the
-     * same size, so a step whose sentence already opens with its headline (PL
-     * 01) carries the sentence alone rather than saying it twice.
+     * Panel headline — since 2026-08-09 the step's own description, moved out
+     * of the rail card. It runs one size above the sentence below it. Still
+     * optional: the panel renders without one, and the layout accounts for it.
      */
     title?: string
     /** The supporting copy, carrying one or two figures. */
@@ -639,8 +641,6 @@ export const howItWorks = {
   heading: ['HOW', 'IT WORKS'],
   subhead: 'JAK WYGLĄDA WSPÓŁPRACA Z SOCIAL LAMĄ?',
   ariaLabel: 'Jak to działa',
-  /** Rail label above the five steps. */
-  railLabel: 'Proces',
   railAriaLabel: 'Kroki współpracy',
   /** Precedes the client wordmark in each step's proof card — the mark itself
    *  is the brand name, so the label deliberately stops short of it. */
@@ -651,13 +651,17 @@ export const howItWorks = {
     {
       number: '01',
       title: 'Warsztaty strategiczne z\u00A0klientem',
-      text: 'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-1.png',
       proof: {
-        // No headline: the sentence absorbed it, and the trailing colon hands
-        // off to the figure row rather than the prose restating the numbers.
+        // The step's own description, promoted out of the rail card: at rail
+        // size it read as a caption under the step name, while the panel beside
+        // it carried no headline at all. The full stop goes with the promotion
+        // — no other panel headline carries one.
+        title:
+          'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości',
         say: [
-          'Zaczęliśmy od analizy dotychczasowej komunikacji i\u00A0określenia kierunku dalszych działań. Początkowa liczba obserwujących wynosiła 1\u00A0168, a\u00A0po 17 miesiącach współpracy efekty są następujące:',
+          'Dla iRobot zaczęliśmy od analizy dotychczasowej komunikacji i\u00A0określenia kierunku dalszych działań. Początkowa liczba obserwujących wynosiła 1\u00A0168, a\u00A0po 17 miesiącach współpracy efekty są następujące:',
         ],
         stats: [
           { figure: '+5 054', label: 'obserwujących' },
@@ -671,11 +675,15 @@ export const howItWorks = {
     {
       number: '02',
       title: 'Opracowanie strategii komunikacji oraz tworzenie treści',
-      text: 'Przekładamy ustalenia na plan działań w\u00A0formie strategii komunikacji, a\u00A0następnie realizujemy działania zgodnie z\u00A0założoną strategią.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-2.png',
       proof: {
+        // The step's own description, promoted out of the rail card and cut
+        // after the first clause (user call: the full sentence was too much at
+        // headline scale). It replaces the client-supplied headline ("Jedna
+        // współpraca, dwa profile…") rather than sitting above it.
         title:
-          'Jedna współpraca, dwa profile i\u00A0indywidualne podejście do każdego z\u00A0nich',
+          'Przekładamy ustalenia na plan działań w\u00A0formie strategii komunikacji',
         say: [
           'Dla każdego z\u00A0salonów samochodowych marki VOLVO opracowaliśmy osobny kierunek komunikacji, dopasowany do jego specyfiki, odbiorców oraz charakteru Facebooka, Instagrama i\u00A0LinkedIna.',
         ],
@@ -691,14 +699,17 @@ export const howItWorks = {
     {
       number: '03',
       title: 'Analiza wyników',
-      text: 'Analizujemy wyniki i\u00A0rekomendujemy wprowadzenie niezbędnych zmian.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-4.png',
       proof: {
-        title: 'Analiza wyników była podstawą skuteczniejszych działań',
+        // The step's own description, promoted out of the rail card; it
+        // replaces the client-supplied headline ("Analiza wyników była
+        // podstawą…").
+        title: 'Analizujemy wyniki i\u00A0rekomendujemy wprowadzenie niezbędnych zmian',
+        // The second sentence (the ~20× subscription comparison) was cut whole
+        // (user call): the figure row already carries it.
         say: [
-          'Regularny monitoring wyników pozwolił nam zidentyfikować obszary wymagające optymalizacji i\u00A0wdrożyć działania, które przełożyły się na znaczący wzrost kanału. Przed rozpoczęciem współpracy liczba nowych subskrypcji wynosiła kilkaset rocznie, natomiast w\u00A0pierwszym roku naszych działań wzrosła niemal ',
-          { figure: '20-krotnie' },
-          '.',
+          'Regularny monitoring wyników pozwolił nam zidentyfikować obszary wymagające optymalizacji i\u00A0wdrożyć działania, które przełożyły się na znaczący wzrost kanału.',
         ],
         stats: [
           { figure: '~20×', label: 'więcej subskrypcji' },
@@ -711,12 +722,12 @@ export const howItWorks = {
     {
       number: '04',
       title: 'Raportowanie',
-      text: 'Opracowujemy raporty miesięczne oraz półroczne i\u00A0roczne.',
+      // No rail description: the panel's own sentence already says it.
       image: '/assets/step-5.png',
       // No link: this step addresses the reader rather than a case, so it has
       // no call to action (decision, 2026-07-28).
       proof: {
-        title: 'Wszystko to prawdziwe liczby z\u00A0raportów',
+        title: 'Wszystko co widziałeś to prawdziwe liczby z\u00A0raportów',
         say: [
           'Przygotowujemy raporty miesięczne, półroczne oraz roczne, w\u00A0których analizujemy dotychczasowe działania oraz uwzględniamy wnioski i\u00A0rekomendacje.',
         ],
@@ -729,12 +740,12 @@ export const howItWorks = {
     {
       number: '05',
       title: 'Proaktywność',
-      text: 'Rekomendujemy nowe możliwości i\u00A0rozwiązania.',
+      // No rail description: the panel's own headline already says it.
       image: '/assets/step-3.png',
       proof: {
         title: 'Inicjatywa wykraczająca poza założenia briefu',
         say: [
-          'Dla marki Pracuj.pl zaproponowaliśmy wdrożenie filtra AR jako dodatkowego narzędzia wspierającego cele komunikacyjne marki. Rozwiązanie zwiększyło potencjał organicznego zaangażowania. Z\u00A0filtra korzystali zarówno użytkownicy, jak i\u00A0influencerzy, tworząc własne treści wokół marki bez konieczności realizacji dodatkowych współprac płatnych.',
+          'Dla marki Pracuj.pl zaproponowaliśmy wdrożenie filtra AR jako dodatkowego narzędzia wspierającego cele komunikacyjne marki. Rozwiązanie zwiększyło potencjał organicznego zaangażowania.',
         ],
         stats: [
           { figure: '6,79 mln', label: 'wyświetleń' },

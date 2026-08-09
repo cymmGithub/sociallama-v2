@@ -438,7 +438,6 @@ export const howItWorks = {
   heading: ['HOW', 'IT WORKS'],
   subhead: "WHAT'S IT LIKE WORKING WITH SOCIAL LAMA?",
   ariaLabel: 'How it works',
-  railLabel: 'Process',
   railAriaLabel: 'Steps of the engagement',
   proofLabel: "Here's how it looked at",
   caseStudyCta: 'See the case study',
@@ -446,13 +445,14 @@ export const howItWorks = {
     {
       number: '01',
       title: 'A strategy workshop with you',
-      text: 'Together we analyze your business needs, goals, challenges, and opportunities.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-1.png',
       proof: {
-        // Mirrors PL 01: no headline, and the colon hands off to the figure row
-        // rather than the prose restating the same two numbers.
+        // Mirrors PL 01: the rail description is promoted to the panel headline.
+        title:
+          'Together we analyze your business needs, goals, challenges, and opportunities',
         say: [
-          "We started by analyzing the previous communication and setting the direction. The baseline was 1,168 followers, and after seventeen months of working together, here's where things stand:",
+          "For iRobot we started by analyzing the previous communication and setting the direction. The baseline was 1,168 followers, and after seventeen months of working together, here's where things stand:",
         ],
         stats: [
           { figure: '+5,054', label: 'followers' },
@@ -466,10 +466,12 @@ export const howItWorks = {
     {
       number: '02',
       title: 'Communication strategy and content creation',
-      text: 'We turn what we agreed on into an action plan — a communication strategy — and then deliver on it.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-2.png',
       proof: {
-        title: 'One partnership, two profiles, and an individual approach to each',
+        // Mirrors PL 02: the rail description replaces the client headline.
+        title:
+          'We turn what we agreed on into an action plan — a communication strategy',
         say: [
           'For each of the VOLVO dealerships we built a separate communication direction, tailored to its specifics, its audience, and the character of Facebook, Instagram, and LinkedIn.',
         ],
@@ -485,14 +487,14 @@ export const howItWorks = {
     {
       number: '03',
       title: 'Results analysis',
-      text: 'We analyze the results and recommend the changes that are needed.',
+      // No rail description: it is the panel headline now — see `proof.title`.
       image: '/assets/step-4.png',
       proof: {
-        title: 'Analyzing the results is what made the work more effective',
+        // Mirrors PL 03: rail description promoted, and the subscription
+        // comparison sentence cut whole — the figure row carries it.
+        title: 'We analyze the results and recommend the changes that are needed',
         say: [
-          'Regular monitoring showed us what needed optimizing, and the changes translated into serious channel growth. Before we started, the channel gained a few hundred new subscribers a year — in our first year, that grew nearly ',
-          { figure: '20-fold' },
-          '.',
+          'Regular monitoring showed us what needed optimizing, and the changes translated into serious channel growth.',
         ],
         stats: [
           { figure: '~20×', label: 'more subscribers' },
@@ -505,7 +507,7 @@ export const howItWorks = {
     {
       number: '04',
       title: 'Reporting',
-      text: 'We prepare monthly, semi-annual, and annual reports.',
+      // No rail description: the panel's own sentence already says it.
       image: '/assets/step-5.png',
       // No link: this step addresses the reader rather than a case, so it has
       // no call to action (decision, 2026-07-28).
@@ -523,12 +525,12 @@ export const howItWorks = {
     {
       number: '05',
       title: 'Proactivity',
-      text: 'We recommend new opportunities and solutions.',
+      // No rail description: the panel's own headline already says it.
       image: '/assets/step-3.png',
       proof: {
         title: 'An initiative beyond the brief',
         say: [
-          "For Pracuj.pl we proposed an AR filter — an extra tool for the brand's communication goals that raised its organic-engagement potential. Users and influencers alike made their own content with it, without a single paid partnership.",
+          "For Pracuj.pl we proposed an AR filter — an extra tool for the brand's communication goals that raised its organic-engagement potential.",
         ],
         stats: [
           { figure: '6.79M', label: 'views' },

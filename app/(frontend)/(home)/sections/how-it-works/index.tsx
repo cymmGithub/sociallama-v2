@@ -127,11 +127,11 @@ function ProofCard({
 }
 
 /**
- * One step's evidence: one sentence carrying its figures, optionally a headline
- * above it, the figure row that restates them at display scale, and the proof
- * card that says whose figures they are. The figure row is pinned to the foot of
- * the panel and the card sits under it at the right edge, so the panel occupies
- * the stage's full height instead of floating in the middle of it.
+ * One step's evidence: a headline, one sentence carrying its figures, the figure
+ * row that restates them at display scale, and the proof card that says whose
+ * figures they are. Sentence and row are one block pinned to the foot of the
+ * panel, with the card under it at the right edge, so the panel occupies the
+ * stage's full height instead of floating in the middle of it.
  *
  * Headline and sentence render at the same size, so a step whose sentence
  * already opens with its headline omits the headline rather than repeating it.
@@ -155,8 +155,14 @@ function Panel({
     <div className={s.panel} data-active={active}>
       <div className={s.panelText}>
         {proof.title && <p className={s.panelTitle}>{proof.title}</p>}
-        <Say parts={proof.say} className={s.panelSay} />
-        <Stats stats={proof.stats} />
+        {/* The sentence travels with the figures it introduces: it is what the
+            numbers are evidence for, and half of them only make sense read
+            together ("…efekty są następujące:" hands straight off to the row).
+            The headline keeps the top of the panel to itself. */}
+        <div className={s.evidence}>
+          <Say parts={proof.say} className={s.panelSay} />
+          <Stats stats={proof.stats} />
+        </div>
         {proof.client && proof.href && (
           <div className={s.cardRow}>
             <ProofCard
@@ -244,7 +250,6 @@ export function HowItWorks({
             role="group"
             aria-label={content.railAriaLabel}
           >
-            <p className={s.railLabel}>{content.railLabel}</p>
             {content.steps.map((step, index) => (
               <button
                 type="button"
@@ -254,10 +259,7 @@ export function HowItWorks({
                 onClick={() => setActive(index)}
               >
                 <span className={s.number}>{step.number}</span>
-                <span className={s.stepBody}>
-                  <span className={s.stepTitle}>{step.title}</span>
-                  <span className={s.stepText}>{step.text}</span>
-                </span>
+                <span className={s.stepTitle}>{step.title}</span>
               </button>
             ))}
           </div>

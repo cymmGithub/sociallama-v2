@@ -161,27 +161,15 @@
   }
 }
 
-.railLabel {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-cream) 62%, transparent);
-  margin-bottom: 0.3rem;
-
-  @media (--mobile) {
-    display: none;
-  }
-}
-
 /* The glassy card treatment the five step cards used to carry moves onto the
    rail items, so the section keeps the active-state language it already had. */
 .railItem {
   display: grid;
-  grid-template-columns: 2.6rem 1fr;
+  grid-template-columns: 3.2rem 1fr;
   gap: 0.7rem;
-  align-items: start;
+  /* Centred, not top-aligned: the numeral is now taller than a line of the
+     title, so anchoring both to the top hung the one-line steps off it. */
+  align-items: center;
   text-align: left;
   cursor: pointer;
   padding: 0.85rem 1rem;
@@ -214,28 +202,27 @@
   }
 }
 
+/* Larger since the rail went title-only (2026-08-09): with the descriptions
+   gone the cards are half their old height, and at 1.4rem the numeral had
+   stopped being the thing that indexes the step. The column widened with it. */
 .number {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.4rem;
-  line-height: 1.05;
+  font-size: 1.9rem;
+  line-height: 1;
   color: var(--color-orange);
 
   @media (--mobile) {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
   }
 }
 
-.stepBody {
-  display: grid;
-  gap: 0.3rem;
-  min-width: 0;
-}
-
-/* The step's name from the process list; the sentence under it steps down to a
-   supporting weight so the two read as heading + description, not two lines of
-   the same sentence. */
+/* The step's name from the process list, and since 2026-08-09 the whole of the
+   rail item: the descriptions that used to sit under it are now the panel
+   headlines beside it. (Mobile had already dropped them — with the description
+   the cards ran ~185px tall and pushed the pinned stage past the viewport.) */
 .stepTitle {
+  min-width: 0;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 0.92rem;
@@ -246,23 +233,6 @@
   @media (--mobile) {
     font-size: 0.78rem;
     line-height: 1.12;
-  }
-}
-
-.stepText {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: color-mix(in srgb, var(--color-cream) 78%, transparent);
-  min-width: 0;
-
-  /* Title only on the horizontal mobile rail: with the description the cards
-     run ~185px tall and push the pinned stage past the viewport (890px at
-     390×844, worse on shorter phones), so the description is desktop-only and
-     the rail keeps the scannable step names. */
-  @media (--mobile) {
-    display: none;
   }
 }
 
@@ -331,55 +301,93 @@
 }
 
 /* The copy is the panel's whole job, so it runs at display scale rather than
-   the caption size it had when it shared the width with an exhibit — and
-   headline and sentence run at ONE size (user decision, 2026-07-30), so the
-   panel reads as a single statement rather than a title with a caption under
-   it. Only weight, case and tint separate them now.
+   the caption size it had when it shared the width with an exhibit.
 
-   2.4rem rather than the 3.7rem the headline used to run at, because the stage
-   cannot afford more. All five panels share one grid cell, so the stage is
-   permanently as tall as the tallest step, and the section is pinned
-   (`min-height: 100svh`) — copy that does not fit is cut off the top and bottom
-   of the screen rather than scrolled to. Measured in Chromium with both at the
-   old 3.7rem: the stage needs 1038px inside an 816px viewport, and the figure
-   row and proof card fall off it (+138 at 1440×900, +244 at 1366×768, +181 at
-   1280×800, +140 at 800×700 — it fails at every desktop width, not just the
-   tight ones). `clamp(1.15rem, 2.6vw, 2.4rem)` is the largest shared size that
-   clears all of them, and is still 2.1× the sentence's previous size. */
+   Headline and sentence ran at ONE size between 2026-07-30 and 2026-08-09. They
+   step apart again now that the headline is the step's own description: the two
+   are no longer one statement, so the sentence drops a notch (~0.82×) and the
+   hierarchy is carried by size, not only by weight, case and tint.
+
+   The headline's 2.4rem ceiling is a measured limit, not a taste call. All five
+   panels share one grid cell, so the stage is permanently as tall as the tallest
+   step, and the section is pinned (`min-height: 100svh`) — copy that does not
+   fit is cut off the top and bottom of the screen rather than scrolled to. With
+   both at the old 3.7rem the stage needed 1038px inside an 816px viewport and
+   the figure row fell off it at every desktop width. */
 .panelTitle,
 .panelSay {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.14;
-  font-size: clamp(1.15rem, 2.6vw, 2.4rem);
   color: var(--color-cream);
   text-wrap: pretty;
-
-  @media (--mobile) {
-    font-size: 1.15rem;
-    line-height: 1.12;
-  }
 }
 
+/* Cream, not orange (user decision 2026-08-09, reversing the 2026-08-07 call):
+   the headlines are now the steps' own descriptions, so they are copy rather
+   than an accent, and the figures below are the only orange left in the panel.
+   Size, weight, case and the 88% tint on the sentence separate the two. */
 .panelTitle {
+  font-size: clamp(1.15rem, 2.6vw, 2.4rem);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.02em;
   text-wrap: balance;
-  color: var(--color-orange);
+  color: var(--color-cream);
+
+  /* Guaranteed air under the headline. The gap below it is otherwise the
+     panel's spare height (`.evidence` takes it with `margin-top: auto`) — and
+     the fullest steps (01 and 05, four and five lines of copy) have no spare
+     height, so headline and sentence collided there and nowhere else. An auto
+     margin cannot express a minimum, so the floor is a real margin; the auto
+     margin still opens on top of it wherever the panel is shorter. */
+  margin-bottom: clamp(0.7rem, 1.4vw, 1.4rem);
 
   @media (--mobile) {
+    font-size: 1.15rem;
+    line-height: 1.12;
     /* Half the stage's spare height sits here — see `.panelText`. */
     margin-top: auto;
   }
 }
 
 .panelSay {
+  font-size: clamp(0.95rem, 2.15vw, 1.98rem);
   color: color-mix(in srgb, var(--color-cream) 88%, transparent);
 
-  /* Steps 01 and 03 carry no headline, so the sentence is the panel's first
-     element and has to take the auto margin the headline would have held. */
+  @media (--mobile) {
+    font-size: 0.98rem;
+    line-height: 1.14;
+  }
+}
+
+/* Sentence + figure row as one block.
+   The sentence introduces the numbers — on step 01 it literally hands off to
+   them ("efekty są następujące:") — so the two travel together and the gap the
+   panel has to spend opens above the pair, not through the middle of it.
+
+   `margin-top: auto` moved here from `.stats`: dropping the pair to the foot of
+   the panel is what keeps the stage from being taller than its own content, and
+   it now lands the sentence's last line just above the row's rule. */
+.evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+  margin-top: auto;
+
+  /* Mobile centres the copy instead — see `.panelText`. The pair takes the
+     bottom auto margin the figure row used to hold, and the headline above it
+     keeps the top one. */
+  @media (--mobile) {
+    gap: 0.35rem;
+    margin-top: 0;
+    margin-bottom: auto;
+  }
+
+  /* A step with no headline makes the pair the panel's first element, so it has
+     to take the auto margin the headline would have held. */
   &:first-child {
     @media (--mobile) {
       margin-top: auto;
@@ -409,7 +417,6 @@
 .stats {
   display: flex;
   align-items: stretch;
-  margin-top: auto;
   border-block: 1px solid
     color-mix(in srgb, var(--color-cream) 20%, transparent);
 
@@ -420,10 +427,6 @@
      390×844 the stage left 188px of empty ground above and below itself. */
   @media (--mobile) {
     display: block;
-    /* Sits directly under the sentence; the spare height goes below it instead,
-       which is what leaves the proof card alone at the foot of the panel. */
-    margin-top: 0.35rem;
-    margin-bottom: auto;
   }
 }
 
@@ -499,13 +502,17 @@
   }
 
   .number {
-    font-size: 1.15rem;
+    font-size: 1.4rem;
   }
 
-  .panelTitle,
-  .panelSay {
+  .panelTitle {
     font-size: 1.45rem;
     line-height: 1.1;
+  }
+
+  .panelSay {
+    font-size: 1.2rem;
+    line-height: 1.12;
   }
 
   .statFigure {
@@ -537,20 +544,24 @@
     gap: 0.3rem;
   }
 
-  /* The sentence now runs at the headline's size, so it is the block that grows
-     fastest here — the widest step spends four lines on it, and each line costs
-     what a line of the headline costs. Both drop together rather than the
-     sentence falling back to a caption size the section no longer uses
-     anywhere. Measured at 360×568: at 1rem the pinned section ran 19px past the
-     screen; 0.9rem plus the tighter gaps above brings it back inside. */
-  .panelTitle,
-  .panelSay {
+  /* The sentence is the block that grows fastest here — the widest step spends
+     four lines on it. Both drop rather than the sentence falling back to a
+     caption size the section no longer uses anywhere, and they keep the one
+     notch of hierarchy between them. Measured at 360×568: at 1rem the pinned
+     section ran 19px past the screen; 0.9rem plus the tighter gaps above brings
+     it back inside. */
+  .panelTitle {
     font-size: 0.9rem;
     line-height: 1.14;
   }
 
-  .stats {
-    margin-top: 0.15rem;
+  .panelSay {
+    font-size: 0.8rem;
+    line-height: 1.16;
+  }
+
+  .evidence {
+    gap: 0.15rem;
   }
 
   .stat {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { howItWorks as plHowItWorks } from './home'
+import { howItWorks as plHowItWorks, type SayPart } from './home'
 import { howItWorks as enHowItWorks } from './home.en'
 
 const ROOT = join(import.meta.dir, '..', '..')
@@ -111,14 +111,19 @@ describe('how-it-works proof content', () => {
       'Raportowanie',
       'Proaktywność',
     ])
+    /* The rail is title-only now (user decision, 2026-08-09): each step's
+       description was either promoted to its panel headline (01–03) or dropped
+       as a duplicate of the panel's own copy (04–05), and `Step.text` is gone.
+       The headlines below are therefore the drift check the rail sentences
+       used to be. */
     expect(
-      plHowItWorks.steps.map((step) => step.text.replaceAll(NBSP, ' '))
+      plHowItWorks.steps.map((step) => step.proof.title?.replaceAll(NBSP, ' '))
     ).toEqual([
-      'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości.',
-      'Przekładamy ustalenia na plan działań w formie strategii komunikacji, a następnie realizujemy działania zgodnie z założoną strategią.',
-      'Analizujemy wyniki i rekomendujemy wprowadzenie niezbędnych zmian.',
-      'Opracowujemy raporty miesięczne oraz półroczne i roczne.',
-      'Rekomendujemy nowe możliwości i rozwiązania.',
+      'Wspólnie analizujemy potrzeby biznesowe, cele, wyzwania oraz możliwości',
+      'Przekładamy ustalenia na plan działań w formie strategii komunikacji',
+      'Analizujemy wyniki i rekomendujemy wprowadzenie niezbędnych zmian',
+      'Wszystko co widziałeś to prawdziwe liczby z raportów',
+      'Inicjatywa wykraczająca poza założenia briefu',
     ])
   })
 
@@ -130,7 +135,11 @@ describe('how-it-works proof content', () => {
     LOCALES
   )('%s: supporting sentences stay inside budget', (_, content) => {
     for (const step of content.steps) {
-      const say = step.proof.say
+      /* Annotated because no step's sentence currently carries an accented
+         figure, so the literal content narrows `say` to `string[]` — the
+         field's own type is wider and the checks below must keep covering it. */
+      const parts: readonly SayPart[] = step.proof.say
+      const say = parts
         .map((part) => (typeof part === 'string' ? part : part.figure))
         .join('')
       expect(say.trim().split(/\s+/).length).toBeLessThanOrEqual(40)
@@ -171,7 +180,8 @@ describe('how-it-works proof content', () => {
      separator has to be non-breaking. */
   test.each(LOCALES)('%s: grouped numbers cannot wrap', (_, content) => {
     for (const step of content.steps) {
-      for (const part of step.proof.say) {
+      const parts: readonly SayPart[] = step.proof.say
+      for (const part of parts) {
         if (typeof part === 'string') continue
         if (!/\d/.test(part.figure)) continue
         expect(`figure ${JSON.stringify(part.figure)}`).not.toMatch(/\d ? \d/)
