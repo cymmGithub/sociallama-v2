@@ -98,7 +98,7 @@ export default defineConfig({
           command: 'bun run dev',
           url: BASE_URL,
           // `next dev` takes its port from the process env at launch, never from
-          // .env.local (see lib/scripts/worktree.ts). Without this, starting a
+          // .env.local (see ../bin/worktree.ts). Without this, starting a
           // server in a worktree boots it on :3000 while we wait on BASE_URL, and
           // the run dies on the 120s timeout instead of anything legible.
           env: { PORT },
