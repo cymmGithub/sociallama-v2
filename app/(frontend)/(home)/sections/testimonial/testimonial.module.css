@@ -89,7 +89,11 @@
   /* Window: the ±2 steps around the centered row plus one receded (0.68-
      scaled) row's height peeking at each edge. */
   height: calc(var(--step) * 4 + var(--step) * 0.68);
-  overflow: hidden;
+  /* Clip, not hidden: rows sit outside the window by design, and `hidden`
+     still builds a scroll container the UA is free to scroll — focusing a
+     cropped row on click scrolled the whole rail off-centre and it never
+     came back. `clip` crops identically with nothing to scroll. */
+  overflow: clip;
 }
 
 /* Rail row: dimmed by default, brightened + orange-barred when active. */
@@ -369,6 +373,11 @@
      `auto 180/56` fallback sizes the box until the wordmark loads. */
   .captionLogo {
     grid-area: 1 / 2;
+    /* The cell is as wide as the widest wordmark, and a replaced element with
+       an intrinsic ratio resolves `justify-self: normal` to `start` (not
+       `stretch`) — so without this every narrower mark left-aligns against
+       Uniphar's width instead of sitting between the rules. */
+    justify-self: center;
     height: 24px;
     width: auto;
     filter: brightness(0) invert(1);

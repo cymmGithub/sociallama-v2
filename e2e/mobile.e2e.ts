@@ -101,4 +101,105 @@ test.describe('Mobile chrome', { tag: ['@mobile', '@monitor'] }, () => {
     box = await logo.boundingBox()
     expect(box?.width, 'desktop logo at 800px').toBeCloseTo(212, 0)
   })
+
+  test('every testimonial wordmark is centred under the rail', async ({
+    page,
+  }) => {
+    // The six wordmarks share one grid cell sized to the widest of them, and a
+    // replaced element with an intrinsic ratio resolves `justify-self: normal`
+    // to `start` — so the narrow marks (STAG, Aquael at 76px against
+    // Uniphar's 123px) left-aligned instead of sitting between the rules.
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await gotoHydrated(page, '/')
+
+    // `div` matters: the wordmarks carry `captionLogo`, so a bare
+    // [class*="caption"] matches them too and the locator is not strict.
+    const caption = page.locator(
+      'div[class*="testimonial-module"][class*="caption"]'
+    )
+    const logos = caption.locator('img[class*="captionLogo"]')
+    await expect(logos).toHaveCount(6)
+
+    // The marks are lazy and far below the fold. Unloaded they all fall back
+    // to the same 180×56 placeholder ratio, so every width would match and the
+    // assertion below would pass without ever proving anything — load them
+    // first and require the real, differing intrinsic widths.
+    await page.evaluate(async () => {
+      const imgs = Array.from(
+        document.querySelectorAll<HTMLImageElement>('img[class*="captionLogo"]')
+      )
+      for (const img of imgs) img.loading = 'eager'
+      await Promise.all(
+        imgs.map(
+          (img) =>
+            img.complete ||
+            new Promise((resolve) => {
+              img.onload = resolve
+              img.onerror = resolve
+            })
+        )
+      )
+    })
+
+    const boxes = await logos.evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const r = node.getBoundingClientRect()
+        return {
+          alt: (node as HTMLImageElement).alt,
+          centre: r.x + r.width / 2,
+          width: r.width,
+        }
+      })
+    )
+    expect(
+      new Set(boxes.map((b) => Math.round(b.width))).size,
+      'wordmarks loaded at their own intrinsic widths'
+    ).toBeGreaterThan(1)
+
+    const capBox = await caption.boundingBox()
+    const capCentre = (capBox?.x ?? 0) + (capBox?.width ?? 0) / 2
+    for (const { alt, centre } of boxes) {
+      expect(centre, `${alt} wordmark centred`).toBeCloseTo(capCentre, 0)
+    }
+  })
+
+  test('picking a cropped rail chip never scrolls the rail off-centre', async ({
+    page,
+  }) => {
+    // The slot model parks rows outside the rail's window on purpose, so the
+    // rail overflows. Under `overflow: hidden` that is still a scroll
+    // container: clicking a chip cropped at the edge focused it, the UA
+    // scrolled it into view, and the whole strip stayed half a chip
+    // off-centre for good — taking the wordmark caption's alignment with it.
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await gotoHydrated(page, '/')
+
+    const rail = page.locator('[role="tablist"]')
+    const tabs = rail.locator('[role="tab"]')
+
+    // Jump two at a time, never one. A neighbour (slot ±1) sits fully inside
+    // the window, so clicking it scrolls nothing and the bug stays hidden —
+    // only a chip parked at the cropped ±2 slot triggers the scroll-into-view.
+    for (const i of [2, 4, 0, 2, 4, 0]) {
+      await expect(tabs.nth(i)).toHaveAttribute('data-slot', /^-?2$/)
+      await tabs.nth(i).click()
+      await expect(tabs.nth(i)).toHaveAttribute('aria-selected', 'true')
+
+      const scroll = await rail.evaluate((node) => ({
+        left: node.scrollLeft,
+        top: node.scrollTop,
+      }))
+      expect(scroll, `rail unscrolled after picking chip ${i}`).toEqual({
+        left: 0,
+        top: 0,
+      })
+
+      const railBox = await rail.boundingBox()
+      const activeBox = await tabs.nth(i).boundingBox()
+      expect(
+        (activeBox?.x ?? 0) + (activeBox?.width ?? 0) / 2,
+        `chip ${i} centred in the rail`
+      ).toBeCloseTo((railBox?.x ?? 0) + (railBox?.width ?? 0) / 2, 0)
+    }
+  })
 })
