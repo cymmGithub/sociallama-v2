@@ -242,6 +242,31 @@ export function Testimonial({
             )
           })}
         </div>
+
+        {/* Mobile-only company caption. A chip is a quarter of the strip wide
+            (~71px of content box on a 390px phone) and the client lockups run
+            about 3.5:1, so a wordmark can't live inside one — the mobile rail
+            drops its logos and the active client's mark is captioned under the
+            strip instead, where it has the section's full width. All six stack
+            in one grid cell (as the slides do) so advancing never resizes the
+            row. Hidden on desktop, where every rail row carries its own. */}
+        <div className={s.caption}>
+          {content.map((t, i) =>
+            t.logo ? (
+              <Image
+                key={t.author}
+                src={t.logo}
+                alt={t.company ?? t.author}
+                width={180}
+                height={56}
+                objectFit="contain"
+                className={s.captionLogo}
+                data-active={i === active}
+                aria-hidden={i !== active}
+              />
+            ) : null
+          )}
+        </div>
       </div>
     </section>
   )

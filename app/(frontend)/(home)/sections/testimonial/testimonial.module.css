@@ -236,6 +236,12 @@
   align-self: flex-start;
 }
 
+/* Company caption — mobile only (see the component). Every desktop rail row
+   already carries its own wordmark. */
+.caption {
+  display: none;
+}
+
 /* Autoplay progress: a thin orange line filling along the active row's bottom
    edge; when it reaches the end the slider advances (JS timer runs the same
    7 s). Gated on data-autoplay so reduced-motion and touch-stopped states show
@@ -269,11 +275,12 @@
    slot model on the X axis. Chips are a quarter of the strip wide, so ±1 sit
    flush beside the active chip (three full chips) and ±2 straddle the strip
    edges half-cropped, fading out under the gradient mask ("more entries").
-   Avatar + name, orange top bar on the active chip, logos dropped. */
+   Avatar + name, orange top bar on the active chip; the chip's own logo is
+   dropped in favour of the caption below the strip. */
 @media (--mobile) {
   .grid {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 24px;
   }
 
   .rail {
@@ -315,12 +322,69 @@
     filter: none;
   }
 
+  /* Tightened until the longest name ("Marta Jemiejłańczuk") wraps to two
+     lines inside the chip instead of being cut off by its overflow clip. */
   .who b {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
   }
 
   .logo {
     display: none;
+  }
+
+  /* Caption: the active client's wordmark between two hairlines, sitting
+     directly under the strip it belongs to. Fixed three-column track so the
+     rules stay put no matter how wide the current wordmark is. */
+  .caption {
+    order: -1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .caption::before,
+  .caption::after {
+    content: "";
+    grid-row: 1;
+    height: 1px;
+    width: min(64px, 100%);
+    background: color-mix(in srgb, var(--color-cream) 22%, transparent);
+  }
+
+  .caption::before {
+    grid-column: 1;
+    justify-self: end;
+  }
+
+  .caption::after {
+    grid-column: 3;
+    justify-self: start;
+  }
+
+  /* All six share the middle cell and crossfade. Height-capped like .logo,
+     and for the same reason it carries no aspect-ratio override: the UA's
+     `auto 180/56` fallback sizes the box until the wordmark loads. */
+  .captionLogo {
+    grid-area: 1 / 2;
+    height: 24px;
+    width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 300ms var(--ease-out-expo),
+      visibility 0s 300ms;
+  }
+
+  /* Same 140ms lead-in as the incoming slide, so caption and quote change
+     together. */
+  .captionLogo[data-active="true"] {
+    opacity: 0.9;
+    visibility: visible;
+    transition-delay: 140ms, 0s;
   }
 
   .pull {
@@ -344,6 +408,10 @@
   }
 
   .client {
+    transition: none;
+  }
+
+  .captionLogo {
     transition: none;
   }
 
