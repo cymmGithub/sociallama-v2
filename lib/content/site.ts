@@ -4,7 +4,7 @@ import type { Localized } from '@/lib/i18n/parity'
 /** Brand identity shared by the root layout and page-level metadata. */
 export const APP_NAME = 'Social Lama'
 export const APP_DEFAULT_TITLE = 'Social Lama'
-export const APP_TITLE_TEMPLATE = '%s — Social Lama'
+export const APP_TITLE_TEMPLATE = '%s | Social Lama'
 export const APP_DESCRIPTION =
   'Agencja social media. Kompleksowa obsługa marek w mediach społecznościowych: strategia, content, sprzedaż, kreacje i wideo.'
 
