@@ -24,6 +24,17 @@ import {
 const DARK_CHROME = hexToRgb(colors['ink-deep'])
 const PLUM_CHROME = hexToRgb(themes.plum.primary)
 
+/**
+ * Budget for a client navigation to commit. CI runs e2e against `bun run dev`
+ * and /kontakt has no loading.tsx (deliberate — see route-loading/index.tsx),
+ * so the router holds the old page *and the old URL* until the destination's
+ * RSC payload and route chunk have compiled, downloaded and committed. That
+ * stretch is bound by the runner, not by the behavior under test: measured
+ * 0.3s locally, 3.1s at 6x CPU throttle, 9.1s at 20x. It overran the 20s
+ * hydration budget twice on main in August 2026, so it gets its own.
+ */
+const COMMITTED = { timeout: 45_000 } as const
+
 test.describe('Kontakt page', () => {
   test('legacy /kontakt URL serves the page directly (no 301)', async ({
     page,
@@ -55,6 +66,10 @@ test.describe('Kontakt page', () => {
   test('navigating to /kontakt from a scrolled homepage lands at the top', async ({
     page,
   }) => {
+    // The default 60s cap cannot hold a scroll drive plus a COMMITTED-budgeted
+    // navigation plus the arrival poll.
+    test.setTimeout(120_000)
+
     // Regression: the custom <Link> uses scroll={false} and Lenis carries its
     // scroll position across route changes, so /kontakt opened at the previous
     // page's offset (e.g. mid-metrics) instead of the top. No reduced-motion
@@ -87,8 +102,40 @@ test.describe('Kontakt page', () => {
     // bottom — so an actionable click times out. dispatchEvent fires the Link's
     // client navigation directly, bypassing occlusion; the scroll-reset behavior
     // this test guards is what matters, not the link's hit-testability.
+    //
+    // Watch for the destination's RSC fetch from here — not from the start of
+    // the test — so a payload the router prefetched earlier cannot pass this
+    // off as the click's doing. A prefetched destination issues no request at
+    // all, which the URL half of the check below covers.
+    const rscFetches: string[] = []
+    page.on('request', (request) => {
+      const url = new URL(request.url())
+      if (url.pathname === '/kontakt' && url.searchParams.has('_rsc')) {
+        rscFetches.push(url.href)
+      }
+    })
     await page.locator('a[href="/kontakt"]').last().dispatchEvent('click')
-    await expect(page).toHaveURL('/kontakt', HYDRATED)
+
+    // Two invariants, two budgets. First: the click actually started a client
+    // navigation — that is what this test is entitled to assert quickly, and
+    // the only half whose failure means the app is broken.
+    await expect
+      .poll(
+        () =>
+          rscFetches.length > 0 || new URL(page.url()).pathname === '/kontakt',
+        {
+          ...HYDRATED,
+          message:
+            'the click on the footer /kontakt link started no client navigation ' +
+            '(no RSC fetch for /kontakt, no URL change) — the Link is broken, ' +
+            'as opposed to the destination merely being slow to commit',
+        }
+      )
+      .toBe(true)
+
+    // Second: the destination commits, which is when the URL flips. Slow here
+    // means a slow runner, not a regression — hence COMMITTED.
+    await expect(page).toHaveURL('/kontakt', COMMITTED)
 
     // The new route must open at the top, not at the carried-over offset.
     await expect

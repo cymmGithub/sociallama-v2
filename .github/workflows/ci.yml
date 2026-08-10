@@ -102,3 +102,14 @@ jobs:
       # separate server step is needed here.
       - name: Run e2e tests
         run: bun run test:e2e
+
+      # Without this a red run leaves nothing behind but the list reporter's
+      # stdout — Playwright's per-test error-context.md (the page snapshot at
+      # the moment of failure) dies with the runner.
+      - name: Upload e2e failure context
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-failure-context
+          path: test-results/
+          retention-days: 7
