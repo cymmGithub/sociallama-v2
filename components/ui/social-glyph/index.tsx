@@ -21,13 +21,13 @@
  * circle in the set, and a circle inscribed in the same square as LinkedIn's
  * actual square encloses about a fifth less area, so matching them
  * geometrically leaves the circle looking undersized. +7% is the usual optical
- * correction and was picked against the rendered row, not calculated.
+ * correction; 89.6% is where it landed after checking it on the running site.
  */
 import type { SocialIconName } from '@/lib/content/socials'
 
 const GLYPHS: Record<SocialIconName, { viewBox: string; d: string }> = {
   facebook: {
-    viewBox: '0.788 0.788 22.424 22.424',
+    viewBox: '1.322 1.322 21.357 21.357',
     d: 'M12 2.438A9.562 9.562 0 1 0 21.563 12 9.574 9.574 0 0 0 12 2.438m.563 17.98v-6.355H15a.563.563 0 0 0 0-1.126h-2.437V10.5a1.687 1.687 0 0 1 1.687-1.687h1.5a.563.563 0 1 0 0-1.126h-1.5a2.81 2.81 0 0 0-2.812 2.813v2.438H9a.562.562 0 0 0 0 1.124h2.438v6.357a8.438 8.438 0 1 1 1.124 0',
   },
   instagram: {
