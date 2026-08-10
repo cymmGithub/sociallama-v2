@@ -409,7 +409,7 @@ export const services = {
             number: '05',
             label: 'Order placed',
             verb: 'WE MEASURE',
-            role: 'orders, not likes',
+            role: 'orders, not\u00A0just reach',
             title: 'Order confirmed',
             meta: '#8412 · today, 2:32 PM',
             rows: [

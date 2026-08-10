@@ -685,7 +685,7 @@ export const services = {
             number: '05',
             label: 'Zamówienie złożone',
             verb: 'MIERZYMY',
-            role: 'zamówienia, nie lajki',
+            role: 'zamówienia, nie\u00A0tylko zasięgi',
             title: 'Zamówienie przyjęte',
             meta: '#8412 · dziś, 14:32',
             rows: [
