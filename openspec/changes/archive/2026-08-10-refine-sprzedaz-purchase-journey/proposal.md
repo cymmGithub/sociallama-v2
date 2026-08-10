@@ -35,14 +35,20 @@ verb-led caption naming the agency's role in that step.
   packshot.
 - The SPRZEDAŻ tab column body copy is rewritten to close the loop:
   "Prowadzimy Twojego klienta od posta do zamówienia: kreacja, klik, sklep,
-  koszyk. Skuteczność mierzymy sprzedażą, nie zasięgami." (EN twin in the same
-  voice.)
+  koszyk. Sprzedaż jest dla nas jednym z najważniejszych mierników
+  skuteczności." (EN twin in the same voice.) The closing sentence keeps
+  sprzedaż as *one* measure rather than dismissing reach outright — the
+  framing `bodyLong` already uses on the same item.
 - Mobile stack stage shows a condensed three-step journey — post (01), strona
   produktu (03), zamówienie (05) — so the story still completes instead of
   cutting off mid-funnel (the previous "first three items" rule would strand
   the story at the shop page).
-- The six retired dashboard exports (`public/assets/sprzedaz-*.png`) are
-  removed once confirmed unused elsewhere.
+- The six dashboard exports (`public/assets/sprzedaz-*.png`) **stay**. The
+  grep that was meant to clear them for deletion found a second consumer:
+  `/uslugi/sprzedaz` reuses all six as its platform dashboards
+  (`lib/content/uslugi.ts` + `uslugi.en.ts`, "O1: reuse of the homepage's six
+  sprzedaż dashboard panels"), and that page is an explicit non-goal here. The
+  homepage stage simply stops referencing them.
 
 ## Capabilities
 
@@ -70,7 +76,9 @@ _None._
   slot geometry replaced with journey card slots; existing stagger vocabulary
   reused.
 - `public/assets/` — two new crops of the Pexels photo added
-  (`sprzedaz-journey-post.jpg`, `sprzedaz-journey-packshot.jpg`); six
-  `sprzedaz-*.png` device mockups removed.
+  (`sprzedaz-journey-post.jpg`, `sprzedaz-journey-packshot.jpg`); the six
+  `sprzedaz-*.png` device mockups stay (still used by `/uslugi/sprzedaz`).
+- `lib/content/locale-parity.test.ts` — the stage-media comparison learns the
+  `journey` kind (crops, step order, and the fictional shop's identity).
 - Reference mock: session artifact "SPRZEDAŻ stage — 3 kierunki" (variant A,
   copy System 1, Pexels product) — the approved visual target.

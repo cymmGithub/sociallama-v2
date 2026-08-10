@@ -295,104 +295,531 @@
   z-index: 2;
 }
 
-/* SPRZEDAŻ: five device-mockup creatives (iPad / MacBook) exported with their
-   frames + drop-shadows baked in on transparency, so they float as bare panels
-   — the floating-card chrome is stripped (no border, radius, fill, shadow, or
-   clip). Scoped without `.layer` so the reset also applies in the mobile stack.
-   Slot order follows the data: Meta Ads (iPad, hero), X, TikTok, YouTube,
-   LinkedIn. */
-.panels[data-stage="sprzedaz"] .panel {
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: visible;
+/* —— Stage media: SPRZEDAŻ purchase journey ————————————————————————— */
+
+/* Five drawn UI vignettes on a dashed flow path. Unlike the panel collages
+   these cards carry live text, so the whole stage runs off one type scale:
+   `--j-scale` keys off stage height *and* width (whichever is scarcer, since
+   the stage's aspect swings from ~1.8:1 to ~3:1) with a readable floor and a
+   cap, and every card dimension below is an `em` multiple of it — a card can
+   never outgrow the type it holds. Horizontal slots stay in %; the top row
+   anchors to `top` and the bottom row to `bottom`, so on a tall stage the
+   funnel spreads instead of clustering under the upper edge. */
+.journey {
+  --j-scale: clamp(10px, min(2.5cqh, 1.05cqw), 13.5px);
+  --j-radius: 12px;
+  --j-muted: color-mix(in srgb, var(--color-ink) 72%, var(--color-cream));
+
+  position: absolute;
+  inset: 0;
+  container-type: size;
 }
 
-/* Four lanes across the wide stage — the Meta Ads iPad and the IG phone each
-   get their own central lane (no stacking), flanked by the two laptop/tablet
-   stacks. Slot order follows the data: 1 Meta Ads (iPad), 2 X, 3 TikTok,
-   4 YouTube, 5 LinkedIn, 6 IG Insights (phone). */
-
-/* Meta Ads iPad — central-left lane, largest landscape device. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
-  height: 74%;
-  left: 37%;
-  top: 12%;
-  translate: -50% 0;
+.jcard {
+  position: absolute;
   z-index: 2;
+  border-radius: var(--j-radius);
+  background: var(--color-cream);
+  color: var(--color-ink);
+  box-shadow: 0 18px 40px
+    color-mix(in srgb, var(--color-ink-deep) 40%, transparent);
+  font-size: var(--j-scale);
+  line-height: 1.4;
+
+  /* Same entrance vocabulary as the panels, delayed per step so the funnel
+     visibly plays 01→05 on every tab activation. */
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 500ms var(--ease-out-expo),
+    transform 500ms var(--ease-out-expo);
 }
 
-/* X Analytics Mac — far left, upper. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
-  height: 48%;
-  left: -3%;
-  top: 5%;
-  rotate: -3deg;
-  z-index: 1;
+.layer.isActive .jcard,
+.layer.isActive .flow,
+.layer.isActive .flowEnd {
+  opacity: 1;
+  transform: none;
 }
 
-/* TikTok Studio Mac — far right, upper. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
-  height: 48%;
-  right: -3%;
-  top: 5%;
-  rotate: 3deg;
-  z-index: 1;
+.layer.isActive .flow,
+.layer.isActive .flowEnd {
+  transition-delay: 40ms;
 }
 
-/* YouTube iPad — far left, lower. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(4) {
-  height: 46%;
-  left: 1%;
-  top: 50%;
-  rotate: 2deg;
-  z-index: 1;
+.layer.isActive .jPost {
+  transition-delay: 80ms;
 }
 
-/* LinkedIn Mac — far right, lower. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
-  height: 46%;
-  right: 1%;
-  top: 50%;
-  rotate: -2deg;
-  z-index: 1;
+.layer.isActive .jClick {
+  transition-delay: 180ms;
 }
 
-/* Instagram Insights phone — central-right lane, portrait, its own space. */
-.layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
-  height: 86%;
-  left: 62%;
-  top: 6%;
-  translate: -50% 0;
-  rotate: 2deg;
+.layer.isActive .jShop {
+  transition-delay: 280ms;
+}
+
+.layer.isActive .jCart {
+  transition-delay: 380ms;
+}
+
+.layer.isActive .jOrder {
+  transition-delay: 460ms;
+}
+
+/* Slots follow the mock: post far left, the click chip below-right of it, the
+   shop browser as the centered hero, cart right-lower, receipt far right. The
+   two rows sit in separate vertical bands, so a top-row and a bottom-row card
+   may share a column without ever overlapping. */
+.jPost {
+  width: 16.1em;
+  left: 2%;
+  top: 8%;
+}
+
+.jClick {
+  width: 12.7em;
+  left: 23%;
+  bottom: 10%;
   z-index: 3;
 }
 
-/* Wider screens have more room than the height-capped stage gives back, so the
-   device mockups grow to keep the collage full. */
+.jShop {
+  width: 29.3em;
+  left: 50%;
+  top: 6%;
+  translate: -50% 0;
+  z-index: 4;
+}
+
+.jCart {
+  width: 12.2em;
+  left: 71.5%;
+  bottom: 10%;
+  z-index: 3;
+}
+
+/* Anchored by its foot, not its head: the receipt is the tallest-varying card
+   (two order rows plus a wrapping role strip), and the flow path has to land
+   on it. Bottom-anchoring keeps its lower edge a constant hair above the
+   path's endpoint dot at every stage size. */
+.jOrder {
+  width: 14.2em;
+  right: 2%;
+  bottom: 51%;
+}
+
+/* Wide screens have more room than the height-capped stage gives back, so the
+   whole collage grows a step — the same allowance the panel stages take. */
 @media (width >= 1600px) {
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
-    height: 84%;
-    top: 8%;
+  .journey {
+    --j-scale: clamp(10px, min(2.7cqh, 1.05cqw), 15px);
   }
+}
 
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(2),
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
-    height: 56%;
-    top: 2%;
-  }
+/* Flow path: decorative, under the cards, stretched to the stage. The stroke
+   is kept off the stretch so the dashes stay even at every stage aspect; the
+   endpoint dot is a CSS circle for the same reason. */
+.flow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-cream) 55%, transparent);
+  stroke-width: 2.5;
+  stroke-dasharray: 7 8;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out-expo);
+}
 
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(4),
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(5) {
-    height: 54%;
-    top: 46%;
-  }
+.flowEnd {
+  position: absolute;
+  right: 11%;
+  top: 51.6%;
+  z-index: 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  translate: 50% -50%;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out-expo);
+}
 
-  .layer .panels[data-stage="sprzedaz"] .panel:nth-child(6) {
-    height: 96%;
-    top: 2%;
+/* Reduced motion: the funnel renders settled, no entrance. This block has to
+   sit *below* the rules it cancels — a media query adds no specificity, so the
+   module's neutralizer near the top of the file would lose the source-order
+   tie against the `transition` shorthands above. */
+@media (--reduced-motion) {
+  .jcard,
+  .flow,
+  .flowEnd {
+    transition: none;
   }
+}
+
+/* Step chip + role strip — the two things every vignette carries. */
+.jChip {
+  position: absolute;
+  top: -0.55em;
+  left: -0.55em;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85em;
+  box-shadow: 0 4px 10px
+    color-mix(in srgb, var(--color-ink-deep) 35%, transparent);
+}
+
+.jRole {
+  border-radius: 0 0 var(--j-radius) var(--j-radius);
+  background: var(--color-plum);
+  color: var(--color-cream);
+  font-size: 0.78em;
+  line-height: 1.35;
+  padding: 0.6em 0.9em;
+}
+
+.jRole b {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  color: var(--color-orange);
+}
+
+/* 01 · post — the creative, with its overlays as real text over the crop. */
+.postHead {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.6em 0.8em;
+}
+
+.postAvatar {
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-orange), var(--color-plum));
+}
+
+.postName {
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.postShot {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  color: var(--color-cream);
+}
+
+.postPill {
+  position: absolute;
+  top: 0.7em;
+  left: 0.7em;
+  border-radius: 1em;
+  background: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.68em;
+  letter-spacing: 0.1em;
+  padding: 0.3em 0.8em;
+}
+
+.postHeadline {
+  position: absolute;
+  top: 2.5em;
+  left: 0.65em;
+  right: 0.65em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15em;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px
+    color-mix(in srgb, var(--color-ink-deep) 45%, transparent);
+}
+
+.postActions {
+  display: flex;
+  gap: 0.6em;
+  padding: 0.55em 0.8em 0.2em;
+}
+
+.postActions svg {
+  width: 1.05em;
+  height: 1.05em;
+}
+
+.postCaption {
+  padding: 0 0.8em 0.7em;
+  font-size: 0.8em;
+  color: var(--j-muted);
+}
+
+.postCaption b {
+  font-weight: 700;
+  color: var(--color-plum);
+}
+
+/* 02 · klik — the ad CTA under a cursor, mid-tap. */
+.clickCta {
+  position: relative;
+  margin: 0.9em 0.85em 0;
+  border-radius: 0.6em;
+  background: var(--color-plum);
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95em;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 0.6em 0.7em;
+}
+
+.clickRipple {
+  position: absolute;
+  right: -0.7em;
+  bottom: -0.7em;
+  width: 2.2em;
+  height: 2.2em;
+  border: 2px solid var(--color-orange);
+  border-radius: 50%;
+}
+
+.clickPointer {
+  position: absolute;
+  right: -1.1em;
+  bottom: -1.25em;
+  width: 1.5em;
+  height: 1.5em;
+  color: var(--color-cream);
+  fill: var(--color-cream);
+  filter: drop-shadow(
+    0 2px 4px color-mix(in srgb, var(--color-ink-deep) 60%, transparent)
+  );
+}
+
+.clickHint {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: 0.65em 0.85em 0.9em;
+  font-size: 0.8em;
+  color: var(--j-muted);
+}
+
+.clickHint svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+/* 03 · strona produktu — the hero card, a shop window in a browser chrome. */
+.shopBar {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.55em 0.8em;
+  border-radius: var(--j-radius) var(--j-radius) 0 0;
+  background: var(--color-sand);
+}
+
+/* One dot plus two drawn with its own shadow — the margin reserves their
+   width, which the box itself doesn't carry. */
+.shopDots {
+  flex: none;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 1.75em;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-ink) 28%, var(--color-sand));
+  box-shadow:
+    0.85em 0 color-mix(in srgb, var(--color-ink) 28%, var(--color-sand)),
+    1.7em 0 color-mix(in srgb, var(--color-ink) 28%, var(--color-sand));
+}
+
+.shopUrl {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  flex: 1;
+  border-radius: 1em;
+  background: var(--color-cream);
+  padding: 0.25em 0.8em;
+  font-size: 0.8em;
+  color: var(--j-muted);
+}
+
+.shopUrl svg {
+  width: 0.9em;
+  height: 0.9em;
+  flex: none;
+}
+
+.shopBody {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0.8em;
+  align-items: center;
+  padding: 0.9em;
+}
+
+.shopShot {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 0.65em;
+  overflow: hidden;
+}
+
+.shopProduct {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 1.1em;
+  line-height: 1.15;
+}
+
+.shopPrice {
+  margin-bottom: 0.55em;
+  font-weight: 800;
+  font-size: 1.15em;
+  font-variant-numeric: tabular-nums;
+}
+
+.shopButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  border-radius: 0.6em;
+  background: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+  padding: 0.6em 0.5em;
+  text-align: center;
+}
+
+.shopButton svg {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+/* 04 · koszyk */
+.cartRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  margin: 0.9em;
+}
+
+.cartIcon {
+  position: relative;
+  flex: none;
+  color: var(--color-plum);
+}
+
+.cartIcon svg {
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -0.45em;
+  right: -0.6em;
+  display: grid;
+  place-items: center;
+  width: 1.25em;
+  height: 1.25em;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: var(--color-ink-deep);
+  font-size: 0.7em;
+  font-weight: 800;
+}
+
+.cartLabel {
+  font-size: 0.82em;
+  color: var(--j-muted);
+}
+
+.cartLabel b {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--color-ink);
+}
+
+/* 05 · zamówienie — the receipt that closes the funnel. */
+.orderCheck {
+  display: grid;
+  place-items: center;
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0.9em auto 0.55em;
+  border-radius: 50%;
+  background: var(--color-orange);
+  color: var(--color-ink-deep);
+}
+
+.orderCheck svg {
+  width: 1.4em;
+  height: 1.4em;
+}
+
+.orderTitle {
+  margin-inline: 0.9em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.95em;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.orderMeta {
+  margin: 0.3em 0.9em 0;
+  font-size: 0.78em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--j-muted);
+}
+
+.orderRows {
+  margin: 0.7em 0.9em 0.9em;
+  padding-top: 0.6em;
+  border-top: 1px dashed var(--color-sand);
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  color: var(--j-muted);
+}
+
+.orderRows > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+}
+
+/* The amount never breaks across lines — "59 / zł" reads as two numbers. */
+.orderRows dd {
+  white-space: nowrap;
 }
 
 /* —— Stage media: phone-framed vertical clip ——————————————————————— */
@@ -622,11 +1049,13 @@
 
 /* Media renders directly in the stack stage (no crossfade layer). */
 .stackStage .panels,
+.stackStage .journey,
 .stackStage .phone {
   z-index: 1;
 }
 
-.stackStage .panel {
+.stackStage .panel,
+.stackStage .jcard {
   opacity: 1;
   transform: none;
 }
@@ -656,38 +1085,53 @@
   top: 26%;
 }
 
-/* Sprzedaż device mockups are landscape (iPad / Mac), so size them by height
-   (width follows the aspect) — Meta Ads iPad hero centered, X + TikTok Macs
-   flanking. Only the first three render on mobile (StageMedia `limit`). */
-.stackStage .panels[data-stage="sprzedaz"] .panel {
-  width: auto;
+/* Condensed journey (mobile): steps 01 · 03 · 05 in a row, so the arc still
+   closes on the order instead of stopping at the shop page. Widths go back to
+   % here — the stage is too small for the em-sized desktop cards — and the
+   post sheds its actions row and caption, because at this size the role strip
+   is the line that has to stay readable. */
+.stackStage .journey {
+  --j-scale: clamp(10.5px, min(4.4cqh, 3.4cqw), 14px);
 }
 
-.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(1) {
-  height: 56%;
-  left: 50%;
-  right: auto;
-  top: 22%;
-  translate: -50% 0;
-  rotate: 0deg;
-  z-index: 3;
+.isCondensed .jClick,
+.isCondensed .jCart,
+.isCondensed .postActions,
+.isCondensed .postCaption {
+  display: none;
 }
 
-.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(2) {
-  height: 40%;
+/* A square creative instead of the 4:5 one — the post card is the tallest of
+   the three, and at this stage height its portrait crop is what pushes the
+   trio past the floor font size. */
+.isCondensed .postShot {
+  aspect-ratio: 1;
+}
+
+.isCondensed .jPost {
+  width: 33%;
   left: 1%;
-  top: 12%;
-  rotate: -3deg;
-  z-index: 2;
+  top: 6%;
 }
 
-.stackStage .panels[data-stage="sprzedaz"] .panel:nth-child(3) {
-  height: 40%;
-  left: auto;
-  right: 1%;
-  top: 14%;
-  rotate: 3deg;
-  z-index: 2;
+.isCondensed .jShop {
+  width: 36%;
+  left: 36%;
+  top: 20%;
+  translate: none;
+}
+
+/* Even columns here — at this width the packshot's share of a 1.1fr split
+   leaves the product name stacking one word per line. */
+.isCondensed .shopBody {
+  grid-template-columns: 1fr 1.05fr;
+}
+
+.isCondensed .jOrder {
+  width: 26%;
+  right: 0.5%;
+  top: 10%;
+  bottom: auto;
 }
 
 /* Three clip frames must fit the narrower mobile stage side by side, so they

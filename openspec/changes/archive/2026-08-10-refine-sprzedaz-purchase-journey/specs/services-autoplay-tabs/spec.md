@@ -83,6 +83,6 @@ The SPRZEDAŻ tab body copy SHALL be updated in both locales to the approved
 - **WHEN** the locale-parity test compares the PL and EN home content
 - **THEN** the SPRZEDAŻ journey descriptors are structurally identical, with every journey string translated in `home.en.ts` (EN captions in the approved voice, e.g. WE CREATE / WE TARGET / WE DRIVE / WE CLOSE / WE MEASURE)
 
-#### Scenario: Retired dashboard assets removed
+#### Scenario: Retired dashboard assets leave the homepage
 - **WHEN** the change is complete
-- **THEN** the six `public/assets/sprzedaz-*.png` device mockups are deleted and no reference to them remains in the codebase
+- **THEN** no homepage content references the six `public/assets/sprzedaz-*.png` device mockups; the files themselves stay, because `/uslugi/sprzedaz` still renders all six as its platform dashboards

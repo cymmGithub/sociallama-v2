@@ -44,14 +44,87 @@ export interface StageClip {
   alt: string
 }
 
+/** One of the two committed crops used by the purchase-journey vignettes. */
+export interface JourneyImage {
+  /** Crop path under /assets. */
+  src: string
+  alt: string
+}
+
+/**
+ * Fields every purchase-journey vignette carries: its place in the sequence,
+ * a name for screen readers (the cards are drawn UI, not screenshots), and the
+ * role strip naming what the agency does at that step.
+ */
+export interface JourneyStep {
+  /** Step chip, "01"–"05". */
+  number: string
+  /** Names the vignette for screen readers. */
+  label: string
+  /** Display verb opening the role strip (TWORZYMY / WE CREATE …). */
+  verb: string
+  /** The rest of the role sentence, following the verb. */
+  role: string
+}
+
+/**
+ * The SPRZEDAŻ stage's five-step purchase journey: post → klik → strona
+ * produktu → koszyk → zamówienie. Every string here renders as real HTML text
+ * so both locales read crisp and nothing is baked into a raster; the shop is
+ * fictional, so no client brand appears anywhere in the stage.
+ */
+export interface StageJourney {
+  post: JourneyStep & {
+    image: JourneyImage
+    /** Fictional brand handle in the post header. */
+    handle: string
+    /** Pill overlaid on the creative. */
+    pill: string
+    /** Headline overlaid on the creative. */
+    headline: string
+    /** Post caption; `captionCta` is its accented tail ("link w bio"). */
+    caption: string
+    captionCta: string
+  }
+  click: JourneyStep & {
+    /** Ad call-to-action the cursor lands on. */
+    cta: string
+    /** Note under the button naming the interaction. */
+    hint: string
+  }
+  shop: JourneyStep & {
+    image: JourneyImage
+    /** Address-bar text of the fictional shop. */
+    url: string
+    product: string
+    price: string
+    addToCart: string
+  }
+  cart: JourneyStep & {
+    /** Item count on the cart badge. */
+    count: string
+    title: string
+    /** Line item under the title. */
+    line: string
+  }
+  order: JourneyStep & {
+    title: string
+    /** Order number and timestamp. */
+    meta: string
+    rows: readonly { label: string; value: string }[]
+  }
+}
+
 /**
  * Per-service stage media for the autoplay-tabs services section.
  * `panels` float real screenshots over the grain-gradient, `video` renders
- * phone-framed clips playing only while their tab is active.
+ * phone-framed clips playing only while their tab is active, `journey` draws
+ * the five purchase-journey vignettes on their flow path.
  */
 export type ServiceStage =
   | { kind: 'panels'; panels: StagePanel[] }
   | { kind: 'video'; clips: StageClip[] }
+  | { kind: 'journey'; journey: StageJourney }
 
 export interface Service {
   id: string
@@ -547,54 +620,80 @@ export const services = {
     {
       id: 'sprzedaz',
       title: 'SPRZEDAŻ',
-      body: 'Komunikacja ma spełniać swoją najważniejszą rolę: sprzedaż — skuteczność mierzymy sukcesem Twojego biznesu.',
+      body: 'Prowadzimy Twojego klienta od posta do zamówienia: kreacja, klik, sklep, koszyk. Sprzedaż jest dla nas jednym z\u00A0najważniejszych mierników skuteczności.',
       bodyLong:
         'Tworząc ofertę dla Twojej marki dbamy o\u00A0to, by komunikacja spełniała wypadkowo swoją najważniejszą rolę: sprzedaż produktów lub usług. Skuteczność naszych działań mierzymy nie tylko wskaźnikami w\u00A0social mediach, ale przede wszystkim — sukcesem Twojego biznesu.',
       link: { label: 'DOWIEDZ SIĘ WIĘCEJ', href: '/uslugi/sprzedaz' },
-      // Device-mockup creatives (iPad / MacBook) exported with their frames and
-      // shadows baked in on transparency, so they render as bare floating panels
-      // (no card chrome — see the frameless rule in the CSS). Mobile shows the
-      // first three (existing rule).
+      // The purchase journey the agency runs, not a wall of dashboards: five
+      // drawn UI vignettes on a flow path, each captioned with our role in
+      // that step (copy system "pięć czasowników"). The shop is fictional
+      // ("twojamarka") so no client brand appears in the stage, and the only
+      // raster is one brand-free stock photo — Pexels 20336139, free licence,
+      // no attribution required — committed in two crops. The handle, domain
+      // and `zł` price stay identical in EN: it is the same Polish shop, only
+      // its interface speaks the reader's language.
       stage: {
-        kind: 'panels',
-        panels: [
-          {
-            src: '/assets/sprzedaz-meta-ads.png',
-            alt: 'Menedżer reklam Meta — wyniki kampanii sprzedażowych na iPadzie',
-            width: 1350,
-            height: 1080,
+        kind: 'journey',
+        journey: {
+          post: {
+            number: '01',
+            label: 'Post w social mediach',
+            verb: 'TWORZYMY',
+            role: 'kreację, która zatrzymuje scroll',
+            handle: 'twojamarka',
+            image: {
+              src: '/assets/sprzedaz-journey-post.jpg',
+              alt: 'Kreacja sprzedażowa — naturalne mydła na pomarańczowym tle',
+            },
+            pill: 'NOWOŚĆ',
+            headline: 'CZYSTY SKŁAD',
+            caption: 'Mydła naturalne już w sklepie —',
+            captionCta: 'link w bio',
           },
-          {
-            src: '/assets/sprzedaz-x.png',
-            alt: 'Analityka X — wzrost wyświetleń i zaangażowania na MacBooku',
-            width: 1350,
-            height: 1080,
+          click: {
+            number: '02',
+            label: 'Klik w reklamę',
+            verb: 'CELUJEMY',
+            role: 'reklamą tam, gdzie są Twoi klienci',
+            cta: 'KUP TERAZ',
+            hint: 'klik w link',
           },
-          {
-            src: '/assets/sprzedaz-tiktok.png',
-            alt: 'TikTok Studio — statystyki wyświetleń i obserwujących na MacBooku',
-            width: 1350,
-            height: 1080,
+          shop: {
+            number: '03',
+            label: 'Strona produktu',
+            verb: 'PROWADZIMY',
+            role: 'ruch prosto do Twojego sklepu',
+            image: {
+              src: '/assets/sprzedaz-journey-packshot.jpg',
+              alt: 'Packshot produktu — kostki naturalnego mydła',
+            },
+            url: 'twojamarka.pl/mydla',
+            product: 'Mydła naturalne',
+            price: '59 zł',
+            addToCart: 'DODAJ DO KOSZYKA',
           },
-          {
-            src: '/assets/sprzedaz-youtube.png',
-            alt: 'Statystyki kanału YouTube — wzrost wyświetleń na iPadzie',
-            width: 1350,
-            height: 1080,
+          cart: {
+            number: '04',
+            label: 'Koszyk',
+            verb: 'DOMYKAMY',
+            role: 'sprzedaż remarketingiem',
+            count: '1',
+            title: 'W koszyku',
+            line: 'Mydła · 59 zł',
           },
-          {
-            src: '/assets/sprzedaz-linkedin.png',
-            alt: 'Analiza strony LinkedIn — wzrost odwiedzin i obserwujących na MacBooku',
-            width: 1350,
-            height: 1080,
+          order: {
+            number: '05',
+            label: 'Zamówienie złożone',
+            verb: 'MIERZYMY',
+            role: 'zamówienia, nie lajki',
+            title: 'Zamówienie przyjęte',
+            meta: '#8412 · dziś, 14:32',
+            rows: [
+              { label: 'Mydła naturalne', value: '59 zł' },
+              { label: 'Dostawa', value: '0 zł' },
+            ],
           },
-          {
-            src: '/assets/sprzedaz-instagram.png',
-            alt: 'Statystyki Instagrama — wzrost zasięgu i obserwujących na iPhonie',
-            width: 900,
-            height: 1117,
-          },
-        ],
+        },
       },
     },
     {

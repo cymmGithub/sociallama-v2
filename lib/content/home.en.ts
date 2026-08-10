@@ -349,50 +349,75 @@ export const services = {
     {
       id: 'sprzedaz',
       title: 'SALES',
-      body: 'Communication has to do its most important job: selling — and we measure success by your business results.',
+      body: 'We walk your customer from post to order: creative, click, store, cart. Sales is one of the most important measures of our work.',
       bodyLong:
         "As we shape your brand's offer, we make sure communication ultimately does its most important job: selling products or services. We measure our effectiveness not only by social media metrics, but above all by your business's success.",
       link: { label: 'LEARN MORE', href: '/en/services/sales' },
+      // The handle, domain and `zł` price are deliberately untranslated: the
+      // depicted shop is the same fictional Polish one in both locales, only
+      // its interface speaks the reader's language.
       stage: {
-        kind: 'panels',
-        panels: [
-          {
-            src: '/assets/sprzedaz-meta-ads.png',
-            alt: 'Meta Ads Manager — sales campaign results on an iPad',
-            width: 1350,
-            height: 1080,
+        kind: 'journey',
+        journey: {
+          post: {
+            number: '01',
+            label: 'Social media post',
+            verb: 'WE CREATE',
+            role: 'the creative that stops the scroll',
+            handle: 'twojamarka',
+            image: {
+              src: '/assets/sprzedaz-journey-post.jpg',
+              alt: 'Sales creative — natural soaps on an orange background',
+            },
+            pill: 'NEW',
+            headline: 'CLEAN INGREDIENTS',
+            caption: 'Natural soaps now in stock —',
+            captionCta: 'link in bio',
           },
-          {
-            src: '/assets/sprzedaz-x.png',
-            alt: 'X analytics — growth in views and engagement on a MacBook',
-            width: 1350,
-            height: 1080,
+          click: {
+            number: '02',
+            label: 'Ad click',
+            verb: 'WE TARGET',
+            role: 'the ads where your customers already are',
+            cta: 'BUY NOW',
+            hint: 'link click',
           },
-          {
-            src: '/assets/sprzedaz-tiktok.png',
-            alt: 'TikTok Studio — views and followers stats on a MacBook',
-            width: 1350,
-            height: 1080,
+          shop: {
+            number: '03',
+            label: 'Product page',
+            verb: 'WE DRIVE',
+            role: 'traffic straight to your store',
+            image: {
+              src: '/assets/sprzedaz-journey-packshot.jpg',
+              alt: 'Product packshot — bars of natural soap',
+            },
+            url: 'twojamarka.pl/mydla',
+            product: 'Natural soaps',
+            price: '59 zł',
+            addToCart: 'ADD TO CART',
           },
-          {
-            src: '/assets/sprzedaz-youtube.png',
-            alt: 'YouTube channel stats — growth in views on an iPad',
-            width: 1350,
-            height: 1080,
+          cart: {
+            number: '04',
+            label: 'Cart',
+            verb: 'WE CLOSE',
+            role: 'the sale with remarketing',
+            count: '1',
+            title: 'In your cart',
+            line: 'Soaps · 59 zł',
           },
-          {
-            src: '/assets/sprzedaz-linkedin.png',
-            alt: 'LinkedIn page analytics — growth in visits and followers on a MacBook',
-            width: 1350,
-            height: 1080,
+          order: {
+            number: '05',
+            label: 'Order placed',
+            verb: 'WE MEASURE',
+            role: 'orders, not likes',
+            title: 'Order confirmed',
+            meta: '#8412 · today, 2:32 PM',
+            rows: [
+              { label: 'Natural soaps', value: '59 zł' },
+              { label: 'Delivery', value: '0 zł' },
+            ],
           },
-          {
-            src: '/assets/sprzedaz-instagram.png',
-            alt: 'Instagram insights — growth in reach and followers on an iPhone',
-            width: 900,
-            height: 1117,
-          },
-        ],
+        },
       },
     },
     {

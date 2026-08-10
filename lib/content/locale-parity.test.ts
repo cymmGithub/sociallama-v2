@@ -27,14 +27,26 @@ test('o-nas team rosters mirror each other (same people, same order)', () => {
 
 test('services stage media is locale-invariant (alt copy aside)', () => {
   const media = (items: LocalizedHome['services']['items']) =>
-    items.map((item) =>
-      'panels' in item.stage
-        ? item.stage.panels.map(({ src, width, height }) => ({
-            src,
-            width,
-            height,
-          }))
-        : item.stage.clips.map(({ src, poster }) => ({ src, poster }))
-    )
+    items.map(({ stage }) => {
+      if ('panels' in stage) {
+        return stage.panels.map(({ src, width, height }) => ({
+          src,
+          width,
+          height,
+        }))
+      }
+      // The journey vignettes are translated, but their crops, their step
+      // order and the fictional shop's identity must not drift between
+      // locales — one depicted shop, one currency, one funnel.
+      if ('journey' in stage) {
+        const { post, click, shop, cart, order } = stage.journey
+        return {
+          crops: [post.image.src, shop.image.src],
+          steps: [post, click, shop, cart, order].map((step) => step.number),
+          shop: [post.handle, shop.url, shop.price],
+        }
+      }
+      return stage.clips.map(({ src, poster }) => ({ src, poster }))
+    })
   expect(media(en.services.items)).toEqual(media(pl.services.items))
 })

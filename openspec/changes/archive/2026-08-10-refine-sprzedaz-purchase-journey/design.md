@@ -59,7 +59,11 @@ a plum caption strip naming the agency's role.
    endpoint dot, `viewBox` with `preserveAspectRatio="none"`, z-indexed
    between backdrop and cards, `aria-hidden`. It is decorative; no per-step
    anchoring logic. If card slots move, the path is retuned by hand (same
-   practice as slot geometry).
+   practice as slot geometry). The stretch is kept off the stroke
+   (`vector-effect="non-scaling-stroke"`) and off the endpoint dot (a CSS
+   circle, not an SVG one), so neither distorts as the stage aspect swings.
+   The condensed stage renders no path at all — three cards fill it wall to
+   wall, so the curve would run entirely behind them.
 
 4. **Mobile shows steps 01, 03, 05 — not "first three".** The stacked mobile
    stage would cut the story at the shop page under the existing
@@ -103,9 +107,12 @@ a plum caption strip naming the agency's role.
   licence requires no attribution; note source photo id in the content
   comment.
 - [Story cut on mobile trio] → resolved by decision 4 (01/03/05 subset).
-- [Removing `sprzedaz-*.png` could break other references] → grep confirms
-  usage only in `lib/content/home.ts` / `home.en.ts` before deletion; removal
-  happens in the same commit as the content swap.
+- [Removing `sprzedaz-*.png` could break other references] → **realized, and
+  the deletion is off.** The grep found a second consumer: `/uslugi/sprzedaz`
+  reuses all six as its platform dashboards (`lib/content/uslugi.ts` +
+  `uslugi.en.ts`, comment "O1: reuse of the homepage's six sprzedaż dashboard
+  panels"). That page is a non-goal here, so the files stay and only the
+  homepage stage stops referencing them.
 
 ## Open Questions
 

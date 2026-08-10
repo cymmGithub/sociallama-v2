@@ -27,12 +27,27 @@
 
 import cn from 'clsx'
 import { useMediaQuery } from 'hamo'
-import { Play } from 'lucide-react'
+import {
+  Check,
+  Heart,
+  Link2,
+  Lock,
+  MessageCircle,
+  MousePointer2,
+  Play,
+  Send,
+  ShoppingCart,
+} from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Video } from '@/components/ui/video'
-import type { LocalizedHome, StageClip } from '@/lib/content/home'
+import type {
+  JourneyStep,
+  LocalizedHome,
+  StageClip,
+  StageJourney,
+} from '@/lib/content/home'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import { breakpoints } from '@/styles/config'
@@ -192,14 +207,17 @@ export function Services({ content }: { content: LocalizedHome['services'] }) {
               <div className={s.stackStage}>
                 <Backdrop />
                 {/* Mobile shows only the first three media items — the smaller
-                    stage fits exactly a trio (slot geometry in the CSS). No
-                    `onEngage`: the tab loop it stops does not exist here. */}
+                    stage fits exactly a trio (slot geometry in the CSS); the
+                    journey stage picks its own trio instead (`condensed`), so
+                    the funnel still ends on the order. No `onEngage`: the tab
+                    loop it stops does not exist here. */}
                 <StageMedia
                   service={service}
                   active
                   playLabel={content.playLabel}
                   reducedMotion={reducedMotion}
                   limit={3}
+                  condensed
                 />
                 <Grain />
               </div>
@@ -266,6 +284,7 @@ function StageMedia({
   playLabel,
   reducedMotion,
   limit,
+  condensed,
   onEngage,
 }: {
   service: ServiceItem
@@ -274,12 +293,18 @@ function StageMedia({
   reducedMotion: boolean
   /** Render only the first N media items (the mobile stage fits a trio). */
   limit?: number
+  /** Mobile stack: the journey stage drops to its three-step subset. */
+  condensed?: boolean
   onEngage?: () => void
 }) {
   const { stage } = service
 
   // `in`-narrowing, not `stage.kind === 'panels'`: Localized widens the `kind`
   // discriminant to `string`, so the property check is what narrows the union.
+  if ('journey' in stage) {
+    return <JourneyStage journey={stage.journey} condensed={condensed} />
+  }
+
   if ('panels' in stage) {
     const panels = limit ? stage.panels.slice(0, limit) : stage.panels
     return (
@@ -312,6 +337,187 @@ function StageMedia({
       reducedMotion={reducedMotion}
       onEngage={onEngage}
     />
+  )
+}
+
+/* Decorative flow path, hand-tuned to the slot geometry in the CSS (the same
+   practice as the slots themselves — nothing anchors the curve to the cards,
+   so moving a slot means retuning the `d` here). Drawn in a 1000×500 box that
+   stretches to the stage; `non-scaling-stroke` keeps the dashes even. */
+const FLOW_PATH =
+  'M 100 275 C 180 380, 230 380, 300 350 C 380 320, 400 240, 500 240 C 620 240, 660 300, 760 340 C 800 355, 880 330, 890 262'
+
+/**
+ * SPRZEDAŻ stage: the purchase journey the agency runs, drawn as five UI
+ * vignettes over a dashed flow path — post → klik → strona produktu → koszyk
+ * → zamówienie. Every string comes from the content layer (real HTML text, so
+ * both locales stay crisp and localizable); the only rasters are the two
+ * committed crops of one brand-free stock photo.
+ *
+ * The cards must stay in step order in the DOM: the entrance delays play the
+ * funnel 01→05 off that order. `condensed` (the mobile stack) renders steps
+ * 01/03/05 — the generic `limit` rule the other tabs use would strand the
+ * story on the shop page instead of closing it on the order.
+ */
+function JourneyStage({
+  journey,
+  condensed,
+}: {
+  journey: StageJourney
+  condensed?: boolean | undefined
+}) {
+  const { post, click, shop, cart, order } = journey
+
+  return (
+    <div
+      className={cn(s.journey, condensed && s.isCondensed)}
+      data-stage="sprzedaz"
+    >
+      {/* No path in the condensed stage: three cards fill it wall to wall, so
+          the curve would run entirely behind them. The step chips carry the
+          order there. */}
+      {!condensed && (
+        <>
+          <svg
+            className={s.flow}
+            viewBox="0 0 1000 500"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+            role="presentation"
+          >
+            <path d={FLOW_PATH} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span className={s.flowEnd} aria-hidden="true" />
+        </>
+      )}
+
+      <div className={cn(s.jcard, s.jPost)}>
+        <StepChip step={post} />
+        <div className={s.postHead}>
+          <span className={s.postAvatar} aria-hidden="true" />
+          <span className={s.postName}>{post.handle}</span>
+        </div>
+        <div className={s.postShot}>
+          <Image
+            src={post.image.src}
+            alt={post.image.alt}
+            fill
+            objectFit="cover"
+            mobileSize="35vw"
+            desktopSize="18vw"
+          />
+          <span className={s.postPill}>{post.pill}</span>
+          <span className={s.postHeadline}>{post.headline}</span>
+        </div>
+        <div className={s.postActions} aria-hidden="true">
+          <Heart />
+          <MessageCircle />
+          <Send />
+        </div>
+        <p className={s.postCaption}>
+          {post.caption} <b>{post.captionCta}</b>
+        </p>
+        <RoleStrip step={post} />
+      </div>
+
+      <div className={cn(s.jcard, s.jClick)}>
+        <StepChip step={click} />
+        <p className={s.clickCta}>
+          {click.cta}
+          <span className={s.clickRipple} aria-hidden="true" />
+          <MousePointer2 className={s.clickPointer} aria-hidden="true" />
+        </p>
+        <p className={s.clickHint}>
+          <Link2 aria-hidden="true" />
+          {click.hint}
+        </p>
+        <RoleStrip step={click} />
+      </div>
+
+      <div className={cn(s.jcard, s.jShop)}>
+        <StepChip step={shop} />
+        <div className={s.shopBar}>
+          <span className={s.shopDots} aria-hidden="true" />
+          <span className={s.shopUrl}>
+            <Lock aria-hidden="true" />
+            {shop.url}
+          </span>
+        </div>
+        <div className={s.shopBody}>
+          <div className={s.shopShot}>
+            <Image
+              src={shop.image.src}
+              alt={shop.image.alt}
+              fill
+              objectFit="cover"
+              mobileSize="20vw"
+              desktopSize="12vw"
+            />
+          </div>
+          <div>
+            <p className={s.shopProduct}>{shop.product}</p>
+            <p className={s.shopPrice}>{shop.price}</p>
+            <p className={s.shopButton}>
+              <ShoppingCart aria-hidden="true" />
+              {shop.addToCart}
+            </p>
+          </div>
+        </div>
+        <RoleStrip step={shop} />
+      </div>
+
+      <div className={cn(s.jcard, s.jCart)}>
+        <StepChip step={cart} />
+        <p className={s.cartRow}>
+          <span className={s.cartIcon}>
+            <ShoppingCart aria-hidden="true" />
+            <span className={s.cartBadge}>{cart.count}</span>
+          </span>
+          <span className={s.cartLabel}>
+            <b>{cart.title}</b>
+            {cart.line}
+          </span>
+        </p>
+        <RoleStrip step={cart} />
+      </div>
+
+      <div className={cn(s.jcard, s.jOrder)}>
+        <StepChip step={order} />
+        <span className={s.orderCheck} aria-hidden="true">
+          <Check />
+        </span>
+        <p className={s.orderTitle}>{order.title}</p>
+        <p className={s.orderMeta}>{order.meta}</p>
+        <dl className={s.orderRows}>
+          {order.rows.map((row) => (
+            <div key={row.label}>
+              <dt>{row.label}</dt>
+              <dd>{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <RoleStrip step={order} />
+      </div>
+    </div>
+  )
+}
+
+/** Numbered chip; the step's name rides along for screen readers. */
+function StepChip({ step }: { step: JourneyStep }) {
+  return (
+    <span className={s.jChip}>
+      {step.number}
+      <span className="sr-only"> — {step.label}</span>
+    </span>
+  )
+}
+
+/** Plum strip closing each card: what the agency does at this step. */
+function RoleStrip({ step }: { step: JourneyStep }) {
+  return (
+    <p className={s.jRole}>
+      <b>{step.verb}</b> {step.role}
+    </p>
   )
 }
 
