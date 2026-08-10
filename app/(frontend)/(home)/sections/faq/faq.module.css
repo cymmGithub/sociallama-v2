@@ -93,13 +93,30 @@
 
   /* Two-column open ledger: question left, answer right (::details-content is
      element-backed and participates as a grid item), toggle at the row's far
-     edge. Mobile keeps the stacked flow untouched. */
+     edge. Mobile keeps the stacked flow untouched.
+
+     The @supports gate is load-bearing, not decoration. Every part of this
+     treatment — the row grid, the shrunk summary, the detached sign, the
+     answer's baseline offset — assumes something lands in column two, and the
+     only thing that ever does is `::details-content`, which Safari shipped in
+     18.4. Below that one version the pseudo-element rule is the single line
+     the parser drops while the rest still applies, so the row rendered as a
+     two-column grid with nothing in the second column: the answer fell under
+     its question carrying a top margin meant for baseline alignment, and the
+     +/− floated at the far right of an empty half. Reported on Safari 18.1.1,
+     2026-08-10. Gated, those engines keep the stacked presentation the mobile
+     fold already uses, which is a design rather than a casualty.
+
+     Keep every rule of this treatment behind the same gate — a rule that
+     escapes it re-creates the half-applied row on its own. */
   @media (--desktop) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-    column-gap: 4rem;
-    /* Positioning context for the absolutely placed .sign. */
-    position: relative;
+    @supports selector(::details-content) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+      column-gap: 4rem;
+      /* Positioning context for the absolutely placed .sign. */
+      position: relative;
+    }
   }
 }
 
@@ -112,9 +129,13 @@
   cursor: pointer;
 
   /* The sign leaves the flow (absolute, far right of the row) so the summary's
-     grid shrinks to numeral | question in the left column. */
+     grid shrinks to numeral | question in the left column. Gated with the row
+     itself: where the ledger does not apply the sign stays in the flow and
+     still needs its `auto` track. */
   @media (--desktop) {
-    grid-template-columns: var(--num-col) 1fr;
+    @supports selector(::details-content) {
+      grid-template-columns: var(--num-col) 1fr;
+    }
   }
 }
 
@@ -170,12 +191,16 @@
   /* Out of the summary's grid, pinned to the row's right edge — over the answer
      column. Top offset is the row padding plus the old margin-top so the bars
      sit where they always did. Still a summary child, so it stays part of the
-     click target. */
+     click target. Gated with the row: without the ledger there is no `.item`
+     positioning context to pin against, and the sign belongs beside the
+     question anyway. */
   @media (--desktop) {
-    position: absolute;
-    inset-inline-end: 0;
-    top: calc(var(--row-pad) + 0.35em);
-    margin-top: 0;
+    @supports selector(::details-content) {
+      position: absolute;
+      inset-inline-end: 0;
+      top: calc(var(--row-pad) + 0.35em);
+      margin-top: 0;
+    }
   }
 }
 
@@ -237,16 +262,23 @@
      the grid row's top, so offset = row padding + (question baseline below its
      box top) − (answer baseline below its own top). With half-leading
      + ~0.8em ascent: 0.9 × question size − 1.1 × answer size (1.1em here).
-     Tuned against 1728px screenshots. */
+     Tuned against 1728px screenshots.
+
+     Gated with the row — this is the offset that made the fallback read as
+     broken rather than merely different: stacked under its question, the
+     answer wore a ~2.5rem gap aligning it to a baseline in a column that was
+     never rendered. */
   @media (--desktop) {
-    margin-block-start: calc(
-      var(--row-pad) +
-      0.9 *
-      var(--question-size) -
-      1.1em
-    );
-    /* Keep clear of the absolutely positioned sign at the row's right edge. */
-    padding-inline-end: calc(var(--sign-size) + var(--gap));
+    @supports selector(::details-content) {
+      margin-block-start: calc(
+        var(--row-pad) +
+        0.9 *
+        var(--question-size) -
+        1.1em
+      );
+      /* Keep clear of the absolutely positioned sign at the row's right edge. */
+      padding-inline-end: calc(var(--sign-size) + var(--gap));
+    }
   }
 }
 
