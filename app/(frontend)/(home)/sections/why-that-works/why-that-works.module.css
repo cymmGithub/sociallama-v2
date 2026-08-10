@@ -76,9 +76,16 @@
 
   /* Experiment (2026-08-04): tiles read a touch large next to the copy —
      cap the mosaic below its full half-row so each card shrinks slightly.
-     Caption type and gaps are cqw-sized, so they scale down with it. */
+     Caption type and gaps are cqw-sized, so they scale down with it.
+
+     `width`, not `max-width`: WebKit drops a percentage max-width on a grid
+     item during track sizing, then lays the item out uncapped. The mosaic came
+     out 11% oversized (833.9px tall in a 749.9px row) and .bottom's
+     `align-items: center` overflowed it 42px upward, into the manifesto's last
+     line — Safari only, measured 2026-08-10. A plain width resolves in both
+     passes; geometry is unchanged in Chromium to the pixel. */
   @media (--desktop) {
-    max-width: 90%;
+    width: 90%;
   }
 }
 
