@@ -889,7 +889,7 @@ export const SERVICES = [
           src: '/clips/folks-cover.mp4',
           mobileSrc: '/clips/folks-cover-mobile.mp4',
           poster: '/clips/folks-cover-poster.jpg',
-          alt: 'Twórca internetowy nagrywający materiał przy lampie pierścieniowej',
+          alt: 'Twórczyni prezentuje produkt do kamery telefonu, druga osoba nagrywa materiał',
         },
         // image: user-supplied Folks showcase — omitted until delivered.
       },

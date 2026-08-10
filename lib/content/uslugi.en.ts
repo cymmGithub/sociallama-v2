@@ -604,7 +604,7 @@ export const SERVICES = [
           src: '/clips/folks-cover.mp4',
           mobileSrc: '/clips/folks-cover-mobile.mp4',
           poster: '/clips/folks-cover-poster.jpg',
-          alt: 'Content creator filming with a ring light',
+          alt: 'A creator presenting a product to a phone camera while someone else films',
         },
       },
       {
