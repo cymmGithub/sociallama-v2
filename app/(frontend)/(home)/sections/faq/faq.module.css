@@ -99,16 +99,18 @@
      treatment — the row grid, the shrunk summary, the detached sign, the
      answer's baseline offset — assumes something lands in column two, and the
      only thing that ever does is `::details-content`, which Safari shipped in
-     18.4. Below that one version the pseudo-element rule is the single line
-     the parser drops while the rest still applies, so the row rendered as a
-     two-column grid with nothing in the second column: the answer fell under
-     its question carrying a top margin meant for baseline alignment, and the
-     +/− floated at the far right of an empty half. Reported on Safari 18.1.1,
-     2026-08-10. Gated, those engines keep the stacked presentation the mobile
-     fold already uses, which is a design rather than a casualty.
+     18.4. Reported on Safari 18.1.1, 2026-08-10.
 
-     Keep every rule of this treatment behind the same gate — a rule that
-     escapes it re-creates the half-applied row on its own. */
+     It is not merely that the pseudo-element rule gets dropped: measured in
+     WebKit 18.2, `<details>` reports `display: grid` and stacks its contents
+     anyway, because its content lives in a UA shadow slot that is not a grid
+     item before 18.4. Grid, flex and bare auto-placement all collapse to one
+     column there. Those engines get the float ledger at the foot of this file,
+     which reaches the same geometry by other means.
+
+     Keep every rule of this treatment behind the same gate, and mirror any
+     geometry change in the float ledger — a rule that escapes the gate
+     re-creates the half-applied row on its own. */
   @media (--desktop) {
     @supports selector(::details-content) {
       display: grid;
@@ -127,6 +129,19 @@
   align-items: start;
   padding-block: var(--row-pad);
   cursor: pointer;
+
+  /* Kill the UA disclosure triangle. Not cosmetic: where the marker survives
+     it becomes an extra grid item and shifts every column of this row along by
+     one, which is what put the +/− on the far LEFT of the mobile row and left
+     a stray triangle above it (measured in WebKit 18.2 at 390px). Chromium and
+     Safari 26 hide it for free — `display: grid` strips the list-item-ness —
+     so the bug was invisible everywhere it was checked. `list-style` covers
+     Chromium and Firefox, the -webkit- pseudo covers Safari. */
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
 
   /* The sign leaves the flow (absolute, far right of the row) so the summary's
      grid shrinks to numeral | question in the left column. Gated with the row
@@ -287,5 +302,74 @@
 @media (--reduced-motion) {
   .item::details-content {
     transition-duration: 0.01ms;
+  }
+}
+
+/* —— Pre-::details-content ledger (Safari < 18.4, Firefox < 139) ————————————
+   The grid path above cannot work here, and not because the pseudo-element
+   rule is merely dropped: measured in WebKit 18.2, `<details>` reports
+   `display: grid` and still stacks its contents. Its content sits in a UA
+   shadow slot that does not participate as a grid item before 18.4, so grid,
+   flex and bare auto-placement all collapse to one column. Only float does
+   the job, because it needs nothing of the parent except the block flow
+   Safari forces `<details>` into anyway.
+
+   Column geometry is the grid path's `minmax(0,1fr) minmax(0,1.25fr)` with a
+   4rem gutter, solved by hand: the row minus the gutter, split 1/2.25. Written
+   as the same expression rather than a rounded 44% so the two paths land on
+   the same pixel — a reader on Safari 18 and a reader on Safari 26 get the
+   same page, not an approximation of it. */
+@media (--desktop) {
+  @supports not selector(::details-content) {
+    .item {
+      /* Positioning context for .sign, exactly as in the grid path. `position`
+         is honoured on <details> in every engine — it is `display` that is
+         quietly ignored. */
+      position: relative;
+    }
+
+    /* Contain the floated summary so the row's hairline sits below both
+       columns instead of riding up under the question. `display: flow-root`
+       would be the modern spelling and is precisely what this engine refuses
+       to apply to <details>, hence the clearfix. */
+    .item::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .summary {
+      float: inline-start;
+      inline-size: calc((100% - 4rem) / 2.25);
+      /* The sign leaves the flow here too, so the summary's inner grid shrinks
+         to numeral | question. */
+      grid-template-columns: var(--num-col) 1fr;
+    }
+
+    .sign {
+      position: absolute;
+      inset-inline-end: 0;
+      top: calc(var(--row-pad) + 0.35em);
+      margin-top: 0;
+    }
+
+    .answer {
+      /* Same first-baseline alignment as the grid path, but as padding rather
+         than margin. The grid path can use a margin because a grid item's
+         margins never collapse; here the answer is an ordinary block whose top
+         margin would collapse straight through <details> — measured, it pushed
+         the entire row down 32px and left the question sitting below its own
+         answer instead of level with it. */
+      padding-block-start: calc(
+        var(--row-pad) +
+        0.9 *
+        var(--question-size) -
+        1.1em
+      );
+      /* Clears the floated question column plus the gutter. The grid path
+         needs no equivalent: there the answer is placed in a track. */
+      margin-inline-start: calc((100% - 4rem) / 2.25 + 4rem);
+      padding-inline-end: calc(var(--sign-size) + var(--gap));
+    }
   }
 }
