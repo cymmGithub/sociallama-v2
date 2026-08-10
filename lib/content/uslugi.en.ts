@@ -601,9 +601,9 @@ export const SERVICES = [
         copy: 'Effective influencer marketing is a great deal more than a one-off post from a creator — which is why we joined forces with Folks, an agency built around authentic relationships between brands and the people who follow them. Both of us belong to the Good One Group, so social media, strategy, content, and influencer marketing all sit under one roof: a wide creator network, seasoned specialists, and full campaign management — from the first idea to the final report. One partner. Many capabilities. BETTER WORKS.',
         href: '/en/contact',
         video: {
-          src: '/clips/folks-cover.mp4',
-          mobileSrc: '/clips/folks-cover-mobile.mp4',
-          poster: '/clips/folks-cover-poster.jpg',
+          src: '/clips/folks-cover-2.mp4',
+          mobileSrc: '/clips/folks-cover-2-mobile.mp4',
+          poster: '/clips/folks-cover-2-poster.jpg',
           alt: 'A creator presenting a product to a phone camera while someone else films',
         },
       },

@@ -885,10 +885,15 @@ export const SERVICES = [
         copy: 'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z\u00A0twórcą — dlatego połączyliśmy siły z\u00A0Folks, agencją specjalizującą się w\u00A0budowaniu autentycznych relacji między markami a\u00A0odbiorcami. Obie należymy do Grupy Good One, więc kompetencje z\u00A0obszaru social mediów, strategii, contentu i\u00A0influencer marketingu spotykają się w\u00A0jednym miejscu: szeroka sieć twórców, doświadczeni eksperci i\u00A0kompleksowa obsługa kampanii — od pomysłu po raportowanie efektów. Jeden partner. Wiele kompetencji. BETTER WORKS.',
         href: '/kontakt',
         // Ambient creator footage (Pexels, free licence) — full-bleed cover.
+        // The `-2` is a cache-busting revision, not a variant: /clips/* ships
+        // `max-age=86400` with no build hash, and the Video primitive fetches
+        // lazily on scroll — so a replaced clip escapes even a hard reload and
+        // returning visitors keep the old one for a day. Bump the number when
+        // the footage changes; never overwrite one of these files in place.
         video: {
-          src: '/clips/folks-cover.mp4',
-          mobileSrc: '/clips/folks-cover-mobile.mp4',
-          poster: '/clips/folks-cover-poster.jpg',
+          src: '/clips/folks-cover-2.mp4',
+          mobileSrc: '/clips/folks-cover-2-mobile.mp4',
+          poster: '/clips/folks-cover-2-poster.jpg',
           alt: 'Twórczyni prezentuje produkt do kamery telefonu, druga osoba nagrywa materiał',
         },
         // image: user-supplied Folks showcase — omitted until delivered.
