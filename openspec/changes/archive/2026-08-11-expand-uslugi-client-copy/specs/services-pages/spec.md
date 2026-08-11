@@ -2,24 +2,48 @@
 
 ## ADDED Requirements
 
-### Requirement: Partner covers render the collaboration pitch as paragraphs
+### Requirement: The collaboration pitch continues below the cover, off the video
 
-A partner cover's copy SHALL support multiple paragraphs, rendered as separate paragraph elements. The two covers whose client documents carry multi-paragraph collaboration copy — SEOFly on the ad-campaigns page and Folks on the influencer-marketing page — SHALL present that copy's argument structure across paragraphs: the division of responsibilities between the partner and Social Lama, the benefit of the Grupa Good One model to the client, and the closing group line. Covers with single-paragraph copy SHALL continue to render unchanged.
+A partner block SHALL carry at most one paragraph over its cover footage. Where the client documents supply a multi-paragraph collaboration pitch — SEOFly on the ad-campaigns page and Folks on the influencer-marketing page — the opening paragraph SHALL ride the cover and the remainder SHALL render in a section immediately below it, on a solid ground with no video behind them. That section SHALL carry the rest of the documents' argument: the division of responsibilities between the partner and Social Lama, the benefit of the Grupa Good One model to the client, and the closing group line.
 
 #### Scenario: Multi-paragraph partner copy
 
-- **WHEN** the ad-campaigns or influencer-marketing partner cover renders in either locale
-- **THEN** its copy appears as more than one paragraph element, and the final paragraph closes with "Jeden partner. Wiele kompetencji. BETTER WORKS." (or its English equivalent)
+- **WHEN** the ad-campaigns or influencer-marketing partner block renders in either locale
+- **THEN** exactly one paragraph renders over the cover video, the remaining paragraphs render in a solid-ground section directly beneath it, and the last of them closes with "Jeden partner. Wiele kompetencji. BETTER WORKS." (or its English equivalent)
 
-#### Scenario: Single-paragraph covers unchanged
+#### Scenario: Single-paragraph blocks unchanged
 
 - **WHEN** the kreacje-wideo DIEA cover renders
-- **THEN** its copy renders as a single paragraph exactly as before
+- **THEN** its copy renders as a single paragraph over the footage exactly as before, and no section is added beneath it
 
-#### Scenario: Copy stays legible over the cover video
+#### Scenario: Copy stays legible
 
-- **WHEN** a partner cover with multi-paragraph copy renders at mobile or desktop width
-- **THEN** all paragraphs meet WCAG AA contrast over the scrimmed video ground
+- **WHEN** a partner block's continuation section renders at mobile or desktop width
+- **THEN** its paragraphs sit on a solid ground rather than over moving footage, and meet WCAG AA contrast
+
+### Requirement: The division of responsibilities renders as a division
+
+Where a partner block states who does what, it SHALL render as two labelled lists — the partner's side and Social Lama's side — rather than as a paragraph describing them. The two SHALL be separated by the same `×` that joins the logos in the cover lockup, drawn as the rule between them. Only the partner's side SHALL carry the partner's brand colour; Social Lama's side SHALL stay neutral, so the brand orange is reserved for the closing group line. A partner block that declares no such division SHALL render only its paragraphs, adding no empty split.
+
+#### Scenario: Who does what is scannable
+
+- **WHEN** the ad-campaigns, influencer-marketing, or audit partner block renders in either locale
+- **THEN** the responsibilities appear as two labelled lists with the partner's list first, matching the lockup's order
+
+#### Scenario: The axis is the lockup's mark
+
+- **WHEN** the two lists render at desktop width
+- **THEN** the `×` separates them on a vertical rule, and once the lists stack at mobile width the same mark separates them on a horizontal one
+
+#### Scenario: One accent per side
+
+- **WHEN** a division renders
+- **THEN** the partner's label carries that partner's own brand colour and Social Lama's label does not, and the brand orange appears only on the closing group line
+
+#### Scenario: A block without a division is unaffected
+
+- **WHEN** the kreacje-wideo DIEA block renders
+- **THEN** no split renders, and the block is its cover alone
 
 ### Requirement: Partner taglines are publisher-authored
 
@@ -37,7 +61,7 @@ A partner cover SHALL only display a tagline the partner actually publishes. No 
 
 ### Requirement: The audit page cross-sells the group's website audits
 
-`/uslugi/audyt-i-konsultacje` and its English counterpart SHALL close with a SEOFly partner cover that reuses the ad-campaigns cover's video assets. Its copy SHALL be complementary to the ad-campaigns block, not a duplicate: it SHALL present Social Lama as the auditor of social media profiles and SEOFly as the group's auditor of websites and SEO, and SHALL NOT present SEOFly as the provider of this page's audits. The cover SHALL close with the group line.
+`/uslugi/audyt-i-konsultacje` and its English counterpart SHALL close with a SEOFly partner block that reuses the ad-campaigns cover's video assets. Its copy SHALL be complementary to the ad-campaigns block, not a duplicate: it SHALL present Social Lama as the auditor of social media profiles and SEOFly as the group's auditor of websites and SEO, and SHALL NOT present SEOFly as the provider of this page's audits. The block SHALL close with the group line.
 
 #### Scenario: The cover reuses the existing video
 
@@ -46,8 +70,8 @@ A partner cover SHALL only display a tagline the partner actually publishes. No 
 
 #### Scenario: The boundary is stated, not blurred
 
-- **WHEN** the audit page's partner cover copy renders in either locale
-- **THEN** it names websites/SEO as SEOFly's audit domain, distinct from the social media profile audits offered by this page, and closes with "Jeden partner. Wiele kompetencji. BETTER WORKS." (or its English equivalent)
+- **WHEN** the audit page's partner block copy renders in either locale
+- **THEN** it names websites/SEO as SEOFly's audit domain, distinct from the social media profile audits offered by this page — stated as the two-list division, not argued in prose — and closes with "Jeden partner. Wiele kompetencji. BETTER WORKS." (or its English equivalent)
 
 ## MODIFIED Requirements
 
@@ -64,7 +88,7 @@ The three services with client copy documents — Strategia, Influencer marketin
 #### Scenario: Audyt composition
 
 - **WHEN** `/uslugi/audyt-i-konsultacje` renders
-- **THEN** it shows a hero with a call-to-action, a deliverables checklist, a strip of the six audited platform marks, a consultation banner, a proof section, and a SEOFly partner cover, in that order
+- **THEN** it shows a hero with a call-to-action, a deliverables checklist, a strip of the six audited platform marks, a consultation banner, a proof section, and a SEOFly partner block, in that order
 - **AND** no triptych appears on the page
 
 #### Scenario: Audyt speaks the client's headline voice

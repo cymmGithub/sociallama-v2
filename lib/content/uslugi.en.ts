@@ -409,7 +409,31 @@ export const SERVICES = [
         partner: 'seofly',
         name: 'SEOFly',
         logo: '/assets/seofly-logo-light.png',
-        copy: 'Good marketing does not stop at one channel — which is why we joined forces with SEOFly, an agency built around SEO and performance marketing. Social Lama handles strategy, content, and social media; SEOFly grows brand visibility in search and runs performance campaigns. Both belong to the Good One Group, so the competencies — social, SEO and performance, PR, influencer marketing, employer branding — all sit in one place. One partner. Many competencies. BETTER WORKS.',
+        copy: [
+          'Good marketing does not stop at one channel. A brand that owns social can still be invisible to someone typing its product into Google — which is why we joined forces with SEOFly, an agency built around SEO and performance marketing.',
+          'For a brand that means one team instead of two agencies to coordinate, one brief instead of explaining the strategy a second time, and one place where every capability in the Good One Group meets — social, SEO and performance, PR, influencer marketing, employer branding.',
+          'One partner. Many capabilities. BETTER WORKS.',
+        ],
+        split: {
+          partner: {
+            label: 'SEOFly',
+            items: [
+              'SEO and visibility in Google',
+              'Google Ads campaigns',
+              'Websites',
+              'Analytics and reporting',
+            ],
+          },
+          lama: {
+            label: 'Social Lama',
+            items: [
+              'Communication strategy',
+              'Content and profile management',
+              'Paid social campaigns',
+              'Influencer marketing',
+            ],
+          },
+        },
         href: '/en/contact',
         video: {
           src: '/clips/seofly-cover.mp4',
@@ -417,6 +441,12 @@ export const SERVICES = [
           poster: '/clips/seofly-cover-poster.jpg',
           alt: 'Working at a laptop on search results',
         },
+      },
+      {
+        kind: 'banner',
+        heading: 'Looking for Meta or TikTok campaigns?',
+        body: 'Paid social lives one page over, on Sales. Search is what we handle here — SEO and campaigns in Google; over there — Meta Ads, TikTok, and selling judged on results.',
+        cta: { label: 'See sales', href: '/en/services/sales' },
       },
     ],
   },
@@ -498,15 +528,15 @@ export const SERVICES = [
         kind: 'hero',
         title: 'Audit & consulting',
         intro:
-          'Need to check whether your social media work is actually paying off, or run an idea past an expert? We analyze your profile, point out the strengths and the places that need work, and walk you through concrete recommendations and next steps in a one-on-one consultation.',
+          "You don't always need a new strategy — sometimes a fresh pair of eyes from outside is enough. Need to check whether your social media work is actually paying off, or run an idea past an expert? We analyze your profile, point out the strengths and the places that need work, and walk you through concrete recommendations and next steps in a one-on-one consultation.",
         cta: { label: 'Book a consultation', href: '/en/contact' },
       },
       {
         kind: 'checklist',
         kicker: 'SCOPE',
-        heading: "What's included?",
+        heading: 'See your brand from a new angle',
         intro:
-          "You don't always need a new strategy — sometimes a fresh expert perspective is enough. We analyze the brand's social profiles, review the communication, content, results, and advertising, then talk the findings through with you one to one.",
+          "We analyze the brand's social profiles, review the communication, content, results, and advertising, then talk the findings through with you one to one. Here's what's included:",
         items: [
           'Analysis of your social media profiles',
           'An assessment of communication strategy and content',
@@ -547,6 +577,44 @@ export const SERVICES = [
             title: 'Building the brands on LinkedIn, Facebook, and Instagram',
           },
         ],
+      },
+      {
+        kind: 'partner',
+        partner: 'seofly',
+        name: 'SEOFly',
+        logo: '/assets/seofly-logo-light.png',
+        copy: [
+          'Our audit stops where social media stops. Past that line it is SEOFly — our sibling agency in the Good One Group, who audit websites and how they show up in Google.',
+          'Take one audit or take both. Take both and the findings from social and from search come back as a single direction to act on, rather than two separate documents somebody has to reconcile afterwards.',
+          'One partner. Many capabilities. BETTER WORKS.',
+        ],
+        split: {
+          partner: {
+            label: 'SEOFly audits',
+            items: [
+              'The technical state of the site',
+              'Visibility in Google',
+              'Content written for search',
+              'The link profile',
+            ],
+          },
+          lama: {
+            label: 'We audit',
+            items: [
+              'Social media profiles',
+              'Communication and content',
+              'Results and engagement',
+              'Advertising activity',
+            ],
+          },
+        },
+        href: '/en/contact',
+        video: {
+          src: '/clips/seofly-cover.mp4',
+          mobileSrc: '/clips/seofly-cover-mobile.mp4',
+          poster: '/clips/seofly-cover-poster.jpg',
+          alt: 'Working at a laptop on search results',
+        },
       },
     ],
   },
@@ -597,8 +665,31 @@ export const SERVICES = [
         partner: 'folks',
         name: 'Folks',
         logo: '/assets/folks-logo-light.png',
-        tagline: 'from creators to results',
-        copy: 'Effective influencer marketing is a great deal more than a one-off post from a creator — which is why we joined forces with Folks, an agency built around authentic relationships between brands and the people who follow them. Both of us belong to the Good One Group, so social media, strategy, content, and influencer marketing all sit under one roof: a wide creator network, seasoned specialists, and full campaign management — from the first idea to the final report. One partner. Many capabilities. BETTER WORKS.',
+        copy: [
+          'Effective influencer marketing is a great deal more than a one-off post from a creator. What counts is picking people who genuinely fit the brand, and a relationship that outlasts a single campaign — which is why we joined forces with Folks, an agency built around authentic relationships between brands and the people who follow them.',
+          'For a brand that means one campaign run end to end in one place, consistent with everything else the brand is saying, plus access to every capability in the Good One Group — social and content, SEO and performance, PR, employer branding.',
+          'One partner. Many capabilities. BETTER WORKS.',
+        ],
+        split: {
+          partner: {
+            label: 'Folks',
+            items: [
+              'Creator network',
+              'Briefing and negotiation',
+              'Content production',
+              'Settlement and reporting',
+            ],
+          },
+          lama: {
+            label: 'Social Lama',
+            items: [
+              'Campaign strategy',
+              "The brand's content and social media",
+              'Fit with everything else the brand says',
+              'Analysis of the results',
+            ],
+          },
+        },
         href: '/en/contact',
         video: {
           src: '/clips/folks-cover-2.mp4',

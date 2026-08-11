@@ -453,9 +453,6 @@
 /* —— Partner cover (full-bleed video — DIEA / Folks) ——————————————————————————— */
 
 .partnerCover {
-  /* Per-partner brand accent (DIEA gold by default; overridden below). */
-  --accent: #f4c430;
-
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -466,13 +463,21 @@
   color: var(--color-cream);
 }
 
-/* Folks coral (echoes folks.pl). */
-.partnerCover[data-partner="folks"] {
+/* Per-partner brand accent, set on both halves of the block — the cover and the
+   brief panel under it — so the partner's own colour carries across the split.
+   DIEA gold is the default; the other two echo their own marks. */
+.partnerCover,
+.partnerBrief {
+  --accent: #f4c430;
+}
+
+.partnerCover[data-partner="folks"],
+.partnerBrief[data-partner="folks"] {
   --accent: #f2695b;
 }
 
-/* SEOFly green, taken from their own mark (echoes seofly.pl). */
-.partnerCover[data-partner="seofly"] {
+.partnerCover[data-partner="seofly"],
+.partnerBrief[data-partner="seofly"] {
   --accent: #41ad49;
 }
 
@@ -546,6 +551,153 @@
   font-size: clamp(1rem, 1.5vw, 1.15rem);
   line-height: 1.55;
   color: color-mix(in srgb, var(--color-cream) 85%, transparent);
+}
+
+/* The rest of the collaboration argument, on solid ground directly under the
+   cover (design D1). The footage carries the opening line only — everything
+   past that needs a ground that holds still and stays legible.
+
+   Brand plum, matching the `.partner` copy+image panel rather than a darker
+   mix: the section is ours, and it should look it. */
+.partnerBrief {
+  padding-block: calc(var(--safe) * 2.5) calc(var(--safe) * 3.5);
+  background: var(--color-plum-dark);
+  color: var(--color-cream);
+}
+
+/* The inline padding sits on the inner box, not the section, so this measures
+   exactly like `.partnerCoverInner` above it: same max-width, same `--safe`
+   inside it. Padding the section instead shifts the panel's text ~16px left of
+   the copy on the cover, and the two read as misaligned columns. */
+.partnerBriefInner {
+  --reveal-stagger: 100ms;
+  --reveal-transform: translateY(24px);
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--safe) * 1.75);
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--safe);
+}
+
+.partnerBriefText {
+  margin: 0;
+  max-width: 46rem;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-cream) 84%, transparent);
+}
+
+/* The group slogan always closes the block. It is the one loud note in the
+   section, so it is also the only place the brand orange is spent here. */
+.partnerBriefText:last-child {
+  max-width: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-orange);
+}
+
+/* —— The division of responsibilities ————————————————————————————————————————
+   The `×` that joins the two logos in the cover lockup returns here as the axis
+   the responsibilities divide on: it is drawn as the rule between the columns
+   rather than set beside one. Vertical on desktop, horizontal once the columns
+   stack. One mark, two scales, the same statement. */
+
+.partnerSplit {
+  display: grid;
+  gap: calc(var(--safe) * 1.5);
+  max-width: 68rem;
+
+  @media (--desktop) {
+    grid-template-columns: 1fr auto 1fr;
+    gap: calc(var(--safe) * 2);
+    align-items: stretch;
+  }
+}
+
+/* Only the partner wears its own mark's colour; our side stays cream. Folks'
+   coral and DIEA's gold sit a few degrees from the brand orange, so colouring
+   both columns turns the pairing to mush. */
+.partnerSplitCol {
+  --col: var(--color-cream);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.partnerSplitCol[data-side="partner"] {
+  --col: var(--accent);
+}
+
+/* The floor is 1.2rem, not smaller: at 800 weight that clears 18.66px, which is
+   where WCAG's large-text threshold (3:1) takes over from 4.5:1. The partner
+   accents land at 3.4–3.6:1 on brand plum, so shrinking this label below that
+   floor would drop it out of AA at mobile widths. */
+.partnerSplitLabel {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 1.7vw, 1.35rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--col);
+}
+
+.partnerSplitItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.partnerSplitItems li {
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-cream) 86%, transparent);
+}
+
+.partnerSplitAxis {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2vw, 1.75rem);
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-cream) 42%, transparent);
+  user-select: none;
+}
+
+.partnerSplitAxis::before,
+.partnerSplitAxis::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-cream) 16%, transparent);
+}
+
+@media (--desktop) {
+  .partnerSplitAxis {
+    flex-direction: column;
+    align-self: stretch;
+  }
+
+  .partnerSplitAxis::before,
+  .partnerSplitAxis::after {
+    width: 1px;
+    height: auto;
+  }
 }
 
 .partnerLockup {

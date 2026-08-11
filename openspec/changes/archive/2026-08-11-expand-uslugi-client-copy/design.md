@@ -24,9 +24,30 @@ The client's source documents (2026-07-25) carry 3–4-paragraph partner copy; t
 
 ## Decisions
 
-### D1 — `partner.copy: string | readonly string[]`, not a forced array and not `\n\n` splitting
+### D1 — `partner.copy: string | readonly string[]`, with the array split across two grounds
 
-The renderer maps an array to one `<p>` per entry; a plain string renders exactly as today. This leaves the DIEA block (and any future single-paragraph partner) untouched in both locales, so the diff stays confined to the two blocks being expanded plus the new Audyt block. Splitting a single string on `\n\n` was rejected as a magic-string convention invisible to the type system; forcing `readonly string[]` everywhere was rejected as needless churn on DIEA and its EN twin. Both renderer branches (cover and copy+image) get the same treatment.
+`copy` widens to `string | readonly string[]`. A plain string renders exactly as today. With an array, `copy[0]` rides the cover footage and `copy[1..]` render in a solid plum section emitted directly beneath the cover by the same component — one `partner` descriptor still describes the whole block, and no new section kind is introduced.
+
+**Revised during implementation.** The first pass stacked every paragraph over the footage. Rendered, that was wrong: one paragraph over a moving clip reads as a caption, four read as a wall of text on a ground that keeps moving and is bright in places (the lit laptop in the SEOFly clip, the phone screen in the Folks one). Attempts to settle the legibility question with a pixel metric were abandoned — every variant scored the untouched DIEA cover the same as the changed ones, because a single specular highlight dominates any worst-case reading of moving video. The split fixes the cause rather than measuring the symptom, and it costs no new component: `PartnerCover` returns a fragment, and an empty tail means no second section at all.
+
+Splitting a single string on `\n\n` was rejected as a magic-string convention invisible to the type system; forcing `readonly string[]` everywhere was rejected as needless churn on DIEA and its EN twin. The copy+image branch (currently unused — every partner block ships a video) renders array copy as stacked paragraphs on its existing plum ground, where legibility was never in question.
+
+### D7 — The division of responsibilities becomes a structure, not a paragraph
+
+**Added during implementation, after a design review of the rendered result.**
+
+The second paragraph of every partner pitch *describes a split*: Social Lama does strategy/content/social, the partner does their thing. Rendered as prose it is four lines of agency copy that a visitor skims past; the one question they actually came with — "can this agency cover what I need?" — is answered in a form that has to be read rather than seen.
+
+So `copy[1]` stops being a string and becomes `split: { partner: { label, items }, lama: { label, items } }`. The renderer draws it as two labelled lists. This is not scope creep away from the spec: the spec already requires the block to present "the division of responsibilities between the partner and Social Lama", and a list of responsibilities is the honest shape for that requirement.
+
+Three decisions inside it:
+
+- **The `×` is the axis.** The glyph that joins the two logos in the cover lockup is redrawn as the rule *between* the two lists — vertical on desktop, horizontal once they stack. One mark, two scales, the same statement. It is drawn as the rule rather than set beside it, so it reads as structure and not as decoration.
+- **Only the partner wears its colour.** Colouring both columns in their brand accents was tried and rejected: Folks' coral and DIEA's gold sit a few degrees from the brand orange, and the pairing turns to mush. The partner's label takes `--accent`, Social Lama's stays cream, and the orange is spent once — on the closing group line.
+- **The panel ground is brand plum.** A near-black mixed down from the plum was tried first, because at full strength the plum does mute the partner accent — but the call went the other way in review: the section is ours, and it should look it. The cost is measured rather than assumed: the partner labels land at 3.6:1 (SEOFly) and 3.4:1 (Folks) on `--color-plum-dark`, so the label's size floor is set at `1.2rem` — at 800 weight that clears 18.66px, where WCAG's large-text threshold of 3:1 takes over from 4.5:1. Shrinking that label below the floor would drop it out of AA at mobile widths.
+- **The panel's inline padding sits on the inner box, not the section.** `.partnerCoverInner` keeps `--safe` *inside* its 1240px box; padding the panel's section instead put its text ~16px left of the copy on the cover, and the two read as misaligned columns. Measured at 390/1100/1440px, the kicker, lockup, cover copy, split labels and closing paragraph now share one left edge exactly.
+
+The Audyt block gains the most: "SEOFly audytuje × My audytujemy" states the boundary the spec guards in one glance, where the prose version spent a sentence arguing it.
 
 ### D2 — The Kampanie→Sprzedaż cross-link is a `banner`, mirroring the existing Sprzedaż→Kampanie banner
 
@@ -50,7 +71,7 @@ The hero keeps the service-name title (spec: heroes carry the service title) and
 
 ## Risks / Trade-offs
 
-- [Long partner copy over video hurts legibility, especially mobile] → The cover already runs a scrim; verify the restored ~120–150-word blocks with Playwright screenshots at mobile and desktop widths (WebKit included, per repo verification rules) and let the copy length be trimmed in review rather than weakening the scrim.
+- [Long partner copy over video hurts legibility, especially mobile] → **Materialised, and resolved by D1's split.** The restored blocks were verified with Playwright screenshots at mobile and desktop widths in Chromium and WebKit; at 390px the four-paragraph blocks covered roughly four times the footage the single paragraph had, reaching into the brightest region of both clips. Rather than weaken or thicken the scrim, only the opening paragraph now rides the video and the argument continues on solid plum.
 - [Audyt page identity dilution — a second agency's brand on our audit page] → D3 placement + D4 boundary copy; the block sells the *group*, not SEOFly as the audit provider.
 - [Union type breaks the `Localized` parity mapping] → `Localized` widens literals; `string | readonly string[]` passes through structurally. Confirmed by compile — the parity gate is itself the test.
 - [Three covers closing with the identical group line reads repetitive to a visitor touring the section] → Accepted: the line is the group's slogan and the spec already pins it on two pages; consistency outweighs variety here.

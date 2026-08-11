@@ -24,7 +24,7 @@ import {
   Video as VideoIcon,
   Wallet,
 } from 'lucide-react'
-import { ViewTransition } from 'react'
+import { Fragment, ViewTransition } from 'react'
 import { ServicePoster } from '@/components/sections/service-posters'
 import { isPosterId } from '@/components/sections/service-posters/ids'
 import { Image } from '@/components/ui/image'
@@ -130,7 +130,13 @@ interface PartnerData {
   name: string
   logo?: string
   tagline?: string
-  copy: string
+  /** One paragraph, or several — see `partnerParagraphs`. */
+  copy: string | readonly string[]
+  /** Who does what, as two lists rather than a paragraph about two lists. */
+  split?: {
+    partner: { label: string; items: readonly string[] }
+    lama: { label: string; items: readonly string[] }
+  }
   href: string
   image?: { src: string; alt: string; width: number; height: number }
   video?: { src: string; mobileSrc?: string; poster: string; alt: string }
@@ -450,9 +456,24 @@ function Triptych({ data }: { data: TriptychData }) {
 // —— Partner (Good One siblings: DIEA / Folks / SEOFly / TymKor) ——————————————
 
 /**
+ * The collaboration pitch, always as a list of paragraphs (design D1). A plain
+ * string is a one-entry list, so both layouts render single- and multi-paragraph
+ * copy through one code path.
+ */
+function partnerParagraphs(copy: PartnerData['copy']): readonly string[] {
+  return typeof copy === 'string' ? [copy] : copy
+}
+
+/**
  * Full-bleed cinematic cover — the partner's showreel plays as an ambient muted
  * loop behind a dark scrim, with the partner's branding overlaid (DIEA on
  * Kreacje). Echoes the partner's own identity (a warm gold accent for DIEA).
+ *
+ * Only the opening paragraph rides the footage: one paragraph over a moving
+ * clip is a caption, four are a wall of text on an unreadable ground. The rest
+ * of the collaboration argument continues in `PartnerBrief` directly below, on
+ * solid plum. A single-paragraph block therefore renders exactly as before, and
+ * grows no second section.
  */
 function PartnerCover({
   data,
@@ -464,65 +485,113 @@ function PartnerCover({
   chrome: Chrome
 }) {
   const ref = useReveal<HTMLDivElement>()
+  const briefRef = useReveal<HTMLDivElement>()
+  const [lead, ...brief] = partnerParagraphs(data.copy)
 
   return (
-    <section className={s.partnerCover} data-partner={data.partner}>
-      <div className={s.partnerCoverMedia} aria-hidden="true">
-        <Video
-          src={video.src}
-          {...(video.mobileSrc ? { mobileSrc: video.mobileSrc } : {})}
-          poster={video.poster}
-          alt={video.alt}
-          className={s.partnerCoverVideo}
-        />
-        <div className={s.partnerCoverScrim} />
-      </div>
-      <div ref={ref} className={s.partnerCoverInner}>
-        <p className={s.partnerKicker} data-reveal-item>
-          {chrome.partnerKicker}
-        </p>
-        {data.logo ? (
-          <span
-            className={s.partnerLockup}
-            data-reveal-item
-            role="img"
-            aria-label={`${data.name} × Social Lama`}
-          >
-            <Image
-              className={s.lockupPartner}
-              src={data.logo}
-              alt=""
-              width={319}
-              height={104}
-              objectFit="contain"
-            />
-            <span className={s.lockupX} aria-hidden="true">
-              ×
+    <>
+      <section className={s.partnerCover} data-partner={data.partner}>
+        <div className={s.partnerCoverMedia} aria-hidden="true">
+          <Video
+            src={video.src}
+            {...(video.mobileSrc ? { mobileSrc: video.mobileSrc } : {})}
+            poster={video.poster}
+            alt={video.alt}
+            className={s.partnerCoverVideo}
+          />
+          <div className={s.partnerCoverScrim} />
+        </div>
+        <div ref={ref} className={s.partnerCoverInner}>
+          <p className={s.partnerKicker} data-reveal-item>
+            {chrome.partnerKicker}
+          </p>
+          {data.logo ? (
+            <span
+              className={s.partnerLockup}
+              data-reveal-item
+              role="img"
+              aria-label={`${data.name} × Social Lama`}
+            >
+              <Image
+                className={s.lockupPartner}
+                src={data.logo}
+                alt=""
+                width={319}
+                height={104}
+                objectFit="contain"
+              />
+              <span className={s.lockupX} aria-hidden="true">
+                ×
+              </span>
+              <Image
+                className={s.lockupLama}
+                src="/assets/sociallama-logo-light.svg"
+                alt=""
+                width={105}
+                height={73}
+                objectFit="contain"
+              />
             </span>
-            <Image
-              className={s.lockupLama}
-              src="/assets/sociallama-logo-light.svg"
-              alt=""
-              width={105}
-              height={73}
-              objectFit="contain"
-            />
-          </span>
-        ) : (
-          <p className={s.partnerWordmark} data-reveal-item>
-            {data.name}
+          ) : (
+            <p className={s.partnerWordmark} data-reveal-item>
+              {data.name}
+            </p>
+          )}
+          {data.tagline && (
+            <p className={s.partnerTagline} data-reveal-item>
+              {data.tagline}
+            </p>
+          )}
+          <p className={s.partnerCoverText} data-reveal-item>
+            {lead}
           </p>
-        )}
-        {data.tagline && (
-          <p className={s.partnerTagline} data-reveal-item>
-            {data.tagline}
-          </p>
-        )}
-        <p className={s.partnerCoverText} data-reveal-item>
-          {data.copy}
-        </p>
-      </div>
-    </section>
+        </div>
+      </section>
+      {(brief.length > 0 || data.split) && (
+        <section
+          className={s.partnerBrief}
+          data-partner={data.partner}
+          data-theme="plum"
+        >
+          <div ref={briefRef} className={s.partnerBriefInner}>
+            {data.split && (
+              <div className={s.partnerSplit} data-reveal-item>
+                {[
+                  ['partner', data.split.partner] as const,
+                  ['lama', data.split.lama] as const,
+                ].map(([side, column], index) => (
+                  <Fragment key={side}>
+                    {/* The lockup's `×`, redrawn as the rule between the two. */}
+                    {index === 1 && (
+                      <span className={s.partnerSplitAxis} aria-hidden="true">
+                        ×
+                      </span>
+                    )}
+                    <div className={s.partnerSplitCol} data-side={side}>
+                      <p className={s.partnerSplitLabel}>{column.label}</p>
+                      <ul className={s.partnerSplitItems}>
+                        {column.items.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+            )}
+            {brief.map((paragraph) => (
+              <p
+                key={paragraph}
+                className={s.partnerBriefText}
+                data-reveal-item
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   )
 }
 
@@ -539,7 +608,11 @@ function Partner({ data, chrome }: { data: PartnerData; chrome: Chrome }) {
         <div className={s.partnerCopy} data-reveal-item>
           <p className={s.partnerKicker}>{chrome.partnerKicker}</p>
           <p className={s.partnerName}>{data.name}</p>
-          <p className={s.partnerText}>{data.copy}</p>
+          {partnerParagraphs(data.copy).map((paragraph) => (
+            <p key={paragraph} className={s.partnerText}>
+              {paragraph}
+            </p>
+          ))}
           <Link className={s.partnerCta} href={data.href}>
             {chrome.ctaButton}
             <ArrowRight size={18} aria-hidden="true" />

@@ -144,6 +144,17 @@ interface StripLogo {
   icon: SocialIconName
 }
 
+/**
+ * Who does what, as two lists rather than a paragraph about two lists. The
+ * client documents state the division of responsibilities in prose; rendered
+ * that way it is four lines to read, rendered this way it is one glance.
+ * `partner` is always listed first, matching the cover lockup's order.
+ */
+interface PartnerSplit {
+  partner: { label: string; items: readonly string[] }
+  lama: { label: string; items: readonly string[] }
+}
+
 /** A muted ambient loop painted behind a section, under a scrim. Decorative:
  *  the section reads identically from its copy alone. */
 interface BackdropVideo {
@@ -178,9 +189,19 @@ export type ServiceSection =
       /** Partner logo (light-on-dark). Rendered in the cover in place of the
        *  text wordmark; `name` remains the alt text. */
       logo?: string
-      /** Short brand line under the wordmark (e.g. DIEA's "from idea to Design"). */
+      /** Short brand line under the wordmark (e.g. DIEA's "from idea to Design").
+       *  Only ever a line the partner actually publishes — never invented. */
       tagline?: string
-      copy: string
+      /**
+       * The collaboration pitch (design D1). With an array, the first entry is
+       * the hook that rides the cover footage and the rest continue in a solid
+       * plum panel directly below it — a paragraph over a moving clip is a
+       * caption, four are an unreadable wall. A plain string stays the single
+       * paragraph it always was and grows no panel.
+       */
+      copy: string | readonly string[]
+      /** The division of responsibilities, split off the prose (design D7). */
+      split?: PartnerSplit
       href: string
       /** Showcase image — user-supplied; block renders copy-only until it lands. */
       image?: Panel
@@ -677,7 +698,34 @@ export const SERVICES = [
         logo: '/assets/seofly-logo-light.png',
         // No tagline — SEOFly publish none, and inventing one is the mistake
         // the Folks block already carries.
-        copy: 'Skuteczny marketing nie kończy się na jednym kanale — dlatego połączyliśmy siły z\u00A0SEOFly, agencją specjalizującą się w\u00A0SEO i\u00A0performance marketingu. Social Lama odpowiada za strategię, content i\u00A0social media, a\u00A0SEOFly rozwija widoczność marek w\u00A0wyszukiwarce i\u00A0realizuje kampanie performance. Obie należą do Grupy Good One, więc kompetencje — od social mediów, przez SEO i\u00A0performance, po PR, influencer marketing i\u00A0employer branding — spotykają się w\u00A0jednym miejscu. Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        // The client's document argues this across four beats: why one channel
+        // is not enough, who does what, what the group model saves the client,
+        // then the group line. Kept as four paragraphs rather than one wall.
+        copy: [
+          'Skuteczny marketing nie kończy się na jednym kanale. Marka, która świetnie radzi sobie w\u00A0social mediach, wciąż może być niewidoczna dla kogoś, kto szuka jej produktu w\u00A0Google — dlatego połączyliśmy siły z\u00A0SEOFly, agencją specjalizującą się w\u00A0SEO i\u00A0performance marketingu.',
+          'Dla marki oznacza to jeden zespół zamiast dwóch agencji do skoordynowania, jeden brief zamiast tłumaczenia strategii po raz drugi i\u00A0jedno miejsce, w\u00A0którym spotykają się wszystkie kompetencje Grupy Good One — od social mediów, przez SEO i\u00A0performance, po PR, influencer marketing i\u00A0employer branding.',
+          'Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        ],
+        split: {
+          partner: {
+            label: 'SEOFly',
+            items: [
+              'SEO i\u00A0widoczność w\u00A0Google',
+              'Kampanie Google Ads',
+              'Strony WWW',
+              'Analityka i\u00A0raportowanie',
+            ],
+          },
+          lama: {
+            label: 'Social Lama',
+            items: [
+              'Strategia komunikacji',
+              'Content i\u00A0prowadzenie profili',
+              'Kampanie w\u00A0social mediach',
+              'Influencer marketing',
+            ],
+          },
+        },
         href: '/kontakt',
         // Ambient search/performance footage (Pexels, free licence).
         video: {
@@ -686,6 +734,15 @@ export const SERVICES = [
           poster: '/clips/seofly-cover-poster.jpg',
           alt: 'Praca na laptopie nad wynikami w wyszukiwarce',
         },
+      },
+      {
+        // D2, reciprocal: the mirror of Sprzedaż's banner pointing here. A
+        // visitor who landed on "kampanie reklamowe" expecting paid social is
+        // routed rather than left to conclude we don't run it.
+        kind: 'banner',
+        heading: 'Szukasz kampanii Meta lub TikTok?',
+        body: 'Reklamę w\u00A0social mediach prowadzimy na stronie Sprzedaż. Tutaj zajmujemy się wyszukiwarką — SEO i\u00A0kampanie w\u00A0Google; tam — Meta Ads, TikTok i\u00A0sprzedaż rozliczana z\u00A0wyniku.',
+        cta: { label: 'Zobacz sprzedaż', href: '/uslugi/sprzedaz' },
       },
     ],
   },
@@ -751,7 +808,8 @@ export const SERVICES = [
   },
 
   // 6 — Audyt i konsultacje · hero(+CTA) · checklist · logoStrip · banner ·
-  //     proof — reshaped from the client doc as a productized service.
+  //     proof · partner(seofly) — reshaped from the client doc as a productized
+  //     service.
   {
     id: 'audyt-i-konsultacje',
     slug: 'audyt-i-konsultacje',
@@ -768,8 +826,10 @@ export const SERVICES = [
       {
         kind: 'hero',
         title: 'Audyt i konsultacje',
+        // D5: the client's "świeże spojrzenie" framing opens the page; the
+        // title stays the service name, as every hero's does.
         intro:
-          'Potrzebujesz zweryfikować skuteczność swoich działań w\u00A0social mediach albo skonsultować pomysł z\u00A0ekspertem? Przeanalizujemy Twój profil, wskażemy mocne strony i\u00A0obszary do poprawy, a\u00A0podczas indywidualnej konsultacji omówimy konkretne rekomendacje oraz kolejne kroki.',
+          'Nie zawsze potrzeba nowej strategii — czasem wystarczy świeże spojrzenie z\u00A0zewnątrz. Potrzebujesz zweryfikować skuteczność swoich działań w\u00A0social mediach albo skonsultować pomysł z\u00A0ekspertem? Przeanalizujemy Twój profil, wskażemy mocne strony i\u00A0obszary do poprawy, a\u00A0podczas indywidualnej konsultacji omówimy konkretne rekomendacje oraz kolejne kroki.',
         cta: { label: 'Umów konsultację', href: '/kontakt' },
       },
       // The invented Audyt/Rekomendacje/Konsultacje triptych is gone (D7): the
@@ -778,9 +838,11 @@ export const SERVICES = [
       {
         kind: 'checklist',
         kicker: 'ZAKRES',
-        heading: 'Co obejmuje usługa?',
+        // D5: the client's own heading. The generic "Co obejmuje usługa?" it
+        // replaces is not lost — it folds into the intro as the list's lead-in.
+        heading: 'Zobacz swoją markę z\u00A0nowej perspektywy',
         intro:
-          'Nie zawsze potrzeba nowej strategii — czasem wystarczy świeże spojrzenie eksperta. Analizujemy profile marki w\u00A0social mediach, sprawdzamy komunikację, content, wyniki i\u00A0działania reklamowe, a\u00A0wnioski omawiamy podczas indywidualnej konsultacji.',
+          'Analizujemy profile marki w\u00A0social mediach, sprawdzamy komunikację, content, wyniki i\u00A0działania reklamowe, a\u00A0wnioski omawiamy podczas indywidualnej konsultacji. Co obejmuje usługa:',
         items: [
           'Analiza profili w social mediach',
           'Ocena strategii komunikacji i contentu',
@@ -832,6 +894,51 @@ export const SERVICES = [
           },
         ],
       },
+      {
+        // D3: last on the page, so it reads as a cross-sell addendum instead of
+        // interrupting the analiza -> konsultacja thread above it.
+        // D4: complementary to the kampanie-reklamowe block, never a duplicate —
+        // social profiles are audited here, websites and search by SEOFly.
+        kind: 'partner',
+        partner: 'seofly',
+        name: 'SEOFly',
+        logo: '/assets/seofly-logo-light.png',
+        copy: [
+          'Nasz audyt kończy się tam, gdzie kończą się social media. Dalej zaczyna się SEOFly — siostrzana agencja z\u00A0Grupy Good One, która audytuje strony i\u00A0ich widoczność w\u00A0Google.',
+          'Możesz zamówić jeden audyt albo oba. Przy obu wnioski z\u00A0social mediów i\u00A0wyszukiwarki spinamy w\u00A0jeden kierunek działań, zamiast w\u00A0dwa osobne dokumenty, które trzeba potem ze sobą pogodzić.',
+          'Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        ],
+        // The boundary this page guards, stated as a split rather than argued
+        // in prose: social profiles here, websites and search at SEOFly.
+        split: {
+          partner: {
+            label: 'SEOFly audytuje',
+            items: [
+              'Techniczny stan strony',
+              'Widoczność w\u00A0Google',
+              'Treści pod wyszukiwarkę',
+              'Profil linków',
+            ],
+          },
+          lama: {
+            label: 'My audytujemy',
+            items: [
+              'Profile w\u00A0social mediach',
+              'Komunikację i\u00A0content',
+              'Wyniki i\u00A0zaangażowanie',
+              'Działania reklamowe',
+            ],
+          },
+        },
+        href: '/kontakt',
+        // The kampanie-reklamowe cover's footage, reused as-is — no new asset.
+        video: {
+          src: '/clips/seofly-cover.mp4',
+          mobileSrc: '/clips/seofly-cover-mobile.mp4',
+          poster: '/clips/seofly-cover-poster.jpg',
+          alt: 'Praca na laptopie nad wynikami w wyszukiwarce',
+        },
+      },
     ],
   },
 
@@ -881,8 +988,33 @@ export const SERVICES = [
         partner: 'folks',
         name: 'Folks',
         logo: '/assets/folks-logo-light.png',
-        tagline: 'from creators to results',
-        copy: 'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z\u00A0twórcą — dlatego połączyliśmy siły z\u00A0Folks, agencją specjalizującą się w\u00A0budowaniu autentycznych relacji między markami a\u00A0odbiorcami. Obie należymy do Grupy Good One, więc kompetencje z\u00A0obszaru social mediów, strategii, contentu i\u00A0influencer marketingu spotykają się w\u00A0jednym miejscu: szeroka sieć twórców, doświadczeni eksperci i\u00A0kompleksowa obsługa kampanii — od pomysłu po raportowanie efektów. Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        // No tagline: "from creators to results" was ours, not Folks' — they
+        // publish none, and the renderer omits the line when it is absent.
+        copy: [
+          'Skuteczny influencer marketing to znacznie więcej niż jednorazowa współpraca z\u00A0twórcą. Liczy się dobór osób, które naprawdę pasują do marki, i\u00A0relacja, która przetrwa dłużej niż jedna kampania — dlatego połączyliśmy siły z\u00A0Folks, agencją wyspecjalizowaną w\u00A0budowaniu autentycznych relacji między markami a\u00A0odbiorcami.',
+          'Dla marki oznacza to jedną kampanię prowadzoną od początku do końca w\u00A0jednym miejscu, spójną z\u00A0resztą komunikacji, i\u00A0dostęp do wszystkich kompetencji Grupy Good One — od social mediów i\u00A0contentu, przez SEO i\u00A0performance, po PR i\u00A0employer branding.',
+          'Jeden partner. Wiele kompetencji. BETTER WORKS.',
+        ],
+        split: {
+          partner: {
+            label: 'Folks',
+            items: [
+              'Sieć twórców',
+              'Brief i\u00A0negocjacje',
+              'Produkcja treści',
+              'Rozliczenie i\u00A0raport',
+            ],
+          },
+          lama: {
+            label: 'Social Lama',
+            items: [
+              'Strategia kampanii',
+              'Content i\u00A0social media marki',
+              'Spójność z\u00A0resztą komunikacji',
+              'Analiza efektów',
+            ],
+          },
+        },
         href: '/kontakt',
         // Ambient creator footage (Pexels, free licence) — full-bleed cover.
         // The `-2` is a cache-busting revision, not a variant: /clips/* ships
