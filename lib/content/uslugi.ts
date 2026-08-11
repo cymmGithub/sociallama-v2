@@ -102,6 +102,10 @@ interface TriptychItem {
   icon: string
   title: string
   body: string
+  /** Optional trailing link. Carries the ad-campaigns → sales cross-link the
+   *  `services-pages` spec requires, on the ADS tile where someone hunting for
+   *  paid social actually looks — rather than as a whole band of its own. */
+  link?: SectionCta
 }
 
 interface ShowreelClip {
@@ -618,9 +622,10 @@ export const SERVICES = [
   },
 
   // 4 — Kampanie reklamowe · hero · triptych(6 kafli, bez numeracji) ·
-  //     partner(seofly) · banner(cross-link) — the client's SZKIELET, minus the
-  //     SEOFly case studies (none supplied; `proof` links only into our own
-  //     collection).
+  //     partner(seofly) — the client's SZKIELET, minus the SEOFly case studies
+  //     (none supplied; `proof` links only into our own collection). The
+  //     reciprocal Sprzedaż cross-link rides the ADS tile rather than a banner:
+  //     as a band it stacked a third plum slab under the partner block.
   {
     id: 'kampanie-reklamowe',
     slug: 'kampanie-reklamowe',
@@ -661,6 +666,10 @@ export const SERVICES = [
             // D1: Google only. Meta Ads and TikTok Ads stay on /uslugi/sprzedaz,
             // which already proves them with dashboard panels.
             body: 'Prowadzimy kampanie Google Ads, które wspierają sprzedaż, generują leady i\u00A0budują świadomość marki. Dobieramy działania do celów biznesowych i\u00A0stale optymalizujemy ich efektywność.',
+            link: {
+              label: 'Szukasz Meta lub TikTok? Zobacz Sprzedaż',
+              href: '/uslugi/sprzedaz',
+            },
           },
           {
             icon: 'PenTool',
@@ -734,15 +743,6 @@ export const SERVICES = [
           poster: '/clips/seofly-cover-poster.jpg',
           alt: 'Praca na laptopie nad wynikami w wyszukiwarce',
         },
-      },
-      {
-        // D2, reciprocal: the mirror of Sprzedaż's banner pointing here. A
-        // visitor who landed on "kampanie reklamowe" expecting paid social is
-        // routed rather than left to conclude we don't run it.
-        kind: 'banner',
-        heading: 'Szukasz kampanii Meta lub TikTok?',
-        body: 'Reklamę w\u00A0social mediach prowadzimy na stronie Sprzedaż. Tutaj zajmujemy się wyszukiwarką — SEO i\u00A0kampanie w\u00A0Google; tam — Meta Ads, TikTok i\u00A0sprzedaż rozliczana z\u00A0wyniku.',
-        cta: { label: 'Zobacz sprzedaż', href: '/uslugi/sprzedaz' },
       },
     ],
   },

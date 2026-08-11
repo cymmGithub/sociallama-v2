@@ -381,6 +381,10 @@ export const SERVICES = [
             icon: 'MousePointerClick',
             title: 'Ads',
             body: 'We run Google Ads campaigns that support sales, generate leads, and build brand awareness. We match the work to your business goals and keep optimizing as it runs.',
+            link: {
+              label: 'Looking for Meta or TikTok? See Sales',
+              href: '/en/services/sales',
+            },
           },
           {
             icon: 'PenTool',
@@ -441,12 +445,6 @@ export const SERVICES = [
           poster: '/clips/seofly-cover-poster.jpg',
           alt: 'Working at a laptop on search results',
         },
-      },
-      {
-        kind: 'banner',
-        heading: 'Looking for Meta or TikTok campaigns?',
-        body: 'Paid social lives one page over, on Sales. Search is what we handle here — SEO and campaigns in Google; over there — Meta Ads, TikTok, and selling judged on results.',
-        cta: { label: 'See sales', href: '/en/services/sales' },
       },
     ],
   },

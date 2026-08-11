@@ -366,6 +366,25 @@
   color: var(--color-plum);
 }
 
+/* Only the ADS tile carries one (the sales cross-link the spec requires). */
+.cardLink {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-plum);
+  text-decoration: none;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
 .cardBody {
   margin: 0;
   font-family: var(--font-mono);
@@ -558,7 +577,9 @@
    past that needs a ground that holds still and stays legible.
 
    Brand plum, matching the `.partner` copy+image panel rather than a darker
-   mix: the section is ours, and it should look it. */
+   mix: the section is ours, and it should look it. A gradient dissolving the
+   cover's near-black into the plum was tried and rejected in review — the hard
+   edge is the wanted read. */
 .partnerBrief {
   padding-block: calc(var(--safe) * 2.5) calc(var(--safe) * 3.5);
   background: var(--color-plum-dark);
@@ -883,10 +904,19 @@
 
 /* —— Checklist (ticked deliverables; graphic optional — task 3.1) —————————————— */
 
+/* Cream, not sand: the sand ground reads grey against the plum bands around it,
+   and on Strategia it also left a 1.29:1 boundary against the cream beside it —
+   a step too small to be read as a division. The trailing padding closes up when
+   a `logoStrip` follows, because the two then read as one band and the full gap
+   would double. */
 .checklist {
   padding: calc(var(--safe) * 3) var(--safe);
-  background: var(--color-sand);
+  background: var(--color-cream);
   color: var(--color-ink);
+
+  &:has(+ .logoStrip) {
+    padding-bottom: calc(var(--safe) * 1.4);
+  }
 }
 
 .checklistInner {
@@ -1209,8 +1239,13 @@
 
 /* —— Logo strip (audited platforms — task 3.4) ————————————————————————————————— */
 
+/* Sand, not cream, and no top padding: this strip captions the checklist
+   directly above it ("we audit profiles on:"), so it shares that band's ground
+   and drops its top padding. Given its own it opened a second light band whose
+   boundary measured 1.29:1 against the neighbour — a step too small to read as
+   a division, so the two sections shimmered instead of separating. */
 .logoStrip {
-  padding: calc(var(--safe) * 2.4) var(--safe);
+  padding: 0 var(--safe) calc(var(--safe) * 2.8);
   background: var(--color-cream);
   color: var(--color-ink);
 }
@@ -1261,9 +1296,11 @@
 
 /* —— Topical posts (blog links by category — design D5) ———————————————————————— */
 
+/* Cream for the same reason as `.checklist`: on sand this band closed Strategia
+   on a 1.29:1 step against the CTA below it. */
 .posts {
   padding: calc(var(--safe) * 3) var(--safe);
-  background: var(--color-sand);
+  background: var(--color-cream);
   color: var(--color-ink);
 }
 

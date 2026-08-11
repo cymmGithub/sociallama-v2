@@ -123,7 +123,12 @@ interface PlatformData {
 interface TriptychData {
   kicker: string
   unnumbered?: boolean
-  items: readonly { icon: string; title: string; body: string }[]
+  items: readonly {
+    icon: string
+    title: string
+    body: string
+    link?: CtaData
+  }[]
 }
 interface PartnerData {
   partner: string
@@ -444,6 +449,12 @@ function Triptych({ data }: { data: TriptychData }) {
                 </div>
                 <h3 className={s.cardTitle}>{item.title}</h3>
                 <p className={s.cardBody}>{item.body}</p>
+                {item.link && (
+                  <Link className={s.cardLink} href={item.link.href}>
+                    {item.link.label}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </Link>
+                )}
               </li>
             )
           })}
