@@ -196,22 +196,26 @@
   filter: saturate(0.6);
 }
 
-/* The wash is a magenta fill masked to the figure's own silhouette (its cutout
-   alpha), matching the img beneath it (same contain/bottom placement). */
-.peer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--color-primary) 60%, #d1568c);
+/* The wash: a second copy of the peer's own photo (same optimized URL, so it is
+   never a frame behind), flattened to a magenta fill by the SVG filter defined
+   in index.tsx. Alpha survives the colour matrix, so the fill takes the
+   figure's own silhouette — what the old `mask-image` did, without pointing at
+   a raw PNG nothing else on the page fetches.
+
+   The id must match PEER_WASH_FILTER_ID in index.tsx. Sitting under `.peer`, it
+   inherits that layer's `saturate(0.6)` / `opacity: 0.9` exactly as the
+   `::after` did. */
+.peerWash {
   opacity: 0.66;
-  -webkit-mask-image: var(--peer-src);
-  mask-image: var(--peer-src);
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-position: bottom;
-  mask-position: bottom;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+  filter: url("#onas-peer-wash");
+}
+
+/* Holds the wash filter def only. Zero-sized rather than `display: none`:
+   WebKit will not resolve `filter: url(#…)` into an undisplayed subtree. */
+.filterDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .peerLeft {

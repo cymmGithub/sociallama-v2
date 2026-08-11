@@ -44,6 +44,26 @@ const CERT_MARKS = {
   meta: { src: '/assets/certs/meta.png', width: 627, height: 345 },
 } as const
 
+// The background peers are washed by re-drawing the peer's own photo through
+// this filter (see Peer). Kept in sync with `.peerWash`'s `filter: url(...)` in
+// team.module.css — the id is a plain literal in this file rather than an
+// import, so nothing has to reach through a 'use client' barrel to name it.
+const PEER_WASH_FILTER_ID = 'onas-peer-wash'
+
+// Every cutout render — warmers, featured, peers and their washes — asks for
+// the same variant, and shares one declaration so it stays that way. Peers are
+// displayed smaller than the featured slot but request its bucket anyway, so a
+// promoted neighbour reuses the already-fetched variant; the warmers fetch that
+// same bucket up front; and the wash layer depends on it outright, since an
+// identical src/sizes pair is what resolves to one URL and one cache entry.
+const CUTOUT_IMAGE_PROPS = {
+  alt: '',
+  fill: true,
+  objectFit: 'contain',
+  mobileSize: '60vw',
+  desktopSize: '30vw',
+} as const
+
 type Member = LocalizedONas['oNasTeam']['members'][number]
 
 // The cutout filename stem ('/o-nas/slider/anna-ozga.png' -> 'anna-ozga') — the
@@ -102,16 +122,45 @@ export function Team({ content }: { content: LocalizedONas['oNasTeam'] }) {
           <Image
             key={m.photo}
             src={m.photo}
-            alt=""
-            fill
-            objectFit="contain"
-            mobileSize="60vw"
-            desktopSize="30vw"
+            {...CUTOUT_IMAGE_PROPS}
             loading="eager"
           />
         ))}
       </div>
+
+      <PeerWashFilter />
     </section>
+  )
+}
+
+/*
+ * The peer duotone, as a filter rather than a mask.
+ *
+ * Zeroed RGB rows with constant offsets discard every pixel's colour and
+ * replace it with one flat value; the alpha row passes through untouched, so
+ * the figure's own silhouette survives and gets filled — exactly what the old
+ * `::after` + `mask-image` produced, but computed from pixels the page has
+ * already loaded (see Peer for why that matters).
+ *
+ * The offsets are `color-mix(in srgb, var(--color-primary) 60%, #d1568c)`
+ * resolved against the plum theme (`--color-primary: #913155`) → rgb(170.6,
+ * 63.8, 107), divided by 255. They are baked, not live: if brand plum moves,
+ * re-derive them here.
+ *
+ * `color-interpolation-filters="sRGB"` is load-bearing — the SVG default is
+ * linearRGB, which would read these sRGB offsets in linear space and paint the
+ * wash markedly lighter than the colour it replaces.
+ */
+function PeerWashFilter() {
+  return (
+    <svg className={s.filterDefs} aria-hidden="true" role="presentation">
+      <filter id={PEER_WASH_FILTER_ID} colorInterpolationFilters="sRGB">
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0.6690  0 0 0 0 0.2502  0 0 0 0 0.4196  0 0 0 1 0"
+        />
+      </filter>
+    </svg>
   )
 }
 
@@ -312,8 +361,7 @@ function Slider({
 
 // One coverflow trio (featured + two plum-tinted neighbours). Purely decorative
 // — every image is alt="" — so the whole group can be aria-hidden while it fades
-// out. Peers request the same size bucket as the featured slot (displayed
-// smaller) so a promoted neighbour reuses the already-fetched variant.
+// out.
 function Trio({
   featured,
   leftPeer,
@@ -329,45 +377,41 @@ function Trio({
 }) {
   return (
     <div className={className} aria-hidden={hidden || undefined}>
-      <span
-        className={cn(s.photo, s.peer, s.peerLeft)}
-        style={{ '--peer-src': `url(${leftPeer.photo})` }}
-        aria-hidden="true"
-      >
-        <Image
-          src={leftPeer.photo}
-          alt=""
-          fill
-          objectFit="contain"
-          mobileSize="60vw"
-          desktopSize="30vw"
-        />
-      </span>
-      <span
-        className={cn(s.photo, s.peer, s.peerRight)}
-        style={{ '--peer-src': `url(${rightPeer.photo})` }}
-        aria-hidden="true"
-      >
-        <Image
-          src={rightPeer.photo}
-          alt=""
-          fill
-          objectFit="contain"
-          mobileSize="60vw"
-          desktopSize="30vw"
-        />
-      </span>
+      <Peer member={leftPeer} side={s.peerLeft} />
+      <Peer member={rightPeer} side={s.peerRight} />
       <span className={cn(s.photo, s.featured)}>
-        <Image
-          src={featured.photo}
-          alt=""
-          fill
-          objectFit="contain"
-          mobileSize="60vw"
-          desktopSize="30vw"
-        />
+        <Image src={featured.photo} {...CUTOUT_IMAGE_PROPS} />
       </span>
     </div>
+  )
+}
+
+// A background neighbour: the photo, and over it the very same image drawn a
+// second time through PeerWashFilter, which is what tints it.
+//
+// The two layers deliberately share every prop, so they resolve to one
+// optimized URL and one cache entry: the wash cannot paint later than the photo
+// it is meant to cover, because they are the same bytes. The mask this replaced
+// pointed at the raw `/o-nas/slider/*.png` — a resource nothing else on the
+// page loads — so on a cold cache the photo arrived first and the peer flashed
+// full-colour before snapping to plum.
+function Peer({
+  member,
+  side,
+}: {
+  member: Member
+  /** `.peerLeft` / `.peerRight` — the CSS-module lookup that places it. */
+  side: string | undefined
+}) {
+  return (
+    <span className={cn(s.photo, s.peer, side)} aria-hidden="true">
+      <Image src={member.photo} {...CUTOUT_IMAGE_PROPS} />
+      <Image
+        src={member.photo}
+        {...CUTOUT_IMAGE_PROPS}
+        className={s.peerWash}
+      />
+    </span>
   )
 }
 

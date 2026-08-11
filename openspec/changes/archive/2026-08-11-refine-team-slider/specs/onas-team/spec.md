@@ -1,6 +1,6 @@
 ## MODIFIED Requirements
 
-### Requirement: Every member has a transparent, frame-respecting portrait cutout
+### Requirement: Every member has a transparent, crop-matched portrait cutout
 
 All members SHALL have a transparent-background PNG cutout under `/public/o-nas/slider/`, consistent in framing (head+torso crop, orientation), comparable in file weight (~300 KB target, optimized), and obeying the framing-integrity rules: the subject bleeds off the frame's bottom edge; the frame's side edges may only be touched below elbow height (hip/torso rows); and no limb may exit a side edge and terminate before the bottom of the frame. The same cutouts fill the homepage grid's full-bleed portrait tiles, so a framing defect is visible on both surfaces.
 
@@ -8,6 +8,16 @@ All members SHALL have a transparent-background PNG cutout under `/public/o-nas/
 
 - **WHEN** the slider or the homepage grid references a member's cutout
 - **THEN** the file exists under `/public/o-nas/slider/`, is a PNG with an alpha channel, and its background is removed
+
+#### Scenario: Framing is consistent across the roster
+
+- **WHEN** all cutouts are viewed together
+- **THEN** crop, scale, and orientation read as one consistent set, with no member visibly mis-scaled or differently framed
+
+#### Scenario: No member is excluded for missing artwork
+
+- **WHEN** the slider renders
+- **THEN** every member is present — no member is commented out or skipped pending a usable photo
 
 #### Scenario: Subject is grounded on the bottom edge
 

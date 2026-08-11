@@ -21,15 +21,22 @@
 
 ## 3. Peer-wash fix (code)
 
-- [ ] 3.1 Add the inline SVG `feColorMatrix` filter def (flat wash colour, alpha preserved; id outside any `'use client'` barrel; matrix constants commented as derived from the plum tokens)
-- [ ] 3.2 In `Trio`, replace the `--peer-src` style with a stacked wash `<Image>` per peer — identical `src`/`fill`/`sizes` props to the photo layer
-- [ ] 3.3 Replace `.peer::after` mask rules with wash-layer rules (`opacity: 0.66`; photo layer keeps `saturate(0.6)`/`opacity: 0.9`)
-- [ ] 3.4 Delete the now-unused `--peer-src` plumbing
+- [x] 3.1 Add the inline SVG `feColorMatrix` filter def (flat wash colour, alpha preserved; id outside any `'use client'` barrel; matrix constants commented as derived from the plum tokens)
+- [x] 3.2 In `Trio`, replace the `--peer-src` style with a stacked wash `<Image>` per peer — identical `src`/`fill`/`sizes` props to the photo layer
+- [x] 3.3 Replace `.peer::after` mask rules with wash-layer rules (`opacity: 0.66`; photo layer keeps `saturate(0.6)`/`opacity: 0.9`)
+- [x] 3.4 Delete the now-unused `--peer-src` plumbing
 
 ## 4. Verification
 
-- [ ] 4.1 Cold-cache deep link (home team grid → `/o-nas?lama=…#zespol`): peers paint washed on their first frame — throttled network, Chromium
-- [ ] 4.2 Same check in WebKit (`filter: url(#…)` support; Safari-is-not-optional rule)
-- [ ] 4.3 Step the slider through all 15: washes swap with the photos, no raw `/o-nas/slider/*.png` requests appear in the network log
-- [ ] 4.4 Screenshot both surfaces (slider + homepage grid) for the six replaced portraits; compare against the approved contact sheet
-- [ ] 4.5 `bun run check` and e2e suite green
+- [x] 4.1 Cold-cache deep link (home team grid → `/o-nas?lama=…#zespol`): peers paint washed on their first frame — throttled network, Chromium. 40-frame burst; every frame with the peer visible measures within 2/255 of the settled wash, against a 37/255 gap to the wash-suppressed baseline
+- [x] 4.2 Same check in WebKit (`filter: url(#…)` support; Safari-is-not-optional rule) — filter resolves, peer washed on its first painted frame, settled colour within 0.6/255 of Chromium. The def `<svg>` is zero-sized rather than `display: none`, which WebKit will not resolve into
+- [x] 4.3 Step the slider through all 15: 30/30 peer layer pairs share one `currentSrc`; zero raw `/o-nas/slider/*.png` requests in either engine (1 stray request across 15 Chromium steps — the warmers hold the variant)
+- [x] 4.4 Screenshot both surfaces (slider + homepage grid) for the six replaced portraits; re-measured alpha edges on the shipped files — all six pass bottom-bleed / no-high-side-cut / no-mid-frame-termination. Published: https://claude.ai/code/artifact/34e2a6cf-7903-450a-b394-a72320fe090d
+- [x] 4.5 `bun run check` green (exit 0 — 648 unit tests, typecheck, manifest; the Biome
+      panics are the five known pre-existing ones). e2e: 75 passed, 4 skipped, 1 failed —
+      `sitemap-crawl.e2e.ts` on 400s from case-study media
+      (`/case-studies/{kbp,luisse,mmhygienic,fundacja-saventic,imid-cmv}` + their `/en`
+      twins). **Accepted by the user as the known standing local-only failure.** No
+      `/o-nas` route failed and case-study pages do not render the team section; it does
+      not reproduce on demand once the dev image cache is warm, so it was not isolated
+      with a before/after run.
