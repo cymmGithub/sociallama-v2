@@ -68,10 +68,12 @@ export const contactForm = {
     name: { label: 'Imię', placeholder: 'Jak się do Ciebie zwracać?' },
     email: { label: 'E-mail', placeholder: 'twoj@adres.pl' },
     // Optional callback channel — opt-in nudge keeps friction near zero.
+    // Kept short on purpose: the inputs render at 21px display type on mobile,
+    // where a single-line placeholder is clipped (not wrapped) past ~30 chars.
     phone: {
       label: 'Telefon',
       optional: 'opcjonalnie',
-      placeholder: 'Wolisz, żebyśmy oddzwonili? Zostaw numer.',
+      placeholder: 'Zostaw numer, oddzwonimy.',
     },
     services: { label: 'Czego dotyczy?', optional: 'opcjonalnie' },
     message: {

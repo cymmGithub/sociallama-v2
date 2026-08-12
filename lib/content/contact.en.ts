@@ -53,7 +53,7 @@ export const contactForm = {
     phone: {
       label: 'Phone',
       optional: 'optional',
-      placeholder: 'Prefer a callback? Leave your number.',
+      placeholder: "Leave a number, we'll call back.",
     },
     services: { label: "What's it about?", optional: 'optional' },
     message: {
