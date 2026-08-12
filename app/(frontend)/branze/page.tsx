@@ -10,7 +10,7 @@ const PL_PATH = '/branze'
 export const metadata: Metadata = {
   title: 'Branże',
   description:
-    'Automotive, beauty, health, finanse, petcare i więcej — social media prowadzone ze znajomością realiów każdej branży. Wybierz swoją.',
+    'Motoryzacja, beauty, zdrowie, finanse, zoologia i więcej — social media prowadzone ze znajomością realiów każdej branży. Wybierz swoją.',
   alternates: alternatesForPath(PL_PATH),
   openGraph: {
     type: 'website',

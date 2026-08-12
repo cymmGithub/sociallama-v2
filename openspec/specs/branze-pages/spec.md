@@ -6,7 +6,7 @@ Define the per-industry (`/branze/*` and `/en/industries/*`) marketing pages: th
 ## Requirements
 ### Requirement: Canonical industry list drives every surface
 
-A single typed content module SHALL define the canonical industry list — order, PL/EN labels, PL/EN slugs — per the design D1 table (proof-first order: Automotive, Elektronika i AGD, Beauty, Health, Finanse, Petcare, then Alkohole, Fashion, Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy, Rozrywka). The overlay menu BRANŻE column, the footer OFERTA column, `generateStaticParams`, and the sitemap SHALL all derive from this module in this order, in both locales. Labels are bare nouns — no "Branża" prefix anywhere.
+A single typed content module SHALL define the canonical industry list — order, PL/EN labels, PL/EN slugs — per the design D1 table (proof-first order, PL labels: Motoryzacja, Elektronika i AGD, Beauty, Zdrowie, Finanse, Zoologiczna, then Alkohole, Moda, Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy, Rozrywka; EN labels unchanged). The overlay menu BRANŻE column, the footer OFERTA column, `generateStaticParams`, and the sitemap SHALL all derive from this module in this order, in both locales. Labels are bare nouns or elliptical adjectives — no "Branża" prefix anywhere. PL slugs stay as originally shipped (`automotive`, `health`, `fashion`, `petcare`, …) — a label rename never changes a URL.
 
 #### Scenario: One list, all surfaces
 
@@ -17,6 +17,11 @@ A single typed content module SHALL define the canonical industry list — order
 
 - **WHEN** the industry list renders anywhere
 - **THEN** Alkohole/Alcohol appears at position 7, never first
+
+#### Scenario: Renamed labels keep their routes
+
+- **WHEN** the Motoryzacja, Zdrowie, Moda or Zoologiczna item is activated anywhere in the PL chrome
+- **THEN** it navigates to `/branze/automotive`, `/branze/health`, `/branze/fashion` or `/branze/petcare` respectively, each returning 200
 
 ### Requirement: Every industry resolves to a live page in both locales
 
@@ -132,4 +137,23 @@ Each industry page's hero SHALL open with a back link to the industries hub, in 
 
 - **WHEN** a visitor lands directly on an industry page with no in-site history
 - **THEN** the back link still navigates to the industries hub
+
+### Requirement: Polish industry copy carries no standalone English phrases
+
+PL industry content (labels, pillars, chips, marquee entries, briefs, manifestos, meta titles and descriptions) SHALL NOT contain list items or headings written entirely in English. Entrenched loanwords and trade terms of art used within Polish phrasing are permitted (e.g. Beauty, Horeca, B2B, fintech, storytelling, content, influencer marketing, social commerce, UGC). Meta titles SHALL use naturally declined Polish forms of the industry name.
+
+#### Scenario: No all-English list items
+
+- **WHEN** any PL industry page renders its pillars, chips or marquee
+- **THEN** no entry is a standalone English phrase (the former „Thought leadership", „Community", „Community marketing", „Trend-driven content" render as their Polish replacements)
+
+#### Scenario: Copy follows the renamed label
+
+- **WHEN** the PL Zdrowie page renders its brief
+- **THEN** the industry is referred to in Polish („branża zdrowotna"), not as „branża health"
+
+#### Scenario: Meta titles decline the industry name
+
+- **WHEN** the PL meta title renders for a renamed industry
+- **THEN** it reads „Social media dla branży motoryzacyjnej / zdrowotnej / modowej / zoologicznej" for Motoryzacja / Zdrowie / Moda / Zoologiczna respectively
 

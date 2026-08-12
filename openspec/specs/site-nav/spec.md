@@ -18,7 +18,7 @@ The site header SHALL show, at every breakpoint, exactly three elements: the Soc
 ### Requirement: Menu overlay
 Activating the Menu toggle SHALL open a full-viewport overlay with a fixed `cream` theme (ink text, plum/orange accents) regardless of the chapter theme active at open time. The overlay SHALL contain two link columns and a utility row:
 
-- **BRANŻE** (column label, not a link): the canonical 12-industry list in proof-first order — Automotive, Elektronika i AGD, Beauty, Health, Finanse, Petcare, Alkohole, Fashion, Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy, Rozrywka — bare-noun labels (no "Branża" prefix), each linking to its industry route under `/branze/` per the canonical content module (see `branze-pages`)
+- **BRANŻE** (column label, not a link): the canonical 12-industry list in proof-first order — Motoryzacja, Elektronika i AGD, Beauty, Zdrowie, Finanse, Zoologiczna, Alkohole, Moda, Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy, Rozrywka — bare-noun labels (no "Branża" prefix), each linking to its industry route under `/branze/` per the canonical content module (see `branze-pages`); the PL slugs keep their original names (`automotive`, `health`, `fashion`, `petcare`, …) regardless of the label
 - **USŁUGI** (column label, not a link): Strategia (`/uslugi/strategia`), Content (`/uslugi/content`), Sprzedaż (`/uslugi/sprzedaz`), Kreacje & Wideo (`/uslugi/kreacje-wideo`), Audyt i konsultacje (`/uslugi/audyt-i-konsultacje`), Influencer marketing (`/uslugi/influencer-marketing`), Szkolenia i kursy (`/szkolenia`)
 - **Utility row** (below the columns): O NAS (`/#o-nas`), contact email (`mailto:halohalo@sociallama.pl`), social links (per the Social links set requirement)
 
@@ -47,10 +47,6 @@ Below the desktop breakpoint each column SHALL be trimmed to a core subset of it
 #### Scenario: Dismissal and scroll lock
 - **WHEN** the overlay is open
 - **THEN** page scroll is locked behind it, and pressing Escape or activating the close affordance closes it and returns focus to the Menu toggle
-
-#### Scenario: Reduced motion
-- **WHEN** the user has `prefers-reduced-motion: reduce`
-- **THEN** the overlay appears and disappears without animated transition
 
 ### Requirement: Social links set
 The site SHALL render one canonical, ordered set of social links, used everywhere social icons appear — currently the footer sign-off band, the homepage hero social row, and the `/o-nas` hero social row. The Menu overlay no longer carries a social row (removed when the mobile menu was simplified), so it is not a consumer. The same set SHALL also supply the `sameAs` list in the site's structured data. The order SHALL be: **Facebook, Instagram, LinkedIn, TikTok, X, YouTube, Pinterest**. Each link SHALL point to its real profile destination:

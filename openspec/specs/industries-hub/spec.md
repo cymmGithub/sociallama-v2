@@ -39,10 +39,11 @@ ground beneath it on all 12 cards in both locales.
 #### Scenario: All 12 industries listed in canonical order
 
 - **WHEN** the index renders in either locale
-- **THEN** it shows 12 poster cards in canonical order — Automotive,
-  Elektronika i AGD, Beauty, Health, Finanse, Petcare, Alkohole, Fashion,
+- **THEN** it shows 12 poster cards in canonical order — Motoryzacja,
+  Elektronika i AGD, Beauty, Zdrowie, Finanse, Zoologiczna, Alkohole, Moda,
   Horeca, Hotele i Miejsca Wypoczynkowe, Nieruchomości i Deweloperzy,
-  Rozrywka — with labels identical to the menu and footer
+  Rozrywka on the Polish index (EN labels unchanged) — with labels
+  identical to the menu and footer
 
 #### Scenario: Card shows the destination's own poster
 

@@ -12,7 +12,7 @@
  *     wall → numbers band (`chips`) → pull-quote + case-study card → CTA.
  *   - `caseStudy` absent    → editorial layout (mock B): cream hero + `collage` →
  *     brief → `marquee` → `manifesto` + `chips` → CTA.
- * Today Automotive (Volvo) and Elektronika i AGD (iRobot) are the proof pages.
+ * Today Motoryzacja (Volvo) and Elektronika i AGD (iRobot) are the proof pages.
  *
  * The `brief` (3 strategic pillars + market-report-backed paragraphs) is
  * verbatim from "BRANŻE - TEKSTY NA STRONĘ SOCIAL LAMA" and sits directly under
@@ -190,7 +190,7 @@ export const INDUSTRIES = [
     id: 'automotive',
     slug: 'automotive',
     pairSlug: 'automotive',
-    label: 'Automotive',
+    label: 'Motoryzacja',
     // Imagery: Pexels (free license, no attribution required) — photo IDs
     // 5864155, 10800215, 8349487. Brand-neutral by design: no competitor
     // marques visible on a Volvo page.
@@ -215,7 +215,7 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży automotive',
+      title: 'Social media dla branży motoryzacyjnej',
       description:
         'Prowadzimy social media marek motoryzacyjnych — od salonów premium po elektromobilność. Zobacz, jak zbudowaliśmy społeczność Volvo Car Warszawa i Domu Volvo.',
     },
@@ -229,7 +229,7 @@ export const INDUSTRIES = [
       ],
       paragraphs: [
         {
-          text: 'Branża automotive to kategoria, w\u00A0której decyzje zakupowe są poprzedzone długim procesem poszukiwania informacji i\u00A0porównywania dostępnych rozwiązań. W\u00A0social mediach kluczową rolę odgrywają eksperckość, wiarygodność oraz umiejętność tłumaczenia zaawansowanych technologii w\u00A0przystępny sposób.',
+          text: 'Branża motoryzacyjna to kategoria, w\u00A0której decyzje zakupowe są poprzedzone długim procesem poszukiwania informacji i\u00A0porównywania dostępnych rozwiązań. W\u00A0social mediach kluczową rolę odgrywają eksperckość, wiarygodność oraz umiejętność tłumaczenia zaawansowanych technologii w\u00A0przystępny sposób.',
           strong:
             'W\u00A0social mediach kluczową rolę odgrywają eksperckość, wiarygodność oraz umiejętność tłumaczenia zaawansowanych technologii w\u00A0przystępny sposób.',
         },
@@ -519,7 +519,7 @@ export const INDUSTRIES = [
     id: 'health',
     slug: 'health',
     pairSlug: 'health',
-    label: 'Health',
+    label: 'Zdrowie',
     // Numbers verbatim from the Adamed case study.
     numbers: [
       { value: '+242%', label: 'Wzrost obserwujących' },
@@ -588,12 +588,12 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży health',
+      title: 'Social media dla branży zdrowotnej',
       description:
         'Prowadzimy social media marek z branży zdrowia i wellbeingu. Rzetelna edukacja, autorytet ekspertów i komunikacja, która buduje zaufanie.',
     },
     tagline:
-      'Zdrowie to branża zaufania. Budujemy je tam, gdzie odbiorca szuka odpowiedzi — w\u00A0feedzie. Edukacyjny content i\u00A0kampanie dla marek health.',
+      'Zdrowie to branża zaufania. Budujemy je tam, gdzie odbiorca szuka odpowiedzi — w\u00A0feedzie. Edukacyjny content i\u00A0kampanie dla marek zdrowotnych.',
     brief: {
       pillars: [
         'Edukacja oparta na wiedzy',
@@ -602,7 +602,7 @@ export const INDUSTRIES = [
       ],
       paragraphs: [
         {
-          text: 'Branża health wymaga szczególnego podejścia do komunikacji. Odbiorcy oczekują rzetelnych informacji, eksperckiej wiedzy oraz treści opartych na faktach. W\u00A0świecie pełnym dezinformacji zaufanie staje się jednym z\u00A0najcenniejszych zasobów marki.',
+          text: 'Branża zdrowotna wymaga szczególnego podejścia do komunikacji. Odbiorcy oczekują rzetelnych informacji, eksperckiej wiedzy oraz treści opartych na faktach. W\u00A0świecie pełnym dezinformacji zaufanie staje się jednym z\u00A0najcenniejszych zasobów marki.',
           strong:
             'Odbiorcy oczekują rzetelnych informacji, eksperckiej wiedzy oraz treści opartych na faktach.',
         },
@@ -655,7 +655,7 @@ export const INDUSTRIES = [
       pillars: [
         'Budowanie wiarygodności',
         'Ekspercka komunikacja',
-        'Thought leadership',
+        'Budowanie pozycji eksperta',
       ],
       paragraphs: [
         {
@@ -700,7 +700,7 @@ export const INDUSTRIES = [
     id: 'petcare',
     slug: 'petcare',
     pairSlug: 'pet',
-    label: 'Petcare',
+    label: 'Zoologiczna',
     // Numbers verbatim from the Aquael case study.
     numbers: [
       { value: '388 717', label: 'Wyświetlenia (średnia miesięczna)' },
@@ -751,12 +751,12 @@ export const INDUSTRIES = [
     },
     relatedCaseStudies: [],
     meta: {
-      title: 'Social media dla branży petcare',
+      title: 'Social media dla branży zoologicznej',
       description:
         'Prowadzimy social media marek zoologicznych i petcare. Lojalne społeczności właścicieli, poradnikowy content i realna sprzedaż.',
     },
     tagline:
-      'Petcare to branża emocji i\u00A0lojalności. Budujemy społeczności właścicieli, dla których zwierzę to członek rodziny — i\u00A0tak samo traktujemy marki.',
+      'Branża zoologiczna to kategoria emocji i\u00A0lojalności. Budujemy społeczności właścicieli, dla których zwierzę to członek rodziny — i\u00A0tak samo traktujemy marki.',
     brief: {
       pillars: [
         'Edukacja i eksperckość',
@@ -776,7 +776,7 @@ export const INDUSTRIES = [
     },
     chips: [
       {
-        value: 'Community',
+        value: 'Społeczność',
         label: 'najbardziej lojalni odbiorcy w\u00A0social mediach',
       },
       { value: 'Poradniki', label: 'content, po który wracają' },
@@ -790,7 +790,7 @@ export const INDUSTRIES = [
       'Zoologia',
       'Karma',
       'Akcesoria',
-      'Community',
+      'Społeczność',
       'Poradniki',
       'Adopcje',
       'Miłość do zwierząt',
@@ -916,23 +916,23 @@ export const INDUSTRIES = [
     id: 'fashion',
     slug: 'fashion',
     pairSlug: 'fashion',
-    label: 'Fashion',
+    label: 'Moda',
     meta: {
-      title: 'Social media dla branży fashion',
+      title: 'Social media dla branży modowej',
       description:
         'Prowadzimy social media marek modowych. Budujemy pożądanie wokół dropów i kolekcji, łączymy lookbooki z UGC i zamieniamy obserwujących w klientów.',
     },
     tagline:
-      'Fashion to branża tempa. Nadajemy markom rytm feedu — budujemy pożądanie wokół dropów i\u00A0kolekcji, sezon po sezonie.',
+      'Moda to branża tempa. Nadajemy markom rytm feedu — budujemy pożądanie wokół dropów i\u00A0kolekcji, sezon po sezonie.',
     brief: {
       pillars: [
-        'Trend-driven content',
+        'Content oparty na trendach',
         'Influencer marketing',
         'Social commerce',
       ],
       paragraphs: [
         {
-          text: 'Branża fashion to jedna z\u00A0najbardziej dynamicznych kategorii w\u00A0social mediach. Konsumenci oczekują od marek nie tylko prezentacji produktów, ale również inspiracji, autentyczności i\u00A0spójnego świata wartości.',
+          text: 'Branża modowa to jedna z\u00A0najbardziej dynamicznych kategorii w\u00A0social mediach. Konsumenci oczekują od marek nie tylko prezentacji produktów, ale również inspiracji, autentyczności i\u00A0spójnego świata wartości.',
         },
         {
           text: 'Według raportu Euromonitor „Top Global Consumer Trends 2025” konsumenci coraz częściej wybierają marki, które odzwierciedlają ich styl życia i\u00A0pozwalają wyrażać własną tożsamość. To sprawia, że social media stają się dla marek modowych przestrzenią do budowania pożądania, inspirowania odbiorców i\u00A0tworzenia zaangażowanych społeczności.',
@@ -950,7 +950,15 @@ export const INDUSTRIES = [
       lead: 'Moda żyje szybciej niż feed.',
       rest: 'Wygrywają marki, które nadają tempo — budują pożądanie wokół dropów i\u00A0zamieniają obserwujących w\u00A0klientów.',
     },
-    marquee: ['Moda', 'Trendy', 'Lookbook', 'Drop', 'UGC', 'Kolekcje', 'Styl'],
+    marquee: [
+      'Sezony',
+      'Trendy',
+      'Lookbook',
+      'Drop',
+      'UGC',
+      'Kolekcje',
+      'Styl',
+    ],
     // Imagery: Pexels (free license) — photo IDs 17016524, 30892135, 36845202.
     collage: [
       {
@@ -1360,7 +1368,7 @@ export const INDUSTRIES = [
       'Rozrywka to branża walki o\u00A0uwagę. Wygrywamy ją treścią — budujemy hype wokół premier i\u00A0wydarzeń, i\u00A0aktywujemy społeczność.',
     brief: {
       pillars: [
-        'Community marketing',
+        'Marketing społeczności',
         'Sezonowe kampanie',
         'Real-time marketing',
       ],
@@ -1377,7 +1385,7 @@ export const INDUSTRIES = [
     },
     chips: [
       { value: 'Hype', label: 'napięcie przed premierą' },
-      { value: 'Community', label: 'społeczność, która współtworzy' },
+      { value: 'Społeczność', label: 'odbiorcy, którzy współtworzą' },
       { value: 'Zaangażowanie', label: 'treść, którą się udostępnia' },
     ],
     manifesto: {
@@ -1388,7 +1396,7 @@ export const INDUSTRIES = [
       'Eventy',
       'Kultura',
       'Premiery',
-      'Community',
+      'Społeczność',
       'Zaangażowanie',
       'Emocje',
       'Live',
