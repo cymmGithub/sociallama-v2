@@ -2,6 +2,7 @@
 
 import cn from 'clsx'
 import {
+  ArrowLeft,
   ArrowRight,
   BarChart3,
   Check,
@@ -35,6 +36,10 @@ import type { SocialIconName } from '@/lib/content/socials'
 import type { LocalizedUslugi, ServiceSection } from '@/lib/content/uslugi'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import type { Localized } from '@/lib/i18n/parity'
+import {
+  HUB_BACK_TRANSITION,
+  POSTER_MORPH_SHARE,
+} from '@/lib/utils/view-transitions'
 import s from './service.module.css'
 
 /*
@@ -79,6 +84,12 @@ export interface ServicePageProps {
    */
   sections: readonly Section[]
   chrome: Chrome
+  /**
+   * Locale-correct services hub (`/uslugi` or `/en/services`), behind the
+   * hero's back link. A deterministic destination rather than `history.back()`
+   * so deep-linked visitors — who have no in-site history — can still go up.
+   */
+  hubHref: string
   /** Locale-correct case-study base (`/case-studies` or `/en/case-studies`). */
   caseStudyBase: string
   /**
@@ -223,10 +234,12 @@ const ICONS: Record<string, LucideIcon> = {
 function Hero({
   data,
   chrome,
+  hubHref,
   serviceId,
 }: {
   data: HeroData
   chrome: Chrome
+  hubHref: string
   serviceId: string
 }) {
   const posterId = isPosterId(serviceId) ? serviceId : undefined
@@ -248,10 +261,11 @@ function Hero({
               crossfade with the page. share must not fall back to `default`
               ("none"); the `poster-morph` view-transition-class activates the
               morph and lets global.css cover-fit the snapshots (card and hero
-              frame the artwork differently). */}
+              frame the artwork differently). It arrives per transition type so
+              the back link below can opt out — see POSTER_MORPH_SHARE. */}
           <ViewTransition
             name={`usluga-${posterId}`}
-            share="poster-morph"
+            share={POSTER_MORPH_SHARE}
             default="none"
           >
             <ServicePoster id={posterId} variant="hero" />
@@ -260,7 +274,17 @@ function Hero({
         </div>
       )}
       <div className={s.heroInner}>
-        <p className={s.breadcrumb}>{chrome.sectionLabel}</p>
+        {/* The section label is the page's route back up (design D2): the
+            label text carries the accessible name, the arrow is decoration.
+            `hub-back` tags the navigation so the poster pair sits it out. */}
+        <Link
+          className={s.breadcrumb}
+          href={hubHref}
+          transitionTypes={HUB_BACK_TRANSITION}
+        >
+          <ArrowLeft size={14} aria-hidden="true" />
+          {chrome.sectionLabel}
+        </Link>
         <div className={s.heroCopy}>
           <h1 className={s.heroTitle}>
             {data.title}
@@ -945,6 +969,7 @@ function CtaBand({ chrome }: { chrome: Chrome }) {
 export function ServicePage({
   sections,
   chrome,
+  hubHref,
   caseStudyBase,
   postBase,
   relatedByPlatform,
@@ -965,6 +990,7 @@ export function ServicePage({
                 key={key}
                 data={section as HeroData}
                 chrome={chrome}
+                hubHref={hubHref}
                 serviceId={serviceId}
               />
             )

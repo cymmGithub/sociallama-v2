@@ -50,6 +50,7 @@ export default async function EnServicePage({ params }: PageProps) {
         serviceId={service.id}
         sections={service.sections}
         chrome={chrome}
+        hubHref="/en/services"
         caseStudyBase="/en/case-studies"
         postBase="/en/blog"
         relatedByPlatform={relatedByPlatform}

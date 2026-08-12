@@ -39,6 +39,7 @@ export default async function BranzaPage({ params }: PageProps) {
       <IndustryPage
         industry={industry}
         chrome={chrome}
+        hubHref="/branze"
         caseStudyBase="/case-studies"
       />
     </Wrapper>

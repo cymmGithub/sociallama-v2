@@ -158,6 +158,13 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | analyticsEnvSchema | `ZodObject<{ NEXT_PUBLIC_GOOGLE_ANALYTICS: ZodOptional<ZodString>; NEXT_PUBLIC...` |
 | coreEnvSchema | `ZodObject<{ NEXT_PUBLIC_BASE_URL: ZodOptional<ZodURL>; }, $strip>` |
 
+### View-transitions (`@/utils/view-transitions`)
+
+| Export | Signature |
+|--------|-----------|
+| HUB_BACK_TRANSITION | `string[]` |
+| POSTER_MORPH_SHARE | `ViewTransitionClassPerType` |
+
 ---
 
 ## WebGL Components

@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import {
   type CSSProperties,
   useEffect,
@@ -15,6 +15,10 @@ import { Marquee } from '@/components/ui/marquee'
 import type { Industry, LocalizedBranze } from '@/lib/content/branze'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import {
+  HUB_BACK_TRANSITION,
+  POSTER_MORPH_SHARE,
+} from '@/lib/utils/view-transitions'
 import s from './industry.module.css'
 
 /*
@@ -32,6 +36,12 @@ type Chrome = LocalizedBranze['chrome']
 export interface IndustryPageProps {
   industry: Industry
   chrome: Chrome
+  /**
+   * Locale-correct industries hub (`/branze` or `/en/industries`), behind the
+   * hero's back link. A deterministic destination rather than `history.back()`
+   * so deep-linked visitors — who have no in-site history — can still go up.
+   */
+  hubHref: string
   /** Locale-correct case-study base (`/case-studies` or `/en/case-studies`). */
   caseStudyBase: string
 }
@@ -130,7 +140,7 @@ function RelatedCaseStudies({
   industry,
   chrome,
   caseStudyBase,
-}: IndustryPageProps) {
+}: Omit<IndustryPageProps, 'hubHref'>) {
   const ref = useReveal<HTMLDivElement>()
   const studies = industry.relatedCaseStudies
   if (!studies || studies.length === 0) {
@@ -247,8 +257,14 @@ function HeroMedia({ id }: { id: string }) {
           view-transition-class activates the morph and lets global.css
           cover-fit the snapshots (card and hero crop the same photo
           differently). It is shared with the services hub — the names stay
-          section-prefixed, so ids can never collide. */}
-      <ViewTransition name={`branza-${id}`} share="poster-morph" default="none">
+          section-prefixed, so ids can never collide. share arrives per
+          transition type so the hero's back link can opt out — see
+          POSTER_MORPH_SHARE. */}
+      <ViewTransition
+        name={`branza-${id}`}
+        share={POSTER_MORPH_SHARE}
+        default="none"
+      >
         <Image
           className={s.heroPoster}
           src={poster}
@@ -285,9 +301,11 @@ function HeroMedia({ id }: { id: string }) {
 function IndustryHero({
   industry,
   chrome,
+  hubHref,
 }: {
   industry: Industry
   chrome: Chrome
+  hubHref: string
 }) {
   const longLabel =
     industry.label.length > 16 ||
@@ -304,7 +322,17 @@ function IndustryHero({
     >
       {hasMedia && <HeroMedia id={industry.id} />}
       <div className={s.heroInner}>
-        <p className={s.breadcrumb}>{chrome.sectionLabel}</p>
+        {/* The section label is the page's route back up (design D2): the
+            label text carries the accessible name, the arrow is decoration.
+            `hub-back` tags the navigation so the poster pair sits it out. */}
+        <Link
+          className={s.breadcrumb}
+          href={hubHref}
+          transitionTypes={HUB_BACK_TRANSITION}
+        >
+          <ArrowLeft size={14} aria-hidden="true" />
+          {chrome.sectionLabel}
+        </Link>
         <div className={s.heroBody} data-long-label={longLabel || undefined}>
           <h1 className={s.heroWordmark}>
             {industry.label}
@@ -486,7 +514,12 @@ function IndustryBrief({
 
 // —— Proof variant (mock C) ————————————————————————————————————————————————————
 
-function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
+function ProofLayout({
+  industry,
+  chrome,
+  hubHref,
+  caseStudyBase,
+}: IndustryPageProps) {
   const wallRef = useReveal<HTMLDivElement>()
   const numbersRef = useReveal<HTMLDivElement>()
   const study = industry.caseStudy
@@ -496,7 +529,7 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
 
   return (
     <>
-      <IndustryHero industry={industry} chrome={chrome} />
+      <IndustryHero industry={industry} chrome={chrome} hubHref={hubHref} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
@@ -603,11 +636,12 @@ function ProofLayout({ industry, chrome, caseStudyBase }: IndustryPageProps) {
 function EditorialLayout({
   industry,
   chrome,
+  hubHref,
   caseStudyBase,
 }: IndustryPageProps) {
   return (
     <>
-      <IndustryHero industry={industry} chrome={chrome} />
+      <IndustryHero industry={industry} chrome={chrome} hubHref={hubHref} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
 

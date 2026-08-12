@@ -42,6 +42,7 @@ export default async function EnIndustryPage({ params }: PageProps) {
       <IndustryPage
         industry={industry}
         chrome={chrome}
+        hubHref="/en/industries"
         caseStudyBase="/en/case-studies"
       />
     </Wrapper>

@@ -5,6 +5,7 @@ import { type ReactNode, ViewTransition } from 'react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { useReveal } from '@/lib/hooks/use-reveal'
+import { POSTER_MORPH_SHARE } from '@/lib/utils/view-transitions'
 import s from './index.module.css'
 
 /*
@@ -139,10 +140,12 @@ export function SectionIndex({ chrome, items, base }: SectionIndexProps) {
                   // to `default` ("none"), so it carries the `poster-morph`
                   // view-transition-class — which both activates the morph and
                   // lets global.css cover-fit the snapshots (card and hero
-                  // frame the same artwork differently).
+                  // frame the same artwork differently). It arrives per
+                  // transition type so a detail page's back link can opt out —
+                  // see POSTER_MORPH_SHARE.
                   <ViewTransition
                     name={item.morphName}
-                    share="poster-morph"
+                    share={POSTER_MORPH_SHARE}
                     default="none"
                   >
                     {poster}

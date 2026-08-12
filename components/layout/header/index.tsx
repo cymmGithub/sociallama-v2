@@ -9,6 +9,7 @@ import { LogoMark } from '@/components/layout/header/logo-mark'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
 import { Link } from '@/components/ui/link'
 import { EN_HOME, PL_HOME } from '@/lib/i18n/slug-map'
+import { HUB_BACK_TRANSITION } from '@/lib/utils/view-transitions'
 import s from './header.module.css'
 
 // Keep the bar revealed within this many pixels of the top so a fresh load or
@@ -228,9 +229,18 @@ export function Header() {
                           column.items.length,
                       }}
                     >
+                      {/* The column's hub link, so it makes the same
+                          detail → hub trip as a hero's back link and carries
+                          the same opt-out: opened over an unscrolled service
+                          or industry page, an untagged navigation morphs the
+                          hero poster toward a card the arriving hub has not
+                          scrolled to. Inert on every other page, where no
+                          poster pair exists to suppress. The item links above
+                          stay untagged — they run the forward morph. */}
                       <Link
                         className={s.moreLink}
                         href={column.more.href}
+                        transitionTypes={HUB_BACK_TRANSITION}
                         onClick={close}
                       >
                         {column.more.label}

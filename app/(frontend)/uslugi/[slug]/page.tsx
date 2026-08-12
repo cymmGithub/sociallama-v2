@@ -48,6 +48,7 @@ export default async function UslugaPage({ params }: PageProps) {
         serviceId={service.id}
         sections={service.sections}
         chrome={chrome}
+        hubHref="/uslugi"
         caseStudyBase="/case-studies"
         // Polish posts sit at the root: `${''}/${slug}`.
         postBase=""

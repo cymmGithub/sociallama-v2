@@ -9,13 +9,33 @@
 
 /* —— Shared chrome ——————————————————————————————————————————————————————————— */
 
+/* The hub back link. Inline-flex and self-start so the hit area wraps the
+   label instead of stretching the full hero width, which is what a block-level
+   flex child would do. The global `*:focus-visible` ring already marks keyboard
+   focus; only its offset is widened, so the outline clears the uppercase
+   letterforms instead of grazing them. */
 .breadcrumb {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.45em;
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  transition: color var(--duration-fast);
+
+  @media (--hover) {
+    &:hover {
+      color: var(--color-contrast);
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: 4px;
+  }
 }
 
 .kicker {
