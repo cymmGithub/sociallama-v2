@@ -1,7 +1,7 @@
 import { ExternalLink, Play } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
-import type { VideoSpotlight } from '@/lib/payload/queries'
+import { focalPosition, type VideoSpotlight } from '@/lib/payload/queries'
 import s from './blog.module.css'
 
 /**
@@ -46,6 +46,7 @@ export function HubVideo({
           mobileSize="100vw"
           objectFit="cover"
           src={video.poster.url ?? ''}
+          style={focalPosition(video.poster)}
         />
         {/* Sits above the frame's scrim, which keeps it legible on any still. */}
         <span className={s.play}>

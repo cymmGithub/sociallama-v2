@@ -5,7 +5,11 @@ import { resolvePostAuthor } from '@/lib/blog/author'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
-import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
+import {
+  focalPosition,
+  resolveCategory,
+  resolveMedia,
+} from '@/lib/payload/queries'
 import { formatPostDate } from '@/lib/utils/format-date'
 import type { Post } from '@/payload-types'
 import s from './blog.module.css'
@@ -43,6 +47,7 @@ export function PostCard({
             objectFit="cover"
             mobileSize="100vw"
             desktopSize="33vw"
+            style={focalPosition(cover)}
           />
         )}
       </span>

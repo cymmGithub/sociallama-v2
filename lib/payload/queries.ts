@@ -852,6 +852,32 @@ export function resolveMedia(
 }
 
 /**
+ * A media row's focal point as an `object-position` style for an
+ * `object-fit: cover` box — or `undefined` when the row has never been moved
+ * off centre.
+ *
+ * Payload's focal picker and CSS agree on the mapping: both read the pair as
+ * percentages of the image that get aligned with the same percentages of the
+ * box, so `focalX: 25` is literally `object-position: 25% …`.
+ *
+ * "No focal point" is 50/50, not null — Payload stamps both fields on every
+ * upload — and `50% 50%` is already `object-position`'s initial value. Folding
+ * that case back to `undefined` keeps every un-adjusted cover rendering exactly
+ * as it did before the focal point was wired up, and leaves the emitted style
+ * as a marker of deliberate editor intent rather than noise on 500-odd rows.
+ */
+export function focalPosition(
+  media: Media | null | undefined
+): { objectPosition: string } | undefined {
+  const x = typeof media?.focalX === 'number' ? media.focalX : 50
+  const y = typeof media?.focalY === 'number' ? media.focalY : 50
+  if (x === 50 && y === 50) {
+    return undefined
+  }
+  return { objectPosition: `${x}% ${y}%` }
+}
+
+/**
  * Resolve a maybe-unpopulated category relation.
  *
  * `category` is a shared field, not a localized one, so it populates on an

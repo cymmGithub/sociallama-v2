@@ -7,7 +7,11 @@ import { readingTimeMinutes } from '@/lib/blog/reading-time'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
-import { resolveCategory, resolveMedia } from '@/lib/payload/queries'
+import {
+  focalPosition,
+  resolveCategory,
+  resolveMedia,
+} from '@/lib/payload/queries'
 import type { Post } from '@/payload-types'
 import s from './blog.module.css'
 
@@ -51,6 +55,7 @@ function PopularPost({
               mobileSize="100vw"
               objectFit="cover"
               src={coverUrl}
+              style={focalPosition(cover)}
             />
           </span>
         )}
@@ -114,6 +119,7 @@ export function HubPopular({
                       mobileSize="30vw"
                       objectFit="cover"
                       src={coverUrl}
+                      style={focalPosition(cover)}
                     />
                   )}
                 </span>

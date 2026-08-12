@@ -31,9 +31,14 @@ Every blog cover render surface SHALL apply the media row's stored focal point (
 ### Requirement: Covers survive every live crop
 
 Every library cover SHALL be produced from a 16:10 master at least 2048px wide, composed
-so the focal subject remains intact when cropped to the central 4/3 (post header) and
-when extended to 16/9 (hub lead), and MUST be verified on the rendered surfaces — not the
-master file — before it is applied to any post.
+so the focal subject remains intact when extended to 16/9 (hub lead) and when a
+narrower-than-16:10 master is cropped to the 16/10 boxes, and MUST be verified on the
+rendered surfaces — not the master file — before it is applied to any post.
+
+The post header and the hub grid card SHALL both render their cover at aspect ratio
+16/10 — the same ratio this requirement mandates of every master, so a library cover
+fills the header with no crop at all, and one focal point governs both surfaces
+identically.
 
 For existing covers whose subject does not survive a rendered crop, setting the media
 row's focal point SHALL be the first repair tool — recomposing or replacing the master is
@@ -42,10 +47,16 @@ adjustment SHALL be recorded in the image audit artifact.
 
 #### Scenario: Post header crop keeps the subject
 
-- **WHEN** a library cover renders in the post page header column at aspect ratio 4/3
+- **WHEN** a library cover renders in the post page header column at aspect ratio 16/10
   with `object-fit: cover`
 - **THEN** the focal subject of the artwork is visible and uncut in a way that changes
   its meaning, with no critical element lost to the crop
+
+#### Scenario: A master at the library ratio is not cropped at all
+
+- **WHEN** a cover produced from a 16:10 master renders in the post header or a hub card
+- **THEN** the box and the master share an aspect ratio, so the whole artwork is shown
+  and the focal point has no effect on those two surfaces
 
 #### Scenario: Card and lead crops keep the subject
 

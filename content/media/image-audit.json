@@ -1664,7 +1664,22 @@
       "altPl": "CASE STUDY Produkty Cukiernicze Brześć",
       "altEn": "CASE STUDY Produkty Cukiernicze Brześć",
       "verdict": "accept",
-      "reason": "Brześć client creative; the Polish speech bubbles are the campaign work being presented."
+      "reason": "Brześć client creative; the Polish speech bubbles are the campaign work being presented.",
+      "focalPoint": {
+        "from": [
+          50,
+          50
+        ],
+        "to": [
+          50,
+          12
+        ],
+        "setAt": "2026-08-12",
+        "change": "fix-blog-cover-focal-point",
+        "reason": "Górna linia dymku wypadała poza kadr nagłówka; punkt w górę odzyskuje oba dymki. Kwadratowy master traci więcej wysokości po zmianie ramki na 16:10.",
+        "ogRegenerated": null,
+        "ogNote": "Master mniejszy niż każdy kadrowany rozmiar — wiersz nie ma rozmiaru og."
+      }
     },
     "136": {
       "filename": "2020-02-InkedOryginalny-sok-zgadywanka_LI-1.jpg",
@@ -1867,7 +1882,22 @@
       "altPl": "Jak angażować na Facebooku? Przykłady postów, które wzbudzą reakcje Twoich Klientów.",
       "altEn": "How to build engagement on Facebook? Examples of posts that will spark reactions from your customers.",
       "verdict": "accept",
-      "reason": "Ice Dream client creative; the Polish riddle is the campaign work being presented."
+      "reason": "Ice Dream client creative; the Polish riddle is the campaign work being presented.",
+      "focalPoint": {
+        "from": [
+          50,
+          50
+        ],
+        "to": [
+          70,
+          50
+        ],
+        "setAt": "2026-08-12",
+        "change": "fix-blog-cover-focal-point",
+        "reason": "Collage z dwóch plansz — kadr środkowy ciął obie; punkt w prawo zostawia planszę z pytaniem w całości.",
+        "ogRegenerated": null,
+        "ogNote": "Master mniejszy niż każdy kadrowany rozmiar — wiersz nie ma rozmiaru og."
+      }
     },
     "148": {
       "filename": "2020-02-platformy.png",
@@ -4297,7 +4327,22 @@
       "altPl": "Social Media zmieniają polski futbol",
       "altEn": "Social media is changing Polish football",
       "verdict": "accept",
-      "reason": "PZPN / Polish national team branding is the subject — the post is about Polish football."
+      "reason": "PZPN / Polish national team branding is the subject — the post is about Polish football.",
+      "focalPoint": {
+        "from": [
+          50,
+          50
+        ],
+        "to": [
+          20,
+          50
+        ],
+        "setAt": "2026-08-12",
+        "change": "fix-blog-cover-focal-point",
+        "reason": "Podpis „REPREZENTACJA POLSKI” ucięty z lewej; 20 odzyskuje pełny podpis i herb PZPN, twarz zostaje w kadrze.",
+        "ogRegenerated": false,
+        "ogNote": "Rozmiar og zachował stary kadr centralny (zapis przez Local API nie uruchamia resizera)."
+      }
     },
     "298": {
       "filename": "2017-01-zie.jpeg",

@@ -18,6 +18,7 @@ import { APP_BASE_URL } from '@/lib/env'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
 import {
+  focalPosition,
   getRelatedPosts,
   resolveCategory,
   resolveMedia,
@@ -166,6 +167,7 @@ export async function PostArticle({
                   objectFit="cover"
                   mobileSize="100vw"
                   desktopSize="48vw"
+                  style={focalPosition(cover)}
                   preload
                 />
               </div>
