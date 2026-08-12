@@ -54,6 +54,11 @@ The desktop footer reveal SHALL only engage when the footer's content fits withi
 - **WHEN** the viewport is shorter than the height at which the footer's content fits
 - **THEN** the footer participates in normal document flow (no sticky reveal) and is fully readable by scrolling
 
+#### Scenario: Each band gets its own height threshold
+
+- **WHEN** the footer renders between 800px and 1199px wide, where the five cells stack into a two-column block roughly twice the height of the five-track row
+- **THEN** the reveal engages only in windows tall enough for that block, not at the threshold that suffices for the five-track row
+
 #### Scenario: Tall viewports keep the reveal
 
 - **WHEN** the footer renders at 1728×1085

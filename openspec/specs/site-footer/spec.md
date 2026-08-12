@@ -69,7 +69,7 @@ The footer SHALL NOT link the `/uslugi`, `/en/services`, `/branze` or `/en/indus
 
 The footer SHALL stack as a single column below the desktop breakpoint, arrange its five cells in a two-column block between the desktop breakpoint and 1200px, and lay all five out in one row at 1200px and above.
 
-The OFERTA column SHALL flow its links into as many sub-columns as its track can fit at an 11rem floor, and SHALL never render fewer than one column of unwrapped labels. Two sub-columns are therefore reached in the two-column block band and again once the five-track row is wide enough (~1615px); between those the column renders as one clean list. Forcing two sub-columns at mid-range desktop widths is explicitly NOT required, because the widest industry label needs 223px and two non-wrapping tracks need 478px — more than the OFERTA track carries below ~1615px.
+The OFERTA column SHALL render its links in exactly two sub-columns at every width at or above the desktop breakpoint — in the two-column block band and throughout the five-track row band alike. Industry labels SHALL never be clipped; labels wider than their sub-column track wrap to a second line instead.
 
 #### Scenario: Stacked on mobile
 
@@ -86,10 +86,15 @@ The OFERTA column SHALL flow its links into as many sub-columns as its track can
 - **WHEN** the footer renders at 1200px or above
 - **THEN** the invite block and four columns occupy one row, with OFERTA given the widest of the four link tracks
 
-#### Scenario: OFERTA labels are never truncated or wrapped to fit a sub-column
+#### Scenario: OFERTA splits at laptop widths
+
+- **WHEN** the footer renders at 1280px, 1440px or 1512px viewport width
+- **THEN** OFERTA renders its links in two sub-columns
+
+#### Scenario: OFERTA labels are never truncated
 
 - **WHEN** the footer renders at any width at or above the desktop breakpoint
-- **THEN** OFERTA renders however many sub-columns its track fits, and no industry label is clipped
+- **THEN** every industry label is fully visible — labels that do not fit their sub-column track on one line wrap instead of clipping
 
 #### Scenario: No horizontal overflow
 
@@ -116,4 +121,28 @@ Because it opens a panel rather than navigating, it SHALL be a button rather tha
 
 - **WHEN** the consent-settings control is inspected or read by assistive technology
 - **THEN** it is announced as a button, and it does not navigate
+
+### Requirement: The reveal never places footer content under the header
+
+The desktop footer reveal SHALL only engage when the footer's content fits within the viewport height; otherwise the footer SHALL render in normal document flow. Footer content — the wordmark in particular — must never sit underneath the fixed header as a consequence of the sticky-bottom reveal.
+
+#### Scenario: Default Safari window on a 1440×900 MacBook
+
+- **WHEN** the footer renders at a 1440×760 or 1280×715 viewport and the page is scrolled to the bottom
+- **THEN** the wordmark's top edge sits below the fixed header's bottom edge in both Chromium and WebKit
+
+#### Scenario: Short windows fall back to normal flow
+
+- **WHEN** the viewport is shorter than the height at which the footer's content fits
+- **THEN** the footer participates in normal document flow (no sticky reveal) and is fully readable by scrolling
+
+#### Scenario: Each band gets its own height threshold
+
+- **WHEN** the footer renders between 800px and 1199px wide, where the five cells stack into a two-column block roughly twice the height of the five-track row
+- **THEN** the reveal engages only in windows tall enough for that block, not at the threshold that suffices for the five-track row
+
+#### Scenario: Tall viewports keep the reveal
+
+- **WHEN** the footer renders at 1728×1085
+- **THEN** the sticky reveal engages and the footer fills the viewport with no overlap
 

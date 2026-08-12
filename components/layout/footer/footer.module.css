@@ -23,22 +23,50 @@
   gap: calc(var(--safe) * 1.75);
   overflow: clip;
 
+  @media (--desktop) {
+    /* The larger top padding keeps the wordmark clear of the fixed header,
+       which is `padding: var(--safe)` around ~53px of content — so its height
+       grows with the viewport (80px at 1200px wide, 110px at 2560px, 129px at
+       3440px). Matching that `--safe` term keeps a constant ~19px of clearance;
+       the flat 6.5rem it replaces was only enough below ~2295px, and equals
+       this at 1440px. The bottom bar's margin-top:auto anchors it to the floor
+       and absorbs the leftover height. */
+    padding-top: calc(var(--safe) * 2 + 4.5rem);
+    gap: calc(var(--safe) * 1.1);
+  }
+
   /* Reveal-from-underneath (desktop only, brightscout-style): pin the footer to
      the viewport bottom and stack it below #main-content (z-index 1), so the
      opaque page scrolls up to uncover it. Its own height is the reveal travel.
      The element carries data-blur-edge-gate (see index.tsx) so the bottom
-     BlurEdge fades out as it emerges. Mobile keeps standard flow. */
-  @media (--desktop) {
+     BlurEdge fades out as it emerges. Mobile keeps standard flow.
+
+     min-height fills the viewport so the bottom-pinned reveal never leaves a
+     gap exposing the plum #main-content above the footer.
+
+     The height gate is the safety net: a sticky-bottom box taller than the
+     viewport necessarily pokes out of the *top*, sliding the wordmark under
+     the fixed header — there is no partial failure. So the reveal engages only
+     where the content is known to fit, and the two bands are two different
+     height regimes:
+
+     - Five-track row (≥1200px): content is 609px at 1200px wide and 754px at
+       1920px (the wordmark cap below holds the upper end), so 700px is the
+       shortest window that still fits with room to spare.
+     - Two-column block (800–1199px): five cells stacked two-up run 1052px at
+       800px wide to 1133px at 1199px — nearly double. 700px would leave the
+       wordmark 240px above the viewport top, fully off-screen. 1200px covers
+       the worst case with headroom, and still lets a portrait tablet reveal.
+
+     The comma is an OR over those two regimes. Below either threshold the
+     footer just scrolls in normal flow. Sits after the desktop block above
+     because media queries add no specificity. */
+  @media (--desktop) and (width < 1200px) and (height >= 1200px),
+    (width >= 1200px) and (height >= 700px) {
     position: sticky;
     bottom: 0;
     z-index: 0;
-    /* Fill the viewport so the bottom-pinned reveal never leaves a gap that
-       exposes the plum #main-content above the footer. The larger top padding
-       keeps the wordmark clear of the fixed header; the bottom bar's
-       margin-top:auto anchors it to the floor and absorbs the leftover height. */
     min-height: 100dvh;
-    padding-top: 6.5rem;
-    gap: calc(var(--safe) * 1.1);
   }
 }
 
@@ -53,10 +81,17 @@
   /* The SVG's height is locked to its width (fixed viewBox ratio), so on wide
      screens it grows tall enough to push the viewport-filling footer past the
      header and clip the wordmark under it. Cap the height to whatever space is
-     left after the rest of the footer (~27rem) so it stays full-width when the
-     viewport is tall enough and only shrinks (centred, via preserveAspectRatio)
-     on short/ultrawide screens where it otherwise wouldn't fit. */
-  max-height: calc(100dvh - 32rem);
+     left after the rest of the footer, so it stays full-width when the viewport
+     is tall enough and only shrinks (centred, via preserveAspectRatio) on
+     short/ultrawide screens where it otherwise wouldn't fit.
+
+     That leftover is not a constant: the rest of the footer measures 464px at
+     1200px wide, 521px at 1920px and 655px at 3440px, because every gap and
+     pad in the chain derives from --safe, which is itself a vw. Measured fit:
+     rest ≈ 22.5rem + 8.6vw. Subtracting a flat 32rem was right only around
+     1440–1728px and left the footer 41px over the viewport at 2560×720; the
+     two-term form tracks it across the range with ~25px of headroom. */
+  max-height: calc(100dvh - 24rem - 8.75vw);
   margin-bottom: calc(var(--safe) * 1.25);
   overflow: visible;
 }
@@ -169,14 +204,18 @@
   gap: 0.7em;
 }
 
-/* Long link lists (e.g. the 12-item OFERTA column) flow into as many columns as
-   the cell can fit — two on wide desktops, one on narrower ones — so the column
-   stays short and the footer doesn't outgrow the viewport. */
+/* Long link lists (e.g. the 12-item OFERTA column) split into two sub-columns
+   so the column stays short and the footer fits one viewport — which the
+   sticky-bottom reveal below depends on. The count is explicit, not
+   `auto-fill` with a rem floor: auto-fill made it a function of viewport width
+   × font size, and two 11rem tracks only fit above a ~1663px viewport, so
+   every laptop silently got one 12-row column and a footer taller than its
+   window. Labels too wide for a track wrap; none are clipped. */
 @media (--desktop) {
   .links[data-cols="2"] {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
-    gap: 0.7em 2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7em 1.25rem;
     align-content: start;
   }
 }
