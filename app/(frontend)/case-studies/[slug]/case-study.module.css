@@ -514,6 +514,7 @@
 }
 
 .ctaPrimary {
+  position: relative;
   padding: 0.9em 2em;
   border-radius: 999px;
   background-color: var(--color-orange);
@@ -525,5 +526,59 @@
 
   &:hover {
     opacity: 0.9;
+  }
+}
+
+/* Comet ring on the primary pill (mock variant A, user pick 2026-08-14): a
+   conic tail-to-head sweep orbiting just outside the button. The registered
+   --spin angle (same idiom as the o-nas orbit) rotates the *gradient* — the
+   element never transforms, so text stays sharp and the work stays on the
+   compositor. Without @property support (Safari <16.4) the angle can't
+   interpolate and the ring simply sits static. */
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes comet {
+  to {
+    --spin: 1turn;
+  }
+}
+
+.ctaPrimary::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0turn 0.62turn,
+    color-mix(in srgb, var(--color-cream) 55%, transparent) 0.93turn,
+    var(--color-cream) 0.99turn,
+    transparent 1turn
+  );
+  /* Keep only the 2px band: content-box mask XORed against the full box. */
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  animation: comet 2.6s linear infinite;
+}
+
+/* Must sit below the ::before rule it overrides — the media query adds no
+   specificity. The global reduced-motion kill-switch would freeze the comet
+   mid-orbit as a smudge; a faint static hairline is the honest idle. */
+@media (--reduced-motion) {
+  .ctaPrimary::before {
+    animation: none;
+    background: color-mix(in srgb, var(--color-cream) 22%, transparent);
   }
 }
