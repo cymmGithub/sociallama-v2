@@ -107,6 +107,7 @@ export const listing = {
 export const postArticle = {
   breadcrumbAria: 'Breadcrumb',
   hubLabel: 'Blog',
+  backAria: 'Back to the blog',
   readingTimeSuffix: hub.readingTimeSuffix,
   cta: postCta,
   toc: postToc,

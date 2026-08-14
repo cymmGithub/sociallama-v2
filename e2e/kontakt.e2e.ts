@@ -18,6 +18,7 @@ import {
  * - the form kit's callback-ref infinite loop (maximum update depth)
  * - dark chrome leaking onto other pages via Next 16's Activity cache
  * - English fallback validation copy on a Polish form
+ * - a required RODO consent that does not actually gate the submit
  */
 
 // Kontakt page / footer dark ground — the shared --color-ink-deep swatch.
@@ -276,20 +277,36 @@ test.describe('Kontakt page', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await gotoHydrated(page, '/kontakt')
 
+    let posted = false
+    page.on('request', (request) => {
+      if (request.method() === 'POST') posted = true
+    })
+
     // Invalid email → the localized client-side message, not "Invalid email".
     await page.locator('input[name="email"]').fill('niepoprawny-adres')
     await expect(page.getByText(contactForm.errors.email)).toBeVisible(HYDRATED)
     await expect(page.getByText(/^Invalid /)).toHaveCount(0)
 
-    // Valid fill-in → submit. The outcome depends on the environment (SMTP
-    // and Turnstile may or may not be configured), so assert a terminal
-    // FormState is reached — success or a graceful, localized error — and no
-    // uncaught exception either way.
     await page.locator('input[name="name"]').fill('Test E2E')
     await page.locator('input[name="email"]').fill('e2e@example.com')
     await page
       .locator('textarea[name="message"]')
       .fill('Wiadomość testowa z suite e2e.')
+
+    // Every other field valid, consent unchecked → blocked on consent alone,
+    // and nothing leaves the browser. A failure here is the consent gate, not
+    // the standing CI navigation flake — no navigation is involved.
+    const consent = page.locator('input[name="consent"]')
+    await expect(consent).not.toBeChecked()
+    await page.locator('button[type="submit"]').click()
+    await expect(page.getByText(contactForm.errors.consent)).toBeVisible()
+    expect(posted).toBe(false)
+
+    // Consent given → submit. The outcome depends on the environment (SMTP
+    // and Turnstile may or may not be configured), so assert a terminal
+    // FormState is reached — success or a graceful, localized error — and no
+    // uncaught exception either way.
+    await consent.check()
     await page.locator('button[type="submit"]').click()
 
     const terminal = page

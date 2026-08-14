@@ -25,6 +25,43 @@
   font-family: var(--font-mono);
 }
 
+/* —— Back to the hub ——————————————————————————————————————————————————— */
+
+/* The row mirrors the header card's width, not the article's padding box: above
+   85rem the card stops growing and centres, so `align-self: flex-start` would
+   leave the link stranded to the card's left. */
+.backRow {
+  width: min(100%, 85rem);
+  /* Small: the link's own box already carries 11px below the glyph. */
+  margin-bottom: 3px;
+}
+
+/* Label-less, so the box is sized for the finger rather than for the glyph: a
+   22px arrow centred in a 44px target. The negative inline start pulls that
+   padding off the row's edge, so the arrow — not the invisible box around it —
+   is what lines up with the card below. It inherits the theme's ink (this sits
+   on the page's sand, not on the stage) and hovers to the plum accent. */
+.backLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-inline-start: -11px;
+  transition: color var(--duration-fast);
+}
+
+.backIcon {
+  width: 22px;
+  height: 22px;
+}
+
+@media (--hover) {
+  .backLink:hover {
+    color: var(--color-plum);
+  }
+}
+
 /* —— The plum grain stage ————————————————————————————————————————————— */
 .stage {
   position: relative;

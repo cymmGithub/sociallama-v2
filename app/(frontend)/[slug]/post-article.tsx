@@ -1,5 +1,6 @@
 import cn from 'clsx'
 import {
+  ArrowLeft,
   ArrowRight,
   ChevronDown,
   ChevronRight,
@@ -125,6 +126,24 @@ export async function PostArticle({
         post={post}
       />
       <article className={s.article}>
+        {/* Above the header card, on the page's own sand ground — a page-level
+            way out of the article. Same destination as the first crumb inside
+            the card, deliberately: the trail says where you are, this says how
+            to leave. The row matches the card's width so the two share a left
+            edge at every viewport.
+
+            Bare arrow, no label: `backAria` is the only accessible name it has,
+            so it is not optional here. */}
+        <div className={s.backRow}>
+          <Link
+            aria-label={content.backAria}
+            className={s.backLink}
+            href={hubPath}
+          >
+            <ArrowLeft aria-hidden="true" className={s.backIcon} />
+          </Link>
+        </div>
+
         <header className={cn(s.stage, s.header)}>
           <nav aria-label={content.breadcrumbAria} className={s.crumbs}>
             <Link href={hubPath}>{content.hubLabel}</Link>

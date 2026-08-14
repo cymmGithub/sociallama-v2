@@ -1,8 +1,6 @@
 'use server'
 
-import { z } from 'zod'
 import {
-  type LocalizedContact,
   contactForm as plForm,
   contactServices as plServices,
 } from '@/lib/content/contact'
@@ -15,13 +13,8 @@ import type { Locale } from '@/lib/i18n/slug-map'
 import { validateFormWithTurnstile } from '@/lib/integrations/turnstile'
 import type { FormState } from '@/lib/types/form'
 import { runFormAction } from '@/lib/utils/form-action'
+import { buildContactSchema, type ContactCopy } from './contact-schema'
 import { getEmailTransport } from './transport'
-
-// Service `value`s are locale-independent (the checkbox values); only labels
-// differ, so the accepted set is the same in both locales.
-const SERVICE_VALUES = plServices.map((s) => s.value) as string[]
-
-type ContactCopy = LocalizedContact['contactForm']
 
 function localeCopy(locale: Locale): {
   form: ContactCopy
@@ -33,39 +26,6 @@ function localeCopy(locale: Locale): {
     form: en ? enForm : plForm,
     serviceLabels: new Map(services.map((s) => [s.value, s.label])),
   }
-}
-
-/**
- * Contact form schema, built per-locale so field-error messages match the
- * submitter's locale. `services` arrives as the JSON string emitted by the form
- * kit's CheckboxesField, so we parse it and keep only known service values.
- */
-function buildContactSchema(form: ContactCopy) {
-  return z.object({
-    name: z.string().min(1, { error: form.errors.name }),
-    email: z.email({ error: form.errors.email }),
-    // Optional callback number — no strict regex so international/informal
-    // formats are accepted (a rejected valid number is a lost lead). Keyed
-    // `phoneNumber` to dodge the form kit's built-in strict `phone` validator.
-    phoneNumber: z.string().trim().optional(),
-    message: z.string().min(1, { error: form.errors.message }),
-    services: z
-      .string()
-      .optional()
-      .transform((raw) => {
-        if (!raw) return [] as string[]
-        try {
-          const parsed: unknown = JSON.parse(raw)
-          if (!Array.isArray(parsed)) return [] as string[]
-          return parsed.filter(
-            (v): v is string =>
-              typeof v === 'string' && SERVICE_VALUES.includes(v)
-          )
-        } catch {
-          return [] as string[]
-        }
-      }),
-  })
 }
 
 /**

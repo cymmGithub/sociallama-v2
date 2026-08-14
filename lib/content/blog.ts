@@ -147,8 +147,14 @@ export const listing = {
  */
 export const postArticle = {
   breadcrumbAria: 'Ścieżka nawigacji',
-  /** The hub crumb, and the same label in the BreadcrumbList JSON-LD. */
+  /**
+   * The hub crumb, the back link's visible label, and the same label in the
+   * BreadcrumbList JSON-LD.
+   */
   hubLabel: 'Blog',
+  /** Accessible name of the back link — the crumb trail says where you are,
+   *  this says where the arrow goes. Contains `hubLabel` (WCAG 2.5.3). */
+  backAria: 'Wróć na blog',
   readingTimeSuffix: hub.readingTimeSuffix,
   cta: postCta,
   toc: postToc,

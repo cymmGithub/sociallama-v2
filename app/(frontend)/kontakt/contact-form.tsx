@@ -2,8 +2,9 @@
 
 import cn from 'clsx'
 import { ArrowRight, CircleSmall } from 'lucide-react'
-import { useCallback, useRef } from 'react'
+import { useCallback, useId, useRef } from 'react'
 import { Form, type FormState, SubmitButton } from '@/components/ui/form'
+import { ConsentField } from '@/components/ui/form/consent-field'
 import {
   CheckboxesField,
   InputField,
@@ -47,12 +48,21 @@ export function ContactForm({
   )
 }
 
+/** The page's own look for a consent row; the kit component owns the wiring. */
+const CONSENT_CLASSES = {
+  row: s.consent,
+  box: s.consentBox,
+  label: s.consentLabel,
+  error: s.consentError,
+}
+
 function ContactFormFields({
   form,
   services,
   locale,
 }: Required<ContactFormProps>) {
   const siteKey = env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY
+  const consentId = useId()
   // The toast context value isn't memoised, so read it through a ref and keep
   // the Form callbacks stable — otherwise a new callback identity on every
   // toast-driven re-render would re-fire the effect (and re-toast in a loop).
@@ -77,6 +87,7 @@ function ContactFormFields({
         name: form.errors.required,
         email: form.errors.email,
         message: form.errors.required,
+        consent: form.errors.consent,
       }
       return messages[field] ?? form.errors.fallback
     },
@@ -160,7 +171,18 @@ function ContactFormFields({
         required
       />
 
-      {siteKey && <TurnstileWidget siteKey={siteKey} />}
+      {/* Required RODO consent — sits above the send row, so nothing is
+          submitted before it is given. */}
+      <ConsentField
+        classNames={CONSENT_CLASSES}
+        id={`${consentId}-consent`}
+        name="consent"
+        required
+        invalidMessage={form.errors.consent}
+      >
+        {form.consent.text}
+        <Link href={form.consent.linkHref}>{form.consent.linkLabel}</Link>.
+      </ConsentField>
 
       <div className={cn(s.send)}>
         <SubmitButton
@@ -174,13 +196,11 @@ function ContactFormFields({
         </SubmitButton>
         <span className={cn(s.note)}>{form.note}</span>
       </div>
-      <p className={cn(s.privacy)}>
-        {form.privacyNote.text}{' '}
-        <Link href={form.privacyNote.linkHref}>
-          {form.privacyNote.linkLabel}
-        </Link>
-        .
-      </p>
+
+      {/* Below the send row (user call, 2026-08-14) — the challenge is
+          plumbing, not a step the visitor should read before the CTA. Still
+          inside the <Form>: the hidden token input must ride in the FormData. */}
+      {siteKey && <TurnstileWidget siteKey={siteKey} />}
     </Form>
   )
 }

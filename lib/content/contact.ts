@@ -89,11 +89,14 @@ export const contactForm = {
   },
   // Reassurance next to the submit pill — aligned to the lede's 24h promise.
   note: 'Odzywamy się w\u00A024h, w\u00A0dni robocze.',
-  // RODO note near the submit row. Split so the component can wrap only the
-  // link in <Link>; the href points at the existing privacy page.
-  privacyNote: {
-    text: 'Twoje dane wykorzystamy tylko po to, żeby odpowiedzieć na wiadomość (i\u00A0oddzwonić, jeśli zostawisz numer).',
-    linkLabel: 'Polityka prywatności',
+  // RODO consent, unchecked by default — the submission is rejected without it.
+  // It replaces the passive privacy note that used to sit under the send row,
+  // keeping that note's substance (a reply, plus the callback the phone field
+  // invites) and its link. Split so the component wraps only the policy name
+  // in <Link>; the href points at the existing privacy page.
+  consent: {
+    text: 'Wyrażam zgodę na przetwarzanie podanych danych osobowych w\u00A0celu odpowiedzi na wiadomość (i\u00A0oddzwonienia, jeśli zostawię numer), zgodnie z\u00A0',
+    linkLabel: 'Polityką prywatności',
     linkHref: '/polityka-prywatnosci',
   },
   // Lead-email labels (server action) — localized so EN submissions arrive with
@@ -121,6 +124,7 @@ export const contactForm = {
     name: 'Podaj imię.',
     email: 'Podaj poprawny adres e-mail.',
     message: 'Napisz wiadomość.',
+    consent: 'Bez zgody nie możemy odpowiedzieć na wiadomość.',
     fallback: 'Uzupełnij to pole.',
     // Short inline hint shown under a missing required field.
     required: 'Wymagane',

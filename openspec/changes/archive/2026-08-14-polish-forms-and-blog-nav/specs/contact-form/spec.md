@@ -22,11 +22,11 @@ The contact form SHALL include a required data-processing consent checkbox in bo
 - **THEN** each shows the consent checkbox with its own locale's label and error copy, and the old static privacy paragraph is gone
 
 ### Requirement: Legible numbered field labels
-The contact form's field labels, including their CSS-counter step-number prefix (`01 —`, `02 —`, …), SHALL render in the cream label recipe used elsewhere on dark stages — `color-mix(in srgb, var(--color-cream) 72%, transparent)` — instead of the muted `#8f838b`, keeping number and label text at the same strength and leaving the orange required-asterisk accent unchanged.
+The contact form's field labels, including their CSS-counter step-number prefix (`01 —`, `02 —`, …), SHALL render in full-strength cream (`var(--color-cream)`) — the page's own text color, matching the hero lede — instead of the muted `#8f838b`, keeping number and label text at the same strength and leaving the orange required-asterisk accent unchanged.
 
-#### Scenario: Step numbers are cream on the plum stage
+#### Scenario: Step numbers are cream on the dark stage
 - **WHEN** the contact form renders
-- **THEN** every field label and its leading step number display in the cream mix, visually matching the careers form's labels
+- **THEN** every field label and its leading step number display in full cream, at the same strength as the page's lede copy
 
 #### Scenario: Required marker keeps its accent
 - **WHEN** a required field's label renders

@@ -68,8 +68,8 @@ export const contactForm = {
     error: 'Try again',
   },
   note: 'We reply within 24h, on business days.',
-  privacyNote: {
-    text: "We'll only use your details to reply to your message (and call you back if you leave a number).",
+  consent: {
+    text: 'I consent to the processing of my personal data so that Social Lama can reply to this message (and call me back if I leave a number), in line with the ',
     linkLabel: 'Privacy Policy',
     linkHref: '/en/privacy-policy',
   },
@@ -92,6 +92,7 @@ export const contactForm = {
     name: 'Please enter your name.',
     email: 'Please enter a valid email address.',
     message: 'Please write a message.',
+    consent: 'We need your consent before we can reply.',
     fallback: 'Please fill in this field.',
     required: 'Required',
   },

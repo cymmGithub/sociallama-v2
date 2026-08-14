@@ -156,13 +156,17 @@
   grid-column: auto / span 1;
 }
 
-/* "01 — Imię" label line (mock .num). */
+/* "01 — Imię" label line (mock .num). Full cream — the page's own text color,
+   same as the lede — rather than --muted: the step number is wayfinding, and
+   both the mauve and a 72% mix were too dim on the near-black stage (user call,
+   2026-08-14). The ::before counter inherits, so number and label read at one
+   strength. */
 .formShell .field label {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--color-cream);
   font-variant-numeric: tabular-nums;
 }
 
@@ -185,8 +189,9 @@
   margin-inline: 0.4em;
 }
 
-/* Big display-face underline inputs (mock .fld). */
-.formShell input:not([type="hidden"]),
+/* Big display-face underline inputs (mock .fld). The consent checkbox is
+   excluded: it is a UA control, not a typed field. */
+.formShell input:not([type="hidden"], [type="checkbox"]),
 .formShell textarea {
   border: none;
   border-bottom: 1px solid var(--line-strong);
@@ -207,7 +212,7 @@
   opacity: 1;
 }
 
-.formShell input:focus,
+.formShell input:not([type="checkbox"]):focus,
 .formShell textarea:focus {
   outline: none;
   border-bottom-color: var(--color-orange);
@@ -327,18 +332,52 @@
   color: var(--muted);
 }
 
-/* RODO privacy note under the send row. */
-.privacy {
+/* RODO consent row — a real checkbox, not a styled span, so it announces
+   itself. Spans the form's full width like every other field. */
+.consent {
   grid-column: 1 / -1;
-  margin-top: -6px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
   max-width: 60ch;
+}
+
+/* The global reset applies `all: unset` to every element outside a small
+   allowlist, which strips a checkbox's appearance down to nothing — it renders
+   as an invisible 0-size box. `revert` puts the UA control back, the same fix
+   the reset itself uses for <meter>. */
+.consentBox {
+  -webkit-appearance: revert;
+  appearance: revert;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--color-orange);
+  cursor: pointer;
+}
+
+/* Two classes, so it out-specifies the numbered `.field label` recipe — this is
+   a sentence of legal copy, not a field label (and it carries no step number). */
+.formShell .consentLabel {
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.6;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
 }
 
-.privacy a {
+.consentError {
+  grid-column: 2;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--field-error);
+}
+
+/* Privacy-policy link inside the consent copy. */
+.formShell .consentLabel a {
   color: var(--color-cream);
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -346,12 +385,12 @@
 }
 
 @media (--hover) {
-  .privacy a:hover {
+  .formShell .consentLabel a:hover {
     color: var(--color-orange);
   }
 }
 
-.privacy a:focus-visible {
+.formShell .consentLabel a:focus-visible {
   outline: 2px solid var(--color-orange);
   outline-offset: 3px;
 }
@@ -541,11 +580,11 @@
     animation: none;
   }
 
-  .formShell input:not([type="hidden"]),
+  .formShell input:not([type="hidden"], [type="checkbox"]),
   .formShell textarea,
   .formShell button[aria-pressed],
   .send button[type="submit"],
-  .privacy a {
+  .formShell .consentLabel a {
     transition: none;
   }
 }

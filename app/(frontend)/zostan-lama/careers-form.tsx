@@ -2,24 +2,13 @@
 
 import cn from 'clsx'
 import { ArrowUpRight, FileUp } from 'lucide-react'
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useId, useRef } from 'react'
 // Shared with /kontakt: the widget is route-agnostic (no CSS module of its
 // own), and both forms need the same explicit-render + reset-on-failure
 // behaviour. Importing the component, not another route's styles.
 import { TurnstileWidget } from '@/app/(frontend)/kontakt/turnstile-widget'
-import {
-  Form,
-  type FormState,
-  SubmitButton,
-  useFormContext,
-} from '@/components/ui/form'
+import { Form, type FormState, SubmitButton } from '@/components/ui/form'
+import { ConsentField } from '@/components/ui/form/consent-field'
 import {
   FileField,
   InputField,
@@ -83,72 +72,12 @@ export function CareersForm({
   )
 }
 
-/**
- * A consent row — a real checkbox, unchecked by default.
- *
- * Not a kit field: a checkbox's `value` is `"on"` whether or not it is checked,
- * so the kit's registered-control path reads every consent box as filled in.
- * For a required one, `setFieldValidity` is the escape hatch — it puts the
- * control back inside the readiness gate, so an unchecked box blocks the submit
- * and reveals its own message rather than making the round trip and coming back
- * with the schema's generic failure.
- *
- * The two consents are separate controls on purpose: bundling the marketing
- * permission into the one an applicant must give would not be freely given
- * consent, and the schema treats them independently.
- */
-function ConsentField({
-  id,
-  name,
-  children,
-  required = false,
-  invalidMessage,
-}: {
-  id: string
-  name: string
-  children: ReactNode
-  required?: boolean
-  invalidMessage?: string
-}) {
-  const { state, actions } = useFormContext()
-  const { setFieldValidity } = actions
-  const [checked, setChecked] = useState(false)
-  const error = state.errors[name]
-
-  // Seed the gate: unchecked is invalid, but silently so — the message appears
-  // when the visitor tries to submit, not the moment the page loads. An
-  // optional consent never enters the gate at all.
-  useEffect(() => {
-    if (required) setFieldValidity(name, false)
-  }, [name, required, setFieldValidity])
-
-  return (
-    <div className={s.consent}>
-      <input
-        className={s.consentBox}
-        type="checkbox"
-        id={id}
-        name={name}
-        checked={checked}
-        onChange={(event) => {
-          const next = event.target.checked
-          setChecked(next)
-          if (required) {
-            setFieldValidity(name, next, next ? '' : (invalidMessage ?? ''))
-          }
-        }}
-      />
-      <label className={s.consentLabel} htmlFor={id}>
-        {children}
-        {required && <span aria-hidden="true"> *</span>}
-      </label>
-      {error?.state && error.message && (
-        <span className={s.consentError} role="alert">
-          {error.message}
-        </span>
-      )}
-    </div>
-  )
+/** The page's own look for a consent row; the kit component owns the wiring. */
+const CONSENT_CLASSES = {
+  row: s.consent,
+  box: s.consentBox,
+  label: s.consentLabel,
+  error: s.consentError,
 }
 
 function CareersFormFields({
@@ -279,7 +208,11 @@ function CareersFormFields({
       />
 
       <div className={s.consentGroup}>
+        {/* Two separate controls on purpose: bundling the marketing permission
+            into the one an applicant must give would not be freely given
+            consent, and the schema treats them independently. */}
         <ConsentField
+          classNames={CONSENT_CLASSES}
           id={`${consentId}-required`}
           name="consent"
           required
@@ -287,7 +220,11 @@ function CareersFormFields({
         >
           {form.consent.required.label}
         </ConsentField>
-        <ConsentField id={`${consentId}-marketing`} name="marketingConsent">
+        <ConsentField
+          classNames={CONSENT_CLASSES}
+          id={`${consentId}-marketing`}
+          name="marketingConsent"
+        >
           {form.consent.marketing.text}
           <Link href={form.consent.marketing.linkHref}>
             {form.consent.marketing.linkLabel}
