@@ -1612,6 +1612,7 @@
 }
 
 .ctaPrimary {
+  position: relative;
   display: inline-flex;
   align-items: center;
   padding: 0.95rem 2rem;
@@ -1622,4 +1623,56 @@
   font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
+}
+
+/* Comet ring on the CTA pill — same treatment as the case-study closing card
+   (mock variant A, user pick 2026-08-14): a cream conic tail-to-head sweep on
+   the 2px band just outside the button. The registered --spin angle rotates
+   the gradient itself — the element never transforms. */
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes comet {
+  to {
+    --spin: 1turn;
+  }
+}
+
+.ctaPrimary::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--spin),
+    transparent 0turn 0.62turn,
+    color-mix(in srgb, var(--color-cream) 55%, transparent) 0.93turn,
+    var(--color-cream) 0.99turn,
+    transparent 1turn
+  );
+  /* Keep only the 2px band: content-box mask XORed against the full box. */
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  animation: comet 2.6s linear infinite;
+}
+
+/* Below the ::before it overrides — the global reduced-motion kill-switch
+   would freeze the comet mid-orbit; a faint static hairline is the honest
+   idle. */
+@media (--reduced-motion) {
+  .ctaPrimary::before {
+    animation: none;
+    background: color-mix(in srgb, var(--color-cream) 22%, transparent);
+  }
 }
