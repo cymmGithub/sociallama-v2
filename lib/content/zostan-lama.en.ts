@@ -134,9 +134,9 @@ export const careersBenefits = {
       text: 'Because spitting far is not a full workout',
     },
     {
-      icon: 'utensils',
-      title: 'Wednesday lunch',
-      text: 'The whole herd at one table',
+      icon: 'library',
+      title: 'Library',
+      text: 'Access to the office bookshelf',
     },
     {
       icon: 'clock',

@@ -4,10 +4,10 @@ import {
   GraduationCap,
   HeartPulse,
   Languages,
+  Library,
   Lightbulb,
   type LucideIcon,
   TrendingUp,
-  Utensils,
 } from 'lucide-react'
 import {
   careersBenefits as careersBenefitsDefault,
@@ -31,9 +31,9 @@ const ICONS: Record<string, LucideIcon> = {
   'graduation-cap': GraduationCap,
   'heart-pulse': HeartPulse,
   languages: Languages,
+  library: Library,
   lightbulb: Lightbulb,
   'trending-up': TrendingUp,
-  utensils: Utensils,
 }
 
 export function CareersBenefits({

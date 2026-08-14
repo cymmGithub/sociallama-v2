@@ -158,9 +158,9 @@ export const careersBenefits = {
       text: 'Bo plucie na odległość to za mało',
     },
     {
-      icon: 'utensils',
-      title: 'Lunch w\u00A0środy',
-      text: 'Całe stado przy jednym stole',
+      icon: 'library',
+      title: 'Biblioteka',
+      text: 'Dostęp do biurowej biblioteczki',
     },
     {
       icon: 'clock',
