@@ -5,16 +5,11 @@ import { ArrowRight, CircleSmall } from 'lucide-react'
 import { useCallback, useId, useRef } from 'react'
 import { Form, type FormState, SubmitButton } from '@/components/ui/form'
 import { ConsentField } from '@/components/ui/form/consent-field'
-import {
-  CheckboxesField,
-  InputField,
-  TextareaField,
-} from '@/components/ui/form/fields'
+import { InputField, TextareaField } from '@/components/ui/form/fields'
 import { Link } from '@/components/ui/link'
 import { Toast, useToast } from '@/components/ui/toast'
 import {
   contactForm as contactFormDefault,
-  contactServices as contactServicesDefault,
   type LocalizedContact,
 } from '@/lib/content/contact'
 import { env } from '@/lib/env'
@@ -24,17 +19,14 @@ import s from './kontakt.module.css'
 import { TurnstileWidget } from './turnstile-widget'
 
 type ContactFormCopy = LocalizedContact['contactForm']
-type ContactServices = LocalizedContact['contactServices']
 
 interface ContactFormProps {
   form?: ContactFormCopy
-  services?: ContactServices
   locale?: Locale
 }
 
 export function ContactForm({
   form = contactFormDefault,
-  services = contactServicesDefault,
   locale = 'pl',
 }: ContactFormProps) {
   // Toast.Provider must live inside a client component — it's a compound-
@@ -42,7 +34,7 @@ export function ContactForm({
   // server page. The Viewport (top-right) is portaled to <body>.
   return (
     <Toast.Provider>
-      <ContactFormFields form={form} services={services} locale={locale} />
+      <ContactFormFields form={form} locale={locale} />
       <Toast.Viewport />
     </Toast.Provider>
   )
@@ -56,11 +48,7 @@ const CONSENT_CLASSES = {
   error: s.consentError,
 }
 
-function ContactFormFields({
-  form,
-  services,
-  locale,
-}: Required<ContactFormProps>) {
+function ContactFormFields({ form, locale }: Required<ContactFormProps>) {
   const siteKey = env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY
   const consentId = useId()
   // The toast context value isn't memoised, so read it through a ref and keep
@@ -144,22 +132,6 @@ function ContactFormFields({
           </>
         }
         placeholder={form.fields.phone.placeholder}
-      />
-      <CheckboxesField
-        className={cn(s.field)}
-        name="services"
-        label={
-          <>
-            {form.fields.services.label}
-            <CircleSmall
-              className={s.labelSep}
-              fill="currentColor"
-              aria-hidden="true"
-            />
-            {form.fields.services.optional}
-          </>
-        }
-        options={services}
       />
       <TextareaField
         className={cn(s.field)}

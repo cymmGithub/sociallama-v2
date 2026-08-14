@@ -33,11 +33,7 @@ export default function EnContactPage() {
           outlinePath={contactMarqueeOutlinePaths.en}
         />
         <div className={s.formSection}>
-          <ContactForm
-            form={en.contactForm}
-            services={en.contactServices}
-            locale="en"
-          />
+          <ContactForm form={en.contactForm} locale="en" />
         </div>
         <ContactSteps head={en.contactStepsHead} steps={en.contactSteps} />
         <div className={s.brands} data-blur-edge-gate>

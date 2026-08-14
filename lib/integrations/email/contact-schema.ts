@@ -1,19 +1,11 @@
 import { z } from 'zod'
-import {
-  type LocalizedContact,
-  contactServices as plServices,
-} from '@/lib/content/contact'
-
-// Service `value`s are locale-independent (the checkbox values); only labels
-// differ, so the accepted set is the same in both locales.
-const SERVICE_VALUES = plServices.map((s) => s.value) as string[]
+import type { LocalizedContact } from '@/lib/content/contact'
 
 export type ContactCopy = LocalizedContact['contactForm']
 
 /**
  * Contact form schema, built per-locale so field-error messages match the
- * submitter's locale. `services` arrives as the JSON string emitted by the form
- * kit's CheckboxesField, so we parse it and keep only known service values.
+ * submitter's locale.
  *
  * It lives here rather than in `action.ts` because a `'use server'` module may
  * only export async functions — and this gate is the authoritative one (the
@@ -32,21 +24,5 @@ export function buildContactSchema(form: ContactCopy) {
     // literal covers both refusal and absence — the consent guarantee holds
     // even when the client-side gate is bypassed.
     consent: z.literal('on', { error: form.errors.consent }),
-    services: z
-      .string()
-      .optional()
-      .transform((raw) => {
-        if (!raw) return [] as string[]
-        try {
-          const parsed: unknown = JSON.parse(raw)
-          if (!Array.isArray(parsed)) return [] as string[]
-          return parsed.filter(
-            (v): v is string =>
-              typeof v === 'string' && SERVICE_VALUES.includes(v)
-          )
-        } catch {
-          return [] as string[]
-        }
-      }),
   })
 }

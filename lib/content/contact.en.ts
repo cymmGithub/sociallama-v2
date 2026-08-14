@@ -1,9 +1,8 @@
 /**
  * English `/kontakt` (Contact) content — EN twin of `contact.ts`.
  *
- * Each block `satisfies LocalizedContact['<key>']` (design D2). Service `value`s
- * are locale-independent (they key the email + schema) and kept identical to the
- * Polish module; only labels, copy, and the privacy-link href differ.
+ * Each block `satisfies LocalizedContact['<key>']` (design D2). Only labels,
+ * copy, and the privacy-link href differ from the Polish module.
  *
  * Voice: playful but clean, American spelling (user-approved 2026-07-22).
  */
@@ -38,14 +37,6 @@ export const contactSteps = [
   },
 ] satisfies LocalizedContact['contactSteps']
 
-export const contactServices = [
-  { label: 'Social media', value: 'social-media' },
-  { label: 'Campaigns', value: 'kampanie' },
-  { label: 'Video', value: 'wideo' },
-  { label: 'Strategy', value: 'strategia' },
-  { label: 'Collaboration', value: 'wspolpraca' },
-] satisfies LocalizedContact['contactServices']
-
 export const contactForm = {
   fields: {
     name: { label: 'Name', placeholder: 'What should we call you?' },
@@ -55,7 +46,6 @@ export const contactForm = {
       optional: 'optional',
       placeholder: "Leave a number, we'll call back.",
     },
-    services: { label: "What's it about?", optional: 'optional' },
     message: {
       label: 'Your message',
       placeholder: 'Tell us a bit about your project.',
@@ -78,7 +68,6 @@ export const contactForm = {
     name: 'Name',
     email: 'Email',
     phone: 'Phone',
-    services: 'Interests',
     message: 'Message',
     none: '—',
   },

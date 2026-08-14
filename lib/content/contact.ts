@@ -54,15 +54,6 @@ export const contactSteps = [
 
 // —— Contact form ————————————————————————————————————————————————————————————
 
-/** Service tags — optional multi-select. `value` is what lands in the email. */
-export const contactServices = [
-  { label: 'Social media', value: 'social-media' },
-  { label: 'Kampanie', value: 'kampanie' },
-  { label: 'Wideo', value: 'wideo' },
-  { label: 'Strategia', value: 'strategia' },
-  { label: 'Współpraca', value: 'wspolpraca' },
-] as const
-
 export const contactForm = {
   fields: {
     name: { label: 'Imię', placeholder: 'Jak się do Ciebie zwracać?' },
@@ -75,7 +66,6 @@ export const contactForm = {
       optional: 'opcjonalnie',
       placeholder: 'Zostaw numer, oddzwonimy.',
     },
-    services: { label: 'Czego dotyczy?', optional: 'opcjonalnie' },
     message: {
       label: 'Twoja wiadomość',
       placeholder: 'Opowiedz nam krótko o\u00A0swoim projekcie.',
@@ -106,7 +96,6 @@ export const contactForm = {
     name: 'Imię',
     email: 'E-mail',
     phone: 'Telefon',
-    services: 'Zainteresowania',
     message: 'Wiadomość',
     none: '—',
   },
@@ -153,7 +142,6 @@ export type ContactContent = {
   contactLede: typeof contactLede
   contactStepsHead: typeof contactStepsHead
   contactSteps: typeof contactSteps
-  contactServices: typeof contactServices
   contactForm: typeof contactForm
   contactMetricsHead: typeof contactMetricsHead
   contactMetrics: typeof contactMetrics

@@ -1,32 +1,14 @@
 'use server'
 
-import {
-  contactForm as plForm,
-  contactServices as plServices,
-} from '@/lib/content/contact'
-import {
-  contactForm as enForm,
-  contactServices as enServices,
-} from '@/lib/content/contact.en'
+import { contactForm as plForm } from '@/lib/content/contact'
+import { contactForm as enForm } from '@/lib/content/contact.en'
 import { env } from '@/lib/env'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { validateFormWithTurnstile } from '@/lib/integrations/turnstile'
 import type { FormState } from '@/lib/types/form'
 import { runFormAction } from '@/lib/utils/form-action'
-import { buildContactSchema, type ContactCopy } from './contact-schema'
+import { buildContactSchema } from './contact-schema'
 import { getEmailTransport } from './transport'
-
-function localeCopy(locale: Locale): {
-  form: ContactCopy
-  serviceLabels: Map<string, string>
-} {
-  const en = locale === 'en'
-  const services = en ? enServices : plServices
-  return {
-    form: en ? enForm : plForm,
-    serviceLabels: new Map(services.map((s) => [s.value, s.label])),
-  }
-}
 
 /**
  * `sendContactEmail` — server action for the `/kontakt` and `/en/contact` forms.
@@ -40,7 +22,7 @@ export async function sendContactEmail(
   formData: FormData
 ): Promise<FormState> {
   const locale: Locale = formData.get('locale') === 'en' ? 'en' : 'pl'
-  const { form, serviceLabels } = localeCopy(locale)
+  const form = locale === 'en' ? enForm : plForm
 
   // validateTurnstile handles the unconfigured case itself: fail open in
   // development (no widget, no token), fail closed in production.
@@ -70,10 +52,6 @@ export async function sendContactEmail(
         return { status: 500, message: form.messages.error }
       }
 
-      const services = input.services.length
-        ? input.services.map((v) => serviceLabels.get(v) ?? v).join(', ')
-        : form.email.none
-
       try {
         await transport.sendMail({
           from: env.SMTP_USER,
@@ -84,7 +62,6 @@ export async function sendContactEmail(
             `${form.email.name}: ${input.name}`,
             `${form.email.email}: ${input.email}`,
             `${form.email.phone}: ${input.phoneNumber || form.email.none}`,
-            `${form.email.services}: ${services}`,
             '',
             `${form.email.message}:`,
             input.message,
