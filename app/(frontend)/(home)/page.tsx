@@ -23,11 +23,14 @@ import { Testimonial } from './sections/testimonial'
 import { WhyThatWorks } from './sections/why-that-works'
 
 export const metadata: Metadata = {
-  title: 'Strategy that works',
+  // "Agencja social media" leads: the live WP site holds position #1 for that
+  // exact query (≈1/3 of all organic traffic, Senuto 2026-08) on the strength
+  // of its <title> alone — the phrase must survive the rebuild.
+  title: 'Agencja social media – Strategy that works',
   description: APP_DESCRIPTION,
   alternates: alternatesForPath('/'),
   openGraph: {
-    title: 'Strategy that works',
+    title: 'Agencja social media – Strategy that works',
     description:
       'Kompleksowa obsługa marek w social mediach: strategia, content, sprzedaż, kreacje i wideo.',
     type: 'website',
