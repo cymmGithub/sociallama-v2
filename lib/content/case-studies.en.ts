@@ -29,7 +29,7 @@ export const caseStudyChrome = {
     gallery: 'Gallery',
   },
   cta: {
-    title: "Let's build something like this for your brand",
+    title: "Let's build something exceptional for your brand",
     text: "Tell us about your challenge — we'll show you how we can help.",
     primary: "Let's talk about your business",
   },

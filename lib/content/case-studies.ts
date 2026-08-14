@@ -37,7 +37,7 @@ export const caseStudyChrome = {
   // the listing is the breadcrumb at the top of the page, not a second button
   // competing with the conversion one.
   cta: {
-    title: 'Zbudujmy coś podobnego dla Twojej marki',
+    title: 'Zbudujmy coś wyjątkowego dla Twojej marki',
     text: 'Opowiedz nam o\u00A0swoim wyzwaniu — pokażemy, jak możemy pomóc.',
     primary: 'Porozmawiajmy o Twoim biznesie',
   },
