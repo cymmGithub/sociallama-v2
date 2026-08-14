@@ -4,11 +4,7 @@
 
 ### Requirement: Platform offer URLs redirect to the service landing
 
-The six legacy platform offer URLs (`/oferta/facebook`, `/oferta/instagram`,
-`/oferta/linkedin`, `/oferta/tiktok`, `/oferta/twitter`, `/oferta/pinterest`)
-SHALL 301-redirect to `/uslugi/prowadzenie-social-media`, their content
-successor, instead of the `/#uslugi` homepage anchor. The bare `/oferta` URL
-keeps its existing target.
+The six legacy platform offer URLs SHALL 301-redirect to `/uslugi/prowadzenie-social-media`, their content successor, instead of the `/#uslugi` homepage anchor: `/oferta/facebook`, `/oferta/instagram`, `/oferta/linkedin`, `/oferta/tiktok`, `/oferta/twitter` and `/oferta/pinterest`. The bare `/oferta` URL keeps its existing target.
 
 #### Scenario: Platform offer URL redirects to the landing
 

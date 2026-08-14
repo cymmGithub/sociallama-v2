@@ -312,7 +312,12 @@ function collect(file: SourceFile, isTsx: boolean): Candidate[] {
     if (!looksPolish(value)) {
       continue
     }
-    const { key, path } = propertyPath(node)
+    const { key, path, metadata } = propertyPath(node)
+    // Same exclusion the literal branch applies: a `<title>`/`<meta>` string is
+    // never laid out, so it has no line ends to orphan a word at.
+    if (metadata) {
+      continue
+    }
     out.push({
       file,
       bodyStart: node.getStart(),
@@ -432,7 +437,16 @@ export function scanOrphans(): Scan {
       // TypeScript itself read out of the literal. An off-by-one here would
       // write a non-breaking space into the middle of a word, so it is a hard
       // stop rather than a warning.
-      if (candidate.kind === 'literal' && decoded !== candidate.value) {
+      //
+      // Blocked candidates are exempt: a template with substitutions is carried
+      // as its own raw source text (escapes and all), so the decoder is *meant*
+      // to disagree with it — and `holdReason` refuses to bind it anyway, so
+      // these offsets are reported but never written through.
+      if (
+        candidate.kind === 'literal' &&
+        !candidate.blocked &&
+        decoded !== candidate.value
+      ) {
         throw new Error(
           `escape decode mismatch at ${path}:${file.getLineAndColumnAtPos(candidate.bodyStart).line} — ` +
             `${JSON.stringify(decoded.slice(0, 60))} vs ${JSON.stringify(candidate.value.slice(0, 60))}`

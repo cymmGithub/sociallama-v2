@@ -1138,12 +1138,18 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla hoteli i miejsc wypoczynkowych',
+      // Leads with the demand phrase ("marketing hotelu"); the old title's
+      // wording is not lost — "social media dla hoteli" moves into the
+      // description, which is where the spec allows it to live.
+      title: 'Marketing hotelu i miejsc wypoczynkowych',
       description:
-        'Prowadzimy social media hoteli, resortów i SPA. Aspiracyjny travel content i komunikacja, która zamienia scroll w rezerwację.',
+        'Prowadzimy social media dla hoteli, resortów i SPA. Aspiracyjny travel content i komunikacja, która zamienia scroll w rezerwację.',
     },
+    // Rewritten to the title's search intent: someone looking for hotel
+    // marketing should meet those words in the first sentence they read, not a
+    // brand aphorism. COPY STATUS: approved by the content team 2026-08-14.
     tagline:
-      'Wypoczynek to branża marzeń. Sprzedajemy je, zanim gość spakuje walizkę — aspiracyjny travel content dla hoteli i\u00A0miejsc wypoczynkowych.',
+      'Marketing hotelu zaczyna się na długo przed rezerwacją — w\u00A0scrollu. Prowadzimy social media hoteli, resortów i\u00A0SPA: aspiracyjny travel content, który sprzedaje pobyt, zanim gość spakuje walizkę.',
     brief: {
       pillars: [
         'Storytelling doświadczeń',
@@ -1253,12 +1259,16 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media dla branży nieruchomości',
+      // Leads with the demand phrase, as on the hotels page; the old title's
+      // wording carries on in the description.
+      title: 'Marketing nieruchomości i deweloperów',
       description:
-        'Prowadzimy social media deweloperów i marek nieruchomości. Prezentacja inwestycji, budowanie zaufania i komunikacja, która generuje leady.',
+        'Prowadzimy social media dla deweloperów i marek nieruchomości. Prezentacja inwestycji, budowanie zaufania i komunikacja, która generuje leady.',
     },
+    // Rewritten to the title's search intent. COPY STATUS: approved by the
+    // content team 2026-08-14.
     tagline:
-      'Nieruchomości to branża największej decyzji zakupowej. Budujemy zaufanie, które ją poprzedza — i\u00A0komunikację, która generuje leady.',
+      'Marketing nieruchomości to praca na najdłuższej ścieżce zakupowej, jaka istnieje. Prowadzimy social media deweloperów i\u00A0biur: prezentujemy inwestycje, budujemy zaufanie, które poprzedza decyzję, i\u00A0generujemy leady.',
     brief: {
       pillars: [
         'Storytelling inwestycji',

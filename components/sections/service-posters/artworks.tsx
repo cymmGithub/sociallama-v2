@@ -3,10 +3,11 @@ import type { PosterId, PosterVariant } from './ids'
 import s from './posters.module.css'
 
 /*
- * The seven service posters, direction A "Kreska" (mock of 2026-08-05, all
- * motifs user-approved). Each artwork returns the contents of an <svg> — the
- * frame, viewBox and plum ground belong to `ServicePoster`, which is also where
- * the motion attributes live.
+ * The eight `/uslugi` posters — the seven services in direction A "Kreska"
+ * (mock of 2026-08-05) and the SEO landing added in the same direction (mock of
+ * 2026-08-14). Every motif is user-approved. Each artwork returns the contents
+ * of an <svg> — the frame, viewBox and plum ground belong to `ServicePoster`,
+ * which is also where the motion attributes live.
  *
  * Two compositions per motif:
  *   card — 600×400, the mock's artwork transplanted geometry-for-geometry
@@ -909,6 +910,136 @@ function Influencer({ variant }: ArtProps) {
   )
 }
 
+// —— Prowadzenie social media — publishing calendar ——————————————————————————
+
+/*
+ * The SEO landing's poster (user-approved motif A, mock of 2026-08-14). Drawn
+ * as the artefact of the job rather than a metaphor for it: a month with most
+ * of its slots already filled and one lit, which is what "prowadzenie" looks
+ * like from the client's side.
+ *
+ * Two motifs were rejected for twinning: a closed process loop reads as
+ * Strategia's route with the ends joined, and a channels-into-a-rail diagram
+ * reads as Content's cascade turned on its side. Nothing else in the set is a
+ * calendar.
+ *
+ * Reuses `dashTravel` and `ping` — no new keyframes.
+ */
+
+/** Filled slots as [x, y, opacity]. Deliberately uneven: a full grid would read
+ *  as a table, and the point is a month that is planned, not a spreadsheet. */
+const CARD_SLOTS = [
+  [99, 150, 0.45],
+  [283, 150, 0.35],
+  [375, 150, 0.5],
+  [191, 220, 0.4],
+  [467, 220, 0.35],
+  [99, 290, 0.4],
+  [283, 290, 0.3],
+] as const
+
+const HERO_SLOTS = [
+  [798, 194, 0.45],
+  [1038, 194, 0.35],
+  [1158, 194, 0.5],
+  [918, 294, 0.4],
+  [1278, 294, 0.35],
+  [798, 394, 0.4],
+  [1038, 394, 0.3],
+] as const
+
+/** Weekday header marks — abstract dots, not letters: the poster carries no
+ *  text in either locale, so it needs no translation. */
+const CARD_DAYS = [116, 208, 300, 392, 484] as const
+const HERO_DAYS = [820, 940, 1060, 1180, 1300] as const
+
+function Prowadzenie({ variant }: ArtProps) {
+  const hero = variant === 'hero'
+  const slots = hero ? HERO_SLOTS : CARD_SLOTS
+  const days = hero ? HERO_DAYS : CARD_DAYS
+  const w = hero ? 44 : 34
+  const h = hero ? 12 : 10
+  const r = hero ? 6 : 5
+  // The accent slot — the next post. Same geometry as a plain marker so the
+  // colour alone carries the emphasis, plus a ring and its ping.
+  const ax = hero ? 1158 : 375
+  const ay = hero ? 394 : 290
+
+  return (
+    <>
+      <rect
+        className={s.line}
+        x={hero ? 760 : 70}
+        y={hero ? 90 : 70}
+        width={hero ? 600 : 460}
+        height={hero ? 360 : 260}
+        rx={hero ? 22 : 18}
+        strokeWidth="3"
+        opacity="0.5"
+      />
+      <line
+        className={s.line}
+        x1={hero ? 760 : 70}
+        y1={hero ? 150 : 120}
+        x2={hero ? 1360 : 530}
+        y2={hero ? 150 : 120}
+        strokeWidth="3"
+        opacity="0.35"
+      />
+      {days.map((x) => (
+        <circle
+          key={x}
+          className={s.solid}
+          cx={x}
+          cy={hero ? 122 : 97}
+          r={hero ? 5 : 4}
+          opacity="0.35"
+        />
+      ))}
+      {/* The week in progress, running under the accent slot's row. */}
+      <line
+        className={`${s.line} ${s.dashTravel}`}
+        x1={hero ? 775 : 80}
+        y1={ay + h / 2}
+        x2={hero ? 1345 : 520}
+        y2={ay + h / 2}
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeDasharray="2 14"
+        opacity="0.3"
+      />
+      {slots.map(([x, y, opacity]) => (
+        <rect
+          key={`${x}-${y}`}
+          className={s.solid}
+          x={x}
+          y={y}
+          width={w}
+          height={h}
+          rx={r}
+          opacity={opacity}
+        />
+      ))}
+      <rect className={s.accent} x={ax} y={ay} width={w} height={h} rx={r} />
+      <circle
+        className={s.accentLine}
+        cx={ax + w / 2}
+        cy={ay + h / 2}
+        r={hero ? 34 : 27}
+        strokeWidth="3"
+        opacity="0.85"
+      />
+      <circle
+        className={`${s.accentLine} ${s.ping}`}
+        cx={ax + w / 2}
+        cy={ay + h / 2}
+        r={hero ? 50 : 40}
+        strokeWidth="2.5"
+      />
+    </>
+  )
+}
+
 export const ARTWORKS: Record<PosterId, (props: ArtProps) => ReactNode> = {
   strategia: Strategia,
   content: Content,
@@ -917,4 +1048,5 @@ export const ARTWORKS: Record<PosterId, (props: ArtProps) => ReactNode> = {
   'kreacje-wideo': Kreacje,
   'audyt-i-konsultacje': Audyt,
   'influencer-marketing': Influencer,
+  'prowadzenie-social-media': Prowadzenie,
 }

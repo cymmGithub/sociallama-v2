@@ -156,10 +156,11 @@
   }
 }
 
-/* The services hub opens on a feature card so seven posters close the grid as
-   1 + 3 + 3 rather than orphaning the seventh. It carries the poster's hero
-   composition, which is wider than 3:2, so it keeps its own ratio at every
-   width — below desktop the grid is single-column and it simply leads. */
+/* The services hub opens AND closes on a feature card, laying its eight posters
+   out as 1 + 3 + 3 + 1 rather than orphaning a tile in a fourth row. A feature
+   card carries the poster's hero composition, which is wider than 3:2, so it
+   keeps its own ratio at every width — below desktop the grid is single-column
+   and the two simply lead and close. */
 .posterCard[data-feature] {
   aspect-ratio: 2 / 1;
 

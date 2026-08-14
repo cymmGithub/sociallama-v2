@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { INDUSTRIES } from '../content/branze'
-import { SERVICES } from '../content/uslugi'
+import { USLUGI_PAGES } from '../content/uslugi'
 import { careersRoles } from '../content/zostan-lama'
 import { alternatesForPath, counterpartPath, SECTIONS } from './slug-map'
 
@@ -20,18 +20,25 @@ function sectionFor(pl: string) {
   return section
 }
 
-describe('slug map — services', () => {
-  test('every service round-trips to its EN twin', () => {
-    for (const service of SERVICES) {
-      const pl = `/uslugi/${service.slug}`
-      const en = `/en/services/${service.pairSlug}`
+/*
+ * `USLUGI_PAGES`, not `SERVICES`: the SEO landings share the `/uslugi` route and
+ * so need the same PL↔EN mapping. They are kept out of the navigation, which
+ * makes the language toggle one of the few ways a visitor moves between their
+ * two locales — a landing missing from the table would strand them on the home
+ * page with nothing on screen to say so.
+ */
+describe('slug map — services and landings', () => {
+  test('every page round-trips to its EN twin', () => {
+    for (const page of USLUGI_PAGES) {
+      const pl = `/uslugi/${page.slug}`
+      const en = `/en/services/${page.pairSlug}`
       expect(counterpartPath(pl)).toBe(en)
       expect(counterpartPath(en)).toBe(pl)
     }
   })
 
   test('table carries no entry the content has dropped', () => {
-    expect(sectionFor('/uslugi').slugs.length).toBe(SERVICES.length)
+    expect(USLUGI_PAGES.length).toBe(sectionFor('/uslugi').slugs.length)
   })
 
   test('the index pair resolves both ways', () => {

@@ -978,12 +978,14 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for hotels and resorts',
+      // Mirrors the Polish pair's new shape. Not a keyword play: EN gets parity
+      // content, not search targeting.
+      title: 'Hotel and resort marketing',
       description:
         'We run social media for hotels, resorts, and spas. Aspirational travel content and communication that turns a scroll into a booking.',
     },
     tagline:
-      'Leisure is a business of dreams. We sell them before a guest packs a bag — aspirational travel content for hotels and resorts.',
+      'Hotel marketing starts long before the booking — in the scroll. We run social media for hotels, resorts, and spas: aspirational travel content that sells the stay before a guest packs a bag.',
     brief: {
       pillars: [
         'Experience storytelling',
@@ -1088,12 +1090,12 @@ export const INDUSTRIES = [
       },
     ],
     meta: {
-      title: 'Social media for the real estate industry',
+      title: 'Real-estate and developer marketing',
       description:
         'We run social media for developers and real-estate brands. Presenting investments, building trust, and communication that generates leads.',
     },
     tagline:
-      'Real estate is a business of the biggest purchase there is. We build the trust that comes before it — and communication that generates leads.',
+      'Real-estate marketing works the longest buying path there is. We run social media for developers and agencies: presenting investments, building the trust that comes before the decision, and generating leads.',
     brief: {
       pillars: [
         'Investment storytelling',

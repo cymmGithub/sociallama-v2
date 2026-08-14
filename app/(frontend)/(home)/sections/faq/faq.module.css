@@ -297,6 +297,58 @@
   }
 }
 
+/* The link rides in the answer's column, so it needs the same clearance from
+   the sign. Gated with the rest of the ledger — see the note on `.item`. */
+.answerLink {
+  @media (--desktop) {
+    @supports selector(::details-content) {
+      padding-inline-end: calc(var(--sign-size) + var(--gap));
+    }
+  }
+}
+
+/* —— Route-onward link under an answer ————————————————————————————————————————
+   A sibling of .answer rather than markup inside it: the answer string is also
+   what the FAQPage JSON-LD emits as `acceptedAnswer.text`, and that has to stay
+   the plain sentence Google compares against the visible copy. Only the pricing
+   row carries one today. */
+
+.answerLink {
+  margin: 0 0 calc(var(--gap) * 1.5);
+}
+
+/* Pull the answer's own bottom margin in when the link follows it — the two
+   belong to one block, and the row's breathing space is the link's margin. */
+.answer:has(+ .answerLink) {
+  margin-bottom: calc(var(--gap) * 0.55);
+}
+
+/* Inline, not the inline-flex the button-ish CTAs elsewhere use: this label is
+   long enough to wrap at 390px, and a flex row parks the arrow against the far
+   edge with a gap where the second line ends. Inline keeps the arrow attached
+   to the last word, which is what a link inside prose should do. */
+.answerCta {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-contrast);
+  text-decoration: none;
+
+  @media (--hover) {
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+  }
+}
+
+.answerCta svg {
+  display: inline-block;
+  margin-inline-start: 0.4em;
+  vertical-align: -0.15em;
+}
+
 /* The global reduced-motion rule covers * and ::before/::after, but not
    ::details-content — neutralise the height transition here. */
 @media (--reduced-motion) {
@@ -368,6 +420,14 @@
       );
       /* Clears the floated question column plus the gutter. The grid path
          needs no equivalent: there the answer is placed in a track. */
+      margin-inline-start: calc((100% - 4rem) / 2.25 + 4rem);
+      padding-inline-end: calc(var(--sign-size) + var(--gap));
+    }
+
+    /* Clears the floated question column too — without it the link would wrap
+       around the float and sit under the question instead of under its
+       answer. */
+    .answerLink {
       margin-inline-start: calc((100% - 4rem) / 2.25 + 4rem);
       padding-inline-end: calc(var(--sign-size) + var(--gap));
     }

@@ -71,5 +71,9 @@ the sitemap parity gate re-verifies every `/oferta/*` target resolves.
 
 ## Open Questions
 
-- Final EN slug (`social-media-management` proposed) — confirm with content
-  team alongside copy approval.
+- ~~Final EN slug (`social-media-management` proposed) — confirm with content
+  team alongside copy approval.~~ **Resolved 2026-08-14:** content team signed
+  off on the drafted PL/EN copy and on `social-media-management` as the English
+  slug. The slug is now load-bearing beyond the app — the six retargeted
+  `/oferta/*` redirects point at its Polish counterpart, and
+  `lib/content/uslugi.test.ts` fails if the pairing breaks.

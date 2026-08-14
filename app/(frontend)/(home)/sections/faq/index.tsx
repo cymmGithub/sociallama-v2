@@ -1,6 +1,8 @@
 'use client'
 
-import type { LocalizedHome } from '@/lib/content/home'
+import { ArrowRight } from 'lucide-react'
+import { Link } from '@/components/ui/link'
+import type { FaqEntry, LocalizedHome } from '@/lib/content/home'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import s from './faq.module.css'
 
@@ -20,6 +22,9 @@ import s from './faq.module.css'
  */
 export function Faq({ content }: { content: LocalizedHome['faq'] }) {
   const ref = useReveal<HTMLElement>()
+  // Read through the declared entry shape: `link` sits on one row only, so the
+  // inferred tuple is a union TypeScript will not read it off (see `FaqEntry`).
+  const items: readonly FaqEntry[] = content.items
 
   return (
     <section ref={ref} className={s.section} aria-label={content.ariaLabel}>
@@ -35,7 +40,7 @@ export function Faq({ content }: { content: LocalizedHome['faq'] }) {
       </div>
 
       <div data-reveal-item className={s.list}>
-        {content.items.map((item, index) => (
+        {items.map((item, index) => (
           // Row 01 ships open — the price answer, the most-wanted one, and it
           // stops the section reading as a wall of unexplained headings.
           <details key={item.question} className={s.item} open={index === 0}>
@@ -47,6 +52,16 @@ export function Faq({ content }: { content: LocalizedHome['faq'] }) {
               <span aria-hidden="true" className={s.sign} />
             </summary>
             <p className={s.answer}>{item.answer}</p>
+            {/* Sibling of the answer, never inside it — the answer string is
+                also the JSON-LD's `acceptedAnswer.text`. */}
+            {item.link && (
+              <p className={s.answerLink}>
+                <Link className={s.answerCta} href={item.link.href}>
+                  {item.link.label}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </p>
+            )}
           </details>
         ))}
       </div>

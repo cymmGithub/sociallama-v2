@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ServicePage } from '@/app/(frontend)/uslugi/[slug]/service-page'
 import { Wrapper } from '@/components/layout/wrapper'
-import { chrome, findService, SERVICES } from '@/lib/content/uslugi.en'
+import { FaqJsonLd } from '@/components/seo/structured-data'
+import { faqItemsOf } from '@/lib/content/uslugi'
+import { chrome, findService, USLUGI_PAGES } from '@/lib/content/uslugi.en'
 import {
   buildRelatedByPlatform,
   buildTopicalPosts,
@@ -13,8 +15,9 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+// Roster ∪ SEO landings — see the note on the Polish route.
 export function generateStaticParams() {
-  return SERVICES.map((service) => ({ slug: service.slug }))
+  return USLUGI_PAGES.map((page) => ({ slug: page.slug }))
 }
 
 export async function generateMetadata({
@@ -44,8 +47,14 @@ export default async function EnServicePage({ params }: PageProps) {
   const relatedByPlatform = await buildRelatedByPlatform(service.sections, 'en')
   const topicalPosts = await buildTopicalPosts(service.sections, 'en')
 
+  // Empty for every page without an `faq` section — see the Polish route.
+  const faqItems = faqItemsOf(service.sections)
+
   return (
     <Wrapper theme="plum">
+      {faqItems.length > 0 && (
+        <FaqJsonLd items={faqItems} path={`/en/services/${service.slug}`} />
+      )}
       <ServicePage
         serviceId={service.id}
         sections={service.sections}

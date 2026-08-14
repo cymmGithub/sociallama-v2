@@ -10,6 +10,7 @@
  */
 import { industryNav } from '@/lib/content/branze.en'
 import type { LocalizedHome } from '@/lib/content/home'
+import { STARTING_PRICE } from '@/lib/content/pricing'
 
 // —— Chrome: top bar ————————————————————————————————————————————————————————
 
@@ -671,8 +672,12 @@ export const faq = {
   items: [
     {
       question: 'How much does it cost to have an agency run your social media?',
-      answer:
-        "It depends on how many platforms you're on, how often you publish, and how wide the scope is — market rates run from about 3,000 to 15,000 PLN a month. Professional management of a single profile usually starts around 920 PLN net per month. One thing worth knowing: unlike a lot of agencies, Social Lama always bills the ad budget separately, so you can see exactly what you're paying for the work and what actually goes into campaigns.",
+      // Same interpolated figure as the Polish answer — see `pricing.ts`.
+      answer: `It depends on how many platforms you're on, how often you publish, and how wide the scope is — market rates run from about 3,000 to 15,000 PLN a month. Professional management of a single profile usually starts around ${STARTING_PRICE} PLN net per month. One thing worth knowing: unlike a lot of agencies, Social Lama always bills the ad budget separately, so you can see exactly what you're paying for the work and what actually goes into campaigns.`,
+      link: {
+        label: 'See what social media management covers and costs',
+        href: '/en/services/social-media-management',
+      },
     },
     {
       question:

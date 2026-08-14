@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { INDUSTRIES } from '@/lib/content/branze'
-import { SERVICES } from '@/lib/content/uslugi'
+import { USLUGI_PAGES } from '@/lib/content/uslugi'
 import { careersRoles } from '@/lib/content/zostan-lama'
 import { APP_BASE_URL } from '@/lib/env'
 import {
@@ -148,9 +148,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // canonical content lists (design D6). Each PL entry carries its EN
   // counterpart slug (`pairSlug`). The index URLs are listed even though
   // desktop chrome no longer links them (design D4), so they stay crawlable.
+  //
+  // Services read `USLUGI_PAGES`, not the roster: the SEO landings are kept out
+  // of navigation, which makes the sitemap the main way a crawler finds them.
   const sectionRoutes: MetadataRoute.Sitemap = [
     { pl: '/branze', en: '/en/industries', items: INDUSTRIES },
-    { pl: '/uslugi', en: '/en/services', items: SERVICES },
+    { pl: '/uslugi', en: '/en/services', items: USLUGI_PAGES },
   ].flatMap(({ pl, en, items }) => [
     entry(pl, 'monthly', 0.8),
     entry(en, 'monthly', 0.8),

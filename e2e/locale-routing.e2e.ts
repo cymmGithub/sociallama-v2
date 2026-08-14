@@ -1,6 +1,6 @@
 import { expect, type Page, test } from '@playwright/test'
 import { INDUSTRIES } from '../lib/content/branze'
-import { SERVICES } from '../lib/content/uslugi'
+import { USLUGI_PAGES } from '../lib/content/uslugi'
 import { gotoHydrated } from './helpers'
 
 /**
@@ -165,7 +165,9 @@ test.describe('Locale routing — language toggle', { tag: '@monitor' }, () => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
 
     const stranded: string[] = []
-    for (const service of SERVICES) {
+    // Roster ∪ SEO landings: a landing is kept out of the navigation, so the
+    // toggle is one of the few ways between its two locales.
+    for (const service of USLUGI_PAGES) {
       await gotoHydrated(page, `/uslugi/${service.slug}`)
       const href = await page
         .locator('footer a[hreflang="en"]')

@@ -1,4 +1,3 @@
-import type { LocalizedHome } from '@/lib/content/home'
 import { APP_NAME } from '@/lib/content/site'
 import { socials } from '@/lib/content/socials'
 import { APP_BASE_URL } from '@/lib/env'
@@ -112,13 +111,15 @@ export function OrganizationJsonLd({ description }: { description: string }) {
 }
 
 /**
- * `FAQPage` node for the homepage FAQ section.
+ * `FAQPage` node for a page that carries an FAQ section — both locale
+ * homepages, and the `/uslugi/prowadzenie-social-media` landing and its English
+ * twin.
  *
- * Fed the same `faq.items` array the section renders, from each locale's
- * content file — Google requires the markup to match the visible copy, and
- * hand-maintained duplicates drift. Rendered server-side from `page.tsx`, not
- * from the client section component: structured data has no reason to wait on
- * hydration. Answers are plain strings in `home.ts`, so nothing needs stripping
+ * Fed the same array the section renders, from the locale's own content file —
+ * Google requires the markup to match the visible copy, and hand-maintained
+ * duplicates drift. Rendered server-side from `page.tsx`, not from the client
+ * section component: structured data has no reason to wait on hydration.
+ * Answers are plain strings in the content modules, so nothing needs stripping
  * before serialising.
  *
  * Expect no rich result: FAQ rich results have been restricted to authoritative
@@ -129,7 +130,9 @@ export function FaqJsonLd({
   items,
   path,
 }: {
-  items: LocalizedHome['faq']['items']
+  /** Structural rather than `LocalizedHome['faq']['items']`: the service-page
+   *  `faq` section carries the same pair and is not a homepage type. */
+  items: readonly { question: string; answer: string }[]
   /** Path of the page carrying the section, e.g. `/` or `/en`. */
   path: string
 }) {

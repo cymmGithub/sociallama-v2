@@ -14,6 +14,7 @@
  * so the English text follows the locale voice rather than a source translation.
  */
 
+import { STARTING_PRICE } from '@/lib/content/pricing'
 import type { LocalizedUslugi } from '@/lib/content/uslugi'
 
 // —— Shared chrome copy ————————————————————————————————————————————————————————
@@ -515,9 +516,11 @@ export const SERVICES = [
     pairSlug: 'audyt-i-konsultacje',
     label: 'Audit & consulting',
     meta: {
-      title: 'Social media audit & consulting',
+      // Mirrors the Polish title's new shape so the pair describes one page.
+      // Not a keyword play: EN gets parity content, not search targeting.
+      title: 'Social media audit — profile analysis and consulting',
       description:
-        'An audit of your social media presence and strategic consulting. Concrete findings and recommendations you can put to work right away.',
+        'An audit of your social media presence: profiles, communication, content, and advertising. Concrete findings, recommendations you can put to work right away, and a session with a specialist.',
     },
     summary:
       'An outside look at your communication — concrete findings and recommendations.',
@@ -624,7 +627,7 @@ export const SERVICES = [
     pairSlug: 'influencer-marketing',
     label: 'Influencer marketing',
     meta: {
-      title: 'Influencer marketing',
+      title: 'Influencer marketing agency — campaigns with creators',
       description:
         'Influencer marketing campaigns — creator selection, partnership strategy, and delivery. Authentic content that builds reach and trust.',
     },
@@ -714,6 +717,108 @@ export const SERVICES = [
   },
 ] satisfies LocalizedUslugi['services']
 
+// —— SEO landings (outside the roster — see the note in uslugi.ts) —————————————
+
+/**
+ * The English twin of the Polish landing. Parity content, not an English
+ * keyword play: the EN locale exists so the pair resolves and the page reads
+ * naturally, while the search targeting is Polish-only (design non-goal).
+ *
+ * COPY STATUS: approved by the content team 2026-08-14, slug included.
+ */
+export const seoLandings = [
+  {
+    id: 'prowadzenie-social-media',
+    slug: 'social-media-management',
+    pairSlug: 'prowadzenie-social-media',
+    label: 'Social media management',
+    meta: {
+      title: 'Social media management — what it covers and what it costs',
+      description: `Social media management for brands: strategy, content, publishing, moderation, and monthly reporting. See the full scope and what it costs — from ${STARTING_PRICE} PLN net.`,
+    },
+    summary:
+      'Full-service profile management — strategy, content, publishing, moderation, reporting. See the scope and the price range.',
+    sections: [
+      {
+        kind: 'hero',
+        title: 'Social media management',
+        intro:
+          "Running social media is not a publishing calendar — it's strategy, content, conversation, and constant tuning against the brand's business goals. We take over your profiles on Facebook, Instagram, TikTok, LinkedIn, YouTube, X and Pinterest: we plan the communication, produce the content, publish it, moderate the replies, and report the results every month.",
+        cta: { label: 'Ask for a quote', href: '/en/contact' },
+      },
+      {
+        kind: 'checklist',
+        kicker: 'SCOPE',
+        heading: 'What does social media management cover?',
+        intro:
+          'We set the scope per brand — how many platforms, how often you publish, what the goals are. Full-service management of one profile usually covers:',
+        items: [
+          'Communication strategy and a content plan',
+          'Copywriting and post design',
+          'Video, reels, and animation production',
+          'Publishing and calendar management',
+          'Comment and message moderation',
+          'Ad campaigns and ongoing optimization',
+          'A monthly report with results and recommendations',
+        ],
+      },
+      {
+        kind: 'banner',
+        heading: 'What does social media management cost?',
+        body: `Professional management of a single profile starts around ${STARTING_PRICE} PLN net per month. Running a brand across several platforms, graphics and video production included, sits in the 3,000–15,000 PLN a month range — the final quote depends on how many channels there are, how much you publish, and how much material has to be made from scratch. The ad budget is always billed separately from the work, so quotes stay comparable.`,
+        cta: { label: 'Ask for a quote', href: '/en/contact' },
+      },
+      {
+        kind: 'proof',
+        kicker: 'PROOF',
+        heading: 'What it looks like in practice',
+        cases: [
+          {
+            slug: 'dolina-charlotty',
+            logo: '/case-studies/dolina-charlotty/dolina-charlotty-logo.png',
+            kicker: 'CASE STUDY',
+            brand: 'Dolina Charlotty',
+            title: 'A resort talking all year round on Facebook and Instagram',
+          },
+        ],
+      },
+      {
+        kind: 'faq',
+        kicker: 'FAQ',
+        heading: 'Questions about social media management',
+        items: [
+          {
+            question: 'How much does social media management cost?',
+            answer: `Managing one profile starts around ${STARTING_PRICE} PLN net per month. Running a brand across several platforms, with graphics and video production, sits in the 3,000–15,000 PLN a month range. The price depends on the number of channels, how much you publish, and how much of the material is made from scratch. The ad budget is billed separately.`,
+          },
+          {
+            question: 'What does social media management include?',
+            answer:
+              'Communication strategy, content planning and production — copy, graphics, video — publishing, comment and message moderation, running ad campaigns, and a monthly report with results and recommendations for the next period. We write the scope down before we start, so everyone knows exactly what the fee buys.',
+          },
+          {
+            question: 'Is the ad budget included in the fee?',
+            answer:
+              'No. The fee for running your profiles and the media budget for campaigns are always billed separately. That way you can see what the team costs and what goes to the ad platforms — and compare agency quotes that bundle the two.',
+          },
+          {
+            question: 'Which platforms do you run?',
+            answer:
+              'Facebook, Instagram, TikTok, LinkedIn, YouTube, X and Pinterest. Never all of them at once — we pick the channels around your audience and your goals, because a profile with no audience costs the same as one that sells.',
+          },
+          {
+            question: 'How quickly do results show up?',
+            answer:
+              'The first qualitative results — a coherent look, higher engagement, a better-described profile — usually show after 4–8 weeks. Sales results depend on the ad budget and the buying cycle, which is why we normally start with a three-month engagement.',
+          },
+        ],
+      },
+      // No `posts` section: the blog is Polish-only, so it would render nothing
+      // (the same reason Strategy omits it).
+    ],
+  },
+] satisfies LocalizedUslugi['seoLandings']
+
 // —— Derived navigation ————————————————————————————————————————————————————————
 
 export const serviceNav = SERVICES.map((service) => ({
@@ -721,7 +826,13 @@ export const serviceNav = SERVICES.map((service) => ({
   href: `/en/services/${service.slug}`,
 }))
 
-/** Lookup by this-locale (English) slug. Returns the widened EN service. */
+/** Roster ∪ landings — the EN twin of `USLUGI_PAGES`. */
+export const USLUGI_PAGES = [...SERVICES, ...seoLandings]
+
+/**
+ * Lookup by this-locale (English) slug. Resolves the roster AND the SEO
+ * landings — see the note on the Polish `findService`.
+ */
 export function findService(slug: string) {
-  return SERVICES.find((service) => service.slug === slug)
+  return USLUGI_PAGES.find((page) => page.slug === slug)
 }

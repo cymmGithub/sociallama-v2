@@ -199,6 +199,11 @@ interface PostsData {
   kicker: string
   heading: string
 }
+interface FaqData {
+  kicker: string
+  heading: string
+  items: readonly { question: string; answer: string }[]
+}
 
 // —— Lucide icon registry (repo rule: lucide only, never raw glyphs) ———————————
 
@@ -946,6 +951,55 @@ function TopicalPosts({
   )
 }
 
+// —— Page FAQ (SEO landings) ——————————————————————————————————————————————————
+
+/**
+ * A question ledger on native `<details>`, for the same reason the homepage
+ * section is built that way: `<details>` renders its contents into the served
+ * HTML whether a row is open or closed, so every answer is retrievable by
+ * crawlers and answer engines without JavaScript. On a page that exists to be
+ * found, that property is the point.
+ *
+ * Deliberately NOT a copy of the homepage ledger. That one opens the answer
+ * into a second column, which needs `::details-content` to act as a grid item —
+ * Safari only made it one in 18.4, hence its `@supports` gate and its float
+ * fallback. Stacking the answer under its question needs none of that, so this
+ * version has one code path in every engine.
+ */
+function ServiceFaq({ data }: { data: FaqData }) {
+  const ref = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.faq} data-theme="cream">
+      {/* Default translate/fade reveal, never `wipe`: a wipe keeps its
+          border-box clip-path after it settles and would slice an answer that
+          opens afterwards. */}
+      <div ref={ref} className={s.faqInner}>
+        <p className={s.kicker}>{data.kicker}</p>
+        <h2 className={s.sectionHeading}>{data.heading}</h2>
+        <div className={s.faqList}>
+          {data.items.map((item, index) => (
+            // Row one ships open — on this page it is the price question, the
+            // one the visitor searched for.
+            <details
+              key={item.question}
+              data-reveal-item
+              className={s.faqItem}
+              open={index === 0}
+            >
+              <summary className={s.faqSummary}>
+                <span className={s.faqQuestion}>{item.question}</span>
+                <span aria-hidden="true" className={s.faqSign} />
+              </summary>
+              <p className={s.faqAnswer}>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // —— Closing CTA (mirrors the branze CTA card) ————————————————————————————————
 
 function CtaBand({ chrome }: { chrome: Chrome }) {
@@ -1042,6 +1096,8 @@ export function ServicePage({
                 postBase={postBase}
               />
             )
+          case 'faq':
+            return <ServiceFaq key={key} data={section as FaqData} />
           default:
             return null
         }

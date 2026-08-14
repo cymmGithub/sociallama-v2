@@ -7,6 +7,13 @@
  * Generated from the live Yoast sitemaps: 151 tag URLs,
  * 14 page URLs. `statusCode: 301` throughout — Next's
  * `permanent: true` would emit 308; the seo-url-parity spec requires 301.
+ *
+ * One later amendment, applied to this file and to the generator's disposition
+ * table together (2026-08-14, seo-uslugi-branze): the six `/oferta/<platform>`
+ * URLs now point at `/uslugi/prowadzenie-social-media`, their content
+ * successor, rather than the `/#uslugi` homepage anchor. Amended by hand
+ * because the generator reads the WP host, which is decommissioned — the
+ * disposition table remains the decision record either way.
  */
 
 interface WpRedirect {
@@ -30,16 +37,40 @@ export const wpRedirects: WpRedirect[] = [
     destination: '/polityka-prywatnosci',
     statusCode: 301,
   },
-  // /oferta/pinterest/ — platform offer page → services section anchor
-  { source: '/oferta/pinterest', destination: '/#uslugi', statusCode: 301 },
-  // /oferta/facebook/ — platform offer page → services section anchor
-  { source: '/oferta/facebook', destination: '/#uslugi', statusCode: 301 },
-  // /oferta/instagram/ — platform offer page → services section anchor
-  { source: '/oferta/instagram', destination: '/#uslugi', statusCode: 301 },
-  // /oferta/linkedin/ — platform offer page → services section anchor
-  { source: '/oferta/linkedin', destination: '/#uslugi', statusCode: 301 },
-  // /oferta/tiktok/ — platform offer page → services section anchor
-  { source: '/oferta/tiktok', destination: '/#uslugi', statusCode: 301 },
-  // /oferta/twitter/ — platform offer page → services section anchor
-  { source: '/oferta/twitter', destination: '/#uslugi', statusCode: 301 },
+  // /oferta/pinterest/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/pinterest',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
+  // /oferta/facebook/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/facebook',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
+  // /oferta/instagram/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/instagram',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
+  // /oferta/linkedin/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/linkedin',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
+  // /oferta/tiktok/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/tiktok',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
+  // /oferta/twitter/ — platform offer page → prowadzenie social media landing (content successor; seo-uslugi-branze 2026-08-14)
+  {
+    source: '/oferta/twitter',
+    destination: '/uslugi/prowadzenie-social-media',
+    statusCode: 301,
+  },
 ]

@@ -35,6 +35,7 @@
  * rather than showing an empty frame.
  */
 
+import { STARTING_PRICE } from '@/lib/content/pricing'
 import type { SocialIconName } from '@/lib/content/socials'
 import type { Localized } from '@/lib/i18n/parity'
 
@@ -159,6 +160,17 @@ interface PartnerSplit {
   lama: { label: string; items: readonly string[] }
 }
 
+/**
+ * One question and its answer. Plain strings on both sides, because this array
+ * feeds the visible ledger AND the page's `FAQPage` JSON-LD — Google requires
+ * the markup to match the rendered copy, so there is exactly one source for
+ * both and nothing needs stripping before serialising.
+ */
+export interface FaqItem {
+  question: string
+  answer: string
+}
+
 /** A muted ambient loop painted behind a section, under a scrim. Decorative:
  *  the section reads identically from its copy alone. */
 interface BackdropVideo {
@@ -270,6 +282,18 @@ export type ServiceSection =
       kicker: string
       heading: string
       categories: readonly string[]
+    }
+  /**
+   * A page-level FAQ, rendered as a native `<details>` ledger like the
+   * homepage's — the answers reach crawlers and answer engines whether or not
+   * a row is open, which is the whole reason the page carries one. The same
+   * array is lifted by the route to emit `FAQPage` JSON-LD (`faqItemsOf`).
+   */
+  | {
+      kind: 'faq'
+      kicker: string
+      heading: string
+      items: readonly FaqItem[]
     }
 
 export interface Service {
@@ -633,8 +657,12 @@ export const SERVICES = [
     label: 'Kampanie reklamowe',
     meta: {
       // D5: the label carries no term anyone searches this offer with, so the
-      // title names SEO and Google Ads instead.
-      title: 'SEO i Google Ads — kampanie reklamowe',
+      // title leads with the demand phrase instead. It names search as a
+      // co-equal subject rather than trailing it after a comma — this page
+      // routes Meta and TikTok ads to /uslugi/sprzedaz and sells search, so a
+      // title that reads as a social-ads page alone would promise the wrong
+      // thing. SEO and Google Ads are named outright in the description.
+      title: 'Kampanie reklamowe w social media i wyszukiwarce',
       description:
         'Pozycjonowanie, kampanie Google Ads, audyty SEO, strony WWW oraz analityka i raportowanie. Obszar search i performance prowadzimy z SEOFly — agencją z Grupy Good One.',
     },
@@ -816,9 +844,11 @@ export const SERVICES = [
     pairSlug: 'audit-consulting',
     label: 'Audyt i konsultacje',
     meta: {
-      title: 'Audyt i konsultacje social media',
+      // Leads with the demand phrase, not the nav label: "audyt social media"
+      // is what people search; "Audyt i konsultacje" is what we call it.
+      title: 'Audyt social media — analiza profili i konsultacje',
       description:
-        'Audyt Waszej obecności w social mediach i konsultacje strategiczne. Konkretne wnioski i rekomendacje, które możecie wdrożyć od razu.',
+        'Audyt social media Twojej marki: analiza profili, komunikacji, contentu i działań reklamowych. Konkretne wnioski, rekomendacje do wdrożenia i konsultacja ze specjalistą.',
     },
     summary:
       'Zewnętrzne spojrzenie na Waszą komunikację — konkretne wnioski i\u00A0rekomendacje.',
@@ -949,7 +979,9 @@ export const SERVICES = [
     pairSlug: 'influencer-marketing',
     label: 'Influencer marketing',
     meta: {
-      title: 'Influencer marketing',
+      // "Agencja influencer marketingu" is the phrase with the demand; the bare
+      // discipline name is not something anyone types when they are hiring.
+      title: 'Agencja influencer marketingu — kampanie z twórcami',
       description:
         'Kampanie influencer marketingowe — dobór twórców, strategia współpracy i realizacja. Autentyczne treści, które budują zasięg i zaufanie.',
     },
@@ -1049,6 +1081,157 @@ export const SERVICES = [
   },
 ] as const satisfies readonly Service[]
 
+// —— SEO landings (outside the roster, by design) ——————————————————————————————
+
+/**
+ * Pages that live under `/uslugi/<slug>` but are NOT services in the brand
+ * architecture: search-demand landings that target a phrase the seven-entry
+ * roster has no page for.
+ *
+ * A separate export rather than an eighth entry with an `inNav: false` flag
+ * (design decision): every roster consumer — the mega-menu, the homepage
+ * services tabs, the hero rotator, the morph transition, the footer — reads
+ * `SERVICES`, and a flag would need each of them to remember to filter. One
+ * missed filter leaks a landing into the site's navigation. This way the nav
+ * surfaces cannot regress, and only the three places that should see landings
+ * opt in by reading `USLUGI_PAGES`: the `[slug]` route, the `/uslugi` index,
+ * and the sitemap.
+ *
+ * COPY STATUS: approved by the content team 2026-08-14. Written to the
+ * "prowadzenie/obsługa social media" + "cennik" cluster (Senuto 2026-08, see
+ * the change proposal) rather than to brand voice — the head phrase leads the
+ * title, the H1 and the first sentence on purpose, so an edit that reaches for
+ * brand voice here costs the page the thing it was built for.
+ */
+export const seoLandings = [
+  {
+    id: 'prowadzenie-social-media',
+    slug: 'prowadzenie-social-media',
+    pairSlug: 'social-media-management',
+    label: 'Prowadzenie social media',
+    meta: {
+      title: 'Prowadzenie social media — cennik i zakres obsługi',
+      description: `Prowadzenie social media dla firm: strategia, content, publikacja, moderacja i raporty. Sprawdź, co obejmuje obsługa profili i ile kosztuje — od ${STARTING_PRICE} zł netto.`,
+    },
+    summary:
+      'Kompleksowa obsługa profili — strategia, content, publikacja, moderacja i raporty. Zobacz pełny zakres i widełki cenowe.',
+    sections: [
+      {
+        kind: 'hero',
+        // The H1 leads with the head phrase; the renderer appends the brand dot.
+        title: 'Prowadzenie social media',
+        intro:
+          'Prowadzenie social media to nie sam kalendarz publikacji — to strategia, treści, rozmowa z odbiorcami i stała optymalizacja pod cele biznesowe marki. Przejmujemy profile na Facebooku, Instagramie, TikToku, LinkedInie, YouTubie, X i Pintereście: planujemy komunikację, produkujemy content, publikujemy, moderujemy i co miesiąc raportujemy wyniki.',
+        cta: { label: 'Zapytaj o wycenę', href: '/kontakt' },
+      },
+      {
+        kind: 'checklist',
+        kicker: 'ZAKRES',
+        heading: 'Co obejmuje prowadzenie social media?',
+        intro:
+          'Zakres ustalamy indywidualnie — pod liczbę platform, tempo publikacji i cele marki. Kompleksowa obsługa profilu obejmuje zwykle:',
+        items: [
+          'Strategię komunikacji i plan contentu',
+          'Copywriting i projekty graficzne postów',
+          'Produkcję wideo, rolek i animacji',
+          'Publikację i prowadzenie kalendarza',
+          'Moderację komentarzy i wiadomości',
+          'Kampanie reklamowe i bieżącą optymalizację',
+          'Miesięczny raport z wynikami i rekomendacjami',
+        ],
+      },
+      {
+        // The pricing band. The figure is interpolated from `pricing.ts`, which
+        // the homepage FAQ answer also reads — the spec requires the two to
+        // agree, so they are one value rather than two copies.
+        kind: 'banner',
+        heading: 'Ile kosztuje prowadzenie social media?',
+        body: `Profesjonalna obsługa jednego profilu startuje od ok. ${STARTING_PRICE} zł netto miesięcznie. Pełna obsługa marki na kilku platformach, razem z produkcją grafik i wideo, mieści się rynkowo w przedziale od 3 000 do 15 000 zł miesięcznie — ostateczna wycena zależy od liczby kanałów, liczby publikacji i tego, ile materiału powstaje od zera. Budżet reklamowy rozliczamy zawsze osobno od wynagrodzenia za pracę, żeby oferty dało się uczciwie porównać.`,
+        cta: { label: 'Zapytaj o wycenę', href: '/kontakt' },
+      },
+      {
+        kind: 'proof',
+        kicker: 'DOWÓD',
+        heading: 'Tak wygląda to w praktyce',
+        // Dolina Charlotty rather than one of the four studies the service
+        // pages already feature — a landing that repeats another page's proof
+        // card adds nothing to either.
+        cases: [
+          {
+            slug: 'dolina-charlotty',
+            logo: '/case-studies/dolina-charlotty/dolina-charlotty-logo.png',
+            kicker: 'CASE STUDY',
+            brand: 'Dolina Charlotty',
+            title: 'Całoroczna komunikacja resortu na Facebooku i Instagramie',
+          },
+        ],
+      },
+      {
+        kind: 'faq',
+        kicker: 'FAQ',
+        heading: 'Pytania o prowadzenie social media',
+        // The first two questions are the cluster's own phrasings (spec:
+        // "ile kosztuje…" and "co obejmuje…"); the rest are the cost variants
+        // that follow them in the SERP.
+        items: [
+          {
+            question: 'Ile kosztuje prowadzenie social media?',
+            answer: `Obsługa jednego profilu startuje od ok. ${STARTING_PRICE} zł netto miesięcznie. Prowadzenie marki na kilku platformach, razem z produkcją grafik i wideo, mieści się rynkowo w przedziale od 3 000 do 15 000 zł miesięcznie. Cena zależy od liczby kanałów, liczby publikacji w miesiącu i tego, ile materiału powstaje od zera. Budżet reklamowy rozliczamy osobno.`,
+          },
+          {
+            question: 'Co obejmuje prowadzenie social media?',
+            answer:
+              'Strategię komunikacji, plan i produkcję contentu — copy, grafiki, wideo — publikację, moderację komentarzy i wiadomości, prowadzenie kampanii reklamowych oraz miesięczny raport z wynikami i rekomendacjami na kolejny okres. Zakres spisujemy przed startem, więc wiadomo dokładnie, co wchodzi w cenę.',
+          },
+          {
+            question: 'Czy budżet reklamowy jest wliczony w cenę?',
+            answer:
+              'Nie. Wynagrodzenie za prowadzenie profili i budżet mediowy na kampanie rozliczamy zawsze osobno. Dzięki temu widać, ile kosztuje praca zespołu, a ile trafia do platform reklamowych — i da się uczciwie porównać oferty agencji, które liczą to inaczej.',
+          },
+          {
+            question: 'Na jakich platformach prowadzicie profile?',
+            answer:
+              'Facebook, Instagram, TikTok, LinkedIn, YouTube, X i Pinterest. Nie prowadzimy wszystkich naraz — kanały dobieramy pod grupę docelową i cele marki, bo profil bez odbiorców kosztuje tyle samo, co profil, który sprzedaje.',
+          },
+          {
+            question: 'Jak szybko widać efekty prowadzenia social media?',
+            answer:
+              'Pierwsze efekty jakościowe — spójny wizerunek, wzrost zaangażowania, lepiej opisany profil — widać zwykle po 4–8 tygodniach. Efekty sprzedażowe zależą od budżetu reklamowego i cyklu zakupowego, dlatego współpracę zaczynamy zwykle od trzech miesięcy.',
+          },
+        ],
+      },
+      {
+        kind: 'posts',
+        kicker: 'Z BLOGA',
+        heading: 'Poczytaj o prowadzeniu social media',
+        categories: ['social-media', 'marketing'],
+      },
+    ],
+  },
+] as const satisfies readonly Service[]
+
+/**
+ * Everything that resolves under `/uslugi/<slug>` — the roster plus the SEO
+ * landings. Read by the `[slug]` route, the `/uslugi` index and the sitemap,
+ * and by nothing that renders navigation.
+ */
+export const USLUGI_PAGES = [...SERVICES, ...seoLandings]
+
+/**
+ * Lift a page's FAQ items, if it declares an `faq` section. The route feeds
+ * these to `FaqJsonLd`, so the structured data is generated from the very array
+ * the page renders instead of a hand-maintained duplicate.
+ *
+ * Takes the widened section type so both locales' modules can call it —
+ * `Localized` erases the `kind` literal, hence the cast (design D8).
+ */
+export function faqItemsOf(
+  sections: readonly Localized<ServiceSection>[]
+): readonly FaqItem[] {
+  const section = sections.find((candidate) => candidate.kind === 'faq')
+  return section ? (section as { items: readonly FaqItem[] }).items : []
+}
+
 // —— Derived navigation ————————————————————————————————————————————————————————
 // The menu USŁUGI column keeps its own labels (it also carries /szkolenia, which
 // is not a service page), so this list is for any surface that wants the six
@@ -1058,9 +1241,13 @@ export const serviceNav = SERVICES.map((service) => ({
   href: `/uslugi/${service.slug}`,
 }))
 
-/** Lookup by this-locale slug (route params → page content). */
+/**
+ * Lookup by this-locale slug (route params → page content). Resolves the roster
+ * AND the SEO landings: they share the `/uslugi/<slug>` route and the same page
+ * template, and only differ in whether the navigation surfaces list them.
+ */
 export function findService(slug: string): Service | undefined {
-  return SERVICES.find((service) => service.slug === slug)
+  return USLUGI_PAGES.find((page) => page.slug === slug)
 }
 
 /**
@@ -1071,6 +1258,7 @@ export function findService(slug: string): Service | undefined {
 export type UslugiContent = {
   chrome: typeof chrome
   services: typeof SERVICES
+  seoLandings: typeof seoLandings
 }
 
 /** Same shape, literals widened so translations compile. */

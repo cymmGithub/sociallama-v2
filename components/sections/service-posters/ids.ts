@@ -5,7 +5,8 @@
  * reference the server cannot invoke.
  */
 
-/** Ordered exactly as the hubs render them (SERVICES order, both locales). */
+/** Ordered exactly as the hubs render them (USLUGI_PAGES order, both locales) —
+ *  the seven services, then the SEO landing, which the hubs list last. */
 export const POSTER_IDS = [
   'strategia',
   'content',
@@ -14,6 +15,7 @@ export const POSTER_IDS = [
   'kreacje-wideo',
   'audyt-i-konsultacje',
   'influencer-marketing',
+  'prowadzenie-social-media',
 ] as const
 
 export type PosterId = (typeof POSTER_IDS)[number]

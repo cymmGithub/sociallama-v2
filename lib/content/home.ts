@@ -11,6 +11,7 @@
 
 import type { ClientCopy } from '@/lib/content/clients'
 import { industryNav } from '@/lib/content/branze'
+import { STARTING_PRICE } from '@/lib/content/pricing'
 import type { Localized } from '@/lib/i18n/parity'
 
 export interface MenuItem {
@@ -962,6 +963,25 @@ export const testimonialLabels = {
  * — Google requires the markup to match the visible copy, so there is exactly
  * one source for both. Row numerals (01–06) are derived from the index.
  */
+/**
+ * One row of the ledger.
+ *
+ * `answer` stays a plain string on purpose: it is also what the `FAQPage`
+ * JSON-LD emits as `acceptedAnswer.text`, and Google requires that to match the
+ * rendered copy. A row that wants to route the reader onward declares `link`
+ * instead of smuggling markup into the prose — the structured data keeps the
+ * clean sentence, the reader gets the way out.
+ *
+ * The component reads this shape rather than `typeof faq.items`: with `link` on
+ * one row only, the inferred tuple is a union that TypeScript will not let
+ * anything read `link` off.
+ */
+export interface FaqEntry {
+  question: string
+  answer: string
+  link?: { label: string; href: string }
+}
+
 export const faq = {
   heading: ['ASK', 'THE LAMA'],
   eyebrow: 'NAJCZĘŚCIEJ ZADAWANE PYTANIA',
@@ -970,7 +990,11 @@ export const faq = {
     {
       question: 'Ile kosztuje prowadzenie social media przez agencję?',
       answer:
-        'Koszt prowadzenia social media zależy od liczby platform, częstotliwości publikacji i\u00A0zakresu działań — rynkowo mieści się w\u00A0przedziale od 3 000 do 15 000 zł miesięcznie. Cennik za profesjonalną obsługę jednego profilu w\u00A0agencji zwykle startuje od ok. 920 zł netto/mies. Co bardzo ważne w\u00A0przeciwieństwie do wielu innych agencji w\u00A0Social Lama budżet reklamowy na kampanie w\u00A0social media rozliczamy zawsze osobno, aby zachować pełną transparentność.',
+        `Koszt prowadzenia social media zależy od liczby platform, częstotliwości publikacji i\u00A0zakresu działań — rynkowo mieści się w\u00A0przedziale od 3 000 do 15 000 zł miesięcznie. Cennik za profesjonalną obsługę jednego profilu w\u00A0agencji zwykle startuje od ok. ${STARTING_PRICE} zł netto/mies. Co bardzo ważne w\u00A0przeciwieństwie do wielu innych agencji w\u00A0Social Lama budżet reklamowy na kampanie w\u00A0social media rozliczamy zawsze osobno, aby zachować pełną transparentność.`,
+      link: {
+        label: 'Zobacz cennik i\u00A0zakres prowadzenia social media',
+        href: '/uslugi/prowadzenie-social-media',
+      },
     },
     {
       question:

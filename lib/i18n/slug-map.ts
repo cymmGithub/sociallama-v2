@@ -55,6 +55,10 @@ export const SECTIONS = [
       ['kreacje-wideo', 'creative-video'],
       ['audyt-i-konsultacje', 'audit-consulting'],
       ['influencer-marketing', 'influencer-marketing'],
+      // Not a service — an SEO landing that shares the `/uslugi` route and so
+      // needs the same PL↔EN mapping. `slug-map.test.ts` checks this table
+      // against `USLUGI_PAGES`, which is the roster plus the landings.
+      ['prowadzenie-social-media', 'social-media-management'],
     ],
   },
   {

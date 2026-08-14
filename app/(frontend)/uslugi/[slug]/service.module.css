@@ -1397,6 +1397,160 @@
   color: var(--color-plum);
 }
 
+/* —— Page FAQ (SEO landings) ——————————————————————————————————————————————————
+   A stacked question ledger. The homepage's version opens each answer into a
+   second column, which needs ::details-content to behave as a grid item —
+   Safari only made it one in 18.4, which is why that file carries an @supports
+   gate and a float fallback. Stacking needs neither, so this one renders the
+   same way in every engine. */
+
+.faq {
+  padding: calc(var(--safe) * 3) var(--safe);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.faqInner {
+  --reveal-stagger: 90ms;
+  --reveal-transform: translateY(24px);
+
+  /* The same 1240px band every other section on the page uses. A narrower
+     column would keep the answers at a nicer measure but would inset this
+     section's left edge from the kicker above and the one below it, which reads
+     as a mistake — the answer's own `max-width` handles the measure instead. */
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+.faqList {
+  /* Square size of the +/− toggle. */
+  --sign-size: 0.8rem;
+  /* Vertical padding of every row — the sign's offset references it. */
+  --row-pad: calc(var(--gap) * 1.1);
+
+  margin-top: calc(var(--safe) * 1.5);
+  border-top: 1px solid var(--line);
+}
+
+.faqItem {
+  /* Lets ::details-content animate from 0 to its intrinsic height where the
+     engine supports it; elsewhere the row snaps open, which is fine. */
+  interpolate-size: allow-keywords;
+
+  border-bottom: 1px solid var(--line);
+}
+
+.faqSummary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--gap);
+  align-items: start;
+  padding-block: var(--row-pad);
+  cursor: pointer;
+
+  /* Kill the UA disclosure triangle. Not cosmetic: where the marker survives it
+     becomes an extra grid item and shifts the row's columns along by one.
+     `list-style` covers Chromium and Firefox, the -webkit- pseudo covers
+     Safari. */
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* The global focus ring sits 2px outside the row, which on a full-width row
+   reads as a page-wide box. Keep the ring, pull it inside the hairline. */
+.faqSummary:focus-visible {
+  outline-offset: -4px;
+}
+
+.faqQuestion {
+  /* `text-wrap: pretty` from global.css cannot reach a <span> inside a
+     <summary>; the summary is a grid container, so this item is blockified and
+     the declaration applies once written. */
+  text-wrap: balance;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+  transition: color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    .faqSummary:hover & {
+      color: var(--color-plum);
+    }
+  }
+}
+
+/* +/− toggle: two bars, the vertical one rotating flat when the row opens. */
+.faqSign {
+  position: relative;
+  inline-size: var(--sign-size);
+  block-size: var(--sign-size);
+  margin-top: 0.45em;
+  color: var(--color-plum);
+}
+
+.faqSign::before,
+.faqSign::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  block-size: 2px;
+  background-color: currentColor;
+  transform: translateY(-50%);
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.faqSign::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.faqItem[open] .faqSign::after {
+  transform: translateY(-50%) rotate(0deg);
+}
+
+/* content-visibility is left to the UA (hidden closed, visible open) and only
+   transitioned — declaring it here would override the open-state value and lay
+   the row out at zero height. */
+.faqItem::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--duration) var(--ease-out-expo),
+    content-visibility var(--duration) allow-discrete;
+}
+
+.faqItem[open]::details-content {
+  block-size: auto;
+}
+
+.faqAnswer {
+  margin: 0;
+  /* Measure, not column: the row runs the full band so its hairline lines up
+     with the section above, but the prose stops at a readable width. */
+  max-width: 74ch;
+  padding-bottom: calc(var(--gap) * 1.5);
+  padding-inline-end: calc(var(--sign-size) + var(--gap));
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+}
+
+/* The global reduced-motion rule covers * and ::before/::after, but not
+   ::details-content — neutralise the height transition here. Must sit below
+   the rule it cancels: a media query adds no specificity. */
+@media (--reduced-motion) {
+  .faqItem::details-content {
+    transition-duration: 0.01ms;
+  }
+}
+
 /* —— Closing CTA (mirrors the branze CTA card) ————————————————————————————————— */
 
 .ctaBand {

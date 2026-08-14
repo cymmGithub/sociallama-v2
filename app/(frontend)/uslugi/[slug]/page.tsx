@@ -1,7 +1,13 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Wrapper } from '@/components/layout/wrapper'
-import { chrome, findService, SERVICES } from '@/lib/content/uslugi'
+import { FaqJsonLd } from '@/components/seo/structured-data'
+import {
+  chrome,
+  faqItemsOf,
+  findService,
+  USLUGI_PAGES,
+} from '@/lib/content/uslugi'
 import {
   buildRelatedByPlatform,
   buildTopicalPosts,
@@ -13,8 +19,10 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+// Roster ∪ SEO landings: the landing shares this route and this template, and
+// differs only in that no navigation surface lists it.
 export function generateStaticParams() {
-  return SERVICES.map((service) => ({ slug: service.slug }))
+  return USLUGI_PAGES.map((page) => ({ slug: page.slug }))
 }
 
 export async function generateMetadata({
@@ -41,9 +49,18 @@ export default async function UslugaPage({ params }: PageProps) {
   const relatedByPlatform = await buildRelatedByPlatform(service.sections, 'pl')
   const topicalPosts = await buildTopicalPosts(service.sections, 'pl')
 
+  // Empty for every page without an `faq` section, which is all seven services.
+  const faqItems = faqItemsOf(service.sections)
+
   return (
     // Plum chrome — the hero paints plum; sections paint their own bands.
     <Wrapper theme="plum">
+      {/* Generated from the very array the page renders, so the markup cannot
+          drift from the visible copy. Server-rendered here rather than in the
+          section component: structured data has no reason to wait on hydration. */}
+      {faqItems.length > 0 && (
+        <FaqJsonLd items={faqItems} path={`/uslugi/${service.slug}`} />
+      )}
       <ServicePage
         serviceId={service.id}
         sections={service.sections}

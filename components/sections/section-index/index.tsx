@@ -45,9 +45,9 @@ export interface SectionIndexItem {
   image?: string
   artwork?: ReactNode
   /**
-   * Spans the card across the whole grid row. The services hub opens on a
-   * feature card so seven items close as 1 + 3 + 3 instead of leaving an
-   * orphan in the last row.
+   * Spans the card across the whole grid row. Poster cards only. The services
+   * hub both opens and closes on one, so its eight items lay out as
+   * 1 + 3 + 3 + 1 instead of orphaning a third-width tile in a fourth row.
    */
   feature?: boolean
   /**
