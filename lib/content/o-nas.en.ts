@@ -271,6 +271,17 @@ export const oNasTeam = {
       photo: '/o-nas/slider/iza-harmoza-sochon.png',
     },
     {
+      given: 'ŁUKASZ',
+      surname: 'PŁOCIŃSKI',
+      role: 'SEO Specialist, SEOFLY',
+      bio: "SEO specialist at SEOFLY, the partner agency in our group. For over fifteen years he has been ranking websites and online stores — from audits and keyword research through optimization to content that actually pulls traffic in. He pairs analytical thinking with creativity and keeps pace with every turn Google's algorithms take. Off the clock he follows volleyball and plays it himself, and gives his free time to his family and to fantasy — Tolkien through Discworld.",
+      link: {
+        label: 'seofly.pl',
+        href: 'https://seofly.pl/zespol/lukasz-plocinski/',
+      },
+      photo: '/o-nas/slider/lukasz-plocinski.png',
+    },
+    {
       given: 'PRZEMYSŁAW',
       surname: 'ŚWIERCZ',
       role: 'Fullstack Developer',

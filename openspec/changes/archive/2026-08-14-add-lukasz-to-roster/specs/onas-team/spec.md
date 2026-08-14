@@ -21,29 +21,6 @@ The removed CTA cell was the section's only route to `/o-nas#o-lamie`; member ti
 - **WHEN** the homepage content modules and the section stylesheet are inspected
 - **THEN** the `moreCard` entry is absent from both locales and the CTA tile's style rules are absent from the section stylesheet — no orphaned copy or dead CSS remains
 
-### Requirement: Reconstructed portraits SHALL be declared and likeness-verified
-
-Where a member's cutout cannot be produced from photography alone and part of the frame is generated, the change that ships it SHALL record which source it was reconstructed from and how much of the frame is synthetic, and the face SHALL remain photographic — reconstruction extends the body, never the likeness.
-
-Because the framing solver normalises head width, scale-ratio checks cannot detect an anisotropic squeeze introduced by a generative step. Verification SHALL therefore be by template correlation of the face against the pre-reconstruction source across a scale grid, with both axes at or above 0.99.
-
-A reconstructed portrait of an identifiable person SHALL be shown to that person for sign-off before it ships.
-
-#### Scenario: Provenance is recorded
-
-- **WHEN** a reconstructed cutout is added to the roster
-- **THEN** the change records the source image it was built from and the proportion of the frame that is generated rather than photographed
-
-#### Scenario: The face survives reconstruction unaltered
-
-- **WHEN** the shipped cutout's face is template-correlated against the pre-reconstruction source across an (sx, sy) scale grid
-- **THEN** both axes correlate at 0.99 or above, and the face reads as the same person at slider scale
-
-#### Scenario: The subject approves their own portrait
-
-- **WHEN** a portrait containing generated body or clothing depicts an identifiable person
-- **THEN** that person has approved the specific image before it appears on the site
-
 ## MODIFIED Requirements
 
 ### Requirement: Both surfaces carry the same roster

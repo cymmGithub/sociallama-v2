@@ -271,7 +271,6 @@ export const whyThatWorks = {
   },
   link: { label: 'DISCOVER OUR EXPERIENCE', href: '/en/case-studies' },
   memberLink: { label: 'More', hrefBase: '/en/about-us' },
-  moreCard: { label: 'Learn more', anchor: '#o-lamie' },
   teamLabel: 'Social Lama team',
   certsLabel:
     'DIMAQ Professional and Meta Small Business Academy — certified skills in digital marketing and advertising across the Meta ecosystem.',

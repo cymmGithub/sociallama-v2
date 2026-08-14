@@ -116,20 +116,6 @@ export function WhyThatWorks({
                 </li>
               )
             })}
-            {/* CTA tile closing the desktop grid's rectangle (16th cell of
-                4x4) and ending the mobile rail. Same tile shell as the
-                members, copy instead of a cutout; the arrow is part of the
-                label, so unlike the member tiles' hover-only affordance it
-                stays visible on touch. */}
-            <li className={cn(s.tile, s.moreTile)}>
-              <Link
-                className={s.moreLink}
-                href={`${content.memberLink.hrefBase}${content.moreCard.anchor}`}
-              >
-                <span className={s.moreLabel}>{content.moreCard.label}</span>
-                <ArrowRight className={s.moreArrow} aria-hidden="true" />
-              </Link>
-            </li>
           </ul>
           {/* Swipe hint for the mobile rail (user decision 2026-08-04):
               passive chevrons below the tiles — outside them so they cannot

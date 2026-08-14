@@ -528,9 +528,6 @@ export const whyThatWorks = {
   // accessible name ("Więcej: Anna Ozga"), hence sentence case. `hrefBase` is
   // the locale's about page; the component appends `?lama=<slug>#zespol`.
   memberLink: { label: 'Więcej', hrefBase: '/o-nas' },
-  // CTA tile closing the team grid's rectangle (16th cell); links to the
-  // "COŚ O LAMIE" band on the locale's about page (`hrefBase` + this anchor).
-  moreCard: { label: 'Dowiedz się więcej', anchor: '#o-lamie' },
   teamLabel: 'Zespół Social Lama',
   // Caption under the two cert cards. The marks are not self-explanatory — one
   // sentence saying what they cover beats presenting them without comment.

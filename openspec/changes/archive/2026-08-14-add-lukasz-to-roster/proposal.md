@@ -5,13 +5,15 @@
 two surfaces that present the people behind Social Lama. The client wants him
 shown as part of the group, so the roster grows from 15 to 16.
 
-The obstacle is the photograph. Every copy of him is a downsampled crop of one
-studio frame (384x384 in `public/authors/`, 300x300 on seofly.pl, 240x240 in
-Downloads) and no original is obtainable. The roster frame is 422x600 with the
-head anchored to ~0.369 of the frame width and the body bleeding off the bottom
-edge, so a third of that frame contains no photograph at all — this is a
-reconstruction, not an upscale, and it needs to be measured before it is
-generated.
+The portrait was the hard part, until it wasn't. Every copy of him the repo or
+the web had was a downsampled crop of one studio frame (384x384 in
+`public/authors/`, a 300x300 circular avatar on seofly.pl, 240x240 in
+Downloads), none of which reaches far enough down the body for the roster's
+422x600 frame — so this change was originally scoped around *reconstructing*
+the missing half generatively. On 2026-08-14 the client supplied the original:
+a 6000x4000 studio frame (`PG1W4678.JPG`, Panasonic DC-S5M2X, 2025-12-01),
+arms crossed, torso running off the bottom of the frame. **The reconstruction
+is therefore cancelled and the shipped cutout is photographic end to end.**
 
 ## What Changes
 
@@ -32,14 +34,15 @@ generated.
   'https://seofly.pl/zespol/lukasz-plocinski/' }` — reusing the optional field
   Przemysław already uses for `imcurious.how`. This makes the partner
   relationship a disclosed fact in the slider rather than a subtlety of the
-  role label. *Proposed, pending confirmation.*
-- **Reconstruct the 422x600 cutout from the seofly.pl 300x300 source**, not
-  from the larger `public/authors/` avatar. Measured against the roster's real
-  framing anchor, the seofly crop leaves **34%** of the frame to be generated
-  versus **46%** for the repo avatar, because it is the same frame cropped
-  wider — mid-chest, both arms, full vest pattern — which also gives the model
-  real garment structure to continue. It costs a ~1.3x upsample, which an
-  upscale pass absorbs. Generation credits were approved on 2026-08-14.
+  role label. Confirmed by the user 2026-08-14; the URL was verified live.
+- **Cut the 422x600 portrait from the client's 6000x4000 original.** No
+  generative step: `bria-rmbg` matte, nearest-opaque edge decontamination, then
+  the roster framing solver. Shipped at head width 0.3673 (anchor 0.369),
+  head-top y=36, 60.4% bottom-edge bleed, no side-edge contact, 285 KB.
+  Superseded three earlier `nano_banana_pro` reconstructions (8 credits, see
+  `tasks.md` 3.x) which are now discarded — the last of them had the right
+  garment but only 0.86 face correlation, and every pass re-rendered his face
+  rather than preserving it. The photograph makes the whole trade-off moot.
 - **Remove the homepage CTA tile** ("Dowiedz się więcej" / "Learn more", user
   decision 2026-08-14). The desktop grid is four columns and currently holds 15
   members plus the CTA as a deliberate 4x4 rectangle; a 16th member would make
@@ -59,9 +62,10 @@ None.
 - `onas-team`: roster membership grows from 15 to 16 (Łukasz Płociński in,
   nobody out) and the curated order gains one position before Przemysław
   Świercz; the homepage grid's required cell set drops the CTA tile, so the
-  grid is 16 member tiles rather than 15 members plus a CTA; the portrait
-  requirement gains a provenance rule for reconstructed cutouts, since a third
-  of this one is generated rather than photographed.
+  grid is 16 member tiles rather than 15 members plus a CTA. The portrait
+  requirement is unchanged in substance — his cutout is photographic like every
+  other member's — beyond restoring the three framing-integrity scenarios that
+  archiving `refine-team-roster` dropped.
 
 ## Impact
 
@@ -79,8 +83,8 @@ None.
   reduced-motion blocks removed as orphans.
 - `lib/content/home.ts` / `lib/content/home.en.ts` — `moreCard` removed as an
   orphan of the tile deletion.
-- Higgsfield credits: approximately three (one upscale, one 2:3 reconstruction
-  edit), plus a retake if the likeness misses.
+- Higgsfield credits: 8 were spent on reconstruction attempts before the
+  original photograph arrived. That work is discarded; nothing generated ships.
 - New `public/` files 404 on a running dev server until it restarts; the
   restart is handed to the user, never performed by the agent.
 
