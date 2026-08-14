@@ -561,15 +561,13 @@
     var(--color-cream) 0.99turn,
     transparent 1turn
   );
-  /* Keep only the 2px band: content-box mask XORed against the full box. */
+  /* Keep only the 2px band: the content-box layer excludes against the full
+     box. The operator must live INSIDE the shorthand: Lightning CSS drops a
+     separate `mask-composite` declaration and strands `-webkit-mask-composite`
+     above the shorthand that resets it, which un-masks the whole button. */
   mask:
-    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0) content-box exclude,
     linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
   animation: comet 2.6s linear infinite;
 }
 
