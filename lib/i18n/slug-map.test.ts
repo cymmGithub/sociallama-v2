@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { INDUSTRIES } from '../content/branze'
 import { SERVICES } from '../content/uslugi'
+import { careersRoles } from '../content/zostan-lama'
 import { alternatesForPath, counterpartPath, SECTIONS } from './slug-map'
 
 /**
@@ -59,6 +60,34 @@ describe('slug map — industries', () => {
     expect(sectionFor('/branze').hasIndex).toBe(true)
     expect(counterpartPath('/branze')).toBe('/en/industries')
     expect(counterpartPath('/en/industries')).toBe('/branze')
+  })
+})
+
+describe('slug map — careers positions', () => {
+  test('every open position round-trips to its EN twin', () => {
+    for (const role of careersRoles) {
+      const pl = `/zostan-lama/${role.id}`
+      const en = `/en/become-a-lama/${role.id}`
+      expect(counterpartPath(pl)).toBe(en)
+      expect(counterpartPath(en)).toBe(pl)
+    }
+  })
+
+  test('table carries no position the content has dropped', () => {
+    expect(sectionFor('/zostan-lama').slugs.length).toBe(careersRoles.length)
+  })
+
+  // The index pair lives in `pathPairs`, so this section deliberately declares
+  // no index of its own — and the toggle must still resolve it.
+  test('the careers index still resolves through the static pairs', () => {
+    expect(sectionFor('/zostan-lama').hasIndex).toBe(false)
+    expect(counterpartPath('/zostan-lama')).toBe('/en/become-a-lama')
+    expect(counterpartPath('/en/become-a-lama')).toBe('/zostan-lama')
+  })
+
+  test('a closed position falls back rather than pointing at a 404', () => {
+    expect(counterpartPath('/zostan-lama/nie-rekrutujemy')).toBe('/en')
+    expect(counterpartPath('/en/become-a-lama/not-hiring')).toBe('/')
   })
 })
 

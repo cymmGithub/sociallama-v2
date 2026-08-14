@@ -24,8 +24,15 @@ export const pathPairs = [
 ] as const
 
 /**
- * Sections whose detail pages carry translated slugs (`pairSlug` in the content
- * modules). Deliberately kept out of `pathPairs`: the sitemap derives these URLs
+ * Sections whose detail pages resolve through a slug table rather than a prefix
+ * swap. Services and industries carry translated slugs (`pairSlug` in the
+ * content modules); the careers positions repeat one id in both locales,
+ * because that id is what the application form submits (design D4 of
+ * add-careers-role-urls) — but they still belong here rather than in the
+ * case-study prefix swap, so an id no longer being hired for stops resolving
+ * instead of pointing the toggle at a 404.
+ *
+ * Detail URLs are deliberately kept out of `pathPairs`: the sitemap derives them
  * straight from the content files (`app/sitemap.ts`), so listing them there too
  * would emit every URL twice.
  *
@@ -67,6 +74,18 @@ export const SECTIONS = [
       ['hotele-i-miejsca-wypoczynkowe', 'hospitality'],
       ['nieruchomosci-i-deweloperzy', 'real-estate'],
       ['rozrywka', 'entertainment'],
+    ],
+  },
+  {
+    // The careers index pair is already in `pathPairs` (it is a static page in
+    // its own right, and the sitemap emits it from STATIC_PAGES), so this entry
+    // resolves the open positions only.
+    pl: '/zostan-lama',
+    en: '/en/become-a-lama',
+    hasIndex: false,
+    slugs: [
+      ['social-media-specialist', 'social-media-specialist'],
+      ['paid-social-media-specialist', 'paid-social-media-specialist'],
     ],
   },
 ] as const satisfies readonly {

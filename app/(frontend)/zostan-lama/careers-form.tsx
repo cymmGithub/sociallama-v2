@@ -46,6 +46,13 @@ interface CareersFormProps {
   form: CareersFormCopy
   roles: CareersRoles
   locale: Locale
+  /**
+   * The position the page was entered through, when it was entered through one
+   * (`/zostan-lama/{id}`) — it changes which role the select opens on, nothing
+   * else. The visitor stays free to pick another, and the server still
+   * validates whatever is submitted.
+   */
+  initialRoleId?: string | undefined
 }
 
 /**
@@ -54,13 +61,23 @@ interface CareersFormProps {
  * /kontakt's pipeline end to end: Turnstile widget, form kit, rate-limited
  * server action, SMTP transport.
  */
-export function CareersForm({ form, roles, locale }: CareersFormProps) {
+export function CareersForm({
+  form,
+  roles,
+  locale,
+  initialRoleId,
+}: CareersFormProps) {
   // Toast.Provider must live inside a client component — it's a compound-
   // component object and can't be resolved across the RSC boundary from the
   // server page. The Viewport (top-right) is portaled to <body>.
   return (
     <Toast.Provider>
-      <CareersFormFields form={form} roles={roles} locale={locale} />
+      <CareersFormFields
+        form={form}
+        roles={roles}
+        locale={locale}
+        initialRoleId={initialRoleId}
+      />
       <Toast.Viewport />
     </Toast.Provider>
   )
@@ -134,7 +151,12 @@ function ConsentField({
   )
 }
 
-function CareersFormFields({ form, roles, locale }: CareersFormProps) {
+function CareersFormFields({
+  form,
+  roles,
+  locale,
+  initialRoleId,
+}: CareersFormProps) {
   const siteKey = env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY
   const consentId = useId()
   // The toast context value isn't memoised, so read it through a ref and keep
@@ -174,9 +196,14 @@ function CareersFormFields({ form, roles, locale }: CareersFormProps) {
     ...roles.map((role) => ({ label: role.title, value: role.id })),
     { label: form.fields.role.spontaneous, value: CAREERS_SPONTANEOUS_VALUE },
   ]
-  // Falls back to the spontaneous option, which is always present — so the
-  // select still has a valid default if every role is ever closed.
-  const defaultRole = roles[0]?.id ?? CAREERS_SPONTANEOUS_VALUE
+  // The position URL's role when the page was entered through one, otherwise
+  // the first opening. Falls back to the spontaneous option, which is always
+  // present — so the select still has a valid default if every role is ever
+  // closed.
+  const defaultRole =
+    roles.find((role) => role.id === initialRoleId)?.id ??
+    roles[0]?.id ??
+    CAREERS_SPONTANEOUS_VALUE
 
   return (
     <Form

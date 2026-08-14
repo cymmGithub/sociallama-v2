@@ -16,10 +16,13 @@ export function CareersApply({
   form = careersFormDefault,
   roles = careersRolesDefault,
   locale = 'pl',
+  initialRoleId,
 }: {
   form?: LocalizedCareers['careersForm']
   roles?: LocalizedCareers['careersRoles']
   locale?: Locale
+  /** Preselects the role select when entered through a position URL. */
+  initialRoleId?: string | undefined
 }) {
   return (
     <section className={s.formBand}>
@@ -29,7 +32,12 @@ export function CareersApply({
           <h2 className={s.formHeading}>{form.heading}</h2>
           <p className={s.formLede}>{form.lede}</p>
         </div>
-        <CareersForm form={form} roles={roles} locale={locale} />
+        <CareersForm
+          form={form}
+          roles={roles}
+          locale={locale}
+          initialRoleId={initialRoleId}
+        />
       </div>
     </section>
   )

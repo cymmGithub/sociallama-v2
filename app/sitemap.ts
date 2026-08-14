@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { INDUSTRIES } from '@/lib/content/branze'
 import { SERVICES } from '@/lib/content/uslugi'
+import { careersRoles } from '@/lib/content/zostan-lama'
 import { APP_BASE_URL } from '@/lib/env'
 import {
   getCaseStudiesForSitemap,
@@ -159,8 +160,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]),
   ])
 
+  // Open positions — one URL per role per locale, from the same array the
+  // careers page renders its tabs from, so a closed position leaves the sitemap
+  // the moment it leaves the content. Ranked below the careers page itself:
+  // these are its details, and they turn over faster than it does.
+  const careersRoleRoutes: MetadataRoute.Sitemap = careersRoles.flatMap(
+    (role) => {
+      const pl = `/zostan-lama/${role.id}`
+      const en = `/en/become-a-lama/${role.id}`
+      return [
+        { ...entry(pl, 'weekly', 0.6), alternates: languagesFor(pl, en) },
+        entry(en, 'weekly', 0.6),
+      ]
+    }
+  )
+
   return [
     ...staticRoutes,
+    ...careersRoleRoutes,
     ...postRoutes,
     ...enPostRoutes,
     ...caseStudyRoutes,

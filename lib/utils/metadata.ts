@@ -223,8 +223,12 @@ interface PairMetadataOptions {
 
 /**
  * Static PL↔EN pages whose slugs live in the content modules (services,
- * industries). `alternatesForPath` resolves the hreflang pair from the literal
- * slug table, with `x-default` → PL.
+ * industries, careers positions). `alternatesForPath` resolves the hreflang pair
+ * from the literal slug table, with `x-default` → PL.
+ *
+ * The brand OG image is restated here rather than inherited: page-level
+ * `openGraph` REPLACES the layout's object outright, so every page built on this
+ * builder was unfurling as a text-only card.
  */
 export function pairMetadata({
   title,
@@ -241,6 +245,9 @@ export function pairMetadata({
       title,
       description,
       url: path,
+      images: [
+        { url: '/opengraph-image.jpg', width: 1200, height: 630, alt: title },
+      ],
     },
     twitter: { card: 'summary_large_image', title, description },
   }

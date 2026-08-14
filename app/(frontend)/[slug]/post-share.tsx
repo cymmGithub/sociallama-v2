@@ -1,31 +1,15 @@
-'use client'
-
-import { Check, Link2 } from 'lucide-react'
-import { useState } from 'react'
-import { Link } from '@/components/ui/link'
-import { SocialGlyph } from '@/components/ui/social-glyph'
+import { ShareRow } from '@/components/ui/share'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import s from './post.module.css'
 
 /**
- * Fill the `{title}` slot in a brand share label. The labels are templates
- * rather than functions like `hubVideo.posterLabel` because they arrive here as
- * props, and a function does not cross the server/client boundary. Replacing
- * through a callback keeps a `$` in a post title out of the substitution
- * grammar.
- */
-const fillTitle = (label: string, title: string) =>
-  label.replace('{title}', () => title)
-
-/**
- * Share row for the rail. LinkedIn and Facebook are plain share-intent links;
- * copy-link needs the clipboard, which is why the whole row is a client
- * component rather than just the button.
+ * The post's share row — `<ShareRow/>` wearing this route's styling.
  *
- * The two brand marks are CSS masks over the same `/assets/icon-*.svg` files
- * the footer's social row uses — lucide dropped its brand icons, and a mask
- * inherits `currentColor` so the marks invert on hover with the button.
+ * Behaviour lives in `components/ui/share` (shared with the careers role
+ * panels); this file is only the binding of `post.module.css` hooks, so the two
+ * call sites — the rail on desktop, below the body on mobile — keep passing
+ * nothing but their own root class.
  */
 export function PostShare({
   url,
@@ -39,54 +23,17 @@ export function PostShare({
   content: Localized<typeof pl.postShare>
   className?: string | undefined
 }) {
-  const [copied, setCopied] = useState(false)
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(url)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Clipboard denied (insecure context, or the user said no) — the two
-      // share links still work, so there's nothing useful to report here.
-    }
-  }
-
-  const encoded = encodeURIComponent(url)
-
   return (
-    <div className={className}>
-      <p className={s.railLabel}>{content.title}</p>
-      <div className={s.shareRow}>
-        <Link
-          aria-label={fillTitle(content.linkedin, title)}
-          className={s.shareButton}
-          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
-          newTab
-        >
-          <SocialGlyph name="linkedin" className={s.shareBrandIcon} />
-        </Link>
-        <Link
-          aria-label={fillTitle(content.facebook, title)}
-          className={s.shareButton}
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encoded}`}
-          newTab
-        >
-          <SocialGlyph name="facebook" className={s.shareBrandIcon} />
-        </Link>
-        <button
-          aria-label={copied ? content.copied : content.copy}
-          className={s.shareButton}
-          onClick={copy}
-          type="button"
-        >
-          {copied ? (
-            <Check aria-hidden="true" className={s.shareIcon} />
-          ) : (
-            <Link2 aria-hidden="true" className={s.shareIcon} />
-          )}
-        </button>
-      </div>
-    </div>
+    <ShareRow
+      brandIconClassName={s.shareBrandIcon}
+      buttonClassName={s.shareButton}
+      className={className}
+      iconClassName={s.shareIcon}
+      labelClassName={s.railLabel}
+      labels={content}
+      rowClassName={s.shareRow}
+      title={title}
+      url={url}
+    />
   )
 }

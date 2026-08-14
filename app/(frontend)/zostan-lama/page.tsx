@@ -1,47 +1,23 @@
 import type { Metadata } from 'next'
-import { Wrapper } from '@/components/layout/wrapper'
-import {
-  careersMeta,
-  careersRoles,
-  careersRolesLabel,
-} from '@/lib/content/zostan-lama'
+import * as pl from '@/lib/content/zostan-lama'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
-import { CareersApply } from './careers-apply'
-import { CareersBenefits } from './careers-benefits'
-import { CareersHero } from './careers-hero'
-import { CareersRoles } from './careers-roles'
-import { DarkChrome } from './dark-chrome'
-import s from './zostan-lama.module.css'
+import { CareersPage } from './careers-page'
 
 /*
  * Careers page (redesign-careers-page, direction C). Dark conversion layout
  * served at /zostan-lama — the legacy WP /zostan-lama/ URL redirects here.
  *
- * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + smooth
- * scrolling); the near-black ground, the orange benefits band and the plum
- * application band are painted by the scoped zostan-lama.module.css.
- *
- * Band order is ink-deep → orange → plum-deep, and the page ENDS on the form
- * (design D3): nothing may be added below <CareersApply/> — the next element is
- * the site footer.
+ * The page itself is <CareersPage/>; this route only names it and its metadata.
+ * The position URLs underneath (`[role]/page.tsx`) render the same composition
+ * with one tab preselected.
  */
 
 export const metadata: Metadata = {
-  title: careersMeta.title,
-  description: careersMeta.description,
+  title: pl.careersMeta.title,
+  description: pl.careersMeta.description,
   alternates: alternatesForPath('/zostan-lama'),
 }
 
 export default function JoinPage() {
-  return (
-    <Wrapper theme="plum-deep">
-      <div className={s.page}>
-        <DarkChrome />
-        <CareersHero />
-        <CareersRoles roles={careersRoles} label={careersRolesLabel} />
-        <CareersBenefits />
-        <CareersApply />
-      </div>
-    </Wrapper>
-  )
+  return <CareersPage content={pl} locale="pl" />
 }

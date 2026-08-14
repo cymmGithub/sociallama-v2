@@ -114,7 +114,8 @@ test.describe('Locale routing — header logo', { tag: '@monitor' }, () => {
 
 test.describe('Locale routing — language toggle', { tag: '@monitor' }, () => {
   // One representative of each shape, plus the two whose slugs are translated
-  // (the case the old prefix-swap logic could not express).
+  // (the case the old prefix-swap logic could not express) and a careers
+  // position, whose id is deliberately the same in both locales.
   const CASES = [
     { from: '/uslugi', to: '/en/services' },
     { from: '/branze', to: '/en/industries' },
@@ -122,6 +123,10 @@ test.describe('Locale routing — language toggle', { tag: '@monitor' }, () => {
     { from: '/uslugi/kampanie-reklamowe', to: '/en/services/ad-campaigns' },
     { from: '/branze/elektronika-i-agd', to: '/en/industries/electronics' },
     { from: '/branze/rozrywka', to: '/en/industries/entertainment' },
+    {
+      from: '/zostan-lama/social-media-specialist',
+      to: '/en/become-a-lama/social-media-specialist',
+    },
   ]
 
   for (const { from, to } of CASES) {

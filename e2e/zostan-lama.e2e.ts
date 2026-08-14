@@ -1,6 +1,14 @@
 import { expect, test } from '@playwright/test'
-import { careersForm, careersRoles } from '../lib/content/zostan-lama'
-import { careersForm as enForm } from '../lib/content/zostan-lama.en'
+import {
+  CAREERS_SPONTANEOUS_VALUE as CAREERS_SPONTANEOUS,
+  careersForm,
+  careersRoles,
+  careersShare,
+} from '../lib/content/zostan-lama'
+import {
+  careersForm as enForm,
+  careersRoles as enRoles,
+} from '../lib/content/zostan-lama.en'
 import { colors } from '../lib/styles/colors'
 import {
   collectPageErrors,
@@ -18,6 +26,12 @@ import {
  * - a required CV or consent that does not actually gate the submit
  * - an oversized attachment reaching the runtime instead of a readable message
  * - content sections appearing after the form (the page ends on submit)
+ *
+ * Plus the position URLs added by add-careers-role-urls, whose failure modes are
+ * their own: a shared link that opens the wrong position (or the page hero), a
+ * share button that hands out the URL the page was loaded from rather than the
+ * panel's own, and an id nobody is hiring for resolving to something other than
+ * a 404.
  */
 
 const DARK_CHROME = hexToRgb(colors['ink-deep'])
@@ -223,6 +237,119 @@ test.describe('Careers page', () => {
 
     expect(consoleErrors).toEqual([])
     expect(pageErrors).toEqual([])
+  })
+
+  test('a position URL opens on that position, in view and preselected', async ({
+    page,
+  }) => {
+    const { consoleErrors, pageErrors } = collectPageErrors(page)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+
+    const second = careersRoles[1]
+    if (!second) throw new Error('expected two open roles')
+    await gotoHydrated(page, `/zostan-lama/${second.id}`)
+
+    // The URL chose the tab — the second one, not the default first.
+    const tabs = page.getByRole('tab')
+    await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true', HYDRATED)
+    await expect(page.getByRole('tabpanel')).toHaveCount(1)
+    await expect(
+      page.getByRole('tab', { name: second.title, selected: true })
+    ).toBeVisible()
+
+    // …and the entry scroll landed on the job rather than the hero (design D3).
+    await expect
+      .poll(
+        () =>
+          page
+            .getByRole('tabpanel')
+            .evaluate((panel) => {
+              const { top, bottom } = panel.getBoundingClientRect()
+              return top < window.innerHeight && bottom > 0
+            })
+            .catch(() => false),
+        { timeout: 10_000 }
+      )
+      .toBe(true)
+    expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+
+    // The application form opens on the position the visitor came for, and the
+    // spontaneous option is still reachable — preselection is not a lock.
+    await expect(page.locator('select[name="role"]')).toHaveValue(second.id)
+    await page.locator('select[name="role"]').selectOption(CAREERS_SPONTANEOUS)
+    await expect(page.locator('select[name="role"]')).toHaveValue(
+      CAREERS_SPONTANEOUS
+    )
+
+    expect(consoleErrors).toEqual([])
+    expect(pageErrors).toEqual([])
+  })
+
+  test('a position id nobody is hiring for is a 404', async ({ page }) => {
+    const response = await page.request.get('/zostan-lama/nie-rekrutujemy', {
+      failOnStatusCode: false,
+    })
+    expect(response.status()).toBe(404)
+  })
+
+  test('the English position URL opens the same position in English', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    const second = enRoles[1]
+    if (!second) throw new Error('expected two open roles')
+
+    await gotoHydrated(page, `/en/become-a-lama/${second.id}`)
+    await expect(
+      page.getByRole('tab', { name: second.title, selected: true })
+    ).toBeVisible(HYDRATED)
+    await expect(page.locator('select[name="role"]')).toHaveValue(second.id)
+  })
+
+  test('every panel shares its own position URL, whatever the entry point', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    // Reading back what was copied needs the permission headless Chromium
+    // withholds by default; the copy itself works either way.
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+    // Entered on the base page, so the share links cannot be reading the
+    // address bar: each panel builds its own absolute URL from the content.
+    await gotoHydrated(page, '/zostan-lama')
+
+    for (const [index, role] of careersRoles.entries()) {
+      if (index > 0) await page.getByRole('tab').nth(index).click()
+      const panel = page.getByRole('tabpanel')
+
+      const shared = await panel
+        .locator('a[href*="linkedin.com/sharing"]')
+        .first()
+        .evaluate((link) =>
+          new URL((link as HTMLAnchorElement).href).searchParams.get('url')
+        )
+      expect(shared).toMatch(
+        new RegExp(`^https?://[^/]+/zostan-lama/${role.id}$`)
+      )
+
+      // Facebook's sharer carries the same target under its own parameter.
+      const fb = await panel
+        .locator('a[href*="facebook.com/sharer"]')
+        .first()
+        .evaluate((link) =>
+          new URL((link as HTMLAnchorElement).href).searchParams.get('u')
+        )
+      expect(fb).toBe(shared)
+
+      // Copy-link writes that URL and confirms inline for a moment.
+      const copy = panel.getByRole('button', { name: careersShare.copy })
+      await copy.click()
+      await expect(
+        panel.getByRole('button', { name: careersShare.copied })
+      ).toBeVisible()
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+        shared
+      )
+    }
   })
 
   test('site chrome links the careers page in both locales', async ({

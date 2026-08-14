@@ -177,6 +177,10 @@
 
 .roles {
   padding-bottom: clamp(50px, 6vw, 84px);
+  /* Where a position URL lands (design D3). Kept in CSS so the JS jump, a
+     no-JS `#` landing and the native fallback all clear the fixed header by
+     the same amount — careers-roles.tsx reads this value back. */
+  scroll-margin-top: calc(var(--header-height) + var(--gap));
 }
 
 .tabs {
@@ -269,6 +273,70 @@
   background: var(--color-orange);
   margin-top: 8px;
   margin-left: 4px;
+}
+
+/* —— Share row (one per role panel) ——————————————————————————————————————— */
+
+/* The blog's row is a stacked block in a sticky rail; this one is a single
+   line under the panel — same component (components/ui/share), same three
+   affordances, dark-stage sizing. The label and the buttons sit on one line so
+   the row reads as a footnote to the position, not as a section of its own. */
+.share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 34px;
+}
+
+.shareLabel {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.shareRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shareButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: none;
+  color: var(--color-cream);
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo),
+    background-color 200ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .shareButton:hover {
+    background-color: var(--color-orange);
+    border-color: var(--color-orange);
+    color: var(--band-ink);
+  }
+}
+
+.shareButton:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+.shareIcon,
+.shareBrandIcon {
+  width: 15px;
+  height: 15px;
 }
 
 /* —— Benefits band ———————————————————————————————————————————————————————— */

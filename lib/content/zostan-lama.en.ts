@@ -38,6 +38,11 @@ export const careersRoles = [
   {
     id: 'social-media-specialist',
     title: 'Social Media Specialist',
+    seo: {
+      title: 'Social Media Specialist — open role',
+      description:
+        'Open role: Social Media Specialist at Social Lama. Content, campaigns, client contact, 2+ years of experience. Send your CV — we reply within 7 days.',
+    },
     blocks: [
       {
         head: "We're looking for someone who",
@@ -70,6 +75,11 @@ export const careersRoles = [
   {
     id: 'paid-social-media-specialist',
     title: 'Paid Social Media Specialist',
+    seo: {
+      title: 'Paid Social Media Specialist — open role',
+      description:
+        'Open role: Paid Social Media Specialist at Social Lama. Campaigns on Meta, TikTok and LinkedIn, optimization and reporting. Send your CV — we reply within 7 days.',
+    },
     blocks: [
       {
         head: "We're looking for someone who",
@@ -98,6 +108,14 @@ export const careersRoles = [
     ],
   },
 ] satisfies LocalizedCareers['careersRoles']
+
+export const careersShare = {
+  title: 'Share this role',
+  linkedin: 'Share “{title}” on LinkedIn',
+  facebook: 'Share “{title}” on Facebook',
+  copy: 'Copy link to this role',
+  copied: 'Link copied',
+} satisfies LocalizedCareers['careersShare']
 
 // —— Benefits band ———————————————————————————————————————————————————————————
 

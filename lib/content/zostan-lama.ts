@@ -46,11 +46,21 @@ export const careersRolesLabel = 'Otwarte role'
  * Open roles, rendered as tab panels (one visible at a time). `id` is the
  * submitted form value — locale-independent, see the module header. Adding a
  * role here and in the English file is the only change a new opening needs.
+ *
+ * `id` is also the URL segment of the role's own page (`/zostan-lama/{id}`),
+ * which is what `seo` describes: the title and description that page emits, and
+ * therefore what a shared link unfurls with. `seo.title` renders through the
+ * site title template (`%s | Social Lama`), so it must not repeat the brand.
  */
 export const careersRoles = [
   {
     id: 'social-media-specialist',
     title: 'Social Media Specialist',
+    seo: {
+      title: 'Social Media Specialist — oferta pracy',
+      description:
+        'Oferta pracy: Social Media Specialist w Social Lama. Content, kampanie, kontakt z klientem, min. 2 lata doświadczenia. Wyślij CV — odpowiadamy w 7 dni.',
+    },
     blocks: [
       {
         head: 'Szukamy osoby, która',
@@ -83,6 +93,11 @@ export const careersRoles = [
   {
     id: 'paid-social-media-specialist',
     title: 'Paid Social Media Specialist',
+    seo: {
+      title: 'Paid Social Media Specialist — oferta pracy',
+      description:
+        'Oferta pracy: Paid Social Media Specialist w Social Lama. Kampanie na Meta, TikToku i LinkedInie, optymalizacja i raporty. Wyślij CV — odpowiadamy w 7 dni.',
+    },
     blocks: [
       {
         head: 'Szukamy osoby, która',
@@ -111,6 +126,18 @@ export const careersRoles = [
     ],
   },
 ] as const
+
+/**
+ * Share row in each role panel. `{title}` is filled with the role's own title,
+ * so the accessible labels name the position being shared, not the page.
+ */
+export const careersShare = {
+  title: 'Udostępnij ofertę',
+  linkedin: 'Udostępnij ofertę „{title}” na LinkedInie',
+  facebook: 'Udostępnij ofertę „{title}” na Facebooku',
+  copy: 'Kopiuj link do oferty',
+  copied: 'Link skopiowany',
+} as const
 
 // —— Benefits band ———————————————————————————————————————————————————————————
 
@@ -268,6 +295,7 @@ export type CareersContent = {
   careersLede: typeof careersLede
   careersRolesLabel: typeof careersRolesLabel
   careersRoles: typeof careersRoles
+  careersShare: typeof careersShare
   careersBenefits: typeof careersBenefits
   careersForm: typeof careersForm
 }
