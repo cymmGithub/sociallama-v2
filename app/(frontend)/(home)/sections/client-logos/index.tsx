@@ -61,7 +61,7 @@ export function ClientLogos({
     // at page start (user decision, 2026-07-13). See components/layout/blur-edge.
     <section className={s.section} data-blur-edge-gate>
       {/* The visible heading names the section — no aria-label, so AT
-          announces "Zaufali nam" exactly once. */}
+          announces it exactly once. */}
       <h2 className={s.heading}>{heading}</h2>
       <Marquee
         className={s.marquee}

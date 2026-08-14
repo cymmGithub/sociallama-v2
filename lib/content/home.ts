@@ -340,7 +340,7 @@ export const hero = {
 
 // —— Clients ————————————————————————————————————————————————————————————————
 
-export const clientsHeading = 'ZAUFALI NAM'
+export const clientsHeading = 'WYBRALI NAS'
 
 // Hover-card CTA, rendered only for brands that have a published case study.
 export const clientCardCta = {
