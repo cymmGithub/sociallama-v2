@@ -229,43 +229,6 @@
   min-height: 52px;
 }
 
-/* Service pills (mock .spill) — aria-pressed marks the selected state. */
-.formShell button[aria-pressed] {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  color: var(--muted);
-  padding: 12px 22px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: transparent;
-  cursor: pointer;
-  transition:
-    color 180ms var(--ease-out-expo),
-    border-color 180ms var(--ease-out-expo),
-    background-color 180ms var(--ease-out-expo);
-}
-
-/* Brighten only unselected pills on hover. A selected pill already has a cream
-   fill; brightening its text to cream too would make the label cream-on-cream
-   (invisible), so it keeps its selected colors on hover. */
-@media (--hover) {
-  .formShell button[aria-pressed="false"]:hover {
-    border-color: var(--color-cream);
-    color: var(--color-cream);
-  }
-}
-
-.formShell button[aria-pressed]:focus-visible {
-  outline: 2px solid var(--color-orange);
-  outline-offset: 2px;
-}
-
-.formShell button[aria-pressed="true"] {
-  background: var(--color-cream);
-  color: var(--ground);
-  border-color: var(--color-cream);
-}
-
 /* Send row: ghost pill + reassurance note (mock .send). */
 .send {
   grid-column: 1 / -1;
@@ -582,7 +545,6 @@
 
   .formShell input:not([type="hidden"], [type="checkbox"]),
   .formShell textarea,
-  .formShell button[aria-pressed],
   .send button[type="submit"],
   .formShell .consentLabel a {
     transition: none;

@@ -152,14 +152,13 @@ test.describe('Kontakt page', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await gotoHydrated(page, '/kontakt')
 
-    // Structure: sr-only h1, marquee copy, numbered form, pills, belt, band.
+    // Structure: sr-only h1, marquee copy, numbered form, belt, band.
     await expect(
       page.getByRole('heading', { level: 1, name: 'Kontakt' })
     ).toBeAttached()
     await expect(page.locator('input[name="name"]')).toBeVisible()
     await expect(page.locator('input[name="email"]')).toBeVisible()
     await expect(page.locator('textarea[name="message"]')).toBeVisible()
-    await expect(page.locator('button[aria-pressed]')).toHaveCount(5)
     // Brand belt: plain scrolling logos, no heading. The aria-hidden marquee
     // clones drop out of the a11y tree, so this matches the one live logo.
     const firstClient = CLIENT_ROSTER[0]
