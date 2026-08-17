@@ -555,8 +555,9 @@ export const SERVICES = [
           { name: 'Instagram', icon: 'instagram' },
           { name: 'LinkedIn', icon: 'linkedin' },
           { name: 'TikTok', icon: 'tiktok' },
-          { name: 'Pinterest', icon: 'pinterest' },
+          { name: 'X', icon: 'x' },
           { name: 'YouTube', icon: 'youtube' },
+          { name: 'Pinterest', icon: 'pinterest' },
         ],
       },
       {

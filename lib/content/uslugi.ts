@@ -886,14 +886,16 @@ export const SERVICES = [
         kind: 'logoStrip',
         heading: 'Przeprowadzamy audyty profili na:',
         // Existing monochrome marks only — no new artwork, and no separator
-        // dots between them (explicit client direction).
+        // dots between them (explicit client direction). Same set and order as
+        // the canonical `socials` row (home hero, o-nas hero, footer).
         logos: [
           { name: 'Facebook', icon: 'facebook' },
           { name: 'Instagram', icon: 'instagram' },
           { name: 'LinkedIn', icon: 'linkedin' },
           { name: 'TikTok', icon: 'tiktok' },
-          { name: 'Pinterest', icon: 'pinterest' },
+          { name: 'X', icon: 'x' },
           { name: 'YouTube', icon: 'youtube' },
+          { name: 'Pinterest', icon: 'pinterest' },
         ],
       },
       {
