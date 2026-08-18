@@ -44,6 +44,6 @@ Staged inputs: `/mem/final-weryfikacja/{logos,asana,drive,video}`. Per-study ver
 ## 7. Verify + prod
 
 - [x] 7.1 `bun run check` exit 0; production build exit 0 (tree stays clean); e2e 86 pass / 1 fail — the standing `sitemap-crawl` red, confirmed to be the 60 req/60 s rate limiter 429ing `/api/media/file` with the image optimizer surfacing it as 400. Untouched studies fail alongside edited ones and every edited page is clean in isolation, so it is not this change
-- [ ] 7.2 Prod DB pass after the code deploy: `BLOB_READ_WRITE_TOKEN` set, report → apply → re-run until zero (script outlives shell — never trust one pass); `refresh-case-study-logos.ts` + seed re-run against prod likewise
-- [ ] 7.3 Browser-verify prod studies + homepage belt/clip; confirm no 404 media
+- [x] 7.2 Prod pass done: imagery 157 edits / 78 uploads / 160 detached, re-run reports 0/0; `refresh-case-study-logos.ts --prod` updated 25 rows, 0 missing, 0 bumped filenames. Seed re-run deliberately skipped — it is skip-if-exists, so it writes nothing for existing studies; the pillar removal rode in the apply script instead
+- [x] 7.3 Prod verified after revalidating 38 tags: irobot/volvo/belvedere/julius-meinl PL + EN and the homepage all HTTP 200, zero broken images, zero 4xx; the cut mockups are live and the belt serves the punched Dom Volvo mark. First pass still showed stale HTML — the cache needs one request to regenerate before it is worth reading
 - [ ] 7.4 Report done on the Asana task; note Brześć/Rabkoland/ASUS follow-ups remain with Anna/Emilia

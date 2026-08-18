@@ -52,9 +52,17 @@ if (process.argv.includes('--prod')) {
       'apply-final-verification-imagery --prod requires DATABASE_URL_PROD in .env.local'
     )
   }
+  // The Blob token is stored as BLOB_READ_WRITE_TOKEN_PROD so that a plain
+  // `bun dev` cannot reach the production store: payload.config.ts enables the
+  // Blob plugin whenever BLOB_READ_WRITE_TOKEN is set, so having it in .env.local
+  // silently pointed every local upload at production. Map it here, for this one
+  // process, exactly as DATABASE_URL_PROD is mapped above.
+  if (process.env.BLOB_READ_WRITE_TOKEN_PROD) {
+    process.env.BLOB_READ_WRITE_TOKEN = process.env.BLOB_READ_WRITE_TOKEN_PROD
+  }
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     throw new Error(
-      '--prod requires BLOB_READ_WRITE_TOKEN, or the new media bytes would be ' +
+      '--prod requires BLOB_READ_WRITE_TOKEN_PROD, or the new media bytes would be ' +
         'written to local disk while prod rows point at files that do not exist.'
     )
   }
@@ -1437,14 +1445,36 @@ async function clearBlobs(file: string) {
   const variant = new RegExp(
     `^${stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(-\\d+x\\d+)?${ext.replace('.', '\\.')}$`
   )
-  const { blobs } = await list({ prefix: stem, token })
-  const mine = blobs.filter((b) => variant.test(b.pathname))
-  if (mine.length > 0)
+  const matching = async () => {
+    const { blobs } = await list({ prefix: stem, token })
+    return blobs.filter((b) => variant.test(b.pathname))
+  }
+
+  const first = await matching()
+  if (first.length === 0) return 0
+  await del(
+    first.map((b) => b.url),
+    { token }
+  )
+
+  // Deleting is not immediately visible to the next upload: the store is
+  // eventually consistent, so a delete-then-put raced and the put came back
+  // "This blob already exists" — repeatedly, on a file whose objects had just
+  // been cleared. Sleeping a fixed amount only moved the odds. Poll the store
+  // until it agrees the objects are gone, re-issuing the delete for anything
+  // still listed, and only then let the caller upload.
+  for (let i = 0; i < 20; i++) {
+    const still = await matching()
+    if (still.length === 0) return first.length
+    await new Promise((r) => setTimeout(r, 500 + i * 250))
     await del(
-      mine.map((b) => b.url),
+      still.map((b) => b.url),
       { token }
     )
-  return mine.length
+  }
+  throw new Error(
+    `${file}: blob objects still present after 20 delete attempts`
+  )
 }
 
 /** Idempotent upload: reuse the media row if this filename is already in. */
