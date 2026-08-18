@@ -12,20 +12,12 @@
  */
 
 import path from 'node:path'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 // The env decision must happen before the config loads — payload.config.ts
 // validates DATABASE_URL at import time, so the config import below is dynamic.
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'payload:seed:case-studies --prod requires DATABASE_URL_PROD in .env.local'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  // CRITICAL: dev mode push-syncs schema on init, which would stamp the prod
-  // DB as dev-managed and hang `payload migrate` on deploy.
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('payload:seed:case-studies', { blob: true })
 }
 
 const dbHost = new URL(

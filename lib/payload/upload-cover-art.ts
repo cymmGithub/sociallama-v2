@@ -34,6 +34,7 @@
  */
 
 import { readFile, writeFile } from 'node:fs/promises'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const MAP_PATH = 'content/media/cover-assignments.json'
 const ALTS_EN_PATH = 'content/media/alts.en.json'
@@ -45,14 +46,11 @@ if (!process.argv.includes('--prod')) {
       'only exist in production, so a local run is a silent no-op.'
   )
 }
-const prodUrl = process.env.DATABASE_URL_PROD
-if (!prodUrl) {
-  throw new Error('payload:upload:cover-art --prod requires DATABASE_URL_PROD')
-}
-process.env.DATABASE_URL = prodUrl
-;(process.env as Record<string, string>).NODE_ENV = 'production'
+targetProdEnv('payload:upload:cover-art', { blob: true })
 
-const dbHost = new URL(prodUrl.replace(/^postgres(?:ql)?:/, 'http:')).hostname
+const dbHost = new URL(
+  (process.env.DATABASE_URL ?? '').replace(/^postgres(?:ql)?:/, 'http:')
+).hostname
 
 interface Piece {
   category: string

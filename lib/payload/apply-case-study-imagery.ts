@@ -1,70 +1,9 @@
-/**
- * Applies the approved case-study imagery audit (change `audit-case-study-imagery`).
- *
- *   bun run payload:apply:case-study-imagery              report only (default)
- *   bun run payload:apply:case-study-imagery --apply      write
- *   bun run payload:apply:case-study-imagery --apply --prod
- *
- * The PLAN below is the change's approved decision list, kept in the repository
- * because it is the only rollback instruction that exists: case-study content
- * lives solely in the database and the Polish drafts are git-ignored, so there
- * is no `git revert` for this. Each row names the media document detached and
- * what replaced it — read backwards, it restores the previous state.
- *
- * ## Detach, never delete
- *
- * Every removal DETACHES the media document from the study; none delete it.
- * Reference counting showed 8 of the 9 are referenced exactly once, so deletion
- * would be permitted by the spec — but the file also lives in Vercel Blob, and
- * deleting it would make the rollback above impossible. Orphaned media rows are
- * reported so cleanup can be a separate, reversible decision.
- *
- * `foodsaver-cover.jpg` is the exception that proves the rule: it is FoodSaver's
- * cover AND a pillar creative on the same study. Only the pillar use is
- * detached, and the document must survive because the cover still points at it.
- *
- * ## Both locales, every time
- *
- * `approach` is a WHOLE-ARRAY localized field, so `pl` and `en` each hold their
- * own copy of the pillars — including their own `media` arrays. A removal
- * written to one locale only would leave the image live on the other language's
- * page. Every edit is therefore applied per locale, and matching is done on
- * media id rather than array index so the two locales cannot drift apart.
- *
- * Writes target the published version (no `draft: true`), because these studies
- * are published and the point is to change what the public page renders.
- */
-
-// Payload's config is imported dynamically (after the --prod env switch below),
-// so this marks the file as a module — top-level await needs it.
-export {}
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const APPLY = process.argv.includes('--apply')
 
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'apply-case-study-imagery --prod requires DATABASE_URL_PROD in .env.local'
-    )
-  }
-  // The Blob token lives as BLOB_READ_WRITE_TOKEN_PROD so that a plain `bun dev`
-  // cannot reach the production store: payload.config.ts enables the Blob plugin
-  // whenever BLOB_READ_WRITE_TOKEN is set, so keeping it in .env.local silently
-  // pointed every local upload at production. Map it for this one process, the
-  // same way DATABASE_URL_PROD is mapped.
-  if (process.env.BLOB_READ_WRITE_TOKEN_PROD) {
-    process.env.BLOB_READ_WRITE_TOKEN = process.env.BLOB_READ_WRITE_TOKEN_PROD
-  }
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    throw new Error(
-      '--prod requires BLOB_READ_WRITE_TOKEN_PROD, or the replacement bytes ' +
-        'would be written to local disk while prod rows point at files that ' +
-        'do not exist.'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('apply-case-study-imagery', { blob: true })
 }
 
 /**

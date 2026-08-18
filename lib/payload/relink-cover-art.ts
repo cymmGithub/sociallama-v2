@@ -31,6 +31,7 @@
  */
 
 import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const MAP_PATH = 'content/media/cover-assignments.json'
 const ALTS_EN_PATH = 'content/media/alts.en.json'
@@ -63,14 +64,11 @@ if (!process.argv.includes('--prod')) {
       'exist in production.'
   )
 }
-const prodUrl = process.env.DATABASE_URL_PROD
-if (!prodUrl) {
-  throw new Error('payload:relink:cover-art --prod requires DATABASE_URL_PROD')
-}
-process.env.DATABASE_URL = prodUrl
-;(process.env as Record<string, string>).NODE_ENV = 'production'
+targetProdEnv('payload:relink:cover-art', { blob: true })
 
-const dbHost = new URL(prodUrl.replace(/^postgres(?:ql)?:/, 'http:')).hostname
+const dbHost = new URL(
+  (process.env.DATABASE_URL ?? '').replace(/^postgres(?:ql)?:/, 'http:')
+).hostname
 
 interface Piece {
   category: string

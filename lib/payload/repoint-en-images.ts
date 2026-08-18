@@ -38,20 +38,14 @@ import {
   type LexicalNode,
   walkNodes,
 } from '@/lib/payload/post-formatting-rules'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const AUDIT_PATH = 'content/media/image-audit.json'
 const MAP_PATH = 'content/media/en-replacements.json'
 const APPLY = process.argv.includes('--apply')
 
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'payload:repoint:en-images --prod requires DATABASE_URL_PROD'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('payload:repoint:en-images', { blob: true })
 }
 
 const dbHost = new URL(

@@ -14,18 +14,10 @@
 
 // The env decision must happen before the config loads — payload.config.ts
 // validates DATABASE_URL at import time, so both imports below are dynamic.
+import { targetProdEnv } from '@/lib/payload/prod-env'
+
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'payload:seed --prod requires DATABASE_URL_PROD in .env.local'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  // CRITICAL: in dev mode Payload push-syncs schema on init, which would
-  // stamp the prod DB as dev-managed and hang `payload migrate` on deploy.
-  // (cast: @types/node marks NODE_ENV readonly)
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('payload:seed', { blob: true })
 }
 
 const dbHost = new URL(
@@ -180,7 +172,3 @@ if (existingPost.totalDocs > 0) {
 
 console.log('Seed complete.')
 process.exit(0)
-
-// All imports are dynamic (env must win before config loads); keep the file
-// a module for TypeScript's top-level await.
-export {}

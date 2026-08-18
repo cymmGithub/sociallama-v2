@@ -354,23 +354,21 @@ def tighten_leading(im, fraction):
     than the bare wordmark. Tightening to 0.75 puts it at 3.7:1, width-bound,
     and in family with its neighbours.
     """
-    gaps = ink_row_gaps(im)
-    if not gaps:
-        return im
     bands, cursor = [], 0
-    for top, bottom in gaps:
+    for top, bottom in ink_row_gaps(im):
         bands.append(im.crop((0, cursor, im.width, top)))
         cursor = bottom + 1
     bands.append(im.crop((0, cursor, im.width, im.height)))
-    bands = [band for band in bands if band.height]
+    if len(bands) < 2:
+        return im
 
     lead = round(fraction * max(band.height for band in bands))
     height = sum(band.height for band in bands) + lead * (len(bands) - 1)
     out = Image.new("RGBA", (im.width, height), (0, 0, 0, 0))
     y = 0
-    for i, band in enumerate(bands):
+    for band in bands:
         out.paste(band, (0, y))
-        y += band.height + (lead if i < len(bands) - 1 else 0)
+        y += band.height + lead
     return out
 
 

@@ -27,29 +27,11 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const isProd = process.argv.includes('--prod')
 if (isProd) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error('--prod requires DATABASE_URL_PROD in .env.local')
-  }
-  // The Blob token lives as BLOB_READ_WRITE_TOKEN_PROD so that a plain `bun dev`
-  // cannot reach the production store: payload.config.ts enables the Blob plugin
-  // whenever BLOB_READ_WRITE_TOKEN is set, so keeping it in .env.local silently
-  // pointed every local upload at production. Map it for this one process, the
-  // same way DATABASE_URL_PROD is mapped.
-  if (process.env.BLOB_READ_WRITE_TOKEN_PROD) {
-    process.env.BLOB_READ_WRITE_TOKEN = process.env.BLOB_READ_WRITE_TOKEN_PROD
-  }
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    throw new Error(
-      '--prod requires BLOB_READ_WRITE_TOKEN_PROD, or the new logo bytes would be ' +
-        'written to local disk while prod rows point at files that do not exist.'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('refresh-case-study-logos', { blob: true })
 }
 
 const dbHost = new URL(

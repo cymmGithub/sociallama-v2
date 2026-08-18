@@ -9,14 +9,10 @@
  */
 
 import path from 'node:path'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error('payload:seed:authors --prod requires DATABASE_URL_PROD')
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('payload:seed:authors', { blob: true })
 }
 
 const dbHost = new URL(

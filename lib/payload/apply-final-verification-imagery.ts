@@ -1,78 +1,14 @@
-/**
- * Applies the final pre-launch verification imagery plan (change
- * `apply-final-verification-feedback`, Asana 1217405077214092).
- *
- *   bun run payload run lib/payload/apply-final-verification-imagery.ts            report only
- *   bun run payload run lib/payload/apply-final-verification-imagery.ts --apply    write
- *   ... --apply --prod                                                             production
- *
- * Sibling of `apply-case-study-imagery.ts` and bound by the same rules — the
- * PLAN below is the approved per-image decision list (the full verdict table,
- * keeps included, lives in the change's `imagery-plan.md`):
- *
- *   - Targets are named by FILENAME, never media id: ids are per-database
- *     (`fm-logistics-gallery-4.jpg` is 155 on development and 493 in
- *     production), so a plan keyed on ids would detach the wrong images the
- *     moment it ran against the second database. Filenames are unique in the
- *     media collection; the id is resolved per run and ambiguity is fatal.
- *   - Detach, never delete. Removed media documents stay in the collection and
- *     in Blob, so this PLAN read backwards is the rollback instruction — the
- *     only one that exists, because case-study content is DB-only.
- *   - `approach` is a WHOLE-ARRAY localized field: every pillar edit is written
- *     to `pl` and `en` separately, matching entries by media id, never index.
- *   - Writes target the published version (no `draft: true`) — these studies
- *     are published and the public page is the thing being corrected.
- *
- * Beyond its sibling this script knows two more moves:
- *
- *   - `add`: files appended after a swapped position (Pracuj's EDU/FUNNY
- *     pillars grew from the client's new material — 2 and 3 creatives where
- *     the audit left 1 and 2).
- *   - `pillar`: removes one whole approach pillar per locale, matched by its
- *     own tag in each locale. Exists for iRobot's `#DLAKAŻDEGO`/`#FOREVERYONE`:
- *     the seed edit alone cannot reach the database, because
- *     `seed-case-studies.ts` is skip-if-exists (design decision 5).
- *
- * Anonymized swaps (`copyAlt`) carry the original document's PL and EN alt
- * onto the replacement — the image still shows the same content, only with
- * avatars blurred, names pseudonymized, or status bars cropped (spec: third-
- * party identities in screenshots are anonymized, not removed).
- */
-
-// Payload's config is imported dynamically (after the --prod env switch below),
-// so this marks the file as a module — top-level await needs it.
-export {}
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 const APPLY = process.argv.includes('--apply')
 
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'apply-final-verification-imagery --prod requires DATABASE_URL_PROD in .env.local'
-    )
-  }
-  // The Blob token is stored as BLOB_READ_WRITE_TOKEN_PROD so that a plain
-  // `bun dev` cannot reach the production store: payload.config.ts enables the
-  // Blob plugin whenever BLOB_READ_WRITE_TOKEN is set, so having it in .env.local
-  // silently pointed every local upload at production. Map it here, for this one
-  // process, exactly as DATABASE_URL_PROD is mapped above.
-  if (process.env.BLOB_READ_WRITE_TOKEN_PROD) {
-    process.env.BLOB_READ_WRITE_TOKEN = process.env.BLOB_READ_WRITE_TOKEN_PROD
-  }
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    throw new Error(
-      '--prod requires BLOB_READ_WRITE_TOKEN_PROD, or the new media bytes would be ' +
-        'written to local disk while prod rows point at files that do not exist.'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('apply-final-verification-imagery', { blob: true })
 }
 
 type Replacement =
-  | { file: string; altPl: string; altEn: string; copyAlt?: never }
-  | { file: string; copyAlt: true; altPl?: never; altEn?: never }
+  | { file: string; copyAlt: true }
+  | { file: string; copyAlt?: false; altPl: string; altEn: string }
 
 type Op =
   | {
@@ -1534,22 +1470,43 @@ async function findOrCreateMedia(
   return { doc, created: true }
 }
 
-/** PL + EN alts of an existing media row, for `copyAlt` swaps. */
-async function altsOf(mediaId: number): Promise<{ pl: string; en: string }> {
-  const out = { pl: '', en: '' }
-  for (const locale of LOCALES) {
-    const res = await payload.find({
-      collection: 'media',
-      where: { id: { equals: mediaId } },
-      limit: 1,
-      locale,
-      fallbackLocale: false,
-    })
-    // biome-ignore lint/suspicious/noExplicitAny: doc shape
-    out[locale] = ((res.docs[0] as any)?.alt as string) ?? ''
-  }
-  if (!out.en) out.en = out.pl
-  return out
+/** PL + EN alts of an existing media row, for `copyAlt` swaps. The PL value
+ *  rides along on the document `resolveTarget` already fetched — the default
+ *  locale is `pl` — so only English needs its own read. */
+async function altsOf(
+  mediaId: number,
+  // biome-ignore lint/suspicious/noExplicitAny: hand-walked Payload doc shape
+  plDoc: any
+): Promise<{ pl: string; en: string }> {
+  const pl = (plDoc?.alt as string) ?? ''
+  const res = await payload.find({
+    collection: 'media',
+    where: { id: { equals: mediaId } },
+    limit: 1,
+    locale: 'en',
+    fallbackLocale: false,
+  })
+  // biome-ignore lint/suspicious/noExplicitAny: doc shape
+  const en = ((res.docs[0] as any)?.alt as string) ?? ''
+  return { pl, en: en || pl }
+}
+
+/** One case-study document in one locale. `depth: 0` is load-bearing: every
+ *  media field comes back as a bare id, which is what the pillar arrays are
+ *  rebuilt from. `draft: true` reads the latest version; the writes below
+ *  deliberately target the published one. */
+async function findStudy(slug: string, locale: (typeof LOCALES)[number]) {
+  const res = await payload.find({
+    collection: 'case-studies',
+    where: { slug: { equals: slug } },
+    limit: 1,
+    draft: true,
+    locale,
+    fallbackLocale: false,
+    depth: 0,
+  })
+  // biome-ignore lint/suspicious/noExplicitAny: hand-walked Payload doc shape
+  return (res.docs[0] as any) ?? null
 }
 
 /** Fatal-on-ambiguity filename -> media doc resolution. */
@@ -1558,6 +1515,8 @@ async function resolveTarget(slug: string, file: string) {
     collection: 'media',
     where: { filename: { equals: file } },
     limit: 5,
+    // Explicit: `altsOf` reuses this document's `alt` as the Polish value.
+    locale: 'pl',
   })
   if (target.totalDocs > 1) {
     throw new Error(
@@ -1572,24 +1531,51 @@ async function resolveTarget(slug: string, file: string) {
   return doc
 }
 
+/**
+ * Filename -> media id for one replacement. In a dry run it only probes, so
+ * `null` means "not uploaded yet"; under `--apply` it uploads on first sight
+ * and records the id for the `alts.en.json` bookkeeping at the end.
+ */
+async function resolveMedia(
+  slug: string,
+  file: string,
+  alts: () => Promise<{ pl: string; en: string }>
+): Promise<number | null> {
+  if (!APPLY) {
+    const probe = await payload.find({
+      collection: 'media',
+      where: { filename: { equals: file } },
+      limit: 1,
+    })
+    return probe.docs[0] ? (probe.docs[0].id as number) : null
+  }
+  const resolved = await alts()
+  const { doc, created } = await findOrCreateMedia(
+    file,
+    slug,
+    resolved.pl,
+    resolved.en
+  )
+  const id = doc.id as number
+  if (created) {
+    uploads++
+    uploaded.push({ id, file, altPl: resolved.pl, altEn: resolved.en })
+    console.log(`  + uploaded ${file} -> media ${id}`)
+  }
+  return id
+}
+
 let changes = 0
 let uploads = 0
-const detached: { slug: string; mediaId: number; file: string }[] = []
+/** media id -> where it was detached from, deduped by id. */
+const detached = new Map<number, { slug: string; file: string }>()
 const touchedSlugs = new Set<string>()
 /** New uploads this run, for the alts.en.json bookkeeping below. */
-const uploaded: { file: string; altPl: string; altEn: string }[] = []
+const uploaded: { id: number; file: string; altPl: string; altEn: string }[] =
+  []
 
 for (const op of PLAN) {
-  const found = await payload.find({
-    collection: 'case-studies',
-    where: { slug: { equals: op.slug } },
-    limit: 1,
-    draft: true,
-    locale: 'pl',
-    depth: 0,
-  })
-  // biome-ignore lint/suspicious/noExplicitAny: doc shape
-  const base = found.docs[0] as any
+  const base = await findStudy(op.slug, 'pl')
   if (!base) {
     console.log(`! ${op.slug}: no document — skipping`)
     continue
@@ -1598,17 +1584,7 @@ for (const op of PLAN) {
   // —— whole-pillar removal, matched per locale by the pillar's own tag ——————
   if (op.kind === 'pillar') {
     for (const locale of LOCALES) {
-      const res = await payload.find({
-        collection: 'case-studies',
-        where: { slug: { equals: op.slug } },
-        limit: 1,
-        draft: true,
-        locale,
-        fallbackLocale: false,
-        depth: 0,
-      })
-      // biome-ignore lint/suspicious/noExplicitAny: doc shape
-      const doc = res.docs[0] as any
+      const doc = await findStudy(op.slug, locale)
       const tag = op.tag[locale]
       // biome-ignore lint/suspicious/noExplicitAny: pillar row shape
       const idx = (doc?.approach ?? []).findIndex((p: any) => p.tag === tag)
@@ -1622,8 +1598,8 @@ for (const op of PLAN) {
       const pillar = doc.approach[idx] as any
       for (const m of pillar.media ?? []) {
         const id = idOf(m)
-        if (id !== null && !detached.some((d) => d.mediaId === id)) {
-          detached.push({ slug: op.slug, mediaId: id, file: `(pillar ${tag})` })
+        if (id !== null && !detached.has(id)) {
+          detached.set(id, { slug: op.slug, file: `(pillar ${tag})` })
         }
       }
       console.log(
@@ -1631,15 +1607,11 @@ for (const op of PLAN) {
           `(${(pillar.media ?? []).length} media detached with it)`
       )
       if (APPLY) {
-        const approach = doc.approach
-          .filter((_: unknown, i: number) => i !== idx)
-          // biome-ignore lint/suspicious/noExplicitAny: pillar row shape
-          .map((p: any) => ({
-            ...p,
-            media: (p.media ?? [])
-              .map(idOf)
-              .filter((v: number | null) => v !== null),
-          }))
+        // `depth: 0` already gave every `media` entry as a bare id, which is
+        // why the swap branch below writes surviving pillars back untouched.
+        const approach = doc.approach.filter(
+          (_: unknown, i: number) => i !== idx
+        )
         await payload.update({
           collection: 'case-studies',
           id: doc.id,
@@ -1661,56 +1633,24 @@ for (const op of PLAN) {
   let newId: number | null = null
   const addIds: number[] = []
   if (op.kind === 'swap' || op.kind === 'cover') {
-    const alts =
-      op.kind === 'swap' && op.to.copyAlt
-        ? await altsOf(mediaId)
-        : { pl: op.to.altPl as string, en: op.to.altEn as string }
-    if (!APPLY) {
-      const probe = await payload.find({
-        collection: 'media',
-        where: { filename: { equals: op.to.file } },
-        limit: 1,
-      })
-      newId = probe.docs[0] ? (probe.docs[0].id as number) : null
-    } else {
-      const { doc, created } = await findOrCreateMedia(
-        op.to.file,
-        op.slug,
-        alts.pl,
-        alts.en
-      )
-      newId = doc.id as number
-      if (created) {
-        uploads++
-        uploaded.push({ file: op.to.file, altPl: alts.pl, altEn: alts.en })
-        console.log(`  + uploaded ${op.to.file} -> media ${newId}`)
-      }
-    }
+    // The alts are only consumed when the row has to be created, so they are
+    // resolved lazily: on a re-run every replacement already exists and this
+    // never fires.
+    // Widening to `Replacement` is what makes `copyAlt` narrow: a cover's `to`
+    // satisfies the non-copyAlt member, so both op kinds share one branch.
+    const to: Replacement = op.to
+    const alts = async () =>
+      to.copyAlt
+        ? await altsOf(mediaId, targetDoc)
+        : { pl: to.altPl, en: to.altEn }
+    newId = await resolveMedia(op.slug, op.to.file, alts)
   }
-  if (op.kind === 'swap' && op.add) {
-    for (const extra of op.add) {
-      if (!APPLY) {
-        const probe = await payload.find({
-          collection: 'media',
-          where: { filename: { equals: extra.file } },
-          limit: 1,
-        })
-        if (probe.docs[0]) addIds.push(probe.docs[0].id as number)
-      } else {
-        const { doc, created } = await findOrCreateMedia(
-          extra.file,
-          op.slug,
-          extra.altPl,
-          extra.altEn
-        )
-        addIds.push(doc.id as number)
-        if (created) {
-          uploads++
-          uploaded.push(extra)
-          console.log(`  + uploaded ${extra.file} -> media ${doc.id}`)
-        }
-      }
-    }
+  for (const extra of op.kind === 'swap' ? (op.add ?? []) : []) {
+    const id = await resolveMedia(op.slug, extra.file, async () => ({
+      pl: extra.altPl,
+      en: extra.altEn,
+    }))
+    if (id !== null) addIds.push(id)
   }
 
   // —— cover: unlocalized, one write, always a swap ——————————————————————————
@@ -1737,25 +1677,15 @@ for (const op of PLAN) {
         })
       }
     }
-    if (!detached.some((d) => d.mediaId === mediaId)) {
-      detached.push({ slug: op.slug, mediaId, file: op.file })
+    if (!detached.has(mediaId)) {
+      detached.set(mediaId, { slug: op.slug, file: op.file })
     }
     continue
   }
 
   // —— pillar-media detach / swap, per locale, matched by id —————————————————
   for (const locale of LOCALES) {
-    const res = await payload.find({
-      collection: 'case-studies',
-      where: { slug: { equals: op.slug } },
-      limit: 1,
-      draft: true,
-      locale,
-      fallbackLocale: false,
-      depth: 0,
-    })
-    // biome-ignore lint/suspicious/noExplicitAny: doc shape
-    const doc = res.docs[0] as any
+    const doc = await findStudy(op.slug, locale)
     if (!doc?.approach?.length) continue
 
     let touched = false
@@ -1811,8 +1741,8 @@ for (const op of PLAN) {
     }
   }
 
-  if (!detached.some((d) => d.mediaId === mediaId)) {
-    detached.push({ slug: op.slug, mediaId, file: op.file })
+  if (!detached.has(mediaId)) {
+    detached.set(mediaId, { slug: op.slug, file: op.file })
   }
 }
 
@@ -1835,13 +1765,7 @@ if (APPLY && uploaded.length > 0) {
   let added = 0
   let foreign = 0
   for (const u of uploaded) {
-    const probe = await payload.find({
-      collection: 'media',
-      where: { filename: { equals: u.file } },
-      limit: 1,
-    })
-    const id = probe.docs[0]?.id
-    if (id === undefined) continue
+    const id = u.id
     const clash = byId.get(id)
     if (clash) {
       if (clash.filename !== u.file) foreign++
@@ -1873,28 +1797,28 @@ const allStudies = await payload.find({
   locale: 'pl',
   depth: 0,
 })
-for (const d of detached) {
+for (const [mediaId, d] of detached) {
   let refs = 0
   // biome-ignore lint/suspicious/noExplicitAny: doc shape
   for (const s of allStudies.docs as any[]) {
-    if (idOf(s.cover) === d.mediaId) refs++
-    if (idOf(s.seo?.ogImage) === d.mediaId) refs++
-    if (idOf(s.client?.logo) === d.mediaId) refs++
-    for (const g of s.gallery ?? []) if (idOf(g) === d.mediaId) refs++
+    if (idOf(s.cover) === mediaId) refs++
+    if (idOf(s.seo?.ogImage) === mediaId) refs++
+    if (idOf(s.client?.logo) === mediaId) refs++
+    for (const g of s.gallery ?? []) if (idOf(g) === mediaId) refs++
     for (const p of s.approach ?? []) {
-      for (const m of p.media ?? []) if (idOf(m) === d.mediaId) refs++
+      for (const m of p.media ?? []) if (idOf(m) === mediaId) refs++
     }
   }
   const note =
     refs === 0
       ? 'orphaned — safe to delete later, kept so this change stays reversible'
       : `still referenced ${refs}x — MUST NOT be deleted`
-  console.log(`  ${d.mediaId} ${d.file.padEnd(32)} ${note}`)
+  console.log(`  ${mediaId} ${d.file.padEnd(32)} ${note}`)
 }
 
 console.log(
   `\n${APPLY ? 'Applied' : 'Would apply'}: ${changes} locale-level edits, ` +
-    `${uploads} uploads, ${detached.length} media detached, 0 deleted.`
+    `${uploads} uploads, ${detached.size} media detached, 0 deleted.`
 )
 if (!APPLY) console.log('Dry run — pass --apply to write.')
 

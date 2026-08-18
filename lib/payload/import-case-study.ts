@@ -21,18 +21,12 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import { targetProdEnv } from '@/lib/payload/prod-env'
 
 // Env decision before config import (payload.config validates DATABASE_URL at
 // import time) — mirrors seed-case-studies.ts.
 if (process.argv.includes('--prod')) {
-  const prodUrl = process.env.DATABASE_URL_PROD
-  if (!prodUrl) {
-    throw new Error(
-      'import-case-study --prod requires DATABASE_URL_PROD in .env.local'
-    )
-  }
-  process.env.DATABASE_URL = prodUrl
-  ;(process.env as Record<string, string>).NODE_ENV = 'production'
+  targetProdEnv('payload:import:case-study', { blob: true })
 }
 
 const dbHost = new URL(
