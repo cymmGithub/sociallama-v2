@@ -226,6 +226,15 @@ Odrzuceni: 38136632 (logo Columbia), 31199539 (emblemat na koszuli). Alty opisuj
 | volvo-konkurs-warsztat.jpg | volvo-konkurs-podsumowanie.mp4 | 28 s — stół plastyczny, bez twarzy i podpisanych prac |
 | julius-meinl-eventy-2.jpg | julius-eventy.mov | 2 s — stoisko Barista Cup, bez osób |
 
-## Poza skryptem (5.6 — okładki, otwarte)
+## Załącznik D — partia follow-up (komentarze Anny na Asanie, 2026-08-18)
 
-`riviera`, `vistula`, `asus`, `belvedere`: przeeksportowanie wymaga lepszych źródeł (decki na gDrive) albo upscalera; brak lokalnych źródeł. Do rozstrzygnięcia z P.
+| study | akcja |
+|---|---|
+| produkty-cukiernicze-brzesc | gallery-3 (wątek z 4 nazwiskami) → komiks „Dobrze nadziany” z Drive; gallery-7 (6 twarzy pracowników, targi ISM) odpięte — materiał zastępczy w toku (1 plik Drive niedostępny dla konta goodone, link FB wymaga logowania, komentarz ucięty „See more”) |
+| rabkoland | A: „najlepiej bez zdjęć” — odpięte gallery-2…7 (zdjęcia z sesji klienta, brak zgód); gallery-1 (maskotka) zostaje z blurem awatara i nicku komentującej |
+| belvedere | „bez fotek” = zdjęcia osób; po usunięciu szefa kuchni nie ma już fotografii osób (grid = dania/wnętrza/dłonie) — bez dalszych zmian |
+| riviera | gallery-6 (story ewel0ny) COFNIĘTE do oryginału — P 2026-08-18: anonimizacja była nadgorliwa (publiczna influencerka, tekst filaru i tak wymienia nick) |
+
+## Okładki (5.6) — rozstrzygnięte
+
+Decki przeszukane percepcyjnie: riviera = ten sam render w 800px, belvedere = identyczny plik 787px, vistula/asus w ogóle nie pochodzą z decków. Za zgodą P: stock Pexels dopasowany do typu klienta (szklana fasada / aula / laptop przy oknie / stół fine-dining), bez obcych znaków, proweniencja w załączniku B; zastosowane na dev.

@@ -407,13 +407,6 @@ const PLAN: Op[] = [
     file: 'riviera-gallery-4.jpg',
     why: 'The "pan" graphic at the wzruszające-wideo section (E: remove)',
   },
-  {
-    kind: 'swap',
-    slug: 'riviera',
-    file: 'riviera-gallery-6.jpg',
-    why: "Private account's story: face, avatar and nick blurred (flagged by us; anonymization line per P)",
-    to: { file: 'riviera-gallery-6-anon.jpg', copyAlt: true },
-  },
   // —— jw-construction ——————————————————————————————————————————————————————
   {
     kind: 'cover',
@@ -640,6 +633,120 @@ const PLAN: Op[] = [
       altPl: 'Baner badania klinicznego POL PRENATAL CMV',
       altEn: 'POL PRENATAL CMV clinical study banner',
     },
+  },
+  // —— pixelated covers (5.6): decks hold nothing larger, so approved stock ——
+  {
+    kind: 'cover',
+    slug: 'riviera',
+    file: 'riviera-cover.jpg',
+    why: 'Pixelated at hero size (E); the deck source is the same render at 800px — stock per P 2026-08-18',
+    to: {
+      file: 'riviera-cover-2.jpg',
+      altPl:
+        'Szklana fasada nowoczesnego budynku (zdjęcie ilustracyjne, Pexels)',
+      altEn: 'Glass facade of a modern building (stock photo, Pexels)',
+    },
+  },
+  {
+    kind: 'cover',
+    slug: 'vistula',
+    file: 'vistula-cover-3.jpg',
+    why: 'Pixelated at hero size (A); no larger client source — stock per P 2026-08-18',
+    to: {
+      file: 'vistula-cover-4.jpg',
+      altPl:
+        'Pusta nowoczesna aula wykładowa z niebieskimi fotelami (zdjęcie ilustracyjne, Pexels)',
+      altEn: 'Empty modern lecture hall with blue seats (stock photo, Pexels)',
+    },
+  },
+  {
+    kind: 'cover',
+    slug: 'asus',
+    file: 'asus-cover-3.jpg',
+    why: 'Pixelated at hero size (E); no larger client source — stock per P 2026-08-18',
+    to: {
+      file: 'asus-cover-4.jpg',
+      altPl: 'Laptop na biurku przy oknie (zdjęcie ilustracyjne, Pexels)',
+      altEn: 'Laptop on a desk by a window (stock photo, Pexels)',
+    },
+  },
+  {
+    kind: 'cover',
+    slug: 'belvedere',
+    file: 'belvedere-cover.jpg',
+    why: 'Pixelated at hero size (A); deck holds the identical 787px file; client photos are out (A: „bez fotek”) — stock per P 2026-08-18',
+    to: {
+      file: 'belvedere-cover-2.jpg',
+      altPl:
+        'Elegancko nakryty stół restauracyjny z kieliszkami (zdjęcie ilustracyjne, Pexels)',
+      altEn:
+        'Elegantly set restaurant table with glassware (stock photo, Pexels)',
+    },
+  },
+  // —— follow-up batch (Anna's Asana comments, 2026-08-18) ——————————————————
+  // —— produkty-cukiernicze-brzesc ——————————————————————————————————————————
+  {
+    kind: 'swap',
+    slug: 'produkty-cukiernicze-brzesc',
+    file: 'produkty-cukiernicze-brzesc-gallery-3.jpg',
+    why: 'Comment thread with four full names and avatars (one already red-boxed in the asset); A supplied the comic creative',
+    to: {
+      file: 'produkty-cukiernicze-brzesc-komiks-1.png',
+      altPl:
+        'Komiksowa kreacja Produktów Cukierniczych Brześć — słomka pyta kruche ciastko z marmoladą, czy liczy się wnętrze („Muszę być dobrze nadziany!”)',
+      altEn:
+        'Brześć comic creative — the puff straw asks the marmalade cookie if the inside matters ("I have to be well filled!")',
+    },
+  },
+  {
+    kind: 'detach',
+    slug: 'produkty-cukiernicze-brzesc',
+    file: 'produkty-cukiernicze-brzesc-gallery-7.jpg',
+    why: 'Six employee faces at the ISM fair stand; replacement material pending (one Drive file inaccessible, FB link needs login)',
+  },
+  // —— rabkoland (A: best with no photos — client-run session, no releases) —
+  {
+    kind: 'swap',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-1.jpg',
+    why: 'Mascot post stays (no session photo); commenter avatar and nick blurred',
+    to: { file: 'rabkoland-gallery-1-anon.jpg', copyAlt: true },
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-2.jpg',
+    why: 'Session photo with visitors — no releases (A 2026-08-18)',
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-3.jpg',
+    why: 'Graphic built on a photo of a person plus children — no releases (A 2026-08-18)',
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-4.jpg',
+    why: 'Two people posing with gift tickets — session photo, no releases (A 2026-08-18)',
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-5.jpg',
+    why: "Child's face in the YouTube episode still — no releases (A 2026-08-18)",
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-6.jpg',
+    why: 'Visitors on a ride — session photo, no releases (A 2026-08-18)',
+  },
+  {
+    kind: 'detach',
+    slug: 'rabkoland',
+    file: 'rabkoland-gallery-7.jpg',
+    why: 'Mother-and-child selfie — no releases (A 2026-08-18)',
   },
 ]
 

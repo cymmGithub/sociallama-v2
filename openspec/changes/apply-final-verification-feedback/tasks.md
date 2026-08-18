@@ -31,7 +31,7 @@ Staged inputs: `/mem/final-weryfikacja/{logos,asana,drive,video}`. Per-study ver
 - [x] 5.3 Probe + rename extensionless Drive files (`drive/IMID/*`, `drive/Pracuj/*`); normalize all replacement filenames to `<slug>-<section>-<n>.<ext>`
 - [x] 5.4 Checked first, as instructed: `media.mimeTypes` is `['image/*']` and neither `case-studies.ts` nor the article renderer has any video path — video is a schema change + migration, not a minimal extension. Decision 2026-08-18: ship a people-free still from each video, video support becomes its own change. Stills cut: volvo 28 s (art table), julius 2 s (Barista Cup stand)
 - [x] 5.5 Source two Pexels business photos for FM's "pan" + employer-advocacy slots (browser-UA HTML search, not the API; mark-free; record page URLs in the PLAN; verify in-frame contrast at rendered size)
-- [ ] 5.6 Re-export pixelated covers (all studies flagged: riviera, vistula, asus, belvedere + any observed) at hero rendered size from best sources
+- [x] 5.6 Decks searched first (perceptual match): riviera = the same render at 800px, belvedere = the identical 787px file, vistula/asus absent — no better sources exist. Per P 2026-08-18: Pexels covers matched to each client's type (glass facade / lecture hall / laptop workspace / fine-dining table), mark-free, provenance in plan appendix B; applied to dev
 
 ## 6. DB imagery pass (dev first)
 
