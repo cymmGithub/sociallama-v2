@@ -203,8 +203,15 @@ export function CaseStudyArticle({
                 const platformLogo = platformLogos.get(platformKey)
                 // Four tiles a row on desktop, two on mobile — but balanced, so
                 // the last row is never a lone tile against an empty measure.
-                const spanDesktop = tileSpans(group.items.length, 4)
                 const spanMobile = tileSpans(group.items.length, 2)
+                // Except when the group holds a single metric. Stretching that
+                // one across the measure only moves the emptiness inside the
+                // tile, where the orange fill makes it read louder than the gap
+                // ever did — "77 tys. / Widzów" is 13 characters holding up a
+                // 1152px bar. It keeps a normal tile's width instead.
+                const spanDesktop = tileSpans(group.items.length, 4).map(
+                  (span) => (span === 12 ? 4 : span)
+                )
                 // The tile's own width decides how big its number may be, and
                 // the group's longest value decides for all of them, so the
                 // numbers in a row stay one size. See .tileValue.
@@ -238,10 +245,7 @@ export function CaseStudyArticle({
                       {group.items.map((item, index) => (
                         <div
                           key={`${item.metric}-${item.value}`}
-                          className={cn(
-                            s.tile,
-                            spanDesktop[index] === 12 && s.tileWide
-                          )}
+                          className={s.tile}
                           style={
                             {
                               '--span-d': spanDesktop[index],

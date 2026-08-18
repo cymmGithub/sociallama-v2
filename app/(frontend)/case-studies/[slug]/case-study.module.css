@@ -383,7 +383,9 @@
    four ignored how many metrics a group actually holds, so a group of one took
    a quarter of the row and left three quarters of empty page. The component
    stamps each tile's span (see tileSpans), and every balanced row length —
-   1, 2, 3, 4 — divides 12, so every row fills the measure. minmax(0, 1fr)
+   1, 2, 3, 4 — divides 12, so a row fills the measure. The one deliberate
+   exception is a group holding a single metric, which the component keeps at a
+   normal tile's width rather than stretching (see spanDesktop). minmax(0, 1fr)
    rather than 1fr: a track's automatic minimum is its content, and CountUp
    rewrites the value on every frame. */
 .tiles {
@@ -415,28 +417,6 @@
 
   @media (--desktop) {
     grid-column: span var(--span-d);
-  }
-}
-
-/* A metric alone on its row would otherwise be a full-measure slab with a small
-   number stranded in one corner, so it turns on its side instead. Desktop only:
-   a lone tile on mobile is 358px, near enough the normal width that stacking
-   still reads right. */
-@media (--desktop) {
-  .tileWide {
-    flex-direction: row;
-    align-items: center;
-    gap: calc(var(--gap) * 1.5);
-
-    & .tileValue {
-      flex: none;
-    }
-
-    & .tileMetric {
-      flex: 1;
-      max-width: 54ch;
-      font-size: 0.9375rem;
-    }
   }
 }
 
