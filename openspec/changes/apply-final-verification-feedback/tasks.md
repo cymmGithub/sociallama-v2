@@ -1,0 +1,49 @@
+# Tasks — apply-final-verification-feedback
+
+Staged inputs: `/mem/final-weryfikacja/{logos,asana,drive,video}`. Per-study verdicts: design.md table.
+
+## 1. Frameless approach creatives (code)
+
+- [ ] 1.1 Strip chrome from `.shot` in `app/(frontend)/case-studies/[slug]/case-study.module.css` (border, background plate; keep radius/spacing per design decision 1); keep `.shotPortrait` sizing/stagger
+- [ ] 1.2 Visual check: media-heavy study (`irobot`) + `riviera` parity, desktop and mobile; screenshot the settled state (wipe-reveal clips overflow — rects lie)
+
+## 2. Logo swaps (code + assets)
+
+- [ ] 2.1 Copy the three new raws into `assets-src/client-logos/raw/`; update `BRANDS` rows for `volvo` (→ Dom Volvo annotated mark), `engie` (→ new logo), `irobot` (→ new wordmark) in `scripts/client-logos/pipeline.py`
+- [ ] 2.2 Re-run the pipeline; diff outputs — only volvo/engie/irobot belt + card assets may change; verify belt screenshot (mono filter + hover color) per client-logo-assets spec
+- [ ] 2.3 Update `lib/content/clients.ts` volvo `name` → `'Dom Volvo'`; sync any alt/testimonial copy in `home.ts`/`home.en.ts` that names the brand; run `lib/content/clients.test.ts`
+- [ ] 2.4 Regenerate `public/case-studies/{volvo,engie,irobot}/<slug>-logo*.png` and run `refresh-case-study-logos.ts` against dev DB (update-in-place; mind the `-1.png` bump gotcha)
+
+## 3. Homepage kreacje clip (asset)
+
+- [ ] 3.1 Re-edit `public/clips/kreacje-pracuj.mp4`: cut/crop Paulina's shot, end on the Pracuj.pl logo; encode with smpte170m color tags; regenerate poster if its frame was cut
+- [ ] 3.2 Clear `.next/dev/cache/images` and verify the clip in the homepage kreacje rail (4th clip, dwell 11 s)
+
+## 4. iRobot pillar removal (seed + DB)
+
+- [ ] 4.1 Delete the `#DLAKAŻDEGO / Akcje specjalne` pillar from `lib/payload/seed-case-studies.ts` (both locales if seeded per-locale)
+- [ ] 4.2 Re-run `payload:seed:case-studies` against dev DB; verify the pillar is gone PL + EN and no media orphaned (detach handled by seed idempotency — confirm)
+
+## 5. Screenshot anonymization + image prep (assets)
+
+- [ ] 5.1 Dump current media per study (`dump-case-study-imagery.ts`) for: vistula, polomarket, pracuj-pl, engie, fm-logistics, volvo; match Anna/Emilia's references to media ids
+- [ ] 5.2 Produce anonymized versions (blur avatars, pseudonymize names consistently per thread, crop clocks/status bars) for the matched screenshots; verify each at rendered size
+- [ ] 5.3 Probe + rename extensionless Drive files (`drive/IMID/*`, `drive/Pracuj/*`); normalize all replacement filenames to `<slug>-<section>-<n>.<ext>`
+- [ ] 5.4 Transcode `video/julius-eventy.mov` and (if needed) `video/volvo-konkurs-podsumowanie.mp4` to web H.264 mp4, smpte170m; confirm the media collection / approach renderer accepts video creatives (design open question) before converting effort into a schema change
+- [ ] 5.5 Source two Pexels business photos for FM's "pan" + employer-advocacy slots (browser-UA HTML search, not the API; mark-free; record page URLs in the PLAN; verify in-frame contrast at rendered size)
+- [ ] 5.6 Re-export pixelated covers (all studies flagged: riviera, vistula, asus, belvedere + any observed) at hero rendered size from best sources
+
+## 6. DB imagery pass (dev first)
+
+- [ ] 6.1 Author the PLAN (per-image verdict rows: study, media id, verdict, reason, replacement) from design.md's table + the 5.1 dumps; every image of every touched study gets a row
+- [ ] 6.2 Run the apply script in report mode against dev DB; review the report against the PLAN
+- [ ] 6.3 Apply to dev DB (per-locale media arrays by id; detach never delete; upload replacements via findOrCreate); re-run until zero changes
+- [ ] 6.4 Browser-verify every touched study PL + EN on dev (frameless rendering live from task 1); screenshot-sample the anonymized screens
+- [ ] 6.5 Fix `content/case-studies/<slug>/draft.en.json` for touched studies where committed EN drafts exist, so re-imports don't resurrect removed images
+
+## 7. Verify + prod
+
+- [ ] 7.1 `bun run check` + e2e; production build
+- [ ] 7.2 Prod DB pass after the code deploy: `BLOB_READ_WRITE_TOKEN` set, report → apply → re-run until zero (script outlives shell — never trust one pass); `refresh-case-study-logos.ts` + seed re-run against prod likewise
+- [ ] 7.3 Browser-verify prod studies + homepage belt/clip; confirm no 404 media
+- [ ] 7.4 Report done on the Asana task; note Brześć/Rabkoland/ASUS follow-ups remain with Anna/Emilia
