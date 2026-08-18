@@ -1468,15 +1468,31 @@ async function findOrCreateMedia(
       data: { alt: altPl },
       filePath: `public/case-studies/${slug}/${file}`,
     })
-  let doc: Awaited<ReturnType<typeof create>>
+  let doc: Awaited<ReturnType<typeof create>> | undefined
   try {
     doc = await create()
   } catch (err) {
     if (!/already exists/i.test(String(err))) throw err
-    const n = await clearBlobs(file)
-    console.log(`  (cleared ${n} shared-store blob object(s) for ${file})`)
-    doc = await create()
+    // Deleting a blob is not immediately visible to the next upload — the store
+    // is eventually consistent, and a single clear-then-retry loses the race on
+    // roughly one file in twenty. Back off and try again rather than aborting a
+    // 90-upload run half way through.
+    for (let attempt = 1; attempt <= 5 && !doc; attempt++) {
+      const n = await clearBlobs(file)
+      console.log(
+        `  (cleared ${n} shared-store blob object(s) for ${file}, attempt ${attempt})`
+      )
+      await new Promise((r) => setTimeout(r, attempt * 1500))
+      try {
+        doc = await create()
+      } catch (retryErr) {
+        if (!/already exists/i.test(String(retryErr)) || attempt === 5) {
+          throw retryErr
+        }
+      }
+    }
   }
+  if (!doc) throw new Error(`${file}: upload never succeeded`)
   // EN alt is a separate localized write; `alt` is required, so a Polish-only
   // upload would be an accessibility regression on /en.
   await payload.update({
