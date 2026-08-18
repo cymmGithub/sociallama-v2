@@ -249,6 +249,18 @@ const PLAN: Op[] = [
     file: 'belvedere-gallery-3.jpg',
     why: 'Instagram grid of client photos — same call as gallery-1',
   },
+  {
+    kind: 'detach',
+    slug: 'belvedere',
+    file: 'belvedere-gallery-4.jpg',
+    why: 'Bellunch creative built on client photography — P 2026-08-18: these go too',
+  },
+  {
+    kind: 'detach',
+    slug: 'belvedere',
+    file: 'belvedere-gallery-5.jpg',
+    why: 'Bellunch creative built on client photography — P 2026-08-18: these go too',
+  },
   // —— irobot ———————————————————————————————————————————————————————————————
   {
     kind: 'pillar',
