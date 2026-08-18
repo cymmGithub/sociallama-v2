@@ -113,6 +113,8 @@ def gd(name):
 # the image itself reports cannot land mid-glyph. `keep` cuts at a height
 # fraction and is only for marks with no blank row anywhere — a badge whose
 # outline runs the full height — where it has to be set by eye and verified.
+# `lead` keeps every line and collapses the blank bands between them instead,
+# for a lockup whose annotation cannot be dropped (see `tighten_leading`).
 # `tol` overrides CONNECT_TOL for a plate that needs a wider reach, and
 # `plate_ink` repaints a white knockout in its plate colour. `boost` multiplies
 # the optical-mass correction and raises its clamp ceiling with it, so a value
@@ -146,7 +148,9 @@ BRANDS = [
     # canvas edge only at tangent points, so nothing is lost to the downscale.
     ("burger-king", "Burger King", gd("Burger_King_2020.svg.png"), None, {"boost": 1.1}),
     ("dpd", "DPD", gd("DPD_logo_(2015).svg.webp"), None, {}),
-    ("engie", "ENGIE", gd("ENGIE_logotype_2018.png"), "engie", {}),
+    # The 2018 logotype is retired; ENGIE rebranded and the belt shows the
+    # current mark (arc over the wordmark), supplied by the client.
+    ("engie", "ENGIE", gd("engie-logo-800.png"), "engie", {}),
     ("fm-logistics", "FM Logistic", repo("fm-logistics"), "fm-logistics", {}),
     # gDrive over the repository asset, which is a crop out of a larger layout:
     # it carries a faint watermark arc *and* the tops of a maroon heading
@@ -157,7 +161,7 @@ BRANDS = [
     # crown, Julius Meinl's roundel over its name) and geometric centring made
     # it read high — ink centroid 44.7 against Belvedere's 56.4. The nudge
     # lands it between its neighbours.
-    ("irobot", "iRobot", repo("irobot"), "irobot", {"dy": 6}),
+    ("irobot", "iRobot", gd("irobot.png"), "irobot", {"dy": 6}),
     ("julius-meinl", "Julius Meinl", gd("Julius_Meinl_(2004).svg.png"), "julius-meinl", {}),
     ("jw-construction", "JW Construction", repo("jw-construction"), "jw-construction", {}),
     # Drops "Krajowe Centrum Przeciwdziałania Uzależnieniom".
@@ -192,10 +196,11 @@ BRANDS = [
     ("skrzat", "Skrzat", repo("skrzat"), "skrzat", {}),
     ("toms", "Toms", gd("Toms.svg.webp"), None, {}),
     ("vistula", "Vistula", gd("vistula.jpg"), "vistula", {}),
-    # One merged VOLVO entry for Dom Volvo + Volvo Car Warszawa, which share the
-    # `volvo` case study. The repository asset is already the bare wordmark, so
-    # the two-line "Dom Volvo" lockup in gDrive is not used.
-    ("volvo", "VOLVO", repo("volvo"), "volvo", {}),
+    # One merged entry for Dom Volvo + Volvo Car Warszawa, which share the
+    # `volvo` case study. We ran the dealer accounts, not global Volvo, so the
+    # belt shows the annotated "Dom Volvo" lockup rather than the bare wordmark
+    # the repository asset carries.
+    ("volvo", "Dom Volvo", gd("Dom volvo.png"), "volvo", {"lead": 0.75}),
 ]
 
 
@@ -331,6 +336,40 @@ def crop_to_fraction(im, keep):
     return im.crop((0, 0, im.width, round(im.height * keep)))
 
 
+def tighten_leading(im, fraction):
+    """Collapse the blank bands *inside* a stacked lockup to `fraction` of its
+    tallest ink band, keeping every line.
+
+    The crops above all drop a line; this keeps them all and buys the room by
+    spending the lockup's own leading. Dom Volvo needs it: the supplied artwork
+    sets VOLVO, a rule and DOM VOLVO with two ~215px voids in a 1084x754 frame,
+    so it trims to 1.6:1 against a 3.4:1 box. Contain-fit is therefore
+    height-bound and the mass normaliser is clamped at it, so the mark lands at
+    a fifth of the roster's ink and DOM VOLVO reads as mush. Neither `gap` nor
+    `keep` applies — the annotation *is* the point of using this lockup rather
+    than the bare wordmark. Tightening to 0.75 puts it at 3.7:1, width-bound,
+    and in family with its neighbours.
+    """
+    gaps = ink_row_gaps(im)
+    if not gaps:
+        return im
+    bands, cursor = [], 0
+    for top, bottom in gaps:
+        bands.append(im.crop((0, cursor, im.width, top)))
+        cursor = bottom + 1
+    bands.append(im.crop((0, cursor, im.width, im.height)))
+    bands = [band for band in bands if band.height]
+
+    lead = round(fraction * max(band.height for band in bands))
+    height = sum(band.height for band in bands) + lead * (len(bands) - 1)
+    out = Image.new("RGBA", (im.width, height), (0, 0, 0, 0))
+    y = 0
+    for i, band in enumerate(bands):
+        out.paste(band, (0, y))
+        y += band.height + (lead if i < len(bands) - 1 else 0)
+    return out
+
+
 def crop_above_gap(im, index):
     """Keep everything above the `index`-th blank row band (1-based).
 
@@ -430,6 +469,8 @@ def build_belt():
             mark = trim(crop_between_gaps(mark, *opts["band"]))
         elif "keep" in opts:
             mark = trim(crop_to_fraction(mark, opts["keep"]))
+        elif "lead" in opts:
+            mark = trim(tighten_leading(mark, opts["lead"]))
         mark, dark = darken(mark)
         fit = min(INNER_W / mark.width, INNER_H / mark.height)
         prepared.append((key, name, slug, mark, fit, cut, dark, opts))
@@ -513,7 +554,11 @@ CS_EXTRA_SOURCES = {
 # secondary lines that are unreadable at the belt's 44px logo height; the card
 # slot is taller and shows the full lockup. Source choice does carry over — that
 # is a judgement about which file is undamaged, which holds for any consumer.
-CS_INHERIT_OPTS = {"tol"}
+# `lead` carries over for the same reason: it drops nothing, it only closes dead
+# space the artwork itself carries, and the card is the tighter box of the two
+# (140x36 rendered against the belt's 140x44), so a lockup that needs it on the
+# belt needs it more here.
+CS_INHERIT_OPTS = {"tol", "lead"}
 
 
 def cs_sources():
@@ -631,6 +676,8 @@ def build_case_studies():
         mark = load(src)
         mark, cut, plate = dematte(mark, opts.get("tol", CONNECT_TOL))
         mark = trim(mono_ink(mark, plate))
+        if "lead" in opts:
+            mark = trim(tighten_leading(mark, opts["lead"]))
         if mark.width < 2 or mark.height < 2:
             sys.exit(f"{slug}: keyed to nothing — re-source it")
         fit = min(CS_INNER_W / mark.width, CS_INNER_H / mark.height)

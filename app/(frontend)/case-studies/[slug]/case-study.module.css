@@ -324,13 +324,12 @@
   }
 }
 
-/* Creative frame — natural aspect; the media keeps its device shape. */
+/* Creatives render frameless — no border, no surface plate; the media keeps
+   its own shape and only the corner radius is clipped. */
 .shot {
   flex: 0 1 30rem;
   border-radius: 18px;
   overflow: hidden;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
   line-height: 0;
 
   img {

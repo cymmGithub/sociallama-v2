@@ -224,21 +224,6 @@ const STUDIES: StudySeed[] = [
           },
         ],
       },
-      {
-        tag: '#DLAKAŻDEGO',
-        heading: 'Akcje specjalne',
-        body: richText(
-          para(
-            'Pokazujemy, jak iRobot łączy pokolenia i dopasowuje się do różnych stylów życia — od pomagania starszym osobom w codziennych obowiązkach, po wspieranie rodzin w utrzymaniu porządku. Udowadniamy, że z iRobotem życie staje się prostsze i wygodniejsze, a technologia działa na korzyść każdego użytkownika.'
-          )
-        ),
-        media: [
-          {
-            file: 'irobot-gallery-5.jpg',
-            alt: 'Materiał wideo iRobot na YouTube — robot ułatwia codzienne obowiązki seniorom',
-          },
-        ],
-      },
     ],
     results: [
       { platform: 'TikTok', metric: 'Wyświetlenia', value: '11 mln' },
@@ -307,15 +292,6 @@ const STUDIES: StudySeed[] = [
             ),
             para(
               'The content underlines that the time saved with iRobot can go to the things that truly matter — hobbies, relaxation, or family — creating positive brand associations and encouraging change.'
-            )
-          ),
-        },
-        {
-          tag: '#FOREVERYONE',
-          heading: 'Special campaigns',
-          body: richText(
-            para(
-              'We show how iRobot brings generations together and adapts to different lifestyles — from helping older people with daily chores to keeping families tidy. We prove that with iRobot life gets simpler and more convenient, and the technology works for every user.'
             )
           ),
         },

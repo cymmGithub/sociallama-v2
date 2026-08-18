@@ -220,10 +220,13 @@ const ROSTER = [
     caseStudySlug: 'vistula',
   },
   // One entry for both Volvo marks in the approved set — Dom Volvo and Volvo
-  // Car Warszawa share the `volvo` case study.
+  // Car Warszawa share the `volvo` case study. It renders the annotated Dom
+  // Volvo mark rather than the global VOLVO wordmark: we ran the dealer
+  // accounts, and the bare wordmark claims the parent brand. The name follows
+  // the mark, because it is the alt text for it.
   {
     key: 'volvo',
-    name: 'VOLVO',
+    name: 'Dom Volvo',
     logo: '/assets/clients/volvo.png',
     industry: 'motoryzacja',
     caseStudySlug: 'volvo',
