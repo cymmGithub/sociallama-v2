@@ -43,7 +43,7 @@ Staged inputs: `/mem/final-weryfikacja/{logos,asana,drive,video}`. Per-study ver
 
 ## 7. Verify + prod
 
-- [ ] 7.1 `bun run check` + e2e; production build
+- [x] 7.1 `bun run check` exit 0; production build exit 0 (tree stays clean); e2e 86 pass / 1 fail — the standing `sitemap-crawl` red, confirmed to be the 60 req/60 s rate limiter 429ing `/api/media/file` with the image optimizer surfacing it as 400. Untouched studies fail alongside edited ones and every edited page is clean in isolation, so it is not this change
 - [ ] 7.2 Prod DB pass after the code deploy: `BLOB_READ_WRITE_TOKEN` set, report → apply → re-run until zero (script outlives shell — never trust one pass); `refresh-case-study-logos.ts` + seed re-run against prod likewise
 - [ ] 7.3 Browser-verify prod studies + homepage belt/clip; confirm no 404 media
 - [ ] 7.4 Report done on the Asana task; note Brześć/Rabkoland/ASUS follow-ups remain with Anna/Emilia
