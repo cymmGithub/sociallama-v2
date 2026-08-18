@@ -379,20 +379,29 @@
   height: 1.5em;
 }
 
+/* Twelve tracks rather than four, because the track count was the bug: a fixed
+   four ignored how many metrics a group actually holds, so a group of one took
+   a quarter of the row and left three quarters of empty page. The component
+   stamps each tile's span (see tileSpans), and every balanced row length —
+   1, 2, 3, 4 — divides 12, so every row fills the measure. minmax(0, 1fr)
+   rather than 1fr: a track's automatic minimum is its content, and CountUp
+   rewrites the value on every frame. */
 .tiles {
   display: grid;
   gap: var(--gap);
-  grid-template-columns: repeat(2, 1fr);
-
-  @media (--desktop) {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
 /* Orange tiles — the numbers are the shareable, distinctive payload, so they
    carry the brand accent and count up on scroll into view. */
 .tile {
   display: flex;
+  grid-column: span var(--span-m);
+  /* Without this the item's automatic minimum is its min-content width, which
+     already pulled 13 mobile tiles off the grid (165/175 instead of 170). */
+  min-width: 0;
+  /* So .tileValue can size itself against the width this tile actually got. */
+  container-type: inline-size;
   flex-direction: column;
   gap: 0.25em;
   padding: var(--gap);
@@ -403,12 +412,47 @@
   color: var(--color-ink);
   box-shadow: 0 6px 20px
     color-mix(in srgb, var(--color-orange) 45%, transparent);
+
+  @media (--desktop) {
+    grid-column: span var(--span-d);
+  }
+}
+
+/* A metric alone on its row would otherwise be a full-measure slab with a small
+   number stranded in one corner, so it turns on its side instead. Desktop only:
+   a lone tile on mobile is 358px, near enough the normal width that stacking
+   still reads right. */
+@media (--desktop) {
+  .tileWide {
+    flex-direction: row;
+    align-items: center;
+    gap: calc(var(--gap) * 1.5);
+
+    & .tileValue {
+      flex: none;
+    }
+
+    & .tileMetric {
+      flex: 1;
+      max-width: 54ch;
+      font-size: 0.9375rem;
+    }
+  }
 }
 
 .tileValue {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  /* Hold the display size until the group's longest value stops fitting the
+     tile it landed in, then step down rather than break mid-parenthetical —
+     "+52,8% (z 366 do 546)" was taking three lines. --len is a character count
+     stamped server-side, so it covers the English strings too (worst case 24)
+     and stays put while CountUp ticks the digits. */
+  font-size: clamp(
+    1.25rem,
+    calc(100cqi / var(--len) * 2),
+    clamp(1.75rem, 4vw, 2.75rem)
+  );
   line-height: 1;
   letter-spacing: -0.02em;
   /* Steady width while the digits tick so the tile doesn't jitter. */

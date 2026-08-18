@@ -1,4 +1,5 @@
 import cn from 'clsx'
+import type { CSSProperties } from 'react'
 import { PostRichText } from '@/app/(frontend)/[slug]/rich-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
@@ -27,6 +28,25 @@ function groupResults(results: CaseStudy['results']) {
   }
   return groups
 }
+
+/**
+ * Split `count` metrics into rows of at most `max`, as evenly as the count
+ * allows, so a group never ends on a stranded tile: five metrics are 3+2, not
+ * 4+1. Row lengths land in 1–4, and every one of those divides the 12 tracks
+ * `.tiles` lays down, so each row fills the measure exactly.
+ */
+function rowPlan(count: number, max: number) {
+  const rows = Math.ceil(count / max)
+  const base = Math.floor(count / rows)
+  const wide = count % rows
+  return Array.from({ length: rows }, (_, i) => (i < wide ? base + 1 : base))
+}
+
+/** Each tile's column span on that 12-track grid, in render order. */
+const tileSpans = (count: number, max: number) =>
+  rowPlan(count, max).flatMap((length) =>
+    Array.from({ length }, () => 12 / length)
+  )
 
 /** Normalize a platform label for logo matching: "TikTok" → "tiktok". */
 const normalizePlatform = (value: string) =>
@@ -181,6 +201,16 @@ export function CaseStudyArticle({
               {resultGroups.map((group) => {
                 const platformKey = normalizePlatform(group.platform)
                 const platformLogo = platformLogos.get(platformKey)
+                // Four tiles a row on desktop, two on mobile — but balanced, so
+                // the last row is never a lone tile against an empty measure.
+                const spanDesktop = tileSpans(group.items.length, 4)
+                const spanMobile = tileSpans(group.items.length, 2)
+                // The tile's own width decides how big its number may be, and
+                // the group's longest value decides for all of them, so the
+                // numbers in a row stay one size. See .tileValue.
+                const longest = Math.max(
+                  ...group.items.map((item) => item.value.length)
+                )
                 return (
                   <div key={group.platform} className={s.resultGroup}>
                     <h3 className={s.resultGroupTitle}>
@@ -201,11 +231,23 @@ export function CaseStudyArticle({
                       )}
                       {group.platform}
                     </h3>
-                    <div className={s.tiles}>
-                      {group.items.map((item) => (
+                    <div
+                      className={s.tiles}
+                      style={{ '--len': longest } as CSSProperties}
+                    >
+                      {group.items.map((item, index) => (
                         <div
                           key={`${item.metric}-${item.value}`}
-                          className={s.tile}
+                          className={cn(
+                            s.tile,
+                            spanDesktop[index] === 12 && s.tileWide
+                          )}
+                          style={
+                            {
+                              '--span-d': spanDesktop[index],
+                              '--span-m': spanMobile[index],
+                            } as CSSProperties
+                          }
                         >
                           <CountUp
                             className={s.tileValue}
