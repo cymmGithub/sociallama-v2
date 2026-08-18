@@ -785,11 +785,29 @@ async function findOrCreateMedia(filePath: string, alt: string) {
 /**
  * `--reset <slug>` (repeatable) deletes a study + its media (filename prefixed
  * `<slug>-`) so the loop below recreates it with fresh content/images. Without
- * it the seed is skip-if-exists. Dev only — never pass with `--prod`.
+ * it the seed is skip-if-exists.
+ *
+ * DEVELOPMENT ONLY, and now enforced rather than merely documented. The media
+ * delete matches on a filename PREFIX, so it takes everything that starts with
+ * the slug — including images uploaded through the admin panel long after the
+ * seed last ran, which this file has never heard of. It is the only media
+ * deletion anywhere in the repository, it leaves the Vercel Blob objects
+ * orphaned behind the deleted rows, and case-study content exists nowhere but
+ * the database. On production that is unrecoverable.
  */
 const resetSlugs = process.argv
   .filter((_, i) => process.argv[i - 1] === '--reset')
   .filter((slug) => !slug.startsWith('--'))
+
+if (resetSlugs.length > 0 && process.argv.includes('--prod')) {
+  throw new Error(
+    `--reset refuses to run with --prod (asked for: ${resetSlugs.join(', ')}). ` +
+      'It deletes every media row whose filename starts with the slug, which ' +
+      'includes anything uploaded through the admin panel. To re-seed a ' +
+      'production study, remove the documents deliberately and re-run without ' +
+      '--reset.'
+  )
+}
 
 for (const slug of resetSlugs) {
   await payload.delete({
