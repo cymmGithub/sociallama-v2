@@ -70,7 +70,7 @@ const normalizePlatform = (value: string) =>
  * its cutouts are actually re-cut AND re-uploaded, or its two kinds of creative
  * drift apart instead of together.
  */
-const RECUT_STUDIES = new Set(['irobot'])
+const RECUT_STUDIES = new Set(['irobot', 'volvo', 'engie'])
 
 export function CaseStudyArticle({
   study,

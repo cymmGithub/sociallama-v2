@@ -274,10 +274,10 @@ export const INDUSTRIES = [
           height: 720,
         },
         {
-          src: '/case-studies/volvo/volvo-dom-savedate-anon-cut.webp',
-          alt: 'Kreacja „Save the date” — dni otwarte w Domu Volvo',
-          width: 585,
-          height: 1179,
+          src: '/case-studies/volvo/volvo-konkurs-warsztat.jpg',
+          alt: 'Stół warsztatowy akcji „Volvo oczami dzieci” — kredki, farby i powstający rysunek w salonie Dom Volvo',
+          width: 1080,
+          height: 1920,
         },
       ],
       quote: {

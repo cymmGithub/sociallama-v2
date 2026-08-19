@@ -16,8 +16,8 @@ Two shapes, both handled:
          plate to trim, only square corners to round. The radius stopped being a
          device proportion in Aug 2026: it is now `.shot`'s CSS `border-radius`
          converted to source pixels, so a re-cut creative and a flat one clip to
-         the same shape. Only irobot has been re-cut against it so far — see
-         `round_canvas`.
+         the same shape. irobot, volvo and engie have been re-cut against it so
+         far — see `round_canvas`.
 
 A `trim` cut can NEVER be re-radiused: the pixels under its corner are the plate,
 flooded away, so a smaller radius uncovers the slab. Only `round` cuts are
@@ -143,8 +143,8 @@ NOT_A_MOCKUP = {
 # neighbours.
 #
 # Only the studies in `RECUT_STUDIES` (case-study-article.tsx) opt into that
-# radius — irobot alone so far, and there only `irobot-edukacja-2-cut.webp` was
-# actually re-cut. Every other file keeps the original 0.16-of-width device
+# radius — irobot (only `irobot-edukacja-2-cut.webp`), volvo and engie so far.
+# Every other file keeps the original 0.16-of-width device
 # corner (~38px rendered). That is deliberate rather than unfinished: a cut file
 # may also be hardcoded into the /branze feed strips (lib/content/branze.ts),
 # which frame it at a different width and radius, so re-cutting one moves two
