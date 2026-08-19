@@ -43,11 +43,14 @@ its alpha channel** (`scripts/case-studies/mockup_cutout.py`), which scales with
 the image where CSS does not — the two agree only at the 240px `.shotPortrait`
 render width.
 
-The baked radius is a **per-study judgement, not a target**: five studies whose
-creatives are flat app captures (irobot, engie, volvo, fm-logistics, laurastar)
-are cut to 18px; the other ~45 keep the ~38px device corner on purpose — there
-the corner IS the phone body, and 18px squares it off. Never sweep the
-collection with `SHOT_RADIUS_CSS_PX`. The 37 `trim`-mode cutouts can never be
+The baked radius is a **per-file judgement, not a target**. The split is by
+what the creative IS, not which study owns it: a **flat app capture** (a
+LinkedIn/Instagram/comment card filling the frame) is cut to 18px, while a
+**phone mockup** (visible device body around the screen) keeps the ~38px
+corner, because there the corner IS the phone and 18px squares it off. irobot
+proves the split runs through a single study: its #HUMOR mockups are 38px,
+its flat `edukacja-2` capture is 18px. Never sweep the collection with
+`SHOT_RADIUS_CSS_PX`. The 37 `trim`-mode cutouts can never be
 re-radiused at all: under their corner is the flood-filled plate, and a smaller
 radius uncovers it. Measure before assuming a defect — read the alpha
 (`m + sqrt(m)` on row 0) *and* `getComputedStyle` on the live page; a "too
