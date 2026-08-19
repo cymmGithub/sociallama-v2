@@ -184,7 +184,9 @@ BRANDS = [
     # plate is real ink the normaliser counts — so the mass correction lands at
     # 0.53, the set's strongest shrink, and the logo reads oddly small on the
     # belt. `boost` re-approximates the wordmark, not the plate, as the mass.
-    ("pracuj-pl", "pracuj.pl", gd("pracuj.pl logo.webp"), "pracuj-pl", {"boost": 1.35}),
+    # Drive copy is the retired pre-2025 gradient pill; the repo file carries the
+    # spring-2025 rebrand (flat navy pill, uisystem.gpcdn.pl/root/logo/pracuj).
+    ("pracuj-pl", "pracuj.pl", repo("pracuj-pl"), "pracuj-pl", {"boost": 1.35}),
     ("produkty-cukiernicze-brzesc", "Brześć", repo("produkty-cukiernicze-brzesc"), "produkty-cukiernicze-brzesc", {}),
     # Drops the "Park Rozrywki" ribbon. The badge's white sticker outline inks
     # every row, so there is no seam to find — hence `keep`, cut just above the
