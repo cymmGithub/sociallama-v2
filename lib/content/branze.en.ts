@@ -383,34 +383,34 @@ export const INDUSTRIES = [
       cardTitle: 'Deep Breath by Adamed — health education on social media',
       creatives: [
         {
-          src: '/case-studies/adamed/adamed-gallery-1.jpg',
+          src: '/case-studies/adamed/adamed-gallery-1-cut.webp',
           alt: 'Adamed campaign creative',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-2.jpg',
+          src: '/case-studies/adamed/adamed-gallery-2-cut.webp',
           alt: 'Adamed campaign creative',
-          width: 540,
-          height: 960,
+          width: 384,
+          height: 785,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-3.jpg',
+          src: '/case-studies/adamed/adamed-gallery-3-cut.webp',
           alt: 'Adamed campaign creative',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-4.jpg',
+          src: '/case-studies/adamed/adamed-gallery-4-cut.webp',
           alt: 'Adamed campaign creative',
-          width: 540,
-          height: 960,
+          width: 384,
+          height: 785,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-5.jpg',
+          src: '/case-studies/adamed/adamed-gallery-5-cut.webp',
           alt: 'Adamed campaign creative',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
       ],
     },
@@ -567,10 +567,10 @@ export const INDUSTRIES = [
           height: 701,
         },
         {
-          src: '/case-studies/aquael/aquael-gallery-2.jpg',
-          alt: 'Aquael campaign creative',
-          width: 925,
-          height: 470,
+          src: '/case-studies/aquael/aquael-gallery-6.jpg',
+          alt: 'Aquael Facebook profile — 45k followers and the Glossy Marine campaign cover art',
+          width: 739,
+          height: 1400,
         },
         {
           src: '/case-studies/aquael/aquael-gallery-3.jpg',
@@ -666,10 +666,10 @@ export const INDUSTRIES = [
       cardTitle: 'Communication for a wine brand',
       creatives: [
         {
-          src: '/case-studies/faktoria-win/faktoria-win-gallery-1.jpg',
-          alt: 'Faktoria Win campaign creative',
-          width: 1400,
-          height: 934,
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-6.jpg',
+          alt: 'Faktoria Win giveaway creative — win two iPhone 14s, from the Kumala summer wine campaign',
+          width: 1200,
+          height: 1200,
         },
         {
           src: '/case-studies/faktoria-win/faktoria-win-gallery-2.jpg',
@@ -969,8 +969,6 @@ export const INDUSTRIES = [
       {
         slug: 'skibooking',
         title: 'Online ski booking',
-        // Its deck shipped no usable logo — render title-only, not a 404 image.
-        logo: false,
       },
       {
         slug: 'getaway',
@@ -1185,7 +1183,7 @@ export const INDUSTRIES = [
           src: '/case-studies/skrzat/skrzat-gallery-5.jpg',
           alt: 'Skrzat. Nowy początek campaign creative',
           width: 644,
-          height: 1400,
+          height: 1145,
         },
       ],
     },

@@ -534,34 +534,34 @@ export const INDUSTRIES = [
         'Głęboki Oddech Adamed — edukacja zdrowotna w\u00A0social mediach',
       creatives: [
         {
-          src: '/case-studies/adamed/adamed-gallery-1.jpg',
+          src: '/case-studies/adamed/adamed-gallery-1-cut.webp',
           alt: 'Kadr z rolki na profilu Głęboki Oddech Adamed — dr n. med. Kamil Janeczek w niebieskim uniformie medycznym mówi do kamery, napis „Leczenie astmy opiera się na dwóch filarach”',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-2.jpg',
+          src: '/case-studies/adamed/adamed-gallery-2-cut.webp',
           alt: 'Kadr z rolki ze specjalistą na profilu Głęboki Oddech Adamed — lekarz w ciemnym uniformie tłumaczy, jak palenie wpływa na organizm',
-          width: 540,
-          height: 960,
+          width: 384,
+          height: 785,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-3.jpg',
+          src: '/case-studies/adamed/adamed-gallery-3-cut.webp',
           alt: 'Post edukacyjny Głęboki Oddech Adamed z pytaniem „Czy chciałbyś poznać różnice między astmą alergiczną a niealergiczną?” i dłonią trzymającą inhalator',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-4.jpg',
+          src: '/case-studies/adamed/adamed-gallery-4-cut.webp',
           alt: 'Post Głęboki Oddech Adamed z pytaniem „Jak radzicie sobie z atakami astmy?” — mężczyzna trzymający się za klatkę piersiową',
-          width: 540,
-          height: 960,
+          width: 384,
+          height: 785,
         },
         {
-          src: '/case-studies/adamed/adamed-gallery-5.jpg',
+          src: '/case-studies/adamed/adamed-gallery-5-cut.webp',
           alt: 'Kreacja Głęboki Oddech Adamed z hasłem „Przestań błądzić w dymie, znajdź zdrową ścieżkę na czas” — tłum ludzi we mgle dymu',
-          width: 648,
-          height: 1152,
+          width: 461,
+          height: 939,
         },
       ],
     },
@@ -720,10 +720,10 @@ export const INDUSTRIES = [
           height: 701,
         },
         {
-          src: '/case-studies/aquael/aquael-gallery-2.jpg',
-          alt: 'Wykres wyników postów Aquael według typu treści — film osiąga najwyższy średni zasięg i zaangażowanie na tle linków, zdjęć i filmów udostępnionych',
-          width: 925,
-          height: 470,
+          src: '/case-studies/aquael/aquael-gallery-6.jpg',
+          alt: 'Profil Aquael na Facebooku — 45 tys. obserwujących i grafika w tle z kampanii Glossy Marine z akwarium morskim',
+          width: 739,
+          height: 1400,
         },
         {
           src: '/case-studies/aquael/aquael-gallery-3.jpg',
@@ -823,10 +823,10 @@ export const INDUSTRIES = [
       cardTitle: 'Komunikacja marki winiarskiej',
       creatives: [
         {
-          src: '/case-studies/faktoria-win/faktoria-win-gallery-1.jpg',
-          alt: 'Ania i Tomek — para doradców Faktorii Win w dżinsowych koszulach na białym tle',
-          width: 1400,
-          height: 934,
+          src: '/case-studies/faktoria-win/faktoria-win-gallery-6.jpg',
+          alt: 'Kreacja konkursowa Faktorii Win „Wygraj 2 iPhony 14” z letniej kampanii wina Kumala — para na różowym tle wśród tropikalnych liści',
+          width: 1200,
+          height: 1200,
         },
         {
           src: '/case-studies/faktoria-win/faktoria-win-gallery-2.jpg',
@@ -1129,8 +1129,6 @@ export const INDUSTRIES = [
       {
         slug: 'skibooking',
         title: 'Rezerwacje narciarskie online',
-        // Its deck shipped no usable logo — render title-only, not a 404 image.
-        logo: false,
       },
       {
         slug: 'getaway',
@@ -1359,7 +1357,7 @@ export const INDUSTRIES = [
           src: '/case-studies/skrzat/skrzat-gallery-5.jpg',
           alt: 'Ekipa i twórcy machają do kamery na planie zdjęciowym filmu „Skrzat. Nowy początek” w lesie',
           width: 644,
-          height: 1400,
+          height: 1145,
         },
       ],
     },
