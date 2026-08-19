@@ -349,6 +349,23 @@
   }
 }
 
+/* A phone-mockup creative carries its corner in its own alpha channel, so it
+   cannot be reshaped from here — the flat creative beside it has to move to
+   meet it instead. Studies listed in `RECUT_STUDIES` (case-study-article.tsx)
+   have had their cutouts re-cut to 24px at the width `.shotPortrait` renders
+   above; scripts/case-studies/mockup_cutout.py holds the same number as
+   SHOT_RADIUS_CSS_PX and is what produced them.
+
+   The rest of the site keeps 18px, which is the closer match to the original
+   ~38px device corner those studies still carry. Three numbers, one meaning:
+   change any of them alone and a re-cut study's two kinds of creative drift
+   apart. */
+.pillarsRecut {
+  .shot {
+    border-radius: 24px;
+  }
+}
+
 /* —— Results (metric tiles) ——————————————————————————————————————— */
 
 .results {

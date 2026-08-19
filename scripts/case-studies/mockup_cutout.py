@@ -13,7 +13,16 @@ Two shapes, both handled:
   trim   the phone sits inside a uniform plate — trim the plate, then flood the
          residual corner background away from the four corners.
   round  the image IS the phone, edge to edge, on a square canvas — there is no
-         plate to trim, only square corners to round to the device radius.
+         plate to trim, only square corners to round. The radius stopped being a
+         device proportion in Aug 2026: it is now `.shot`'s CSS `border-radius`
+         converted to source pixels, so a re-cut creative and a flat one clip to
+         the same shape. Only irobot has been re-cut against it so far — see
+         `round_canvas`.
+
+A `trim` cut can NEVER be re-radiused: the pixels under its corner are the plate,
+flooded away, so a smaller radius uncovers the slab. Only `round` cuts are
+reshapeable, and `classify` is the authority on which is which — comparing source
+and output dimensions is not, because a 1px trim leaves them equal.
 
 THE GATE IS THE POINT. A flat creative whose margin is part of the design must
 never be trimmed, and a coloured plate must never be flooded away — doing that
@@ -126,11 +135,39 @@ NOT_A_MOCKUP = {
     'stadler-form-gallery-7.jpg', 'stadler-form-gallery-8.jpg',
 }
 
-def round_canvas(path, out, ratio=0.16):
+# `.pillarsRecut .shot`'s border-radius in case-study.module.css, and the width
+# `.shotPortrait` renders at on desktop (`flex: 0 1 15rem`). THESE TWO NUMBERS
+# ARE THE WHOLE COUPLING. A radius baked into alpha scales with the image, a CSS
+# one does not, so they agree at exactly one render width; edit the stylesheet or
+# the flex-basis and every file cut here silently stops matching its flat
+# neighbours.
+#
+# Only the studies in `RECUT_STUDIES` (case-study-article.tsx) opt into that
+# radius — irobot alone so far, and there only `irobot-edukacja-2-cut.webp` was
+# actually re-cut. Every other file keeps the original 0.16-of-width device
+# corner (~38px rendered). That is deliberate rather than unfinished: a cut file
+# may also be hardcoded into the /branze feed strips (lib/content/branze.ts),
+# which frame it at a different width and radius, so re-cutting one moves two
+# pages at once. Check for a strip reference before re-cutting anything.
+#
+# Adding a study is: this script over its `round` sources,
+# `lib/payload/refresh-case-study-creatives.ts` over the outputs, THEN the slug
+# into `RECUT_STUDIES`. Regenerating the files is a third of the job — the bytes
+# have to reach Payload and the stylesheet has to be told.
+SHOT_RADIUS_CSS_PX = 24
+SHOT_RENDER_WIDTH_PX = 240
+
+
+def round_canvas(path, out, css_px=SHOT_RADIUS_CSS_PX, render_w=SHOT_RENDER_WIDTH_PX):
     im = Image.open(path).convert('RGBA')
     w, h = im.size
+    # The browser downsamples this file to `render_w`, so `css_px` on screen is
+    # this many pixels here. Rounding is deliberate: PIL wants an int, and it
+    # draws the radius exactly (a corner arc measured off the top row reads
+    # ~sqrt(r) short, which is the pixel-centre offset, not a PIL error).
+    radius = round(css_px * w / render_w)
     mask = Image.new('L', (w, h), 0)
-    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w-1, h-1], radius=int(w*ratio), fill=255)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, w-1, h-1], radius=radius, fill=255)
     im.putalpha(mask.filter(ImageFilter.GaussianBlur(0.8)))
     im.save(out)
     return (w, h)

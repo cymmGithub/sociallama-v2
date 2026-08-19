@@ -59,6 +59,19 @@ const normalizePlatform = (value: string) =>
  * breadcrumb, CTA — comes from `chrome`, and `basePath` / `contactHref` localize
  * the internal links.
  */
+/**
+ * Studies whose phone-mockup cutouts have been re-cut to the 24px corner
+ * (scripts/case-studies/mockup_cutout.py, SHOT_RADIUS_CSS_PX). Their creatives
+ * carry that radius in their own alpha channel, so the flat creatives beside
+ * them have to be clipped to the same number — hence `.pillarsRecut`.
+ *
+ * Every other study still carries the original device corner (~38px rendered),
+ * where the page's default 18px is the closer match. Add a slug here only after
+ * its cutouts are actually re-cut AND re-uploaded, or its two kinds of creative
+ * drift apart instead of together.
+ */
+const RECUT_STUDIES = new Set(['irobot'])
+
 export function CaseStudyArticle({
   study,
   platforms,
@@ -274,7 +287,12 @@ export function CaseStudyArticle({
             <h2 className={s.sectionTitle} id="podejscie">
               {chrome.sections.approach}
             </h2>
-            <div className={s.pillars}>
+            <div
+              className={cn(
+                s.pillars,
+                RECUT_STUDIES.has(study.slug) && s.pillarsRecut
+              )}
+            >
               {study.approach.map((pillar) => {
                 const pillarMedia = (pillar.media ?? [])
                   .map((item) => resolveMedia(item))
