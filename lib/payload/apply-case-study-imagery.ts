@@ -490,6 +490,95 @@ const PLAN: Op[] = [
       altEn: 'An open ASUS Zenbook S 16 laptop on a light background',
     },
   },
+
+  /**
+   * —— pre-cropped landscape masters (change `fix-case-study-covers`) ——
+   *
+   * The recrops above fixed WHERE the crop landed. These four fix what there
+   * was to crop. Three shipped a source too small for the boxes that consume
+   * it — `rabkoland` sent 607x788 into a 2300x1292 retina hero, and both
+   * `kontigo-cover-3.jpg` and `bioagris-cover-3.jpg` are 1200x630 files cut
+   * from originals that were smaller still. Their replacements are cut from
+   * Higgsfield 4K upscales and land at 2400px on the long edge, so the hero
+   * downscales instead of stretching.
+   *
+   * `faktoria-win` is the odd one out: no new pixels, just the recrop the
+   * earlier pass never gave it. Its 1200x1200 creative was handed to
+   * `objectFit: cover` unexamined, which decapitated the man at the hairline
+   * and cut the "zgrana para" headline away entirely.
+   *
+   * Three of the four are AI reconstructions rather than photographs, and the
+   * spec now requires that to be recorded where imagery provenance is tracked
+   * — this is that record. `bioagris` additionally had its logo lockup
+   * composited back from `public/case-studies/bioagris/bioagris-logo.png`
+   * because the model rewrote the tagline "Skuteczność z natury" as
+   * "Stuiea.mcês a.noluty"; the band that shipped sits below the lockup, so the
+   * repair survives only in the stored master. `power-elements` was dropped
+   * from this list for the same class of failure with no such escape: the
+   * upscaler turned "30-Day Power Supply" on the tub into "20-Dey Porrar
+   * Sapply", which is a false statement about a client's product rather than a
+   * cosmetic one.
+   *
+   * Aspect ratios are deliberately not uniform. 1.90:1 sits between the hero
+   * (1.78) and the 1440px listing card (2.10) so neither crops meaningfully,
+   * and that is what three of them use. `faktoria-win` uses 2.19:1 instead,
+   * because its badge ends 16px above its headline: any crop tall enough to
+   * read as 1.90:1 hands the card box enough vertical overflow to slice
+   * "zgrana" off the top, and any crop that clears the badge starts below it.
+   * Widening the master until the card stops cropping vertically is the only
+   * move the source allows.
+   */
+  {
+    slug: 'faktoria-win',
+    file: 'faktoria-win-cover.jpg',
+    why: 'Square creative sent to objectFit cover — man decapitated at the hairline, headline cut away',
+    target: 'cover',
+    replace: {
+      file: 'faktoria-win-cover-3.jpg',
+      altPl:
+        'Kreacja Faktorii Win z hasłem „zgrana para” — uśmiechnięta para nad butelkami wina',
+      altEn:
+        'Faktoria Win creative headlined “zgrana para” — a smiling couple above bottles of wine',
+    },
+  },
+  {
+    slug: 'rabkoland',
+    file: 'rabkoland-cover.jpg',
+    why: '607x788 source stretched 1.38x into the card and 3.79x into the retina hero',
+    target: 'cover',
+    replace: {
+      file: 'rabkoland-cover-3.jpg',
+      altPl:
+        'Diabelski młyn w parku rozrywki Rabkoland na tle błękitnego nieba',
+      altEn:
+        'The Ferris wheel at the Rabkoland amusement park against a blue sky',
+    },
+  },
+  {
+    slug: 'kontigo',
+    file: 'kontigo-cover-3.jpg',
+    why: 'Proven bicubic upscale — round-trips to the 808x425 file at 1.6/255 error with lower gradient energy',
+    target: 'cover',
+    replace: {
+      file: 'kontigo-cover-5.jpg',
+      altPl:
+        'Dwie kobiety w turbanach z ręczników nakładają sobie maseczki kosmetyczne — kadr z okładki grupy KontigoCLUB',
+      altEn:
+        'Two women in towel turbans applying face masks to each other — from the KontigoCLUB group cover',
+    },
+  },
+  {
+    slug: 'bioagris',
+    file: 'bioagris-cover-3.jpg',
+    why: 'No plane of critical focus at any scale — soft everywhere rather than soft outside the subject',
+    target: 'cover',
+    replace: {
+      file: 'bioagris-cover-5.jpg',
+      altPl:
+        'Dłonie przesypujące żyzną, ciemną glebę w świetle zachodzącego słońca',
+      altEn: 'Hands sifting rich dark soil in the light of the setting sun',
+    },
+  },
 ]
 
 const { default: config } = await import('@payload-config')
@@ -561,13 +650,44 @@ async function findOrCreateMedia(file: string, slug: string, altPl: string) {
       filePath: `public/case-studies/${slug}/${file}`,
     })
   try {
-    return { doc: await create(), created: true }
+    return { doc: assertNamed(await create(), file), created: true }
   } catch (err) {
     if (!/already exists/i.test(String(err))) throw err
     const n = await clearBlobs(file)
     console.log(`  (cleared ${n} shared-store blob object(s) for ${file})`)
-    return { doc: await create(), created: true }
+    return { doc: assertNamed(await create(), file), created: true }
   }
+}
+
+/**
+ * Payload renames an upload rather than refusing it, and the check it renames
+ * against is not the one you would expect. `getSafeFileName` tests the target
+ * database AND `staticPath` on the local filesystem — and the local path is
+ * consulted even when a storage adapter is writing the bytes to Vercel Blob.
+ *
+ * That makes dev-then-prod, run from one worktree, silently desynchronise the
+ * two databases. The development run has no BLOB_READ_WRITE_TOKEN, so its bytes
+ * land in `media/` on disk; the production run minutes later finds that file
+ * sitting there and quietly ships `x-3.jpg` where the plan said `x-2.jpg`. It is
+ * invisible in the output, because the log line prints the requested name.
+ *
+ * A silent rename is fatal to this script specifically, because the whole plan
+ * is keyed on filenames being the same identifier in every database. So refuse
+ * the run: clear the local `media/` copy (or rename the plan entry to the
+ * generation that is actually free) and start again.
+ */
+// biome-ignore lint/suspicious/noExplicitAny: Payload doc shape
+function assertNamed(doc: any, wanted: string) {
+  if (doc.filename !== wanted) {
+    throw new Error(
+      `Payload stored ${doc.filename} for a plan entry named ${wanted}. ` +
+        'Something already holds that name — most often a development copy in ' +
+        "this worktree's media/ directory, which getSafeFileName checks even " +
+        "when the bytes go to Vercel Blob. Filenames are this plan's only " +
+        'cross-database identifier, so a rename is refused rather than shipped.'
+    )
+  }
+  return doc
 }
 
 let changes = 0
