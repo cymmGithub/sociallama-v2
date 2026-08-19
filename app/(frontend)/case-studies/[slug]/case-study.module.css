@@ -332,7 +332,21 @@
 }
 
 /* Creatives render frameless — no border, no surface plate; the media keeps
-   its own shape and only the corner radius is clipped. */
+   its own shape and only the corner radius is clipped.
+
+   18px is the page's only radius now — the `.pillarsRecut` modifier and its
+   `RECUT_STUDIES` opt-in are gone, because no study asks for a second one any
+   more. It is load-bearing twice over: a flat creative is clipped to it here,
+   while a phone-mockup cutout carries its corner in its own alpha channel,
+   baked by scripts/case-studies/mockup_cutout.py from this number and the width
+   `.shotPortrait` renders below (240px). A baked radius scales with the image
+   and a CSS one does not, so the two agree at exactly that width.
+
+   Most cutouts are NOT cut against it and should not be: on a full-bleed phone
+   mockup the baked ~38px corner IS the device body, and squaring it makes the
+   phone stop reading as a phone. The five studies cut to 18px — irobot, engie,
+   volvo, fm-logistics, laurastar — are the ones whose creatives are flat
+   captures, where a big corner reads as a bite taken out of the card. */
 .shot {
   flex: 0 1 30rem;
   border-radius: 18px;
@@ -353,23 +367,6 @@
 
   &:nth-child(2) {
     margin-top: calc(var(--gap) * 1.5);
-  }
-}
-
-/* A phone-mockup creative carries its corner in its own alpha channel, so it
-   cannot be reshaped from here — the flat creative beside it has to move to
-   meet it instead. Studies listed in `RECUT_STUDIES` (case-study-article.tsx)
-   have had their cutouts re-cut to 24px at the width `.shotPortrait` renders
-   above; scripts/case-studies/mockup_cutout.py holds the same number as
-   SHOT_RADIUS_CSS_PX and is what produced them.
-
-   The rest of the site keeps 18px, which is the closer match to the original
-   ~38px device corner those studies still carry. Three numbers, one meaning:
-   change any of them alone and a re-cut study's two kinds of creative drift
-   apart. */
-.pillarsRecut {
-  .shot {
-    border-radius: 24px;
   }
 }
 

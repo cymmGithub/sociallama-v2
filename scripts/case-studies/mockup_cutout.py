@@ -16,8 +16,9 @@ Two shapes, both handled:
          plate to trim, only square corners to round. The radius stopped being a
          device proportion in Aug 2026: it is now `.shot`'s CSS `border-radius`
          converted to source pixels, so a re-cut creative and a flat one clip to
-         the same shape. irobot, volvo and engie have been re-cut against it so
-         far — see `round_canvas`.
+         the same shape. Five studies are cut against it — the ones whose
+         creatives are flat captures rather than device mockups; the rest keep
+         the device corner deliberately. See `round_canvas`.
 
 A `trim` cut can NEVER be re-radiused: the pixels under its corner are the plate,
 flooded away, so a smaller radius uncovers the slab. Only `round` cuts are
@@ -135,26 +136,36 @@ NOT_A_MOCKUP = {
     'stadler-form-gallery-7.jpg', 'stadler-form-gallery-8.jpg',
 }
 
-# `.pillarsRecut .shot`'s border-radius in case-study.module.css, and the width
+# `.shot`'s border-radius in case-study.module.css, and the width
 # `.shotPortrait` renders at on desktop (`flex: 0 1 15rem`). THESE TWO NUMBERS
 # ARE THE WHOLE COUPLING. A radius baked into alpha scales with the image, a CSS
 # one does not, so they agree at exactly one render width; edit the stylesheet or
-# the flex-basis and every file cut here silently stops matching its flat
+# the flex-basis and every file cut against them silently stops matching its flat
 # neighbours.
 #
-# Only the studies in `RECUT_STUDIES` (case-study-article.tsx) opt into that
-# radius — irobot (only `irobot-edukacja-2-cut.webp`), volvo and engie so far.
-# Every other file keeps the original 0.16-of-width device
-# corner (~38px rendered). That is deliberate rather than unfinished: a cut file
-# may also be hardcoded into the /branze feed strips (lib/content/branze.ts),
-# which frame it at a different width and radius, so re-cutting one moves two
-# pages at once. Check for a strip reference before re-cutting anything.
+# `.pillarsRecut` and its `RECUT_STUDIES` opt-in are gone as of 2026-08-19: they
+# held a second radius (24px) while irobot, volvo and engie were tighter than the
+# page, and all three have since been cut to the page's own 18px.
 #
-# Adding a study is: this script over its `round` sources,
-# `lib/payload/refresh-case-study-creatives.ts` over the outputs, THEN the slug
-# into `RECUT_STUDIES`. Regenerating the files is a third of the job — the bytes
-# have to reach Payload and the stylesheet has to be told.
-SHOT_RADIUS_CSS_PX = 24
+# DO NOT SWEEP THE COLLECTION WITH THIS. Only five studies are cut against it —
+# irobot, engie, volvo, fm-logistics, laurastar — and they share one trait: their
+# creatives are flat captures (LinkedIn and Instagram cards), where a large
+# corner reads as a bite taken out of the card. The other ~45 studies keep the
+# original 0.16-of-width device corner (~38px rendered) BY DECISION: there the
+# baked corner is the phone's own body, and 18px squares it off so the mockup
+# stops reading as a device. A fleet-wide 18px pass was built and discarded for
+# exactly that reason.
+#
+# Two more things that survive either way:
+#   - The 37 `trim` cutouts cannot be re-radiused at all. Their corner alpha is
+#     the plate, flooded away, so a smaller radius uncovers the slab.
+#   - A cut file may also be hardcoded into the /branze feed strips
+#     (lib/content/branze.ts), which frame it at 224px behind a 14.4px clip, so
+#     re-cutting one moves two pages at once. Check for a strip reference first.
+#
+# Regenerating the files is a third of the job: the bytes then have to reach
+# Payload through `lib/payload/refresh-case-study-creatives.ts`.
+SHOT_RADIUS_CSS_PX = 18
 SHOT_RENDER_WIDTH_PX = 240
 
 
