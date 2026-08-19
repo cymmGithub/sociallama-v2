@@ -180,6 +180,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    /* List items are the shortest blocks here, so justification has the fewest
+       words to spread its slack over — the spaces gape. Lists stay ragged, like
+       the headings above. */
+    text-align: left;
   }
 
   ul {
@@ -298,6 +302,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.375em;
+    /* Same call as `.prose`: short list items make justification gape, so
+       lists keep the ragged edge. */
+    text-align: left;
   }
 
   ul {
