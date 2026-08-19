@@ -74,11 +74,18 @@ const TEAR_TABLE: readonly TearBand[] = [
  * box or the mobile media box); the 5 URLs are identical, so the browser still
  * fetches only 5 files no matter how many instances mount.
  *
- * Priority: only look-01 (first paint / LCP candidate) is prioritized — looks
- * 2–5 load eagerly but at normal priority so they don't contend with it. The
- * `primary` instance owns the single `<link rel=preload>`; any secondary
- * instance hints high priority inline instead, avoiding a duplicate-preload
- * warning while still favouring look-01 whichever viewport paints.
+ * Priority: only look-01 (first paint / LCP candidate) is prioritized. Looks
+ * 2–5 need an explicit fetchPriority="low": React's streaming renderer
+ * auto-preloads every non-lazy <img> it meets in the shell, and on the PPR
+ * homepage those surface as `Link: rel=preload` headers on the document — so
+ * without the marker all five looks compete at preload priority, 233KB ahead
+ * of the LCP image on PSI's slow-4G simulation (2026-08-19 audit).
+ * `loading="lazy"` and fetchPriority="low" are React's only opt-outs; low
+ * keeps them eager, resident long before the first tear fires at ~4s. The
+ * `primary` instance owns the single look-01 `<link rel=preload>`; any
+ * secondary instance hints high priority inline instead, avoiding a
+ * duplicate-preload warning while still favouring look-01 whichever viewport
+ * paints.
  *
  * The resting layer stays a real `<img>` for exactly that reason: the HTML
  * preload scanner finds it while parsing, whereas a CSS background is only
@@ -178,6 +185,7 @@ export function HeroLooks({
             objectFit="contain"
             {...(isFirst && primary && { preload: true })}
             {...(isFirst && !primary && { fetchPriority: 'high' as const })}
+            {...(!isFirst && { fetchPriority: 'low' as const })}
             alt={isActive ? alt : ''}
             aria-hidden={!isActive}
             className={cn(
