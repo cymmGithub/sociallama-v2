@@ -69,8 +69,15 @@ const normalizePlatform = (value: string) =>
  * where the page's default 18px is the closer match. Add a slug here only after
  * its cutouts are actually re-cut AND re-uploaded, or its two kinds of creative
  * drift apart instead of together.
+ *
+ * volvo was in this Set and left it. Its two #STRUKTURA TREŚCI cutouts are its
+ * entire cutout inventory and they read better tight, so they were cut to the
+ * page's own 18px instead — the same treatment fm-logistics and laurastar got.
+ * The radius is a per-study judgement, not a number the collection is
+ * converging on: 38px suits most of these mockups, and the studies listed here
+ * are the ones where it did not.
  */
-const RECUT_STUDIES = new Set(['irobot', 'volvo', 'engie'])
+const RECUT_STUDIES = new Set(['irobot', 'engie'])
 
 export function CaseStudyArticle({
   study,
