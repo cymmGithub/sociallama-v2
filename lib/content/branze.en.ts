@@ -234,7 +234,7 @@ export const INDUSTRIES = [
         },
         {
           src: '/case-studies/irobot/irobot-edukacja-2-cut.webp',
-          alt: 'iRobot Polska post introducing the Roomba MAX 705 Combo',
+          alt: 'iRobot Polska post introducing the Roomba MAX 775 Combo',
           width: 814,
           height: 1316,
         },

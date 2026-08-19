@@ -376,7 +376,7 @@ export const INDUSTRIES = [
         },
         {
           src: '/case-studies/irobot/irobot-edukacja-2-cut.webp',
-          alt: 'Zrzut posta iRobot Polska prezentującego Roombę MAX 705 Combo',
+          alt: 'Zrzut posta iRobot Polska prezentującego Roombę MAX 775 Combo',
           width: 814,
           height: 1316,
         },
