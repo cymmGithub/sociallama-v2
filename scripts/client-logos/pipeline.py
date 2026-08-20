@@ -569,6 +569,13 @@ CS_EXTRA_SOURCES = {
 # belt needs it more here.
 CS_INHERIT_OPTS = {"tol", "lead"}
 
+# Slugs whose `<slug>-logo-mono.png` is hand-placed and must NOT be regenerated.
+# breville: the 2026-08-20 review replaced the card mark with the official
+# colour logo (black wordmark, red dot over the i) plated by hand onto the
+# 280x72 canvas at the old mono's optical box — the mono treatment would
+# flatten the red dot to black, which is exactly what the review rejected.
+CS_HAND_PLACED = {"breville"}
+
 
 def cs_sources():
     """slug -> (source path, opts), for every published case study.
@@ -584,6 +591,8 @@ def cs_sources():
     out = {}
     for slug in sorted(os.listdir(CS_SRC)):
         if not os.path.isdir(os.path.join(CS_SRC, slug)):
+            continue
+        if slug in CS_HAND_PLACED:
             continue
         if slug in CS_EXTRA_SOURCES:
             out[slug] = (CS_EXTRA_SOURCES[slug], {})
