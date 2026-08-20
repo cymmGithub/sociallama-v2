@@ -33,7 +33,11 @@ const APPLY = process.argv.includes('--apply')
 
 if (process.argv.includes('--prod')) {
   const { targetProdEnv } = await import('./prod-env')
-  targetProdEnv('delete-review-orphans')
+  // `blob: true` even though nothing is uploaded: production keeps the bytes in
+  // Vercel Blob, and Payload can only remove a deleted row's object while its
+  // Blob plugin is active. Without the token the row goes and the object is
+  // orphaned in the store with nothing left pointing at it.
+  targetProdEnv('delete-review-orphans', { blob: true })
 }
 
 /** Detached by strip-pracuj-creatives.ts and swap-irobot-humor.ts. */
