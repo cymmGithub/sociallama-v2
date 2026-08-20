@@ -569,12 +569,13 @@ CS_EXTRA_SOURCES = {
 # belt needs it more here.
 CS_INHERIT_OPTS = {"tol", "lead"}
 
-# Slugs whose `<slug>-logo-mono.png` is hand-placed and must NOT be regenerated.
+# Slugs whose `<slug>-logo-mono.png` is hand-placed: the file is never
+# overwritten, but the slug still flows through pass 1/2 so the set's median
+# optical mass — which normalizes the other 47 marks — and the contact sheet
+# are unchanged by the exclusion.
 # breville: the 2026-08-20 review replaced the source artwork with the official
 # logo; the card mark is that artwork flattened to black by hand, plated onto
-# the 280x72 canvas at the previous mono's exact optical box. A pipeline run
-# would re-derive it from the same source at the set-median normalization —
-# near-identical, but the hand placement is the reviewed one, so it stays.
+# the 280x72 canvas at the previous mono's exact optical box.
 CS_HAND_PLACED = {"breville"}
 
 
@@ -592,8 +593,6 @@ def cs_sources():
     out = {}
     for slug in sorted(os.listdir(CS_SRC)):
         if not os.path.isdir(os.path.join(CS_SRC, slug)):
-            continue
-        if slug in CS_HAND_PLACED:
             continue
         if slug in CS_EXTRA_SOURCES:
             out[slug] = (CS_EXTRA_SOURCES[slug], {})
@@ -713,7 +712,8 @@ def build_case_studies():
     for slug, src, mark, fit, cut in prepared:
         correction = min(1.0, max(0.5, (median / masses[slug]) ** 0.5))
         placed = place_left(mark, fit * correction)
-        placed.save(os.path.join(CS_SRC, slug, f"{slug}-logo-mono.png"))
+        if slug not in CS_HAND_PLACED:
+            placed.save(os.path.join(CS_SRC, slug, f"{slug}-logo-mono.png"))
         marks.append((slug, placed))
         rows.append((slug, src, mark.size, cut, correction))
 

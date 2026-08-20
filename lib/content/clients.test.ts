@@ -21,7 +21,7 @@ describe('client roster', () => {
       // A `?v=N` suffix is a cache-bust for the image optimizer after an
       // in-place byte replacement (see the volvo entry) — the path itself
       // still has to follow the key convention and exist on disk.
-      const path = brand.logo.split('?')[0] ?? brand.logo
+      const path = brand.logo.replace(/\?.*$/, '')
       expect(path).toBe(`/assets/clients/${brand.key}.png`)
       expect(existsSync(join(PUBLIC, path))).toBe(true)
     }

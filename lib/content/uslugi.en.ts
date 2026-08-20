@@ -573,7 +573,7 @@ export const SERVICES = [
         cases: [
           {
             slug: 'volvo',
-            logo: '/case-studies/volvo/volvo-logo.png',
+            logo: '/case-studies/volvo/volvo-logo.png?v=2',
             kicker: 'CASE STUDY',
             brand: 'Volvo',
             title: 'Building the brands on LinkedIn, Facebook, and Instagram',

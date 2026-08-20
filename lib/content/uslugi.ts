@@ -916,7 +916,7 @@ export const SERVICES = [
         cases: [
           {
             slug: 'volvo',
-            logo: '/case-studies/volvo/volvo-logo.png',
+            logo: '/case-studies/volvo/volvo-logo.png?v=2',
             kicker: 'CASE STUDY',
             brand: 'Volvo',
             // Not a prefix strip: the brand was embedded in the sentence, so it

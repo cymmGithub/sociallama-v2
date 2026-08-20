@@ -989,14 +989,11 @@
   box-shadow: 0 6px 18px -10px rgb(43 31 36 / 35%);
   font-family: var(--font-mono);
 
-  /* Tracks the orbit rather than sitting at a fixed size: 1.177vw is 3.27% of
-     the 36vw box, the ratio this has at full desktop. Fixed type in a shrinking
-     diagram wrapped the pills onto more and more lines until they touched the
-     hub — clearance went negative below ~1000px, worst on
-     /branze/elektronika-i-agd, whose longest pillar runs to five lines there.
-     The 0.85rem cap is the size this has always had once --orbit reaches its
-     26rem ceiling, so full desktop is unchanged. */
-  font-size: clamp(0.72rem, 1.177vw, 0.85rem);
+  /* Tracks the orbit rather than sitting at a fixed size: fixed type in a
+     shrinking diagram wrapped the pills onto more lines until they touched the
+     hub (worst on /branze/elektronika-i-agd below ~1000px). The 0.85rem cap is
+     what 26rem × 0.0327 comes to, so full desktop is unchanged. */
+  font-size: clamp(0.72rem, calc(var(--orbit) * 0.0327), 0.85rem);
   font-weight: 600;
   line-height: 1.25;
   text-align: center;
@@ -1022,10 +1019,9 @@
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
 
-  /* 2.077vw is 5.77% of the 36vw box — the same ratio the 1.5rem cap has
-     against a 26rem orbit, so the hub scales with the diagram instead of
-     bottoming out at its old 1.1rem floor and crowding the pills. */
-  font-size: clamp(0.95rem, 2.077vw, 1.5rem);
+  /* Scales with the diagram instead of bottoming out at the old 1.1rem floor
+     and crowding the pills; 26rem × 0.0577 is the 1.5rem cap. */
+  font-size: clamp(0.95rem, calc(var(--orbit) * 0.0577), 1.5rem);
   font-weight: 700;
   line-height: 1.1;
   text-align: center;

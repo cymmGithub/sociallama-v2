@@ -64,30 +64,24 @@ test.describe('Careers page', () => {
     ).toBeAttached()
     expect(await page.locator('h1').count()).toBe(1)
 
-    // Band order: roles → benefits → form, with nothing after the form.
+    // Band order: roles → form, with nothing after the form (the benefits
+    // band was removed by the 2026-08-20 review).
     const order = await page.evaluate(() => {
       const find = (fragment: string) =>
         document.querySelector(`[class*="${fragment}"]`)
       const roles = find('__roles')
-      const benefits = find('__benefits')
       const form = find('__formBand')
-      if (!(roles && benefits && form)) return null
+      if (!(roles && form)) return null
       return {
-        rolesBeforeBenefits: Boolean(
-          roles.compareDocumentPosition(benefits) &
-            Node.DOCUMENT_POSITION_FOLLOWING
-        ),
-        benefitsBeforeForm: Boolean(
-          benefits.compareDocumentPosition(form) &
-            Node.DOCUMENT_POSITION_FOLLOWING
+        rolesBeforeForm: Boolean(
+          roles.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING
         ),
         // Whatever follows the form band must be site chrome, not a section.
         nextIsFooter: form.nextElementSibling === null,
       }
     })
     expect(order).toEqual({
-      rolesBeforeBenefits: true,
-      benefitsBeforeForm: true,
+      rolesBeforeForm: true,
       nextIsFooter: true,
     })
 

@@ -28,7 +28,7 @@ export function CareersApply({
     <section className={s.formBand}>
       <div className={`${s.inner} ${s.formGrid}`}>
         <div>
-          <p className={`${s.eyebrow} ${s.formEyebrow}`}>{form.eyebrow}</p>
+          <p className={s.formEyebrow}>{form.eyebrow}</p>
           <h2 className={s.formHeading}>{form.heading}</h2>
           <p className={s.formLede}>{form.lede}</p>
         </div>

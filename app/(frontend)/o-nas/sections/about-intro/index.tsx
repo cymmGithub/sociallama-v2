@@ -39,9 +39,12 @@ export function AboutIntro({
     >
       <div className={s.inner}>
         <div data-reveal-item className={s.figure}>
+          {/* The -2 is a cache-busting revision, not a variant — the illustration was
+                replaced in place by the team photo (2026-08-20) and the optimizer
+                caches variants by URL. Bump the suffix if the photo changes again. */}
           <Image
             className={s.illustration}
-            src="/o-nas/cos-o-lamie.png"
+            src="/o-nas/cos-o-lamie-2.png"
             alt={content.imageAlt}
             aspectRatio={701 / 655}
             desktopSize="40vw"

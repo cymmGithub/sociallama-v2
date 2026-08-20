@@ -20,8 +20,8 @@ import s from './zostan-lama.module.css'
  * scrolling); the near-black ground and the plum application band are painted
  * by the scoped zostan-lama.module.css.
  *
- * Band order is ink-deep → ink-deep → plum-deep: hero, then role panels, then
- * the form immediately after them. The page ENDS on the form (design D3):
+ * Band order is ink-deep (hero, then role panels) → plum-deep (the form
+ * immediately after them). The page ENDS on the form (design D3):
  * nothing may be added below <CareersApply/> — the next element is the site
  * footer.
  */
