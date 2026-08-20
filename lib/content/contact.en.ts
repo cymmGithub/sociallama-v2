@@ -91,8 +91,8 @@ export const contactMetricsHead =
   'A few numbers on what we do for brands:' satisfies LocalizedContact['contactMetricsHead']
 
 export const contactMetrics = [
-  { value: '500,000', caption: 'engaged fans' },
+  { value: '514,000', caption: 'engaged fans' },
   { value: '528', caption: 'campaigns run' },
   { value: '80', caption: 'happy clients' },
-  { value: '7,000,000', caption: 'reach on Facebook' },
+  { value: '7,260,000', caption: 'reach on Facebook' },
 ] satisfies LocalizedContact['contactMetrics']

@@ -44,23 +44,36 @@ render the same section composition.
 ### Requirement: Section composition and band order
 
 The page SHALL render, in order: a marquee hero carrying the page's accessible
-heading and lede, role panels, a benefits band, and the application form.
+heading and lede, role panels, and the application form. The page SHALL NOT
+render a benefits section: benefits change over time and the removed section's
+items (e.g. "brainstorm") read as filler rather than benefits.
 
-The bands SHALL alternate ground colour in the order deep-ink, deep-ink,
-orange, deep-plum, so the benefits band is the page's only light break and sits
-immediately before the form.
+The bands SHALL keep the alternating ground colours of the remaining sections
+(deep-ink, deep-ink, deep-plum), with the application form immediately
+following the role panels.
+
+The hero lede SHALL be the tone-of-voice-approved copy: "Chcesz zdobywać nowe
+umiejętności w świecie social mediów? Aplikuj do Social Lamy" (EN twin carries
+its translation). The previous jokey lede ("…Bijesz rekordy w pluciu na
+odległość?…") SHALL NOT appear.
 
 #### Scenario: Bands render in order
 
 - **WHEN** the careers page renders
-- **THEN** the benefits band appears after the role panels and before the
-  application form
+- **THEN** the application form appears immediately after the role panels
+- **AND** no benefits section appears anywhere on the page
 
 #### Scenario: The decorative marquee is not the heading
 
 - **WHEN** assistive technology reads the page
 - **THEN** exactly one `h1` names the page
 - **AND** the repeating marquee text is hidden from the accessibility tree
+
+#### Scenario: Hero lede carries the approved copy
+
+- **WHEN** the Polish careers page renders
+- **THEN** the hero lede reads "Chcesz zdobywać nowe umiejętności w świecie
+  social mediów? Aplikuj do Social Lamy"
 
 ### Requirement: The page ends on the application form
 
@@ -93,7 +106,7 @@ technology.
 ### Requirement: Careers copy lives in locale content files
 
 All page copy SHALL be sourced from `lib/content/zostan-lama.ts` and its English
-counterpart — role definitions, benefits, form labels and status messages — and
+counterpart — role definitions, form labels and status messages — and
 SHALL NOT be hardcoded in component markup. The English file SHALL satisfy the
 same shape as the Polish one under the translation-parity gate.
 

@@ -4,9 +4,8 @@
  * Every block is `satisfies LocalizedCareers['<key>']` — the parity gate, so a
  * missing or mis-shaped key fails the build while real translations compile.
  *
- * Role `id`s and benefit `icon` keys are NOT translated: the ids are the values
- * the form submits and the server action validates against, and the icon keys
- * index the section component's lucide map. Only human-facing text changes.
+ * Role `id`s are NOT translated: they are the values the form submits and the
+ * server action validates against. Only human-facing text changes.
  */
 
 import type { LocalizedCareers } from './zostan-lama'
@@ -117,61 +116,12 @@ export const careersShare = {
   copied: 'Link copied',
 } satisfies LocalizedCareers['careersShare']
 
-// —— Benefits band ———————————————————————————————————————————————————————————
-
-export const careersBenefits = {
-  eyebrow: 'What you get',
-  heading: 'Benefits we actually use',
-  items: [
-    {
-      icon: 'heart-pulse',
-      title: 'Private healthcare',
-      text: 'Medicover or CMP — your pick',
-    },
-    {
-      icon: 'activity',
-      title: 'Multisport card',
-      text: 'Because spitting far is not a full workout',
-    },
-    {
-      icon: 'library',
-      title: 'Library',
-      text: 'Access to the office bookshelf',
-    },
-    {
-      icon: 'clock',
-      title: 'Fridays until 3:30 pm',
-      text: 'Seven hours and the weekend starts',
-    },
-    {
-      icon: 'languages',
-      title: 'Language classes',
-      text: 'We cover part of the course',
-    },
-    {
-      icon: 'graduation-cap',
-      title: 'Learning platform',
-      text: 'Plus a budget for outside training',
-    },
-    {
-      icon: 'lightbulb',
-      title: 'Brainstorms',
-      text: 'Creative sessions and in-house workshops',
-    },
-    {
-      icon: 'trending-up',
-      title: 'Real growth',
-      text: '13 years on the market, inside a marketing group',
-    },
-  ],
-} satisfies LocalizedCareers['careersBenefits']
-
 // —— Application form ————————————————————————————————————————————————————————
 
 export const careersForm = {
   eyebrow: 'Application',
   heading: 'Apply — boldly\nand creatively',
-  lede: 'Can you behave yourself in a group? Does anyone actually like you online? Do you hold the record for long-distance spitting? …then you might just fit in.',
+  lede: 'Want to pick up new skills in the world of social media? Apply to Social Lama',
   fields: {
     name: { label: 'Full name', placeholder: 'Anna Kowalska' },
     email: { label: 'Email', placeholder: 'anna@example.com' },

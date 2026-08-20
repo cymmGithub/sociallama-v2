@@ -44,6 +44,9 @@
 .illustration {
   width: 100%;
   height: auto;
+  /* Matches .card in the projects section below — the two are the only framed
+     images on the page, so they share one corner. */
+  border-radius: 18px;
 }
 
 /* —— Right: heading + body + CTA ——————————————————————————————————— */

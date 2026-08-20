@@ -11,10 +11,8 @@ import s from './about-intro.module.css'
 /*
  * About-intro band ("COŚ O LAMIE") — cream chapter of /o-nas.
  *
- * Two columns: a framed illustration (left) and the agency statement (right).
- * The illustration asset is not in yet, so the left cell renders a 1:1
- * placeholder box carrying `data-onas-img="cos-o-lamie"` — swap the whole box
- * for the real PNG later.
+ * Two columns: a team photo (left) and the agency statement (right). The photo
+ * carries the same 18px corner as the project cards further down the page.
  *
  * data-theme="cream" is required, not decorative: the page mounts inside
  * <Wrapper theme="plum">, so without it --color-secondary would resolve to
@@ -45,7 +43,7 @@ export function AboutIntro({
             className={s.illustration}
             src="/o-nas/cos-o-lamie.png"
             alt={content.imageAlt}
-            aspectRatio={749 / 802}
+            aspectRatio={701 / 655}
             desktopSize="40vw"
             mobileSize="80vw"
           />

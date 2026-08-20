@@ -25,9 +25,10 @@ export const oNasHero = {
 export const oNasAbout = {
   headingLead: 'SOMETHING',
   headingRest: 'ABOUT THE LAMA',
-  body: "Social Lama is a social media agency handling full-service brand communication on social — plus effective advertising on Facebook, Instagram, and beyond. We'll build a strategy that works, craft creative communication, take care of your community, and run a campaign that actually delivers.",
+  body: 'Social Lama is an agency handling full-service brand communication on social media, on the market since 2013. We keep that communication coherent and engaging — from strategy through moderation to content production and work that joins the online to the offline. We help companies hit their brand and sales goals with creative concepts built for their audience, and with recommendations we bring to them first.',
   cta: { label: 'DISCOVER OUR EXPERIENCE', href: '#zespol' },
-  imageAlt: 'Illustration of the Social Lama llama herd in a wooden frame',
+  imageAlt:
+    'Three of the Social Lama team at a desk, looking at a screen together',
 } satisfies LocalizedONas['oNasAbout']
 
 export const oNasValues = {
@@ -211,7 +212,7 @@ export const oNasTeam = {
       surname: 'ROKICKA',
       role: 'Social Media Manager',
       certs: ['dimaq'],
-      bio: 'Over 12 years in the marketing industry. She specializes in communication strategy, social media, moderation, content marketing, and podcasts. She has worked with brands in beauty, retail, FMCG, automotive, real estate, pharma, and e-commerce. After hours she works to educate the industry — running trainings, publishing expert pieces, and sharing what she knows on her own podcast.',
+      bio: 'In the marketing industry since 2014. She specializes in communication strategy, social media, moderation, content marketing, and podcasts. She has worked with brands in beauty, retail, FMCG, automotive, real estate, pharma, and e-commerce. After hours she works to educate the industry — running trainings, publishing expert pieces, and sharing what she knows on her own podcast.',
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
@@ -225,21 +226,21 @@ export const oNasTeam = {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
-      bio: 'Five years in marketing and social media. She pairs a passion for photography with a background in management and advertising graphics, which is why she thrives on content production and unconventional concepts. She built her experience in the hotel, restaurant, beauty, and lifestyle industries. She knows that good social media is a mix of aesthetics, psychology, humor, and a well-judged amount of madness. Plus analytics, obviously.',
+      bio: 'In marketing and social media since 2021. She pairs a passion for photography with a background in management and advertising graphics, which is why she thrives on content production and unconventional concepts. She built her experience in the hotel, restaurant, beauty, and lifestyle industries. She knows that good social media is a mix of aesthetics, psychology, humor, and a well-judged amount of madness. Plus analytics, obviously.',
       photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
-      bio: 'Over four years in marketing, and at Social Lama she creates engaging content and helps brands build a coherent, strong presence online. She pairs a Communication Management background with a creative approach to content, treating every brief as room for something unconventional.',
+      bio: 'In marketing since 2022, and at Social Lama she creates engaging content and helps brands build a coherent, strong presence online. She pairs a Communication Management background with a creative approach to content, treating every brief as room for something unconventional.',
       photo: '/o-nas/slider/katarzyna-kaptur.png',
     },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
       role: 'Social Media Specialist',
-      bio: 'For over 10 years she has run brand communication on social media, building her experience on projects for global names in beauty, FMCG, home appliances, and lifestyle. She builds long-range strategies and engaging content, backing authenticity, emotion, and lasting relationships between a brand and its audience.',
+      bio: 'Since 2016 she has run brand communication on social media, building her experience on projects for global names in beauty, FMCG, home appliances, and lifestyle. She builds long-range strategies and engaging content, backing authenticity, emotion, and lasting relationships between a brand and its audience.',
       photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
@@ -274,7 +275,7 @@ export const oNasTeam = {
       given: 'ŁUKASZ',
       surname: 'PŁOCIŃSKI',
       role: 'SEO Specialist, SEOFLY',
-      bio: "SEO specialist at SEOFLY, the partner agency in our group. For over fifteen years he has been ranking websites and online stores — from audits and keyword research through optimization to content that actually pulls traffic in. He pairs analytical thinking with creativity and keeps pace with every turn Google's algorithms take. Off the clock he follows volleyball and plays it himself, and gives his free time to his family and to fantasy — Tolkien through Discworld.",
+      bio: "SEO specialist at SEOFLY, the partner agency in our group. Since 2011 he has been ranking websites and online stores — from audits and keyword research through optimization to content that actually pulls traffic in. He pairs analytical thinking with creativity and keeps pace with every turn Google's algorithms take. Off the clock he follows volleyball and plays it himself, and gives his free time to his family and to fantasy — Tolkien through Discworld.",
       link: {
         label: 'seofly.pl',
         href: 'https://seofly.pl/zespol/lukasz-plocinski/',

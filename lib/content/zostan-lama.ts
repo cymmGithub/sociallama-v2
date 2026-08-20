@@ -1,7 +1,7 @@
 /**
  * Copy + data for the `/zostan-lama` careers page (redesign-careers-page).
  *
- * Components never hardcode strings — every label, role, benefit, and status
+ * Components never hardcode strings — every label, role and status
  * message on the page reads from this module (repo rule; mirrors contact.ts).
  * The Zod schema in `lib/integrations/email/careers-schema.ts` also sources its
  * field-error and status messages from here, and the set of accepted role
@@ -139,57 +139,6 @@ export const careersShare = {
   copied: 'Link skopiowany',
 } as const
 
-// —— Benefits band ———————————————————————————————————————————————————————————
-
-// `icon` is a key into the section component's lucide map — content modules
-// stay serialisable data, so they never hold React components.
-export const careersBenefits = {
-  eyebrow: 'Co dajemy',
-  heading: 'Benefity, których naprawdę używamy',
-  items: [
-    {
-      icon: 'heart-pulse',
-      title: 'Opieka medyczna',
-      text: 'Medicover albo CMP — do wyboru',
-    },
-    {
-      icon: 'activity',
-      title: 'Karta Multisport',
-      text: 'Bo plucie na odległość to za mało',
-    },
-    {
-      icon: 'library',
-      title: 'Biblioteka',
-      text: 'Dostęp do biurowej biblioteczki',
-    },
-    {
-      icon: 'clock',
-      title: 'Piątki do 15:30',
-      text: 'Siedem godzin i\u00A0weekend się zaczyna',
-    },
-    {
-      icon: 'languages',
-      title: 'Nauka języków',
-      text: 'Dofinansowanie kursów',
-    },
-    {
-      icon: 'graduation-cap',
-      title: 'Platforma szkoleniowa',
-      text: 'Plus dofinansowanie szkoleń zewnętrznych',
-    },
-    {
-      icon: 'lightbulb',
-      title: 'Brainstormy',
-      text: 'Kreatywne i\u00A0szkolenia wewnętrzne',
-    },
-    {
-      icon: 'trending-up',
-      title: 'Realny rozwój',
-      text: '13 lat na rynku, w\u00A0grupie marketingowej',
-    },
-  ],
-} as const
-
 // —— Application form ————————————————————————————————————————————————————————
 
 /**
@@ -205,7 +154,7 @@ export const CAREERS_CV_MAX_BYTES = 5 * 1024 * 1024
 export const careersForm = {
   eyebrow: 'Aplikacja',
   heading: 'Aplikuj śmiało\ni kreatywnie',
-  lede: 'Umiesz się zachować w\u00A0grupie? Lubi Cię ktoś w\u00A0ogóle na fejsie? Bijesz rekordy w\u00A0pluciu na odległość? …to może do nas pasujesz.',
+  lede: 'Chcesz zdobywać nowe umiejętności w\u00A0świecie social mediów? Aplikuj do Social Lamy',
   fields: {
     name: { label: 'Imię i nazwisko', placeholder: 'Anna Kowalska' },
     email: { label: 'E-mail', placeholder: 'anna@example.com' },
@@ -296,7 +245,6 @@ export type CareersContent = {
   careersRolesLabel: typeof careersRolesLabel
   careersRoles: typeof careersRoles
   careersShare: typeof careersShare
-  careersBenefits: typeof careersBenefits
   careersForm: typeof careersForm
 }
 

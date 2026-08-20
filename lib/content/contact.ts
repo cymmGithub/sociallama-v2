@@ -126,10 +126,10 @@ export const contactForm = {
 export const contactMetricsHead = 'Kilka liczb o\u00A0tym, co robimy dla marek:'
 
 export const contactMetrics = [
-  { value: '500 000', caption: 'zaangażowanych fanów' },
+  { value: '514 000', caption: 'zaangażowanych fanów' },
   { value: '528', caption: 'przeprowadzonych kampanii' },
   { value: '80', caption: 'zadowolonych klientów' },
-  { value: '7 000 000', caption: 'zasięgu na Facebooku' },
+  { value: '7 260 000', caption: 'zasięgu na Facebooku' },
 ] as const
 
 /**

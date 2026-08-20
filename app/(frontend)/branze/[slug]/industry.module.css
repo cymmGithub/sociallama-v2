@@ -890,8 +890,12 @@
   /* Chips swing a footprint ~1.14x the orbit box (each reaches --item-r + half
      its own width from centre). The reveal keeps a border-box clip even when
      settled, so that whole footprint must fit the column or the 3/9 o'clock
-     chips get sliced — hence the conservative size. */
-  --orbit: min(26rem, 30vw);
+     chips get sliced. The column is ~44.5vw until the 1240px container caps it,
+     so 36vw leaves ~27px of slack at the narrowest desktop — measured, not
+     guessed. The old 30vw spent only two thirds of the column and left the
+     diagram too small to hold legible type at the bottom of the desktop range;
+     see the font-size notes below. */
+  --orbit: min(26rem, 36vw);
   --period: 48s;
   --ring-r: calc(var(--orbit) * 0.28);
   --item-r: calc(var(--orbit) * 0.4);
@@ -951,10 +955,23 @@
     translateY(calc(-1 * var(--ring-r)));
 }
 
-/* `display: contents` so each <li> positions against .briefOrbit while the list
-   keeps its semantics. */
+/* A real positioned box, deliberately NOT `display: contents`. It used to be
+   the latter — the <li>s then positioned against .briefOrbit directly while the
+   list kept its semantics — but Mac Safari does not inherit custom properties
+   through a `display: contents` element. `--orbit` and `--item-r` never reached
+   the pillars there: `width: calc(var(--orbit) * 0.34)` fell back to `auto` and
+   `translateY(calc(-1 * var(--item-r)))` to zero, so all three chips collapsed
+   onto the hub at the ring centre while the hub — a direct child, so unaffected
+   — rendered correctly. Chromium and recent WebKit never showed it.
+
+   `inset: 0` makes this box congruent with .briefOrbit, so the <li>s resolve
+   their `top: 50%` / `left: 50%` against exactly the same square as before and
+   the geometry is unchanged. The GOOD ONE wheel on /o-nas, which this mirrors,
+   has always had its logo blocks as direct children — which is why it renders
+   correctly on the same machine. */
 .orbitItems {
-  display: contents;
+  position: absolute;
+  inset: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -971,7 +988,15 @@
   border-radius: 999px;
   box-shadow: 0 6px 18px -10px rgb(43 31 36 / 35%);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+
+  /* Tracks the orbit rather than sitting at a fixed size: 1.177vw is 3.27% of
+     the 36vw box, the ratio this has at full desktop. Fixed type in a shrinking
+     diagram wrapped the pills onto more and more lines until they touched the
+     hub — clearance went negative below ~1000px, worst on
+     /branze/elektronika-i-agd, whose longest pillar runs to five lines there.
+     The 0.85rem cap is the size this has always had once --orbit reaches its
+     26rem ceiling, so full desktop is unchanged. */
+  font-size: clamp(0.72rem, 1.177vw, 0.85rem);
   font-weight: 600;
   line-height: 1.25;
   text-align: center;
@@ -996,7 +1021,11 @@
   margin: 0;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+
+  /* 2.077vw is 5.77% of the 36vw box — the same ratio the 1.5rem cap has
+     against a 26rem orbit, so the hub scales with the diagram instead of
+     bottoming out at its old 1.1rem floor and crowding the pills. */
+  font-size: clamp(0.95rem, 2.077vw, 1.5rem);
   font-weight: 700;
   line-height: 1.1;
   text-align: center;

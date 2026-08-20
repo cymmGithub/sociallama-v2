@@ -33,9 +33,10 @@ export const oNasHero = {
 export const oNasAbout = {
   headingLead: 'COŚ',
   headingRest: 'O LAMIE',
-  body: 'Social Lama to agencja social media zajmująca się kompleksową obsługą komunikacji marki w\u00A0mediach społecznościowych oraz prowadzeniem efektywnej reklamy na Facebooku, Instagramie i\u00A0pozostałych mediach społecznościowych. Przygotujemy skuteczną strategię, opracujemy kreatywną komunikację, zajmiemy się Twoją społecznością i\u00A0stworzymy efektywną kampanię reklamową.',
+  body: 'Social Lama to agencja zajmująca się kompleksową obsługą komunikacji marki w\u00A0mediach społecznościowych, działająca na rynku od 2013 roku. Zapewniamy spójną i\u00A0angażującą komunikację w\u00A0social mediach – od strategii, przez moderację, po tworzenie contentu i\u00A0działania łączące online z\u00A0offline. Wspieramy firmy w\u00A0realizacji celów wizerunkowych i\u00A0sprzedażowych poprzez koncepcje kreatywne dopasowane do grupy docelowej oraz proaktywne rekomendacje.',
   cta: { label: 'POZNAJ NASZE DOŚWIADCZENIE', href: '#zespol' },
-  imageAlt: 'Ilustracja stadka lam Social Lamy w drewnianej ramce',
+  imageAlt:
+    'Troje osób z\u00A0zespołu Social Lamy przy biurku, wspólnie patrzą na ekran komputera',
 } as const
 
 // —— Values grid ("THAT WORKS WITH SOCIAL LAMA") — orange band ——————————————————
@@ -260,7 +261,7 @@ export const oNasTeam = {
       certs: ['dimaq'],
       // The DIMAQ sentence that used to close this bio is now the chip above —
       // stating it twice is the redundancy the chip exists to remove.
-      bio: 'Od ponad 12 lat pracuje w\u00A0branży marketingowej. Specjalizuje się w\u00A0strategii komunikacji, social mediach, moderacji, content marketingu oraz podcastach. Ma doświadczenie w\u00A0pracy z\u00A0markami z\u00A0branży beauty, retail, FMCG, motoryzacyjnej, nieruchomości, farmaceutycznej oraz e-commerce. Po godzinach aktywnie działa na rzecz edukacji branży — prowadzi szkolenia, tworzy eksperckie publikacje i\u00A0dzieli się wiedzą w\u00A0autorskim podcaście.',
+      bio: 'Od 2014 roku pracuje w\u00A0branży marketingowej. Specjalizuje się w\u00A0strategii komunikacji, social mediach, moderacji, content marketingu oraz podcastach. Ma doświadczenie w\u00A0pracy z\u00A0markami z\u00A0branży beauty, retail, FMCG, motoryzacyjnej, nieruchomości, farmaceutycznej oraz e-commerce. Po godzinach aktywnie działa na rzecz edukacji branży — prowadzi szkolenia, tworzy eksperckie publikacje i\u00A0dzieli się wiedzą w\u00A0autorskim podcaście.',
       photo: '/o-nas/slider/magda-rokicka.png',
     },
     {
@@ -274,21 +275,21 @@ export const oNasTeam = {
       given: 'AGNIESZKA',
       surname: 'KLAJBERT',
       role: 'Senior Social Media Specialist',
-      bio: 'Od 5 lat związana z\u00A0marketingiem i\u00A0mediami społecznościowymi. Łączy pasję do fotografii z\u00A0wykształceniem z\u00A0zakresu zarządzania i\u00A0grafiki komputerowej w\u00A0reklamie, dzięki czemu odnajduje się w\u00A0tworzeniu contentu i\u00A0nieszablonowych koncepcji. Doświadczenie zdobywała w\u00A0branży hotelarskiej, gastronomicznej, beauty i\u00A0lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i\u00A0wyważonego szaleństwa. No i\u00A0oczywiście analityki.',
+      bio: 'Od 2021 roku związana z\u00A0marketingiem i\u00A0mediami społecznościowymi. Łączy pasję do fotografii z\u00A0wykształceniem z\u00A0zakresu zarządzania i\u00A0grafiki komputerowej w\u00A0reklamie, dzięki czemu odnajduje się w\u00A0tworzeniu contentu i\u00A0nieszablonowych koncepcji. Doświadczenie zdobywała w\u00A0branży hotelarskiej, gastronomicznej, beauty i\u00A0lifestyle. Wie, że dobre social media to połączenie estetyki, psychologii, humoru i\u00A0wyważonego szaleństwa. No i\u00A0oczywiście analityki.',
       photo: '/o-nas/slider/agnieszka-klajbert.png',
     },
     {
       given: 'KATARZYNA',
       surname: 'KAPTUR',
       role: 'Social Media Expert',
-      bio: 'Od ponad 4 lat działa w\u00A0marketingu, a\u00A0w\u00A0Social Lamie tworzy angażujące treści i\u00A0wspiera marki w\u00A0budowaniu spójnej, silnej obecności online. Łączy wykształcenie z\u00A0zakresu Communication Management z\u00A0kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
+      bio: 'Od 2022 roku działa w\u00A0marketingu, a\u00A0w\u00A0Social Lamie tworzy angażujące treści i\u00A0wspiera marki w\u00A0budowaniu spójnej, silnej obecności online. Łączy wykształcenie z\u00A0zakresu Communication Management z\u00A0kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
       photo: '/o-nas/slider/katarzyna-kaptur.png',
     },
     {
       given: 'OLIWIA',
       surname: 'WITEWSKA',
       role: 'Social Media Specialist',
-      bio: 'Od ponad 10 lat odpowiada za komunikację marek w\u00A0social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z\u00A0obszaru beauty, FMCG, AGD i\u00A0lifestyle. Tworzy długofalowe strategie i\u00A0angażujący content, stawiając na autentyczność, emocje i\u00A0budowanie trwałych relacji między marką a\u00A0jej odbiorcami.',
+      bio: 'Od 2016 roku odpowiada za komunikację marek w\u00A0social mediach, zdobywając doświadczenie przy projektach dla globalnych brandów z\u00A0obszaru beauty, FMCG, AGD i\u00A0lifestyle. Tworzy długofalowe strategie i\u00A0angażujący content, stawiając na autentyczność, emocje i\u00A0budowanie trwałych relacji między marką a\u00A0jej odbiorcami.',
       photo: '/o-nas/slider/oliwia-witewska.png',
     },
     {
@@ -326,7 +327,7 @@ export const oNasTeam = {
       // Social Lama, so the agency is part of the role label — a visitor
       // reading the tile alone must not take him for staff.
       role: 'Specjalista SEO, SEOFLY',
-      bio: 'Specjalista SEO w\u00A0SEOFLY, partnerskiej agencji z\u00A0naszej grupy. Od ponad piętnastu lat pozycjonuje strony i\u00A0sklepy internetowe — od audytu i\u00A0doboru słów kluczowych, przez optymalizację, po treści, które realnie dowożą ruch. Łączy analityczne podejście z\u00A0kreatywnością i\u00A0na bieżąco nadąża za zmianami w\u00A0algorytmach Google. Po godzinach kibicuje siatkówce i\u00A0sam w\u00A0nią gra, a\u00A0wolny czas oddaje rodzinie i\u00A0fantastyce — od Tolkiena po Świat Dysku.',
+      bio: 'Specjalista SEO w\u00A0SEOFLY, partnerskiej agencji z\u00A0naszej grupy. Od 2011 roku pozycjonuje strony i\u00A0sklepy internetowe — od audytu i\u00A0doboru słów kluczowych, przez optymalizację, po treści, które realnie dowożą ruch. Łączy analityczne podejście z\u00A0kreatywnością i\u00A0na bieżąco nadąża za zmianami w\u00A0algorytmach Google. Po godzinach kibicuje siatkówce i\u00A0sam w\u00A0nią gra, a\u00A0wolny czas oddaje rodzinie i\u00A0fantastyce — od Tolkiena po Świat Dysku.',
       // His profile at the partner agency. Same treatment as Przemysław's
       // personal site below: an external destination, so the label is the
       // domain. It makes the partner relationship a fact you can follow

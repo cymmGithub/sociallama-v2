@@ -9,7 +9,7 @@
  * page's entire hook paragraph was invisible in both locales. Nothing here may
  * import another route's module; the page owns its surface.
  *
- * Band order (design D2): ink-deep hero + roles → orange benefits → plum-deep
+ * Band order (design D2): ink-deep hero + roles → plum-deep
  * form. The page ends on the submit button (design D3) — the footer is the next
  * element, and that is site chrome, not this page.
  */
@@ -339,15 +339,7 @@
   height: 15px;
 }
 
-/* —— Benefits band ———————————————————————————————————————————————————————— */
-
-/* Hard ink→orange edge, the /o-nas band idiom. This is the page's only light
-   break and it sits immediately before the form: what you get, then apply. */
-.benefits {
-  background: var(--color-orange);
-  color: var(--band-ink);
-  padding-block: clamp(46px, 5.4vw, 78px);
-}
+/* —— Shared section eyebrow ——————————————————————————————————————————————— */
 
 .eyebrow {
   display: flex;
@@ -367,66 +359,6 @@
   max-width: 120px;
   background: currentColor;
   opacity: 0.32;
-}
-
-.benefitsHeading {
-  font-family: var(--font-display);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.02;
-  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  margin-top: 14px;
-  max-width: 18ch;
-}
-
-/* 2px gaps over a translucent ink backdrop draw the grid rules — no borders to
-   double up at the cell seams. */
-.benefitsGrid {
-  display: grid;
-  gap: 2px;
-  margin-top: 30px;
-  background: color-mix(in srgb, var(--band-ink) 16%, transparent);
-  list-style: none;
-  padding: 0;
-}
-
-@media (width >= 700px) {
-  .benefitsGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (width >= 1040px) {
-  .benefitsGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.benefit {
-  background: var(--color-orange);
-  padding: 26px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
-
-.benefitIcon {
-  width: 24px;
-  height: 24px;
-  stroke-width: 1.7;
-}
-
-.benefitTitle {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.benefitText {
-  font-size: 0.83rem;
-  line-height: 1.5;
-  opacity: 0.8;
 }
 
 /* —— Application form ————————————————————————————————————————————————————— */

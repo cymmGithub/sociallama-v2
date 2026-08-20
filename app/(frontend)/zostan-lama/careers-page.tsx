@@ -3,7 +3,6 @@ import type { LocalizedCareers } from '@/lib/content/zostan-lama'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { careersMarqueeOutlinePaths } from '@/lib/wordmark-paths'
 import { CareersApply } from './careers-apply'
-import { CareersBenefits } from './careers-benefits'
 import { CareersHero } from './careers-hero'
 import { CareersRoles } from './careers-roles'
 import { DarkChrome } from './dark-chrome'
@@ -18,12 +17,13 @@ import s from './zostan-lama.module.css'
  * section added here cannot reach three routes and miss the fourth.
  *
  * Renders inside <Wrapper theme="plum-deep"> (cream-on-dark chrome + smooth
- * scrolling); the near-black ground, the orange benefits band and the plum
- * application band are painted by the scoped zostan-lama.module.css.
+ * scrolling); the near-black ground and the plum application band are painted
+ * by the scoped zostan-lama.module.css.
  *
- * Band order is ink-deep → orange → plum-deep, and the page ENDS on the form
- * (design D3): nothing may be added below <CareersApply/> — the next element is
- * the site footer.
+ * Band order is ink-deep → ink-deep → plum-deep: hero, then role panels, then
+ * the form immediately after them. The page ENDS on the form (design D3):
+ * nothing may be added below <CareersApply/> — the next element is the site
+ * footer.
  */
 
 /**
@@ -67,7 +67,6 @@ export function CareersPage({
           rolesBasePath={CAREERS_BASE_PATH[locale]}
           initialRoleId={initialRoleId}
         />
-        <CareersBenefits benefits={content.careersBenefits} />
         <CareersApply
           form={content.careersForm}
           roles={content.careersRoles}

@@ -200,13 +200,18 @@ BRANDS = [
     ("vistula", "Vistula", gd("vistula.jpg"), "vistula", {}),
     # One merged entry for Dom Volvo + Volvo Car Warszawa, which share the
     # `volvo` case study. We ran the dealer accounts, not global Volvo, so the
-    # belt shows the annotated "Dom Volvo" lockup rather than the bare wordmark
-    # the repository asset carries.
+    # mark shows an annotated lockup rather than the bare wordmark.
+    # Sourced from the repo, not the Drive file: the Drive artwork's annotation
+    # reads only "DOM VOLVO", which names one of the two dealer brands and was
+    # flagged in the 2026-08-19 review. `volvo-logo.png` carries the corrected
+    # "VOLVO CAR WARSZAWA & DOM VOLVO" line. Re-pointing here rather than fixing
+    # the emitted file alone, so a later run cannot quietly restore the old
+    # string.
     # `punch` because the lockup is positive artwork: the counters of the O's and
     # the D are plate showing through, not ink, and the border flood cannot reach
     # them. Without it they ship as opaque white boxes that the belt's hover
     # state (filter: none) shows as holes in the letters.
-    ("volvo", "Dom Volvo", gd("Dom volvo.png"), "volvo", {"lead": 0.75, "punch": True}),
+    ("volvo", "Dom Volvo", repo("volvo"), "volvo", {"lead": 0.75, "punch": True}),
 ]
 
 
