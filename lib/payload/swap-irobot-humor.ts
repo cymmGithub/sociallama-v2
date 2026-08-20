@@ -12,6 +12,15 @@
  * replacement is a new file, not a re-cut of an existing row. It is created
  * once and then found by filename, so re-running is safe.
  *
+ * That create is the one dangerous step here, because Payload's
+ * `getSafeFileName` bumps a name that is already taken — and it consults the
+ * local `media/` directory even on a --prod run whose bytes go to Vercel Blob.
+ * A dev run therefore leaves a file on disk that silently renames the
+ * PRODUCTION upload to `<stem>-1.<ext>`, and the log prints the name that was
+ * REQUESTED, not the one stored. The pre-flight below refuses to start while
+ * that collision exists; the check after the create is the belt to its braces,
+ * and deletes the bumped row so a failure leaves nothing behind.
+ *
  * Keyed the same way as detach-comment-screenshots.ts, and for the same
  * reasons: filenames rather than media ids (ids are per-database), the pillar
  * tag as a GUARD rather than a selector (a file found under an unexpected tag
@@ -34,6 +43,7 @@
  * the live cache — after running against production, redeploy (or revalidate).
  */
 
+import fs from 'node:fs'
 import path from 'node:path'
 
 const APPLY = process.argv.includes('--apply')
@@ -97,6 +107,16 @@ let replacementId = found.docs[0]?.id
 if (replacementId) {
   console.log(`= ${filename}: media row already exists (id ${replacementId})`)
 } else {
+  // See the note above: a same-named file in the local upload dir renames the
+  // upload, whichever database is being written.
+  const collision = path.join('media', filename)
+  if (fs.existsSync(collision)) {
+    throw new Error(
+      `${collision} exists, which would rename this upload to ` +
+        `"${path.parse(filename).name}-1${path.parse(filename).ext}". ` +
+        `Move it aside first:  mv ${collision.replace(/\.[^.]+$/, '')}* /tmp/`
+    )
+  }
   changes++
   console.log(`${APPLY ? '+' : 'would'} create media row for ${filename}`)
   if (APPLY) {
@@ -109,9 +129,13 @@ if (replacementId) {
     // Payload bumps a name when one is taken; a bump here means the lookup
     // above missed a row and the pillar would point at a duplicate.
     if (created.filename !== filename) {
+      // Undo it, so the run is all-or-nothing rather than leaving an
+      // unreferenced row (and, on production, an orphaned Blob object).
+      await payload.delete({ collection: 'media', id: created.id })
       throw new Error(
-        `${filename}: Payload stored it as "${created.filename}" — a row with ` +
-          'that name already exists; investigate before re-running'
+        `${filename}: Payload stored it as "${created.filename}" — something ` +
+          'already claims that name. The row just created has been deleted; ' +
+          'find the claimant before re-running.'
       )
     }
     await payload.update({

@@ -51,6 +51,12 @@ const CANDIDATES = [
   'pracuj-pl-influencer.jpg',
   'irobot-gallery-3-anon-cut.webp',
   'irobot-gallery-6-anon-cut.webp',
+  // Not from the review: the first --prod run of swap-irobot-humor.ts uploaded
+  // the parrot while a same-named file sat in the local `media/` dir, so
+  // Payload stored it under this bumped name and the run aborted before
+  // attaching it. Nothing references it. The script now refuses to start in
+  // that state, so this entry is a one-off clean-up.
+  'irobot-humor-parrot-1.jpg',
 ]
 
 const dbHost = new URL(
