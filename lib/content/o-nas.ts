@@ -96,7 +96,7 @@ export const oNasProjects = {
       logo: '/case-studies/irobot/irobot-logo.png',
       logoW: 808,
       logoH: 160,
-      image: '/case-studies/irobot/irobot-cover.jpg',
+      image: '/case-studies/irobot/irobot-cover.jpg?v=2',
       href: '/case-studies/irobot',
     },
     {
