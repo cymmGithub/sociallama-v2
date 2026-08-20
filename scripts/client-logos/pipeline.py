@@ -570,10 +570,11 @@ CS_EXTRA_SOURCES = {
 CS_INHERIT_OPTS = {"tol", "lead"}
 
 # Slugs whose `<slug>-logo-mono.png` is hand-placed and must NOT be regenerated.
-# breville: the 2026-08-20 review replaced the card mark with the official
-# colour logo (black wordmark, red dot over the i) plated by hand onto the
-# 280x72 canvas at the old mono's optical box — the mono treatment would
-# flatten the red dot to black, which is exactly what the review rejected.
+# breville: the 2026-08-20 review replaced the source artwork with the official
+# logo; the card mark is that artwork flattened to black by hand, plated onto
+# the 280x72 canvas at the previous mono's exact optical box. A pipeline run
+# would re-derive it from the same source at the set-median normalization —
+# near-identical, but the hand placement is the reviewed one, so it stays.
 CS_HAND_PLACED = {"breville"}
 
 
