@@ -127,6 +127,17 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
     dangerouslyAllowSVG: true,
+    /* Defining localPatterns turns local images into an allow-list, so the
+       catch-all entry must stay or every plain public/ image breaks. The two
+       logo families may carry a `?v=N` cache-bust (see clients.ts and the
+       branze related cards): the optimizer's variant cache keys on the URL and
+       lives minimumCacheTTL (30 days), so an in-place byte replacement never
+       propagates on its own — bumping the version is the only reliable way. */
+    localPatterns: [
+      { pathname: '/assets/clients/**' },
+      { pathname: '/case-studies/**' },
+      { pathname: '/**', search: '' },
+    ],
     remotePatterns: [
       {
         protocol: 'https',
