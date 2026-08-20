@@ -31,7 +31,7 @@
 
 ## 5. Ship
 
-- [ ] 5.1 `bun run check`, e2e locale-parity; commit on the branch; merge ff to main; deploy
-- [ ] 5.2 With explicit per-run approval: `refresh-case-study-logos --prod`, `apply-cover-refresh --prod`, `delete-case-study --prod`; each re-run to zero
-- [ ] 5.3 `vercel cache purge --project sociallama-v2 --type cdn -y`; verify listing + heroes + `/branze/health` in a real browser on the deployed host
-- [ ] 5.4 Note the deferred trio (dolina-charlotty, power-elements, ed-invest) in the plan as pending client material
+- [x] 5.1 `bun run check`, e2e locale-parity; commit on the branch; merge ff to main; deploy
+- [x] 5.2 With explicit per-run approval: `refresh-case-study-logos --prod`, `apply-cover-refresh --prod`, `delete-case-study --prod`; each re-run to zero
+- [x] 5.3 `vercel cache purge --project sociallama-v2 --type cdn -y`; verify listing + heroes + `/branze/health` in a real browser on the deployed host
+- [x] 5.4 Note the deferred trio (dolina-charlotty, power-elements, ed-invest) in the plan as pending client material
