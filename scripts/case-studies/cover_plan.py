@@ -50,6 +50,9 @@ def main():
     change, pexels = opts["change"], opts["pexels"]
 
     picks = load(os.path.join(change, "picks.json"))
+    # What production actually stored, where getSafeFileName bumped the index.
+    stored_path = os.path.join(change, "prod-stored-names.json")
+    stored = load(stored_path) if os.path.exists(stored_path) else {}
     alts = load(os.path.join(change, "cover-alts.json"))
     cands = load(os.path.join(pexels, "candidates.json"))
     man = {(c["slug"], str(c["id"])): c for c in cands}
@@ -65,15 +68,23 @@ def main():
         "",
         "One row per study. **This table is the rollback instruction**: case-study",
         "content is database-only, so there is no `git revert` for a cover write.",
-        "`new file` is the name the apply script uploads; the two `before` columns are",
-        "what each database's row pointed at when it was probed on 2026-08-20 —",
-        "restore that filename to undo. They differ where a study was repointed in one",
-        "environment and not the other.",
+        "The two `before` columns are what each database's row pointed at when it was",
+        "probed on 2026-08-20 — restore that filename to undo. They differ where a",
+        "study was repointed in one environment and not the other.",
+        "",
+        "The two `now` columns differ too, and that is not a mistake: Payload's",
+        "`getSafeFileName` checks the local media directory for collisions even when",
+        "the bytes go to Vercel Blob, so the production run — made from the same",
+        "working copy as the development one — found every `-cover-2.jpg` already",
+        "written locally and bumped each index by one (⚠). The bytes are identical in",
+        "both environments; only the stored names diverge. `apply-cover-refresh.ts`",
+        "carries the production names in its `stored` field, which is what lets a",
+        "re-run report already-done rather than a stale plan.",
         "",
         f"Deferred for client material, untouched by this pass: {', '.join(DEFERRED)}.",
         "",
-        "| study | verdict | dev before | prod before | new file | alt PL / EN |",
-        "| --- | --- | --- | --- | --- | --- |",
+        "| study | verdict | dev before | prod before | dev now | prod now | alt PL / EN |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     prov = [
         "# Pexels provenance — refresh-case-study-covers",
@@ -96,9 +107,11 @@ def main():
         new_name = prod[slug]["nextFree"]
         pl, en = alts[slug]
         verdict = LOCAL.get(str(choice), f"Pexels {choice}")
+        on_prod = stored.get(slug, new_name)
+        flag = "" if on_prod == new_name else " ⚠"
         plan.append(
             f"| `{slug}` | {verdict} | `{dev[slug]['cover']}` | `{prod[slug]['cover']}` "
-            f"| `{new_name}` | {pl} / {en} |"
+            f"| `{new_name}` | `{on_prod}`{flag} | {pl} / {en} |"
         )
         c = man.get((slug, str(choice)))
         if c:

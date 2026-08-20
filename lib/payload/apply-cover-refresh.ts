@@ -41,6 +41,22 @@ type Op = {
   /** Acceptable current filenames — dev's and prod's, which can differ. */
   from: string[]
   to: string
+  /**
+   * The name production ACTUALLY stored, where it differs from `to`.
+   *
+   * Payload's getSafeFileName checks the local media directory for collisions
+   * even when the bytes go to Vercel Blob. The development run of this script
+   * wrote every `<slug>-cover-2.jpg` into that directory, so the production
+   * run — executed from the same working copy — found all 27 names taken and
+   * bumped each index by one. The BYTES are unaffected: they are read from
+   * `public/case-studies/<slug>/` by the `to` name, and production serves files
+   * byte-identical to the ones this change built.
+   *
+   * Recorded rather than renamed. Renaming a live row would rewrite the
+   * rollback record for no gain, and this field is what lets a re-run report
+   * already-done instead of falsely claiming the plan is stale.
+   */
+  stored?: string
   altPl: string
   altEn: string
 }
@@ -50,6 +66,7 @@ const OPS: Op[] = [
     slug: 'a1-karting',
     from: ['a1-karting-cover.jpg'],
     to: 'a1-karting-cover-2.jpg',
+    stored: 'a1-karting-cover-3.jpg',
     altPl: 'Kierowca w kombinezonie w gokarcie',
     altEn: 'A driver in racing gear in a go-kart',
   },
@@ -57,6 +74,7 @@ const OPS: Op[] = [
     slug: 'aquael',
     from: ['aquael-cover.jpg'],
     to: 'aquael-cover-2.jpg',
+    stored: 'aquael-cover-3.jpg',
     altPl: 'Rozświetlone akwarium, przed nim sylwetka osoby',
     altEn: 'A lit aquarium with a person silhouetted in front of it',
   },
@@ -64,6 +82,7 @@ const OPS: Op[] = [
     slug: 'ariadna',
     from: ['ariadna-cover-2.jpg'],
     to: 'ariadna-cover-3.jpg',
+    stored: 'ariadna-cover-4.jpg',
     altPl: 'Dłoń wypełniająca papierową ankietę ołówkiem',
     altEn: 'A hand filling in a paper questionnaire with a pencil',
   },
@@ -71,6 +90,7 @@ const OPS: Op[] = [
     slug: 'breville',
     from: ['breville-cover.jpg'],
     to: 'breville-cover-2.jpg',
+    stored: 'breville-cover-3.jpg',
     altPl: 'Deser podany na białym talerzu',
     altEn: 'A plated dessert on a white plate',
   },
@@ -78,6 +98,7 @@ const OPS: Op[] = [
     slug: 'dynamic-development',
     from: ['dynamic-development-cover.jpg'],
     to: 'dynamic-development-cover-2.jpg',
+    stored: 'dynamic-development-cover-3.jpg',
     altPl: 'Rysunki architektoniczne rzutu budynku',
     altEn: 'Architectural floor plan drawings',
   },
@@ -85,6 +106,7 @@ const OPS: Op[] = [
     slug: 'engie',
     from: ['engie-cover.jpg'],
     to: 'engie-cover-2.jpg',
+    stored: 'engie-cover-3.jpg',
     altPl: 'Turbiny wiatrowe na łące o wschodzie słońca',
     altEn: 'Wind turbines in a meadow at sunrise',
   },
@@ -92,6 +114,7 @@ const OPS: Op[] = [
     slug: 'entelo',
     from: ['entelo-cover-3.jpg'],
     to: 'entelo-cover-4.jpg',
+    stored: 'entelo-cover-5.jpg',
     altPl: 'Pokój dziecięcy z zielonymi meblami',
     altEn: "A child's room with green furniture",
   },
@@ -99,6 +122,7 @@ const OPS: Op[] = [
     slug: 'faktoria-win',
     from: ['faktoria-win-cover-3.jpg'],
     to: 'faktoria-win-cover-4.jpg',
+    stored: 'faktoria-win-cover-5.jpg',
     altPl: 'Butelki wina na sklepowych półkach',
     altEn: 'Wine bottles on shop shelves',
   },
@@ -106,6 +130,7 @@ const OPS: Op[] = [
     slug: 'fm-logistics',
     from: ['fm-logistics-cover.jpg'],
     to: 'fm-logistics-cover-2.jpg',
+    stored: 'fm-logistics-cover-3.jpg',
     altPl: 'Ciężarówka na autostradzie w górskim krajobrazie',
     altEn: 'A truck on a highway in a mountain landscape',
   },
@@ -113,6 +138,7 @@ const OPS: Op[] = [
     slug: 'foodsaver',
     from: ['foodsaver-cover.jpg'],
     to: 'foodsaver-cover-2.jpg',
+    stored: 'foodsaver-cover-3.jpg',
     altPl: 'Zbliżenie świeżych owoców: truskawki, maliny, jabłko i mango',
     altEn:
       'A close-up of fresh fruit — strawberries, raspberries, apple and mango',
@@ -121,6 +147,7 @@ const OPS: Op[] = [
     slug: 'irobot',
     from: ['irobot-cover.jpg'],
     to: 'irobot-cover-2.jpg',
+    stored: 'irobot-cover-3.jpg',
     altPl: 'Robot sprzątający na dywanie obok stolika z przekąskami',
     altEn: 'A robot vacuum on a rug beside a coffee table with snacks',
   },
@@ -128,6 +155,7 @@ const OPS: Op[] = [
     slug: 'julius-meinl',
     from: ['julius-meinl-cover-2.jpg'],
     to: 'julius-meinl-cover-3.jpg',
+    stored: 'julius-meinl-cover-4.jpg',
     altPl: 'Zbliżenie palonych ziaren kawy',
     altEn: 'A close-up of roasted coffee beans',
   },
@@ -135,6 +163,7 @@ const OPS: Op[] = [
     slug: 'kbp',
     from: ['kbp-cover.jpg'],
     to: 'kbp-cover-2.jpg',
+    stored: 'kbp-cover-3.jpg',
     altPl: 'Publiczność na sali konferencyjnej',
     altEn: 'An audience in a conference hall',
   },
@@ -142,6 +171,7 @@ const OPS: Op[] = [
     slug: 'kohersen',
     from: ['kohersen-cover.jpg'],
     to: 'kohersen-cover-2.jpg',
+    stored: 'kohersen-cover-3.jpg',
     altPl: 'Danie podane na białym talerzu',
     altEn: 'A plated dish on a white plate',
   },
@@ -149,6 +179,7 @@ const OPS: Op[] = [
     slug: 'kontigo',
     from: ['kontigo-cover-5.jpg'],
     to: 'kontigo-cover-6.jpg',
+    stored: 'kontigo-cover-7.jpg',
     altPl: 'Dwie kobiety nakładające krem na twarz',
     altEn: 'Two women applying face cream',
   },
@@ -156,6 +187,7 @@ const OPS: Op[] = [
     slug: 'laurastar',
     from: ['laurastar-cover.jpg'],
     to: 'laurastar-cover-2.jpg',
+    stored: 'laurastar-cover-3.jpg',
     altPl: 'Parownica do ubrań na łóżku, w tle otwarta garderoba',
     altEn: 'A garment steamer on a bed with an open wardrobe behind it',
   },
@@ -163,6 +195,7 @@ const OPS: Op[] = [
     slug: 'mazurska-manufaktura-alkoholi',
     from: ['mazurska-manufaktura-alkoholi-cover.jpg'],
     to: 'mazurska-manufaktura-alkoholi-cover-2.jpg',
+    stored: 'mazurska-manufaktura-alkoholi-cover-3.jpg',
     altPl: 'Dwie szklanki whisky na ciemnym blacie',
     altEn: 'Two glasses of whisky on a dark counter',
   },
@@ -170,6 +203,7 @@ const OPS: Op[] = [
     slug: 'mercator',
     from: ['mercator-cover.jpg'],
     to: 'mercator-cover-2.jpg',
+    stored: 'mercator-cover-3.jpg',
     altPl: 'Pudełka rękawic nitrylowych na biurku',
     altEn: 'Boxes of nitrile gloves on a desk',
   },
@@ -177,6 +211,7 @@ const OPS: Op[] = [
     slug: 'n-energia',
     from: ['n-energia-cover.jpg'],
     to: 'n-energia-cover-2.jpg',
+    stored: 'n-energia-cover-3.jpg',
     altPl: 'Panele fotowoltaiczne na dachu domu',
     altEn: 'Photovoltaic panels on a house roof',
   },
@@ -184,6 +219,7 @@ const OPS: Op[] = [
     slug: 'ozgasl',
     from: ['ozgasl-cover.jpg'],
     to: 'ozgasl-cover-2.jpg',
+    stored: 'ozgasl-cover-3.jpg',
     altPl: 'Mechanik przy samochodzie na podnośniku w warsztacie',
     altEn: 'A mechanic working on a car on a lift in a workshop',
   },
@@ -191,6 +227,7 @@ const OPS: Op[] = [
     slug: 'personal-effect',
     from: ['personal-effect-cover-3.jpg'],
     to: 'personal-effect-cover-4.jpg',
+    stored: 'personal-effect-cover-5.jpg',
     altPl: 'Fotel w spokojnym wnętrzu w ciepłym świetle',
     altEn: 'An armchair in a calm room in warm light',
   },
@@ -198,6 +235,7 @@ const OPS: Op[] = [
     slug: 'polomarket',
     from: ['polomarket-cover.jpg'],
     to: 'polomarket-cover-2.jpg',
+    stored: 'polomarket-cover-3.jpg',
     altPl: 'Kobieta przy stoisku z warzywami i owocami',
     altEn: 'A woman at a fruit and vegetable stand',
   },
@@ -208,6 +246,7 @@ const OPS: Op[] = [
       'image_crop_1200x800_w1200_q0.9.jpg',
     ],
     to: 'produkty-cukiernicze-brzesc-cover-4.jpg',
+    stored: 'produkty-cukiernicze-brzesc-cover-5.jpg',
     altPl: 'Miska zupy na zastawionym stole',
     altEn: 'A bowl of soup on a laid table',
   },
@@ -215,6 +254,7 @@ const OPS: Op[] = [
     slug: 'rabkoland',
     from: ['rabkoland-cover-3.jpg'],
     to: 'rabkoland-cover-4.jpg',
+    stored: 'rabkoland-cover-5.jpg',
     altPl: 'Rozświetlona karuzela w parku rozrywki',
     altEn: 'A lit carousel at an amusement park',
   },
@@ -222,6 +262,7 @@ const OPS: Op[] = [
     slug: 'skibooking',
     from: ['skibooking-cover.jpg'],
     to: 'skibooking-cover-2.jpg',
+    stored: 'skibooking-cover-3.jpg',
     altPl: 'Stok narciarski z wyciągiem i narciarzami',
     altEn: 'A ski slope with a lift and skiers',
   },
@@ -229,6 +270,7 @@ const OPS: Op[] = [
     slug: 'skrzat',
     from: ['skrzat-cover.jpg'],
     to: 'skrzat-cover-2.jpg',
+    stored: 'skrzat-cover-3.jpg',
     altPl: 'Puste czerwone fotele w sali kinowej',
     altEn: 'Empty red seats in a cinema auditorium',
   },
@@ -236,6 +278,7 @@ const OPS: Op[] = [
     slug: 'stadler-form',
     from: ['stadler-form-cover.jpg'],
     to: 'stadler-form-cover-2.jpg',
+    stored: 'stadler-form-cover-3.jpg',
     altPl: 'Oczyszczacz powietrza na podłodze studia jogi',
     altEn: 'An air purifier on the floor of a yoga studio',
   },
@@ -380,7 +423,7 @@ for (const op of OPS) {
   const cover = study.cover as { id?: number; filename?: string } | null
   const current = cover?.filename ?? null
 
-  if (current === op.to) {
+  if (current === op.to || current === op.stored) {
     done++
     continue
   }
