@@ -46,6 +46,17 @@ export interface IndustryPageProps {
   caseStudyBase: string
 }
 
+/**
+ * Cache-bust for the related-card logo files. The path is derived from the
+ * slug, so a per-study version has nowhere to live — and Vercel's
+ * image-optimizer cache keys on the URL alone, so after an in-place byte
+ * replacement (volvo's annotation and breville's colour mark, 2026-08-20
+ * review) a bare path keeps serving the old artwork for up to a day (the
+ * /case-studies max-age). Bump whenever any of these files' CONTENT changes;
+ * the cost is one re-optimization of each related-card logo.
+ */
+const RELATED_LOGO_V = '?v=2'
+
 /* Keyword marquee — shared by both layouts (a proof page can carry one too). */
 function IndustryMarquee({ industry }: { industry: Industry }) {
   if (!industry.marquee || industry.marquee.length === 0) {
@@ -169,7 +180,7 @@ function RelatedCaseStudies({
               <span className={s.relatedCardLogo}>
                 {/* Logos are locale-independent public assets, not prefixed. */}
                 <Image
-                  src={`/case-studies/${study.slug}/${study.slug}-logo.png`}
+                  src={`/case-studies/${study.slug}/${study.slug}-logo.png${RELATED_LOGO_V}`}
                   alt=""
                   width={120}
                   height={38}
@@ -606,7 +617,7 @@ function ProofLayout({
           <span className={s.caseCardLogo}>
             {/* Logos are locale-independent public assets, not prefixed. */}
             <Image
-              src={`/case-studies/${study.slug}/${study.slug}-logo.png`}
+              src={`/case-studies/${study.slug}/${study.slug}-logo.png${RELATED_LOGO_V}`}
               alt=""
               width={140}
               height={44}

@@ -18,8 +18,12 @@ describe('client roster', () => {
 
   test('every logo file exists and is named after its key', () => {
     for (const brand of CLIENT_ROSTER) {
-      expect(brand.logo).toBe(`/assets/clients/${brand.key}.png`)
-      expect(existsSync(join(PUBLIC, brand.logo))).toBe(true)
+      // A `?v=N` suffix is a cache-bust for the image optimizer after an
+      // in-place byte replacement (see the volvo entry) — the path itself
+      // still has to follow the key convention and exist on disk.
+      const path = brand.logo.split('?')[0] ?? brand.logo
+      expect(path).toBe(`/assets/clients/${brand.key}.png`)
+      expect(existsSync(join(PUBLIC, path))).toBe(true)
     }
   })
 

@@ -227,7 +227,11 @@ const ROSTER = [
   {
     key: 'volvo',
     name: 'Dom Volvo',
-    logo: '/assets/clients/volvo.png',
+    // `?v=2`: the file's annotation was corrected in place (2026-08-20 review),
+    // and Vercel's image-optimizer cache keys on the URL alone — a bare path
+    // keeps serving the old artwork for up to a day (the /assets max-age) after
+    // a byte replacement. Bump the version whenever the file's CONTENT changes.
+    logo: '/assets/clients/volvo.png?v=2',
     industry: 'motoryzacja',
     caseStudySlug: 'volvo',
   },
