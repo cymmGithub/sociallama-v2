@@ -51,6 +51,11 @@ const CANDIDATES = [
   'pracuj-pl-influencer.jpg',
   'irobot-gallery-3-anon-cut.webp',
   'irobot-gallery-6-anon-cut.webp',
+  // Production only: the study's cover there pointed at this mascot-ad row —
+  // the same "not Social Lama's work" class the review removed — until
+  // repoint-pracuj-cover.ts moved it onto pracuj-pl-cover.jpg. Development
+  // never had the row, so it reports as already gone there.
+  'pracuj_digitalx_2-3635319750.jpg',
   // Not from the review: the first --prod run of swap-irobot-humor.ts uploaded
   // the parrot while a same-named file sat in the local `media/` dir, so
   // Payload stored it under this bumped name and the run aborted before
