@@ -12,7 +12,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap);
-  max-width: 60ch;
+  /* Wide enough for the subhead's second line to hold together: the longest of
+     the two locales' tails is 67 characters, and at 60ch it broke two words
+     onto a third line. The measure only binds above ~900px — below that the
+     column is viewport-bound and wraps as it always did. */
+  max-width: 76ch;
 }
 
 .heading {

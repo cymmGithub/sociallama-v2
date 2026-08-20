@@ -370,50 +370,6 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Health',
-    // Numbers verbatim from the Adamed case study.
-    numbers: [
-      { value: '+242%', label: 'Follower growth' },
-      { value: '+269%', label: 'Content interactions' },
-      { value: '+719%', label: 'Link clicks' },
-      { value: '+100%', label: 'View growth' },
-    ],
-    caseStudy: {
-      slug: 'adamed',
-      cardKicker: 'CASE STUDY',
-      cardTitle: 'Deep Breath by Adamed — health education on social media',
-      creatives: [
-        {
-          src: '/case-studies/adamed/adamed-gallery-1-cut.webp',
-          alt: 'Adamed campaign creative',
-          width: 461,
-          height: 939,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-2-cut.webp',
-          alt: 'Adamed campaign creative',
-          width: 384,
-          height: 785,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-3-cut.webp',
-          alt: 'Adamed campaign creative',
-          width: 461,
-          height: 939,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-4-cut.webp',
-          alt: 'Adamed campaign creative',
-          width: 384,
-          height: 785,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-5-cut.webp',
-          alt: 'Adamed campaign creative',
-          width: 461,
-          height: 939,
-        },
-      ],
-    },
     relatedCaseStudies: [
       {
         slug: 'imid-cmv',

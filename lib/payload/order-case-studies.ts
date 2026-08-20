@@ -39,7 +39,6 @@ const ORDER = [
   'stadler-form',
   'mercator',
   'motointegrator',
-  'adamed',
   // Major Polish names.
   'polomarket',
   'vistula',

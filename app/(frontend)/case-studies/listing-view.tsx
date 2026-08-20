@@ -31,7 +31,11 @@ export function CaseStudiesListingView({
       <section className={s.listing}>
         <header className={s.header}>
           <h1 className={s.heading}>{content.heading}</h1>
-          <p className={s.subhead}>{content.subhead}</p>
+          <p className={s.subhead}>
+            {content.subhead.lead}
+            <br />
+            {content.subhead.tail}
+          </p>
         </header>
 
         {studies.length > 0 ? (

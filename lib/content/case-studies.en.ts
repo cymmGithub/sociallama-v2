@@ -9,8 +9,10 @@ export const caseStudiesListing = {
   metaDescription:
     'Social Lama case studies — the real results of our social media work: strategies, campaigns, and hard numbers for brands across retail, real estate, FMCG, and entertainment.',
   heading: 'Case studies',
-  subhead:
-    'How we work and what comes of it — selected Social Lama projects, with the numbers that describe them.',
+  subhead: {
+    lead: 'How we work and what comes of it',
+    tail: 'Selected Social\u00A0Lama projects, with the numbers that describe them.',
+  },
   cardRead: 'VIEW CASE STUDY',
   empty: {
     title: 'Coming soon',

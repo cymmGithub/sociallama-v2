@@ -520,51 +520,6 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Zdrowie',
-    // Numbers verbatim from the Adamed case study.
-    numbers: [
-      { value: '+242%', label: 'Wzrost obserwujących' },
-      { value: '+269%', label: 'Interakcje z zawartością' },
-      { value: '+719%', label: 'Kliknięcia w link' },
-      { value: '+100%', label: 'Wzrost wyświetleń' },
-    ],
-    caseStudy: {
-      slug: 'adamed',
-      cardKicker: 'CASE STUDY',
-      cardTitle:
-        'Głęboki Oddech Adamed — edukacja zdrowotna w\u00A0social mediach',
-      creatives: [
-        {
-          src: '/case-studies/adamed/adamed-gallery-1-cut.webp',
-          alt: 'Kadr z rolki na profilu Głęboki Oddech Adamed — dr n. med. Kamil Janeczek w niebieskim uniformie medycznym mówi do kamery, napis „Leczenie astmy opiera się na dwóch filarach”',
-          width: 461,
-          height: 939,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-2-cut.webp',
-          alt: 'Kadr z rolki ze specjalistą na profilu Głęboki Oddech Adamed — lekarz w ciemnym uniformie tłumaczy, jak palenie wpływa na organizm',
-          width: 384,
-          height: 785,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-3-cut.webp',
-          alt: 'Post edukacyjny Głęboki Oddech Adamed z pytaniem „Czy chciałbyś poznać różnice między astmą alergiczną a niealergiczną?” i dłonią trzymającą inhalator',
-          width: 461,
-          height: 939,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-4-cut.webp',
-          alt: 'Post Głęboki Oddech Adamed z pytaniem „Jak radzicie sobie z atakami astmy?” — mężczyzna trzymający się za klatkę piersiową',
-          width: 384,
-          height: 785,
-        },
-        {
-          src: '/case-studies/adamed/adamed-gallery-5-cut.webp',
-          alt: 'Kreacja Głęboki Oddech Adamed z hasłem „Przestań błądzić w dymie, znajdź zdrową ścieżkę na czas” — tłum ludzi we mgle dymu',
-          width: 461,
-          height: 939,
-        },
-      ],
-    },
     relatedCaseStudies: [
       {
         slug: 'imid-cmv',

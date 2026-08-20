@@ -569,9 +569,23 @@ CS_EXTRA_SOURCES = {
 # belt needs it more here.
 CS_INHERIT_OPTS = {"tol", "lead"}
 
+# Per-slug optical-mass boost for the card pass, mirroring the belt's `boost`
+# but kept as its own table: the belt's value is tuned against the belt's 140x44
+# box and its own median, so it is not transferable (that is why `boost` is not
+# in CS_INHERIT_OPTS). Same formula, same trade: a value above 1.0 raises the
+# clamp ceiling with it, letting a mark spend the canvas padding.
+#
+# pracuj.pl is the one mark the normaliser underweights here for the same reason
+# it does on the belt — the wordmark is knocked out of a solid navy pill, and the
+# pill is real ink the mass measure counts, so the correction lands at 0.53, the
+# set's strongest shrink, and the card mark reads visibly smaller than its
+# neighbours (the 2026-08-20 client review). The boost re-approximates the
+# wordmark, not the pill, as the mass.
+CS_BOOST = {"pracuj-pl": 1.35}
+
 # Slugs whose `<slug>-logo-mono.png` is hand-placed: the file is never
 # overwritten, but the slug still flows through pass 1/2 so the set's median
-# optical mass — which normalizes the other 47 marks — and the contact sheet
+# optical mass — which normalizes the other marks — and the contact sheet
 # are unchanged by the exclusion.
 # breville: the 2026-08-20 review replaced the source artwork with the official
 # logo; the card mark is that artwork flattened to black by hand, plated onto
@@ -710,7 +724,8 @@ def build_case_studies():
 
     marks, rows = [], []
     for slug, src, mark, fit, cut in prepared:
-        correction = min(1.0, max(0.5, (median / masses[slug]) ** 0.5))
+        boost = CS_BOOST.get(slug, 1.0)
+        correction = min(boost, max(0.5, (median / masses[slug]) ** 0.5) * boost)
         placed = place_left(mark, fit * correction)
         if slug not in CS_HAND_PLACED:
             placed.save(os.path.join(CS_SRC, slug, f"{slug}-logo-mono.png"))
