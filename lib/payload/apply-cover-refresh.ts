@@ -25,16 +25,24 @@
  * at `image_crop_1200x800_w1200_q0.9.jpg` on prod. Both are recorded, and a
  * cover matching NEITHER aborts that study rather than overwriting something
  * this plan never looked at — the content moved, and the plan is stale.
+ *
+ * Every write goes through `media-ops.ts`, which is what makes the stored
+ * filename equal the requested one, refuses a production run from a working
+ * copy that would rename it, and ends by revalidating the pages it touched.
+ * The first run of this script (2026-08-21) predates the module and shipped
+ * all 27 production uploads renamed by one index — hence the `stored` field.
  */
 
-import { targetProdEnv } from '@/lib/payload/prod-env'
+import {
+  begin,
+  finish,
+  repointRelation,
+  uploadMedia,
+  type Verdict,
+} from '@/lib/payload/media-ops'
 
 const APPLY = process.argv.includes('--apply')
 const IS_PROD = process.argv.includes('--prod')
-
-if (IS_PROD) {
-  targetProdEnv('apply-cover-refresh', { blob: true })
-}
 
 type Op = {
   slug: string
@@ -284,195 +292,55 @@ const OPS: Op[] = [
   },
 ]
 
-const { default: config } = await import('@payload-config')
-const { getPayload } = await import('payload')
-const payload = await getPayload({ config })
-
-/**
- * Clear a filename's objects out of the Blob store, then wait until the store
- * agrees they are gone.
- *
- * Dev and prod share one store, so a dev run of this script has already written
- * the exact key a prod run wants and the upload comes back "already exists"
- * even though no media ROW owns the name. Deleting is not immediately visible
- * to the next put either — the store is eventually consistent — so this polls
- * rather than sleeping a fixed amount.
- */
-async function clearBlobs(file: string) {
-  const { list, del } = await import('@vercel/blob')
-  const token = process.env.BLOB_READ_WRITE_TOKEN
-  if (!token) throw new Error('BLOB_READ_WRITE_TOKEN is not set')
-  const dot = file.lastIndexOf('.')
-  const stem = file.slice(0, dot)
-  const ext = file.slice(dot)
-  const variant = new RegExp(
-    `^${stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(-\\d+x\\d+)?${ext.replace('.', '\\.')}$`
-  )
-  const matching = async () => {
-    const { blobs } = await list({ prefix: stem, token })
-    return blobs.filter((b) => variant.test(b.pathname))
-  }
-  const first = await matching()
-  if (first.length === 0) return 0
-  await del(
-    first.map((b) => b.url),
-    { token }
-  )
-  for (let i = 0; i < 20; i++) {
-    if ((await matching()).length === 0) return first.length
-    await new Promise((r) => setTimeout(r, 500 + i * 250))
-    await del(
-      (await matching()).map((b) => b.url),
-      { token }
-    )
-  }
-  throw new Error(
-    `${file}: blob objects still present after 20 delete attempts`
-  )
-}
-
-/**
- * Upload the file unless a row already owns that filename, and write both
- * locales' alt.
- *
- * Payload's `getSafeFileName` checks the local `media/` directory even when the
- * bytes go to Blob, so a name already on local disk is silently renamed — which
- * is how a dev-then-prod sequence once shipped `-cover-3` where the plan said
- * `-cover-2`. The stored filename is therefore read back off the created doc
- * and reported, rather than assumed to be what was asked for.
- */
-async function findOrCreateMedia(op: Op) {
-  const existing = await payload.find({
-    collection: 'media',
-    where: { filename: { equals: op.to } },
-    limit: 1,
-    locale: 'pl',
-    overrideAccess: true,
-  })
-  if (existing.docs[0]) return { doc: existing.docs[0], created: false }
-
-  const create = () =>
-    payload.create({
-      collection: 'media',
-      locale: 'pl',
-      data: { alt: op.altPl },
-      filePath: `public/case-studies/${op.slug}/${op.to}`,
-      overrideAccess: true,
-    })
-
-  let doc: Awaited<ReturnType<typeof create>> | undefined
-  try {
-    doc = await create()
-  } catch (err) {
-    if (!/already exists/i.test(String(err))) throw err
-    for (let attempt = 1; attempt <= 5 && !doc; attempt++) {
-      const n = await clearBlobs(op.to)
-      console.log(
-        `    (cleared ${n} shared-store blob object(s), attempt ${attempt})`
-      )
-      await new Promise((r) => setTimeout(r, attempt * 1500))
-      try {
-        doc = await create()
-      } catch (retryErr) {
-        if (!/already exists/i.test(String(retryErr)) || attempt === 5)
-          throw retryErr
-      }
-    }
-  }
-  if (!doc) throw new Error(`${op.to}: upload never succeeded`)
-
-  // `alt` is required, so a Polish-only upload is an accessibility regression
-  // on /en. Separate write because `alt` is localized and `cover` is not.
-  await payload.update({
-    collection: 'media',
-    id: doc.id,
-    locale: 'en',
-    data: { alt: op.altEn },
-    overrideAccess: true,
-  })
-  return { doc, created: true }
-}
-
-let pending = 0
-let done = 0
-let aborted = 0
-const rollback: string[] = []
+const ctx = await begin({
+  script: 'apply-cover-refresh',
+  prod: IS_PROD,
+  apply: APPLY,
+  host: 'https://sociallama-v2.vercel.app',
+})
 
 console.log(
   `apply-cover-refresh — ${OPS.length} studies, ${IS_PROD ? 'PRODUCTION' : 'development'} database, ` +
     `${APPLY ? 'APPLYING' : 'report only'}\n`
 )
 
+const counts: Record<Verdict, number> = {
+  'already-done': 0,
+  pending: 0,
+  stale: 0,
+  missing: 0,
+}
+
 for (const op of OPS) {
-  const found = await payload.find({
+  const verdict = await repointRelation(ctx, {
     collection: 'case-studies',
-    where: { slug: { equals: op.slug } },
-    limit: 1,
-    depth: 1,
-    locale: 'pl',
-    draft: false,
-    overrideAccess: true,
+    slug: op.slug,
+    field: 'cover',
+    from: op.from,
+    // `stored` is what production actually holds for the 27 rows the first,
+    // pre-module run renamed. On prod the target IS that name — the module
+    // compares the live value against `to`, so the renamed row must be the
+    // target there or every row reads as stale. Dev kept the planned name.
+    to: IS_PROD ? (op.stored ?? op.to) : op.to,
+    tags: ['case-studies', `case-study:${op.slug}`],
+    upload: async () => {
+      const { doc, created } = await uploadMedia(ctx, {
+        file: IS_PROD ? (op.stored ?? op.to) : op.to,
+        fromPath: `public/case-studies/${op.slug}/${op.to}`,
+        altPl: op.altPl,
+        altEn: op.altEn,
+      })
+      if (doc && created)
+        console.log(`    + uploaded ${doc.filename} (id ${doc.id})`)
+      return doc
+    },
   })
-  const study = found.docs[0]
-  if (!study) {
-    console.log(`  ! ${op.slug}: no such study — skipped`)
-    aborted++
-    continue
-  }
-
-  const cover = study.cover as { id?: number; filename?: string } | null
-  const current = cover?.filename ?? null
-
-  if (current === op.to || current === op.stored) {
-    done++
-    continue
-  }
-  if (!(current && op.from.includes(current))) {
-    // The guard, not a selector: an unexpected cover means the content moved
-    // since the plan was written, and overwriting it would destroy a change
-    // nobody recorded.
-    console.log(
-      `  ! ${op.slug}: cover is ${current ?? '(none)'}, expected one of ` +
-        `${op.from.join(' | ')} — skipped, the plan is stale for this study`
-    )
-    aborted++
-    continue
-  }
-
-  pending++
-  console.log(`  ${APPLY ? '~' : 'would'} ${op.slug}: ${current} -> ${op.to}`)
-  if (!APPLY) continue
-
-  const { doc, created } = await findOrCreateMedia(op)
-  const stored = doc.filename as string
-  if (stored !== op.to) {
-    console.log(
-      `    ! stored as ${stored}, not ${op.to} (getSafeFileName renamed it)`
-    )
-  }
-  if (created) console.log(`    + uploaded ${stored} (id ${doc.id})`)
-
-  await payload.update({
-    collection: 'case-studies',
-    id: study.id,
-    data: { cover: doc.id },
-    overrideAccess: true,
-  })
-  rollback.push(`${op.slug}: ${stored} -> ${current}`)
+  counts[verdict]++
 }
 
 console.log(
-  `\nDone. ${APPLY ? 'applied' : 'pending'}=${pending} already-done=${done} skipped=${aborted}`
+  `\nDone. ${APPLY ? 'applied' : 'pending'}=${counts.pending} ` +
+    `already-done=${counts['already-done']} skipped=${counts.stale + counts.missing}`
 )
-if (rollback.length) {
-  console.log('\nRollback — repoint these covers back:')
-  for (const line of rollback) console.log(`  ${line}`)
-}
-if (APPLY && IS_PROD) {
-  console.log(
-    '\n/api/media/file ships max-age=31536000 and the optimizer keeps year-old ' +
-      'variants: run `vercel cache purge --project sociallama-v2 --type cdn -y`, ' +
-      'then verify in a real browser (bare curl hits a different Accept-negotiated entry).'
-  )
-}
+await finish(ctx)
 process.exit(0)

@@ -43,18 +43,21 @@ if (!ALLOWED.has(SLUG)) {
   )
 }
 
-if (process.argv.includes('--prod')) {
-  const { targetProdEnv } = await import('./prod-env')
-  // `blob: true` with nothing uploaded: production keeps the bytes in Vercel
-  // Blob, and Payload can only remove a deleted row's object while its Blob
-  // plugin is active. Without the token the row goes and the object is left in
-  // the store with nothing pointing at it.
-  targetProdEnv('delete-case-study', { blob: true })
-}
-
-const { default: config } = await import('@payload-config')
-const { getPayload } = await import('payload')
-const payload = await getPayload({ config })
+// `begin()` requires the Blob token on prod even though nothing is uploaded:
+// production keeps the bytes in Vercel Blob, and Payload can only remove a
+// deleted row's object while its Blob plugin is active. Without the token the
+// row goes and the object is left in the store with nothing pointing at it.
+// It also checks REVALIDATE_SECRET up front — the first run of this script
+// (2026-08-21) deleted the study and left /case-studies serving 48 cards for
+// an hour, because the collection hooks' revalidateTag is a no-op from the CLI.
+const { begin, finish } = await import('./media-ops')
+const ctx = await begin({
+  script: 'delete-case-study',
+  prod: process.argv.includes('--prod'),
+  apply: APPLY,
+  host: 'https://sociallama-v2.vercel.app',
+})
+const payload = ctx.payload
 
 const idOf = (v: unknown): number | null => {
   if (typeof v === 'number') return v
@@ -212,7 +215,10 @@ for (const m of manifest) {
 }
 
 console.log(`\nDone. study=1 media=${removed}`)
-console.log(
-  'Writes bypass the deployed app cache — redeploy or revalidate to surface this.'
-)
+
+// The listing, the study's own page, and the sitemap all read the deleted row.
+ctx.tags.add('case-studies')
+ctx.tags.add(`case-study:${SLUG}`)
+ctx.bytesChanged = removed > 0
+await finish(ctx)
 process.exit(0)
