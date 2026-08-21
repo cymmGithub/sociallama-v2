@@ -48,11 +48,7 @@ export function CaseStudiesListingView({
           <header className={s.header}>
             <div className={s.headerText}>
               <h1 className={s.heading}>{content.heading}</h1>
-              <p className={s.subhead}>
-                {content.subhead.lead}
-                <br />
-                {content.subhead.tail}
-              </p>
+              <p className={s.subhead}>{content.subhead}</p>
             </div>
             {/* Nothing to filter when the collection is empty, and the field
                 would read as broken next to the "coming soon" state. */}

@@ -14,12 +14,17 @@
   gap: var(--gap);
 
   /* Title block and search field side by side, the field's rule landing on the
-     subhead's last line. Not at `--desktop` (800px): the text column holds a
-     76ch measure, ~684px at this body size and ~742px in WebKit, so an 800px
-     viewport would leave the field about 80px. 1100px is the first width where
-     both hold their own — text measure, a two-gap gutter, and a field wide
-     enough to read a brand name in. */
-  @media (width >= 1100px) {
+     subhead's last line. The threshold is set by the subhead, which is one
+     sentence and is meant to stay on one line: English measures 965px at this
+     size, plus a 22rem field, a two-gap gutter and the page's own padding puts
+     the first viable width just under 1400px. Below that the field drops back
+     under the sentence, which then has the full width and still holds one line
+     down to ~1000px.
+
+     Deliberately not 1440: a 1440px screen reports ~1425px of viewport once a
+     classic scrollbar takes its cut, so a 1440 threshold would never engage on
+     the very screens it was written for. */
+  @media (width >= 1400px) {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
@@ -31,11 +36,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap);
-  /* Wide enough for the subhead's second line to hold together: the longest of
-     the two locales' tails is 67 characters, and at 60ch it broke two words
-     onto a third line. The measure only binds above ~900px — below that the
-     column is viewport-bound and wraps as it always did. */
-  max-width: 76ch;
+  /* No measure. The subhead is one sentence and is meant to hold one line, so
+     the column takes whatever the row leaves it — up to the search field's
+     left edge on the split row, the full width below it. A 76ch cap lived here
+     while the copy was two hand-broken clauses; it would now fold the sentence
+     at every width. */
 }
 
 .heading {
@@ -77,7 +82,7 @@
   /* On the split row it stops being a full-measure element and becomes a
      fixed-width control at the far end, shrinking only if the text column
      needs the room. */
-  @media (width >= 1100px) {
+  @media (width >= 1400px) {
     flex: 0 1 22rem;
     width: 22rem;
     max-width: none;
