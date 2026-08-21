@@ -417,16 +417,10 @@ function renderParagraph({
  * --desktop the orbit is swapped for the plain chip list (positioned spokes
  * crowd at phone width), so only one of the two is in the a11y tree per width.
  *
- * The orbit does not rotate. It used to, driven by a registered <angle>
- * `--spin`, and that is exactly what broke it: `@property` is the one feature
- * in the stylesheet the build cannot downlevel, Safari only gained it in 16.4,
- * and below that `var(--spin)` substitutes to nothing, the chips' whole
- * `transform` is invalid at computed-value time, and it computes to `none`.
- * Three chips then pile onto the hub. Three attempts to keep the animation and
- * work around the breakage all failed on the reporter's Mac, so the animation
- * is gone: chip positions are now plain arithmetic on `--base` and `--item-r`,
- * two ordinary custom properties that have worked everywhere for a decade.
- * Do not reintroduce a registered property here.
+ * The sweep is driven by keyframes holding literal angles, never by a
+ * registered custom property. Safari below 16.4 has no `@property`, which is
+ * what collapsed the chips onto the hub in the 2026-08-21 report; see the long
+ * note in the CSS module. Nothing here needs a browser check.
  *
  * List semantics ride on role=list / listitem because the chips must be direct
  * children of the box that carries the sizing variables.
@@ -439,6 +433,27 @@ function IndustryBrief({
   chrome: Chrome
 }) {
   const ref = useReveal<HTMLDivElement>()
+  const orbitRef = useRef<HTMLDivElement>(null)
+  const [spinning, setSpinning] = useState(false)
+  const reducedMotion = usePreferredReducedMotion()
+
+  // Spin only while on screen, never under reduced motion (the CSS also
+  // disables it — this just avoids running a pointless observer).
+  useEffect(() => {
+    const el = orbitRef.current
+    if (!el) {
+      return
+    }
+    if (reducedMotion) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => setSpinning(entries[0]?.isIntersecting ?? false),
+      { threshold: 0 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [reducedMotion])
 
   const pillars = industry.brief.pillars
   const step = 360 / Math.max(pillars.length, 1)
@@ -451,7 +466,13 @@ function IndustryBrief({
           {/* biome-ignore lint/a11y/useSemanticElements: a <ul> here would put a
               wrapper between the chips and the box that carries --orbit — the
               structural difference this component exists to avoid. */}
-          <div data-reveal-item className={s.briefOrbit} role="list">
+          <div
+            ref={orbitRef}
+            data-reveal-item
+            className={s.briefOrbit}
+            data-spinning={spinning}
+            role="list"
+          >
             <div className={s.orbitTrack} aria-hidden="true">
               <svg
                 className={s.orbitSvg}

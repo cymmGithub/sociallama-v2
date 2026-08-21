@@ -884,16 +884,48 @@
 
 /* —— Brief orbit (desktop) ——————————————————————————————————————————————————
 
-   A still diagram: a dotted ring, three orange spoke dots and three pillar
-   chips, each placed by arithmetic on --base and --item-r.
+   A dotted ring carrying three orange spoke dots, three pillar chips revolving
+   on it, and a still hub. One 48s period, one phase, so each dot stays inboard
+   of its chip; each chip counter-rotates by the same angle so its text stays
+   upright.
 
-   It used to rotate, and that is what broke it on a Mac. See the note on
-   --spin's registration above the CTA comet: below Safari 16.4 the chips'
-   whole transform was invalid at computed-value time and computed to none, so
-   three top:50%/left:50% chips piled onto the hub. Three fixes that kept the
-   animation all failed there, so the animation is gone rather than guarded.
-   --base and --item-r are ordinary custom properties and were never part of
-   the problem. Do not reintroduce a registered property in this diagram. */
+   The angles are literals in the keyframes, NOT a registered custom property.
+   That distinction is the whole history of this component. It used to drive
+   everything from an @property-registered <angle> --spin, and @property is the
+   one feature here the build cannot downlevel: custom media comes out as
+   min-width:800px and nesting as a descendant selector, but the registration
+   ships verbatim, and Safari only gained it in 16.4. Below that --spin is an
+   ordinary custom property nobody declares, var(--spin) substitutes to
+   nothing, every transform reading it is invalid at computed-value time and
+   computes to none, and three top:50%/left:50% chips pile onto the hub. That
+   was the Mac report of 2026-08-21.
+
+   Writing the sweep as `rotate(var(--base))` -> `rotate(calc(var(--base) +
+   360deg))` needs no registration at all: two keyframes with the same function
+   list interpolate argument by argument, so the rotation is identical, and
+   --base and --item-r are ordinary custom properties that resolve everywhere.
+   Do not reintroduce a registered property here. */
+
+@keyframes orbit-track {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Both keyframes must repeat the chip's full function list: interpolation is
+   per-argument and only works when the lists match. */
+@keyframes orbit-chip {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--base))
+      translateY(calc(-1 * var(--item-r))) rotate(calc(-1 * var(--base)));
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(calc(var(--base) + 360deg))
+      translateY(calc(-1 * var(--item-r)))
+      rotate(calc(-1 * var(--base) - 360deg));
+  }
+}
 
 .briefOrbit {
   /* Chips swing a footprint ~1.14x the orbit box (each reaches --item-r + half
@@ -913,6 +945,7 @@
      where the old 36vw had already capped at 1155px, and without it the diagram
      would gain ~40px at 1440. */
   --orbit: min(26rem, calc(0.368 * min(1240px, 100vw - 2 * var(--safe))));
+  --period: 48s;
   --ring-r: calc(var(--orbit) * 0.28);
   --item-r: calc(var(--orbit) * 0.4);
   --dot-size: calc(var(--orbit) * 0.03);
@@ -935,6 +968,13 @@
   width: calc(var(--ring-r) * 2);
   height: calc(var(--ring-r) * 2);
   margin: calc(var(--ring-r) * -1);
+  transform: rotate(0deg);
+  animation: orbit-track var(--period) linear infinite;
+  animation-play-state: paused;
+
+  .briefOrbit[data-spinning="true"] & {
+    animation-play-state: running;
+  }
 }
 
 .orbitSvg {
@@ -987,9 +1027,16 @@
   line-height: 1.25;
   text-align: center;
   color: var(--color-plum);
-  /* Out along the spoke, then straight back upright. */
+  /* Out along the spoke, then straight back upright. Matches orbit-chip's
+     `from`, so a paused or unsupported animation rests here. */
   transform: translate(-50%, -50%) rotate(var(--base))
     translateY(calc(-1 * var(--item-r))) rotate(calc(-1 * var(--base)));
+  animation: orbit-chip var(--period) linear infinite;
+  animation-play-state: paused;
+
+  .briefOrbit[data-spinning="true"] & {
+    animation-play-state: running;
+  }
 }
 
 /* Hub — the section kicker, held still at the centre. */
@@ -1010,6 +1057,13 @@
   text-align: center;
   text-transform: uppercase;
   color: var(--color-plum);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbitTrack,
+  .orbitItem {
+    animation: none;
+  }
 }
 
 /* Below --desktop the orbit is replaced by the flat kicker + chip list. */
