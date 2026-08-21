@@ -1,0 +1,37 @@
+#  Crop boxes for this change, x,y,w,h in the SOURCE file's pixels.
+#
+#  The task list budgeted a crop box for each of the ~25 Mac screenshots, to cut
+#  away status bars, reel overlays and browser chrome. Measured, that work is
+#  almost entirely absent: Emilia framed her screen grabs on the creative
+#  itself, so 26 of the 27 arrive with no chrome at any edge. What the edge
+#  scan did find was creative content mistaken for chrome — the pure black at
+#  the top of `power elements/Zrzut 16.19.44` is the "POWER IS COMING" backdrop,
+#  the pale band above `volvo/Zrzut 14.46.32` is sky, the light gradient above
+#  `laurastar/Zrzut 15.24.01` is a wall. Cropping any of them would have eaten
+#  the picture.
+#
+#  Method: per file, walk in from each edge while the row/column's channel
+#  standard deviation stays under 4, then read the run's mean colour; anything
+#  the detector flagged was then looked at as a magnified edge strip before a
+#  crop was written here. Files with no row are encoded whole.
+#
+source	crop	why
+breville/Zrzut ekranu 2026-08-20 o 15.13.56.png	0,6,1256,1568	6 px of white above the photograph, and the red brand rule at the foot is the creative's own — kept
+fm-logistics/pexels-10541203 (stock)	0,0,3840,4800	2:3 original cropped to the 4:5 the other pillar creatives use; the discarded band is unlit brick
+#
+#  The seven in-place crops of creatives ALREADY in the database are measured
+#  against their own files under public/case-studies/, not against a Drive
+#  source, and are recorded here once cut:
+#
+fm-logistics/fm-logistics-greensupply-1-cut.webp	0,634,560,570	cut the LinkedIn post frame, keep the graphic
+fm-logistics/fm-logistics-gallery-3.jpg	0,128,403,400	cut the post frame, keep the graphic
+fm-logistics/fm-logistics-crossdock-2.png	0,551,748,759	cut the post frame, keep the graphic
+entelo/entelo-gallery-5-cut.webp	50,293,586,892	cut the Facebook post mockup, keep the creative
+dolina-charlotty/dolina-charlotty-gallery-3-cut.webp	24,101,412,735	cut the phone mockup, keep the story
+dolina-charlotty/dolina-charlotty-gallery-4-cut.webp	24,285,412,501	cut the phone mockup, keep the post creative
+dolina-charlotty/dolina-charlotty-gallery-5-cut.webp	20,210,398,485	cut the phone mockup, keep the reel frame
+#
+#  Reverted 2026-08-21 on the owner's call: las-vegans needs no re-cut (both
+#  press clippings stay as they are), and the Pracuj cover was never asked
+#  for — the boxes measured for them are dropped rather than kept as dead
+#  rows.

@@ -7,8 +7,9 @@
   built from the dev DB (`dump-case-study-imagery.ts` + a pillar probe) and the
   18 Drive brand folders pulled with `rclone` by folder id (several folder
   names carry trailing spaces; `iRobot ` and `Mercator ` break path-based
-  addressing). The owner approved it with two amendments: Pracuj cover ←
-  `blur 2`, FM #EMPLOYERBRANDING ← man in a suit.
+  addressing). The owner approved it with two amendments — Pracuj cover ←
+  `blur 2`, FM #EMPLOYERBRANDING ← man in a suit — and struck the Pracuj one
+  again on 2026-08-21, before it was applied.
 - The Drive files are flat: 1080×1350 / 1080×1080 Instagram exports
   (`<id>_n.jpg`) and 870–1260 px wide Mac screenshots of reels and posts.
   None is a device mockup, so `mockup_cutout.py` does not apply; they render
@@ -62,13 +63,31 @@ proposal; touching Pracuj pillars.
    plate once.
 
 4. **Crops of surviving creatives (fm-logistics ×3, entelo-5, dolina-charlotty
-   ×3, las-vegans ×2) update the existing media row in place** via `uploadMedia({replace:
-   true})` on the same filename, the way `refresh-case-study-creatives.ts`
-   does. Pillars reference by id; a new row would need a repoint for nothing.
+   ×3) update the existing media row in place.** Pillars reference by id; a new
+   row would need a repoint for nothing. Las Vegans was in this list until the
+   owner cancelled its re-cut on 2026-08-21.
 
-5. **Pracuj cover: same in-place replace** of `pracuj-pl-cover.jpg` bytes with
-   `blur 2`, encoded through `encode_cover.py` so the 1200×630 variant is
-   regenerated. The cover id does not change.
+   **Amended during implementation.** This said `uploadMedia({ replace: true })`,
+   which cannot do it: `uploadMedia` returns the existing row untouched when the
+   filename is taken, and its `replace` flag only covers an orphaned object with
+   no row. Replacing bytes needed a new operation, so `media-ops.ts` gained two:
+
+   - `replaceMediaBytes()` — new bytes behind an existing filename, keeping the
+     id, with the Blob clear and the stored-name assertion the module already
+     does for uploads. Idempotent on **dimensions**, not byte count: Payload
+     re-encodes WebP on upload, so a filesize comparison reports the same re-cut
+     pending for ever.
+   - `repointPillarMedia()` — sets one pillar's `media` array in both locales,
+     guarded by the pillar's tag and its current contents. `repointRelation`
+     could not: it writes a single unlocalized top-level field, and `approach`
+     is a localized whole array.
+
+5. **The Pracuj cover is not in this change.** It stood here as an in-place
+   replace from `blur 2`; the owner struck it on 2026-08-21 ("i didnt mention
+   that"), and the re-encode was reverted before any database saw it. A cover
+   swap did land, but a different one: `power-elements` takes an owner-supplied
+   texture as `power-elements-cover-2.jpg`, through `repointRelation` on the
+   `cover` field, so the displaced portrait shot survives as an orphan.
 
 6. **FM employer-branding slot is a stock swap, not a removal.** Candidates are
    sourced with `pexels_candidates.py` (query "man suit office"), shown at the
@@ -77,9 +96,11 @@ proposal; touching Pracuj pillars.
    written plainly ("A man in a dark suit at an office window"), no
    attribution to the client. Same rule the covers followed.
 
-7. **Empty pillars stay.** a1-karting #VIDEO, engie #PERSONALBRANDING,
-   power-elements #COMMUNITY, kontigo #LIVE, kbp (both) keep their copy and
-   render through `pillarSolo`. Rejected: deleting the pillar (copy is content
+7. **Empty pillars stay.** Fourteen of them, listed in `plan.md` — a1-karting
+   #VIDEO, three on asus, engie #PERSONALBRANDING, kbp, kontigo #LIVE, two on
+   las-vegans, dolina-charlotty #AUTENTYCZNOŚĆ, three #MODERACJA pillars and
+   power-elements #COMMUNITY. Each keeps its copy and renders through
+   `pillarSolo`. Rejected: deleting the pillar (copy is content
    the owner did not ask to lose) and refilling with stock (the spec makes
    stock an explicit per-image approval, and none was given here).
 
@@ -91,11 +112,12 @@ proposal; touching Pracuj pillars.
 
 ## Risks / Trade-offs
 
-- **Las Vegans "dajmy większe".** Reducing to one screenshot per pillar does
-  not change the render box; the crop to the article is what makes the
-  legible part bigger. If that is still too small on the sand page, the fix is
-  a `.shot` sizing rule for landscape-only pillars, raised as its own change,
-  not media.
+- **Las Vegans "dajmy większe" — unresolved by this change.** Reducing to one
+  screenshot per pillar does not change the render box, and the crop that would
+  have made the legible part bigger was cancelled by the owner on 2026-08-21.
+  The two press clippings still render at their original size. If that reads too
+  small on the sand page, the fix is a `.shot` sizing rule for landscape-only
+  pillars, raised as its own change, not media.
 
 - **Interpretive calls baked into the plan.** Stadler gallery-5/6/7 (faceless,
   dropped under a literal reading), Mercator #MODERACJA, Personal Effect
@@ -106,7 +128,7 @@ proposal; touching Pracuj pillars.
   and Brześć covers). The `from` guard turns that into a `stale` line in the
   prod report rather than a wrong write; those lines are resolved by hand
   before rerunning.
-- **87 uploads against prod** at the Blob + Neon pace is a long run; the
+- **89 uploads against prod** at the Blob + Neon pace is a long run; the
   shell may return before it finishes. The rerun-until-zero rule covers it.
 - **Faces in supplied files.** Volvo `konkurs 1`, Kohersen's two screenshots,
   Dynamic Development's four, Ariadna's four all show people. They come from

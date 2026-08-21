@@ -144,6 +144,21 @@ const filenameOf = (v: unknown): string | null =>
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
+/** Pixel size of a file on disk, or null for anything sharp cannot read. */
+async function imageSize(
+  path: string
+): Promise<{ width: number; height: number } | null> {
+  try {
+    const { default: sharp } = await import('sharp')
+    const meta = await sharp(path).metadata()
+    return meta.width && meta.height
+      ? { width: meta.width, height: meta.height }
+      : null
+  } catch {
+    return null
+  }
+}
+
 // —— upload —————————————————————————————————————————————————————————————————
 
 export type UploadOpts = {
@@ -357,6 +372,313 @@ export async function repointRelation(
   })
   ctx.rollback.push(
     `${opts.slug}.${opts.field}: ${media.filename} -> ${current}`
+  )
+  return 'pending'
+}
+
+// —— replace bytes ——————————————————————————————————————————————————————————
+
+export type ReplaceOpts = {
+  /** The filename whose row is updated. It does not change. */
+  file: string
+  /** Path on disk holding the new bytes. */
+  fromPath: string
+  /** New alt, when the picture changed enough that the old one lies. */
+  altPl?: string
+  altEn?: string
+  /** Cache tags this write invalidates. */
+  tags: string[]
+}
+
+/**
+ * Put new bytes behind an existing filename, keeping the row and its id.
+ *
+ * This is the operation a re-crop needs and `uploadMedia` deliberately refuses:
+ * `uploadMedia` returns the existing row untouched when the filename is already
+ * taken, because a plan that names a new file and finds one there has a bug.
+ * A re-crop is the opposite — the row is the point, since `approach[].media`
+ * references it by id and a fresh row would need every pillar repointed for a
+ * picture that did not change.
+ *
+ * Idempotent on `filesize`: a re-crop always changes it, so a second run
+ * reports `already-done` instead of pushing the same bytes at Blob again. Alt
+ * text is compared too, in both locales, because the crop is often what makes
+ * the old description wrong.
+ */
+export async function replaceMediaBytes(
+  ctx: Ctx,
+  opts: ReplaceOpts
+): Promise<Verdict> {
+  const found = await ctx.payload.find({
+    collection: 'media',
+    where: { filename: { equals: opts.file } },
+    limit: 2,
+    locale: 'pl',
+    overrideAccess: true,
+  })
+  if (found.docs.length === 0) {
+    console.log(`  ! ${opts.file}: no media row owns that name — skipped`)
+    return 'missing'
+  }
+  if (found.docs.length > 1) {
+    throw new Error(
+      `${opts.file}: ${found.docs.length} media rows share that filename — ` +
+        'refusing to guess which one the plan means'
+    )
+  }
+  const doc = found.docs[0]
+  const { statSync } = await import('node:fs')
+  const size = statSync(opts.fromPath).size
+  const local = await imageSize(opts.fromPath)
+
+  let altEnCurrent: string | null = null
+  if (opts.altEn) {
+    const en = await ctx.payload.find({
+      collection: 'media',
+      where: { id: { equals: doc.id } },
+      limit: 1,
+      locale: 'en',
+      fallbackLocale: false,
+      depth: 0,
+      overrideAccess: true,
+    })
+    altEnCurrent = (en.docs[0]?.alt as string) ?? null
+  }
+  // Dimensions first, byte count only as a fallback. Payload re-encodes WebP on
+  // upload, so a stored row's `filesize` never equals the source file's and a
+  // filesize check would report the same re-cut pending for ever. Every re-cut
+  // changes the frame, so width and height are the honest signal.
+  const bytesDone =
+    local && doc.width && doc.height
+      ? doc.width === local.width && doc.height === local.height
+      : doc.filesize === size
+  const altDone =
+    (!opts.altPl || doc.alt === opts.altPl) &&
+    (!opts.altEn || altEnCurrent === opts.altEn)
+  if (bytesDone && altDone) return 'already-done'
+
+  console.log(
+    `  ${ctx.apply ? '~' : 'would'} ${opts.file} (id ${doc.id}): ` +
+      `${bytesDone ? 'alt only' : `${doc.filesize} -> ${size} bytes`}`
+  )
+  for (const t of opts.tags) ctx.tags.add(t)
+  if (!ctx.apply) return 'pending'
+
+  if (!bytesDone) {
+    // The Blob adapter will not overwrite a key, and `getSafeFileName` bumps a
+    // name whose row already exists — including the row being updated. Clearing
+    // first and asserting the stored name afterwards covers both.
+    await clearBlobs(opts.file)
+    let res = await ctx.payload.update({
+      collection: 'media',
+      id: doc.id,
+      locale: 'pl',
+      filePath: opts.fromPath,
+      data: opts.altPl ? { alt: opts.altPl } : {},
+      overrideAccess: true,
+    })
+    if (res.filename !== opts.file) {
+      await clearBlobs(opts.file)
+      res = await ctx.payload.update({
+        collection: 'media',
+        id: doc.id,
+        locale: 'pl',
+        filePath: opts.fromPath,
+        data: {},
+        overrideAccess: true,
+      })
+    }
+    if (res.filename !== opts.file) {
+      throw new Error(
+        `${opts.file}: stored as ${res.filename} after two attempts — the row ` +
+          `(id ${doc.id}) now points at the wrong object`
+      )
+    }
+    ctx.bytesChanged = true
+    ctx.rollback.push(
+      `${opts.file} (id ${doc.id}): bytes replaced — restore from git and re-run`
+    )
+  } else if (opts.altPl) {
+    await ctx.payload.update({
+      collection: 'media',
+      id: doc.id,
+      locale: 'pl',
+      data: { alt: opts.altPl },
+      overrideAccess: true,
+    })
+  }
+
+  if (opts.altEn) {
+    await ctx.payload.update({
+      collection: 'media',
+      id: doc.id,
+      locale: 'en',
+      data: { alt: opts.altEn },
+      overrideAccess: true,
+    })
+  }
+  return 'pending'
+}
+
+// —— pillar media ———————————————————————————————————————————————————————————
+
+export type PillarOpts = {
+  slug: string
+  /** Index into `approach`. Asserted against the tags below, never trusted. */
+  pillar: number
+  tagPl: string
+  tagEn: string
+  /** Filenames the pillar is expected to hold now, in any order. */
+  from: string[]
+  /** Filenames it should hold afterwards, in this order. */
+  to: string[]
+  /** Resolves (or uploads) a row for one filename. Called only when pending. */
+  resolve: (file: string) => Promise<{ id: number; filename: string } | null>
+  tags: string[]
+}
+
+const LOCALES = ['pl', 'en'] as const
+
+/**
+ * Set one approach pillar's creatives, in both locales, guarded by its tag and
+ * by what it holds now.
+ *
+ * Why this is not `repointRelation`: that one writes a single top-level upload
+ * field on an unlocalized document. A pillar creative is neither. `approach` is
+ * a localized WHOLE ARRAY, so PL and EN carry separate copies of every pillar
+ * pointing at the same media rows, and a write that touches one locale leaves
+ * the other showing the picture the review rejected.
+ *
+ * Three guards, in order, because each catches a different way a plan rots:
+ *
+ *   1. **The tag.** Pillar order is editable in the admin, so index 2 today
+ *      need not be index 2 when the plan was written. A tag that does not match
+ *      means the study was reordered — reported, never written.
+ *   2. **The current set.** `from` is the plan's expected contents. A third
+ *      filename means someone edited the pillar since; dev and prod diverge
+ *      this way routinely.
+ *   3. **The target set.** Already equal to `to` in both locales is
+ *      `already-done`, which is what makes "re-run until zero pending" finish.
+ */
+export async function repointPillarMedia(
+  ctx: Ctx,
+  opts: PillarOpts
+): Promise<Verdict> {
+  const label = `${opts.slug} ${opts.tagPl}`
+  // biome-ignore lint/suspicious/noExplicitAny: Payload doc shape
+  const docs: Record<string, any> = {}
+
+  for (const locale of LOCALES) {
+    const res = await ctx.payload.find({
+      collection: 'case-studies',
+      where: { slug: { equals: opts.slug } },
+      limit: 1,
+      draft: true,
+      locale,
+      fallbackLocale: false,
+      depth: 1, // media populated so the guard can read filenames
+      overrideAccess: true,
+    })
+    const doc = res.docs[0]
+    if (!doc) {
+      console.log(`  ! ${label}: no case study with that slug — skipped`)
+      return 'missing'
+    }
+    const pillar = doc.approach?.[opts.pillar]
+    if (!pillar) {
+      console.log(
+        `  ! ${label} [${locale}]: no pillar at index ${opts.pillar} — skipped`
+      )
+      return 'missing'
+    }
+    const expectedTag = locale === 'pl' ? opts.tagPl : opts.tagEn
+    // Untagged pillars are real — Pracuj and Volvo both have some — and Payload
+    // returns null rather than '' for them, so the plan's empty string has to
+    // compare equal.
+    if ((pillar.tag ?? '') !== expectedTag) {
+      console.log(
+        `  ! ${label} [${locale}]: pillar ${opts.pillar} is tagged ` +
+          `${pillar.tag}, expected ${expectedTag} — skipped, the pillars moved`
+      )
+      return 'stale'
+    }
+    docs[locale] = doc
+  }
+
+  const namesOf = (doc: unknown, pillarIndex: number): string[] =>
+    // biome-ignore lint/suspicious/noExplicitAny: doc shape
+    ((doc as any).approach[pillarIndex].media ?? []).map(
+      (m: unknown) => filenameOf(m) ?? '(unnamed)'
+    )
+
+  const same = (a: string[], b: string[]) =>
+    a.length === b.length && a.every((v, i) => v === b[i])
+  const sameSet = (a: string[], b: string[]) =>
+    same([...a].sort(), [...b].sort())
+
+  const done = LOCALES.every((l) =>
+    same(namesOf(docs[l], opts.pillar), opts.to)
+  )
+  if (done) return 'already-done'
+
+  for (const locale of LOCALES) {
+    const current = namesOf(docs[locale], opts.pillar)
+    if (same(current, opts.to)) continue
+    if (!sameSet(current, opts.from)) {
+      console.log(
+        `  ! ${label} [${locale}]: holds ${current.join(', ') || '(none)'}, ` +
+          `plan expected ${opts.from.join(', ') || '(none)'} — skipped, stale`
+      )
+      return 'stale'
+    }
+  }
+
+  console.log(
+    `  ${ctx.apply ? '~' : 'would'} ${label}: ` +
+      `${opts.from.join(', ') || '(none)'} -> ${opts.to.join(', ') || '(none)'}`
+  )
+  for (const t of opts.tags) ctx.tags.add(t)
+  if (!ctx.apply) return 'pending'
+
+  const ids: number[] = []
+  for (const file of opts.to) {
+    const media = await opts.resolve(file)
+    if (!media) {
+      throw new Error(
+        `${label}: no media row for ${file} — aborting rather than writing a ` +
+          'pillar that is missing a creative'
+      )
+    }
+    ids.push(media.id)
+  }
+
+  for (const locale of LOCALES) {
+    const doc = docs[locale]
+    if (same(namesOf(doc, opts.pillar), opts.to)) continue
+    // Rebuild the whole array: `approach` is localized as a unit, so a partial
+    // write would blank the pillars it omits. Populated relations are reduced
+    // back to ids on the way in.
+    // biome-ignore lint/suspicious/noExplicitAny: hand-built rows, validated by Payload
+    const approach = doc.approach.map((pillar: any, i: number) => ({
+      ...pillar,
+      media:
+        i === opts.pillar
+          ? ids
+          : (pillar.media ?? []).map((m: unknown) => idOf(m)),
+    }))
+    await ctx.payload.update({
+      collection: 'case-studies',
+      id: doc.id,
+      locale,
+      // No `draft: true`: these studies are published and the published page is
+      // what the review is correcting.
+      // biome-ignore lint/suspicious/noExplicitAny: hand-built rows
+      data: { approach } as any,
+      overrideAccess: true,
+    })
+  }
+  ctx.rollback.push(
+    `${label}: ${opts.to.join(', ') || '(none)'} -> ${opts.from.join(', ') || '(none)'}`
   )
   return 'pending'
 }

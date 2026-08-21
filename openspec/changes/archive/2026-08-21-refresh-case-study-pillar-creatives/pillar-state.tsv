@@ -1,0 +1,111 @@
+# Pillar state on the dev database, 2026-08-21 — what the plan was written
+# against and what `from` is checked against at write time.
+# slug	index	tagPl	tagEn	current media (comma separated)
+a1-karting	0	#TWÓJTORDO	#YOURTRACKTO	a1-karting-gallery-1-cut.webp
+a1-karting	1	#HUMOR	#HUMOR	a1-karting-gallery-2-cut.webp
+a1-karting	2	#EDUKACJA	#EDUCATION	a1-karting-gallery-3-cut.webp,a1-karting-gallery-4-cut.webp
+a1-karting	3	#DOŚWIADCZENIA	#EXPERIENCES	a1-karting-gallery-5-cut.webp,a1-karting-gallery-6-cut.webp
+a1-karting	4	#VIDEO	#VIDEO	a1-karting-gallery-7-cut.webp
+ariadna	0	#WIDEO_REKLAMOWE	#AD_VIDEO	ariadna-gallery-1-cut.webp,ariadna-gallery-2.jpg,ariadna-gallery-3.jpg
+ariadna	1	#KAMPANIA	#CAMPAIGN	ariadna-gallery-4-cut.webp
+ariadna	2	#INFLUENCERKA	#INFLUENCER	ariadna-gallery-5.jpg
+ariadna	3	#OBSERWUJACY	#FOLLOWERS	ariadna-gallery-6-cut.webp,ariadna-gallery-9-cut.webp
+ariadna	4	#WYNIKI	#RESULTS	ariadna-gallery-10.jpg
+asus	0	#YOUTUBE	#YOUTUBE	asus-gallery-1-cut.webp
+asus	1	#FACEBOOK	#FACEBOOK	asus-gallery-3.jpg,asus-gallery-4-anon.jpg
+asus	2	#ANIMACJE	#ANIMATION	asus-gallery-5-cut.webp
+asus	3	#REELS	#REELS	asus-gallery-6-cut.webp
+asus	4	#KARUZELE	#CAROUSELS	asus-gallery-7.jpg,asus-gallery-8.jpg
+breville	0	#SPRZEDAŻ	#SALES	breville-gallery-1.jpg
+breville	1	#EKSPERCKOŚĆ	#EXPERTISE	breville-gallery-2.jpg
+breville	2	#KUCHNIADOBREGOSMAKU	#GOODTASTEKITCHEN	breville-gallery-3.jpg,breville-gallery-4.jpg,breville-gallery-5.jpg
+breville	3	#ZAANGAŻOWANIE	#ENGAGEMENT	breville-gallery-6.jpg
+dolina-charlotty	0	#POZNAJDOLINĘ	#DISCOVERDOLINA	dolina-charlotty-gallery-1-cut.webp
+dolina-charlotty	1	#AUTENTYCZNOŚĆ	#AUTHENTICITY	dolina-charlotty-gallery-2-cut.webp
+dolina-charlotty	2	#ZAUFANIE	#TRUST	dolina-charlotty-gallery-3-cut.webp
+dolina-charlotty	3	#DOŚWIADCZENIA	#EXPERIENCES	dolina-charlotty-gallery-4-cut.webp
+dolina-charlotty	4	#VIDEO	#VIDEO	dolina-charlotty-gallery-5-cut.webp,dolina-charlotty-gallery-6.jpg
+dynamic-development	0	#TIKTOK	#TIKTOK	dynamic-development-gallery-1-cut.webp
+dynamic-development	1	#MODERACJA	#MODERATION	
+dynamic-development	2	#NAGRANIA_WIDEO	#VIDEO_SHOOTS	dynamic-development-gallery-4-cut.webp,dynamic-development-gallery-5-cut.webp
+dynamic-development	3	#SPRZEDAŻ	#SALES	dynamic-development-gallery-6-cut.webp
+ed-invest	0	#KOMUNIKACJA	#COMMUNICATION	ed-invest-gallery-7.jpg
+ed-invest	1	#WIDEO	#VIDEO	ed-invest-gallery-1-cut.webp,ed-invest-gallery-2-cut.webp
+ed-invest	2	#EVENTY	#EVENTS	ed-invest-gallery-3-cut.webp,ed-invest-gallery-4-cut.webp
+ed-invest	3	#KREACJE	#CREATIVE	ed-invest-gallery-5.jpg,ed-invest-gallery-6.jpg
+ed-invest	4	#MODERACJA	#MODERATION	
+engie	0	#STRUKTURA_TREŚCI	#CONTENT_STRUCTURE	engie-gallery-1-anon-cut.webp
+engie	1	#STRUKTURA_TREŚCI	#CONTENT_STRUCTURE	engie-gallery-2-anon-cut.webp
+engie	2	#PERSONALBRANDING	#PERSONALBRANDING	engie-gallery-3-anon-cut.webp
+engie	3	#PERSONALBRANDING	#PERSONALBRANDING	engie-gallery-4.jpg
+engie	4	#SPRZEDAŻ	#SALES	engie-gallery-5-anon-cut.webp,engie-gallery-6-anon-cut.webp
+entelo	0	#DOBREKRZESLO	#DOBREKRZESLO	entelo-gallery-2-cut.webp
+entelo	1	#POLSKOSC	#MADE_IN_POLAND	entelo-gallery-3-cut.webp
+entelo	2	#NACZASIE	#TIMELY	entelo-gallery-4-cut.webp,entelo-gallery-5-cut.webp,entelo-gallery-6-cut.webp
+entelo	3	#CONTENT_EDUKACYJNY	#EDUCATIONAL_CONTENT	entelo-gallery-7-cut.webp,entelo-gallery-8-cut.webp
+entelo	4	#VIRAL	#VIRAL	entelo-gallery-9-cut.webp
+fm-logistics	0	#LIDER_LOGISTYKI	#LOGISTICS_LEADER	fm-logistics-lider-1.jpg
+fm-logistics	1	#GREENSUPPLYCHAIN	#GREENSUPPLYCHAIN	fm-logistics-greensupply-1-cut.webp
+fm-logistics	2	#CROSSDOCK	#CROSSDOCK	fm-logistics-gallery-3.jpg,fm-logistics-crossdock-2.png
+fm-logistics	3	#EMPLOYERBRANDING	#EMPLOYERBRANDING	fm-logistics-employerbranding-1.jpg
+fm-logistics	4	#KAMPANIE	#CAMPAIGNS	fm-logistics-gallery-7.jpg
+foodsaver	0	#EKSPERCKOŚĆ	#EXPERTISE	foodsaver-gallery-1.jpg
+foodsaver	1	#LIDERNARYNKU	#MARKET_LEADER	foodsaver-gallery-2.jpg
+foodsaver	2	#ZAANGAŻOWANIE	#ENGAGEMENT	foodsaver-gallery-3.jpg
+foodsaver	3	#ZEROWASTE	#ZEROWASTE	
+kbp	0	#PROMOCJAWYDARZENIA	#EVENTPROMOTION	kbp-gallery-1.jpg,kbp-gallery-2.jpg
+kohersen	0	#EKSPERCKOŚĆ	#EXPERTISE	kohersen-gallery-1.jpg,kohersen-gallery-2.jpg
+kohersen	1	#ZAANGAŻOWANIE	#ENGAGEMENT	kohersen-gallery-3.jpg
+kohersen	2	#SPRZEDAŻ	#SALES	kohersen-gallery-4.jpg
+kohersen	3	#SESJEZDJĘCIOWE	#PHOTOSHOOTS	kohersen-gallery-5.jpg,kohersen-gallery-6.jpg
+kohersen	4	#WIDEO	#VIDEO	kohersen-gallery-7.jpg,kohersen-gallery-8.jpg
+kontigo	0	#REKRUTACJA	#RECRUITMENT	kontigo-gallery-1.jpg
+kontigo	1	#REGULAMIN_I_MODERACJA	#RULES_AND_MODERATION	kontigo-gallery-2.jpg,kontigo-gallery-3.jpg
+kontigo	2	#LIVE	#LIVE	kontigo-gallery-4.jpg
+kontigo	3	#ULUBIENIEC_MIESIACA	#FAVORITE_OF_THE_MONTH	kontigo-gallery-5.jpg,kontigo-gallery-6.jpg
+kontigo	4	#TOP_AMBASADORKI	#TOP_AMBASSADORS	kontigo-gallery-7.jpg,kontigo-gallery-8.jpg
+las-vegans	0	#WEBINARY	#WEBINARS	las-vegans-gallery-1.jpg,las-vegans-gallery-2.jpg
+las-vegans	1	#INFLUENCERZY	#INFLUENCERS	las-vegans-gallery-3-cut.webp,las-vegans-gallery-4.jpg
+las-vegans	2	#SPOLECZNOSC_WEGE	#VEGAN_COMMUNITY	las-vegans-gallery-5.jpg,las-vegans-gallery-6.jpg
+las-vegans	3	#PR_W_MEDIACH	#MEDIA_PR	las-vegans-gallery-7.jpg,las-vegans-gallery-8.jpg
+las-vegans	4	#WYNIKI_I_SUKCES	#RESULTS_AND_SUCCESS	las-vegans-gallery-9.jpg,las-vegans-gallery-10.jpg
+laurastar	0	#EKSPERCKOŚĆ	#EXPERTISE	laurastar-gallery-1-cut.webp
+laurastar	1	#SPRZEDAŻ	#SALES	laurastar-gallery-2.jpg
+laurastar	2	#ZAANGAŻOWANIE	#ENGAGEMENT	laurastar-gallery-4-cut.webp
+mazurska-manufaktura-alkoholi	0	#STRATEGIA	#STRATEGY	mazurska-manufaktura-alkoholi-gallery-1.jpg,mazurska-manufaktura-alkoholi-gallery-2.jpg
+mazurska-manufaktura-alkoholi	1	#AMBASADORKA	#AMBASSADOR	mazurska-manufaktura-alkoholi-gallery-3.jpg,mazurska-manufaktura-alkoholi-gallery-4.jpg
+mazurska-manufaktura-alkoholi	2	#ZASIEG_MEDIALNY	#MEDIA_REACH	mazurska-manufaktura-alkoholi-gallery-5.jpg,mazurska-manufaktura-alkoholi-gallery-6.jpg
+mazurska-manufaktura-alkoholi	3	#WYNIKI	#RESULTS	mazurska-manufaktura-alkoholi-gallery-7.jpg
+mercator	0	#WIDEOPRODUKTOWE	#PRODUCT_VIDEO	mercator-gallery-1.jpg,mercator-gallery-2.jpg
+mercator	1	#GRAFIKI	#GRAPHICS	mercator-gallery-3-cut.webp
+mercator	2	#BRANŻEIZASTOSOWANIA	#INDUSTRIES_AND_USES	mercator-gallery-4-cut.webp,mercator-gallery-5-cut.webp
+mercator	3	#EVENTYIŻYCIEFIRMY	#EVENTS_AND_COMPANY_LIFE	mercator-gallery-6-cut.webp,mercator-gallery-7-cut.webp
+mercator	4	#MODERACJA	#MODERATION	mercator-gallery-8.jpg
+personal-effect	0	#PERSONALEFFECT	#PERSONALEFFECT	personal-effect-gallery-1-cut.webp,personal-effect-gallery-2-cut.webp
+personal-effect	1	#EKSPERCKOŚĆ	#EXPERTISE	personal-effect-gallery-3.jpg,personal-effect-gallery-4.jpg
+personal-effect	2	#ODŚWIEŻENIEPROFILU	#PROFILE_REFRESH	personal-effect-gallery-5-cut.webp,personal-effect-gallery-6-cut.webp
+personal-effect	3	#SESJA	#PHOTOSHOOT	personal-effect-gallery-7.jpg,personal-effect-gallery-8.jpg
+personal-effect	4	#ROZWÓJ	#GROWTH	personal-effect-gallery-9-cut.webp,personal-effect-gallery-10-cut.webp
+power-elements	0	#PREMIERA_MARKI	#BRAND_LAUNCH	power-elements-gallery-1-cut.webp,power-elements-gallery-2-cut.webp
+power-elements	1	#LIFESTYLE	#LIFESTYLE	power-elements-gallery-3.jpg,power-elements-gallery-4-cut.webp
+power-elements	2	#EDUKACJA	#EDUCATION	power-elements-gallery-5-cut.webp,power-elements-gallery-6-cut.webp
+power-elements	3	#COMMUNITY	#COMMUNITY	power-elements-gallery-7-cut.webp
+power-elements	4	#VIDEO	#VIDEO	power-elements-gallery-8-cut.webp,power-elements-gallery-9-cut.webp
+pracuj-pl	0			
+pracuj-pl	1	FILTR AR	AR FILTER	
+pracuj-pl	2	#CONTENT	#CONTENT	
+pracuj-pl	3	#CONTENT	#CONTENT	
+pracuj-pl	4			
+pracuj-pl	5	#INFLUENCER MARKETING	#INFLUENCER MARKETING	
+stadler-form	0	#ROZPOZNAWALNOŚĆ	#RECOGNITION	stadler-form-gallery-1.jpg,stadler-form-gallery-2.jpg
+stadler-form	1	#MODERACJA	#MODERATION	stadler-form-gallery-3.jpg,stadler-form-gallery-4.jpg
+stadler-form	2	#EKSPERCKOŚĆ	#EXPERTISE	stadler-form-gallery-5.jpg,stadler-form-gallery-6.jpg
+stadler-form	3	#WIDEO	#VIDEO	stadler-form-gallery-7.jpg,stadler-form-gallery-8.jpg
+stadler-form	4	#SESJEZDJĘCIOWE	#PHOTOSHOOTS	stadler-form-gallery-9.jpg,stadler-form-gallery-10.jpg
+vobis	0	#RTM	#RTM	vobis-gallery-1.jpg,vobis-gallery-2.jpg
+vobis	1	#NOWE_FORMATY_POSTÓW	#NEW_POST_FORMATS	vobis-gallery-3.jpg
+vobis	2	#MODERACJA	#MODERATION	vobis-gallery-4-cut.webp
+volvo	0	#STRUKTURA TREŚCI	#CONTENT STRUCTURE	volvo-vcw-post-anon-cut.webp
+volvo	1	#STRUKTURA TREŚCI	#CONTENT STRUCTURE	volvo-vcw-goracy-anon-cut.webp
+volvo	2			volvo-event-noc.jpg,volvo-event-ex30.jpg
+volvo	3	KONKURS	CONTEST	volvo-konkurs-warsztat.jpg
