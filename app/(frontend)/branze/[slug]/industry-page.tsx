@@ -420,10 +420,11 @@ function renderParagraph({
  * The GOOD ONE wheel in `o-nas/sections/good-one/index.tsx` is the structural
  * reference, not a loose inspiration: same child order (track, then the
  * revolving blocks, then the hub) and the same flat DOM, where every revolving
- * block is a direct child of the orbit box. That wheel renders correctly on the
- * Mac Safari where this orbit collapsed, so keep the two shapes identical and
- * copy any change here from there. List semantics ride on role=list / listitem
- * because the wrapper the <ul> used to provide is gone.
+ * block is a direct child of the orbit box. List semantics ride on role=list /
+ * listitem because the wrapper the <ul> used to provide is gone.
+ *
+ * On the reporter's Mac Safari the chips still land on the hub, so the orbit
+ * also carries a measured fallback — see the effect below.
  */
 function IndustryBrief({
   industry,
@@ -435,6 +436,7 @@ function IndustryBrief({
   const ref = useReveal<HTMLDivElement>()
   const orbitRef = useRef<HTMLDivElement>(null)
   const [spinning, setSpinning] = useState(false)
+  const [pinnedWidth, setPinnedWidth] = useState(0)
   const reducedMotion = usePreferredReducedMotion()
 
   // Spin only while on screen, never under reduced motion (the CSS also
@@ -455,8 +457,89 @@ function IndustryBrief({
     return () => observer.disconnect()
   }, [reducedMotion])
 
+  /*
+   * Safari fallback, by measurement rather than by user agent.
+   *
+   * On the reporter's Mac the three chips render stacked on the hub. Each
+   * chip's `transform: translate(-50%,-50%) rotate(calc(var(--base) +
+   * var(--spin))) …` resolves to `none` there, which drops a `top: 50%; left:
+   * 50%` box back onto the ring centre — exactly the symptom. `--spin` is the
+   * only registered custom property in that chain, and the dots (same chain
+   * minus `--spin`) and the hub (no var() at all) both render correctly, so
+   * the registration is the suspect. Mirroring the GOOD ONE wheel's DOM
+   * (841616ed) did not fix it and a fourth guess is not worth shipping.
+   *
+   * So: measure the outcome. If a chip's centre sits inside half the ring
+   * radius, the transform chain did not survive, and we rewrite every chip's
+   * position as plain px literals with no var() in them. The diagram stays
+   * whole; only the spin is gone. Browsers that lay the orbit out correctly
+   * never enter this branch, and a Safari that gains the missing support stops
+   * entering it too — nothing here names a browser.
+   *
+   * Latched deliberately: pinned chips measure as healthy, so re-testing them
+   * would flip the orbit back and forth. After the latch the ResizeObserver
+   * only refreshes the width the geometry is derived from.
+   */
+  useEffect(() => {
+    const el = orbitRef.current
+    if (!el) {
+      return
+    }
+    let pinned = false
+    const read = () => {
+      const box = el.getBoundingClientRect()
+      // Below --desktop the orbit is display: none — nothing to measure.
+      if (box.width < 1) {
+        return
+      }
+      if (pinned) {
+        setPinnedWidth(box.width)
+        return
+      }
+      const cx = box.left + box.width / 2
+      const cy = box.top + box.height / 2
+      const chips = el.querySelectorAll<HTMLElement>('[data-orbit-chip]')
+      // A chip on the ring is --item-r (0.4 × the box) from the centre; a
+      // collapsed one is half its own width out, ~0.18 ×. Split the difference.
+      const collapsed = Array.from(chips).some((chip) => {
+        const r = chip.getBoundingClientRect()
+        return (
+          Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) <
+          box.width * 0.2
+        )
+      })
+      if (collapsed) {
+        pinned = true
+        setPinnedWidth(box.width)
+      }
+    }
+    const frame = requestAnimationFrame(read)
+    const observer = new ResizeObserver(read)
+    observer.observe(el)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [])
+
   const pillars = industry.brief.pillars
   const step = 360 / Math.max(pillars.length, 1)
+
+  // The same place the CSS transform would have put the chip, spelled out in
+  // px. Undefined until the fallback latches, so the CSS keeps the animation.
+  const pinnedChip = (base: number): CSSProperties | undefined => {
+    if (!pinnedWidth) {
+      return undefined
+    }
+    const radians = (base * Math.PI) / 180
+    const itemR = pinnedWidth * 0.4
+    const x = (itemR * Math.sin(radians)).toFixed(2)
+    const y = (-itemR * Math.cos(radians)).toFixed(2)
+    return {
+      width: pinnedWidth * 0.34,
+      transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
+    }
+  }
 
   return (
     <section className={s.brief} data-theme="cream">
@@ -470,7 +553,7 @@ function IndustryBrief({
             ref={orbitRef}
             data-reveal-item
             className={s.briefOrbit}
-            data-spinning={spinning}
+            data-spinning={spinning && !pinnedWidth}
             role="list"
           >
             <div className={s.orbitTrack} aria-hidden="true">
@@ -495,8 +578,14 @@ function IndustryBrief({
               // biome-ignore lint/a11y/useSemanticElements: see the orbit box.
               <div
                 key={pillar}
+                data-orbit-chip
                 className={s.orbitItem}
-                style={{ '--base': `${i * step}deg` } as CSSProperties}
+                style={
+                  {
+                    '--base': `${i * step}deg`,
+                    ...pinnedChip(i * step),
+                  } as CSSProperties
+                }
                 role="listitem"
               >
                 {pillar}
