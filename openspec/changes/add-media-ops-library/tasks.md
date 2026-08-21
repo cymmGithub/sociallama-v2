@@ -21,4 +21,4 @@
 
 ## 4. Close
 
-- [ ] 4.1 `bun run check`; memory note `media-batch-update-pitfalls` written to point at the module; commit; ff-merge; push
+- [x] 4.1 `bun run check`; memory note `media-batch-update-pitfalls` written to point at the module; commit; ff-merge; push
