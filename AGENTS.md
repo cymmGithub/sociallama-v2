@@ -388,6 +388,44 @@ Critical rules:
 - Test with hard refresh (bypasses router cache) AND normal navigation
 - Dev and prod behave differently - test both
 
+### Route status vs `loading.tsx`
+
+A `loading.tsx` opens a Suspense boundary around its segment's `page.tsx`, so
+Next commits the response and starts streaming **before** the page body runs.
+A `notFound()` or `permanentRedirect()` in that body therefore cannot set the
+status line. Next has already sent `200` and can only render the not-found
+body into it. Measured 2026-08-21: twelve URL families answered 200 for unknown
+slugs, and `/blog/page/1` served the non-canonical page at 200 with a
+`NEXT_REDIRECT` marker instead of a 308. Every route *without* a `loading.tsx`
+was correct. No counter-example either way.
+
+The fix is a sibling `layout.tsx`, which nests *above* `loading.tsx` in the same
+segment, so its work happens before the response commits.
+`lib/payload/slug-gate.ts` is the shared gate for the post and case-study
+detail routes.
+
+Two constraints decide whether a route can carry one:
+
+- **`generateStaticParams` must enumerate the params.** An un-enumerated
+  `params` is itself uncached data under Cache Components, so awaiting it
+  outside a boundary fails the build with *"Uncached data was accessed outside
+  of <Suspense>"* rather than falling back to dynamic rendering.
+- **Nothing the build prerenders may reach `notFound()`.** A `notFound()` during
+  prerendering with no boundary above it crashes the build with a bare
+  `TypeError`; it does not degrade to a 404 page. `staticParamsOrPlaceholder`
+  invents a `placeholder-*` param when a collection is empty, and that param
+  404s by design, so the gate falls through whenever the published list is
+  empty.
+
+The two together rule out the blog and category **listing** routes: the pages
+`generateStaticParams` prerenders for them are exactly the ones that 404
+(out-of-range page numbers, the empty-collection placeholder). They keep their
+`loading.tsx`, and `/category/{slug}`, `/en/blog/category/{slug}`,
+`/blog/page/{n}` and `/en/blog/page/{n}` still answer 200 on a miss.
+
+`dynamicParams = false` is not an option here: Next rejects it outright
+alongside `cacheComponents`.
+
 ### Next.js 16 Request Proxy
 
 `proxy.ts` at the project root handles cross-cutting request concerns — currently rate limiting for `/api/*` routes via `@/utils/rate-limit`. Security headers stay in `next.config.ts`.

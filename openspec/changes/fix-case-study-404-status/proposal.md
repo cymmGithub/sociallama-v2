@@ -16,6 +16,17 @@ Measured on 2026-08-20, dev server restarted clean:
 | `/blog/nope-not-real` | 404 |
 | `/branze/nonsense` | 404 |
 
+**Corrected 2026-08-21, during design.** `/blog/nope-not-real` is not the blog
+post route, so it was the wrong control. Polish posts live at root `/{slug}`,
+which has a `loading.tsx` of its own and answers 200 for unknown slugs like the
+rest. Re-measuring found **twelve** URL families with the bug, not one: both
+locales' case-study and post detail routes, both category listings, and both
+paginated blog listings, plus `/blog/page/1` and `/category/{slug}/page/1`,
+where the same boundary swallows a `permanentRedirect()` and serves the
+non-canonical page at 200 instead of a 308. Every route without a `loading.tsx`
+was already correct. This change fixes all of them; see `design.md` for the
+full table and the two fix shapes.
+
 **Cause, confirmed by experiment rather than inspection.**
 `app/(frontend)/case-studies/[slug]/loading.tsx` opens a Suspense boundary, so
 Next commits the response and starts streaming *before* `loadCaseStudy()`
@@ -56,6 +67,9 @@ reintroduce the no-JS hidden-shell regression that `loading.tsx` was involved in
 ### Modified Capabilities
 - `case-studies`: a request for a slug with no published study SHALL answer 404,
   not 200, while a published study still streams its shell.
+- `seo-url-parity`: every param-driven route SHALL send its `notFound()` or
+  `permanentRedirect()` on the response line rather than rendering it into an
+  already-committed 200.
 
 ## Impact
 
