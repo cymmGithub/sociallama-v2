@@ -12,6 +12,25 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+
+  /* Title block and search field side by side, the field's rule landing on the
+     subhead's last line. Not at `--desktop` (800px): the text column holds a
+     76ch measure, ~684px at this body size and ~742px in WebKit, so an 800px
+     viewport would leave the field about 80px. 1100px is the first width where
+     both hold their own — text measure, a two-gap gutter, and a field wide
+     enough to read a brand name in. */
+  @media (width >= 1100px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: calc(var(--gap) * 2);
+  }
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
   /* Wide enough for the subhead's second line to hold together: the longest of
      the two locales' tails is 67 characters, and at 60ch it broke two words
      onto a third line. The measure only binds above ~900px — below that the
@@ -33,6 +52,97 @@
   line-height: 1.5;
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
   text-wrap: pretty;
+}
+
+/* —— Search ————————————————————————————————————————————————————————————
+   Ported from the blog hub's field (`blog.module.css`) rather than extracted:
+   two consumers, ~50 lines, and the blog's rules are tuned to its own filter
+   row — this one sits under the subhead, on its own line. */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.125rem;
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color var(--duration-fast);
+
+  &:focus-within {
+    border-color: var(--color-contrast);
+  }
+
+  @media (--desktop) {
+    max-width: 26rem;
+  }
+
+  /* On the split row it stops being a full-measure element and becomes a
+     fixed-width control at the far end, shrinking only if the text column
+     needs the room. */
+  @media (width >= 1100px) {
+    flex: 0 1 22rem;
+    width: 22rem;
+    max-width: none;
+  }
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  width: 1.0625rem;
+  height: 1.0625rem;
+  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-secondary) 62%, transparent);
+  }
+
+  /* The clear affordance is our own button, which is labelled and keyboard
+     reachable — the WebKit decoration would be a second, unlabelled one. */
+  &::-webkit-search-cancel-button {
+    appearance: none;
+  }
+}
+
+.searchClear {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+  transition: color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-contrast);
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* Per-card search veil. Idle it is transparent to layout, so the card stays
+   the grid item; filtered out it takes the card and its images out of flow
+   without unmounting them. No `nth-child` rule reads the grid today — if one
+   is added, it has to account for this. */
+.cardVeil {
+  display: contents;
+}
+
+.cardHidden {
+  display: none;
 }
 
 .grid {

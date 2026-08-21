@@ -56,3 +56,49 @@ export type CaseStudiesContent = {
 
 /** Same shape, literals widened so translations compile. */
 export type LocalizedCaseStudies = Localized<CaseStudiesContent>
+
+/**
+ * The count noun for the hub's search results.
+ *
+ * Polish needs three forms where English needs two, and `case study` is an
+ * indeclinable loan — "3 case study" is what a Polish writer would actually
+ * type, which reads as a bug in a result count. `realizacja` is the native
+ * noun the subhead already uses for the same thing ("Wybrane projekty"), and
+ * it declines properly. Same shape as `postsPlural` in `lib/content/blog.ts`.
+ */
+function studiesPlural(count: number): string {
+  const lastTwo = count % 100
+  if (count === 1) {
+    return 'realizację'
+  }
+  if (lastTwo >= 12 && lastTwo <= 14) {
+    return 'realizacji'
+  }
+  const last = count % 10
+  return last >= 2 && last <= 4 ? 'realizacje' : 'realizacji'
+}
+
+/**
+ * The listing's search copy. Typed structurally rather than through
+ * `Localized`, which maps over object types and would strip `results`'s
+ * callability — the count is pluralized per locale, so the wording stays a
+ * function. Same exemption `hubSearch` takes in `lib/content/blog.ts`.
+ */
+export interface CaseStudySearchCopy {
+  label: string
+  placeholder: string
+  clear: string
+  results: (count: number) => string
+  emptyTitle: string
+  emptyText: string
+}
+
+export const caseStudySearch: CaseStudySearchCopy = {
+  label: 'Szukaj w case studies',
+  placeholder: 'Marka, temat, kampania…',
+  clear: 'Wyczyść',
+  /** Announced to assistive technology whenever the result count changes. */
+  results: (count: number) => `Znaleziono ${count} ${studiesPlural(count)}.`,
+  emptyTitle: 'Nic nie pasuje',
+  emptyText: 'Spróbuj innej nazwy marki albo wyczyść wyszukiwanie.',
+}

@@ -1,8 +1,14 @@
 /**
  * English `/case-studies` chrome — EN twin of `case-studies.ts`.
  * Voice: playful but clean, American spelling (user-approved 2026-07-22).
+ *
+ * `caseStudySearch` is exempt from `Localized`: it carries a function, and
+ * `Localized` maps over object types, which would strip callability.
  */
-import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
+import type {
+  CaseStudySearchCopy,
+  LocalizedCaseStudies,
+} from '@/lib/content/case-studies'
 
 export const caseStudiesListing = {
   metaTitle: 'Case studies',
@@ -36,3 +42,13 @@ export const caseStudyChrome = {
     primary: "Let's talk about your business",
   },
 } satisfies LocalizedCaseStudies['caseStudyChrome']
+
+export const caseStudySearch = {
+  label: 'Search case studies',
+  placeholder: 'Brand, topic, campaign…',
+  clear: 'Clear',
+  results: (count: number) =>
+    `Found ${count} ${count === 1 ? 'case study' : 'case studies'}.`,
+  emptyTitle: 'Nothing matches',
+  emptyText: 'Try a different brand name, or clear the search.',
+} satisfies CaseStudySearchCopy

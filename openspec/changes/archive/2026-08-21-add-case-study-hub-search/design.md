@@ -16,7 +16,7 @@ Constraints: `Localized<T>` in `lib/i18n/parity.ts` maps over object types, whic
 
 **Non-Goals:**
 - Pagination (rejected in explore; see proposal).
-- Tag pills or any faceted filter.
+- Tag pills or any faceted filter. Revisited during implementation: `tags` is a free-text `hasMany` field, and across the 47 published studies it holds 115 distinct values of which 100 appear exactly once — a pill row built from it would be an index, not a filter. The only real taxonomy on site is the 12 industries curated in `lib/content/branze.ts`, which reach 32 of the 47. Filtering by industry is a separate change and wants the industry on the case-study document, not in a content file (see the follow-up note below).
 - Searching rich text (`challenge`, `approach`, `client.about`).
 - Persisting the query in the URL or across navigations.
 - Sharing a component with the blog hub. The two differ in what they filter (an index vs rendered children); a shared abstraction would need both modes.
@@ -36,8 +36,8 @@ The provider owns `matches: Set<string>` and `searching: boolean`, so it knows `
 **4. Copy as a separate `caseStudySearch` export, typed structurally.**
 Because `Localized<>` strips the `results(count)` function, the copy goes in a new `export const caseStudySearch` in `lib/content/case-studies.ts` and `.en.ts` with an explicit `CaseStudySearchCopy` interface, exactly as `hubSearch` does for the blog. The client provider imports both locale modules and picks by a `locale` prop, for the same reason the blog does: a function cannot cross the server/client boundary as a prop. Polish plural uses the existing three-form helper pattern from `lib/content/blog.ts` (`postsPlural`) with case-study nouns; English is authored independently.
 
-**5. Input in the header, under the subhead.**
-Results appear directly below, so there is no "three screens away" problem that forced the blog to hide curated sections. Styles for `.search`, `.searchIcon`, `.searchInput`, `.searchClear` are copied from `blog.module.css` rather than extracted: two consumers, ~50 lines, and the blog's rules are tuned to its own header.
+**5. Input in the header, on the title's row from 1100px and under the subhead below it.**
+Results appear directly below either way, so there is no "three screens away" problem that forced the blog to hide curated sections. The split row (revised during implementation, at the owner's call) puts the field at the far end of the header with its rule landing on the subhead's last line and its right edge on the grid's, which keeps the title block from being pushed down by a control. It cannot hang on `--desktop` (800px): the text column carries a 76ch measure, ~684px at this body size and ~742px in WebKit, so an 800px viewport would leave the field about 80px. 1100px is the first width where the measure, a two-gap gutter and a 22rem field all fit. Styles for `.search`, `.searchIcon`, `.searchInput`, `.searchClear` are copied from `blog.module.css` rather than extracted: two consumers, ~50 lines, and the blog's rules are tuned to its own header.
 
 **6. Match semantics identical to blog.**
 Whole-phrase substring on the folded haystack. An all-whitespace query is "not searching". `filterPosts` is not reused (it is typed to `SearchEntry`); only `foldDiacritics` is.
@@ -57,4 +57,12 @@ No schema, no data, no routes. Ship on a feature branch, ff-merge. Rollback is a
 
 ## Open Questions
 
-- Whether `results(count)` should mention the noun ("3 case studies") or just the number. Default: noun, matching blog.
+- Whether `results(count)` should mention the noun ("3 case studies") or just the number. Default: noun, matching blog. Resolved: noun, and in Polish that noun is `realizacja` — `case study` is an indeclinable loan and "Znaleziono 3 case study" reads as a bug.
+
+## Follow-up: filtering by industry
+
+Raised by the owner during implementation and deliberately not folded into this change.
+
+The data does not support it yet. `tags` is free text (`type: 'text', hasMany: true`): 141 tag instances over 47 published studies, 115 distinct, 100 used exactly once, 4 used three times or more. `lib/content/branze.ts` does hold a real 12-industry taxonomy, but it is a hand-maintained mapping in a content file, it reaches only 32 of the 47 studies, and two of its industries (`finanse`, `fashion`) link none at all. Pills built from it today would hide 15 studies behind a control that looks exhaustive, `pracuj-pl`, `polomarket`, `riviera` and `vistula` among them, and would go stale the next time a study is imported without anyone editing `branze.ts`.
+
+The shape worth proposing separately: an `industry` select on the case-study document (schema change, migration, editorial backfill of 47 rows), with `branze.ts` reading it instead of restating it. Then a pill row is exhaustive by construction and the industry pages and the hub cannot disagree.
