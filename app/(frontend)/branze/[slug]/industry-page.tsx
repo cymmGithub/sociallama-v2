@@ -499,13 +499,20 @@ function IndustryBrief({
       const cx = box.left + box.width / 2
       const cy = box.top + box.height / 2
       const chips = el.querySelectorAll<HTMLElement>('[data-orbit-chip]')
-      // A chip on the ring is --item-r (0.4 × the box) from the centre; a
-      // collapsed one is half its own width out, ~0.18 ×. Split the difference.
       const collapsed = Array.from(chips).some((chip) => {
+        // The failure itself: a transform that cannot resolve its var()s is
+        // invalid at computed-value time, so it computes to the initial value.
+        if (getComputedStyle(chip).transform === 'none') {
+          return true
+        }
+        // Backstop for a failure that leaves some other transform in place. A
+        // chip on the ring is --item-r (0.4 × the box) from the centre; one
+        // that lost its transform is half its own size out — 0.176 × for a
+        // one-line chip, 0.202 × for a four-liner at the narrowest desktop.
         const r = chip.getBoundingClientRect()
         return (
           Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy) <
-          box.width * 0.2
+          box.width * 0.25
         )
       })
       if (collapsed) {

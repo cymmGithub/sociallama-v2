@@ -235,7 +235,7 @@
   padding: 2px;
   pointer-events: none;
   background: conic-gradient(
-    from var(--spin),
+    from var(--spin, 0deg),
     transparent 0turn 0.62turn,
     color-mix(in srgb, var(--color-cream) 55%, transparent) 0.93turn,
     var(--color-cream) 0.99turn,
@@ -874,6 +874,23 @@
    the same element. The hub never rotates; each pillar counter-rotates by its
    own angle so the text stays upright. */
 
+/* Why every read of --spin carries a `, 0deg` fallback.
+   `@property` is the one thing here the build cannot downlevel: custom media
+   becomes `min-width: 800px` and nesting becomes a descendant selector, but
+   the registration ships verbatim, and Safari only gained it in 16.4. Below
+   that, --spin is an ordinary custom property that nobody ever declares, so
+   `var(--spin)` substitutes to nothing, the whole `transform` is invalid at
+   computed-value time, and it computes to `none`. That drops a
+   `top: 50%; left: 50%` child onto the centre, which is the collapse reported
+   from a Mac on 2026-08-21.
+
+   The fallback costs supported browsers nothing, because a registered
+   property always has at least its initial value and never reaches the
+   fallback. Where the registration is missing it resolves to 0deg, the
+   transform is valid again, and the ring renders correctly while standing
+   still: a keyframe on an unregistered property can only step discretely, and
+   0deg and 360deg render identically, so the step is invisible. */
+
 @property --spin {
   syntax: "<angle>";
   inherits: false;
@@ -927,7 +944,7 @@
   width: calc(var(--ring-r) * 2);
   height: calc(var(--ring-r) * 2);
   margin: calc(var(--ring-r) * -1);
-  transform: rotate(var(--spin));
+  transform: rotate(var(--spin, 0deg));
   animation: brief-spin var(--period) linear infinite;
   animation-play-state: paused;
 
@@ -986,9 +1003,9 @@
   line-height: 1.25;
   text-align: center;
   color: var(--color-plum);
-  transform: translate(-50%, -50%) rotate(calc(var(--base) + var(--spin)))
+  transform: translate(-50%, -50%) rotate(calc(var(--base) + var(--spin, 0deg)))
     translateY(calc(-1 * var(--item-r)))
-    rotate(calc(-1 * (var(--base) + var(--spin))));
+    rotate(calc(-1 * (var(--base) + var(--spin, 0deg))));
   animation: brief-spin var(--period) linear infinite;
   animation-play-state: paused;
 
