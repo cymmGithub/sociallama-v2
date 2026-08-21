@@ -218,9 +218,26 @@
 
 /* Comet ring on the CTA pill — same treatment as the case-study closing card
    (mock variant A, user pick 2026-08-14): a cream conic tail-to-head sweep on
-   the 2px band just outside the button. Rides the --spin registration the
-   brief orbit below already provides; the gradient rotates, the element never
-   transforms. */
+   the 2px band just outside the button. The gradient rotates; the element
+   never transforms.
+
+   This is now the only consumer of --spin in the file. The brief orbit below
+   used to drive its whole geometry from it and lost the animation because of
+   it: `@property` is the one feature here the build cannot downlevel (custom
+   media comes out as min-width:800px, nesting as a descendant selector, but
+   the registration ships verbatim) and Safari only gained it in 16.4. Below
+   that --spin is an ordinary custom property nobody declares, var(--spin)
+   substitutes to nothing, and every declaration reading it is invalid at
+   computed-value time. Hence the 0deg fallback: it costs a supported browser
+   nothing, because a registered property always has at least its initial
+   value, and where the registration is missing it keeps the gradient valid and
+   simply still. */
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @keyframes comet {
   to {
     --spin: 1turn;
@@ -865,43 +882,18 @@
   color: var(--color-orange);
 }
 
-/* —— Brief orbit (desktop) ————————————————————————————————————————————————————
+/* —— Brief orbit (desktop) ——————————————————————————————————————————————————
 
-   Mirrors the GOOD ONE wheel on /o-nas: one registered <angle> `--spin` drives
-   the system, animated on EACH element whose own transform reads it (the ring
-   group and every pillar) — never on a shared parent, since with
-   `inherits: false` an animated custom property only reaches the transform on
-   the same element. The hub never rotates; each pillar counter-rotates by its
-   own angle so the text stays upright. */
+   A still diagram: a dotted ring, three orange spoke dots and three pillar
+   chips, each placed by arithmetic on --base and --item-r.
 
-/* Why every read of --spin carries a `, 0deg` fallback.
-   `@property` is the one thing here the build cannot downlevel: custom media
-   becomes `min-width: 800px` and nesting becomes a descendant selector, but
-   the registration ships verbatim, and Safari only gained it in 16.4. Below
-   that, --spin is an ordinary custom property that nobody ever declares, so
-   `var(--spin)` substitutes to nothing, the whole `transform` is invalid at
-   computed-value time, and it computes to `none`. That drops a
-   `top: 50%; left: 50%` child onto the centre, which is the collapse reported
-   from a Mac on 2026-08-21.
-
-   The fallback costs supported browsers nothing, because a registered
-   property always has at least its initial value and never reaches the
-   fallback. Where the registration is missing it resolves to 0deg, the
-   transform is valid again, and the ring renders correctly while standing
-   still: a keyframe on an unregistered property can only step discretely, and
-   0deg and 360deg render identically, so the step is invisible. */
-
-@property --spin {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes brief-spin {
-  to {
-    --spin: 360deg;
-  }
-}
+   It used to rotate, and that is what broke it on a Mac. See the note on
+   --spin's registration above the CTA comet: below Safari 16.4 the chips'
+   whole transform was invalid at computed-value time and computed to none, so
+   three top:50%/left:50% chips piled onto the hub. Three fixes that kept the
+   animation all failed there, so the animation is gone rather than guarded.
+   --base and --item-r are ordinary custom properties and were never part of
+   the problem. Do not reintroduce a registered property in this diagram. */
 
 .briefOrbit {
   /* Chips swing a footprint ~1.14x the orbit box (each reaches --item-r + half
@@ -921,7 +913,6 @@
      where the old 36vw had already capped at 1155px, and without it the diagram
      would gain ~40px at 1440. */
   --orbit: min(26rem, calc(0.368 * min(1240px, 100vw - 2 * var(--safe))));
-  --period: 48s;
   --ring-r: calc(var(--orbit) * 0.28);
   --item-r: calc(var(--orbit) * 0.4);
   --dot-size: calc(var(--orbit) * 0.03);
@@ -944,13 +935,6 @@
   width: calc(var(--ring-r) * 2);
   height: calc(var(--ring-r) * 2);
   margin: calc(var(--ring-r) * -1);
-  transform: rotate(var(--spin, 0deg));
-  animation: brief-spin var(--period) linear infinite;
-  animation-play-state: paused;
-
-  .briefOrbit[data-spinning="true"] & {
-    animation-play-state: running;
-  }
 }
 
 .orbitSvg {
@@ -1003,15 +987,9 @@
   line-height: 1.25;
   text-align: center;
   color: var(--color-plum);
-  transform: translate(-50%, -50%) rotate(calc(var(--base) + var(--spin, 0deg)))
-    translateY(calc(-1 * var(--item-r)))
-    rotate(calc(-1 * (var(--base) + var(--spin, 0deg))));
-  animation: brief-spin var(--period) linear infinite;
-  animation-play-state: paused;
-
-  .briefOrbit[data-spinning="true"] & {
-    animation-play-state: running;
-  }
+  /* Out along the spoke, then straight back upright. */
+  transform: translate(-50%, -50%) rotate(var(--base))
+    translateY(calc(-1 * var(--item-r))) rotate(calc(-1 * var(--base)));
 }
 
 /* Hub — the section kicker, held still at the centre. */
@@ -1038,13 +1016,6 @@
 .briefKickerFlat {
   @media (--desktop) {
     display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orbitTrack,
-  .orbitItem {
-    animation: none;
   }
 }
 
