@@ -894,8 +894,16 @@
      so 36vw leaves ~27px of slack at the narrowest desktop — measured, not
      guessed. The old 30vw spent only two thirds of the column and left the
      diagram too small to hold legible type at the bottom of the desktop range;
-     see the font-size notes below. */
-  --orbit: min(26rem, 36vw);
+     see the font-size notes below.
+
+     Written in the wheel's container form rather than a raw vw so the two
+     orbits compute --orbit the same way. `--safe` is 1.1111vw on desktop, so
+     `100vw - 2 * var(--safe)` is 0.977778vw and 0.368 of it is 0.36vw — the
+     previous value to within a pixel across the whole desktop range. The outer
+     26rem cap stays: the container keeps growing to 1240px (viewport 1268px)
+     where the old 36vw had already capped at 1155px, and without it the diagram
+     would gain ~40px at 1440. */
+  --orbit: min(26rem, calc(0.368 * min(1240px, 100vw - 2 * var(--safe))));
   --period: 48s;
   --ring-r: calc(var(--orbit) * 0.28);
   --item-r: calc(var(--orbit) * 0.4);
@@ -955,30 +963,10 @@
     translateY(calc(-1 * var(--ring-r)));
 }
 
-/* A real positioned box, deliberately NOT `display: contents`. It used to be
-   the latter — the <li>s then positioned against .briefOrbit directly while the
-   list kept its semantics — but Mac Safari does not inherit custom properties
-   through a `display: contents` element. `--orbit` and `--item-r` never reached
-   the pillars there: `width: calc(var(--orbit) * 0.34)` fell back to `auto` and
-   `translateY(calc(-1 * var(--item-r)))` to zero, so all three chips collapsed
-   onto the hub at the ring centre while the hub — a direct child, so unaffected
-   — rendered correctly. Chromium and recent WebKit never showed it.
-
-   `inset: 0` makes this box congruent with .briefOrbit, so the <li>s resolve
-   their `top: 50%` / `left: 50%` against exactly the same square as before and
-   the geometry is unchanged. The GOOD ONE wheel on /o-nas, which this mirrors,
-   has always had its logo blocks as direct children — which is why it renders
-   correctly on the same machine. */
-.orbitItems {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+/* Chips are direct children of .briefOrbit, with no wrapper between them and
+   the box that holds --orbit/--item-r. Keep this shape in step with `.orbit`
+   and `.logo` in o-nas/sections/good-one/good-one.module.css. */
 .orbitItem {
-  text-wrap: balance;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -413,10 +413,17 @@ function renderParagraph({
 /** Under-hero brief: pillars + the industry's copy. */
 /*
  * Under-hero brief. On desktop the kicker + strategic pillars render as an
- * orbit — kicker at the hub, pillars revolving on a dotted ring — mirroring the
- * GOOD ONE wheel on /o-nas. Below --desktop the orbit is swapped for the plain
- * chip list (positioned spokes crowd at phone width), so only one of the two is
- * in the a11y tree per width.
+ * orbit — kicker at the hub, pillars revolving on a dotted ring. Below
+ * --desktop the orbit is swapped for the plain chip list (positioned spokes
+ * crowd at phone width), so only one of the two is in the a11y tree per width.
+ *
+ * The GOOD ONE wheel in `o-nas/sections/good-one/index.tsx` is the structural
+ * reference, not a loose inspiration: same child order (track, then the
+ * revolving blocks, then the hub) and the same flat DOM, where every revolving
+ * block is a direct child of the orbit box. That wheel renders correctly on the
+ * Mac Safari where this orbit collapsed, so keep the two shapes identical and
+ * copy any change here from there. List semantics ride on role=list / listitem
+ * because the wrapper the <ul> used to provide is gone.
  */
 function IndustryBrief({
   industry,
@@ -456,13 +463,17 @@ function IndustryBrief({
       <div ref={ref} className={s.briefInner}>
         <div className={s.briefHead}>
           {/* Desktop orbit */}
+          {/* biome-ignore lint/a11y/useSemanticElements: a <ul> here would put a
+              wrapper between the chips and the box that carries --orbit — the
+              structural difference this component exists to avoid. */}
           <div
             ref={orbitRef}
             data-reveal-item
             className={s.briefOrbit}
             data-spinning={spinning}
+            role="list"
           >
-            <div className={s.orbitTrack}>
+            <div className={s.orbitTrack} aria-hidden="true">
               <svg
                 className={s.orbitSvg}
                 viewBox="0 0 100 100"
@@ -480,17 +491,17 @@ function IndustryBrief({
               ))}
             </div>
 
-            <ul className={s.orbitItems}>
-              {pillars.map((pillar, i) => (
-                <li
-                  key={pillar}
-                  className={s.orbitItem}
-                  style={{ '--base': `${i * step}deg` } as CSSProperties}
-                >
-                  {pillar}
-                </li>
-              ))}
-            </ul>
+            {pillars.map((pillar, i) => (
+              // biome-ignore lint/a11y/useSemanticElements: see the orbit box.
+              <div
+                key={pillar}
+                className={s.orbitItem}
+                style={{ '--base': `${i * step}deg` } as CSSProperties}
+                role="listitem"
+              >
+                {pillar}
+              </div>
+            ))}
 
             <p className={s.orbitHub}>{chrome.briefKicker}</p>
           </div>
