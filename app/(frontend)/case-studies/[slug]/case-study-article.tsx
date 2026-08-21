@@ -315,7 +315,10 @@ export function CaseStudyArticle({
                             key={media.id}
                             className={cn(
                               s.shot,
-                              (media.height ?? 0) > (media.width ?? 1) &&
+                              // Phone lane only for real portraits: a 1230×1232
+                              // square (polomarket-sprzedaz-1) is a rounding
+                              // artefact, not a phone, and 4:5 posts sit at 0.8.
+                              (media.width ?? 1) / (media.height ?? 1) < 0.9 &&
                                 s.shotPortrait
                             )}
                           >
