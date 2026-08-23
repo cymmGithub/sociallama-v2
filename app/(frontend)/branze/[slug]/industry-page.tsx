@@ -12,7 +12,11 @@ import {
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { Marquee } from '@/components/ui/marquee'
-import type { Industry, LocalizedBranze } from '@/lib/content/branze'
+import type {
+  Industry,
+  IndustryCreative,
+  LocalizedBranze,
+} from '@/lib/content/branze'
 import { usePreferredReducedMotion } from '@/lib/hooks'
 import { useReveal } from '@/lib/hooks/use-reveal'
 import {
@@ -534,6 +538,79 @@ function IndustryBrief({
   )
 }
 
+/**
+ * Desktop `sizes` hint for one wall tile. It has to track `.wallItem` in the
+ * stylesheet: the default 14rem phone slot is 16vw at 1440, but a landscape
+ * tile spans two of them and a lone tile is 22rem, so both would otherwise be
+ * handed a variant far narrower than they render at.
+ */
+function wallTileSize(landscape: boolean, lone: boolean): `${number}vw` {
+  if (landscape) {
+    return '32vw'
+  }
+  return lone ? '25vw' : '16vw'
+}
+
+/**
+ * The "here's how it looks in the feed" wall. Owned by neither layout: a proof
+ * industry feeds it `caseStudy.creatives`, an editorial one its own
+ * `industry.creatives` (design D1). Tiles render at their intrinsic aspect —
+ * they are device mockups, so cropping them to a uniform tile mangles the
+ * phone. A landscape frame is flagged for the CSS, which gives it two tile
+ * widths instead of squeezing a 2:1 image into a phone slot (design D3).
+ */
+function CreativesWall({
+  creatives,
+  chrome,
+}: {
+  creatives: readonly IndustryCreative[]
+  chrome: Chrome
+}) {
+  const wallRef = useReveal<HTMLDivElement>()
+
+  return (
+    <section className={s.portfolio} data-theme="cream">
+      <div className={s.portfolioHead}>
+        <div>
+          <p className={s.kicker}>{chrome.proof.portfolioKicker}</p>
+          <h2 className={s.portfolioHeading}>
+            {chrome.proof.portfolioHeading}
+          </h2>
+        </div>
+        <span className={s.realBadge}>{chrome.proof.realBadge}</span>
+      </div>
+      <div ref={wallRef} className={s.wall}>
+        {creatives.map((creative) => {
+          // Ratio, not `width > height` (design D3). Two tiles already on the
+          // walls are square within a rounding error — julius-meinl-eventy-1 is
+          // 1574×1572 and irobot-humor-parrot 713×640 — and a bare inequality
+          // would hand them the double-width slot meant for the 2056×1164
+          // YouTube still, wrecking a wall this change never meant to reshape.
+          const landscape = creative.width / creative.height >= 1.5
+          return (
+            <div
+              key={creative.src}
+              data-reveal-item
+              data-landscape={landscape || undefined}
+              className={s.wallItem}
+            >
+              <Image
+                className={s.wallImg}
+                src={creative.src}
+                alt={creative.alt}
+                width={creative.width}
+                height={creative.height}
+                desktopSize={wallTileSize(landscape, creatives.length === 1)}
+                mobileSize="45vw"
+              />
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 // —— Proof variant (mock C) ————————————————————————————————————————————————————
 
 function ProofLayout({
@@ -542,7 +619,6 @@ function ProofLayout({
   hubHref,
   caseStudyBase,
 }: IndustryPageProps) {
-  const wallRef = useReveal<HTMLDivElement>()
   const numbersRef = useReveal<HTMLDivElement>()
   const study = industry.caseStudy
   if (!study) {
@@ -555,33 +631,7 @@ function ProofLayout({
 
       <IndustryBrief industry={industry} chrome={chrome} />
 
-      {/* Portfolio — real creatives wall */}
-      <section className={s.portfolio} data-theme="cream">
-        <div className={s.portfolioHead}>
-          <div>
-            <p className={s.kicker}>{chrome.proof.portfolioKicker}</p>
-            <h2 className={s.portfolioHeading}>
-              {chrome.proof.portfolioHeading}
-            </h2>
-          </div>
-          <span className={s.realBadge}>{chrome.proof.realBadge}</span>
-        </div>
-        <div ref={wallRef} className={s.wall}>
-          {study.creatives.map((creative) => (
-            <div key={creative.src} data-reveal-item className={s.wallItem}>
-              <Image
-                className={s.wallImg}
-                src={creative.src}
-                alt={creative.alt}
-                width={creative.width}
-                height={creative.height}
-                desktopSize="16vw"
-                mobileSize="45vw"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+      <CreativesWall creatives={study.creatives} chrome={chrome} />
 
       {/* Numbers band — case-study metrics (`numbers`), not manifesto chips. */}
       {industry.numbers && (
@@ -666,6 +716,10 @@ function EditorialLayout({
       <IndustryHero industry={industry} chrome={chrome} hubHref={hubHref} />
 
       <IndustryBrief industry={industry} chrome={chrome} />
+
+      {industry.creatives && industry.creatives.length > 0 && (
+        <CreativesWall creatives={industry.creatives} chrome={chrome} />
+      )}
 
       <IndustryMarquee industry={industry} />
       <IndustryApproach industry={industry} chrome={chrome} />

@@ -38,11 +38,15 @@ A creatives wall MAY reference files from more than one related case study only 
 - **THEN** every wall tile is a current Volvo pillar creative
 
 ### Requirement: Wall tiles size to their shape and count
-Portrait and square tiles SHALL render at the phone-sized width (14rem on desktop, two-up on mobile). A landscape tile (width greater than height) SHALL span two tile widths plus the gap on desktop and full width on mobile, keeping its intrinsic aspect. When the wall holds exactly one tile, that tile SHALL render wider than the phone size (22rem on desktop) with no stagger offset.
+Portrait and square tiles SHALL render at the phone-sized width (14rem on desktop, two-up on mobile). A landscape tile, meaning one at least 1.5 times as wide as it is tall, SHALL span two tile widths plus the gap on desktop and full width on mobile, keeping its intrinsic aspect. The threshold is a ratio rather than `width > height` because several wall tiles are square within a pixel or two (`julius-meinl-eventy-1.png` is 1574×1572) and must keep the phone-sized slot. Each tile's `sizes` hint SHALL match the slot it renders in, so a wider slot is not served a narrower variant. When the wall holds exactly one tile, that tile SHALL render wider than the phone size (22rem on desktop) with no stagger offset.
 
 #### Scenario: iRobot landscape tile spans two columns
 - **WHEN** `/branze/elektronika-i-agd` renders `irobot-innowacja-1.png` (2056×1164) among three portrait tiles
 - **THEN** the landscape tile is twice the portrait tile width on desktop and keeps its aspect without cropping
+
+#### Scenario: A near-square tile keeps the phone slot
+- **WHEN** `/branze/horeca` renders `julius-meinl-eventy-1.png` (1574×1572), which is two pixels wider than it is tall
+- **THEN** it renders at the phone-sized width like every other tile on that wall
 
 #### Scenario: Rozrywka single tile renders larger
 - **WHEN** `/branze/rozrywka` renders with one wall tile

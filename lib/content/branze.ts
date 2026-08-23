@@ -94,7 +94,7 @@ interface IndustryImage {
  * these are device mockups, so they render at their intrinsic aspect — the same
  * treatment the case study gives them. Hence the required pixel dimensions.
  */
-interface IndustryCreative extends IndustryImage {
+export interface IndustryCreative extends IndustryImage {
   width: number
   height: number
 }
@@ -167,6 +167,14 @@ export interface Industry {
   /** Manifesto value chips (editorial voice, not metrics). */
   chips?: readonly IndustryStat[]
   caseStudy?: IndustryCaseStudy
+  /**
+   * Standalone feed wall for an EDITORIAL industry (design D1). A proof
+   * industry draws its wall from `caseStudy.creatives`; this field lets an
+   * industry with no featured study still show real creatives, drawn from the
+   * studies in `relatedCaseStudies`. Never set alongside `caseStudy` — the
+   * proof layout ignores it.
+   */
+  creatives?: readonly IndustryCreative[]
   /**
    * Case studies linked from a compact card row. ADDITIVE and rendered in BOTH
    * variants — unlike `caseStudy`, this does NOT select the layout, so an
@@ -250,16 +258,16 @@ export const INDUSTRIES = [
         'Budowa marek Volvo na LinkedInie, Facebooku i\u00A0Instagramie',
       creatives: [
         {
-          src: '/case-studies/volvo/volvo-vcw-post-anon-cut.webp',
-          alt: 'Post Volvo Car Warszawa na Instagramie prezentujący samochód Volvo',
-          width: 351,
-          height: 730,
+          src: '/case-studies/volvo/volvo-gallery-3.jpg',
+          alt: 'Kreacja Volvo z kobietą z rozwianymi włosami nad morzem, hasło „Gorący okres? Weź to na chłodno!”',
+          width: 1068,
+          height: 1350,
         },
         {
-          src: '/case-studies/volvo/volvo-vcw-goracy-anon-cut.webp',
-          alt: 'Kreacja Volvo „Gorący okres?” o przygotowaniu auta na lato',
-          width: 351,
-          height: 730,
+          src: '/case-studies/volvo/volvo-gallery-1.jpg',
+          alt: 'Kreacja Volvo Car Warszawa z przeszklonym Domem Volvo, hasło „Midsommar w Domu Volvo: dni otwarte 25–27.06” i zapowiedź premiery Volvo XC60',
+          width: 1080,
+          height: 1350,
         },
         {
           src: '/case-studies/volvo/volvo-event-ex30.jpg',
@@ -274,10 +282,10 @@ export const INDUSTRIES = [
           height: 720,
         },
         {
-          src: '/case-studies/volvo/volvo-konkurs-warsztat.jpg',
-          alt: 'Stół warsztatowy akcji „Volvo oczami dzieci” — kredki, farby i powstający rysunek w salonie Dom Volvo',
-          width: 1080,
-          height: 1920,
+          src: '/case-studies/volvo/volvo-gallery-4.jpg',
+          alt: 'Kreacja konkursowa Volvo z dziećmi rysującymi przy stole, hasło „Volvo oczami dziecka” i zaproszenie na wystawę prac w Domu Volvo 25–27.06',
+          width: 1079,
+          height: 1350,
         },
       ],
       quote: {
@@ -366,8 +374,12 @@ export const INDUSTRIES = [
       cardTitle:
         'iRobot — humor i\u00A0edukacja, które budują markę na YouTube i\u00A0TikToku',
       creatives: [
-        // Phone mockups only — galleries 4 and 5 are laptop/YouTube frames whose
-        // landscape shape doesn't belong on a feed wall. Alts match the case study.
+        {
+          src: '/case-studies/irobot/irobot-humor-parrot.jpg',
+          alt: 'Kadr z humorystycznego filmu iRobot — zielona papuga w mieszkaniu, na środku zielone logo iRobot',
+          width: 713,
+          height: 640,
+        },
         {
           src: '/case-studies/irobot/irobot-edukacja-1.png',
           alt: 'Kreacja iRobot z pytaniem „Czy pies może się stresować… sprzątaniem?”',
@@ -375,22 +387,16 @@ export const INDUSTRIES = [
           height: 1320,
         },
         {
-          src: '/case-studies/irobot/irobot-edukacja-2-cut.webp',
+          src: '/case-studies/irobot/irobot-edukacja-2-cut.webp?v=2',
           alt: 'Zrzut posta iRobot Polska prezentującego Roombę MAX 775 Combo',
           width: 814,
           height: 1316,
         },
         {
-          src: '/case-studies/irobot/irobot-gallery-3-anon-cut.webp',
-          alt: 'Humorystyczny film twórczyni z robotem Roomba w kampanii iRobot na TikToku',
-          width: 524,
-          height: 1080,
-        },
-        {
-          src: '/case-studies/irobot/irobot-gallery-6-anon-cut.webp',
-          alt: 'Film twórczyni w kampanii TikTok iRobot z robotem Roomba',
-          width: 437,
-          height: 900,
+          src: '/case-studies/irobot/irobot-innowacja-1.png',
+          alt: 'Kadr z filmu YouTube „Find Your Roomba” — widzowie oglądają spot o robocie dla właścicieli psów',
+          width: 2056,
+          height: 1164,
         },
       ],
       // Verbatim client testimonial (supplied by the user 2026-07-24).
@@ -440,10 +446,10 @@ export const INDUSTRIES = [
           height: 1080,
         },
         {
-          src: '/case-studies/kontigo/kontigo-gallery-4.jpg',
-          alt: 'Lista minionych wydarzeń grupy KontigoCLUB na Facebooku — transmisje Live z Harrym o makijażu na lato i Live o zdrowej opaleniźnie',
-          width: 670,
-          height: 532,
+          src: '/case-studies/kontigo/kontigo-gallery-7.jpg',
+          alt: 'Grafika „Top 3 Ambasadorki maj 2023” z listą zwyciężczyń: Adrianna Anna, Kinga Jaromin, Nikola Lopata',
+          width: 1080,
+          height: 1080,
         },
         {
           src: '/case-studies/kontigo/kontigo-gallery-5.jpg',
@@ -520,6 +526,45 @@ export const INDUSTRIES = [
     slug: 'health',
     pairSlug: 'health',
     label: 'Zdrowie',
+    /*
+     * Health has no featured study, so this wall is drawn from two of the five
+     * studies in `relatedCaseStudies` rather than from one client's feed
+     * (design D1/D2). Alt text names the brand for that reason — on a mixed
+     * wall the tile itself is the only thing that says whose creative it is.
+     * Selection confirmed 2026-08-23.
+     */
+    creatives: [
+      {
+        src: '/case-studies/fundacja-saventic/fundacja-saventic-gallery-3.jpg',
+        alt: 'Post edukacyjny Fundacji Saventic „Kardiomiopatie — przyczyny, objawy, leczenie” z ilustracją lekarki i serca',
+        width: 1400,
+        height: 1400,
+      },
+      {
+        src: '/case-studies/imid-cmv/imid-cmv-edu-1.jpg',
+        alt: 'Kreacja kampanii LeczenieCMV.pl — „Czy CMV jest wirusem dziedzicznym?”',
+        width: 1080,
+        height: 1080,
+      },
+      {
+        src: '/case-studies/fundacja-saventic/fundacja-saventic-gallery-2.jpg',
+        alt: 'Post edukacyjny Fundacji Saventic „Jakim chorobom towarzyszy żółtaczka?” z komentarzem dr. hab. n. med. Patryka Lipińskiego',
+        width: 1201,
+        height: 1200,
+      },
+      {
+        src: '/case-studies/imid-cmv/imid-cmv-walacyklowir-1.jpg',
+        alt: 'Kreacja kampanii LeczenieCMV.pl — „Immunoglobuliny czy walacyklowir — jaką terapię wybrać przy leczeniu cytomegalii w ciąży?”',
+        width: 720,
+        height: 720,
+      },
+      {
+        src: '/case-studies/imid-cmv/imid-cmv-edu-2.jpg',
+        alt: 'Kreacja kampanii LeczenieCMV.pl — „90% kobiet w wieku rozrodczym jest zarażona wirusem cytomegalii”',
+        width: 720,
+        height: 720,
+      },
+    ],
     relatedCaseStudies: [
       {
         slug: 'imid-cmv',
@@ -779,15 +824,9 @@ export const INDUSTRIES = [
       creatives: [
         {
           src: '/case-studies/faktoria-win/faktoria-win-gallery-6.jpg',
-          alt: 'Kreacja konkursowa Faktorii Win „Wygraj 2 iPhony 14” z letniej kampanii wina Kumala — para na różowym tle wśród tropikalnych liści',
+          alt: 'Konkursowa kreacja Faktorii Win z winami Kumala i nagrodami — dwa iPhone’y 14',
           width: 1200,
           height: 1200,
-        },
-        {
-          src: '/case-studies/faktoria-win/faktoria-win-gallery-2.jpg',
-          alt: 'Grupa znajomych wznosząca toast kieliszkami wina na świeżym powietrzu przy beczce',
-          width: 934,
-          height: 1400,
         },
         {
           src: '/case-studies/faktoria-win/faktoria-win-gallery-3.jpg',
@@ -796,16 +835,22 @@ export const INDUSTRIES = [
           height: 1400,
         },
         {
-          src: '/case-studies/faktoria-win/faktoria-win-gallery-4.jpg',
-          alt: 'Widok siatki profilu Faktorii Win na Instagramie ze spójnymi kreacjami graficznymi',
-          width: 493,
-          height: 726,
+          src: '/case-studies/mazurska-manufaktura-alkoholi/mazurska-manufaktura-alkoholi-gallery-2.jpg',
+          alt: 'Kreacja Mazurskiej Manufaktury Alkoholi — linia rozlewnicza butelek Bielik Vodka i grafika „Zebraliśmy już 2 000 000 zł!”',
+          width: 900,
+          height: 900,
         },
         {
-          src: '/case-studies/faktoria-win/faktoria-win-gallery-5.jpg',
-          alt: 'Kreacja Faktorii Win „Jakie wino na weekend?” z parą w sklepie i rekomendacjami butelek win',
-          width: 601,
-          height: 511,
+          src: '/case-studies/mazurska-manufaktura-alkoholi/mazurska-manufaktura-alkoholi-gallery-1.jpg',
+          alt: 'Kreacja Mazurskiej Manufaktury Alkoholi „Zostań naszym akcjonariuszem! Masz czas do godziny 23.59” z logo marki',
+          width: 960,
+          height: 960,
+        },
+        {
+          src: '/case-studies/mazurska-manufaktura-alkoholi/mazurska-manufaktura-alkoholi-gallery-3.jpg',
+          alt: 'Kreacja Mazurskiej Manufaktury Alkoholi „Magda Gessler już zainwestowała… A Ty?” z portretem ambasadorki marki',
+          width: 1200,
+          height: 900,
         },
       ],
     },
@@ -954,7 +999,7 @@ export const INDUSTRIES = [
           height: 1566,
         },
         {
-          src: '/case-studies/julius-meinl/julius-meinl-gallery-3-cut.webp',
+          src: '/case-studies/julius-meinl/julius-meinl-gallery-3-cut.webp?v=2',
           alt: 'Kreacja Instagram „3 błędy w latte art” z czerwoną filiżanką kawy Julius Meinl',
           width: 320,
           height: 523,
@@ -1049,34 +1094,28 @@ export const INDUSTRIES = [
       cardTitle: 'Resort & SPA jako całoroczny kierunek',
       creatives: [
         {
-          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-1-cut.webp',
-          alt: 'Profil Dolina Charlotty Resort & Spa na Instagramie w telefonie — zdjęcie profilowe z logo i wyróżnione relacje z atrakcjami obiektu',
-          width: 457,
-          height: 936,
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-6.jpg',
+          alt: 'Zdjęcie z autorskiej sesji w Dolinie Charlotty — ceglany budynek hotelowy z balkonami udekorowanymi czerwonymi kwiatami latem',
+          width: 555,
+          height: 832,
         },
         {
-          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-2-cut.webp',
-          alt: 'Post Dolina Charlotty na Instagramie w telefonie — grupa dzieci bawiąca się kolorową chustą animacyjną podczas zajęć w obiekcie',
-          width: 457,
-          height: 936,
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-3-cut.webp?v=2',
+          alt: 'Relacja na Instagramie Doliny Charlotty — lama z Zoo Charlotta i ankieta „Będziecie?” z wynikiem 71% głosów na „Tak!”',
+          width: 412,
+          height: 735,
         },
         {
-          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-3-cut.webp',
-          alt: 'Relacja na Instagramie Doliny Charlotty w telefonie — lama z Zoo Charlotta i ankieta „Będziecie?” z wynikiem 71% głosów na „Tak!”',
-          width: 457,
-          height: 938,
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-4-cut.webp?v=2',
+          alt: 'Reklamowa kreacja Dolina Charlotty „Bilety do ZOO za pół ceny!” z dwoma lemurami',
+          width: 412,
+          height: 501,
         },
         {
-          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-4-cut.webp',
-          alt: 'Reklamowy post Dolina Charlotty na Facebooku w telefonie — kreacja „Bilety do ZOO za pół ceny!” z dwoma lemurami',
-          width: 457,
-          height: 936,
-        },
-        {
-          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-5-cut.webp',
-          alt: 'Reels Dolina Charlotty na Instagramie w telefonie — kadr nad wodą z hasłem „Odwiedź Dolinę Charlotty”',
-          width: 437,
-          height: 900,
+          src: '/case-studies/dolina-charlotty/dolina-charlotty-gallery-5-cut.webp?v=2',
+          alt: 'Kadr z reelsa Doliny Charlotty — ujęcie nad wodą z hasłem „Odwiedź Dolinę Charlotty”',
+          width: 398,
+          height: 485,
         },
       ],
     },
@@ -1170,25 +1209,19 @@ export const INDUSTRIES = [
       cardTitle: 'Deweloper na Facebooku, Instagramie i\u00A0LinkedInie',
       creatives: [
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp',
+          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp?v=2',
           alt: 'Kadr z nagrania wideo ED Invest — widok z lotu ptaka na realizowaną inwestycję mieszkaniową na tle panoramy miasta',
           width: 694,
           height: 1400,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-2-cut.webp',
-          alt: 'Kadr z nagrania wideo ED Invest — pracownica biura sprzedaży przy biurku podczas rozmowy z klientem',
-          width: 694,
-          height: 1400,
-        },
-        {
-          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp',
+          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp?v=2',
           alt: 'Relacja wideo z eventu branżowego Orange Ball — scena z logo ED Invest podczas wydarzenia',
           width: 694,
           height: 1400,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp',
+          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp?v=2',
           alt: 'Zdjęcie grupowe przedstawicieli ED Invest z wyróżnieniem podczas branżowej gali',
           width: 694,
           height: 1400,
@@ -1289,30 +1322,6 @@ export const INDUSTRIES = [
           alt: 'Grafika promocyjna „Ile skrzatów kryje się w lesie?” — sylwetki skrzatów ukryte w słonecznym lesie',
           width: 540,
           height: 675,
-        },
-        {
-          src: '/case-studies/skrzat/skrzat-gallery-2.jpg',
-          alt: 'Kreatywna grafika „Jak powiedzieć »skrzat« w różnych językach?” z bohaterami filmu na fioletowym tle',
-          width: 540,
-          height: 675,
-        },
-        {
-          src: '/case-studies/skrzat/skrzat-gallery-3.jpg',
-          alt: 'Grafika „3 oznaki bycia skrzaciarą” z kadrem zza kulis i dopiskiem WOW',
-          width: 540,
-          height: 675,
-        },
-        {
-          src: '/case-studies/skrzat/skrzat-gallery-4-cut.webp',
-          alt: 'Post konkursowy #Kamyczki „Wygraj bilet na film” z plakatem „Skrzat. Nowy początek” w grupie na Facebooku',
-          width: 437,
-          height: 900,
-        },
-        {
-          src: '/case-studies/skrzat/skrzat-gallery-5.jpg',
-          alt: 'Ekipa i twórcy machają do kamery na planie zdjęciowym filmu „Skrzat. Nowy początek” w lesie',
-          width: 644,
-          height: 1145,
         },
       ],
     },

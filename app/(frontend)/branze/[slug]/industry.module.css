@@ -504,6 +504,27 @@
   }
 }
 
+/* A landscape frame (design D3) — iRobot's YouTube still is 2056×1164, and at
+   the phone width it collapses to a 14rem strip. Two tile widths plus the gap
+   they span keeps it on the same grid. Mobile gives it the full row, where
+   tiles are otherwise two-up. */
+.wallItem[data-landscape] {
+  flex-basis: 100%;
+
+  @media (--desktop) {
+    flex-basis: calc(28rem + var(--gap));
+  }
+}
+
+/* A one-tile wall (rozrywka) has no rhythm to keep, so the tile carries the
+   section alone at a larger size. It is always :nth-child(1), so the stagger
+   above never reaches it. */
+.wallItem:only-child {
+  @media (--desktop) {
+    flex-basis: 22rem;
+  }
+}
+
 .wallImg {
   display: block;
   width: 100%;

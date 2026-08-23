@@ -1,0 +1,45 @@
+sync-en-pillar-media --prod, DRY RUN, 2026-08-23.
+
+This is the rollback record for the production EN pillar-media sync: each line
+reads `from -> to`, so reversing an arrow undoes that pillar. Reproduce with
+`bun ./lib/payload/sync-en-pillar-media.ts --prod`. The pg sslmode deprecation
+notice on connect is stripped.
+
+sync-en-pillar-media — 9 studies
+PRODUCTION database, report only
+
+ariadna (PL read as published)
+  would pillar 3 [#FOLLOWERS]: ariadna-gallery-6-cut.webp -> (none)
+dolina-charlotty (PL read as published)
+  would pillar 0 [#DISCOVERDOLINA]: dolina-charlotty-gallery-1-cut.webp -> dolina-charlotty-gallery-6.jpg
+  would pillar 4 [#VIDEO]: dolina-charlotty-gallery-5-cut.webp, dolina-charlotty-gallery-6.jpg -> dolina-charlotty-gallery-5-cut.webp
+dynamic-development (PL read as published)
+  would pillar 0 [#TIKTOK]: dynamic-development-gallery-1-cut.webp, dynamic-development-gallery-7.jpg -> dynamic-development-gallery-7.jpg
+entelo (PL read as published)
+  would pillar 0 [#DOBREKRZESLO]: entelo-gallery-2-cut.webp -> entelo-gallery-10.jpg
+  would pillar 1 [#MADE_IN_POLAND]: entelo-gallery-3-cut.webp -> entelo-polska-produkcja.png
+  would pillar 2 [#TIMELY]: entelo-gallery-5-cut.webp, entelo-gallery-10.jpg, entelo-gallery-11.jpg -> entelo-gallery-5-cut.webp
+  would pillar 4 [#VIRAL]: entelo-gallery-9-cut.webp -> entelo-gallery-11.jpg
+getaway (PL read as published)
+  would pillar 0 [#FUN_FACTS]: getaway-gallery-1-cut.webp -> (none)
+  would pillar 1 [#EXPERTS]: getaway-gallery-2-cut.webp -> (none)
+  would pillar 2 [#NEW_QUALITY_OF_TRAVEL]: getaway-gallery-3-cut.webp -> (none)
+personal-effect (PL read as published)
+  would pillar 2 [#PROFILE_REFRESH]: personal-effect-gallery-5-cut.webp, personal-effect-gallery-6-cut.webp -> personal-effect-gallery-15.jpg
+  would pillar 3 [#PHOTOSHOOT]: personal-effect-gallery-15.jpg, personal-effect-gallery-16.jpg -> personal-effect-gallery-16.jpg
+  would pillar 4 [#GROWTH]: personal-effect-gallery-9-cut.webp, personal-effect-gallery-10-cut.webp, personal-effect-gallery-17.jpg -> personal-effect-gallery-17.jpg
+riviera (PL read as published)
+  would pillar 0 [#EVENTS]: riviera-gallery-1.jpg -> riviera-gallery-9.jpg
+skibooking (PL read as published)
+  would pillar 0 [#INSPIRATION]: skibooking-gallery-1-cut.webp -> skibooking-gallery-5.png
+  would pillar 1 [#KNOWLEDGE]: skibooking-gallery-2-cut.webp, skibooking-gallery-3-cut.webp -> skibooking-gallery-4.png
+  would pillar 2 [#SALES]: (none) -> skibooking-gallery-3.png
+skrzat (PL read as published)
+  would pillar 1 [#GRAPHICS]: skrzat-gallery-2.jpg, skrzat-gallery-3.jpg -> (none)
+  would pillar 2 [#PEBBLES]: skrzat-gallery-4-cut.webp -> (none)
+  would pillar 3 [#ONSET]: skrzat-gallery-5.jpg, skrzat-gallery-6.jpg -> (none)
+  would pillar 4 [#PREMIERE]: skrzat-gallery-7-cut.webp, skrzat-gallery-8-cut.webp -> (none)
+
+9 pending, 0 already done, 0 stale, 0 missing
+
+On --apply --prod this run would POST https://sociallama-v2.vercel.app/api/revalidate?tag=case-studies&tag=case-study%3Aariadna&tag=case-study%3Adolina-charlotty&tag=case-study%3Adynamic-development&tag=case-study%3Aentelo&tag=case-study%3Agetaway&tag=case-study%3Apersonal-effect&tag=case-study%3Ariviera&tag=case-study%3Askibooking&tag=case-study%3Askrzat

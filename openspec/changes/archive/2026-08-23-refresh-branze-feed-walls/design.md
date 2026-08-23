@@ -25,7 +25,9 @@
 
 **D2. Mixed walls need no schema.** Alkohole and health tiles simply point at other studies' files; alt text names the brand in the creative. The proof wall's heading and "100% realne kreacje" badge stay true. The case card under alkohole stays Faktoria; the wall no longer claims to be one client's feed, which the page copy never did.
 
-**D3. iRobot keeps its landscape tile.** `irobot-innowacja-1.png` (2056×1164) breaks the 14rem phone rhythm. Rather than exclude it, render it at `flex-basis` twice the tile width plus the gap (`calc(28rem + var(--gap))`) on desktop, full width on mobile, via a `data-landscape` attribute set when `width > height`. The user asked for all four.
+**D3. iRobot keeps its landscape tile.** `irobot-innowacja-1.png` (2056×1164) breaks the 14rem phone rhythm. Rather than exclude it, render it at `flex-basis` twice the tile width plus the gap (`calc(28rem + var(--gap))`) on desktop, full width on mobile, via a `data-landscape` attribute. The user asked for all four.
+
+**AMENDED during implementation:** the attribute is set on `width / height >= 1.5`, not `width > height`. Two tiles already on the walls satisfy the bare inequality without being landscape in any sense that matters — `julius-meinl-eventy-1.png` is 1574×1572 and `irobot-humor-parrot.jpg` is 713×640 — and would have taken the double-width slot, reshaping the horeca wall this change was not meant to touch. `irobot-innowacja-1.png` is 1.77:1, well clear of the threshold. The `sizes` hint moves with the slot (`32vw` landscape, `25vw` lone tile, `16vw` otherwise); leaving it at `16vw` would have handed the wide tile a variant a third of its render width.
 
 **D4. Single-tile wall.** `.wallItem:only-child` gets `flex-basis: 22rem` on desktop and no stagger offset. No new prop; the data already says it.
 
@@ -51,7 +53,20 @@
 
 Rollback: content and bytes are git-revertable. The EN sync's dry-run output is the rollback instruction (old ids per pillar); keep it in the PR.
 
+## Findings from the 2026-08-23 re-run (task 1.1)
+
+The prod PL pillar sets still match the approved map on all ten walls, so nothing in section 4 had to move. Three things the re-run turned up that the audit had not recorded:
+
+- **Eight stale tiles, not six.** `dolina-charlotty-gallery-5-cut.webp` and `ed-invest-gallery-3-cut.webp` were listed as "check md5, bump if stale" and both are stale. Every prod file is ~35% smaller than its `public/` copy at identical pixel dimensions, so the drift is a WebP re-encode, not a re-cut. All eight get the `?v=2` bump.
+- **Three declared dimensions were already wrong.** The Dolina Charlotty tiles claimed 457×938 / 457×936 / 437×900 against real files of 412×735 / 412×501 / 398×485. The tiles have been rendering at the wrong aspect. Corrected from the files; this is the drift the new test exists to catch.
+- **Prod's alt for `irobot-edukacja-2-cut.webp` names the wrong model.** Prod says "Roombę MAX 705 Combo"; the repo said 775. Cropping the caption band out of the file settles it: the post reads "Nowość 2026 - Poznaj iRobot Roomba MAX 775 Combo". The repo copy is correct and stays; **prod's media alt is wrong and should be corrected separately** — it is out of this change's scope, and it is the alt screen readers get on `/case-studies/irobot` in both locales.
+
+`images.localPatterns` was checked before the bump: `{ pathname: '/case-studies/**' }` carries no `search` key, so any query string is allowed and the `-2` filename fallback is not needed.
+
 ## Open Questions
 
-- Health tile set (5 from ~30, proposed: `imid-cmv-edu-1`, `mercator-gallery-12`, `power-elements-gallery-12`, `fundacja-saventic-gallery-3`, `mercator-gallery-16`) and alkohole set (proposed: `faktoria-win-6`, `faktoria-win-2`, `mazurska-6`, `faktoria-win-3`, `mazurska-4`) are picks, not approvals yet; confirm on the artifact before task 1.
+- Health tile set (5 from 30, proposed: `imid-cmv-edu-1`, `mercator-gallery-12`, `power-elements-gallery-12`, `fundacja-saventic-gallery-3`, `mercator-gallery-16`) and alkohole set (proposed: `faktoria-win-6`, `faktoria-win-2`, `mazurska-6`, `faktoria-win-3`, `mazurska-4`) are picks, not approvals yet. RESOLVED 2026-08-23 on the artifact "Health & Alkohole Walls" (every prod PL creative from both pools, picked by clicking).
+
+- **health** (industry-level, editorial page): `fundacja-saventic-gallery-3`, `imid-cmv-edu-1`, `fundacja-saventic-gallery-2`, `imid-cmv-walacyklowir-1`, `imid-cmv-edu-2`. Two brands rather than the proposed five; Mercator, Power Elements and MM Hygienic are not on the wall.
+- **alkohole**: `faktoria-win-gallery-6`, `faktoria-win-gallery-3`, `mazurska-…-gallery-2`, `-1`, `-3`. The first pick used Mazurska `-6` and `-7`. Neither is a feed creative: `-6` is a screenshot of a HoReCa Trends press article and `-7` is a Good One results slide carrying agency branding, and both sat under a badge reading "100% realne kreacje" on a wall headed "tak to wygląda w feedzie". Swapped on request. The wall also loses its landscape tile as a result: `-gallery-3` is 1200×900, a 1.33 ratio, below the D3 threshold.
 - "For /branze/automotive import all irobot images" was read as elektronika-i-agd (the iRobot page). Automotive follows the Volvo map.
