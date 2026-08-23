@@ -223,15 +223,23 @@
 
    This is now the only consumer of --spin in the file. The brief orbit below
    used to drive its whole geometry from it and lost the animation because of
-   it: `@property` is the one feature here the build cannot downlevel (custom
-   media comes out as min-width:800px, nesting as a descendant selector, but
-   the registration ships verbatim) and Safari only gained it in 16.4. Below
-   that --spin is an ordinary custom property nobody declares, var(--spin)
-   substitutes to nothing, and every declaration reading it is invalid at
-   computed-value time. Hence the 0deg fallback: it costs a supported browser
-   nothing, because a registered property always has at least its initial
-   value, and where the registration is missing it keeps the gradient valid and
-   simply still. */
+   it.
+
+   `from var(--spin)` carries NO fallback, and must not grow one. A `var()`
+   fallback inside a conic-gradient permanently wins in Blink: --spin keeps
+   interpolating (getComputedStyle reports it moving), but the gradient image
+   is resolved once against the fallback and never re-resolved on an animation
+   tick, so the ring paints at the fallback angle and freezes. That shipped
+   here as `var(--spin, 0deg)` and stood still on every /branze/* page until
+   2026-08-23. `transform: rotate(var(--spin, 0deg))` in good-one.module.css
+   does track the animation, so the bug is specific to gradients.
+
+   The fallback was there as a Safari <16.4 guard: without `@property` support
+   --spin is an ordinary custom property nobody declares, var(--spin)
+   substitutes to nothing, and the whole `background` is invalid at
+   computed-value time, so those browsers get no ring at all. That is the same
+   trade case-study.module.css and service.module.css already make, and a
+   static ring is not worth freezing the animation everywhere else. */
 @property --spin {
   syntax: "<angle>";
   inherits: false;
@@ -252,7 +260,7 @@
   padding: 2px;
   pointer-events: none;
   background: conic-gradient(
-    from var(--spin, 0deg),
+    from var(--spin),
     transparent 0turn 0.62turn,
     color-mix(in srgb, var(--color-cream) 55%, transparent) 0.93turn,
     var(--color-cream) 0.99turn,
