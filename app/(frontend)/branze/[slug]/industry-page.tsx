@@ -60,9 +60,14 @@ export interface IndustryPageProps {
 const LOGO_V: Record<string, string> = {
   volvo: '?v=2',
   breville: '?v=2',
-  // 2026-08-24: trimmed the 800×800 board with 240px of transparent padding
-  // down to the mark itself — it rendered as a tall square among wide logos.
+  // 2026-08-24: boards trimmed down to the mark itself — ozgasl was an
+  // 800×800 square with 240px transparent bands, kohersen/foodsaver sat on
+  // opaque white 2:1 boards, stadler-form carried 144px transparent bands.
+  // Each rendered taller than its visible mark and threw the card row off.
   ozgasl: '?v=2',
+  kohersen: '?v=2',
+  foodsaver: '?v=2',
+  'stadler-form': '?v=2',
 }
 const studyLogoSrc = (slug: string) =>
   `/case-studies/${slug}/${slug}-logo.png${LOGO_V[slug] ?? ''}`
