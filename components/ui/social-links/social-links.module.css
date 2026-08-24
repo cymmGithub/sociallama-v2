@@ -1,0 +1,106 @@
+/*
+ * Brand-colour hover for the social row (user pick 2026-08-24, mock variant
+ * G): the circle fills with the network's colour, the glyph goes white, and
+ * a white ring peels outward from the edge and fades. Size, resting border
+ * and glyph colour stay in each caller's module; this file owns only the
+ * hover.
+ *
+ * Both layers are pseudo-elements so the Instagram gradient can fade in like
+ * the flat colours do (background-image itself will not transition). The peel
+ * is a masked ring; the `exclude` operator sits inside the mask shorthand
+ * layer because Lightning CSS drops a standalone `mask-composite`.
+ *
+ * The peel is white for every network rather than brand-coloured (user
+ * feedback 2026-08-24): a red or black ring is lost on plum and on the
+ * footer's #161216, and TikTok and X fill with black there anyway.
+ */
+.link {
+  --brand: var(--color-cream);
+  position: relative;
+  isolation: isolate;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &::before {
+    z-index: -1;
+    background: var(--brand);
+    transition: opacity var(--duration-fast) var(--ease-out-expo);
+  }
+
+  &::after {
+    padding: 1px;
+    background: var(--color-white);
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+  }
+}
+
+.link[data-social="facebook"] {
+  --brand: #1877f2;
+}
+.link[data-social="instagram"] {
+  --brand: linear-gradient(45deg, #f9ce34, #ee2a7b 50%, #6228d7);
+}
+.link[data-social="linkedin"] {
+  --brand: #0a66c2;
+}
+.link[data-social="tiktok"],
+.link[data-social="x"] {
+  --brand: #000;
+}
+.link[data-social="youtube"] {
+  --brand: #f00;
+}
+.link[data-social="pinterest"] {
+  --brand: #e60023;
+}
+
+.icon {
+  transition: color var(--duration-fast) var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .link:hover {
+    border-color: transparent;
+  }
+  .link:hover::before {
+    opacity: 1;
+  }
+  .link:hover::after {
+    animation: peel 640ms var(--ease-out-expo) forwards;
+  }
+  .link:hover .icon {
+    color: var(--color-white);
+  }
+}
+
+@keyframes peel {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  40%,
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+@media (--reduced-motion) {
+  .link::before,
+  .icon {
+    transition: none;
+  }
+  .link:hover::after {
+    animation: none;
+  }
+}

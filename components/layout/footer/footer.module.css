@@ -271,12 +271,6 @@
   border-radius: 999px;
   border: 1px solid var(--line-strong);
   transition: border-color var(--duration-fast) var(--ease-out-expo);
-
-  @media (--hover) {
-    &:hover {
-      border-color: var(--accent);
-    }
-  }
 }
 
 .socialIcon {
