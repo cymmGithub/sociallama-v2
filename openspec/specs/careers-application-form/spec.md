@@ -181,12 +181,13 @@ must never cost an application, and must never pass unnoticed.
 ### Requirement: Delivery failure is reported, never masked
 
 The action SHALL return a failure state whenever mail delivery is unavailable,
-including when the SMTP transport is unconfigured and resolves to none. It SHALL
-NOT report success for an application it did not deliver.
+including when the email delivery client is unconfigured and resolves to none.
+It SHALL NOT report success for an application it did not deliver.
 
-#### Scenario: Unconfigured transport fails the submission
+#### Scenario: Unconfigured delivery fails the submission
 
-- **WHEN** an application is submitted while the SMTP transport is unconfigured
+- **WHEN** an application is submitted while email delivery is unconfigured
+  (missing API key, sender address, or destination inbox)
 - **THEN** the visitor is shown a failure state rather than a success
   confirmation
 

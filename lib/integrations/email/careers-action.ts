@@ -16,7 +16,7 @@ import { validateFormWithTurnstile } from '@/lib/integrations/turnstile'
 import type { FormState } from '@/lib/types/form'
 import { runFormAction } from '@/lib/utils/form-action'
 import { buildCareersSchema } from './careers-schema'
-import { getEmailTransport } from './transport'
+import { getResend } from './client'
 
 type CareersFormCopy = LocalizedCareers['careersForm']
 
@@ -78,7 +78,8 @@ export async function sendCareersApplication(
     schema: buildCareersSchema(form),
     formData,
     run: async (input) => {
-      const transport = getEmailTransport()
+      const resend = getResend()
+      const from = env.EMAIL_FROM
       // Applications go to their own inbox (client decision): a CV is a
       // candidate's personal document and does not belong in the shared
       // sales-lead mailbox. Falls back rather than failing, so a missing value
@@ -90,11 +91,12 @@ export async function sendCareersApplication(
           '[email] CAREERS_INBOX not set — delivering the application to CONTACT_INBOX'
         )
       }
-      // Fail-soft SMTP means an unconfigured environment would otherwise
-      // accept applications and deliver nothing (design: Risks).
-      if (!(transport && inbox)) {
+      // Fail-soft delivery means an unconfigured environment would otherwise
+      // accept applications and deliver nothing (design: Risks). EMAIL_FROM is
+      // part of the guard: Resend rejects sends from unverified addresses.
+      if (!(resend && from && inbox)) {
         console.error(
-          '[email] careers application not delivered — transport or CONTACT_INBOX missing'
+          '[email] careers application not delivered — Resend client, EMAIL_FROM or CONTACT_INBOX missing'
         )
         return { status: 500, message: form.messages.error }
       }
@@ -111,8 +113,10 @@ export async function sendCareersApplication(
         : []
 
       try {
-        await transport.sendMail({
-          from: env.SMTP_USER,
+        // Resend reports API-level failures via `error`, not by throwing — an
+        // unchecked result would read a rejected send as success.
+        const { error } = await resend.emails.send({
+          from,
           to: inbox,
           replyTo: input.email,
           subject: `${form.email.subjectPrefix}: ${roleLabel} — ${input.name}`,
@@ -131,8 +135,12 @@ export async function sendCareersApplication(
           ].join('\n'),
           attachments,
         })
+        if (error) {
+          console.error('[email] careers send rejected:', error)
+          return { status: 500, message: form.messages.error }
+        }
       } catch (error) {
-        console.error('[email] careers sendMail failed:', error)
+        console.error('[email] careers send failed:', error)
         return { status: 500, message: form.messages.error }
       }
 

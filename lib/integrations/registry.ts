@@ -57,9 +57,9 @@ export const integrations = {
     docsUrl: 'https://developers.cloudflare.com/turnstile/',
   },
   email: {
-    name: 'Email (SMTP)',
+    name: 'Email (Resend)',
     envSchema: emailEnvSchema,
-    docsUrl: 'https://nodemailer.com/smtp/',
+    docsUrl: 'https://resend.com/docs',
   },
   analytics: {
     name: 'Analytics',

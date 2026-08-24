@@ -69,14 +69,13 @@ export const mailchimpEnvSchema = z.object({
 })
 
 /**
- * Environment variables required for contact-form email delivery (SMTP
- * transport + destination inbox). `SMTP_PORT` is optional — the transport
- * defaults to 587.
+ * Environment variables required for contact-form email delivery (Resend API
+ * client + sender address + destination inbox). `EMAIL_FROM` must sit on the
+ * Resend-verified domain.
  */
 export const emailEnvSchema = z.object({
-  SMTP_HOST: z.string().min(1, { error: 'SMTP_HOST is required' }),
-  SMTP_USER: z.string().min(1, { error: 'SMTP_USER is required' }),
-  SMTP_PASS: z.string().min(1, { error: 'SMTP_PASS is required' }),
+  RESEND_API_KEY: z.string().min(1, { error: 'RESEND_API_KEY is required' }),
+  EMAIL_FROM: z.string().min(1, { error: 'EMAIL_FROM is required' }),
   CONTACT_INBOX: z.string().min(1, { error: 'CONTACT_INBOX is required' }),
 })
 

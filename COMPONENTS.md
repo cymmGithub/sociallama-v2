@@ -152,7 +152,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | shopifyEnvSchema | `ZodObject<{ SHOPIFY_STORE_DOMAIN: ZodString; SHOPIFY_STOREFRONT_ACCESS_TOKEN:...` |
 | hubspotEnvSchema | `ZodObject<{ HUBSPOT_ACCESS_TOKEN: ZodOptional<ZodString>; NEXT_PUBLIC_HUBSPOT...` |
 | mailchimpEnvSchema | `ZodObject<{ MAILCHIMP_API_KEY: ZodString; MAILCHIMP_SERVER_PREFIX: ZodString;...` |
-| emailEnvSchema | `ZodObject<{ SMTP_HOST: ZodString; SMTP_USER: ZodString; SMTP_PASS: ZodString;...` |
+| emailEnvSchema | `ZodObject<{ RESEND_API_KEY: ZodString; EMAIL_FROM: ZodString; CONTACT_INBOX: ...` |
 | turnstileEnvSchema | `ZodObject<{ NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: ZodString; CLOUDFLARE_...` |
 | payloadEnvSchema | `ZodObject<{ DATABASE_URL: ZodString; PAYLOAD_SECRET: ZodString; }, $strip>` |
 | analyticsEnvSchema | `ZodObject<{ NEXT_PUBLIC_GOOGLE_ANALYTICS: ZodOptional<ZodString>; NEXT_PUBLIC...` |

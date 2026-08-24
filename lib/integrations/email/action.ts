@@ -7,8 +7,8 @@ import type { Locale } from '@/lib/i18n/slug-map'
 import { validateFormWithTurnstile } from '@/lib/integrations/turnstile'
 import type { FormState } from '@/lib/types/form'
 import { runFormAction } from '@/lib/utils/form-action'
+import { getResend } from './client'
 import { buildContactSchema } from './contact-schema'
-import { getEmailTransport } from './transport'
 
 /**
  * `sendContactEmail` — server action for the `/kontakt` and `/en/contact` forms.
@@ -43,18 +43,23 @@ export async function sendContactEmail(
     schema: buildContactSchema(form),
     formData,
     run: async (input) => {
-      const transport = getEmailTransport()
+      const resend = getResend()
+      const from = env.EMAIL_FROM
       const inbox = env.CONTACT_INBOX
-      if (!(transport && inbox)) {
+      // EMAIL_FROM is part of the guard: Resend rejects sends from unverified
+      // addresses, so a missing sender must fail the submission, not fall back.
+      if (!(resend && from && inbox)) {
         console.error(
-          '[email] contact submission not delivered — transport or CONTACT_INBOX missing'
+          '[email] contact submission not delivered — Resend client, EMAIL_FROM or CONTACT_INBOX missing'
         )
         return { status: 500, message: form.messages.error }
       }
 
       try {
-        await transport.sendMail({
-          from: env.SMTP_USER,
+        // Resend reports API-level failures via `error`, not by throwing — an
+        // unchecked result would read a rejected send as success.
+        const { error } = await resend.emails.send({
+          from,
           to: inbox,
           replyTo: input.email,
           subject: `${form.email.subjectPrefix} — ${input.name}`,
@@ -67,8 +72,12 @@ export async function sendContactEmail(
             input.message,
           ].join('\n'),
         })
+        if (error) {
+          console.error('[email] send rejected:', error)
+          return { status: 500, message: form.messages.error }
+        }
       } catch (error) {
-        console.error('[email] sendMail failed:', error)
+        console.error('[email] send failed:', error)
         return { status: 500, message: form.messages.error }
       }
 

@@ -1,0 +1,62 @@
+# Daily email-delivery health check (openspec: add-resend-email-delivery).
+#
+# Runs lib/scripts/email-health.ts against the live Resend API: asserts the
+# EMAIL_FROM domain is still verified (catches revoked keys and DNS drift),
+# then sends one test email to Resend's official sink delivered@resend.dev —
+# no human inbox, no domain-reputation impact, no production form touched.
+# The script has zero imports, so no `bun install` here: the run stays in
+# seconds. Deliberately separate from the heavy Monitor workflow, which is
+# manual-only by user decision (2026-08-01).
+#
+# Config: RESEND_API_KEY is a repository SECRET and must be a FULL-ACCESS key —
+# the domain check reads /domains, which a sending-only key (the app's) cannot.
+# EMAIL_FROM is a repository VARIABLE (an address is not a secret, and
+# variables are visible for triage).
+#
+# Alerting: GitHub emails the workflow author on failed scheduled runs, and the
+# GitHub → Slack integration forwards failures once the channel subscribes:
+#   /github subscribe <owner>/<repo> workflows:{name:"Email health"}
+#
+# Note: this repo is PUBLIC, so GitHub auto-disables cron workflows after 60
+# days without repo activity. Any commit resets the clock; if pushes ever
+# pause for weeks, re-enable under Actions → Email health or push a commit.
+
+name: Email health
+
+permissions:
+  contents: read
+
+on:
+  schedule:
+    # UTC, deliberately off the top of the hour (Actions cron congestion).
+    - cron: '43 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  email-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Require Resend configuration
+        run: |
+          if [ -z "${{ secrets.RESEND_API_KEY }}" ]; then
+            echo "::error::Repository secret RESEND_API_KEY is not set (Settings → Secrets and variables → Actions → Secrets)."
+            exit 1
+          fi
+          if [ -z "${{ vars.EMAIL_FROM }}" ]; then
+            echo "::error::Repository variable EMAIL_FROM is not set (Settings → Secrets and variables → Actions → Variables)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Probe Resend delivery
+        run: bun ./lib/scripts/email-health.ts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ vars.EMAIL_FROM }}

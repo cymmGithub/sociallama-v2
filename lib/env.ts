@@ -50,12 +50,11 @@ const envSchema = z.object({
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: z.string().optional(),
   CLOUDFLARE_TURNSTILE_SECRET_KEY: z.string().optional(),
 
-  // Contact email (SMTP — Google Workspace). Absent → /kontakt renders but
-  // cannot deliver; the action fails gracefully. See lib/integrations/email.
-  SMTP_HOST: z.string().optional(),
-  SMTP_PORT: z.string().optional(),
-  SMTP_USER: z.string().optional(),
-  SMTP_PASS: z.string().optional(),
+  // Contact email (Resend API). Absent → /kontakt renders but cannot deliver;
+  // the action fails gracefully. EMAIL_FROM must be an address on the
+  // Resend-verified domain. See lib/integrations/email.
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().optional(),
   CONTACT_INBOX: z.string().optional(),
   // Careers applications go to their own inbox, separate from the sales leads
   // that land in CONTACT_INBOX (client decision). Falls back to CONTACT_INBOX

@@ -48,7 +48,7 @@ interface CareersFormProps {
  * Application form — the page's closing section (design D3), on the deep-plum
  * band. Replaces the `mailto:` CTA the redesign exists to remove, and reuses
  * /kontakt's pipeline end to end: Turnstile widget, form kit, rate-limited
- * server action, SMTP transport.
+ * server action, Resend delivery.
  */
 export function CareersForm({
   form,
