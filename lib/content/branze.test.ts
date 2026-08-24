@@ -81,3 +81,26 @@ test('PL and EN walls reference the same files in the same order', () => {
     )
   expect(srcs(wallsOf(INDUSTRIES_EN))).toEqual(srcs(wallsOf(INDUSTRIES_PL)))
 })
+
+/**
+ * The related-studies row never wraps on desktop, so its budget is one row —
+ * six cards (owner call, 2026-08-24). The page component clips at the same
+ * number (MAX_RELATED in industry-page.tsx); this pins the content itself, so
+ * an overgrown roster fails here instead of being silently truncated there.
+ */
+describe('related case studies', () => {
+  const MAX_RELATED = 6
+  for (const [locale, industries] of [
+    ['pl', INDUSTRIES_PL],
+    ['en', INDUSTRIES_EN],
+  ] as const) {
+    test(`${locale}: no industry exceeds ${MAX_RELATED} related studies`, () => {
+      for (const industry of industries as readonly Industry[]) {
+        expect(
+          industry.relatedCaseStudies?.length ?? 0,
+          `${industry.id} overflows the single-row card budget`
+        ).toBeLessThanOrEqual(MAX_RELATED)
+      }
+    })
+  }
+})

@@ -184,10 +184,6 @@ export const INDUSTRIES = [
         slug: 'laurastar',
         title: 'Premium appliances and educational content',
       },
-      {
-        slug: 'foodsaver',
-        title: 'Zero waste with vacuum sealers',
-      },
     ],
     meta: {
       title: 'Social media for the electronics & appliances industry',

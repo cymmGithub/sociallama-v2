@@ -72,6 +72,9 @@ const LOGO_V: Record<string, string> = {
 const studyLogoSrc = (slug: string) =>
   `/case-studies/${slug}/${slug}-logo.png${LOGO_V[slug] ?? ''}`
 
+/** Most related-study cards a page shows — the single desktop row's budget. */
+export const MAX_RELATED = 6
+
 /* Keyword marquee — shared by both layouts (a proof page can carry one too). */
 function IndustryMarquee({ industry }: { industry: Industry }) {
   if (!industry.marquee || industry.marquee.length === 0) {
@@ -168,7 +171,11 @@ function RelatedCaseStudies({
   caseStudyBase,
 }: Omit<IndustryPageProps, 'hubHref'>) {
   const ref = useReveal<HTMLDivElement>()
-  const studies = industry.relatedCaseStudies
+  // Hard cap at six (owner call, 2026-08-24): the desktop row never wraps, so
+  // a seventh card only squeezes the others. branze.test.ts pins the content
+  // to the cap too, so an overgrown roster fails loudly instead of truncating
+  // here silently.
+  const studies = industry.relatedCaseStudies?.slice(0, MAX_RELATED)
   if (!studies || studies.length === 0) {
     return null
   }

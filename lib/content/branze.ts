@@ -338,10 +338,6 @@ export const INDUSTRIES = [
         slug: 'laurastar',
         title: 'AGD premium i content edukacyjny',
       },
-      {
-        slug: 'foodsaver',
-        title: 'Zero waste ze zgrzewarkami próżniowymi',
-      },
     ],
     meta: {
       title: 'Social media dla branży elektronika i AGD',
