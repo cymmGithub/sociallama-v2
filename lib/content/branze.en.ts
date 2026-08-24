@@ -1027,22 +1027,25 @@ export const INDUSTRIES = [
       cardTitle: 'A developer on Facebook, Instagram and LinkedIn',
       creatives: [
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp?v=3',
           alt: 'Frame from an ED Invest video, an aerial view of a residential development under construction against the city skyline',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp?v=3',
           alt: 'Video coverage of the Orange Ball industry event, a stage carrying the ED Invest logo',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp?v=3',
           alt: 'A group photo of ED Invest representatives with their award at an industry gala',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
           src: '/case-studies/ed-invest/ed-invest-gallery-5.jpg',

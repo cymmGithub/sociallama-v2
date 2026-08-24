@@ -97,6 +97,10 @@ interface IndustryImage {
 export interface IndustryCreative extends IndustryImage {
   width: number
   height: number
+  /** Alpha-cutout phone mockup: the wall tile must not paint its cream card
+      or shadow behind it — the transparent rounded corners would show them
+      as pale wedges under the phone (owner report, 2026-08-24). */
+  cutout?: true
 }
 
 /** A brief paragraph; `strong` (if set) is an exact substring rendered bold. */
@@ -1209,22 +1213,25 @@ export const INDUSTRIES = [
       cardTitle: 'Deweloper na Facebooku, Instagramie i\u00A0LinkedInie',
       creatives: [
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-1-cut.webp?v=3',
           alt: 'Kadr z nagrania wideo ED Invest — widok z lotu ptaka na realizowaną inwestycję mieszkaniową na tle panoramy miasta',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-3-cut.webp?v=3',
           alt: 'Relacja wideo z eventu branżowego Orange Ball — scena z logo ED Invest podczas wydarzenia',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
-          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp?v=2',
+          src: '/case-studies/ed-invest/ed-invest-gallery-4-cut.webp?v=3',
           alt: 'Zdjęcie grupowe przedstawicieli ED Invest z wyróżnieniem podczas branżowej gali',
           width: 694,
-          height: 1400,
+          height: 1394,
+          cutout: true,
         },
         {
           src: '/case-studies/ed-invest/ed-invest-gallery-5.jpg',

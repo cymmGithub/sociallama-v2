@@ -589,6 +589,18 @@
   }
 }
 
+/* An alpha-cutout phone mockup carries its own silhouette and baked shadow,
+   so the tile paints nothing: the cream card showed through the transparent
+   rounded corners as pale wedges under the phone, and the card's drop shadow
+   drew a bright seam beneath the bezel (owner report, 2026-08-24,
+   /branze/nieruchomosci-i-deweloperzy). No radius either — clipping a
+   transparent box only nibbles the baked shadow's corners. */
+.wallItem[data-cutout] {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
 .wallImg {
   display: block;
   width: 100%;

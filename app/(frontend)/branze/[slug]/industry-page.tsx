@@ -599,6 +599,7 @@ function CreativesWall({
               data-reveal-item
               data-landscape={landscape || undefined}
               data-wide={wide || undefined}
+              data-cutout={creative.cutout || undefined}
               className={s.wallItem}
             >
               <Image
