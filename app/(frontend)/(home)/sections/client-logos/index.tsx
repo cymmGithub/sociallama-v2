@@ -56,10 +56,7 @@ export function ClientLogos({
   const finePointer = useMediaQuery('(hover: hover) and (pointer: fine)')
 
   return (
-    // data-blur-edge-gate: the viewport-bottom progressive blur stays hidden
-    // while this belt is on screen — the brand marquee must never be frosted
-    // at page start (user decision, 2026-07-13). See components/layout/blur-edge.
-    <section className={s.section} data-blur-edge-gate>
+    <section className={s.section}>
       {/* The visible heading names the section — no aria-label, so AT
           announces it exactly once. */}
       <h2 className={s.heading}>{heading}</h2>

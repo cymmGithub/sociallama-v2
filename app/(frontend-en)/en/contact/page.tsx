@@ -36,7 +36,7 @@ export default function EnContactPage() {
           <ContactForm form={en.contactForm} locale="en" />
         </div>
         <ContactSteps head={en.contactStepsHead} steps={en.contactSteps} />
-        <div className={s.brands} data-blur-edge-gate>
+        <div className={s.brands}>
           <BrandBelt
             logos={CLIENT_ROSTER.map((client) => ({
               name: client.name,

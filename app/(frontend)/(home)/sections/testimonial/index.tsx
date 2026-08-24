@@ -147,14 +147,10 @@ export function Testimonial({
   }
 
   return (
-    // data-blur-edge-gate: suppress the viewport-bottom blur while this section
-    // is on screen — the byline and rail sit low on short desktop viewports and
-    // must stay crisp (see components/layout/blur-edge).
     <section
       ref={ref}
       className={s.section}
       aria-labelledby={labelId}
-      data-blur-edge-gate
       data-autoplay={autoplay ? 'true' : 'false'}
     >
       <h2 id={labelId} className="sr-only">

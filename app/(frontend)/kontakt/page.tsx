@@ -36,10 +36,8 @@ export default function ContactPage() {
         </div>
         <ContactSteps />
         {/* Brand marquee between the form and the numbers (user decision
-            2026-07-17) — a plain scrolling logo belt, dark variant. The gate
-            keeps the belt from being frosted by the viewport-bottom BlurEdge
-            while it's on screen (see components/layout/blur-edge). */}
-        <div className={s.brands} data-blur-edge-gate>
+            2026-07-17) — a plain scrolling logo belt, dark variant. */}
+        <div className={s.brands}>
           <BrandBelt
             logos={CLIENT_ROSTER.map((client) => ({
               name: client.name,

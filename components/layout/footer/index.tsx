@@ -12,12 +12,7 @@ import s from './footer.module.css'
 export function Footer() {
   const { footer } = useChrome().chrome
   return (
-    <footer
-      className={s.footer}
-      id="kontakt"
-      data-blur-edge-gate
-      data-site-footer
-    >
+    <footer className={s.footer} id="kontakt" data-site-footer>
       {/* Sign-off wordmark — the last brand beat. A single merged-outline path
           (glyphs boolean-unioned in lib/scripts/gen-wordmark.py) so the tight
           tracking has no crossing/doubled strokes where letters overlap; plain

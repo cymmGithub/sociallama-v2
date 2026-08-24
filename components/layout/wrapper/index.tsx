@@ -10,7 +10,6 @@
 
 import cn from 'clsx'
 import type { LenisOptions } from 'lenis'
-import { BlurEdge } from '@/components/layout/blur-edge'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { Lenis } from '@/components/layout/lenis'
@@ -118,8 +117,6 @@ export function Wrapper({
       </Canvas>
       {/* Footer is rendered here - do NOT add another in layout.tsx */}
       <Footer />
-      {/* Progressive blur at the viewport's bottom edge (Azurio-style). */}
-      <BlurEdge />
       {lenis && (
         <Lenis
           root
