@@ -801,7 +801,7 @@ export const INDUSTRIES = [
     id: 'horeca',
     slug: 'horeca',
     pairSlug: 'horeca',
-    label: 'Horeca',
+    label: 'HoReCa',
     // Numbers verbatim from the Julius Meinl case study.
     numbers: [
       { value: '4 806', label: 'Interactions', delta: '+956,3%' },

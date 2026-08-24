@@ -471,7 +471,7 @@ export const INDUSTRIES = [
         'Prowadzimy social media marek beauty — skincare, makijaż, pielęgnacja. Estetyczny content, siła UGC i kampanie, które realnie sprzedają.',
     },
     tagline:
-      'Beauty to branża pierwszego wrażenia. Budujemy je tam, gdzie klientka je wyrabia — w\u00A0feedzie. Estetyczny content i\u00A0kampanie dla marek kosmetycznych.',
+      'Beauty to branża pierwszego wrażenia. Budujemy je tam, gdzie klientka je wyrabia — na feedzie. Estetyczny content i\u00A0kampanie dla marek kosmetycznych.',
     brief: {
       pillars: [
         'Edukacja i eksperckość',
@@ -498,7 +498,7 @@ export const INDUSTRIES = [
       },
     ],
     manifesto: {
-      lead: 'Piękno sprzedaje się w feedzie.',
+      lead: 'Piękno sprzedaje się na feedzie.',
       rest: 'Ale to spójny, estetyczny content i\u00A0realne twarze społeczności decydują, po którą markę klientka sięgnie przy półce.',
     },
     marquee: [
@@ -593,7 +593,7 @@ export const INDUSTRIES = [
         'Prowadzimy social media marek z branży zdrowia i wellbeingu. Rzetelna edukacja, autorytet ekspertów i komunikacja, która buduje zaufanie.',
     },
     tagline:
-      'Zdrowie to branża zaufania. Budujemy je tam, gdzie odbiorca szuka odpowiedzi — w\u00A0feedzie. Edukacyjny content i\u00A0kampanie dla marek zdrowotnych.',
+      'Zdrowie to branża zaufania. Budujemy je tam, gdzie odbiorca szuka odpowiedzi — na feedzie. Edukacyjny content i\u00A0kampanie dla marek zdrowotnych.',
     brief: {
       pillars: [
         'Edukacja oparta na wiedzy',
@@ -973,7 +973,7 @@ export const INDUSTRIES = [
     id: 'horeca',
     slug: 'horeca',
     pairSlug: 'horeca',
-    label: 'Horeca',
+    label: 'HoReCa',
     // Numbers verbatim from the Julius Meinl case study.
     numbers: [
       { value: '4 806', label: 'Interakcje', delta: '+956,3%' },
@@ -1030,7 +1030,7 @@ export const INDUSTRIES = [
         'Prowadzimy social media restauracji, kawiarni i barów. Apetyczny food content, budowanie atmosfery miejsca i komunikacja, która zapełnia stoliki.',
     },
     tagline:
-      'HoReCa to branża apetytu. Budzimy go tam, gdzie zaczyna się głód — w\u00A0feedzie. Food content i\u00A0komunikacja, która zapełnia stoliki.',
+      'HoReCa to branża apetytu. Budzimy go tam, gdzie zaczyna się głód — na feedzie. Food content i\u00A0komunikacja, która zapełnia stoliki.',
     brief: {
       pillars: [
         'Apetyczny content',
@@ -1054,7 +1054,7 @@ export const INDUSTRIES = [
       { value: 'Rezerwacje', label: 'feed, który zapełnia stoliki' },
     ],
     manifesto: {
-      lead: 'Głód zaczyna się w feedzie.',
+      lead: 'Głód zaczyna się na feedzie.',
       rest: 'Zanim gość przekroczy próg, apetyczny content i\u00A0atmosfera miejsca już zapełniają stoliki.',
     },
     marquee: [
