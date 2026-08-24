@@ -57,7 +57,13 @@ export interface IndustryPageProps {
  * entry whenever its file's CONTENT changes (volvo's annotation and breville's
  * colour mark, 2026-08-20 review) — only bumped slugs re-optimize.
  */
-const LOGO_V: Record<string, string> = { volvo: '?v=2', breville: '?v=2' }
+const LOGO_V: Record<string, string> = {
+  volvo: '?v=2',
+  breville: '?v=2',
+  // 2026-08-24: trimmed the 800×800 board with 240px of transparent padding
+  // down to the mark itself — it rendered as a tall square among wide logos.
+  ozgasl: '?v=2',
+}
 const studyLogoSrc = (slug: string) =>
   `/case-studies/${slug}/${slug}-logo.png${LOGO_V[slug] ?? ''}`
 
