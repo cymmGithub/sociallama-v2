@@ -1,9 +1,11 @@
 /*
- * Brand-colour hover for the social row (user pick 2026-08-24, mock variant
- * G): the circle fills with the network's colour, the glyph goes white, and
- * a white ring peels outward from the edge and fades. Size, resting border
- * and glyph colour stay in each caller's module; this file owns only the
- * hover.
+ * Brand-colour hover for the social row and the share row's two brand links
+ * (user pick 2026-08-24, mock variant G): the circle fills with the network's
+ * colour, the glyph goes white, and a ring peels outward from the edge and
+ * fades. Size, resting border and glyph colour stay in each caller's module;
+ * this file owns only the hover. The hover selectors carry `[data-social]` so
+ * they outrank a caller's own `.button:hover` (the share rows keep one for
+ * their copy-link button) regardless of module order.
  *
  * Both layers are pseudo-elements so the Instagram gradient can fade in like
  * the flat colours do (background-image itself will not transition). The peel
@@ -12,10 +14,13 @@
  *
  * The peel is white for every network rather than brand-coloured (user
  * feedback 2026-08-24): a red or black ring is lost on plum and on the
- * footer's #161216, and TikTok and X fill with black there anyway.
+ * footer's #161216, and TikTok and X fill with black there anyway. A caller
+ * on a light ground sets `--social-peel` on an ancestor (the blog share row
+ * uses its ink colour), because white peels into white.
  */
 .link {
   --brand: var(--color-cream);
+  --peel: var(--social-peel, var(--color-white));
   position: relative;
   isolation: isolate;
 
@@ -37,7 +42,7 @@
 
   &::after {
     padding: 1px;
-    background: var(--color-white);
+    background: var(--peel);
     mask:
       linear-gradient(#000 0 0) content-box exclude,
       linear-gradient(#000 0 0);
@@ -69,16 +74,16 @@
 }
 
 @media (--hover) {
-  .link:hover {
+  .link[data-social]:hover {
     border-color: transparent;
   }
-  .link:hover::before {
+  .link[data-social]:hover::before {
     opacity: 1;
   }
-  .link:hover::after {
+  .link[data-social]:hover::after {
     animation: peel 640ms var(--ease-out-expo) forwards;
   }
-  .link:hover .icon {
+  .link[data-social]:hover .icon {
     color: var(--color-white);
   }
 }
@@ -100,7 +105,7 @@
   .icon {
     transition: none;
   }
-  .link:hover::after {
+  .link[data-social]:hover::after {
     animation: none;
   }
 }

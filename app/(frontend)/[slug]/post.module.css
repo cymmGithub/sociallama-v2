@@ -508,6 +508,9 @@
   display: flex;
   align-items: center;
   gap: 0.625rem;
+  /* The brand links' peel ring (social-links.module.css) is white by default;
+     on this light ground it takes the ink colour instead. */
+  --social-peel: var(--color-secondary);
 }
 
 .shareButton {

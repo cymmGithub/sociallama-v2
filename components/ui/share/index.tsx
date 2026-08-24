@@ -1,9 +1,11 @@
 'use client'
 
+import cn from 'clsx'
 import { Check, Link2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from '@/components/ui/link'
 import { SocialGlyph } from '@/components/ui/social-glyph'
+import social from '@/components/ui/social-links/social-links.module.css'
 
 /**
  * Share row — LinkedIn intent, Facebook sharer, copy-link. One behaviour for
@@ -17,6 +19,10 @@ import { SocialGlyph } from '@/components/ui/social-glyph'
  * The two brand marks are inline SVGs (`SocialGlyph`) inheriting `currentColor`,
  * so they invert with the button on hover — lucide dropped its brand icons, and
  * the earlier mask + background-color paint washed out under forced dark modes.
+ *
+ * The brand links wear the social row's hover (brand fill + peel ring, see
+ * `social-links.module.css`) on top of the caller's button class; copy-link
+ * keeps the caller's own hover.
  */
 
 /** The copy a share row needs, in one locale. */
@@ -85,19 +91,27 @@ export function ShareRow({
       <div className={rowClassName}>
         <Link
           aria-label={fillTitle(labels.linkedin, title)}
-          className={buttonClassName}
+          className={cn(social.link, buttonClassName)}
+          data-social="linkedin"
           href={`https://www.linkedin.com/sharing/share-offsite/?url=${encoded}`}
           newTab
         >
-          <SocialGlyph name="linkedin" className={brandIconClassName} />
+          <SocialGlyph
+            name="linkedin"
+            className={cn(social.icon, brandIconClassName)}
+          />
         </Link>
         <Link
           aria-label={fillTitle(labels.facebook, title)}
-          className={buttonClassName}
+          className={cn(social.link, buttonClassName)}
+          data-social="facebook"
           href={`https://www.facebook.com/sharer/sharer.php?u=${encoded}`}
           newTab
         >
-          <SocialGlyph name="facebook" className={brandIconClassName} />
+          <SocialGlyph
+            name="facebook"
+            className={cn(social.icon, brandIconClassName)}
+          />
         </Link>
         <button
           aria-label={copied ? labels.copied : labels.copy}
