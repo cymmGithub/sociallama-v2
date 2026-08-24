@@ -913,8 +913,61 @@
   background: var(--color-cream);
 }
 
+/* The head centers over the row; the row itself runs the section's full
+   width (owner call, 2026-08-24) — only the section's --safe padding frames
+   it. */
+.relatedInner {
+  margin-inline: auto;
+}
+
 .relatedHead {
   margin-bottom: calc(var(--safe) * 1.6);
+  text-align: center;
+}
+
+/* One linked study: a centered lone card under a centered heading reads as a
+   stub, so desktop pairs them instead — heading left, card right (owner
+   sketch), both a size up from the grid scale so the pair carries the band
+   alone (owner call, 2026-08-24). Mobile keeps the stacked centered flow. */
+@media (--desktop) {
+  .related[data-lone] .relatedInner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--safe) * 2);
+  }
+
+  .related[data-lone] .relatedHead {
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  .related[data-lone] .relatedHeading {
+    font-size: clamp(2.8rem, 6vw, 4.4rem);
+    max-width: 12ch;
+  }
+
+  .related[data-lone] .relatedCard {
+    flex-basis: 40rem;
+    gap: 1.2rem;
+    padding: calc(var(--safe) * 1.9);
+  }
+
+  .related[data-lone] .related[data-stretch] .relatedCard {
+    @media (--desktop) {
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: none;
+    }
+  }
+
+  .relatedCardLogo {
+    max-width: 10rem;
+  }
+
+  .related[data-lone] .relatedCardTitle {
+    font-size: 1.35rem;
+  }
 }
 
 .relatedHeading {
@@ -934,15 +987,30 @@
   color: var(--color-orange);
 }
 
+/* Wrapped flex, not the old auto-fill grid: a part-filled grid row left its
+   dead space on the right, while centered wrap keeps every row — including
+   the last partial one — on the section's axis. */
 .relatedGrid {
   --reveal-stagger: 90ms;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
   gap: 1rem;
+
+  /* Desktop: one row, always — a wrapped orphan card centered under the row
+     is unacceptable (owner, 2026-08-24, /branze/zdrowie). Cards split the
+     row evenly and shrink below their cap when the roster is long. */
+  @media (--desktop) {
+    flex-wrap: nowrap;
+  }
 }
 
 .relatedCard {
+  /* Mobile: full row, like the featured case card above (owner call,
+     2026-08-24) — the fixed basis is a desktop-only shape. */
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -953,6 +1021,13 @@
   transition:
     transform 0.2s ease,
     border-color 0.2s ease;
+
+  /* Desktop default (a pair of cards): natural width, centered by the row.
+     From three cards up ([data-stretch]) the row is divided evenly across
+     the full width. */
+  @media (--desktop) {
+    flex: 0 1 17rem;
+  }
 
   &:hover {
     transform: translateY(-3px);
@@ -967,7 +1042,9 @@
 }
 
 .relatedCardTitle {
-  flex: 1;
+  /* The stretchy space lives ABOVE the title, so the description always sits
+     right on the CTA regardless of the logo's height (owner, 2026-08-24). */
+  margin-top: auto;
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;

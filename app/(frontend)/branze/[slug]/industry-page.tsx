@@ -163,42 +163,54 @@ function RelatedCaseStudies({
   }
 
   return (
-    <section className={s.related} data-theme="cream">
-      <div className={s.relatedHead}>
-        <p className={s.kicker}>{chrome.related.kicker}</p>
-        <h2 className={s.relatedHeading}>
-          <span className={s.headingAccent}>
-            {chrome.related.headingAccent}
-          </span>{' '}
-          {chrome.related.heading}
-        </h2>
-      </div>
-      <div className={s.relatedGrid} ref={ref}>
-        {studies.map((study) => (
-          <Link
-            key={study.slug}
-            className={s.relatedCard}
-            href={`${caseStudyBase}/${study.slug}`}
-          >
-            {study.logo !== false && (
-              <span className={s.relatedCardLogo}>
-                {/* Logos are locale-independent public assets, not prefixed. */}
-                <Image
-                  src={studyLogoSrc(study.slug)}
-                  alt=""
-                  width={120}
-                  height={38}
-                  objectFit="contain"
-                />
+    <section
+      className={s.related}
+      data-theme="cream"
+      /* One linked study (e.g. beauty): heading left, the lone card right —
+         a centered single card under a centered heading read as a stub
+         (owner sketch, 2026-08-24). */
+      data-lone={studies.length === 1 || undefined}
+      /* Four or more cards stretch across the full row (owner call,
+         2026-08-24); fewer stay centered at their natural width. */
+      data-stretch={studies.length >= 4 || undefined}
+    >
+      <div className={s.relatedInner}>
+        <div className={s.relatedHead}>
+          <p className={s.kicker}>{chrome.related.kicker}</p>
+          <h2 className={s.relatedHeading}>
+            <span className={s.headingAccent}>
+              {chrome.related.headingAccent}
+            </span>{' '}
+            {chrome.related.heading}
+          </h2>
+        </div>
+        <div className={s.relatedGrid} ref={ref}>
+          {studies.map((study) => (
+            <Link
+              key={study.slug}
+              className={s.relatedCard}
+              href={`${caseStudyBase}/${study.slug}`}
+            >
+              {study.logo !== false && (
+                <span className={s.relatedCardLogo}>
+                  {/* Logos are locale-independent public assets, not prefixed. */}
+                  <Image
+                    src={studyLogoSrc(study.slug)}
+                    alt=""
+                    width={120}
+                    height={38}
+                    objectFit="contain"
+                  />
+                </span>
+              )}
+              <span className={s.relatedCardTitle}>{study.title}</span>
+              <span className={s.relatedCardCta}>
+                {chrome.related.cta}
+                <ArrowRight size={16} aria-hidden="true" />
               </span>
-            )}
-            <span className={s.relatedCardTitle}>{study.title}</span>
-            <span className={s.relatedCardCta}>
-              {chrome.related.cta}
-              <ArrowRight size={16} aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   )
