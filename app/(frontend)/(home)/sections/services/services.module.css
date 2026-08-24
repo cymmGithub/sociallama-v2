@@ -143,6 +143,15 @@
   pointer-events: none;
 }
 
+/* The journey cards carry live text the soft-light grain visibly smears
+   (worst on the small plum role strips), so the sprzedaż layer paints above
+   .grain. The gradient backdrop keeps its grain, and the screenshot tabs stay
+   under it as designed. The mobile twin of this lift sits with the
+   .stackStage rules. */
+.layer:has(.journey) {
+  z-index: 3;
+}
+
 /* The global reduced-motion neutralizer's `*` rule loses to these class
    selectors (same pitfall global.css documents for [data-reveal]), so the
    module opts its own animations out explicitly: static gradient, instant
@@ -485,7 +494,7 @@
   border-radius: 0 0 var(--j-radius) var(--j-radius);
   background: var(--color-plum);
   color: var(--color-cream);
-  font-size: 0.78em;
+  font-size: 0.9em;
   line-height: 1.35;
   padding: 0.6em 0.9em;
 }
@@ -1049,9 +1058,14 @@
 
 /* Media renders directly in the stack stage (no crossfade layer). */
 .stackStage .panels,
-.stackStage .journey,
 .stackStage .phone {
   z-index: 1;
+}
+
+/* Mobile twin of the desktop `.layer:has(.journey)` lift: no crossfade layer
+   here, so the journey itself rises above the grain (z-index 2). */
+.stackStage .journey {
+  z-index: 3;
 }
 
 .stackStage .panel,
