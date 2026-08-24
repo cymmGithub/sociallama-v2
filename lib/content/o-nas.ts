@@ -323,10 +323,10 @@ export const oNasTeam = {
     {
       given: 'ŁUKASZ',
       surname: 'PŁOCIŃSKI',
-      // The only roster member who works for a partner company rather than for
-      // Social Lama, so the agency is part of the role label — a visitor
-      // reading the tile alone must not take him for staff.
-      role: 'Specjalista SEO, SEOFLY',
+      // The only roster member from a partner company. The tile label matches
+      // the rest of the roster (owner call, 2026-08-24); the SEOFLY
+      // affiliation lives in the bio and the seofly.pl link below.
+      role: 'SEO Specialist',
       bio: 'Specjalista SEO w\u00A0SEOFLY, partnerskiej agencji z\u00A0naszej grupy. Od 2011 roku pozycjonuje strony i\u00A0sklepy internetowe — od audytu i\u00A0doboru słów kluczowych, przez optymalizację, po treści, które realnie dowożą ruch. Łączy analityczne podejście z\u00A0kreatywnością i\u00A0na bieżąco nadąża za zmianami w\u00A0algorytmach Google. Po godzinach kibicuje siatkówce i\u00A0sam w\u00A0nią gra, a\u00A0wolny czas oddaje rodzinie i\u00A0fantastyce — od Tolkiena po Świat Dysku.',
       // His profile at the partner agency. Same treatment as Przemysław's
       // personal site below: an external destination, so the label is the

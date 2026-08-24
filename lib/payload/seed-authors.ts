@@ -27,7 +27,9 @@ const AUTHORS = [
   {
     name: 'Łukasz Płociński',
     avatarPath: 'public/authors/lukasz-plocinski.png',
-    role: 'Specjalista SEO, SEOFLY',
+    // Matches the value set by hand in the prod admin on 2026-08-24; the
+    // o-nas roster tile deliberately drops the agency suffix instead.
+    role: 'SEO Specialist, SEOFLY',
     // Carries the SEOFLY partner credit that used to sit in the post bodies
     // as "Tekst powstał we współpracy z agencją SEOFLY…".
     bio: 'Specjalista SEO w SEOFLY, partnerskiej agencji z naszej grupy. Od ponad piętnastu lat pozycjonuje strony i sklepy internetowe — łączy analityczne podejście z kreatywnością i na bieżąco nadąża za zmianami w algorytmach Google.',
