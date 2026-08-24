@@ -206,17 +206,30 @@
 
 /* Long link lists (e.g. the 12-item OFERTA column) split into two sub-columns
    so the column stays short and the footer fits one viewport — which the
-   sticky-bottom reveal below depends on. The count is explicit, not
-   `auto-fill` with a rem floor: auto-fill made it a function of viewport width
-   × font size, and two 11rem tracks only fit above a ~1663px viewport, so
-   every laptop silently got one 12-row column and a footer taller than its
-   window. Labels too wide for a track wrap; none are clipped. */
+   sticky-bottom reveal below depends on. Multicol, not a 2-column grid: grid
+   rows share height across both sub-columns, so any label that wraps to two
+   lines ("Hotele i Miejsca Wypoczynkowe") stretched its row and punched a
+   hole under the one-line neighbor. Multicol packs each sub-column
+   independently; a wrap just makes that column one line taller. The count is
+   explicit, not `column-width` with a rem floor: a width floor makes the
+   split a function of viewport width × font size, and two 11rem tracks only
+   fit above a ~1663px viewport, so every laptop silently got one 12-row
+   column and a footer taller than its window. Spacing moves from flex `gap`
+   to item margins because `columns` needs a block container. */
 @media (--desktop) {
   .links[data-cols="2"] {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.7em 1.25rem;
-    align-content: start;
+    display: block;
+    columns: 2;
+    column-gap: 1.25rem;
+
+    li {
+      break-inside: avoid;
+      margin-block-end: 0.7em;
+    }
+
+    li:last-child {
+      margin-block-end: 0;
+    }
   }
 }
 
