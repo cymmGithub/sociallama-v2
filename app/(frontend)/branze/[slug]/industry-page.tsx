@@ -586,12 +586,18 @@ function CreativesWall({
           // 1574×1572 and irobot-humor-parrot 713×640 — and a bare inequality
           // would hand them the double-width slot meant for the 2056×1164
           // YouTube still, wrecking a wall this change never meant to reshape.
-          const landscape = creative.width / creative.height >= 1.5
+          const ratio = creative.width / creative.height
+          const landscape = ratio >= 1.5
+          // Anything meaningfully wider than tall spans the mobile columns
+          // (user call 2026-08-24: the parrot squeezed into a half column).
+          // 1.05 clears rounding-error squares; true squares stay two-up.
+          const wide = ratio > 1.05 && !landscape
           return (
             <div
               key={creative.src}
               data-reveal-item
               data-landscape={landscape || undefined}
+              data-wide={wide || undefined}
               className={s.wallItem}
             >
               <Image
@@ -601,7 +607,12 @@ function CreativesWall({
                 width={creative.width}
                 height={creative.height}
                 desktopSize={wallTileSize(landscape, creatives.length === 1)}
-                mobileSize="45vw"
+                /* Mobile is a two-column masonry, so a tile is ~45vw — except
+                   the column-spanning cases (landscape, lone tile), which take
+                   the full row. */
+                mobileSize={
+                  landscape || wide || creatives.length === 1 ? '90vw' : '45vw'
+                }
               />
             </div>
           )

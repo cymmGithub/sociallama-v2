@@ -471,28 +471,46 @@
   --reveal-stagger: 90ms;
   --reveal-transform: translateY(28px);
 
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  gap: var(--gap);
+  /* Mobile: two MASONRY columns, not flex rows. Flex forces equal widths per
+     row, so a near-square tile beside a tall phone mockup left a hole the
+     size of their height difference (iRobot's parrot next to a 1:1.6 story,
+     Kontigo's square next to a chat screenshot), and an odd last tile floated
+     centered on its own row. Columns pack each tile directly under its
+     neighbour, whatever its aspect. Walls whose tiles share one aspect
+     (Volvo, health) render exactly as before. */
+  columns: 2;
+  column-gap: var(--gap);
   max-width: 1240px;
   margin-inline: auto;
+
+  @media (--desktop) {
+    /* Desktop keeps the flex rows — a flex container ignores `columns`. */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--gap);
+  }
 }
 
 /* Creative frame — natural aspect, exactly like the case study's `.shot`: these
    are device mockups, so the frame IS the content and cropping it to a uniform
    tile mangles the phone. Phone-sized on desktop, two-up on mobile. */
 .wallItem {
-  flex: 0 1 calc(50% - var(--gap) / 2);
   overflow: hidden;
   border-radius: 0.9rem;
   background: var(--color-cream);
   box-shadow: 0 20px 40px -24px rgb(0 0 0 / 35%);
   line-height: 0;
 
+  /* Fragmentation controls for the mobile columns; inert on desktop, where
+     the flex `gap` takes over and the margin is zeroed. */
+  break-inside: avoid;
+  margin-bottom: var(--gap);
+
   @media (--desktop) {
     flex: 0 1 14rem;
+    margin-bottom: 0;
   }
 }
 
@@ -509,7 +527,9 @@
    they span keeps it on the same grid. Mobile gives it the full row, where
    tiles are otherwise two-up. */
 .wallItem[data-landscape] {
-  flex-basis: 100%;
+  /* Full row on mobile: spanning the columns, since half a 390px screen would
+     shrink a 2:1 frame to a strip. */
+  column-span: all;
 
   @media (--desktop) {
     flex-basis: calc(28rem + var(--gap));
@@ -520,9 +540,20 @@
    section alone at a larger size. It is always :nth-child(1), so the stagger
    above never reaches it. */
 .wallItem:only-child {
+  /* Mobile: a lone tile in a two-column flow would hang half-width in the
+     left column; span it instead, like the landscape frame. */
+  column-span: all;
+
   @media (--desktop) {
     flex-basis: 22rem;
   }
+}
+
+/* Wider-than-tall but short of the desktop landscape slot (iRobot's parrot,
+   713×640): the shape a half column squeezes worst, so on mobile it takes the
+   full row too. Desktop keeps it in the ordinary phone slot. */
+.wallItem[data-wide] {
+  column-span: all;
 }
 
 .wallImg {

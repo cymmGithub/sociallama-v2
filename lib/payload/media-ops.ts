@@ -376,6 +376,86 @@ export async function repointRelation(
   return 'pending'
 }
 
+// —— alt text ———————————————————————————————————————————————————————————————
+
+export type AltOpts = {
+  /** The filename whose row is edited. */
+  file: string
+  /** `media.alt` is localized; each locale is a separate guarded write. */
+  locale: 'pl' | 'en'
+  /** Substring the current alt must contain — the guard AND what changes. */
+  from: string
+  /** Its replacement. */
+  to: string
+  /** Cache tags this write invalidates. */
+  tags: string[]
+}
+
+/**
+ * Correct one substring of a media row's alt text, one locale at a time.
+ *
+ * The narrow shape is deliberate: a substring swap cannot blank an alt or
+ * replace a description wholesale, which is what `replaceMediaBytes` (new
+ * picture, new description) and the seeders are for. The `from` string is both
+ * the edit and the guard — an alt that no longer contains it has been edited by
+ * someone since the plan was written, so the row is reported `stale` and left
+ * alone rather than overwritten.
+ *
+ * Idempotent: an alt already containing `to` reports `already-done`.
+ */
+export async function updateMediaAlt(
+  ctx: Ctx,
+  opts: AltOpts
+): Promise<Verdict> {
+  const label = `${opts.file} [${opts.locale}]`
+  const found = await ctx.payload.find({
+    collection: 'media',
+    where: { filename: { equals: opts.file } },
+    limit: 2,
+    locale: opts.locale,
+    fallbackLocale: false,
+    overrideAccess: true,
+  })
+  if (found.docs.length === 0) {
+    console.log(`  ! ${label}: no media row owns that name — skipped`)
+    return 'missing'
+  }
+  if (found.docs.length > 1) {
+    throw new Error(
+      `${opts.file}: ${found.docs.length} media rows share that filename — ` +
+        'refusing to guess which one the plan means'
+    )
+  }
+  const doc = found.docs[0]
+  const alt: string = doc.alt ?? ''
+
+  if (alt.includes(opts.to)) return 'already-done'
+  if (!alt.includes(opts.from)) {
+    console.log(
+      `  ! ${label}: alt is "${alt}" — expected it to contain "${opts.from}". ` +
+        'Skipped: someone has edited this since the plan was written.'
+    )
+    return 'stale'
+  }
+
+  const next = alt.replace(opts.from, opts.to)
+  console.log(
+    `  ${ctx.apply ? '~' : 'would'} ${label} ${alt}\n      -> ${next}`
+  )
+  for (const t of opts.tags) ctx.tags.add(t)
+  if (!ctx.apply) return 'pending'
+
+  await ctx.payload.update({
+    collection: 'media',
+    id: doc.id,
+    locale: opts.locale,
+    data: { alt: next },
+    overrideAccess: true,
+  })
+  ctx.rollback.push(`media ${label} alt: ${next} -> ${alt}`)
+  return 'pending'
+}
+
 // —— replace bytes ——————————————————————————————————————————————————————————
 
 export type ReplaceOpts = {
