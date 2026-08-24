@@ -285,12 +285,6 @@ export const INDUSTRIES = [
           width: 406,
           height: 720,
         },
-        {
-          src: '/case-studies/volvo/volvo-gallery-4.jpg',
-          alt: 'Kreacja konkursowa Volvo z dziećmi rysującymi przy stole, hasło „Volvo oczami dziecka” i zaproszenie na wystawę prac w Domu Volvo 25–27.06',
-          width: 1079,
-          height: 1350,
-        },
       ],
       quote: {
         text: 'Personal branding doradców i\u00A0treści eksperckie zbudowały pozycję obu marek na LinkedInie — bez kupowania zasięgów.',
@@ -434,12 +428,6 @@ export const INDUSTRIES = [
           height: 1080,
         },
         {
-          src: '/case-studies/kontigo/kontigo-gallery-2.jpg',
-          alt: 'Zrzut ekranu wiadomości powitalnej grupy #KontigoCLUB z zasadami dodawania hashtagów i regulaminem konkursu Top 3 Ambasadorek',
-          width: 345,
-          height: 713,
-        },
-        {
           src: '/case-studies/kontigo/kontigo-gallery-3.jpg',
           alt: 'Grafika #KontigoCLUB z napisem „Zasady grupy”, w otoczeniu tropikalnych liści i kwiatów hibiskusa',
           width: 1080,
@@ -555,12 +543,6 @@ export const INDUSTRIES = [
       {
         src: '/case-studies/imid-cmv/imid-cmv-walacyklowir-1.jpg',
         alt: 'Kreacja kampanii LeczenieCMV.pl — „Immunoglobuliny czy walacyklowir — jaką terapię wybrać przy leczeniu cytomegalii w ciąży?”',
-        width: 720,
-        height: 720,
-      },
-      {
-        src: '/case-studies/imid-cmv/imid-cmv-edu-2.jpg',
-        alt: 'Kreacja kampanii LeczenieCMV.pl — „90% kobiet w wieku rozrodczym jest zarażona wirusem cytomegalii”',
         width: 720,
         height: 720,
       },
@@ -737,12 +719,6 @@ export const INDUSTRIES = [
           width: 465,
           height: 680,
         },
-        {
-          src: '/case-studies/aquael/aquael-gallery-5.jpg',
-          alt: 'Aranżacja akwarium Aquael w szafce z drewnianym frontem, w przytulnym salonie z roślinami',
-          width: 1080,
-          height: 1080,
-        },
       ],
       quote: {
         text: 'Social Lama jest agencją, która w\u00A0pełni odpowiada naszym oczekiwaniom. Działania zespołu okazały się dla nas na tyle satysfakcjonujące, że zdecydowaliśmy się poszerzyć zakres współpracy o\u00A0kolejne projekty.',
@@ -845,12 +821,6 @@ export const INDUSTRIES = [
           alt: 'Kreacja Mazurskiej Manufaktury Alkoholi „Zostań naszym akcjonariuszem! Masz czas do godziny 23.59” z logo marki',
           width: 960,
           height: 960,
-        },
-        {
-          src: '/case-studies/mazurska-manufaktura-alkoholi/mazurska-manufaktura-alkoholi-gallery-3.jpg',
-          alt: 'Kreacja Mazurskiej Manufaktury Alkoholi „Magda Gessler już zainwestowała… A Ty?” z portretem ambasadorki marki',
-          width: 1200,
-          height: 900,
         },
       ],
     },
@@ -1009,12 +979,6 @@ export const INDUSTRIES = [
           alt: 'Kreacja Instagram „Fakt czy mit” z filiżanką kawy Julius Meinl',
           width: 419,
           height: 581,
-        },
-        {
-          src: '/case-studies/julius-meinl/julius-meinl-eventy-1.png',
-          alt: 'Grafika zapowiadająca polski finał Julius Meinl Barista Cup 2026 — plaża, piłka siatkowa i filiżanka espresso',
-          width: 1574,
-          height: 1572,
         },
       ],
     },

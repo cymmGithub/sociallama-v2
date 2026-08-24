@@ -483,36 +483,26 @@
   max-width: 1240px;
   margin-inline: auto;
 
+  /* The one-tile rozrywka wall renders as a centered flex row on desktop —
+     a flex container ignores `columns`. */
   @media (--desktop) {
-    /* The one-tile rozrywka wall renders as a centered flex row; every other
-       wall goes masonry below too (owner call, 2026-08-24: columns at every
-       width, not only ≥1220). A flex container ignores `columns`. */
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    gap: var(--gap);
-
-    &:not(:has(.wallItem:only-child)) {
-      /* Width-based count: ~3 columns at 800px, 4 near 1200px. */
-      display: block;
-      columns: 14rem;
-      column-gap: var(--gap);
+    &:has(.wallItem:only-child) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: var(--gap);
     }
   }
 
-  /* Wide desktop: once every tile fits one flex row (the wall caps at
-     1240px), the row reads as a ragged strip — tile heights swing 224–525px
-     and the short ones leave holes. Back to masonry columns (owner call,
-     2026-08-24), five-up: ~235px tiles match the flex rows' phone slot (the
-     owner walked this from three columns through four to five on the live
-     layout). The one-tile rozrywka wall keeps the centered flex row — a
-     lone tile in the first of five columns would hang left. */
-  @media (width >= 1220px) {
+  /* From 960px a multi-tile wall runs one column per tile (owner's final
+     rule, 2026-08-24: "nicely filled, no empty spaces" — fewer columns than
+     tiles always packs some column double-height and leaves a hole under
+     the shortest one). Below 960px the mobile two-column packing carries
+     on. Count comes from the tile count (inline --wall-cols, capped at 4). */
+  @media (width >= 960px) {
     &:not(:has(.wallItem:only-child)) {
-      display: block;
-      /* Capped by the tile count (set inline) — see the JSX note. */
-      columns: var(--wall-cols, 5);
+      columns: var(--wall-cols, 4);
     }
   }
 }
@@ -537,6 +527,14 @@
   @media (--desktop) {
     flex: 0 1 14rem;
   }
+
+  /* One tile per column: sequential balancing otherwise stacks two short
+     tiles under a tall neighbour and leaves the last column empty (beauty:
+     three squares + one story, in any order). The sub-960 two-column flow
+     packs by design and stays exempt. */
+  @media (width >= 960px) {
+    break-after: column;
+  }
 }
 
 /* A landscape frame (design D3) — iRobot's YouTube still is 2056×1164, and at
@@ -544,10 +542,10 @@
    they span keeps it on the same grid. Mobile gives it the full row, where
    tiles are otherwise two-up. */
 .wallItem[data-landscape] {
-  /* Full row on mobile: spanning the columns, since half a 390px screen would
-     shrink a 2:1 frame to a strip. Mobile-scoped: in the ≥1220 masonry a full
-     span would blow the frame up to the whole 1240px wall. */
-  @media (--mobile) {
+  /* Full row in the packed band (below 960px): half a narrow screen would
+     shrink a 2:1 frame to a strip. Scoped: in the one-per-column masonry a
+     full span would blow the frame up to the whole wall. */
+  @media (width < 960px) {
     column-span: all;
   }
 
@@ -560,10 +558,10 @@
    section alone at a larger size. It is always :nth-child(1), so the stagger
    above never reaches it. */
 .wallItem:only-child {
-  /* Mobile: a lone tile in a two-column flow would hang half-width in the
-     left column; span it instead, like the landscape frame. (The ≥1220 wall
-     never goes multicol with an only child — see .wall.) */
-  @media (--mobile) {
+  /* Packed band: a lone tile in a two-column flow would hang half-width in
+     the left column; span it instead, like the landscape frame. (The
+     desktop wall never goes multicol with an only child — see .wall.) */
+  @media (width < 960px) {
     column-span: all;
   }
 
@@ -576,7 +574,7 @@
    713×640): the shape a half column squeezes worst, so on mobile it takes the
    full row too. Desktop keeps it in the ordinary phone slot. */
 .wallItem[data-wide] {
-  @media (--mobile) {
+  @media (width < 960px) {
     column-span: all;
   }
 }

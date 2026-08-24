@@ -614,10 +614,12 @@ function CreativesWall({
         ref={wallRef}
         className={s.wall}
         /* The wide masonry can only fill as many columns as it has tiles —
-           multicol never splits a tile, so a 4-tile wall under `columns: 5`
-           parks a permanently empty fifth column on the right. */
+           multicol never splits a tile, so a sparser wall under a fixed
+           count parks permanently empty columns on the right. Walls are
+           pinned to four tiles (branze.test.ts), so in practice this is four
+           columns everywhere. */
         style={
-          { '--wall-cols': Math.min(5, creatives.length) } as CSSProperties
+          { '--wall-cols': Math.min(4, creatives.length) } as CSSProperties
         }
       >
         {creatives.map((creative) => {

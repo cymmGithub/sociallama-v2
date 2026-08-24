@@ -104,3 +104,25 @@ describe('related case studies', () => {
     })
   }
 })
+
+/**
+ * The wide-desktop wall renders `min(4, tiles)` masonry columns and multicol
+ * never splits a tile, so a wall past four tiles can only stack tiles into
+ * already-filled columns — and the owner pinned the walls to exactly this
+ * budget (2026-08-24: "no empty spaces, four columns above 1220px").
+ */
+describe('wall tile budget', () => {
+  for (const [locale, industries] of [
+    ['pl', INDUSTRIES_PL],
+    ['en', INDUSTRIES_EN],
+  ] as const) {
+    test(`${locale}: no wall exceeds 4 tiles`, () => {
+      for (const wall of wallsOf(industries as readonly Industry[])) {
+        expect(
+          wall.creatives.length,
+          `${wall.id} overflows the four-column wall`
+        ).toBeLessThanOrEqual(4)
+      }
+    })
+  }
+})

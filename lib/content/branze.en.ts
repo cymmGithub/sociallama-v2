@@ -132,12 +132,6 @@ export const INDUSTRIES = [
           width: 406,
           height: 720,
         },
-        {
-          src: '/case-studies/volvo/volvo-gallery-4.jpg',
-          alt: 'Volvo contest creative with children drawing at a table, headlined "Volvo as a child sees it", inviting visitors to the exhibition at Dom Volvo on 25 to 27 June',
-          width: 1079,
-          height: 1350,
-        },
       ],
       quote: {
         text: "Personal branding for advisors and expert content built both brands' positions on LinkedIn — without buying reach.",
@@ -277,12 +271,6 @@ export const INDUSTRIES = [
           height: 1080,
         },
         {
-          src: '/case-studies/kontigo/kontigo-gallery-2.jpg',
-          alt: 'Screenshot of the #KontigoCLUB group welcome message with the hashtag rules and the Top 3 Ambassadors contest terms',
-          width: 345,
-          height: 713,
-        },
-        {
           src: '/case-studies/kontigo/kontigo-gallery-3.jpg',
           alt: '#KontigoCLUB graphic captioned "Group rules", framed by tropical leaves and hibiscus flowers',
           width: 1080,
@@ -387,12 +375,6 @@ export const INDUSTRIES = [
       {
         src: '/case-studies/imid-cmv/imid-cmv-walacyklowir-1.jpg',
         alt: 'LeczenieCMV.pl campaign creative asking whether to treat CMV in pregnancy with immunoglobulins or valacyclovir',
-        width: 720,
-        height: 720,
-      },
-      {
-        src: '/case-studies/imid-cmv/imid-cmv-edu-2.jpg',
-        alt: 'LeczenieCMV.pl campaign creative: 90% of women of childbearing age carry cytomegalovirus',
         width: 720,
         height: 720,
       },
@@ -567,12 +549,6 @@ export const INDUSTRIES = [
           width: 465,
           height: 680,
         },
-        {
-          src: '/case-studies/aquael/aquael-gallery-5.jpg',
-          alt: 'Aquael campaign creative',
-          width: 1080,
-          height: 1080,
-        },
       ],
       quote: {
         text: "Social Lama is an agency that fully meets our expectations. The team's work proved satisfying enough that we decided to expand the collaboration to further projects.",
@@ -671,12 +647,6 @@ export const INDUSTRIES = [
           alt: 'Mazurska Manufaktura Alkoholi creative reading "Become our shareholder, you have until 11:59 p.m." beside the brand mark',
           width: 960,
           height: 960,
-        },
-        {
-          src: '/case-studies/mazurska-manufaktura-alkoholi/mazurska-manufaktura-alkoholi-gallery-3.jpg',
-          alt: 'Mazurska Manufaktura Alkoholi creative reading "Magda Gessler has already invested. And you?" with a portrait of the brand ambassador',
-          width: 1200,
-          height: 900,
         },
       ],
     },
@@ -833,12 +803,6 @@ export const INDUSTRIES = [
           alt: 'Instagram creative "Fact or myth" with a cup of Julius Meinl coffee',
           width: 419,
           height: 581,
-        },
-        {
-          src: '/case-studies/julius-meinl/julius-meinl-eventy-1.png',
-          alt: 'Announcement graphic for the Polish final of the Julius Meinl Barista Cup 2026, with beach volleyball and an espresso cup',
-          width: 1574,
-          height: 1572,
         },
       ],
     },
