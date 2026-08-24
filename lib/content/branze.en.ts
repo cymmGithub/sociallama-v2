@@ -289,16 +289,16 @@ export const INDUSTRIES = [
           height: 1080,
         },
         {
-          src: '/case-studies/kontigo/kontigo-gallery-7.jpg',
-          alt: 'Graphic "Top 3 Ambassadors May 2023" listing the winners: Adrianna Anna, Kinga Jaromin, Nikola Lopata',
-          width: 1080,
-          height: 1080,
-        },
-        {
           src: '/case-studies/kontigo/kontigo-gallery-5.jpg',
           alt: 'Graphic "Discover the KontigoCLUB Favorite of May!" presenting the Anwen Wake It Up enzyme shampoo',
           width: 597,
           height: 1400,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-7.jpg',
+          alt: 'Graphic "Top 3 Ambassadors May 2023" listing the winners: Adrianna Anna, Kinga Jaromin, Nikola Lopata',
+          width: 1080,
+          height: 1080,
         },
       ],
     },

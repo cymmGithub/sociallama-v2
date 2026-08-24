@@ -511,7 +511,8 @@
   @media (width >= 1220px) {
     &:not(:has(.wallItem:only-child)) {
       display: block;
-      columns: 5;
+      /* Capped by the tile count (set inline) — see the JSX note. */
+      columns: var(--wall-cols, 5);
     }
   }
 }

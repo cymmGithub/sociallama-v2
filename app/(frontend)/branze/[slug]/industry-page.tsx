@@ -610,7 +610,16 @@ function CreativesWall({
         </div>
         <span className={s.realBadge}>{chrome.proof.realBadge}</span>
       </div>
-      <div ref={wallRef} className={s.wall}>
+      <div
+        ref={wallRef}
+        className={s.wall}
+        /* The wide masonry can only fill as many columns as it has tiles —
+           multicol never splits a tile, so a 4-tile wall under `columns: 5`
+           parks a permanently empty fifth column on the right. */
+        style={
+          { '--wall-cols': Math.min(5, creatives.length) } as CSSProperties
+        }
+      >
         {creatives.map((creative) => {
           // Ratio, not `width > height` (design D3). Two tiles already on the
           // walls are square within a rounding error — julius-meinl-eventy-1 is

@@ -446,16 +446,16 @@ export const INDUSTRIES = [
           height: 1080,
         },
         {
-          src: '/case-studies/kontigo/kontigo-gallery-7.jpg',
-          alt: 'Grafika „Top 3 Ambasadorki maj 2023” z listą zwyciężczyń: Adrianna Anna, Kinga Jaromin, Nikola Lopata',
-          width: 1080,
-          height: 1080,
-        },
-        {
           src: '/case-studies/kontigo/kontigo-gallery-5.jpg',
           alt: 'Grafika „Odkryj Ulubieńca Maja KontigoCLUB!” z prezentacją szamponu enzymatycznego Anwen Wake It Up',
           width: 597,
           height: 1400,
+        },
+        {
+          src: '/case-studies/kontigo/kontigo-gallery-7.jpg',
+          alt: 'Grafika „Top 3 Ambasadorki maj 2023” z listą zwyciężczyń: Adrianna Anna, Kinga Jaromin, Nikola Lopata',
+          width: 1080,
+          height: 1080,
         },
       ],
     },
