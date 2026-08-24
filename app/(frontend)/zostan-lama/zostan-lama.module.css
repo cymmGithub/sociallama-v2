@@ -572,6 +572,167 @@
   letter-spacing: normal;
 }
 
+/* Drag-over: the card answers the dragged file the way it answers hover, and
+   the hint swaps to the drop copy (the kit does the swap). */
+.cvField[data-dragging] label {
+  border-color: var(--color-orange);
+  background: rgb(0 0 0 / 0.3);
+}
+
+/* —— Attached (variant "Stempel", 2026-08-24) ————————————————————————————
+   The card stays the one control and changes state in place: the dashed
+   outline becomes solid, an orange line sweeps the perimeter once, the lucide
+   check draws itself on, and the hint gives way to the file line. */
+.cvField[data-attached] label {
+  position: relative;
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-orange) 7%, rgb(0 0 0 / 0.2));
+}
+
+.cvField label > [data-part="sweep"] {
+  position: absolute;
+  inset: -1.5px;
+  width: calc(100% + 3px);
+  height: calc(100% + 3px);
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Geometry through CSS, not attributes — SVG attributes cannot take calc(). */
+.cvField label > [data-part="sweep"] rect {
+  x: 1px;
+  y: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  rx: 14px;
+  fill: none;
+  stroke: var(--color-orange);
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  animation: cvSweep 640ms var(--ease-out-expo) forwards;
+}
+
+/* lucide's CircleCheck is a circle plus a 3-point path; the dash lengths are
+   their user-unit lengths (2π·10 ≈ 63, tick ≈ 8.5), rounded up. */
+.cvField[data-attached] label > span:first-of-type svg circle {
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+  animation: cvDraw 420ms 180ms var(--ease-out-expo) forwards;
+}
+
+.cvField[data-attached] label > span:first-of-type svg path {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 10;
+  animation: cvDraw 300ms 420ms var(--ease-out-expo) forwards;
+}
+
+.cvField label > [data-part="file"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  animation: cvRise 420ms 200ms var(--ease-out-expo) both;
+}
+
+/* Outranks the asterisk rule (`.field > label span:not([class])`), which would
+   otherwise paint the bare name span orange. */
+.formShell .cvField [data-part="file"] [data-part="name"] {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.cvField [data-part="chip"] {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--color-orange) 45%, transparent);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-orange);
+}
+
+.cvField [data-part="actions"] {
+  display: flex;
+  gap: 14px;
+  padding-left: 38px;
+  margin-top: 4px;
+  animation: cvRise 420ms 320ms var(--ease-out-expo) both;
+}
+
+.cvField [data-part="actions"] button {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-strong);
+  transition:
+    color 200ms var(--ease-out-expo),
+    text-decoration-color 200ms var(--ease-out-expo);
+}
+
+@media (--hover) {
+  .cvField [data-part="actions"] button:hover {
+    color: var(--color-cream);
+    text-decoration-color: var(--color-orange);
+  }
+}
+
+.cvField [data-part="actions"] button:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@keyframes cvSweep {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 1;
+  }
+
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes cvDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cvRise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Two consents: required first, optional marketing second. Grouped so they read
    as one block and sit tighter than the form's field rhythm. */
 .consentGroup {
@@ -722,8 +883,22 @@
   .formShell textarea,
   .formShell select,
   .cvField label,
+  .cvField [data-part="actions"] button,
   .send button[type="submit"],
   .consentLabel a {
     transition: none;
+  }
+
+  /* The attached state lands in one step: no sweep, check already drawn. */
+  .cvField label > [data-part="sweep"] {
+    display: none;
+  }
+
+  .cvField[data-attached] label > span:first-of-type svg circle,
+  .cvField[data-attached] label > span:first-of-type svg path,
+  .cvField label > [data-part="file"],
+  .cvField [data-part="actions"] {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }

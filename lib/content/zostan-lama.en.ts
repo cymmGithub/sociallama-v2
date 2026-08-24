@@ -135,7 +135,11 @@ export const careersForm = {
     },
     cv: {
       label: 'Attach your CV',
+      attached: 'CV attached',
       hint: 'PDF or DOCX, up to 5 MB',
+      dropHint: 'Drop it here',
+      change: 'Change',
+      remove: 'Remove',
     },
   },
   // Translations of the client-supplied Polish clauses — do not reword either

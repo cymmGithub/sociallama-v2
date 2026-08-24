@@ -2,7 +2,7 @@
 
 import { Field } from '@base-ui/react/field'
 import cn from 'clsx'
-import { type ReactNode, useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { useFormContext } from '..'
 import s from './fields.module.css'
 
@@ -254,18 +254,37 @@ type FileFieldProps = {
   id: string
   name?: string
   label?: ReactNode
+  /** Replaces `label` once a file is attached — e.g. "CV attached". */
+  attachedLabel?: ReactNode
   /** Forwarded to the input's `accept`, and the allowlist the check enforces. */
   accept: string
   /** Client-side ceiling in bytes (design D5, layer 1). */
   maxBytes: number
   /** Static hint under the label — e.g. "PDF or DOCX, up to 5 MB". */
   hint?: string
+  /** Replaces `hint` while a file is dragged over the card. */
+  dropHint?: string
+  /** Labels for the attached-state actions; the row renders only with both. */
+  changeText?: string
+  removeText?: string
+  /** BCP 47 tag for the size chip's number format. */
+  locale?: string
   /** Shown when the picked file is over `maxBytes`. */
   sizeError: string
   /** Shown when the picked file is outside `accept`. */
   typeError: string
   required?: boolean
   disabled?: boolean
+}
+
+/** "PDF · 184 KB" — extension from the name, whole KB below 1 MB, else 1 dp. */
+function describeFile(file: File, locale: string): string {
+  const ext = (file.name.split('.').pop() ?? '').toUpperCase()
+  const size =
+    file.size < 1024 * 1024
+      ? `${Math.round(file.size / 1024)} KB`
+      : `${(file.size / 1048576).toLocaleString(locale, { maximumFractionDigits: 1 })} MB`
+  return `${ext} · ${size}`
 }
 
 /**
@@ -305,15 +324,27 @@ function matchesAccept(file: File, accept: string): boolean {
  * path. A file input's `value` is a fake path that stays non-empty after the
  * rejected file has been cleared, so the default path would report a required
  * field as satisfied by a file that is no longer attached.
+ *
+ * The label is also the drop target. A drop lands the FileList on the clipped
+ * input (so the file rides in the FormData like a picked one) and then runs
+ * the same check. Once a file is attached the card swaps to `attachedLabel`,
+ * the file's name and a type · size chip, plus change / remove actions; the
+ * `data-attached` / `data-dragging` attributes and `data-part` hooks are what a
+ * page styles, since the kit forwards only `className`.
  */
 export function FileField({
   className,
   id,
   name,
   label,
+  attachedLabel,
   accept,
   maxBytes,
   hint,
+  dropHint,
+  changeText,
+  removeText,
+  locale = 'en',
   sizeError,
   typeError,
   required = false,
@@ -326,8 +357,10 @@ export function FileField({
   // Server-side error for this field, if the page surfaces one; the local
   // check owns everything the browser can see first.
   const serverError = errors[fieldName]
-  const [fileName, setFileName] = useState<string | null>(null)
+  const [attached, setAttached] = useState<File | null>(null)
+  const [dragging, setDragging] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const reg = register(fieldName)
 
   // Seed the gate: an empty required field is invalid, but silently so — the
@@ -336,10 +369,18 @@ export function FileField({
     setFieldValidity(fieldName, !required)
   }, [fieldName, required, setFieldValidity])
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  const clear = (input: HTMLInputElement) => {
+    // Clearing the input is what keeps a rejected body off the wire.
+    input.value = ''
+    setAttached(null)
+    setLocalError(null)
+    setFieldValidity(fieldName, !required)
+  }
+
+  /** Shared by the change and drop paths — the check does not care which. */
+  const acceptFile = (input: HTMLInputElement, file: File | undefined) => {
     if (!file) {
-      setFileName(null)
+      setAttached(null)
       setLocalError(null)
       setFieldValidity(fieldName, !required)
       return
@@ -353,33 +394,75 @@ export function FileField({
     }
 
     if (rejection) {
-      // Clearing the input is what keeps the oversized body off the wire.
-      event.target.value = ''
-      setFileName(null)
+      input.value = ''
+      setAttached(null)
       setLocalError(rejection)
       setFieldValidity(fieldName, !required, rejection)
       return
     }
 
-    setFileName(file.name)
+    setAttached(file)
     setLocalError(null)
     setFieldValidity(fieldName, true)
   }
 
+  const handleDrop = (event: React.DragEvent<HTMLLabelElement>) => {
+    event.preventDefault()
+    setDragging(false)
+    const input = inputRef.current
+    const files = event.dataTransfer?.files
+    if (!(input && files?.length)) return
+    // A FileList is assignable to `files`; the browser then submits it with
+    // the form exactly as if it had been picked.
+    try {
+      input.files = files
+    } catch {
+      // happy-dom has no setter; the check below still runs on the dropped file.
+    }
+    acceptFile(input, files[0])
+  }
+
   const message =
     localError ?? (serverError?.state ? serverError.message : null)
+  const showActions = attached && changeText && removeText
 
   return (
     <Field.Root
       className={cn(s.field, s.fileField, message && s.error, className)}
       disabled={disabled}
+      data-attached={attached ? '' : undefined}
+      data-dragging={dragging ? '' : undefined}
     >
-      <Field.Label htmlFor={id} className={cn(s.fileLabel)}>
+      <Field.Label
+        htmlFor={id}
+        className={cn(s.fileLabel)}
+        onDragOver={(event: React.DragEvent<HTMLLabelElement>) => {
+          event.preventDefault()
+          if (!dragging) setDragging(true)
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+      >
+        {attached && (
+          // Remounted per file so the page's outline sweep replays on a re-pick.
+          <svg key={attached.name} aria-hidden="true" data-part="sweep">
+            <rect pathLength="100" />
+          </svg>
+        )}
         <span className={s.fileTitle}>
-          {label}
+          {attached ? (attachedLabel ?? label) : label}
           {required && <span aria-hidden="true"> *</span>}
         </span>
-        <span className={s.fileHint}>{fileName ?? hint}</span>
+        {attached ? (
+          <span className={s.fileHint} data-part="file">
+            <span data-part="name">{attached.name}</span>
+            <span data-part="chip">{describeFile(attached, locale)}</span>
+          </span>
+        ) : (
+          <span className={s.fileHint}>
+            {dragging ? (dropHint ?? hint) : hint}
+          </span>
+        )}
       </Field.Label>
       <Field.Control
         type="file"
@@ -389,12 +472,29 @@ export function FileField({
         required={required}
         className={cn(s.fileInput)}
         {...reg}
+        ref={(node: HTMLInputElement | null) => {
+          inputRef.current = node
+          reg.ref(node)
+        }}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           reg.onChange(event)
-          handleChange(event)
+          acceptFile(event.target, event.target.files?.[0])
         }}
         render={<input />}
       />
+      {showActions && (
+        <span data-part="actions">
+          <button type="button" onClick={() => inputRef.current?.click()}>
+            {changeText}
+          </button>
+          <button
+            type="button"
+            onClick={() => inputRef.current && clear(inputRef.current)}
+          >
+            {removeText}
+          </button>
+        </span>
+      )}
       {message && (
         <span className={cn(s.errorMessage)} role="alert">
           {message}

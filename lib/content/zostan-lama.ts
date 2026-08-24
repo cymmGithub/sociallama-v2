@@ -168,7 +168,11 @@ export const careersForm = {
     },
     cv: {
       label: 'Dodaj CV',
+      attached: 'CV dodane',
       hint: 'PDF lub DOCX, do 5\u00A0MB',
+      dropHint: 'Upu\u015B\u0107 plik tutaj',
+      change: 'Zmie\u0144',
+      remove: 'Usu\u0144',
     },
   },
   // RODO consents, both unchecked by default. The first is required — the

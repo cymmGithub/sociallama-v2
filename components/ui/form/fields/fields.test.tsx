@@ -42,7 +42,11 @@ function renderFileField(required = false) {
       <FileField
         id="cv"
         label="Dodaj CV"
+        attachedLabel="CV dodane"
         hint="PDF lub DOCX, do 5 MB"
+        dropHint="Upuść plik tutaj"
+        changeText="Zmień"
+        removeText="Usuń"
         accept={ACCEPT}
         maxBytes={MAX_BYTES}
         sizeError="Plik jest za duży"
@@ -53,6 +57,13 @@ function renderFileField(required = false) {
     </Form>
   )
   return document.querySelector<HTMLInputElement>('input[type="file"]')
+}
+
+/** The drop target is the card — the label — not the clipped input. */
+function dropZone(): HTMLLabelElement {
+  const label = document.querySelector<HTMLLabelElement>('label[for="cv"]')
+  if (!label) throw new Error('file label not rendered')
+  return label
 }
 
 /**
@@ -180,6 +191,60 @@ describe('FileField', () => {
     // A good file opens it.
     pick(input, file('cv.pdf', 'application/pdf', 1024))
     expect(screen.queryByRole('alert')).toBeNull()
+  })
+
+  test('an accepted file switches the card to its attached state', () => {
+    const input = renderFileField()
+    if (!input) throw new Error('file input not rendered')
+
+    pick(input, file('cv.pdf', 'application/pdf', 188_416))
+
+    expect(screen.getByText('CV dodane')).toBeTruthy()
+    expect(screen.queryByText('Dodaj CV')).toBeNull()
+    expect(screen.getByText('PDF · 184 KB')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Zmień' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Usuń' })).toBeTruthy()
+  })
+
+  test('remove clears the input and shuts the required gate again', () => {
+    const input = renderFileField(true)
+    if (!input) throw new Error('file input not rendered')
+    const submit = screen.getByRole('button', { name: 'Wyślij' })
+
+    const { cleared } = pick(input, file('cv.pdf', 'application/pdf', 1024))
+    expect(screen.queryByRole('alert')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Usuń' }))
+
+    expect(cleared).toEqual([''])
+    expect(screen.getByText('Dodaj CV')).toBeTruthy()
+    expect(screen.queryByText('cv.pdf')).toBeNull()
+    fireEvent.click(submit)
+    expect(screen.getByRole('alert').textContent).toBe('Invalid cv')
+  })
+
+  test('a dropped file goes through the same check as a picked one', () => {
+    const input = renderFileField(true)
+    if (!input) throw new Error('file input not rendered')
+    const zone = dropZone()
+
+    fireEvent.dragOver(zone)
+    expect(screen.getByText('Upuść plik tutaj')).toBeTruthy()
+
+    fireEvent.drop(zone, {
+      dataTransfer: {
+        files: [file('cv.pdf', 'application/pdf', MAX_BYTES + 1)],
+      },
+    })
+    expect(screen.getByRole('alert').textContent).toBe('Plik jest za duży')
+    expect(screen.queryByText('Upuść plik tutaj')).toBeNull()
+
+    fireEvent.drop(zone, {
+      dataTransfer: { files: [file('cv.docx', '', 2048)] },
+    })
+    expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.getByText('cv.docx')).toBeTruthy()
+    expect(screen.getByText('DOCX · 2 KB')).toBeTruthy()
   })
 
   test('stays focusable — the control is clipped, not display:none', () => {

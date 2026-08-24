@@ -1,7 +1,7 @@
 'use client'
 
 import cn from 'clsx'
-import { ArrowUpRight, FileUp } from 'lucide-react'
+import { ArrowUpRight, CircleCheck, FileUp } from 'lucide-react'
 import { useCallback, useId, useRef } from 'react'
 // Shared with /kontakt: the widget is route-agnostic (no CSS module of its
 // own), and both forms need the same explicit-render + reset-on-failure
@@ -199,7 +199,17 @@ function CareersFormFields({
             {form.fields.cv.label}
           </>
         }
+        attachedLabel={
+          <>
+            <CircleCheck aria-hidden="true" />
+            {form.fields.cv.attached}
+          </>
+        }
         hint={form.fields.cv.hint}
+        dropHint={form.fields.cv.dropHint}
+        changeText={form.fields.cv.change}
+        removeText={form.fields.cv.remove}
+        locale={locale}
         accept={CAREERS_CV_ACCEPT}
         maxBytes={CAREERS_CV_MAX_BYTES}
         sizeError={form.errors.cvSize}
