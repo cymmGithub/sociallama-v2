@@ -242,9 +242,13 @@
   flex-direction: column;
   justify-content: space-between;
   gap: calc(var(--safe) * 2);
-  /* Top padding clears the fixed bar; the bottom adds the home-indicator inset
-     so the last row (utility links / PL-EN) never sits under the gesture bar. */
-  padding: calc(var(--safe) * 5) var(--safe)
+  /* Top padding clears the fixed bar. `--safe * 5` alone is viewport-scaled
+     while the bar's CTA pill is a fixed height, so narrow windows shrank the
+     padding under the bar (column labels vanished behind it at ≤1100px); the
+     second max() arm is bar height (pill + 2×safe) plus ~11px of clearance.
+     The bottom adds the home-indicator inset so the last row (utility links /
+     PL-EN) never sits under the gesture bar. */
+  padding: max(calc(var(--safe) * 5), calc(var(--safe) * 2 + 64px)) var(--safe)
     calc(var(--safe) * 1.5 + env(safe-area-inset-bottom));
 }
 
@@ -265,12 +269,12 @@
 }
 
 .columnLabel {
-  font-family: var(--font-mono);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  color: var(--color-plum);
 }
 
 .columnItems {
