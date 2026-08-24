@@ -540,15 +540,16 @@ function IndustryBrief({
 
 /**
  * Desktop `sizes` hint for one wall tile. It has to track `.wallItem` in the
- * stylesheet: the default 14rem phone slot is 16vw at 1440, but a landscape
- * tile spans two of them and a lone tile is 22rem, so both would otherwise be
- * handed a variant far narrower than they render at.
+ * stylesheet across both desktop regimes: the flex rows' 14rem phone slot is
+ * 28vw at the 800px breakpoint, and the ≥1220 three-column masonry renders a
+ * tile at ~390px (≈28vw at 1440). A landscape tile spans two flex slots and a
+ * lone tile is 22rem, so both get wider hints.
  */
 function wallTileSize(landscape: boolean, lone: boolean): `${number}vw` {
   if (landscape) {
     return '32vw'
   }
-  return lone ? '25vw' : '16vw'
+  return lone ? '25vw' : '28vw'
 }
 
 /**

@@ -37,7 +37,7 @@ export const chrome = {
   briefKicker: 'DLACZEGO TO DZIAŁA',
   proof: {
     portfolioKicker: 'PORTFOLIO',
-    portfolioHeading: 'TAK TO WYGLĄDA W FEEDZIE',
+    portfolioHeading: 'TAK TO WYGLĄDA NA FEEDZIE',
     realBadge: '100% REALNE KREACJE',
     caseStudyCta: 'ZOBACZ CASE STUDY',
     ctaHeadline: 'Chcesz takich wyników w\u00A0swojej branży?',

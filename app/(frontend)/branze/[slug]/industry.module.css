@@ -491,6 +491,20 @@
     justify-content: center;
     gap: var(--gap);
   }
+
+  /* Wide desktop: once every tile fits one flex row (the wall caps at
+     1240px), the row reads as a ragged strip — tile heights swing 224–525px
+     and the short ones leave holes. Back to masonry columns (owner call,
+     2026-08-24), four-up: ~295px tiles stay near the flex rows' phone slot,
+     and a five-tile wall still stacks (owner picked this over the bigger
+     three-up tiles). The one-tile rozrywka wall keeps the centered flex
+     row — a lone tile in the first of four columns would hang left. */
+  @media (width >= 1220px) {
+    &:not(:has(.wallItem:only-child)) {
+      display: block;
+      columns: 4;
+    }
+  }
 }
 
 /* Creative frame — natural aspect, exactly like the case study's `.shot`: these
@@ -512,13 +526,24 @@
     flex: 0 1 14rem;
     margin-bottom: 0;
   }
+
+  /* Masonry again ≥1220 — the fragmentation margin comes back. */
+  @media (width >= 1220px) {
+    margin-bottom: var(--gap);
+  }
 }
 
-/* Stagger the heights for the tossed-stack feel of the mock. */
+/* Stagger the heights for the tossed-stack feel of the mock. Only while the
+   wall is flex — the ≥1220 masonry has its own natural stagger, and a
+   margin-top there would just dent the first column. */
 .wallItem:nth-child(2),
 .wallItem:nth-child(4) {
   @media (--desktop) {
     margin-top: calc(var(--safe) * 1.4);
+  }
+
+  @media (width >= 1220px) {
+    margin-top: 0;
   }
 }
 
@@ -528,8 +553,11 @@
    tiles are otherwise two-up. */
 .wallItem[data-landscape] {
   /* Full row on mobile: spanning the columns, since half a 390px screen would
-     shrink a 2:1 frame to a strip. */
-  column-span: all;
+     shrink a 2:1 frame to a strip. Mobile-scoped: in the ≥1220 masonry a full
+     span would blow the frame up to the whole 1240px wall. */
+  @media (--mobile) {
+    column-span: all;
+  }
 
   @media (--desktop) {
     flex-basis: calc(28rem + var(--gap));
@@ -541,8 +569,11 @@
    above never reaches it. */
 .wallItem:only-child {
   /* Mobile: a lone tile in a two-column flow would hang half-width in the
-     left column; span it instead, like the landscape frame. */
-  column-span: all;
+     left column; span it instead, like the landscape frame. (The ≥1220 wall
+     never goes multicol with an only child — see .wall.) */
+  @media (--mobile) {
+    column-span: all;
+  }
 
   @media (--desktop) {
     flex-basis: 22rem;
@@ -553,7 +584,9 @@
    713×640): the shape a half column squeezes worst, so on mobile it takes the
    full row too. Desktop keeps it in the ordinary phone slot. */
 .wallItem[data-wide] {
-  column-span: all;
+  @media (--mobile) {
+    column-span: all;
+  }
 }
 
 .wallImg {
