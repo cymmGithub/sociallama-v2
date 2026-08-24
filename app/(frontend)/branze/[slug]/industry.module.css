@@ -937,8 +937,15 @@
     max-width: 12ch;
   }
 
+  /* The width lives on the grid, which is the row's flex item — a basis on
+     the card alone let the grid size to the card's content (~470px) and
+     the card shrink into it, so the 40rem never showed. */
+  .related[data-lone] .relatedGrid {
+    flex: 0 1 40rem;
+  }
+
   .related[data-lone] .relatedCard {
-    flex-basis: 40rem;
+    flex: 1 1 auto;
     gap: 1.2rem;
     padding: calc(var(--safe) * 1.9);
   }
