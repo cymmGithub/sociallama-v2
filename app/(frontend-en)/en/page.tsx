@@ -18,20 +18,21 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd } from '@/components/seo/structured-data'
 import * as en from '@/lib/content/home.en'
 import { oNasTeamGrid } from '@/lib/content/o-nas.en'
-import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site.en'
+import { APP_DESCRIPTION } from '@/lib/content/site.en'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getLatestPost } from '@/lib/payload/queries'
+import { rootOpenGraph } from '@/lib/utils/metadata'
 
 export const metadata: Metadata = {
   title: 'Strategy that works',
   description: APP_DESCRIPTION,
   alternates: alternatesForPath('/en'),
+  // Same shape as the Polish homepage — see the comment there.
   openGraph: {
+    ...rootOpenGraph('en'),
     title: 'Strategy that works',
     description:
       'Full-service brand management on social media: strategy, content, sales, creative, and video.',
-    type: 'website',
-    ...OG_BASE,
   },
 }
 

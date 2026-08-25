@@ -35,6 +35,32 @@ function ogBase(locale: Locale): { siteName: string; locale: string } {
 }
 
 /**
+ * The brand OG card. Named in ONE place because replacing the asset means
+ * bumping the URL on every surface that points at it — the image optimizer
+ * caches by URL for 30 days and a CDN purge cannot reach those variants, so a
+ * missed copy keeps serving the old card with no error anywhere.
+ */
+export function brandOgImages(alt: string) {
+  return [{ url: '/opengraph-image.jpg', width: 1200, height: 630, alt }]
+}
+
+/**
+ * The og object for a locale ROOT — brand identity, the locale root's own
+ * `og:url`, and the brand card. `rootMetadata` layers the layout's title
+ * template on top; a home page spreads this and overrides only its own copy,
+ * which is how it keeps `og:url`/`og:image` while stating a different
+ * `og:description` from its meta description.
+ */
+export function rootOpenGraph(locale: Locale) {
+  return {
+    type: 'website' as const,
+    ...ogBase(locale),
+    url: ROOT_URL[locale].og,
+    images: brandOgImages(SITE[locale].APP_DEFAULT_TITLE),
+  }
+}
+
+/**
  * The metadata each root layout exports — the base every page's own metadata
  * merges into. Written once so the two documents cannot drift.
  */
@@ -61,19 +87,9 @@ export function rootMetadata(locale: Locale): Metadata {
     },
     formatDetection: { telephone: false },
     openGraph: {
-      type: 'website',
-      ...site.OG_BASE,
+      ...rootOpenGraph(locale),
       title,
       description: site.APP_DESCRIPTION,
-      url: url.og,
-      images: [
-        {
-          url: '/opengraph-image.jpg',
-          width: 1200,
-          height: 630,
-          alt: site.APP_DEFAULT_TITLE,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -245,9 +261,7 @@ export function pairMetadata({
       title,
       description,
       url: path,
-      images: [
-        { url: '/opengraph-image.jpg', width: 1200, height: 630, alt: title },
-      ],
+      images: brandOgImages(title),
     },
     twitter: { card: 'summary_large_image', title, description },
   }

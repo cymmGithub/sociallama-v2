@@ -106,3 +106,78 @@ test.describe('Sitemap crawl', { tag: ['@monitor', '@slow'] }, () => {
     expect(failures).toEqual([])
   })
 })
+
+/**
+ * hreflang reciprocity — the invariant behind `fix-seo-hreflang-og`.
+ *
+ * Google drops a cluster WHOLE unless every URL it names points back, so a
+ * one-sided annotation is not a partial win, it is a no-op. The 2026-08-25
+ * audit found 92 of 338 url-blocks annotated and the English locale invisible
+ * as an alternate for exactly this reason.
+ *
+ * This asserts the ARTIFACT, not the code shape: whatever `app/sitemap.ts` does
+ * internally, every alternate href must itself be a `<loc>` here and must carry
+ * a byte-identical cluster. A future collection that annotates only one half
+ * fails this the day it ships, rather than at the next manual audit.
+ *
+ * Deliberately its own test and NOT `@slow`: it costs one request, so it stays
+ * green when the media-heavy crawl above trips the `/api` rate limiter
+ * (60 req/60s) that makes `/_next/image` report 400s.
+ *
+ * Against CI's empty database this covers statics, section pages and careers
+ * roles; the post and category pairs exist only where the CMS has translations.
+ */
+test.describe('Sitemap hreflang', { tag: ['@monitor'] }, () => {
+  test('every cluster is reciprocal', async ({ request }) => {
+    const response = await request.get('/sitemap.xml')
+    expect(response.status()).toBe(200)
+    const xml = await response.text()
+
+    /** `<loc>` → its cluster, normalised to a comparable string ('' = bare). */
+    const clusters = new Map<string, string>()
+    for (const block of xml.matchAll(/<url>(?<body>[\s\S]*?)<\/url>/g)) {
+      const body = block.groups?.body ?? ''
+      const loc = body.match(/<loc>(?<loc>[^<]+)<\/loc>/)?.groups?.loc
+      if (!loc) continue
+      clusters.set(
+        loc,
+        [...body.matchAll(/hreflang="(?<lang>[^"]+)"\s+href="(?<href>[^"]+)"/g)]
+          .map((link) => `${link.groups?.lang}=${link.groups?.href}`)
+          .sort()
+          .join(' ')
+      )
+    }
+    // Too few entries means the sitemap itself is broken — fail loudly rather
+    // than vacuously passing over an empty map.
+    expect(clusters.size).toBeGreaterThanOrEqual(6)
+
+    const violations: string[] = []
+    for (const [loc, cluster] of clusters) {
+      if (!cluster) continue
+      const hrefs = cluster
+        .split(' ')
+        .map((pair) => pair.slice(pair.indexOf('=') + 1))
+      // The entry has to be inside its own cluster, or it is annotating a pair
+      // it does not belong to.
+      if (!hrefs.includes(loc)) {
+        violations.push(`${loc} — cluster omits the entry itself: ${cluster}`)
+      }
+      for (const href of new Set(hrefs)) {
+        const partner = clusters.get(href)
+        if (partner === undefined) {
+          violations.push(`${loc} — names ${href}, which is not a <loc> here`)
+        } else if (partner !== cluster) {
+          violations.push(
+            `${loc} — partner ${href} carries ${partner || 'NO cluster'}`
+          )
+        }
+      }
+    }
+
+    const annotated = [...clusters.values()].filter(Boolean).length
+    console.log(
+      `sitemap hreflang: ${annotated}/${clusters.size} entries annotated`
+    )
+    expect(violations).toEqual([])
+  })
+})

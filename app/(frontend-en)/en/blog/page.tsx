@@ -1,20 +1,20 @@
 import type { Metadata } from 'next'
 import { BlogHubView } from '@/app/(frontend)/blog/hub-view'
 import { hubView } from '@/lib/content/blog.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
 import {
   getBlogHub,
   getCategories,
   getPostsPage,
   getSearchIndex,
 } from '@/lib/payload/queries'
+import { pairMetadata } from '@/lib/utils/metadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: 'Blog',
   description:
     'The Social Lama blog — marketing, advertising, SEO, and social media in practice. Strategies, case studies, and concrete advice for brands.',
-  alternates: alternatesForPath('/en/blog'),
-}
+  path: '/en/blog',
+})
 
 /**
  * The English /en/blog hub. The composition is `BlogHubView`, shared with the

@@ -3,7 +3,7 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { BrandBelt } from '@/components/ui/brand-belt'
 import { CLIENT_ROSTER } from '@/lib/content/clients'
 import { contactMeta } from '@/lib/content/contact'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 import { ContactForm } from './contact-form'
 import { ContactHero } from './contact-hero'
 import { ContactMetrics } from './contact-metrics'
@@ -19,11 +19,11 @@ import s from './kontakt.module.css'
  * scoped kontakt.module.css.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: contactMeta.title,
   description: contactMeta.description,
-  alternates: alternatesForPath('/kontakt'),
-}
+  path: '/kontakt',
+})
 
 export default function ContactPage() {
   return (

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 import { CaseStudiesListingView } from '@/app/(frontend)/case-studies/listing-view'
 import { caseStudiesListing } from '@/lib/content/case-studies.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getCaseStudies } from '@/lib/payload/queries'
+import { pairMetadata } from '@/lib/utils/metadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: caseStudiesListing.metaTitle,
   description: caseStudiesListing.metaDescription,
-  alternates: alternatesForPath('/en/case-studies'),
-}
+  path: '/en/case-studies',
+})
 
 export default async function EnCaseStudiesPage() {
   const studies = await getCaseStudies('en')

@@ -110,6 +110,8 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 
 | Export | Signature |
 |--------|-----------|
+| brandOgImages | `(alt: string)` |
+| rootOpenGraph | `(locale: Locale)` |
 | rootMetadata | `(locale: Locale) => Metadata` |
 | postMetadata | `(post: Post, { path, counterpartUrl }: DocumentPaths) => Metadata` |
 | caseStudyMetadata | `(study: CaseStudy, path: string) => Metadata` |

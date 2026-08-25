@@ -9,14 +9,14 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { BrandBelt } from '@/components/ui/brand-belt'
 import { CLIENT_ROSTER } from '@/lib/content/clients'
 import * as en from '@/lib/content/contact.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 import { contactMarqueeOutlinePaths } from '@/lib/wordmark-paths'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: en.contactMeta.title,
   description: en.contactMeta.description,
-  alternates: alternatesForPath('/en/contact'),
-}
+  path: '/en/contact',
+})
 
 export default function EnContactPage() {
   // English contact page: the Polish dark-canvas composition fed English content;

@@ -34,8 +34,19 @@ route layouts, or `staticParamsOrPlaceholder`.
 - Category pages keep their deliberate no-OG stance (`categoryMetadata`).
 - Blog pagination entries stay without alternates (locale page sets differ).
 - Sitemap `lastmod` accuracy (separate audit finding, not in this change).
-- On-page `<link rel="alternate">` tags — the sitemap remains the single
-  hreflang channel (Google needs one complete method, not two).
+- Twitter card titles. `pairMetadata` gives the six listing pages a
+  page-specific `twitter:title`, so the two home documents are now the only
+  ones still inheriting the layout's generic `"Social Lama"`. That asymmetry is
+  a real consequence of this change and is **deliberately left**: home's Twitter
+  copy was not in the audit, and changing it is a content decision, not a
+  defect fix. Flagged here so the next OG pass picks it up on purpose.
+- On-page `<link rel="alternate">` tags — already emitted on every mapped page
+  (Next renders them from the `alternates.languages` that `alternatesForPath`
+  returns), and this change does not touch them. Note the site therefore runs
+  **two** hreflang channels, not one: pages resolve their pair through
+  `slug-map.ts`'s literal tables, the sitemap through the content modules.
+  They agree because `slug-map.test.ts` binds the two together — do not "tidy"
+  either channel away on the belief that the sitemap is the only one.
 
 ## Decisions
 

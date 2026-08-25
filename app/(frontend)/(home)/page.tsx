@@ -4,9 +4,10 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { FaqJsonLd, WebSiteJsonLd } from '@/components/seo/structured-data'
 import * as pl from '@/lib/content/home'
 import { oNasTeamGrid } from '@/lib/content/o-nas'
-import { APP_DESCRIPTION, OG_BASE } from '@/lib/content/site'
+import { APP_DESCRIPTION } from '@/lib/content/site'
 import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getLatestPost } from '@/lib/payload/queries'
+import { rootOpenGraph } from '@/lib/utils/metadata'
 import { Chapters } from './chapters'
 import { BigMarquee } from './sections/big-marquee'
 import { ClientLogos } from './sections/client-logos'
@@ -29,12 +30,14 @@ export const metadata: Metadata = {
   title: 'Agencja social media – Strategy that works',
   description: APP_DESCRIPTION,
   alternates: alternatesForPath('/'),
+  // Spreads the locale root's og object (brand, `og:url`, brand card) and
+  // overrides only the copy — home states a shorter og description than its
+  // meta description, which is why it does not go through `pairMetadata`.
   openGraph: {
+    ...rootOpenGraph('pl'),
     title: 'Agencja social media – Strategy that works',
     description:
       'Kompleksowa obsługa marek w social mediach: strategia, content, sprzedaż, kreacje i wideo.',
-    type: 'website',
-    ...OG_BASE,
   },
 }
 
