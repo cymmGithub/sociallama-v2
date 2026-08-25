@@ -535,6 +535,23 @@
   @media (width >= 960px) {
     break-after: column;
   }
+
+  /* …and the two-column band does not get to balance either. WebKit's
+     balancer overshoots the column height when the unbreakable children are
+     sized by an image's aspect ratio instead of a CSS height (same boxes at
+     explicit pixel heights: both engines agree), so iOS Safari packed three
+     tiles into the left column and hung the fourth alone on the right
+     (owner report, 2026-08-25, /branze/automotive; also beauty and horeca,
+     and a one-gap drop on hotele/nieruchomosci/petcare). Splitting after the
+     second tile makes the band deterministic: measured pixel-identical to
+     Chromium on all 12 walls in playwright webkit. Walls are pinned to four
+     tiles (branze.test.ts); a lone tile never matches, and a tile that spans
+     the columns opens its own fragment either way. */
+  @media (width < 960px) {
+    &:nth-child(2) {
+      break-after: column;
+    }
+  }
 }
 
 /* A landscape frame (design D3) — iRobot's YouTube still is 2056×1164, and at
