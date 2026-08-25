@@ -763,8 +763,8 @@ export const seoLandings = [
           'A monthly report with results and recommendations',
         ],
         media: {
-          src: '/assets/prowadzenie-zakres-lamy.webp',
-          alt: 'A llama crew running a brand profile: a camera operator, jugglers throwing the Facebook, Instagram and LinkedIn marks, and a llama working on a laptop',
+          src: '/assets/prowadzenie-zakres-lamy-v2.webp',
+          alt: 'A llama crew running a brand profile: a camera operator, jugglers throwing the TikTok, YouTube, LinkedIn, Facebook and Instagram marks, and a llama working on a laptop',
           width: 1150,
           height: 1005,
         },

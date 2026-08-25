@@ -1148,8 +1148,8 @@ export const seoLandings = [
           'Miesięczny raport z wynikami i rekomendacjami',
         ],
         media: {
-          src: '/assets/prowadzenie-zakres-lamy.webp',
-          alt: 'Zespół lam prowadzący profil marki: kamerzysta, żonglerzy ikonami Facebooka, Instagrama i LinkedIna oraz lama pracująca na laptopie',
+          src: '/assets/prowadzenie-zakres-lamy-v2.webp',
+          alt: 'Zespół lam prowadzący profil marki: kamerzysta, żonglerzy ikonami TikToka, YouTube’a, LinkedIna, Facebooka i Instagrama oraz lama pracująca na laptopie',
           width: 1150,
           height: 1005,
         },
