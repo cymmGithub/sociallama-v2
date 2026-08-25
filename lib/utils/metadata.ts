@@ -39,9 +39,16 @@ function ogBase(locale: Locale): { siteName: string; locale: string } {
  * bumping the URL on every surface that points at it — the image optimizer
  * caches by URL for 30 days and a CDN purge cannot reach those variants, so a
  * missed copy keeps serving the old card with no error anywhere.
+ *
+ * `?v=` is that bump, and it is not optional on a replacement: Facebook and
+ * LinkedIn cache a scraped card against the URL, so a deploy alone leaves every
+ * already-shared link showing the OLD image indefinitely. Raise it whenever the
+ * bytes change. v2 (2026-08-25) replaced the Satus starter plate that shipped
+ * with the initial scaffold. `twitter:image` inherits from here, so both cards
+ * move together.
  */
 export function brandOgImages(alt: string) {
-  return [{ url: '/opengraph-image.jpg', width: 1200, height: 630, alt }]
+  return [{ url: '/opengraph-image.jpg?v=2', width: 1200, height: 630, alt }]
 }
 
 /**
