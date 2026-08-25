@@ -181,7 +181,7 @@
     },
     "fb-ads": {
       "category": "reklama",
-      "mediaId": null,
+      "mediaId": 1265,
       "file": "content/media/cover-art/fb-ads.jpg",
       "altPl": "Lama w kamizelce trzyma megafon i plakietkę z logo Facebooka",
       "altEn": "A llama in a waistcoat holding a megaphone and a Facebook logo badge",
