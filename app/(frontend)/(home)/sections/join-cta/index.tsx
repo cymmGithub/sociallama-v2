@@ -219,11 +219,11 @@ export function JoinCta({ content }: { content: LocalizedHome['joinCta'] }) {
   return (
     <section ref={rotatorRef} className={s.section}>
       <div className={s.copy}>
-        {/* The visual token rotates; expose a stable accessible name. */}
-        <h2
-          className={s.heading}
-          aria-label={`${content.headingLead} ${content.rotator[0]?.token ?? ''}`}
-        >
+        {/* Heading extractors read DOM textContent, not aria-label — the
+            canonical phrase is a real sr-only <h2>; the rotating visual is
+            aria-hidden (same pattern as the hero's h1). */}
+        <h2 className="sr-only">{content.srHeading}</h2>
+        <div className={s.heading} aria-hidden="true">
           <span aria-hidden="true">{content.headingLead}</span>
           <span aria-hidden="true" className={s.tokenMask}>
             <span className={s.rotator}>
@@ -241,7 +241,7 @@ export function JoinCta({ content }: { content: LocalizedHome['joinCta'] }) {
               ))}
             </span>
           </span>
-        </h2>
+        </div>
         {/* Placement C: the services live under the heading, in the column
             that was otherwise empty below the button. All seven lists stack
             in one grid cell — the inactive ones are transparent, never

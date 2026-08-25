@@ -335,6 +335,10 @@ export const hero = {
       'STRATEGIA',
     ],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
+    /* Crawler-facing text of the sr-only <h1>. Heading extractors read
+       DOM textContent, not aria-label, so the rotating words live in an
+       aria-hidden sibling and this single phrase is the H1. */
+    srHeading: 'SOCIAL MEDIA THAT WORKS WITH SOCIAL LAMA',
   },
   llamaAlt: 'Lama w okularach przeciwsłonecznych — maskotka Social Lama',
 } as const
@@ -1030,6 +1034,10 @@ export const faq = {
 
 export const joinCta = {
   headingLead: 'POTRZEBUJESZ WSPARCIA',
+  /* Crawler-facing text of the sr-only <h2> (same pattern as
+     hero.headline.srHeading). "W SOCIAL MEDIACH?" is deliberately not a
+     rotator token — it is the umbrella phrase over the seven platforms. */
+  srHeading: 'POTRZEBUJESZ WSPARCIA W SOCIAL MEDIACH?',
   /* Rotating token = preposition + locative + "?" in one string — Polish
      locative case forces per-word prepositions (W FACEBOOKU / NA
      INSTAGRAMIE), and keeping the "?" inside the token means it never

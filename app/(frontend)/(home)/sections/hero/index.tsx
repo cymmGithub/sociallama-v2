@@ -15,7 +15,7 @@ export function Hero({ content }: { content: LocalizedHome['hero'] }) {
   // coupling against the old turn montage was tried and rejected 2026-07-22;
   // the boss-approved static-pose concept 2026-07-24 makes sync trivial.)
   // The hook's ref also serves as the headline element ref.
-  const { ref: headlineRef, rotation } = useRotator<HTMLHeadingElement>(
+  const { ref: headlineRef, rotation } = useRotator<HTMLDivElement>(
     content.headline.rotator.length
   )
 
@@ -38,12 +38,12 @@ export function Hero({ content }: { content: LocalizedHome['hero'] }) {
       />
       <div className={s.inner}>
         <div className={s.copy}>
-          {/* The visual headline rotates; expose a stable accessible name. */}
-          <h1
-            ref={headlineRef}
-            className={s.headline}
-            aria-label={`${content.headline.rotator[0]} ${content.headline.lines.join(' ')}`}
-          >
+          {/* Heading extractors (SEO crawlers included) read DOM
+              textContent, not aria-label — so the canonical phrase is a
+              real sr-only <h1> and the rotating visual is an aria-hidden
+              sibling that never pollutes the heading outline. */}
+          <h1 className="sr-only">{content.headline.srHeading}</h1>
+          <div ref={headlineRef} className={s.headline} aria-hidden="true">
             <span aria-hidden="true" className={s.lineMask}>
               <span className={cn(s.line, s.lineSmall, s.rotator)}>
                 {content.headline.rotator.map((word, index) => (
@@ -69,7 +69,7 @@ export function Hero({ content }: { content: LocalizedHome['hero'] }) {
                 </span>
               </span>
             ))}
-          </h1>
+          </div>
 
           <SocialLinks
             className={s.socials}

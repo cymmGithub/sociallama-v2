@@ -105,6 +105,8 @@ export const hero = {
       'STRATEGY',
     ],
     lines: ['THAT WORKS', 'WITH SOCIAL LAMA'],
+    // Same string as PL — the hero headline is English in both locales.
+    srHeading: 'SOCIAL MEDIA THAT WORKS WITH SOCIAL LAMA',
   },
   llamaAlt: 'A llama in sunglasses — the Social Lama mascot',
 } satisfies LocalizedHome['hero']
@@ -713,6 +715,7 @@ export const faq = {
 
 export const joinCta = {
   headingLead: 'NEED A HAND',
+  srHeading: 'NEED A HAND WITH SOCIAL MEDIA?',
   // English drops the Polish locative cases — a flat "ON <platform>?" per token,
   // "?" kept inside so it never detaches from the sliding word.
   // Seven platform tokens only: each drives a cube and a services list, which
