@@ -172,6 +172,7 @@ interface ProofData {
     brand: string
     logo?: string
   }[]
+  figure?: { src: string; alt: string; width: number; height: number }
 }
 interface ChecklistData {
   kicker: string
@@ -728,7 +729,10 @@ function Proof({
           <p className={s.kicker}>{data.kicker}</p>
           <h2 className={s.proofHeading}>{data.heading}</h2>
         </div>
-        <div className={s.proofCards}>
+        <div
+          className={s.proofCards}
+          data-has-figure={data.figure ? '' : undefined}
+        >
           {data.cases.map((item) => (
             <Link
               key={item.slug}
@@ -759,6 +763,21 @@ function Proof({
               </span>
             </Link>
           ))}
+          {/* Decorative: the cards already carry the section's meaning, so the
+              mascot is announced only through its own alt, not the cards'. */}
+          {data.figure && (
+            <div className={s.proofFigure} data-reveal-item>
+              <Image
+                src={data.figure.src}
+                alt={data.figure.alt}
+                width={data.figure.width}
+                height={data.figure.height}
+                objectFit="contain"
+                desktopSize="26vw"
+                mobileSize="60vw"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -970,7 +989,7 @@ function ServiceFaq({ data }: { data: FaqData }) {
   const ref = useReveal<HTMLDivElement>()
 
   return (
-    <section className={s.faq} data-theme="cream">
+    <section className={s.faq} data-theme="plum">
       {/* Default translate/fade reveal, never `wipe`: a wipe keeps its
           border-box clip-path after it settles and would slice an answer that
           opens afterwards. */}

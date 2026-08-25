@@ -762,6 +762,12 @@ export const seoLandings = [
           'Ad campaigns and ongoing optimization',
           'A monthly report with results and recommendations',
         ],
+        media: {
+          src: '/assets/prowadzenie-zakres-lamy.webp',
+          alt: 'A llama crew running a brand profile: a camera operator, jugglers throwing the Facebook, Instagram and LinkedIn marks, and a llama working on a laptop',
+          width: 1150,
+          height: 1005,
+        },
       },
       {
         kind: 'banner',
@@ -782,6 +788,13 @@ export const seoLandings = [
             title: 'A resort talking all year round on Facebook and Instagram',
           },
         ],
+        // Artwork is shared with the Polish page; only the alt is localized.
+        figure: {
+          src: '/assets/prowadzenie-dowod-lama.webp',
+          alt: 'A llama in a navy blazer tossing a fluffy cube carrying the Facebook, Instagram and X marks',
+          width: 819,
+          height: 1034,
+        },
       },
       {
         kind: 'faq',

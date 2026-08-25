@@ -847,6 +847,33 @@
   }
 }
 
+/* With a mascot in the row the cards stop stretching to its height — a lone
+   card blown up to 500px is mostly padding. It keeps its natural size at the
+   top of the row while the figure stands on the row's baseline. */
+.proofCards[data-has-figure] {
+  align-items: start;
+}
+
+/* Bled onto the band's bottom border for the same reason as `.checklistMedia`:
+   the mascot is cropped at its own frame edge. */
+.proofFigure {
+  display: flex;
+  align-self: end;
+  justify-content: center;
+  margin-bottom: calc(var(--safe) * -3);
+
+  & img {
+    width: min(100%, 260px);
+    height: auto;
+  }
+
+  @media (--desktop) {
+    & img {
+      width: min(100%, 380px);
+    }
+  }
+}
+
 .caseCard {
   display: flex;
   flex-direction: column;
@@ -930,12 +957,16 @@
    a `logoStrip` follows, because the two then read as one band and the full gap
    would double. */
 .checklist {
-  padding: calc(var(--safe) * 3) var(--safe);
+  /* Held in a variable because `.checklistMedia` cancels exactly this much to
+     bleed its graphic to the band edge — the two must not drift apart. */
+  --checklist-pad-bottom: calc(var(--safe) * 3);
+
+  padding: calc(var(--safe) * 3) var(--safe) var(--checklist-pad-bottom);
   background: var(--color-cream);
   color: var(--color-ink);
 
   &:has(+ .logoStrip) {
-    padding-bottom: calc(var(--safe) * 1.4);
+    --checklist-pad-bottom: calc(var(--safe) * 1.4);
   }
 }
 
@@ -1004,9 +1035,22 @@
   color: var(--color-plum);
 }
 
+/* The graphic is cut off at its own bottom edge — the suited llama walks out of
+   frame. Bled onto the band's bottom border that reads as intended; floating
+   above the section's padding it reads as a bad crop. */
 .checklistMedia {
   display: flex;
+  align-self: end;
   justify-content: center;
+  margin-bottom: calc(var(--checklist-pad-bottom) * -1);
+
+  /* The Image reset is `width: auto`, so without this the graphic renders at
+     its intrinsic width and blows the grid column open. */
+  & img {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+  }
 }
 
 /*
@@ -1406,8 +1450,21 @@
 
 .faq {
   padding: calc(var(--safe) * 3) var(--safe);
-  background: var(--color-cream);
-  color: var(--color-ink);
+  background: var(--color-plum);
+  color: var(--color-cream);
+}
+
+/* The plum ground is load-bearing, not decoration: `proof` above it bleeds its
+   mascot onto its own bottom border, and the colour change is what turns that
+   crop into a figure standing on an edge. `data-theme="plum"` on the section
+   flips `--line` and the focus ring with it (see global.css), so only the
+   literals below need restating. */
+.faq .kicker {
+  color: var(--color-orange);
+}
+
+.faq .sectionHeading {
+  color: var(--color-cream);
 }
 
 .faqInner {
@@ -1475,12 +1532,12 @@
   font-size: clamp(1.1rem, 2vw, 1.5rem);
   line-height: 1.25;
   letter-spacing: -0.01em;
-  color: var(--color-ink);
+  color: var(--color-cream);
   transition: color var(--duration-fast) var(--ease-out-expo);
 
   @media (--hover) {
     .faqSummary:hover & {
-      color: var(--color-plum);
+      color: var(--color-orange);
     }
   }
 }
@@ -1491,7 +1548,7 @@
   inline-size: var(--sign-size);
   block-size: var(--sign-size);
   margin-top: 0.45em;
-  color: var(--color-plum);
+  color: var(--color-orange);
 }
 
 .faqSign::before,
@@ -1539,7 +1596,9 @@
   font-family: var(--font-mono);
   font-size: 0.95rem;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  /* 88%, matching `.bannerText` — the page's other plum band — rather than the
+     dark-backdrop checklist's 82%, which answers a different ground. */
+  color: color-mix(in srgb, var(--color-cream) 88%, transparent);
 }
 
 /* The global reduced-motion rule covers * and ::before/::after, but not

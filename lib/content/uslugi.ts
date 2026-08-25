@@ -229,11 +229,17 @@ export type ServiceSection =
       video?: { src: string; mobileSrc?: string; poster: string; alt: string }
     }
   | { kind: 'showreel'; kicker: string; clips: readonly ShowreelClip[] }
+  /**
+   * Case-study cards. `figure` is an optional mascot for the column a short
+   * `cases` list leaves empty — with one case the desktop grid is half dead
+   * space otherwise. Omit it and the cards run on their own, as before.
+   */
   | {
       kind: 'proof'
       kicker: string
       heading: string
       cases: readonly ProofCase[]
+      figure?: Panel
     }
   /**
    * A ticked list of deliverables. Both visuals are optional and mutually
@@ -1141,6 +1147,12 @@ export const seoLandings = [
           'Kampanie reklamowe i bieżącą optymalizację',
           'Miesięczny raport z wynikami i rekomendacjami',
         ],
+        media: {
+          src: '/assets/prowadzenie-zakres-lamy.webp',
+          alt: 'Zespół lam prowadzący profil marki: kamerzysta, żonglerzy ikonami Facebooka, Instagrama i LinkedIna oraz lama pracująca na laptopie',
+          width: 1150,
+          height: 1005,
+        },
       },
       {
         // The pricing band. The figure is interpolated from `pricing.ts`, which
@@ -1167,6 +1179,14 @@ export const seoLandings = [
             title: 'Całoroczna komunikacja resortu na Facebooku i Instagramie',
           },
         ],
+        // One case leaves the second grid cell empty on desktop. The mascot
+        // fills it rather than the card standing alone next to dead space.
+        figure: {
+          src: '/assets/prowadzenie-dowod-lama.webp',
+          alt: 'Lama w granatowej marynarce podrzucająca puchatą kostkę z ikonami Facebooka, Instagrama i X',
+          width: 819,
+          height: 1034,
+        },
       },
       {
         kind: 'faq',
