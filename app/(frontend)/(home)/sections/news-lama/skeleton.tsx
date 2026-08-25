@@ -19,10 +19,13 @@ export function NewsLamaSkeleton({ heading }: { heading: string }) {
 
   return (
     <section className={s.section} aria-hidden="true">
-      <h2 className={s.heading}>
+      {/* Not an <h2>: the fallback stays in the streamed HTML source, so a
+          real heading here doubles "News LAMA" for crawlers' heading
+          extractors. Same classes, so the layout hold is identical. */}
+      <div className={s.heading}>
         {headingPrefix}
         {hasAccent && <span className={s.headingAccent}>{HEADING_ACCENT}</span>}
-      </h2>
+      </div>
 
       <div className={s.card}>
         <div className={cn(s.media, s.bone)} />
