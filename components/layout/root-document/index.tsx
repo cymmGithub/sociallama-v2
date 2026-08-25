@@ -10,6 +10,7 @@ import { Link } from '@/components/ui/link'
 import { RealViewport } from '@/components/ui/real-viewport'
 import { ConsentInit } from '@/lib/consent/consent-init'
 import { GoogleAnalytics } from '@/lib/consent/google-analytics'
+import { GoogleTagManager } from '@/lib/consent/google-tag-manager'
 import type { ChromeContent } from '@/lib/content/home'
 import { OptionalFeatures } from '@/lib/features'
 import type { Locale } from '@/lib/i18n/slug-map'
@@ -71,13 +72,15 @@ export function RootDocument({
       {/* Order in <head> is the entire point (design.md Decision 3): the denied
           Consent Mode defaults — and a returning visitor's synchronous upgrade
           from the cookie — must be queued into dataLayer before the Google tag
-          queues its `config`. Do not reorder these two, and do not move them
-          into <body>. */}
+          queues its `config` and before the GTM container fires its first
+          event. ConsentInit stays first; do not reorder, and do not move any
+          of these into <body>. */}
       {/* biome-ignore lint/style/noHeadElement: this IS the App Router root
           document — `next/head` is a Pages Router API. The rule only skips the
           check for files under app/, and the document lives here now. */}
       <head>
         <ConsentInit />
+        <GoogleTagManager />
         <GoogleAnalytics />
       </head>
       <body>

@@ -360,15 +360,23 @@ test.describe('Cookie consent', () => {
     expect(consentAt).toBeGreaterThan(-1)
     expect(consentAt).toBeLessThan(html.indexOf('</head>'))
 
+    // Each Google loader is checked independently: production may carry the
+    // direct tag, the GTM container, or both.
     const tagAt = html.indexOf('googletagmanager.com/gtag/js')
-    if (tagAt === -1) {
-      // No measurement id configured — which is itself the guarantee that a
-      // preview or dev server cannot pollute the property.
-      expect(html).not.toContain('gtag/js')
-      return
+    if (tagAt !== -1) {
+      expect(consentAt).toBeLessThan(tagAt)
+      expect(consentAt).toBeLessThan(html.indexOf('id="sl-ga-config"'))
     }
-    expect(consentAt).toBeLessThan(tagAt)
-    expect(consentAt).toBeLessThan(html.indexOf('id="sl-ga-config"'))
+    const gtmAt = html.indexOf('googletagmanager.com/gtm.js')
+    if (gtmAt !== -1) {
+      expect(consentAt).toBeLessThan(gtmAt)
+      expect(consentAt).toBeLessThan(html.indexOf('id="sl-gtm-init"'))
+    }
+    if (tagAt === -1 && gtmAt === -1) {
+      // No id configured — which is itself the guarantee that a preview or
+      // dev server cannot pollute the property.
+      expect(html).not.toContain('gtag/js')
+    }
   })
 
   /**
@@ -411,9 +419,13 @@ test.describe('Cookie consent', () => {
     // The other direction — catches a policy entry for a vendor that was
     // removed. Only meaningful once the Google tag is genuinely loaded, which
     // by design happens only where a measurement id is configured.
+    const content = await page.content()
     test.skip(
-      !(await page.content()).includes('googletagmanager.com/gtag/js'),
-      'no measurement id configured — Google cookies cannot appear'
+      !(
+        content.includes('googletagmanager.com/gtag/js') ||
+        content.includes('googletagmanager.com/gtm.js')
+      ),
+      'no Google tag configured — Google cookies cannot appear'
     )
     for (const pattern of DECLARED) {
       expect(
