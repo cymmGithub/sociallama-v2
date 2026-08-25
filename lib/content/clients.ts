@@ -185,7 +185,10 @@ const ROSTER = [
   {
     key: 'rabkoland',
     name: 'Rabkoland',
-    logo: '/assets/clients/rabkoland.png',
+    // `?v=2`: re-emitted without the pipeline's contrast darkening (`no_darken`)
+    // — the darkened badge read heavy on the sand. The optimizer cache keys on
+    // the URL alone, so a content change must bump the version.
+    logo: '/assets/clients/rabkoland.png?v=2',
     industry: 'rozrywka',
     caseStudySlug: 'rabkoland',
   },

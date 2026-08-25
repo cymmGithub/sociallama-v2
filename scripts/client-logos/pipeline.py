@@ -89,7 +89,9 @@ INK_LINE_TOL = 90
 #
 # FLOOR is 150 rather than the readability limit itself: darkening is what hover
 # reveals, so it is kept to the minimum the resting state needs. Pulling these
-# three to 105 made their hover colour read as mud.
+# three to 105 made their hover colour read as mud. Rabkoland has since opted
+# out entirely (`no_darken` on its BRANDS entry): darkened, the badge read
+# heavy — it rests light on purpose (2026-08-25).
 LIGHT_INK_LUM = 190
 CONTRAST_FLOOR = 150
 
@@ -192,7 +194,11 @@ BRANDS = [
     # every row, so there is no seam to find — hence `keep`, cut just above the
     # ribbon. Verified at belt size: uncropped, RABKOLAND shrinks and the ribbon
     # is mush; cut, the wordmark reads.
-    ("rabkoland", "Rabkoland", gd("rabkoland.svg"), "rabkoland", {"keep": 0.766}),
+    # `no_darken`: the contrast rule pre-darkened this mark (mean ink 203) and
+    # the result read heavy and dull on the sand — "dimmed", per review. It
+    # rests light and airy like Burger King instead, and hover reveals the
+    # full-strength pink and yellow (user decision, 2026-08-25).
+    ("rabkoland", "Rabkoland", gd("rabkoland.svg"), "rabkoland", {"keep": 0.766, "no_darken": True}),
     ("riviera", "Centrum Riviera", repo("riviera"), "riviera", {}),
     # `film skrzat.webp` in the gDrive set is the movie poster, not the mark.
     ("skrzat", "Skrzat", repo("skrzat"), "skrzat", {}),
@@ -480,7 +486,7 @@ def build_belt():
             mark = trim(crop_to_fraction(mark, opts["keep"]))
         elif "lead" in opts:
             mark = trim(tighten_leading(mark, opts["lead"]))
-        mark, dark = darken(mark)
+        mark, dark = (mark, False) if opts.get("no_darken") else darken(mark)
         fit = min(INNER_W / mark.width, INNER_H / mark.height)
         prepared.append((key, name, slug, mark, fit, cut, dark, opts))
 
