@@ -304,8 +304,8 @@ export default function EnPrivacyPolicyPage() {
           <h2>Article 7. Cookies</h2>
           <ol>
             <li>
-              The website www.sociallama.pl (the “Website”) uses IT data stored
-              on the end devices of Website users, i.e. in particular text files
+              The website sociallama.pl (the “Website”) uses IT data stored on
+              the end devices of Website users, i.e. in particular text files
               containing, among other things, the name of the website they come
               from, their storage time on the end device, and a unique number
               (“Cookies”).

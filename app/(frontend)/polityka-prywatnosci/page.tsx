@@ -336,8 +336,8 @@ export default function PrivacyPolicyPage() {
           <h2>Artykuł 7. Pliki Cookies</h2>
           <ol>
             <li>
-              W&nbsp;serwisie internetowym www.sociallama.pl („Serwis”) stosuje
-              się dane informatyczne przechowywane w&nbsp;urządzeniach końcowych
+              W&nbsp;serwisie internetowym sociallama.pl („Serwis”) stosuje się
+              dane informatyczne przechowywane w&nbsp;urządzeniach końcowych
               użytkowników Serwisu, tj. w&nbsp;szczególności pliki tekstowe,
               zawierające m.in. nazwę strony internetowej, z&nbsp;której
               pochodzą, czas przechowywania ich na urządzeniu końcowym oraz
