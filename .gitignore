@@ -107,6 +107,8 @@ README.original.md
 !/content/posts/*/
 /content/posts/*/*
 !/content/posts/*/draft.en.json
+!/content/posts/*/source.pl.md
+!/content/posts/*/post.json
 !/content/posts/glossary.json
 !/content/posts/taxonomy.en.json
 !/content/posts/STATUS.md

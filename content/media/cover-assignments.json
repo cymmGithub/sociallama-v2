@@ -5,7 +5,8 @@
     "entry key — so the repoint script can assert the post's current cover before writing,",
     "and the audit supersession record has a stable anchor.",
     "`library[*].mediaId` is filled by the upload step (task 4.1); it is null until then.",
-    "Briefs, reference assets and generation settings live in cover-library-brief.md."
+    "Briefs, reference assets and generation settings live in cover-library-brief.md.",
+    "New posts have no old cover id; their assignment keys are 'new-<slug>'."
   ],
   "library": {
     "seo-a": {
@@ -177,6 +178,14 @@
       "altEn": "Three llamas with speech bubbles containing hearts",
       "note": "Bespoke cover for a single post — hub rank 8 at migration.",
       "revision": 2
+    },
+    "fb-ads": {
+      "category": "reklama",
+      "mediaId": null,
+      "file": "content/media/cover-art/fb-ads.jpg",
+      "altPl": "Lama w kamizelce trzyma megafon i plakietkę z logo Facebooka",
+      "altEn": "A llama in a waistcoat holding a megaphone and a Facebook logo badge",
+      "note": "Bespoke cover for a single post — depicts the author Łukasz Płociński on a reklama post (user decision 2026-08-25)."
     }
   },
   "assignments": {
@@ -342,6 +351,12 @@
       "hubRank": 22,
       "group": "series-brand",
       "note": "The LAMÓWKA series announcement — series cover, not marketing art."
+    },
+    "new-reklama-na-facebooku": {
+      "piece": "fb-ads",
+      "slug": "reklama-na-facebooku",
+      "category": "reklama",
+      "group": "bespoke"
     }
   }
 }

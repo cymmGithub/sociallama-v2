@@ -21,6 +21,7 @@
     "payload:seed": "bun ./lib/payload/seed.ts",
     "payload:seed:case-studies": "bun ./lib/payload/seed-case-studies.ts",
     "payload:import:case-study": "bun ./lib/payload/import-case-study.ts",
+    "payload:import:post": "bun ./lib/payload/import-post.ts",
     "payload:translate:case-study": "bun ./lib/payload/translate-case-study.ts",
     "payload:translate:post": "bun ./lib/payload/translate-post.ts",
     "payload:translate:alt": "bun ./lib/payload/translate-media-alt.ts",

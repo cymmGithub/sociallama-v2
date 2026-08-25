@@ -93,8 +93,8 @@ const altsEn = JSON.parse(await readFile(ALTS_EN_PATH, 'utf8')) as {
 
 const assignments = Object.entries(map.assignments)
 const rejected: string[] = []
-if (assignments.length !== 22) {
-  rejected.push(`assignment map has ${assignments.length} entries, expected 22`)
+if (assignments.length !== 23) {
+  rejected.push(`assignment map has ${assignments.length} entries, expected 23`)
 }
 for (const [key, piece] of Object.entries(map.library)) {
   try {
