@@ -63,6 +63,11 @@ export const contactForm = {
     linkLabel: 'Privacy Policy',
     linkHref: '/en/privacy-policy',
   },
+  marketingConsent: {
+    text: 'I consent to my personal data being stored and processed for marketing purposes, in line with our ',
+    linkLabel: 'Privacy Policy',
+    linkHref: '/en/privacy-policy',
+  },
   email: {
     subjectPrefix: 'New message from the form',
     name: 'Name',
@@ -70,8 +75,10 @@ export const contactForm = {
     phone: 'Phone',
     message: 'Message',
     consent: 'Consent (GDPR)',
+    marketing: 'Marketing consent',
     granted: 'granted',
-    consentBody: 'Text of the granted consent',
+    declined: 'not granted',
+    consentBody: 'Text of the granted consents',
     none: '—',
   },
   messages: {

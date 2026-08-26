@@ -68,6 +68,9 @@ export async function sendContactEmail(
             `${form.email.email}: ${input.email}`,
             `${form.email.phone}: ${input.phoneNumber || form.email.none}`,
             `${form.email.consent}: ${form.email.granted}`,
+            `${form.email.marketing}: ${
+              input.marketingConsent ? form.email.granted : form.email.declined
+            }`,
             '',
             `${form.email.message}:`,
             input.message,
@@ -75,7 +78,12 @@ export async function sendContactEmail(
             // Verbatim snapshot of what was agreed to — the email is the only
             // record of the submission, and the on-page wording can change.
             `${form.email.consentBody}:`,
-            `${form.consent.text}${form.consent.linkLabel}.`,
+            `– ${form.consent.text}${form.consent.linkLabel}.`,
+            ...(input.marketingConsent
+              ? [
+                  `– ${form.marketingConsent.text}${form.marketingConsent.linkLabel}.`,
+                ]
+              : []),
           ].join('\n'),
         })
         if (error) {

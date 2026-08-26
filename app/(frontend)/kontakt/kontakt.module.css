@@ -295,8 +295,17 @@
   color: var(--muted);
 }
 
+/* Both consent rows stacked — the required RODO one above the optional
+   marketing one. The group is the form-grid item, so it takes the full-width
+   span that used to sit on the single row. */
+.consentGroup {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+}
+
 /* RODO consent row — a real checkbox, not a styled span, so it announces
-   itself. Spans the form's full width like every other field. */
+   itself. */
 .consent {
   grid-column: 1 / -1;
   display: grid;

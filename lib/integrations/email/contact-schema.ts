@@ -24,5 +24,11 @@ export function buildContactSchema(form: ContactCopy) {
     // literal covers both refusal and absence — the consent guarantee holds
     // even when the client-side gate is bypassed.
     consent: z.literal('on', { error: form.errors.consent }),
+    // Optional and deliberately separate from the required one (careers
+    // pattern): absent = declined, which is a valid submission.
+    marketingConsent: z
+      .literal('on')
+      .optional()
+      .transform((value) => value === 'on'),
   })
 }

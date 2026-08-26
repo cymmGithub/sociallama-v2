@@ -143,18 +143,33 @@ function ContactFormFields({ form, locale }: Required<ContactFormProps>) {
         required
       />
 
-      {/* Required RODO consent — sits above the send row, so nothing is
-          submitted before it is given. */}
-      <ConsentField
-        classNames={CONSENT_CLASSES}
-        id={`${consentId}-consent`}
-        name="consent"
-        required
-        invalidMessage={form.errors.consent}
-      >
-        {form.consent.text}
-        <Link href={form.consent.linkHref}>{form.consent.linkLabel}</Link>.
-      </ConsentField>
+      {/* Consents sit above the send row, so nothing is submitted before the
+          required one is given. Two separate controls on purpose: bundling the
+          marketing permission into the one a visitor must give would not be
+          freely given consent, and the schema treats them independently. */}
+      <div className={s.consentGroup}>
+        <ConsentField
+          classNames={CONSENT_CLASSES}
+          id={`${consentId}-consent`}
+          name="consent"
+          required
+          invalidMessage={form.errors.consent}
+        >
+          {form.consent.text}
+          <Link href={form.consent.linkHref}>{form.consent.linkLabel}</Link>.
+        </ConsentField>
+        <ConsentField
+          classNames={CONSENT_CLASSES}
+          id={`${consentId}-marketing`}
+          name="marketingConsent"
+        >
+          {form.marketingConsent.text}
+          <Link href={form.marketingConsent.linkHref}>
+            {form.marketingConsent.linkLabel}
+          </Link>
+          .
+        </ConsentField>
+      </div>
 
       <div className={cn(s.send)}>
         <SubmitButton

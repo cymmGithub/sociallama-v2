@@ -89,6 +89,15 @@ export const contactForm = {
     linkLabel: 'Polityką prywatności',
     linkHref: '/polityka-prywatnosci',
   },
+  // Optional marketing consent — a separate control, because bundling it into
+  // the one a visitor must give would not be freely given consent. Wording
+  // reused from the careers form's client-supplied clause (design D12) — do
+  // not reword without asking.
+  marketingConsent: {
+    text: 'Wyrażam zgodę na przechowywanie i\u00A0przetwarzanie danych osobowych w\u00A0celach marketingowych, zgodnie z\u00A0naszą ',
+    linkLabel: 'Polityką Prywatności',
+    linkHref: '/polityka-prywatnosci',
+  },
   // Lead-email labels (server action) — localized so EN submissions arrive with
   // English field labels (design D7). `subjectPrefix` gets `— <name>` appended.
   email: {
@@ -101,8 +110,10 @@ export const contactForm = {
     // the label always pairs with `granted`; `consentBody` heads the verbatim
     // wording snapshot at the bottom of the email.
     consent: 'Zgoda (RODO)',
+    marketing: 'Zgoda marketingowa',
     granted: 'udzielona',
-    consentBody: 'Treść udzielonej zgody',
+    declined: 'nieudzielona',
+    consentBody: 'Treść udzielonych zgód',
     none: '—',
   },
   // FormState.message returned by the server action; the form's

@@ -34,6 +34,18 @@ describe('contact form schema', () => {
     expect(result.success).toBe(true)
   })
 
+  test('accepts a submission that declines the marketing consent', () => {
+    const result = schema.safeParse(valid)
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.marketingConsent).toBe(false)
+  })
+
+  test('records a granted marketing consent', () => {
+    const result = schema.safeParse({ ...valid, marketingConsent: 'on' })
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.marketingConsent).toBe(true)
+  })
+
   test('rejects a missing consent and attributes it to that control', () => {
     const { consent: _dropped, ...withoutConsent } = valid
     const result = schema.safeParse(withoutConsent)
