@@ -287,6 +287,13 @@ export function categoryMetadata({
  * so `/blog/page/5` and `/en/blog/page/5` hold different posts — often the
  * English one does not exist — and a reciprocal hreflang pair would assert an
  * equivalence that is false.
+ *
+ * NOT every numbered listing, despite the shape fitting: `/category/{slug}/
+ * page/{n}` and its English twin are left inheriting the root og — they follow
+ * the category decision recorded on `categoryMetadata` above, not this one
+ * (user decision, 2026-08-26). They are live (200) and reachable from the
+ * category pagination links, just absent from the sitemap, which is why the
+ * og:url audit never listed them. Point them here if that decision changes.
  */
 export function paginatedIndexMetadata({
   title,
