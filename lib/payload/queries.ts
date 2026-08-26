@@ -11,6 +11,7 @@ import type {
   Post,
   SocialPlatform,
 } from '@/payload-types'
+import { resolveMedia } from './media-refs'
 
 /**
  * Cached Local API queries for the blog routes.
@@ -844,12 +845,13 @@ export function caseStudyHeadline(title: string): string {
   return rest.charAt(0).toUpperCase() + rest.slice(1)
 }
 
-/** Resolve a maybe-unpopulated media relation (depth-dependent union). */
-export function resolveMedia(
-  value: number | Media | null | undefined
-): Media | null {
-  return typeof value === 'object' && value !== null ? value : null
-}
+/*
+ * `resolveMedia` now lives in the leaf `media-refs.ts` — it is a pure type
+ * guard, and importing it from here forced the CMS env check on consumers that
+ * touch no database (see that file). Re-exported so every existing caller keeps
+ * the import path it already had.
+ */
+export { resolveMedia }
 
 /**
  * A media row's focal point as an `object-position` style for an

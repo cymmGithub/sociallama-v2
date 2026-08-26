@@ -4,7 +4,7 @@ import * as siteEn from '@/lib/content/site.en'
 import { APP_BASE_URL, env } from '@/lib/env'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { alternatesForPath, localeOf } from '@/lib/i18n/slug-map'
-import { resolveMedia } from '@/lib/payload/queries'
+import { resolveMedia } from '@/lib/payload/media-refs'
 import type { CaseStudy, Post } from '@/payload-types'
 
 /**
