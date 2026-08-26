@@ -2,23 +2,16 @@ import type { Metadata } from 'next'
 import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { chrome, INDUSTRIES } from '@/lib/content/branze.en'
-import { OG_BASE } from '@/lib/content/site.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 const EN_PATH = '/en/industries'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: 'Industries',
   description:
     'Automotive, beauty, health, finance, pet care and more — social media run by people who know how each industry actually works. Pick yours.',
-  alternates: alternatesForPath(EN_PATH),
-  openGraph: {
-    type: 'website',
-    ...OG_BASE,
-    title: 'Industries',
-    url: EN_PATH,
-  },
-}
+  path: EN_PATH,
+})
 
 const cards = INDUSTRIES.map((industry) => ({
   slug: industry.slug,

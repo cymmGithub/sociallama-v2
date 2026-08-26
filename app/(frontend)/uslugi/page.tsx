@@ -3,24 +3,17 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { ServicePoster } from '@/components/sections/service-posters'
 import { isPosterId } from '@/components/sections/service-posters/ids'
-import { OG_BASE } from '@/lib/content/site'
 import { chrome, USLUGI_PAGES } from '@/lib/content/uslugi'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 const PL_PATH = '/uslugi'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: 'Usługi',
   description:
     'Od strategii po sprzedaż — pełne spektrum działań w social mediach. Strategia, content, sprzedaż, kreacje i wideo, audyt i influencer marketing.',
-  alternates: alternatesForPath(PL_PATH),
-  openGraph: {
-    type: 'website',
-    ...OG_BASE,
-    title: 'Usługi',
-    url: PL_PATH,
-  },
-}
+  path: PL_PATH,
+})
 
 /* Poster cards, not summaries: each card shows the line-art artwork that opens
    its service page, and `usluga-<id>` pairs the two so the clicked poster

@@ -3,24 +3,17 @@ import { Wrapper } from '@/components/layout/wrapper'
 import { SectionIndex } from '@/components/sections/section-index'
 import { ServicePoster } from '@/components/sections/service-posters'
 import { isPosterId } from '@/components/sections/service-posters/ids'
-import { OG_BASE } from '@/lib/content/site.en'
 import { chrome, USLUGI_PAGES } from '@/lib/content/uslugi.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 const EN_PATH = '/en/services'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: 'Services',
   description:
     'From strategy to sales — the full spectrum of social media work. Strategy, content, sales, creative & video, audit, and influencer marketing.',
-  alternates: alternatesForPath(EN_PATH),
-  openGraph: {
-    type: 'website',
-    ...OG_BASE,
-    title: 'Services',
-    url: EN_PATH,
-  },
-}
+  path: EN_PATH,
+})
 
 /* Mirrors `/uslugi` — see the note there. Service ids are locale-neutral, so
    both hubs build `usluga-<id>` pairs against their own locale's pages and the
