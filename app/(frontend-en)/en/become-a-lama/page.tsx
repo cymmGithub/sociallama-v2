@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { CareersPage } from '@/app/(frontend)/zostan-lama/careers-page'
 import * as en from '@/lib/content/zostan-lama.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
 
 /*
  * English careers page — the Polish composition fed English content. The form
@@ -9,11 +9,13 @@ import { alternatesForPath } from '@/lib/i18n/slug-map'
  * messages, toasts and lead-email labels.
  */
 
-export const metadata: Metadata = {
+/* Same og fix as the Polish hub — see the note there. */
+export const metadata: Metadata = pairMetadata({
   title: en.careersMeta.title,
   description: en.careersMeta.description,
-  alternates: alternatesForPath('/en/become-a-lama'),
-}
+  path: '/en/become-a-lama',
+  images: careersOgImages('en', en.careersMeta.title),
+})
 
 export default function EnJoinPage() {
   return <CareersPage content={en} locale="en" />

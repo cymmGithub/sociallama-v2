@@ -52,6 +52,31 @@ export function brandOgImages(alt: string) {
 }
 
 /**
+ * The careers card — one image for the whole `/zostan-lama` branch, per locale.
+ *
+ * Role-agnostic on purpose. The position's own name already reaches the unfurl
+ * through `og:title` (`role.seo.title`), so putting it in the artwork too would
+ * only make every new opening need a new asset. As it stands, adding a position
+ * to `careersRoles` needs no image work at all.
+ *
+ * `?v=` carries the same contract as the brand card above — bump it whenever
+ * the bytes change, or already-shared links keep unfurling the old artwork.
+ * These URLs never reach `/_next/image` (a scraper fetches the meta tag's URL
+ * directly), so the `localPatterns` allow-list in `next.config.ts` — which
+ * admits a public path only with an EMPTY query — does not apply to them.
+ */
+export function careersOgImages(locale: Locale, alt: string) {
+  return [
+    {
+      url: `/opengraph-careers-${locale}.jpg?v=1`,
+      width: 1200,
+      height: 630,
+      alt,
+    },
+  ]
+}
+
+/**
  * The og object for a locale ROOT — brand identity, the locale root's own
  * `og:url`, and the brand card. `rootMetadata` layers the layout's title
  * template on top; a home page spreads this and overrides only its own copy,
@@ -242,6 +267,12 @@ interface PairMetadataOptions {
   description: string
   /** The page's own URL — canonical and `og:url`. */
   path: string
+  /**
+   * The card this page unfurls with, when the brand card is not it. Only the
+   * careers branch passes one (`careersOgImages`); everything else takes the
+   * default, which is why this is an override rather than a required argument.
+   */
+  images?: ReturnType<typeof brandOgImages>
 }
 
 /**
@@ -257,6 +288,7 @@ export function pairMetadata({
   title,
   description,
   path,
+  images = brandOgImages(title),
 }: PairMetadataOptions): Metadata {
   return {
     title,
@@ -268,7 +300,7 @@ export function pairMetadata({
       title,
       description,
       url: path,
-      images: brandOgImages(title),
+      images,
     },
     twitter: { card: 'summary_large_image', title, description },
   }

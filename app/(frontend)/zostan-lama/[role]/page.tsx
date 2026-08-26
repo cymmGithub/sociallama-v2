@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import * as pl from '@/lib/content/zostan-lama'
-import { pairMetadata } from '@/lib/utils/metadata'
+import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
 import {
   CAREERS_BASE_PATH,
   CareersPage,
@@ -41,6 +41,7 @@ export async function generateMetadata({
     title: role.seo.title,
     description: role.seo.description,
     path: `${CAREERS_BASE_PATH.pl}/${role.id}`,
+    images: careersOgImages('pl', role.title),
   })
 }
 

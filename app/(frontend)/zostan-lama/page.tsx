@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import * as pl from '@/lib/content/zostan-lama'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
 import { CareersPage } from './careers-page'
 
 /*
@@ -12,11 +12,20 @@ import { CareersPage } from './careers-page'
  * with one tab preselected.
  */
 
-export const metadata: Metadata = {
+/*
+ * Through `pairMetadata` for the openGraph block, not just the alternates:
+ * page-level `openGraph` is not deep-merged, it REPLACES the layout's object —
+ * and a page that omits it inherits the layout's whole object rather than
+ * having og:title/og:url derived from its own. This page was therefore
+ * unfurling as the HOMEPAGE: og:title "Social Lama", og:url the site root.
+ * The position pages underneath were always correct; only the hub was not.
+ */
+export const metadata: Metadata = pairMetadata({
   title: pl.careersMeta.title,
   description: pl.careersMeta.description,
-  alternates: alternatesForPath('/zostan-lama'),
-}
+  path: '/zostan-lama',
+  images: careersOgImages('pl', pl.careersMeta.title),
+})
 
 export default function JoinPage() {
   return <CareersPage content={pl} locale="pl" />
