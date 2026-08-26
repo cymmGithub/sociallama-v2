@@ -97,6 +97,12 @@ export const contactForm = {
     email: 'E-mail',
     phone: 'Telefon',
     message: 'Wiadomość',
+    // Proof-of-consent lines: the schema rejects unconsented submissions, so
+    // the label always pairs with `granted`; `consentBody` heads the verbatim
+    // wording snapshot at the bottom of the email.
+    consent: 'Zgoda (RODO)',
+    granted: 'udzielona',
+    consentBody: 'Treść udzielonej zgody',
     none: '—',
   },
   // FormState.message returned by the server action; the form's

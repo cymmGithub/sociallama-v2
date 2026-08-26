@@ -212,6 +212,8 @@ export const careersForm = {
     marketing: 'Zgoda marketingowa',
     granted: 'udzielona',
     declined: 'nieudzielona',
+    // Heads the verbatim consent-wording snapshot at the bottom of the email.
+    consentBody: 'Treść udzielonych zgód',
     none: '—',
   },
   // FormState.message returned by the server action; the form's

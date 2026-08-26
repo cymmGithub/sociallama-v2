@@ -132,6 +132,16 @@ export async function sendCareersApplication(
             '',
             `${form.email.message}:`,
             input.message,
+            '',
+            // Verbatim snapshot of what was agreed to — the email is the only
+            // record of the application, and the on-page wording can change.
+            `${form.email.consentBody}:`,
+            `– ${form.consent.required.label}`,
+            ...(input.marketingConsent
+              ? [
+                  `– ${form.consent.marketing.text}${form.consent.marketing.linkLabel}.`,
+                ]
+              : []),
           ].join('\n'),
           attachments,
         })

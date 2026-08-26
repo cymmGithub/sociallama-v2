@@ -67,9 +67,15 @@ export async function sendContactEmail(
             `${form.email.name}: ${input.name}`,
             `${form.email.email}: ${input.email}`,
             `${form.email.phone}: ${input.phoneNumber || form.email.none}`,
+            `${form.email.consent}: ${form.email.granted}`,
             '',
             `${form.email.message}:`,
             input.message,
+            '',
+            // Verbatim snapshot of what was agreed to — the email is the only
+            // record of the submission, and the on-page wording can change.
+            `${form.email.consentBody}:`,
+            `${form.consent.text}${form.consent.linkLabel}.`,
           ].join('\n'),
         })
         if (error) {

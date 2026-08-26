@@ -172,6 +172,7 @@ export const careersForm = {
     marketing: 'Marketing consent',
     granted: 'granted',
     declined: 'not granted',
+    consentBody: 'Text of the granted consents',
     none: '—',
   },
   messages: {

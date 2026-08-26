@@ -69,6 +69,9 @@ export const contactForm = {
     email: 'Email',
     phone: 'Phone',
     message: 'Message',
+    consent: 'Consent (GDPR)',
+    granted: 'granted',
+    consentBody: 'Text of the granted consent',
     none: '—',
   },
   messages: {
