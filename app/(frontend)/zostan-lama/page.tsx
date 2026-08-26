@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import * as pl from '@/lib/content/zostan-lama'
-import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
+import { pairMetadata } from '@/lib/utils/metadata'
 import { CareersPage } from './careers-page'
 
 /*
@@ -24,7 +24,7 @@ export const metadata: Metadata = pairMetadata({
   title: pl.careersMeta.title,
   description: pl.careersMeta.description,
   path: '/zostan-lama',
-  images: careersOgImages('pl', pl.careersMeta.title),
+  card: 'careers',
 })
 
 export default function JoinPage() {

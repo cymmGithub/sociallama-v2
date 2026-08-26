@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { CareersPage } from '@/app/(frontend)/zostan-lama/careers-page'
 import * as en from '@/lib/content/zostan-lama.en'
-import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 /*
  * English careers page — the Polish composition fed English content. The form
@@ -14,7 +14,7 @@ export const metadata: Metadata = pairMetadata({
   title: en.careersMeta.title,
   description: en.careersMeta.description,
   path: '/en/become-a-lama',
-  images: careersOgImages('en', en.careersMeta.title),
+  card: 'careers',
 })
 
 export default function EnJoinPage() {

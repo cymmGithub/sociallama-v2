@@ -27,10 +27,10 @@ export async function generateMetadata({
   const { number } = await params
   // Canonical-only alternates and a card-less og block — see
   // `paginatedIndexMetadata`, which carries the reasoning for both.
-  return paginatedIndexMetadata(
-    `Blog — strona ${number}`,
-    `/blog/page/${number}`
-  )
+  return paginatedIndexMetadata({
+    title: `Blog — strona ${number}`,
+    path: `/blog/page/${number}`,
+  })
 }
 
 export default async function BlogPageN({ params }: PageProps) {

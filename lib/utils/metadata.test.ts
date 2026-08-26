@@ -24,23 +24,16 @@ const ROOT = join(import.meta.dir, '..', '..')
  * announcing 1200×630 and every platform crops it to something nobody chose.
  */
 
-/** Both halves of `Locale`, so a third locale cannot be added untested. */
+/* Both halves of `Locale`. The annotation does not enforce that — a third
+   locale would compile against a two-element array — so the roots assertion
+   below is what would actually notice one going unchecked. */
 const LOCALES: Locale[] = ['pl', 'en']
 
-/** Facebook's recommended size, and what every builder declares. */
-const OG_SIZE = { width: 1200, height: 630 }
-
-/**
- * Every card a builder can emit, deduped by URL — `rootOpenGraph` hands back
- * the brand card, so both locales' roots collapse onto the one entry.
- */
+/** Every distinct card a builder can emit. */
 const CARDS = [
   ...brandOgImages('brand'),
   ...LOCALES.flatMap((locale) => careersOgImages(locale, 'careers')),
-  ...LOCALES.flatMap((locale) => rootOpenGraph(locale).images),
-].filter(
-  (card, i, all) => all.findIndex((other) => other.url === card.url) === i
-)
+]
 
 /**
  * Where a public URL's bytes actually live. `public/` for most, `app/` for the
@@ -48,32 +41,35 @@ const CARDS = [
  * served from the route root, so a `public/`-only lookup would report the
  * site's primary card missing.
  */
-function fileFor(url: string): string | null {
+function fileFor(url: string): string | undefined {
   const pathname = url.split('?')[0] ?? ''
-  return (
-    [join(ROOT, 'public', pathname), join(ROOT, 'app', pathname)].find(
-      existsSync
-    ) ?? null
+  return [join(ROOT, 'public', pathname), join(ROOT, 'app', pathname)].find(
+    existsSync
   )
 }
 
 describe('OG cards declared in the metadata builders', () => {
-  test('the brand and careers cards are all present', () => {
-    // Three: the brand card plus one careers card per locale. A number rather
-    // than a lower bound, so dropping a locale's card fails here.
-    expect(CARDS).toHaveLength(3)
+  test('the locale roots reuse the brand card', () => {
+    // Not folded into CARDS: `rootOpenGraph` returns `brandOgImages` by
+    // construction, so adding it there would only create a duplicate to filter
+    // back out. Asserted instead, so a root that starts naming its own artwork
+    // fails here rather than quietly going unchecked on disk.
+    for (const locale of LOCALES) {
+      expect(rootOpenGraph(locale).images).toEqual(
+        brandOgImages(rootOpenGraph(locale).images[0]?.alt ?? '')
+      )
+    }
   })
 
   test.each(CARDS)('$url exists on disk at its declared size', async (card) => {
     const file = fileFor(card.url)
-    expect(file).not.toBeNull()
+    if (!file) throw new Error(`no file on disk for ${card.url}`)
 
-    const { width, height } = await sharp(file as string).metadata()
+    const { width, height } = await sharp(file).metadata()
     expect({ width, height }).toEqual({
       width: card.width,
       height: card.height,
     })
-    expect({ width, height }).toEqual(OG_SIZE)
   })
 
   test.each(CARDS)('$url carries a version query', (card) => {

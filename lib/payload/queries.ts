@@ -845,12 +845,8 @@ export function caseStudyHeadline(title: string): string {
   return rest.charAt(0).toUpperCase() + rest.slice(1)
 }
 
-/*
- * `resolveMedia` now lives in the leaf `media-refs.ts` — it is a pure type
- * guard, and importing it from here forced the CMS env check on consumers that
- * touch no database (see that file). Re-exported so every existing caller keeps
- * the import path it already had.
- */
+/* Defined in the leaf `media-refs.ts`, which carries the why; re-exported so
+   existing callers keep their import path. Prefer the leaf in new code. */
 export { resolveMedia }
 
 /**

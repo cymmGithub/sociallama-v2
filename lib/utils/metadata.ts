@@ -35,6 +35,12 @@ function ogBase(locale: Locale): { siteName: string; locale: string } {
 }
 
 /**
+ * Facebook's recommended card size, and what every card below declares.
+ * `lib/utils/metadata.test.ts` asserts the files on disk really are this.
+ */
+const OG_CARD_SIZE = { width: 1200, height: 630 } as const
+
+/**
  * The brand OG card. Named in ONE place because replacing the asset means
  * bumping the URL on every surface that points at it — the image optimizer
  * caches by URL for 30 days and a CDN purge cannot reach those variants, so a
@@ -48,7 +54,7 @@ function ogBase(locale: Locale): { siteName: string; locale: string } {
  * move together.
  */
 export function brandOgImages(alt: string) {
-  return [{ url: '/opengraph-image.jpg?v=2', width: 1200, height: 630, alt }]
+  return [{ url: '/opengraph-image.jpg?v=2', ...OG_CARD_SIZE, alt }]
 }
 
 /**
@@ -64,16 +70,13 @@ export function brandOgImages(alt: string) {
  * These URLs never reach `/_next/image` (a scraper fetches the meta tag's URL
  * directly), so the `localPatterns` allow-list in `next.config.ts` — which
  * admits a public path only with an EMPTY query — does not apply to them.
+ *
+ * Routes do not call this. They pass `card: 'careers'` to `pairMetadata`,
+ * which reads the locale off the path — see `PairMetadataOptions`. Exported
+ * for the test, which needs every card a builder can emit.
  */
 export function careersOgImages(locale: Locale, alt: string) {
-  return [
-    {
-      url: `/opengraph-careers-${locale}.jpg?v=1`,
-      width: 1200,
-      height: 630,
-      alt,
-    },
-  ]
+  return [{ url: `/opengraph-careers-${locale}.jpg?v=1`, ...OG_CARD_SIZE, alt }]
 }
 
 /**
@@ -285,7 +288,14 @@ export function categoryMetadata({
  * English one does not exist — and a reciprocal hreflang pair would assert an
  * equivalence that is false.
  */
-export function paginatedIndexMetadata(title: string, path: string): Metadata {
+export function paginatedIndexMetadata({
+  title,
+  path,
+}: {
+  title: string
+  /** The page's own URL — canonical and `og:url`. */
+  path: string
+}): Metadata {
   return {
     title,
     alternates: { canonical: path },
@@ -304,11 +314,14 @@ interface PairMetadataOptions {
   /** The page's own URL — canonical and `og:url`. */
   path: string
   /**
-   * The card this page unfurls with, when the brand card is not it. Only the
-   * careers branch passes one (`careersOgImages`); everything else takes the
-   * default, which is why this is an override rather than a required argument.
+   * Which card this page unfurls with. Named, not handed in as images, so the
+   * locale stays derived from `path` — see this module's header. Passing the
+   * artwork directly meant every careers route stated its locale a second
+   * time, one line from the `path` it had to agree with, and a PL file copied
+   * into the EN tree would have compiled with the Polish card: both halves are
+   * a valid `Locale`, and nothing but a scraper would ever have said so.
    */
-  images?: ReturnType<typeof brandOgImages>
+  card?: 'brand' | 'careers'
 }
 
 /**
@@ -324,19 +337,24 @@ export function pairMetadata({
   title,
   description,
   path,
-  images = brandOgImages(title),
+  card = 'brand',
 }: PairMetadataOptions): Metadata {
+  const locale = localeOf(path)
+
   return {
     title,
     description,
     alternates: alternatesForPath(path),
     openGraph: {
       type: 'website',
-      ...ogBase(localeOf(path)),
+      ...ogBase(locale),
       title,
       description,
       url: path,
-      images,
+      images:
+        card === 'careers'
+          ? careersOgImages(locale, title)
+          : brandOgImages(title),
     },
     twitter: { card: 'summary_large_image', title, description },
   }

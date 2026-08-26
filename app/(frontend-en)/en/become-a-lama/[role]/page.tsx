@@ -6,7 +6,7 @@ import {
   findCareersRole,
 } from '@/app/(frontend)/zostan-lama/careers-page'
 import * as en from '@/lib/content/zostan-lama.en'
-import { careersOgImages, pairMetadata } from '@/lib/utils/metadata'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 /*
  * English twin of `/zostan-lama/[role]`. The position ids are locale-
@@ -35,7 +35,7 @@ export async function generateMetadata({
     title: role.seo.title,
     description: role.seo.description,
     path: `${CAREERS_BASE_PATH.en}/${role.id}`,
-    images: careersOgImages('en', role.title),
+    card: 'careers',
   })
 }
 
