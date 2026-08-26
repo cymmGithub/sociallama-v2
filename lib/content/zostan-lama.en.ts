@@ -152,7 +152,7 @@ export const careersForm = {
     marketing: {
       text: 'I consent to my personal data being stored and processed for marketing purposes, in line with our ',
       linkLabel: 'Privacy Policy',
-      linkHref: '/polityka-prywatnosci',
+      linkHref: '/en/privacy-policy',
     },
   },
   submit: {
