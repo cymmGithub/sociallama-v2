@@ -12,13 +12,13 @@ import { ValuesGrid } from '@/app/(frontend)/o-nas/sections/values-grid'
 import { Wrapper } from '@/components/layout/wrapper'
 import * as home from '@/lib/content/home.en'
 import * as en from '@/lib/content/o-nas.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: en.oNasMeta.title,
   description: en.oNasMeta.description,
-  alternates: alternatesForPath('/en/about-us'),
-}
+  path: '/en/about-us',
+})
 
 export default function EnAboutPage() {
   // English About page: the Polish band sequence fed English content. The reused

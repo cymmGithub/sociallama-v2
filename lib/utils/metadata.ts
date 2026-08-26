@@ -248,6 +248,15 @@ interface CategoryMetadataOptions extends DocumentPaths {
 /**
  * Blog category listings. No `openGraph`/`twitter` block by design: these are
  * paginated indexes, not shareable documents.
+ *
+ * Be aware of what omitting the block actually does, because it is not "no
+ * card": page-level `openGraph` is not deep-merged, so a page without one
+ * inherits the ROOT LAYOUT's whole object — brand title, brand card, and the
+ * locale home's `og:url`. A shared category link therefore unfurls as the
+ * homepage rather than as nothing. Kept deliberately (user decision,
+ * 2026-08-26) — the eight category URLs are not a sharing surface — but it is
+ * a decision, not an absence, and `paginatedIndexMetadata` below is what the
+ * opposite call looks like.
  */
 export function categoryMetadata({
   title,
@@ -259,6 +268,33 @@ export function categoryMetadata({
     title,
     description,
     alternates: documentAlternates(path, counterpartUrl),
+  }
+}
+
+/**
+ * A numbered listing page — `/blog/page/{n}` and its English twin.
+ *
+ * Carries an og block with a URL and nothing else. The page is not a sharing
+ * surface, so it gets no card and no `twitter` block; what it must not do is
+ * inherit the root layout's og and claim the locale home's `og:url`, which is
+ * what all sixteen of these were doing.
+ *
+ * `alternates` stays canonical-only, which is why this cannot go through
+ * `pairMetadata`: page counts differ per locale under the D6 translation gate,
+ * so `/blog/page/5` and `/en/blog/page/5` hold different posts — often the
+ * English one does not exist — and a reciprocal hreflang pair would assert an
+ * equivalence that is false.
+ */
+export function paginatedIndexMetadata(title: string, path: string): Metadata {
+  return {
+    title,
+    alternates: { canonical: path },
+    openGraph: {
+      type: 'website',
+      ...ogBase(localeOf(path)),
+      title,
+      url: path,
+    },
   }
 }
 

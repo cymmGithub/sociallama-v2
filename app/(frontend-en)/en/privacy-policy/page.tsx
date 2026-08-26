@@ -10,7 +10,7 @@ import {
   consentTable,
   consentTrigger,
 } from '@/lib/content/consent.en'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
+import { pairMetadata } from '@/lib/utils/metadata'
 
 /*
  * English privacy policy — EN twin of `/polityka-prywatnosci`, a faithful
@@ -26,12 +26,12 @@ import { alternatesForPath } from '@/lib/i18n/slug-map'
  * Keep the two pages in sync.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: 'Privacy Policy',
   description:
     'Privacy policy and information on how the personal data of sociallama.pl users is protected.',
-  alternates: alternatesForPath('/en/privacy-policy'),
-}
+  path: '/en/privacy-policy',
+})
 
 export default function EnPrivacyPolicyPage() {
   return (

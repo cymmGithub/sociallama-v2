@@ -4,6 +4,7 @@ import { BlogListing } from '@/app/(frontend)/blog/listing'
 import { parsePageNumber } from '@/app/(frontend)/blog/pagination'
 import { listing } from '@/lib/content/blog.en'
 import { getCategories, getPostsPage } from '@/lib/payload/queries'
+import { paginatedIndexMetadata } from '@/lib/utils/metadata'
 
 interface PageProps {
   params: Promise<{ number: string }>
@@ -26,15 +27,12 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { number } = await params
-  return {
-    title: `Blog — page ${number}`,
-    // Canonical only, deliberately (task 7.4). Page counts differ per locale
-    // under the D6 gate — English paginates over translated posts alone — so
-    // /blog/page/5 and /en/blog/page/5 are not the same set of posts, and
-    // often the English one does not exist at all. A reciprocal hreflang pair
-    // here would assert an equivalence that is false.
-    alternates: { canonical: `/en/blog/page/${number}` },
-  }
+  // Canonical-only alternates and a card-less og block — see
+  // `paginatedIndexMetadata`, which carries the reasoning for both.
+  return paginatedIndexMetadata(
+    `Blog — page ${number}`,
+    `/en/blog/page/${number}`
+  )
 }
 
 export default async function EnBlogPageN({ params }: PageProps) {

@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { Wrapper } from '@/components/layout/wrapper'
 import * as home from '@/lib/content/home'
 import * as pl from '@/lib/content/o-nas'
-import { alternatesForPath } from '@/lib/i18n/slug-map'
 import { getLatestPost } from '@/lib/payload/queries'
+import { pairMetadata } from '@/lib/utils/metadata'
 import { BigMarquee } from '../(home)/sections/big-marquee'
 import { ClientLogos } from '../(home)/sections/client-logos'
 import { JoinCta } from '../(home)/sections/join-cta'
@@ -32,11 +32,11 @@ import { ValuesGrid } from './sections/values-grid'
  * resolve the right brand tokens.
  */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pairMetadata({
   title: pl.oNasMeta.title,
   description: pl.oNasMeta.description,
-  alternates: alternatesForPath('/o-nas'),
-}
+  path: '/o-nas',
+})
 
 /**
  * The only CMS-dependent slice of the page, isolated behind Suspense so the

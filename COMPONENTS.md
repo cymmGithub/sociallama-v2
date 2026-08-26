@@ -117,6 +117,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 | postMetadata | `(post: Post, { path, counterpartUrl }: DocumentPaths) => Metadata` |
 | caseStudyMetadata | `(study: CaseStudy, path: string) => Metadata` |
 | categoryMetadata | `({ title, description, path, counterpartUrl, }: CategoryMetadataOptions) => Metadata` |
+| paginatedIndexMetadata | `(title: string, path: string) => Metadata` |
 | pairMetadata | `({ title, description, path, images = brandOgImages(title), }: PairMetadataOptions) => Metadata` |
 
 ### Raf (`@/utils/raf`)
