@@ -78,7 +78,7 @@ export async function sendContactEmail(
             // Verbatim snapshot of what was agreed to — the email is the only
             // record of the submission, and the on-page wording can change.
             `${form.email.consentBody}:`,
-            `– ${form.consent.text}${form.consent.linkLabel}.`,
+            `– ${form.consent.text}`,
             ...(input.marketingConsent
               ? [
                   `– ${form.marketingConsent.text}${form.marketingConsent.linkLabel}.`,

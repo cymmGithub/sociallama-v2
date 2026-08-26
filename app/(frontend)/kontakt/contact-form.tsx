@@ -156,7 +156,6 @@ function ContactFormFields({ form, locale }: Required<ContactFormProps>) {
           invalidMessage={form.errors.consent}
         >
           {form.consent.text}
-          <Link href={form.consent.linkHref}>{form.consent.linkLabel}</Link>.
         </ConsentField>
         <ConsentField
           classNames={CONSENT_CLASSES}

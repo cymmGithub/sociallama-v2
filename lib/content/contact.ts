@@ -80,14 +80,12 @@ export const contactForm = {
   // Reassurance next to the submit pill — aligned to the lede's 24h promise.
   note: 'Odzywamy się w\u00A024h, w\u00A0dni robocze.',
   // RODO consent, unchecked by default — the submission is rejected without it.
-  // It replaces the passive privacy note that used to sit under the send row,
-  // keeping that note's substance (a reply, plus the callback the phone field
-  // invites) and its link. Split so the component wraps only the policy name
-  // in <Link>; the href points at the existing privacy page.
+  // Kept to one short clause (the callback parenthetical and the policy link
+  // were dropped by decision, 2026-08-26); the required asterisk comes from
+  // the ConsentField component, and the marketing row below carries the
+  // privacy-policy link.
   consent: {
-    text: 'Wyrażam zgodę na przetwarzanie podanych danych osobowych w\u00A0celu odpowiedzi na wiadomość (i\u00A0oddzwonienia, jeśli zostawię numer), zgodnie z\u00A0',
-    linkLabel: 'Polityką prywatności',
-    linkHref: '/polityka-prywatnosci',
+    text: 'Wyrażam zgodę na przetwarzanie podanych danych osobowych w\u00A0celu odpowiedzi na wiadomość.',
   },
   // Optional marketing consent — a separate control, because bundling it into
   // the one a visitor must give would not be freely given consent. Wording

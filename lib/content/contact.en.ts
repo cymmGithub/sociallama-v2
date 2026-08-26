@@ -59,9 +59,7 @@ export const contactForm = {
   },
   note: 'We reply within 24h, on business days.',
   consent: {
-    text: 'I consent to the processing of my personal data so that Social Lama can reply to this message (and call me back if I leave a number), in line with the ',
-    linkLabel: 'Privacy Policy',
-    linkHref: '/en/privacy-policy',
+    text: 'I consent to the processing of my personal data so that Social Lama can reply to this message.',
   },
   marketingConsent: {
     text: 'I consent to my personal data being stored and processed for marketing purposes, in line with our ',
