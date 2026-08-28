@@ -90,41 +90,6 @@ export const careersRoles = [
       },
     ],
   },
-  {
-    id: 'paid-social-media-specialist',
-    title: 'Paid Social Media Specialist',
-    seo: {
-      title: 'Paid Social Media Specialist — oferta pracy',
-      description:
-        'Oferta pracy: Paid Social Media Specialist w Social Lama. Kampanie na Meta, TikToku i LinkedInie, optymalizacja i raporty. Wyślij CV — odpowiadamy w 7 dni.',
-    },
-    blocks: [
-      {
-        head: 'Szukamy osoby, która',
-        items: [
-          'efektywnie zarządza kampaniami i\u00A0testuje nowe rozwiązania',
-          'zawsze ma na uwadze sukces klienta',
-          'dzieli się wiedzą i\u00A0praktykami performance w\u00A0zespole',
-        ],
-      },
-      {
-        head: 'Będziesz odpowiadać za',
-        items: [
-          'samodzielną realizację kampanii (TikTok, Facebook, LinkedIn)',
-          'monitorowanie wydajności kampanii i\u00A0optymalizację',
-          'raporty i\u00A0rekomendacje dla klientów',
-        ],
-      },
-      {
-        head: 'Oczekujemy',
-        items: [
-          'min. 2 lata w\u00A0performance marketingu',
-          'Meta, LinkedIn, TikTok, Pinterest, X\u00A0Ads Manager',
-          'wysoko rozwiniętych umiejętności analitycznych',
-        ],
-      },
-    ],
-  },
 ] as const
 
 /**

@@ -71,41 +71,6 @@ export const careersRoles = [
       },
     ],
   },
-  {
-    id: 'paid-social-media-specialist',
-    title: 'Paid Social Media Specialist',
-    seo: {
-      title: 'Paid Social Media Specialist — open role',
-      description:
-        'Open role: Paid Social Media Specialist at Social Lama. Campaigns on Meta, TikTok and LinkedIn, optimization and reporting. Send your CV — we reply within 7 days.',
-    },
-    blocks: [
-      {
-        head: "We're looking for someone who",
-        items: [
-          'runs campaigns efficiently and still tests the untested',
-          'keeps the client outcome in view at all times',
-          'shares performance know-how with the rest of the team',
-        ],
-      },
-      {
-        head: "You'll be responsible for",
-        items: [
-          'running campaigns solo across TikTok, Facebook and LinkedIn',
-          'monitoring performance and optimizing what underdelivers',
-          'reports and recommendations for clients',
-        ],
-      },
-      {
-        head: 'What we expect',
-        items: [
-          'at least 2 years in performance marketing',
-          'Meta, LinkedIn, TikTok, Pinterest and X Ads Manager',
-          'genuinely strong analytical skills',
-        ],
-      },
-    ],
-  },
 ] satisfies LocalizedCareers['careersRoles']
 
 export const careersShare = {

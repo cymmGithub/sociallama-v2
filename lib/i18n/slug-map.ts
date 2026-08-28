@@ -87,10 +87,7 @@ export const SECTIONS = [
     pl: '/zostan-lama',
     en: '/en/become-a-lama',
     hasIndex: false,
-    slugs: [
-      ['social-media-specialist', 'social-media-specialist'],
-      ['paid-social-media-specialist', 'paid-social-media-specialist'],
-    ],
+    slugs: [['social-media-specialist', 'social-media-specialist']],
   },
 ] as const satisfies readonly {
   pl: string
