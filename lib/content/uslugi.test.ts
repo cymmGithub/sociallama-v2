@@ -147,20 +147,25 @@ describe('the landing targets its cluster', () => {
     expect(kinds.indexOf('faq')).toBeGreaterThan(kinds.indexOf('banner'))
   })
 
-  test('the FAQ answers both cluster questions', () => {
+  /*
+   * The pricing banner owns the cost question under that heading, so the FAQ
+   * must not ask it a second time — the page carried both and ground the
+   * topic. The scope question stays: it is the FAQ's own cluster phrasing.
+   */
+  test('the FAQ asks the scope question and leaves pricing to the banner', () => {
     const questions = faqItemsOf(LANDING.sections).map((item) =>
       item.question.toLowerCase()
     )
-    expect(questions.some((q) => q.includes('ile kosztuje'))).toBe(true)
     expect(questions.some((q) => q.includes('co obejmuje'))).toBe(true)
+    expect(questions.some((q) => q.includes('ile kosztuje'))).toBe(false)
   })
 
-  test('the English twin asks the same two, in its own words', () => {
+  test('the English twin asks the same one, in its own words', () => {
     const questions = faqItemsOf(LANDING_EN.sections).map((item) =>
       item.question.toLowerCase()
     )
-    expect(questions.some((q) => q.includes('how much'))).toBe(true)
     expect(questions.some((q) => q.includes('include'))).toBe(true)
+    expect(questions.some((q) => q.includes('how much'))).toBe(false)
   })
 })
 
@@ -186,12 +191,6 @@ describe('one price figure, quoted in four places', () => {
       )
       expect(banner).toBeDefined()
       expect(priceOf((banner as { body: string }).body)).toBe(true)
-    }
-  })
-
-  test('both landings quote it in the FAQ cost answer', () => {
-    for (const landing of [LANDING, LANDING_EN]) {
-      expect(priceOf(faqItemsOf(landing.sections)[0]?.answer ?? '')).toBe(true)
     }
   })
 })

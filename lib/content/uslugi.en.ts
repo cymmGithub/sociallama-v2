@@ -802,10 +802,6 @@ export const seoLandings = [
         heading: 'Questions about social media management',
         items: [
           {
-            question: 'How much does social media management cost?',
-            answer: `Managing one profile starts around ${STARTING_PRICE} PLN net per month. Running a brand across several platforms, with graphics and video production, sits in the 3,000–15,000 PLN a month range. The price depends on the number of channels, how much you publish, and how much of the material is made from scratch. The ad budget is billed separately.`,
-          },
-          {
             question: 'What does social media management include?',
             answer:
               'Communication strategy, content planning and production — copy, graphics, video — publishing, comment and message moderation, running ad campaigns, and a monthly report with results and recommendations for the next period. We write the scope down before we start, so everyone knows exactly what the fee buys.',

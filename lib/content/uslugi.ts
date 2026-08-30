@@ -1192,14 +1192,11 @@ export const seoLandings = [
         kind: 'faq',
         kicker: 'FAQ',
         heading: 'Pytania o prowadzenie social media',
-        // The first two questions are the cluster's own phrasings (spec:
-        // "ile kosztuje…" and "co obejmuje…"); the rest are the cost variants
-        // that follow them in the SERP.
+        // "Co obejmuje…" is the cluster's own phrasing; the rest are the
+        // variants that follow it in the SERP. The "ile kosztuje…" question
+        // is deliberately absent: the pricing banner above answers it under
+        // the same heading, and carrying it twice ground the cost topic.
         items: [
-          {
-            question: 'Ile kosztuje prowadzenie social media?',
-            answer: `Obsługa jednego profilu startuje od ok. ${STARTING_PRICE} zł netto miesięcznie. Prowadzenie marki na kilku platformach, razem z produkcją grafik i wideo, mieści się rynkowo w przedziale od 3 000 do 15 000 zł miesięcznie. Cena zależy od liczby kanałów, liczby publikacji w miesiącu i tego, ile materiału powstaje od zera. Budżet reklamowy rozliczamy osobno.`,
-          },
           {
             question: 'Co obejmuje prowadzenie social media?',
             answer:
