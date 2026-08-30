@@ -1192,16 +1192,12 @@ export const seoLandings = [
         kind: 'faq',
         kicker: 'FAQ',
         heading: 'Pytania o prowadzenie social media',
-        // "Co obejmuje…" is the cluster's own phrasing; the rest are the
-        // variants that follow it in the SERP. The "ile kosztuje…" question
-        // is deliberately absent: the pricing banner above answers it under
-        // the same heading, and carrying it twice ground the cost topic.
+        // The cluster's two head phrasings — "ile kosztuje…" and "co
+        // obejmuje…" — are deliberately absent. The pricing banner and the
+        // scope checklist above already carry them as headings, and asking
+        // them a second time behind a <details> ground both topics. What is
+        // left are the variants no section on the page answers.
         items: [
-          {
-            question: 'Co obejmuje prowadzenie social media?',
-            answer:
-              'Strategię komunikacji, plan i produkcję contentu — copy, grafiki, wideo — publikację, moderację komentarzy i wiadomości, prowadzenie kampanii reklamowych oraz miesięczny raport z wynikami i rekomendacjami na kolejny okres. Zakres spisujemy przed startem, więc wiadomo dokładnie, co wchodzi w cenę.',
-          },
           {
             question: 'Czy budżet reklamowy jest wliczony w cenę?',
             answer:

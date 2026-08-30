@@ -148,24 +148,28 @@ describe('the landing targets its cluster', () => {
   })
 
   /*
-   * The pricing banner owns the cost question under that heading, so the FAQ
-   * must not ask it a second time — the page carried both and ground the
-   * topic. The scope question stays: it is the FAQ's own cluster phrasing.
+   * Two FAQ questions used to echo a section heading word for word — the
+   * pricing banner's "Ile kosztuje…" and the scope checklist's "Co
+   * obejmuje…". Those sections answer them in the open; the accordion asked
+   * them again behind a <details>, grinding both topics twice on one page.
+   *
+   * Asserted against every heading rather than those two strings, so a
+   * section added later cannot quietly reintroduce the pattern, and so the
+   * rule reads the same in both locales.
    */
-  test('the FAQ asks the scope question and leaves pricing to the banner', () => {
-    const questions = faqItemsOf(LANDING.sections).map((item) =>
-      item.question.toLowerCase()
-    )
-    expect(questions.some((q) => q.includes('co obejmuje'))).toBe(true)
-    expect(questions.some((q) => q.includes('ile kosztuje'))).toBe(false)
-  })
-
-  test('the English twin asks the same one, in its own words', () => {
-    const questions = faqItemsOf(LANDING_EN.sections).map((item) =>
-      item.question.toLowerCase()
-    )
-    expect(questions.some((q) => q.includes('include'))).toBe(true)
-    expect(questions.some((q) => q.includes('how much'))).toBe(false)
+  test('no FAQ question echoes a heading from its own page', () => {
+    const normalize = (text: string) => text.trim().toLowerCase()
+    for (const landing of [LANDING, LANDING_EN]) {
+      const headings = landing.sections
+        .map((section) => (section as { heading?: string }).heading)
+        .filter((heading) => typeof heading === 'string')
+        .map(normalize)
+      const questions = faqItemsOf(landing.sections)
+      expect(questions.length).toBeGreaterThan(0)
+      for (const item of questions) {
+        expect(headings).not.toContain(normalize(item.question))
+      }
+    }
   })
 })
 

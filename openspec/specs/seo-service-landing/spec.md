@@ -32,9 +32,10 @@ The Polish landing's metadata title and H1 SHALL lead with the phrase
 "prowadzenie social media", and the page SHALL contain, in order: a scope
 section describing what the service covers, a pricing section stating a
 concrete starting price consistent with the homepage FAQ pricing answer, and
-a page-level FAQ whose questions cover the cluster's variants (at minimum:
-what the service includes). The FAQ SHALL NOT repeat the pricing section's
-question under the same heading. Draft copy SHALL be flagged for content-team
+a page-level FAQ carrying the cluster's remaining variants. No FAQ
+question SHALL repeat a heading from a section on the same page — those
+sections answer their own question in the open, so asking it again inside the
+accordion only grinds the topic. Draft copy SHALL be flagged for content-team
 approval before launch.
 
 #### Scenario: Title and H1 carry the head phrase
@@ -47,11 +48,11 @@ approval before launch.
 - **WHEN** the pricing section renders
 - **THEN** it states a starting price figure that matches the figure in the homepage FAQ pricing answer
 
-#### Scenario: Page FAQ covers the cluster variants without repeating the banner
+#### Scenario: Page FAQ does not echo the page's own headings
 
 - **WHEN** the page FAQ renders
-- **THEN** it answers at least "co obejmuje prowadzenie social media" (locale-equivalent phrasing on EN)
-- **AND** it carries no question whose heading repeats the pricing section's "ile kosztuje…" heading
+- **THEN** it carries at least one question
+- **AND** no question repeats a section heading from the same page, in either locale
 
 ### Requirement: The page emits FAQ structured data
 

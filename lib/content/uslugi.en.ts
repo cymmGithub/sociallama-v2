@@ -802,11 +802,6 @@ export const seoLandings = [
         heading: 'Questions about social media management',
         items: [
           {
-            question: 'What does social media management include?',
-            answer:
-              'Communication strategy, content planning and production — copy, graphics, video — publishing, comment and message moderation, running ad campaigns, and a monthly report with results and recommendations for the next period. We write the scope down before we start, so everyone knows exactly what the fee buys.',
-          },
-          {
             question: 'Is the ad budget included in the fee?',
             answer:
               'No. The fee for running your profiles and the media budget for campaigns are always billed separately. That way you can see what the team costs and what goes to the ad platforms — and compare agency quotes that bundle the two.',
