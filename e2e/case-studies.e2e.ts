@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page, test } from '@playwright/test'
+import { BLOB_HOST } from '@/lib/blob-store'
 import { foldDiacritics } from '@/lib/blog/search'
 import type { CaseStudySearchCopy } from '@/lib/content/case-studies'
 import { caseStudySearch as searchPl } from '@/lib/content/case-studies'
@@ -34,12 +35,23 @@ const HUBS = [
   copy: CaseStudySearchCopy
 }[]
 
-/** Card images, the requests the "clear costs nothing" claim is about. */
+/**
+ * Card images, the requests the "clear costs nothing" claim is about.
+ *
+ * Three shapes, because one image can take any of them: the optimizer, the
+ * Blob CDN (where uploads live once a write token is configured — so this is
+ * the deployed shape, while a token-less local run still sees the third), and
+ * Payload's retired proxy route.
+ */
 function trackImageRequests(page: Page): string[] {
   const urls: string[] = []
   page.on('request', (request) => {
     const url = request.url()
-    if (url.includes('/_next/image') || url.includes('/api/media/file')) {
+    if (
+      url.includes('/_next/image') ||
+      url.includes(BLOB_HOST) ||
+      url.includes('/api/media/file')
+    ) {
       urls.push(url)
     }
   })
@@ -80,6 +92,10 @@ for (const { locale, hub, prefix, copy } of HUBS) {
       // fetch again.
       const beforeFiltering = new Set(imageRequests)
       const requestsAtRest = imageRequests.length
+      // Without this the refetch assertion below passes on an empty list, and
+      // says nothing. Exactly how it would fail if the images moved to a host
+      // `trackImageRequests` does not know about.
+      expect(requestsAtRest).toBeGreaterThan(0)
 
       // —— A client's own name narrows the grid ——————————————————————————
       const firstCard = cards.first()

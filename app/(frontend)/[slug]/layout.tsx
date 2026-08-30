@@ -10,6 +10,6 @@ interface LayoutProps {
 /** Status gate above this segment's `loading.tsx`. See `gateOnPublishedSlug`. */
 export default async function PostLayout({ children, params }: LayoutProps) {
   const { slug } = await params
-  await gateOnPublishedSlug(slug, getPublishedPostSlugs)
+  await gateOnPublishedSlug(slug, () => getPublishedPostSlugs('pl'))
   return children
 }

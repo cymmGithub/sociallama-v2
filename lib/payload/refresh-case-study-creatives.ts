@@ -19,6 +19,12 @@
  *
  * Blob keys and the filename bump behave exactly as in refresh-case-study-logos.ts
  * — read that header before touching either.
+ *
+ * Nothing to purge afterwards: the media hook stamps `?v=<filesize>` on every
+ * URL, so new bytes arrive on a URL nothing has cached. Verify by reading the
+ * version in the rendered `src` — see "Replacing media bytes on prod" in
+ * CLAUDE.md, and do not reach for `vercel cache purge`, which cannot touch the
+ * Blob store's CDN.
  */
 
 import fs from 'node:fs'

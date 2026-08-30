@@ -31,7 +31,7 @@ interface PageProps {
 const BASE_PATH = ''
 
 export async function generateStaticParams() {
-  const slugs = await getPublishedPostSlugs()
+  const slugs = await getPublishedPostSlugs('pl')
   return staticParamsOrPlaceholder('slug', slugs, 'placeholder-bez-tresci')
 }
 

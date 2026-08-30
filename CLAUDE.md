@@ -59,10 +59,30 @@ round" report can be the site default.
 ## Replacing media bytes on prod
 
 `lib/payload/refresh-case-study-creatives.ts <paths…>` updates the existing
-media rows in place (never delete+recreate — pillars reference by id). After a
-`--prod` run, a deploy is **not** enough: `/api/media/file/*` ships
-`max-age=31536000` and `/_next/image` keeps variants built from the stale
-upstream for up to a year. Finish with
-`vercel cache purge --project sociallama-v2 --type cdn -y`, then verify in a
-real browser — bare `curl` hits a different Accept-negotiated cache entry than
-Chrome and reports false success.
+media rows in place (never delete+recreate — pillars reference by id). A deploy
+alone has never been enough: the bytes ship `max-age=31536000` and
+`/_next/image` keeps variants built from them for a year.
+
+**Do not reach for `vercel cache purge` here — it is the wrong tool now.**
+Media is served straight from the Vercel Blob store's own CDN
+(`<store>.public.blob.vercel-storage.com`, see `lib/blob-store.ts`), and that
+purge only clears *this project's* CDN. There is no purge for a blob URL; the
+only thing that reaches an already-cached copy is a different URL, which is
+Vercel's own documented answer for updated blob content.
+
+So the URL carries the version: the media collection's `afterRead` hook stamps
+`?v=<filesize>` on `url`, `thumbnailURL` and every `sizes[*].url`. Replacing
+bytes changes the filesize, which changes the URL, which nothing has cached —
+for the direct fetch and for `/_next/image` alike. Nothing to run afterwards.
+**Verify by reading the version in the rendered `src`**: an unchanged `?v=`
+means the upload did not land, and no amount of purging would have fixed that.
+
+Two things this does *not* cover:
+
+- **Assets under `public/`** (the branże walls, client logos on the marquee)
+  are still served by this project's CDN. They keep the old contract: bump
+  `?v=N` in the source **and** `vercel cache purge --project sociallama-v2
+  --type cdn -y`.
+- **Verification.** Always check in a real browser — bare `curl` hits a
+  different Accept-negotiated cache entry than Chrome and reports false
+  success.

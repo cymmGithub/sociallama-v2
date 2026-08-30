@@ -18,8 +18,10 @@ import type * as pl from '@/lib/content/blog'
 import { APP_BASE_URL } from '@/lib/env'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
+import { mediaSource } from '@/lib/payload/media-refs'
 import {
   focalPosition,
+  getRecentPostSlugs,
   getRelatedPosts,
   resolveCategory,
   resolveMedia,
@@ -92,6 +94,19 @@ export async function PostArticle({
   } catch {
     related = []
   }
+
+  // Sequential, not concurrent with the read above: parallel Payload queries
+  // deadlock static generation. Derived from an already-cached slug list, so
+  // this costs no extra DB round trip.
+  const recentSlugs = await getRecentPostSlugs(locale)
+  const unoptimized = !recentSlugs.has(post.slug)
+  /* The cover stays on the optimizer whatever the post's age. It is one image
+     per page and the preloaded LCP element, and `minimumCacheTTL` is a year
+     now — a few hundred transformations a year is not the cost this change
+     exists to remove; that was the whole 726-file corpus re-expiring monthly
+     across 16 widths. Body images and listing cards, which are many per page,
+     still opt out. */
+  const coverSource = mediaSource(cover, false)
 
   const body = post.content
     ? splitBeforeHeading(post.content, ctaSplitOrdinal(toc, CTA_BEFORE_H2))
@@ -177,10 +192,10 @@ export async function PostArticle({
               </div>
             </div>
             {/* No cover means no empty media box — the stage just closes up. */}
-            {cover?.url && (
+            {cover && coverSource && (
               <div className={s.cover}>
                 <Image
-                  src={cover.url}
+                  src={coverSource.url}
                   alt={cover.alt}
                   fill
                   objectFit="cover"
@@ -188,6 +203,7 @@ export async function PostArticle({
                   desktopSize="48vw"
                   style={focalPosition(cover)}
                   preload
+                  unoptimized={false}
                 />
               </div>
             )}
@@ -228,6 +244,7 @@ export async function PostArticle({
                   fallbackHref={hubPath}
                   locale={locale}
                   toc={toc}
+                  unoptimized={unoptimized}
                 />
                 {inlineCta}
                 {body.after && (
@@ -239,6 +256,7 @@ export async function PostArticle({
                     headingOffset={body.headingsBefore}
                     locale={locale}
                     toc={toc}
+                    unoptimized={unoptimized}
                   />
                 )}
               </div>
@@ -270,6 +288,7 @@ export async function PostArticle({
                     content={content.postCard}
                     locale={locale}
                     post={item}
+                    unoptimized={!recentSlugs.has(item.slug)}
                   />
                 </li>
               ))}

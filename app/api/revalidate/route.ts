@@ -16,7 +16,7 @@ import { getClientIP, rateLimit, rateLimiters } from '@/lib/utils/rate-limit'
  * only reach the cache from *inside* the deployed app. A maintenance script
  * writing straight to the production database runs outside any Next request
  * scope, where `revalidateTag` throws and the hook swallows it, so the data
- * changes and the pages keep serving the old cache for `cacheLife('days')`.
+ * changes and the pages keep serving the old cache for `cacheLife('weeks')`.
  * Redeploying fixes it; this exists so redeploying is not the only way.
  */
 

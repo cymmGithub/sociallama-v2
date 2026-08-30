@@ -33,8 +33,10 @@ Media serving is the dominant cost driver on both bills, measured 2026-08-29/30:
   and baked into cached HTML/OG tags). Static rule, no DB involved.
 - **Optimizer allowlist** gains the blob hostname in `images.remotePatterns`
   (today only `cdn.shopify.com`).
-- **Posts outside the newest 15 render images `unoptimized`** — article body
-  (rich-text upload converter) and listing/hub cards. Pre-sized WP exports
+- **Posts outside the newest 15 render body images and listing cards
+  `unoptimized`** — the many-per-page images. The cover is not in scope: it is
+  one image per page and the LCP element, so it stays on the optimizer (tasks
+  §6.2). Pre-sized WP exports
   gain nothing from resize; this removes their transformations and cache
   writes. The window derives from the already-cached `getPublishedPostSlugs()`
   (tag `posts`), so it moves automatically on publish, no cron, no migration.
@@ -62,6 +64,14 @@ Media serving is the dominant cost driver on both bills, measured 2026-08-29/30:
   `/api/media/file/*` proxy route is retired (redirect preserves inbound
   links).
 
+- **Media URLs carry `?v=<filesize>`.** Bytes are replaced in place under an
+  unchanged filename, so without a version a re-cut is invisible to everything
+  holding the year-long cached copy — and once the bytes come from the Blob
+  store, `vercel cache purge` cannot reach them (it clears this project's CDN).
+  A version in the URL is Vercel's documented answer for updated blob content
+  and mirrors the `?v=N` convention `public/` assets already use. Filesize, not
+  `updatedAt`, so editing alt text does not churn every image URL.
+
 ## Impact
 
 - `payload.config.ts` — plugin flag.
@@ -69,14 +79,26 @@ Media serving is the dominant cost driver on both bills, measured 2026-08-29/30:
   (blob host derived from `BLOB_READ_WRITE_TOKEN` store id at config time).
 - `app/robots.ts` — the `/api/media/` allow entry becomes moot; update the
   comment (blob host serves images now).
+- `lib/blob-store.ts` (new) — the store host, written once and imported by both
+  `next.config.ts` and the media collection, so the redirect cannot drift from
+  the URLs.
+- `lib/payload/media-ops.ts`, `CLAUDE.md`, `refresh-case-study-creatives.ts` —
+  the byte-replacement procedure: no CDN purge, verify the `?v=` instead.
 - `lib/payload/queries.ts` — `cacheLife` values + a `isRecentPost`-style
   helper for the top-15 window.
 - `app/(frontend)/[slug]/rich-text.tsx` (upload converter), post article
   wiring, and blog listing/hub card components — thread the
   `optimized`/`unoptimized` flag.
 - **Risks / accepted trade-offs:**
-  - Old posts serve original JPG/PNG (no webp, no srcset): ~20–30% heavier
-    for human visitors. Accepted — their traffic is overwhelmingly bots.
+  - Old posts serve their images without webp or srcset. The "~20–30% heavier,
+    accepted because the traffic is bots" estimate this change was written on
+    turned out to be measured against the *listing* variants; the post hero and
+    hub lead pass the **original upload**, which across the archive is
+    unprocessed stock at DSLR resolution — 61.8 MiB over 60 covers, the worst
+    of them 20.7 MiB at 6240px against a 128 KiB `card` variant sitting right
+    beside it. See tasks §6: the opt-out has to render the generated variant,
+    not the original, and that is a prerequisite of this change rather than a
+    follow-up.
   - Image URLs move hosts → Google Images re-crawl churn; the permanent
     redirect mitigates.
   - Local dev without `BLOB_READ_WRITE_TOKEN` falls back to local storage

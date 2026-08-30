@@ -171,6 +171,7 @@ export function CaseStudyArticle({
                 fallbackHref={linkFallback}
                 locale={locale}
                 data={study.client.about}
+                unoptimized={false}
               />
             </div>
           </section>
@@ -188,6 +189,7 @@ export function CaseStudyArticle({
                 fallbackHref={linkFallback}
                 locale={locale}
                 data={study.challenge}
+                unoptimized={false}
               />
             </div>
           </section>
@@ -304,6 +306,7 @@ export function CaseStudyArticle({
                             data={pillar.body}
                             fallbackHref={linkFallback}
                             locale={locale}
+                            unoptimized={false}
                           />
                         </div>
                       )}

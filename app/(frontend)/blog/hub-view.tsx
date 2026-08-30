@@ -2,7 +2,12 @@ import { Wrapper } from '@/components/layout/wrapper'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
-import type { BlogHubData, PostsPage, SearchEntry } from '@/lib/payload/queries'
+import {
+  type BlogHubData,
+  getRecentPostSlugs,
+  type PostsPage,
+  type SearchEntry,
+} from '@/lib/payload/queries'
 import type { Category } from '@/payload-types'
 import s from './blog.module.css'
 import { HubFeatured } from './hub-featured'
@@ -47,7 +52,7 @@ interface HubViewCopy {
  * labels and the path props localize every link. Pagination rides `hubPath`:
  * page 1 is the hub itself.
  */
-export function BlogHubView({
+export async function BlogHubView({
   data,
   postsPage,
   categories,
@@ -71,6 +76,8 @@ export function BlogHubView({
   categoryPath: string
   locale: Locale
 }) {
+  const recentSlugs = await getRecentPostSlugs(locale)
+
   return (
     <Wrapper theme="cream">
       <div className={s.listing}>
@@ -99,6 +106,7 @@ export function BlogHubView({
                 content={content.hub}
                 locale={locale}
                 popular={data.popular}
+                recentSlugs={recentSlugs}
                 shortList={data.shortList}
               />
               {/* Absent video = no section at all, not an empty frame. */}
@@ -122,6 +130,7 @@ export function BlogHubView({
                       key={post.id}
                       locale={locale}
                       post={post}
+                      unoptimized={!recentSlugs.has(post.slug)}
                     />
                   ))}
                 </div>

@@ -4,7 +4,7 @@ import { Link } from '@/components/ui/link'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
-import type { PostsPage } from '@/lib/payload/queries'
+import { getRecentPostSlugs, type PostsPage } from '@/lib/payload/queries'
 import type { Category } from '@/payload-types'
 import s from './blog.module.css'
 import { Pagination } from './pagination'
@@ -36,7 +36,7 @@ interface BlogListingProps {
  * Shared by both locales: posts and categories are locale-resolved by the page,
  * `content` carries the copy, and the path props localize every link.
  */
-export function BlogListing({
+export async function BlogListing({
   heading,
   content,
   listingPath,
@@ -48,6 +48,8 @@ export function BlogListing({
   categories,
   activeCategory,
 }: BlogListingProps) {
+  const recentSlugs = await getRecentPostSlugs(locale)
+
   return (
     <Wrapper theme="cream">
       <section className={s.listing}>
@@ -85,6 +87,7 @@ export function BlogListing({
                   content={content.postCard}
                   basePath={basePath}
                   locale={locale}
+                  unoptimized={!recentSlugs.has(post.slug)}
                 />
               ))}
             </div>

@@ -974,7 +974,7 @@ if (!APPLY) console.log('Dry run — pass --apply to write.')
  * `afterChange` hook calls `revalidateTag`, but `safeRevalidate` deliberately
  * swallows the throw when there is no Next request scope — which is exactly this
  * script — so the data changes and the pages keep serving the old cache for
- * `cacheLife('days')`. Every removal here stayed invisible on the deployed site
+ * `cacheLife('weeks')`. Every removal here stayed invisible on the deployed site
  * until the tags were expired by hand.
  *
  * So the script does it itself rather than trusting anyone to remember. Target

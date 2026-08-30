@@ -15,11 +15,16 @@
  *    production run while `media/` holds any file at all.
  * 2. **Stale pages.** Collection hooks revalidate through `revalidateTag`, which
  *    throws outside a Next request and is swallowed — a CLI write invalidates
- *    nothing for `cacheLife('days')`. Here: `finish()` POSTs every touched tag
+ *    nothing for `cacheLife('weeks')`. Here: `finish()` POSTs every touched tag
  *    to `/api/revalidate`, and the secret is checked before the first write.
- * 3. **Year-old optimizer variants.** `/_next/image` caches variants of the old
- *    bytes; a deploy does not clear them. Here: `finish()` purges the CDN when
- *    bytes changed.
+ * 3. **Year-old cached bytes.** Media is served straight from the Blob CDN and
+ *    `/_next/image` caches variants of it, both for a year, and a deploy clears
+ *    neither. `vercel cache purge` never reached the Blob store, and now that
+ *    the bytes come from there it would not help even for the original file.
+ *    Here: the media collection's `afterRead` hook stamps `?v=<filesize>` on
+ *    every URL, so replacing bytes under the same filename produces a URL
+ *    nothing has cached — for the direct fetch and the optimizer alike
+ *    (lib/payload/collections/media.ts).
  * 4. **Diverged environments.** Dev and prod can point one field at different
  *    rows. Here: `repointRelation` takes the list of filenames the plan expects
  *    and reports `stale` — never writes — on a third value.
@@ -766,12 +771,19 @@ export async function repointPillarMedia(
 // —— finish —————————————————————————————————————————————————————————————————
 
 /**
- * End the run: revalidate what changed, purge the CDN if bytes changed, print
- * the rollback lines.
+ * End the run: revalidate what changed and print the rollback lines.
  *
  * One POST carrying every tag — `/api/revalidate` is rate-limited. On a dev or
  * report-only run the calls are printed, not made, so the log shows exactly
  * what production would do.
+ *
+ * No CDN purge any more. It used to be here because `/api/media/file/*` was
+ * served by this project's CDN with a year on it, so replacing bytes under an
+ * unchanged filename left the old picture in place. Media now comes from the
+ * Blob store's own CDN, which `vercel cache purge` cannot touch at all — so
+ * the fix moved to where it always belonged: the URL itself changes, because
+ * the media hook stamps `?v=<filesize>` on it. A purge would only throw away
+ * this project's warm page cache for nothing.
  */
 export async function finish(ctx: Ctx): Promise<void> {
   if (ctx.rollback.length) {
@@ -790,11 +802,6 @@ export async function finish(ctx: Ctx): Promise<void> {
 
   if (!(ctx.prod && ctx.apply)) {
     console.log(`\nOn --apply --prod this run would POST ${url}`)
-    if (ctx.bytesChanged || !ctx.apply) {
-      console.log(
-        'and then: vercel cache purge --project sociallama-v2 --type cdn -y'
-      )
-    }
     return
   }
 
@@ -806,25 +813,18 @@ export async function finish(ctx: Ctx): Promise<void> {
   if (!res.ok) {
     throw new Error(
       `revalidate failed (${res.status}): ${body.slice(0, 200)} — the data is ` +
-        'written; re-run this POST by hand or the pages stay stale for a day.'
+        'written; re-run this POST by hand or the pages stay stale for weeks.'
     )
   }
   console.log(`\nRevalidated ${tags.length} tag(s): ${body.slice(0, 160)}`)
 
   if (ctx.bytesChanged) {
-    const { spawnSync } = await import('node:child_process')
-    const r = spawnSync(
-      'vercel',
-      ['cache', 'purge', '--project', 'sociallama-v2', '--type', 'cdn', '-y'],
-      { encoding: 'utf-8' }
+    console.log(
+      'Bytes changed — the new pictures ride a new `?v=<filesize>` URL, so ' +
+        'nothing cached under the old one is in the way. Check the rendered ' +
+        'src carries the new version; an unchanged `?v=` means the upload did ' +
+        'not land.'
     )
-    if (r.status !== 0) {
-      throw new Error(
-        `CDN purge failed: ${r.stderr || r.stdout} — /_next/image will serve ` +
-          'old variants for up to a year until it is run by hand.'
-      )
-    }
-    console.log('CDN purged.')
   }
   console.log(
     'Verify in a real browser, not curl — and wait ~10 s: a read inside the ' +

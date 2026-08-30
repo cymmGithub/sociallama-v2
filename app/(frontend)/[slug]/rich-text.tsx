@@ -14,6 +14,7 @@ import { Link } from '@/components/ui/link'
 import { slugifyHeading } from '@/lib/blog/heading-slug'
 import { type TocEntry, trackedHeading } from '@/lib/blog/toc'
 import type { Locale } from '@/lib/i18n/slug-map'
+import { mediaSource } from '@/lib/payload/media-refs'
 import type { Media } from '@/payload-types'
 import s from './post.module.css'
 
@@ -118,19 +119,28 @@ export function linkHref(
   return hrefForRelation(String(doc.relationTo), slug, paths, locale)
 }
 
-function UploadImage({ node }: { node: SerializedUploadNode }) {
+function UploadImage({
+  node,
+  unoptimized,
+}: {
+  node: SerializedUploadNode
+  unoptimized: boolean
+}) {
   if (node.relationTo !== 'media' || typeof node.value !== 'object') {
     return null
   }
   const media = node.value as Media
-  if (!media.url) {
+  // Not `media.url`: an unoptimized render ships `src` verbatim, so it takes
+  // the generated variant rather than the original upload (see `mediaSource`).
+  const source = mediaSource(media, unoptimized)
+  if (!source) {
     return null
   }
 
   return (
     <span className={s.figure}>
       <Image
-        src={media.url}
+        src={source.url}
         // `payload-types` declares `alt` as a plain `string`, and since it
         // became `localized: true` that is a lie on this surface: blog queries
         // read with `fallbackLocale: false` for the design D6 gate, which
@@ -140,11 +150,12 @@ function UploadImage({ node }: { node: SerializedUploadNode }) {
         // image decorative, which is the correct degradation when there is
         // genuinely no description to give.
         alt={media.alt ?? ''}
-        {...(media.width && media.height
-          ? { width: media.width, height: media.height }
+        {...(source.width && source.height
+          ? { width: source.width, height: source.height }
           : { fill: true })}
         mobileSize="100vw"
         desktopSize="72vw"
+        unoptimized={unoptimized}
       />
     </span>
   )
@@ -162,7 +173,8 @@ function makeConverters(
   toc: readonly TocEntry[] | undefined,
   headingOffset: number,
   paths: PostPaths,
-  locale: Locale
+  locale: Locale,
+  unoptimized: boolean
 ): JSXConvertersFunction<DefaultNodeTypes> {
   let index = headingOffset
 
@@ -199,7 +211,7 @@ function makeConverters(
         {nodesToJSX({ nodes: node.children })}
       </Link>
     ),
-    upload: ({ node }) => <UploadImage node={node} />,
+    upload: ({ node }) => <UploadImage node={node} unoptimized={unoptimized} />,
   })
 }
 
@@ -208,6 +220,7 @@ export function PostRichText({
   toc,
   headingOffset = 0,
   locale,
+  unoptimized,
   ...paths
 }: PostPaths & {
   data: SerializedEditorState
@@ -224,10 +237,26 @@ export function PostRichText({
    * English document.
    */
   locale: Locale
+  /**
+   * Skip Next's image optimizer for body images — true for posts outside the
+   * newest `OPTIMIZED_POST_COUNT` (lib/payload/queries.ts).
+   *
+   * Required, not defaulted, for the reason `PostCard` gives: a default would
+   * have to pick a direction, and the safe-looking one (optimize) is the
+   * expensive one. Case studies pass `false` and mean it — their creatives are
+   * current artwork, not a 2020 export.
+   */
+  unoptimized: boolean
 }) {
   return (
     <RichText
-      converters={makeConverters(toc, headingOffset, paths, locale)}
+      converters={makeConverters(
+        toc,
+        headingOffset,
+        paths,
+        locale,
+        unoptimized
+      )}
       data={data}
     />
   )

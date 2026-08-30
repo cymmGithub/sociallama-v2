@@ -1,6 +1,7 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
+import { BLOB_HOST } from './lib/blob-store'
 import { wpRedirects } from './lib/wp-redirects'
 
 // --- Storybook proxy ---------------------------------------------------------
@@ -12,6 +13,17 @@ import { wpRedirects } from './lib/wp-redirects'
 const STORYBOOK_URL = process.env.NEXT_PUBLIC_STORYBOOK_URL?.replace(/\/+$/, '')
 const STORYBOOK_PROXY_ENABLED =
   Boolean(STORYBOOK_URL) && process.env.VERCEL_ENV !== 'production'
+// -----------------------------------------------------------------------------
+
+// --- Media ------------------------------------------------------------------
+// Uploads live in Vercel Blob only when a write token is configured; without
+// one they fall back to disk and Payload's own `/api/media/file/*` route is the
+// real serving path. `lib/payload/collections/media.ts` gates its URL rewrite
+// on the same variable, so the redirect below has to gate on it too — the two
+// describe one fact. Redirecting unconditionally strands local dev and CI:
+// their media URLs are still proxy paths, and `/_next/image` cannot follow a
+// redirect to another origin, so every image 400s.
+const MEDIA_ON_BLOB = Boolean(process.env.BLOB_READ_WRITE_TOKEN)
 // -----------------------------------------------------------------------------
 
 const nextConfig: NextConfig = {
@@ -131,7 +143,7 @@ const nextConfig: NextConfig = {
        catch-all entry must stay or every plain public/ image breaks. The two
        logo families may carry a `?v=N` cache-bust (see clients.ts and the
        branze related cards): the optimizer's variant cache keys on the URL and
-       lives minimumCacheTTL (30 days), so an in-place byte replacement never
+       lives minimumCacheTTL (a year), so an in-place byte replacement never
        propagates on its own — bumping the version is the only reliable way. */
     localPatterns: [
       { pathname: '/assets/clients/**' },
@@ -143,8 +155,21 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.shopify.com',
       },
+      // Payload uploads. Only the newest posts' images pass through the
+      // optimizer (`OPTIMIZED_POST_COUNT` in lib/payload/queries.ts); the rest
+      // render `unoptimized` straight off the Blob CDN and never reach this
+      // list.
+      {
+        protocol: 'https',
+        hostname: BLOB_HOST,
+      },
     ],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    /* A year. The short TTL bought nothing: replacing a file in place already
+       requires a `?v=N` bump (see localPatterns above), because the variant
+       cache keys on the URL. All 30 days did was expire the whole variant
+       corpus monthly and have crawler traffic pay to rebuild it
+       (reduce-media-serving-costs). */
+    minimumCacheTTL: 60 * 60 * 24 * 365,
     qualities: [90],
     /* WebP only: the optimizer's AVIF output is squashed (750×563 from a
        1370×1080 source) and range-flagged pc while the pixels are limited —
@@ -222,7 +247,23 @@ const nextConfig: NextConfig = {
   // 301 to their v2 equivalents — generated module, see lib/wp-redirects.ts.
   // Legacy /blog/page/N needs no rule: the v2 hub uses the same pagination
   // shape (blog/page/[number]) and serves it as 200.
-  redirects: async () => wpRedirects,
+  // Retired media proxy: `/api/media/file/*` used to be Payload's static
+  // handler. Those URLs are indexed by Google and baked into cached HTML and
+  // OG tags, so they 308 to the same filename on the Blob CDN — a static rule,
+  // no function body, no DB. Blob keys are flat (no collection prefix), so the
+  // filename passes through unchanged.
+  redirects: async () => [
+    ...wpRedirects,
+    ...(MEDIA_ON_BLOB
+      ? [
+          {
+            source: '/api/media/file/:file*',
+            destination: `https://${BLOB_HOST}/:file*`,
+            permanent: true,
+          },
+        ]
+      : []),
+  ],
   rewrites: async () =>
     STORYBOOK_PROXY_ENABLED
       ? [

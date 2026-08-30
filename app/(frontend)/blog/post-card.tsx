@@ -25,11 +25,20 @@ export function PostCard({
   content,
   basePath,
   locale,
+  unoptimized,
 }: {
   post: Post
   content: Localized<typeof pl.postCard>
   basePath: string
   locale: Locale
+  /**
+   * Skip Next's image optimizer for this card's cover. Required rather than
+   * defaulted: every listing has to decide, and a missed call site would
+   * quietly keep re-billing transformations for the old corpus
+   * (reduce-media-serving-costs). The caller compares the post against
+   * `getRecentPostSlugs()`.
+   */
+  unoptimized: boolean
 }) {
   const category = resolveCategory(post.category)
   const author = resolvePostAuthor(post, locale)
@@ -48,6 +57,7 @@ export function PostCard({
             mobileSize="100vw"
             desktopSize="33vw"
             style={focalPosition(cover)}
+            unoptimized={unoptimized}
           />
         )}
       </span>

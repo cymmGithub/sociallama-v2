@@ -70,7 +70,7 @@ const APPLY = process.argv.includes('--apply')
  * This script writes straight to the database, which is outside any Next
  * request scope — `revalidateTag` throws there and `lib/payload/revalidate.ts`
  * swallows it, so the data changes and the deployed pages keep serving the old
- * cache for `cacheLife('days')`. Without this step the spot-checks that follow
+ * cache for `cacheLife('weeks')`. Without this step the spot-checks that follow
  * a wave read a stale page and report the translations as missing, sending
  * someone to debug a translation engine that worked.
  *

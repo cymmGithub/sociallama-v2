@@ -22,7 +22,7 @@ The admin panel SHALL display in Polish: `i18n` configured with Polish via `@pay
 - **THEN** the Payload UI chrome and collection/field labels appear in Polish
 
 ### Requirement: Postgres and Blob infrastructure
-Payload SHALL use the `@payloadcms/db-postgres` adapter with a Neon Postgres connection string from `DATABASE_URL`, and `@payloadcms/storage-vercel-blob` for media files via `BLOB_READ_WRITE_TOKEN`. `PAYLOAD_SECRET` SHALL be required. Env vars SHALL be validated with Zod following the repo's integration env pattern, failing loudly with setup instructions when missing.
+Payload SHALL use the `@payloadcms/db-postgres` adapter with a Neon Postgres connection string from `DATABASE_URL`, and `@payloadcms/storage-vercel-blob` for media files via `BLOB_READ_WRITE_TOKEN`. `PAYLOAD_SECRET` SHALL be required. Env vars SHALL be validated with Zod following the repo's integration env pattern, failing loudly with setup instructions when missing. Uploaded bytes SHALL be served by the Blob CDN rather than through Payload's own upload route — see the `media-serving-policy` capability, which owns where media URLs point and what they cost.
 
 #### Scenario: Missing configuration
 - **WHEN** the app starts without `DATABASE_URL` or `PAYLOAD_SECRET`
@@ -30,7 +30,7 @@ Payload SHALL use the `@payloadcms/db-postgres` adapter with a Neon Postgres con
 
 #### Scenario: Media upload
 - **WHEN** an editor uploads an image in the admin panel
-- **THEN** the file is stored in Vercel Blob and served via the media collection with generated sizes
+- **THEN** the file is stored in Vercel Blob with its generated sizes, and the media collection exposes URLs that address the store directly
 
 ### Requirement: Posts collection
 A `posts` collection SHALL exist with fields: `title` (required), `slug` (required, unique, URL-safe), `excerpt`, `cover` (relation to media), `content` (Lexical rich text), `category` (relation to categories, required), `publishedAt` (datetime), and an SEO group (`metaTitle`, `metaDescription`, `ogImage` with fallback to cover). Drafts and versions SHALL be enabled; only published posts are publicly visible. Post slugs SHALL be validated against a reserved-slug list (at minimum: `blog`, `category`, `admin`, `api`, `en`, and existing top-level routes) exported as a single constant.

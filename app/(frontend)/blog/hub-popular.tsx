@@ -31,11 +31,13 @@ function PopularPost({
   content,
   basePath,
   locale,
+  unoptimized,
 }: {
   post: Post
   content: Localized<typeof pl.hub>
   basePath: string
   locale: Locale
+  unoptimized: boolean
 }) {
   const author = resolvePostAuthor(post, locale)
   const cover = resolveMedia(post.cover)
@@ -56,6 +58,7 @@ function PopularPost({
               objectFit="cover"
               src={coverUrl}
               style={focalPosition(cover)}
+              unoptimized={unoptimized}
             />
           </span>
         )}
@@ -85,12 +88,20 @@ export function HubPopular({
   content,
   basePath,
   locale,
+  recentSlugs,
 }: {
   popular: Post | null
   shortList: Post[]
   content: Localized<typeof pl.hub>
   basePath: string
   locale: Locale
+  /**
+   * Posts whose images still go through Next's image optimizer
+   * (`getRecentPostSlugs()`). The set rather than a flag, because this section
+   * owns the short-list loop and each row decides for itself
+   * (reduce-media-serving-costs).
+   */
+  recentSlugs: ReadonlySet<string>
 }) {
   if (shortList.length === 0 && !popular) {
     return null
@@ -120,6 +131,7 @@ export function HubPopular({
                       objectFit="cover"
                       src={coverUrl}
                       style={focalPosition(cover)}
+                      unoptimized={!recentSlugs.has(post.slug)}
                     />
                   )}
                 </span>
@@ -141,6 +153,7 @@ export function HubPopular({
           content={content}
           locale={locale}
           post={popular}
+          unoptimized={!recentSlugs.has(popular.slug)}
         />
       )}
     </section>

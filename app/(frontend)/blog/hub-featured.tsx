@@ -6,6 +6,7 @@ import { readingTimeMinutes } from '@/lib/blog/reading-time'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import type { Locale } from '@/lib/i18n/slug-map'
+import { mediaSource } from '@/lib/payload/media-refs'
 import {
   focalPosition,
   resolveCategory,
@@ -40,12 +41,15 @@ function FeaturedPost({
   const category = resolveCategory(post.category)
   const author = resolvePostAuthor(post, locale)
   const cover = resolveMedia(post.cover)
+  // Optimized whatever the post's age, for the reason PostArticle's cover
+  // gives: one image per page, and the hub's LCP element.
+  const coverSource = mediaSource(cover, false)
   const readingTime = post.content ? readingTimeMinutes(post.content) : null
 
   return (
     <Link className={s.lead} href={`${basePath}/${post.slug}`}>
       {/* No cover means no empty media box — the block just closes up. */}
-      {cover?.url && (
+      {coverSource && cover && (
         <span className={s.leadMedia}>
           {/* LCP candidate on the hub, so it preloads. `preload` is the
               wrapper's own prop — passing Next's deprecated `priority` instead
@@ -57,8 +61,9 @@ function FeaturedPost({
             mobileSize="100vw"
             objectFit="cover"
             preload
-            src={cover.url}
+            src={coverSource.url}
             style={focalPosition(cover)}
+            unoptimized={false}
           />
         </span>
       )}

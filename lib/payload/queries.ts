@@ -11,7 +11,7 @@ import type {
   Post,
   SocialPlatform,
 } from '@/payload-types'
-import { resolveMedia } from './media-refs'
+import { mediaSource, resolveMedia } from './media-refs'
 
 /**
  * Cached Local API queries for the blog routes.
@@ -78,7 +78,7 @@ async function findPostBySlug(
 ): Promise<Post | null> {
   'use cache'
   cacheTag('posts', `post:${slug}`)
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -118,12 +118,19 @@ async function findDraftPostBySlug(
   return result.docs[0] ?? null
 }
 
-async function findPublishedPostSlugs(
-  locale: Locale = 'pl'
-): Promise<string[]> {
+/**
+ * Every published slug, newest first.
+ *
+ * `locale` is required rather than defaulted: both this and its `cache()`
+ * wrapper key on the argument list, so a caller relying on a default would get
+ * its own cache entry — a second copy of the same array and a second
+ * `payload.find()` per revalidation window, for the locale that already had
+ * one.
+ */
+async function findPublishedPostSlugs(locale: Locale): Promise<string[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -132,10 +139,38 @@ async function findPublishedPostSlugs(
     limit: 0,
     pagination: false,
     select: { slug: true },
+    // The route gates that consume this only ask "is this slug published", but
+    // `findRecentPostSlugs` takes the head of the list, so the order has to
+    // mean something.
+    sort: '-publishedAt',
     locale,
     ...READ,
   })
   return result.docs.map((doc) => doc.slug)
+}
+
+/**
+ * How many of the newest posts keep Next's image optimizer.
+ *
+ * Everything older renders `unoptimized`: those images are 2020 WordPress
+ * exports, already sized (`*-1024x640.jpg`), so a resize buys a few percent of
+ * bytes — while each variant costs a transformation plus an optimization-cache
+ * write, re-billed every time the cache expires, driven by crawler traffic
+ * rather than readers (reduce-media-serving-costs). Recent posts keep webp and
+ * srcset, where the covers are new artwork and the human traffic actually is.
+ */
+export const OPTIMIZED_POST_COUNT = 15
+
+/**
+ * Slugs of the newest published posts — the ones whose images still go through
+ * the optimizer. Derived from the cached slug list rather than its own query,
+ * so the window moves on publish with no cron and no extra DB read.
+ */
+async function findRecentPostSlugs(
+  locale: Locale
+): Promise<ReadonlySet<string>> {
+  const slugs = await getPublishedPostSlugs(locale)
+  return new Set(slugs.slice(0, OPTIMIZED_POST_COUNT))
 }
 
 /** Newest published post, for the homepage NewsLAMA section. */
@@ -183,7 +218,7 @@ async function findPostsPage(
 ): Promise<PostsPage> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -213,7 +248,7 @@ async function findPostsPage(
 async function findCategories(locale: Locale = 'pl'): Promise<Category[]> {
   'use cache'
   cacheTag('categories')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -238,7 +273,7 @@ async function findCategoryBySlug(
 ): Promise<Category | null> {
   'use cache'
   cacheTag('categories')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -261,7 +296,7 @@ async function findPostsForSitemap(
 ): Promise<Pick<Post, 'id' | 'slug' | 'updatedAt'>[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -284,7 +319,7 @@ async function findPostsForLlms(
 ): Promise<Pick<Post, 'title' | 'slug' | 'excerpt'>[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -312,7 +347,7 @@ async function findCaseStudyBySlug(
 ): Promise<CaseStudy | null> {
   'use cache'
   cacheTag('case-studies', `case-study:${slug}`)
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -345,7 +380,7 @@ async function findDraftCaseStudyBySlug(
 async function findPublishedCaseStudySlugs(): Promise<string[]> {
   'use cache'
   cacheTag('case-studies')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -362,7 +397,7 @@ async function findPublishedCaseStudySlugs(): Promise<string[]> {
 async function findCaseStudies(locale: Locale = 'pl'): Promise<CaseStudy[]> {
   'use cache'
   cacheTag('case-studies')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -384,7 +419,7 @@ async function findCaseStudiesForSitemap(): Promise<
 > {
   'use cache'
   cacheTag('case-studies')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -410,7 +445,7 @@ async function findPostsForPlatform(
 ): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -447,7 +482,7 @@ async function findPostsForCategories(
 ): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -486,7 +521,7 @@ async function findRelatedPosts(
 ): Promise<Post[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const picked: Post[] = []
@@ -549,7 +584,7 @@ async function findPostSlugInLocale(
 ): Promise<string | null> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -571,7 +606,7 @@ async function findCategorySlugInLocale(
 ): Promise<string | null> {
   'use cache'
   cacheTag('categories')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -602,7 +637,7 @@ export interface SearchEntry {
 async function findSearchIndex(locale: Locale = 'pl'): Promise<SearchEntry[]> {
   'use cache'
   cacheTag('posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -718,7 +753,7 @@ function resolveSpotlight(video: BlogHub['video']): VideoSpotlight | null {
 async function findBlogHub(locale: Locale = 'pl'): Promise<BlogHubData> {
   'use cache'
   cacheTag('blog-hub', 'posts')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
 
@@ -777,7 +812,7 @@ async function findBlogHub(locale: Locale = 'pl'): Promise<BlogHubData> {
 async function findSocialPlatforms(): Promise<SocialPlatform[]> {
   'use cache'
   cacheTag('social-platforms')
-  cacheLife('days')
+  cacheLife('weeks')
 
   const payload = await getPayload({ config })
   const result = await payload.find({
@@ -800,6 +835,7 @@ export const getPostBySlug = cache(findPostBySlug)
 export const getLatestPost = cache(findLatestPost)
 export const getDraftPostBySlug = cache(findDraftPostBySlug)
 export const getPublishedPostSlugs = cache(findPublishedPostSlugs)
+export const getRecentPostSlugs = cache(findRecentPostSlugs)
 export const getPostsPage = cache(findPostsPage)
 export const getCategories = cache(findCategories)
 export const getCategoryBySlug = cache(findCategoryBySlug)
@@ -847,7 +883,7 @@ export function caseStudyHeadline(title: string): string {
 
 /* Defined in the leaf `media-refs.ts`, which carries the why; re-exported so
    existing callers keep their import path. Prefer the leaf in new code. */
-export { resolveMedia }
+export { mediaSource, resolveMedia }
 
 /**
  * A media row's focal point as an `object-position` style for an
