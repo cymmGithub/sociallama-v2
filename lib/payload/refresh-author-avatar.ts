@@ -12,6 +12,16 @@
  * way ids do. Replacing bytes in place keeps the id the author relation points
  * at, which delete-and-recreate would strand.
  *
+ * Payload names the stored object after the SOURCE FILE'S BASENAME, not after
+ * the row being updated, so the bytes are staged through a temp copy named for
+ * the row. Skipping that step cost a production incident: the source was
+ * `katarzyna-kaptur.png` against a row named
+ * `katarzyna-kaptur-headshot-blog.png`, `clearBlobs` removed the row's real
+ * object, and the upload then landed under `katarzyna-kaptur-1.png` because
+ * `getSafeFileName` bumps a name it thinks is taken. Every other
+ * `replaceMediaBytes` caller happens to pass a path whose basename already
+ * equals the row's filename, which is why the trap was invisible.
+ *
  * Nothing to purge afterwards: the media hook stamps `?v=<filesize>` on every
  * URL, so new bytes arrive on a URL nothing has cached. `finish()` still
  * revalidates the blog tags, because the author card is rendered into the
@@ -19,6 +29,8 @@
  */
 
 import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import { begin, finish, replaceMediaBytes } from '@/lib/payload/media-ops'
 
 const APPLY = process.argv.includes('--apply')
@@ -60,12 +72,24 @@ if (!avatar?.filename) {
 }
 console.log(`${name} (#${author.id}) → media ${avatar.id} ${avatar.filename}`)
 
-const verdict = await replaceMediaBytes(ctx, {
-  file: avatar.filename,
-  fromPath: file,
-  tags: ['posts', 'blog-hub'],
-})
-console.log(`  ${verdict}`)
+// Stage under the row's own filename — see the header. A no-op copy when the
+// two already agree, which is the only case the shared helper was built for.
+const staged = path.join(
+  fs.mkdtempSync(path.join(os.tmpdir(), 'author-avatar-')),
+  avatar.filename
+)
+fs.copyFileSync(file, staged)
+
+try {
+  const verdict = await replaceMediaBytes(ctx, {
+    file: avatar.filename,
+    fromPath: staged,
+    tags: ['posts', 'blog-hub'],
+  })
+  console.log(`  ${verdict}`)
+} finally {
+  fs.rmSync(path.dirname(staged), { recursive: true, force: true })
+}
 
 await finish(ctx)
 process.exit(0)
