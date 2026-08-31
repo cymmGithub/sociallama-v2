@@ -33,6 +33,7 @@
     "payload:order:case-studies": "bun ./lib/payload/order-case-studies.ts",
     "payload:seed:platforms": "bun ./lib/payload/seed-social-platforms.ts",
     "payload:seed:authors": "bun ./lib/payload/seed-authors.ts",
+    "payload:refresh:author-avatar": "bun ./lib/payload/refresh-author-avatar.ts",
     "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",
     "payload:repair:embed-links": "bun ./lib/payload/repair-wp-embed-links.ts",
     "payload:audit:post-formatting": "bun ./lib/payload/audit-post-formatting.ts",
