@@ -106,6 +106,36 @@ for (const doc of englishAll.docs) {
   }
 }
 
+/**
+ * Author role/bio in both locales, keyed by id.
+ *
+ * These are localized fields, and an author row created in the admin panel
+ * carries the locale the editor was working in — Polish. With
+ * `fallbackLocale: false` the English card then renders the name and nothing
+ * else, and `author-card.tsx` guards `{author.role && …}`, so the loss is
+ * silent: no error, no empty element, just a byline that says less. That is
+ * the same degradation `apply-taxonomy-en.ts` was written for after the
+ * original cutover, and nothing re-checked it afterwards.
+ */
+const authorLocale = async (locale: 'pl' | 'en') =>
+  new Map(
+    (
+      await payload.find({
+        collection: 'authors',
+        limit: 0,
+        pagination: false,
+        locale,
+        ...READ,
+        select: { name: true, role: true, bio: true },
+      })
+    ).docs.map((d: { id: number | string; [k: string]: unknown }) => [
+      String(d.id),
+      d,
+    ])
+  )
+const authorsPl = await authorLocale('pl')
+const authorsEn = await authorLocale('en')
+
 interface Row {
   slug: string
   enSlug: string
@@ -165,6 +195,38 @@ for (const pl of polish.docs) {
       where: 'status',
       message: `English sits on "${en._status}", not the published version`,
     })
+  }
+
+  // The author card is part of the English post surface, so an untranslated
+  // author is an untranslated post — even when every word of the body is done.
+  const authorId = pl.author == null ? null : String(pl.author)
+  const plAuthor = authorId ? authorsPl.get(authorId) : undefined
+  const enAuthor = authorId ? authorsEn.get(authorId) : undefined
+  if (plAuthor) {
+    for (const field of ['role', 'bio'] as const) {
+      const plValue = plAuthor[field]
+      const enValue = enAuthor?.[field]
+      if (!plValue) {
+        continue
+      }
+      const where = `author.${field}`
+      if (!enValue) {
+        findings.push({
+          level: 'error',
+          where,
+          message: `"${plAuthor.name}" has no English ${field} — run payload:apply:taxonomy-en`,
+        })
+      } else if (field === 'bio' && enValue === plValue) {
+        // Only `bio` — a role is a job title, and Polish uses the English one
+        // verbatim often enough ("Social Media Expert") that flagging a match
+        // would be permanent noise rather than a finding.
+        findings.push({
+          level: 'warn',
+          where,
+          message: `"${plAuthor.name}" reads identical to Polish`,
+        })
+      }
+    }
   }
 
   const owners = slugOwners.get(String(en.slug)) ?? []

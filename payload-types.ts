@@ -211,7 +211,7 @@ export interface Author {
   id: number;
   name: string;
   /**
-   * Kwadratowe zdjęcie profilowe. Bez niego pokażemy inicjał.
+   * Kwadratowe zdjęcie profilowe, min. 256×256 px. Bez niego pokażemy inicjał.
    */
   avatar?: (number | null) | Media;
   /**

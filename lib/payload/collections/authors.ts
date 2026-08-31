@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { checkAvatarDimensions } from '@/lib/payload/author-avatar-rules'
 import {
   revalidateAuthorAfterChange,
   revalidateAuthorAfterDelete,
@@ -45,7 +46,37 @@ export const authors: CollectionConfig = {
       relationTo: 'media',
       admin: {
         description:
-          'Kwadratowe zdjęcie profilowe. Bez niego pokażemy inicjał.',
+          'Kwadratowe zdjęcie profilowe, min. 256×256 px. Bez niego pokażemy inicjał.',
+      },
+      /*
+       * "Kwadratowe" was only ever a note here, and a note is not a gate: the
+       * first non-square upload (324×276, added through the admin panel) was
+       * squeezed into the avatar circle and read as a bad photograph rather
+       * than a bad fit. The rule lives in author-avatar-rules.ts so it can be
+       * tested without booting Payload; this reads the media row it points at,
+       * because the dimensions are on the upload, not on this field.
+       */
+      validate: async (
+        value: unknown,
+        { req }: { req: { payload?: unknown } }
+      ) => {
+        if (!value) {
+          return true
+        }
+        const id =
+          typeof value === 'object' ? (value as { id?: unknown }).id : value
+        // biome-ignore lint/suspicious/noExplicitAny: Payload's request type is enormous and unexported here
+        const payload = (req as any)?.payload
+        if (!payload) {
+          return true
+        }
+        const media = await payload.findByID({
+          collection: 'media',
+          id,
+          depth: 0,
+          overrideAccess: true,
+        })
+        return checkAvatarDimensions(media ?? {}) ?? true
       },
     },
     {
