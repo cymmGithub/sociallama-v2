@@ -25,10 +25,15 @@
 }
 
 /* Intrinsic 2x pixels are requested for a crisp circle; CSS shrinks the
- * <img> back into the span rather than letting it define the box. */
+ * <img> back into the span rather than letting it define the box.
+ *
+ * `cover` because an author photo is not guaranteed square — the default
+ * `fill` silently stretches a landscape headshot into the disc and narrows
+ * the face, which reads as a bad photo rather than a layout bug. */
 .image {
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 /*

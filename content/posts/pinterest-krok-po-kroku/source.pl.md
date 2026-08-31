@@ -5,7 +5,7 @@ W przeciwieństwie do wielu innych platform Pinterest wyróżnia się długą ż
 
 Pinterest ma również duży potencjał sprzedażowy. Piny mogą prowadzić użytkownika bezpośrednio na stronę internetową marki lub konkretną kartę produktu, tworząc prostą ścieżkę od inspiracji aż do zakupu. Co więcej, użytkownik może zapisać produkt i wrócić do niego w późniejszym czasie, gdy będzie gotowy do podjęcia decyzji zakupowej.
 
-![media:pinterest-app-icon]()
+![media:pinterest-moodboard]()
 
 ## Czym są Piny, tablice i zapisania?
 W najprostszym ujęciu Pin to podstawowa forma publikacji na Pintereście. Może zawierać zdjęcie, grafikę lub materiał wideo, a także opis, tytuł i link prowadzący np. do strony internetowej, artykułu czy konkretnego produktu. Dzięki temu Pin może pełnić nie tylko funkcję inspiracji, ale również kierować użytkownika bezpośrednio do miejsca, w którym może dowiedzieć się więcej lub dokonać zakupu.
