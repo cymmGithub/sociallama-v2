@@ -1,0 +1,28 @@
+{
+  "$comment": [
+    "Authored metadata for import-post.ts; content lives in source.pl.md alongside.",
+    "Imagery is Pexels (free license, no attribution required) — photo IDs 7549484",
+    "(cover, moodboard wall) and 5426400 (body, Pinterest app icon)."
+  ],
+  "slug": "pinterest-krok-po-kroku",
+  "title": "Pinterest krok po kroku – przewodnik po platformie",
+  "excerpt": "Pinterest to wizualna wyszukiwarka, w której dobrze przygotowany Pin pracuje miesiącami po publikacji. Sprawdź, czym są Piny, tablice i zapisania, jak działa feed, kto naprawdę korzysta z platformy i jak wykorzystać ją w komunikacji marki.",
+  "categorySlug": "social-media",
+  "authorName": "Katarzyna Kaptur",
+  "publishedAt": "2026-08-31T10:00:00.000Z",
+  "seo": {
+    "metaDescription": "Czym jest Pinterest i jak z niego korzystać? Piny, tablice i zapisania, działanie feedu i wyszukiwarki, profil użytkowników, Pinterest SEO oraz sposoby na wykorzystanie platformy w marketingu marki."
+  },
+  "cover": {
+    "file": "content/media/cover-art/pinterest-moodboard.jpg",
+    "altPl": "Kobieta stoi przed ścianą pokrytą przypiętymi zdjęciami, próbkami kolorów i notatkami — moodboard w wersji analogowej",
+    "altEn": "A woman standing in front of a wall covered in pinned photos, colour swatches and notes — a moodboard in analogue form"
+  },
+  "bodyImages": {
+    "pinterest-app-icon": {
+      "file": "content/media/post-body/pinterest-app-icon.jpg",
+      "altPl": "Zbliżenie na ikonę aplikacji Pinterest na ekranie smartfona, z dwoma nieprzeczytanymi powiadomieniami",
+      "altEn": "Close-up of the Pinterest app icon on a smartphone screen, showing two unread notifications"
+    }
+  }
+}

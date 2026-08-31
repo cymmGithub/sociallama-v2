@@ -16,6 +16,16 @@
  * `post.json` names a file that exists on disk; a missing file skips the
  * cover with a note, so text can land before the artwork is finished.
  *
+ * Body images work the same way, with one extra step. Lexical's own markdown
+ * importer only recognises `![media:<id>]()` — a raw row id, which is per
+ * database (dev media 1 is tiktok.png, prod media 1 is blog-1.png), so it can
+ * never be written into a committed source file. Instead `source.pl.md`
+ * carries a NAME: `![media:pinterest-app-icon]()`, `post.json` maps that name
+ * to a file plus its alt text, and this script substitutes the id the upload
+ * actually got in THIS database before converting. A name with no entry, an
+ * entry no line uses, or a file missing from disk all abort — a placeholder
+ * that survives conversion renders as literal text in a published post.
+ *
  * Publishing stays a manual per-post action in the admin panel — this script
  * never publishes, so it needs no revalidation of its own (the publish hook
  * does that). EN rides the existing pipeline afterwards:
@@ -40,6 +50,8 @@ interface PostMeta {
   publishedAt: string
   seo?: { metaTitle?: string; metaDescription?: string }
   cover?: { file: string; altPl: string; altEn: string }
+  /** Keyed by the name used in `![media:<name>]()` inside source.pl.md. */
+  bodyImages?: Record<string, { file: string; altPl: string; altEn: string }>
 }
 
 const IS_PROD = process.argv.includes('--prod')
@@ -61,6 +73,36 @@ if (/^# /m.test(markdown)) {
   throw new Error('source.pl.md contains an H1 — the title field owns the H1')
 }
 
+/**
+ * `![media:<name>]()` on a line of its own. Lexical's UploadMarkdownTransformer
+ * is an element transformer, so a placeholder sharing a line with prose is not
+ * converted — the check below only proves the name resolves, not the position.
+ */
+const BODY_IMAGE_RE = /!\[media:(?<name>[a-z0-9-]+)\]\(\)/g
+const bodyImages = meta.bodyImages ?? {}
+const usedNames = [...markdown.matchAll(BODY_IMAGE_RE)].map(
+  (m) => m[1] as string
+)
+
+for (const name of new Set(usedNames)) {
+  const entry = bodyImages[name]
+  if (!entry) {
+    throw new Error(
+      `source.pl.md uses ![media:${name}]() but post.json has no bodyImages entry for it`
+    )
+  }
+  if (!fs.existsSync(entry.file)) {
+    throw new Error(`bodyImages.${name}: ${entry.file} is not on disk`)
+  }
+}
+for (const name of Object.keys(bodyImages)) {
+  if (!usedNames.includes(name)) {
+    throw new Error(
+      `post.json declares bodyImages.${name} but source.pl.md never uses ![media:${name}]()`
+    )
+  }
+}
+
 // begin() routes --prod through targetProdEnv and refuses a prod run while
 // media/ holds dev files, exactly the guards this write needs.
 const ctx = await begin({
@@ -71,10 +113,37 @@ const ctx = await begin({
 })
 const { payload } = ctx
 
+// Upload each body image and swap its NAME for the id it got here, which is
+// the only form Lexical's importer understands. Done after begin() because
+// uploadMedia needs the context; the names were validated before it.
+const bodyImageIds = new Map<string, number>()
+for (const [name, entry] of Object.entries(bodyImages)) {
+  const { doc, created } = await uploadMedia(ctx, {
+    file: path.basename(entry.file),
+    fromPath: entry.file,
+    altPl: entry.altPl,
+    altEn: entry.altEn,
+  })
+  if (!doc) {
+    throw new Error(`bodyImages.${name}: upload returned no media doc`)
+  }
+  bodyImageIds.set(name, doc.id)
+  console.log(
+    `body image ${name}: ${doc.filename} (media ${doc.id}, ${created ? 'created' : 'already present'})`
+  )
+}
+const resolvedMarkdown = markdown.replace(
+  BODY_IMAGE_RE,
+  (_match, name: string) => `![media:${bodyImageIds.get(name)}]()`
+)
+
 const editorConfig = await editorConfigFactory.default({
   config: payload.config,
 })
-const content = convertMarkdownToLexical({ editorConfig, markdown })
+const content = convertMarkdownToLexical({
+  editorConfig,
+  markdown: resolvedMarkdown,
+})
 
 const category = (
   await payload.find({

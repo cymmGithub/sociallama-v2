@@ -35,6 +35,21 @@ const AUTHORS = [
     bio: 'Specjalista SEO w SEOFLY, partnerskiej agencji z naszej grupy. Od ponad piętnastu lat pozycjonuje strony i sklepy internetowe — łączy analityczne podejście z kreatywnością i na bieżąco nadąża za zmianami w algorytmach Google.',
     profileUrl: 'https://seofly.pl/zespol/lukasz-plocinski/',
   },
+  {
+    name: 'Katarzyna Kaptur',
+    // Square head-and-shoulders crop of the o-nas slider cutout, framed to
+    // match lukasz-plocinski.png — the card circle-crops it itself, so the
+    // round gradient badge in public/assets/team/ would double up.
+    avatarPath: 'public/authors/katarzyna-kaptur.png',
+    // Verbatim from the o-nas roster (lib/content/o-nas.ts), so the byline and
+    // the team page can never disagree about who she is. The nbsp runs the
+    // roster uses are display typography for that page and are dropped here.
+    role: 'Social Media Expert',
+    bio: 'Od 2022 roku działa w marketingu, a w Social Lamie tworzy angażujące treści i wspiera marki w budowaniu spójnej, silnej obecności online. Łączy wykształcenie z zakresu Communication Management z kreatywnym podejściem do contentu, traktując każde wyzwanie jako przestrzeń do nieszablonowego działania.',
+    // In-house, so no external profile: `profileUrl` becomes the Person's
+    // schema.org `sameAs`, and /o-nas is not a second identity for her.
+    profileUrl: null,
+  },
 ] as const
 
 const payload = await getPayload({ config })
