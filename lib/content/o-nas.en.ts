@@ -178,14 +178,6 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      given: 'KAMIL',
-      surname: 'MAZURUK',
-      role: 'Founder, Good One Group',
-      bio: "Founder of the Good One group, which since 2009 has been helping Polish and global brands — leaders in their fields — grow their potential through understanding, sharp advice, and effective work across marketing, sales, and management. He backs the Social Lama team with strategic advice and the business experience of the whole group. Beyond Good One, he advises startups and SME boards, and invests his own resources — and the group's — in building new business ventures. In life and business he values trust, proactivity, optimism, understanding, and partnership.",
-      link: { label: 'goodone.co', href: 'https://goodone.co' },
-      photo: '/o-nas/slider/kamil-mazuruk.png',
-    },
-    {
       given: 'ROBERT',
       surname: 'SAWICKI',
       role: 'Art & Creative Director',
@@ -289,6 +281,14 @@ export const oNasTeam = {
       bio: "He owns the development and upkeep of the Social Lama site — frontend, backend, performance, and deploys. He also builds the internal tools and automations that shorten the team's path from idea to release. Off the clock he writes a technical blog. Outside work he likes to keep moving — cycling, running, martial arts back in the day.",
       link: { label: 'imcurious.how', href: 'https://imcurious.how' },
       photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    },
+    {
+      given: 'KAMIL',
+      surname: 'MAZURUK',
+      role: 'Founder, Good One Group',
+      bio: "Founder of the Good One group, which since 2009 has been helping Polish and global brands — leaders in their fields — grow their potential through understanding, sharp advice, and effective work across marketing, sales, and management. He backs the Social Lama team with strategic advice and the business experience of the whole group. Beyond Good One, he advises startups and SME boards, and invests his own resources — and the group's — in building new business ventures. In life and business he values trust, proactivity, optimism, understanding, and partnership.",
+      link: { label: 'goodone.co', href: 'https://goodone.co' },
+      photo: '/o-nas/slider/kamil-mazuruk.png',
     },
   ],
 } satisfies LocalizedONas['oNasTeam']

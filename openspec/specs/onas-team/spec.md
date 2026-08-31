@@ -10,7 +10,7 @@ The `/o-nas` team slider and the homepage `why-that-works` grid SHALL present th
 #### Scenario: Roster parity across surfaces
 
 - **WHEN** `oNasTeam.members` is compared to the homepage grid rendered from `oNasTeamGrid`
-- **THEN** both contain the same 16 people — Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Łukasz Płociński, Przemysław Świercz — with none omitted from either
+- **THEN** both contain the same 16 people — Anna Ozga, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Łukasz Płociński, Przemysław Świercz, Kamil Mazuruk — with none omitted from either
 
 #### Scenario: Names agree across surfaces
 
@@ -344,12 +344,12 @@ The plum duotone wash on the slider's background peers SHALL be derived from the
 
 ### Requirement: Client-curated order shared by both surfaces
 
-The homepage grid, the `/o-nas` slider, and the EN locale mirror SHALL all present the roster in the client's curated order: Anna Ozga, Kamil Mazuruk, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Łukasz Płociński, Przemysław Świercz. No surface deviates; a future reorder is a content change to this list, not a per-surface curation.
+The homepage grid, the `/o-nas` slider, and the EN locale mirror SHALL all present the roster in the client's curated order: Anna Ozga, Robert Sawicki, Emilia Metryka, Paulina Hildebrand, Magda Rokicka, Piotrek Zach, Agnieszka Klajbert, Katarzyna Kaptur, Oliwia Witewska, Karolina Marcinowska, Wojtek Sochaczyński, Aleksander Dymiński, Iza Harmoza-Sochoń, Łukasz Płociński, Przemysław Świercz, Kamil Mazuruk. No surface deviates; a future reorder is a content change to this list, not a per-surface curation.
 
 #### Scenario: Homepage grid order
 
 - **WHEN** the homepage `why-that-works` grid renders
-- **THEN** the 16 tiles appear in the curated order above, with Łukasz Płociński immediately before Przemysław Świercz
+- **THEN** the 16 tiles appear in the curated order above, with Przemysław Świercz immediately before Kamil Mazuruk
 
 #### Scenario: Slider order matches the grid
 
@@ -379,7 +379,7 @@ Tile width SHALL stay close to the previous two-column width (~46vw) so the exis
 #### Scenario: Every member is reachable by swiping
 
 - **WHEN** the visitor swipes the rail to its end
-- **THEN** all 16 members have passed in the curated order, with Przemysław Świercz as the final cell
+- **THEN** all 16 members have passed in the curated order, with Kamil Mazuruk as the final cell
 
 #### Scenario: Deep links survive the presentation change
 

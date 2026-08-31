@@ -223,16 +223,6 @@ export const oNasTeam = {
       photo: '/o-nas/slider/anna-ozga.png',
     },
     {
-      given: 'KAMIL',
-      surname: 'MAZURUK',
-      role: 'Founder, Good One Group',
-      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Zespół Social Lamy wspiera strategicznym doradztwem i\u00A0doświadczeniem biznesowym całej grupy. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
-      // The group the bio just introduced — an external site, so the label is
-      // the domain (same convention as Przemysław's imcurious.how below).
-      link: { label: 'goodone.co', href: 'https://goodone.co' },
-      photo: '/o-nas/slider/kamil-mazuruk.png',
-    },
-    {
       given: 'ROBERT',
       surname: 'SAWICKI',
       role: 'Art & Creative Director',
@@ -347,6 +337,16 @@ export const oNasTeam = {
       // label is the domain — it says where the link goes before it is clicked.
       link: { label: 'imcurious.how', href: 'https://imcurious.how' },
       photo: '/o-nas/slider/przemyslaw-swiercz.png',
+    },
+    {
+      given: 'KAMIL',
+      surname: 'MAZURUK',
+      role: 'Founder, Good One Group',
+      bio: 'Założyciel grupy Good One, która od 2009 roku z\u00A0sukcesami wspiera polskie i\u00A0globalne marki — liderów swoich branż — w\u00A0rozwoju ich potencjału poprzez zrozumienie, doskonałe doradztwo i\u00A0efektywne działania w\u00A0obszarach marketingu, sprzedaży i\u00A0zarządzania. Zespół Social Lamy wspiera strategicznym doradztwem i\u00A0doświadczeniem biznesowym całej grupy. Poza Good One doradza startupom oraz zarządom z\u00A0sektora MŚP, a\u00A0także inwestuje w\u00A0nowe projekty biznesowe i\u00A0je rozwija. W\u00A0życiu i\u00A0biznesie ceni zaufanie, proaktywność, optymizm, zrozumienie i\u00A0partnerstwo.',
+      // The group the bio just introduced — an external site, so the label is
+      // the domain (same convention as Przemysław's imcurious.how above).
+      link: { label: 'goodone.co', href: 'https://goodone.co' },
+      photo: '/o-nas/slider/kamil-mazuruk.png',
     },
   ],
 } as const
