@@ -3,8 +3,16 @@ import { Image } from '@/components/ui/image'
 import { authorInitials, type ResolvedAuthor } from '@/lib/blog/author'
 import s from './author-avatar.module.css'
 
-/** 2x the largest rendered diameter (3rem on the post card). */
-const AVATAR_PIXELS = 96
+/**
+ * The largest diameter any consumer renders: 4.25rem on the post card
+ * (post.module.css), against 1.5rem and 2.25rem on the listings. Declared in
+ * CSS pixels — the browser multiplies by device pixel ratio itself when it
+ * picks from the srcset.
+ */
+const AVATAR_CSS_PIXELS = 68
+
+/** Intrinsic box, 2x the above, so the reserved layout box is retina-sharp. */
+const AVATAR_PIXELS = AVATAR_CSS_PIXELS * 2
 
 /**
  * An author's face: their photo when the CMS has one, otherwise an initials
@@ -59,6 +67,16 @@ export function AuthorAvatar({
         alt=""
         className={s.image}
         height={AVATAR_PIXELS}
+        /*
+         * Explicit, in px, because the `Image` wrapper otherwise defaults to
+         * `100vw` (components/ui/image). A `vw` sizes makes Next build the
+         * srcset from `deviceSizes` alone, whose smallest entry is 640 — so a
+         * 68px circle downloaded a >=640px variant, and an author photo
+         * narrower than that was UPSCALED first, then squeezed back down by
+         * the browser. That round trip is what made the avatar look soft.
+         * A px sizes puts `imageSizes` (16-384) back in reach.
+         */
+        sizes={`${AVATAR_CSS_PIXELS}px`}
         src={author.avatarUrl}
         width={AVATAR_PIXELS}
       />
