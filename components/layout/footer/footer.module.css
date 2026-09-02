@@ -187,15 +187,14 @@
     gap: 0.7rem;
   }
 
-  /* Not full opacity at rest: the sygnet is the most saturated thing in the
-     footer and would otherwise out-shout the outline wordmark directly above
-     it. Hover lifts the whole mark, colour included — it is a link and has to
-     say so. */
-  opacity: 0.9;
-  transition: opacity var(--duration-fast) var(--ease-out-expo);
-
+  /* The rest-state opacity is on `.groupMark`, not here. It exists to stop the
+     sygnet out-shouting the outline wordmark above it, which is about the
+     artwork; putting it on the link dragged the label down with it and cost
+     0.6 of contrast ratio — enough to fail `--muted` itself against the plum
+     ground (4.18:1 against a 4.5 floor). A colour token that has been computed
+     against both grounds is only true if nothing composites over it. */
   @media (--hover) {
-    &:hover {
+    &:hover .groupMark {
       opacity: 1;
     }
   }
@@ -206,14 +205,17 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  /* Smaller and dimmer than .columnTitle on purpose. At the column titles'
-     0.7rem/--muted it sat 50px above "KONTAKT" in an identical treatment and
-     read as a fifth column that had lost its links. Dropped to a caption on
-     the mark instead — 5.9:1 on the footer ground, so still well clear of the
-     4.5:1 floor at this size. */
+  /* Smaller than .columnTitle on purpose: at the column titles' 0.7rem it sat
+     50px above "KONTAKT" in an identical treatment and read as a fifth column
+     that had lost its links. Size is the whole differentiation, because colour
+     cannot be: a draft dimmed this to #9d8c96, which clears 4.5:1 on the
+     footer's own ink-deep ground but only manages 3.26:1 on the plum the
+     sticky reveal leaves behind it — an axe failure CI caught. There is no
+     room below the token either; the dimmest value that still clears plum is
+     98% of `--muted`, so `--muted` IS the floor here. */
   font-size: 0.62rem;
   line-height: 1;
-  color: #9d8c96;
+  color: var(--muted);
 }
 
 .groupMark {
@@ -223,6 +225,12 @@
      to be whatever the composition wants. */
   width: 133px;
   height: auto;
+  /* Not full opacity at rest: the sygnet is the most saturated thing in the
+     footer and would otherwise out-shout the outline wordmark directly above
+     it. Hover lifts it — it is a link and has to say so. Scoped to the artwork
+     so it never composites over the label's text (see `.groupLink`). */
+  opacity: 0.9;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
 
   @media (width < 1200px) {
     width: 104px;
@@ -462,7 +470,7 @@
   .link,
   .legalLink,
   .social,
-  .groupLink {
+  .groupMark {
     transition: none;
   }
 }
