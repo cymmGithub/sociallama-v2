@@ -1255,6 +1255,16 @@ export const footer = {
   },
   copyright: 'Copyright 2026 sociallama. All rights reserved.',
   legal: [{ label: 'Polityka prywatności', href: '/polityka-prywatnosci' }],
+  // Group affiliation, signed under the right end of the wordmark. Sentence
+  // case here and uppercased in CSS, like `wordmark` above — all-caps in the
+  // source would reach the anchor's `aria-label`, where some screen readers
+  // spell it letter by letter. `href` is absolute, which is all the Link
+  // component needs to open it in a new tab (see `isExternalHref`).
+  group: {
+    label: 'Część grupy',
+    name: 'Good One',
+    href: 'https://goodone.co',
+  },
 } as const
 
 /**

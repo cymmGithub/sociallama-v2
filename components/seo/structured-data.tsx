@@ -105,6 +105,10 @@ export function OrganizationJsonLd({ description }: { description: string }) {
     parentOrganization: {
       '@type': 'Organization',
       name: 'GOODONE GROUP',
+      // The group's own site, which the footer signature now links to. Without
+      // it this node was an unresolvable name — a claim of parentage with
+      // nothing for a consumer to resolve it against.
+      url: 'https://goodone.co/',
       ...(groupYouTube ? { sameAs: [groupYouTube] } : {}),
     },
   })

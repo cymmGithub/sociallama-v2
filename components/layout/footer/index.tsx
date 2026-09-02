@@ -4,6 +4,7 @@ import { ArrowRight, CornerDownRight } from 'lucide-react'
 import { ConsentSettingsLink } from '@/components/consent/consent-settings-link'
 import { useChrome } from '@/components/layout/chrome-provider'
 import { LocaleToggle } from '@/components/layout/locale-toggle'
+import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { SocialLinks } from '@/components/ui/social-links'
 import { footerWordmarkPath } from '@/lib/wordmark-footer'
@@ -27,6 +28,37 @@ export function Footer() {
       >
         <path d={footerWordmarkPath.d} vectorEffect="non-scaling-stroke" />
       </svg>
+
+      {/* Group signature — set under the wordmark's right terminal, like an
+          imprint under a masthead, rather than in the invite column: that cell
+          is the CTA, and a second logotype under the primary button dilutes it.
+          One node, moved to the footer's tail below the desktop breakpoint by
+          `order` (see the CSS) — on a phone this band would otherwise put the
+          group's mark ahead of Social Lama's own navigation.
+
+          The anchor wraps both label and mark so the whole line is the hit
+          target and carries one accessible name; the mark's `alt` is empty
+          because that name already reads the brand. `unoptimized` keeps it off
+          /_next/image: at 133px the optimizer saves nothing on a 4KB PNG, and
+          its variants are keyed by URL for a month, so an optimized copy would
+          outlive any re-run of the pipeline that emits it. */}
+      <div className={s.group}>
+        <Link
+          className={s.groupLink}
+          href={footer.group.href}
+          aria-label={`${footer.group.label} ${footer.group.name}`}
+        >
+          <span className={s.groupLabel}>{footer.group.label}</span>
+          <Image
+            className={s.groupMark}
+            src="/assets/group/good-one.png"
+            alt=""
+            width={266}
+            height={46}
+            unoptimized
+          />
+        </Link>
+      </div>
 
       <div className={s.body}>
         <div className={s.invite}>

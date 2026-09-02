@@ -904,4 +904,12 @@ export const footer = {
   },
   copyright: 'Copyright 2026 sociallama. All rights reserved.',
   legal: [{ label: 'Privacy Policy', href: '/en/privacy-policy' }],
+  // "Part of" rather than "Part of the group": the label is finished by the
+  // mark beside it, so naming the group twice is the redundancy. It also keeps
+  // the anchor's accessible name reading as a sentence — "Part of Good One".
+  group: {
+    label: 'Part of',
+    name: 'Good One',
+    href: 'https://goodone.co',
+  },
 } satisfies LocalizedHome['footer']

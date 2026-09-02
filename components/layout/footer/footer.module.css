@@ -15,6 +15,22 @@
   --line: rgba(244, 239, 233, 0.14);
   --line-strong: rgba(244, 239, 233, 0.3);
 
+  /* Air between the group signature and the column titles below it. Declared
+     here, not on `.group`, because the wordmark's `max-height` has to subtract
+     the same quantity — the footer must fit one viewport (see the reveal gate)
+     and this air comes out of the wordmark's height. One name, read in both
+     places, so the two can never drift apart.
+
+     It is a clamp rather than a flat `4rem` because that quantity is only
+     available where there is slack. `100dvh - 25.75rem - 8.75vw` is what the
+     wordmark may occupy before the air; subtracting a further `6rem` asks
+     whether spending 4rem still leaves the mark a legible ~96px. Where it
+     does — every normal laptop and desktop — the air is the full 4rem. Where
+     it does not, the term goes negative and the clamp takes it to 0: at
+     2560×720 a flat 4rem left "SOCIAL LAMA" a 32px sliver, which is not a
+     wordmark. Zero air there is the pre-existing spacing, not a regression. */
+  --group-air: clamp(0rem, calc(100dvh - 25.75rem - 8.75vw - 6rem), 4rem);
+
   background-color: var(--ground);
   color: var(--ink);
   padding: calc(var(--safe) * 2) var(--safe) calc(var(--safe) * 1.5);
@@ -89,8 +105,16 @@
      pad in the chain derives from --safe, which is itself a vw. Measured fit:
      rest ≈ 22.5rem + 8.6vw. Subtracting a flat 32rem was right only around
      1440–1728px and left the footer 41px over the viewport at 2560×720; the
-     two-term form tracks it across the range with ~25px of headroom. */
-  max-height: calc(100dvh - 24rem - 8.75vw);
+     two-term form tracks it across the range with ~25px of headroom.
+
+     The 25.75rem term was 24rem before the group signature was added below;
+     that line is 26px of `rest` the cap now has to subtract too. Its air is
+     the separate `--group-air` term, which is variable — see the property.
+     This only changes the render where the cap binds — wide and short, where
+     the wordmark is already down to ~112px; everywhere else it is
+     width-limited and never reaches the cap.
+     `lib/scripts/audit-footer-geometry.ts` measures the fit. */
+  max-height: calc(100dvh - 25.75rem - 8.75vw - var(--group-air));
   margin-bottom: calc(var(--safe) * 1.25);
   overflow: visible;
 }
@@ -102,6 +126,107 @@
      renders thin outline strokes with chromatic fringing, and a slightly
      heavier line gives a solid core so the edges read crisp. */
   stroke-width: 3px;
+}
+
+/* —— Group signature ————————————————————————————————————————————————————————
+   "CZĘŚĆ GRUPY · Good One", set under the wordmark's right terminal. One line,
+   not a stacked block: stacked costs 49px of footer height against this one's
+   26px, and the footer has a hard height budget (see the reveal gate above).
+
+   Separation is bought twice over, and only one half costs height: the
+   negative top margin pulls the line up against the wordmark it signs, which
+   opens the gap downward for free, and the bottom margin adds the rest. `--safe`
+   for the pull so it tracks the wordmark's own `--safe`-derived `margin-bottom`.
+
+   Same place at every width: under the wordmark, flush right. The wordmark is
+   `width: 100%` on a phone as much as on a laptop, so its right terminal is at
+   the right edge in both — the signature sits under the same letter either way.
+   Two drafts got this wrong, first moving the line to the footer's tail below
+   --desktop and then aligning it left there; both broke the one thing a reader
+   notices, which is that it is in the same place. */
+.group {
+  display: flex;
+  justify-content: flex-end;
+  /* The pull applies at every width, not just --desktop: `--safe` is a larger
+     share of a phone's screen (4.27vw below 800px against 1.11vw above), so
+     the footer's own band gap leaves the signature adrift under a wordmark
+     that is itself only ~44px tall there. */
+  margin-top: calc(var(--safe) * -1.4);
+
+  /* Air down to the column titles, so the signature reads as belonging to the
+     wordmark rather than heading the directory. Defined on `.footer` because
+     the wordmark's cap spends the same quantity.
+
+     Five-track band only. `--group-air` sizes itself against the slack in that
+     band's `rest` (~500px); the two-column band stacks five cells two-up for
+     ~1000px of `rest` on the same viewport, so the air it thinks is free is
+     already spent. At 1199×1200 — that band's own sticky threshold — a flat
+     4rem put the footer 11px over the window, which slides the wordmark under
+     the header. That band gets the tighter treatment below anyway. */
+  @media (width >= 1200px) {
+    margin-bottom: var(--group-air);
+  }
+
+  /* Below 800px `--safe` jumps from 1.11vw to 4.27vw, because `--device-width`
+     switches from 1440 to 375 — so the same `-1.4` that leaves 15px of gap on
+     a laptop leaves 27px on a phone, under a wordmark that is itself only 44px
+     tall. The extra pull is scoped to that band and nowhere else: applied
+     across `width < 1200px` it closed the 800–1199 gap to 6px, since that band
+     is still on the small `--safe`. */
+  @media (--mobile) {
+    margin-top: calc(var(--safe) * -1.85);
+  }
+}
+
+.groupLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+
+  @media (width < 1200px) {
+    gap: 0.7rem;
+  }
+
+  /* Not full opacity at rest: the sygnet is the most saturated thing in the
+     footer and would otherwise out-shout the outline wordmark directly above
+     it. Hover lifts the whole mark, colour included — it is a link and has to
+     say so. */
+  opacity: 0.9;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.groupLabel {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  /* Smaller and dimmer than .columnTitle on purpose. At the column titles'
+     0.7rem/--muted it sat 50px above "KONTAKT" in an identical treatment and
+     read as a fifth column that had lost its links. Dropped to a caption on
+     the mark instead — 5.9:1 on the footer ground, so still well clear of the
+     4.5:1 floor at this size. */
+  font-size: 0.62rem;
+  line-height: 1;
+  color: #9d8c96;
+}
+
+.groupMark {
+  /* 133px is an exact 2x of the 266px source, which has no vector — see
+     assets-src/group-logo/README.md. Anything wider resamples up; narrower
+     only costs some of the 2x, which is why the tablet-and-down size is free
+     to be whatever the composition wants. */
+  width: 133px;
+  height: auto;
+
+  @media (width < 1200px) {
+    width: 104px;
+  }
 }
 
 /* —— Invite + directory ————————————————————————————————————————————————————— */
@@ -336,7 +461,8 @@
   .cta,
   .link,
   .legalLink,
-  .social {
+  .social,
+  .groupLink {
     transition: none;
   }
 }
