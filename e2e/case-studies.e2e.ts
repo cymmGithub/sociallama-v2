@@ -1,9 +1,19 @@
 import { expect, type Locator, type Page, test } from '@playwright/test'
 import { BLOB_HOST } from '@/lib/blob-store'
 import { foldDiacritics } from '@/lib/blog/search'
-import type { CaseStudySearchCopy } from '@/lib/content/case-studies'
-import { caseStudySearch as searchPl } from '@/lib/content/case-studies'
-import { caseStudySearch as searchEn } from '@/lib/content/case-studies.en'
+import { INDUSTRY_KEYS } from '@/lib/content/branze'
+import type {
+  CaseStudySearchCopy,
+  LocalizedCaseStudies,
+} from '@/lib/content/case-studies'
+import {
+  caseStudiesListing as listingPl,
+  caseStudySearch as searchPl,
+} from '@/lib/content/case-studies'
+import {
+  caseStudiesListing as listingEn,
+  caseStudySearch as searchEn,
+} from '@/lib/content/case-studies.en'
 import { collectPageErrors, EMPTY_CMS_OK, gotoHydrated } from './helpers'
 
 /**
@@ -21,18 +31,21 @@ const HUBS = [
     hub: '/case-studies',
     prefix: '/case-studies/',
     copy: searchPl,
+    listing: listingPl,
   },
   {
     locale: 'EN',
     hub: '/en/case-studies',
     prefix: '/en/case-studies/',
     copy: searchEn,
+    listing: listingEn,
   },
 ] satisfies {
   locale: string
   hub: string
   prefix: string
   copy: CaseStudySearchCopy
+  listing: LocalizedCaseStudies['caseStudiesListing']
 }[]
 
 /**
@@ -153,6 +166,120 @@ for (const { locale, hub, prefix, copy } of HUBS) {
       // the 429 as a 400. The untouched `case-study.e2e.ts` fails the same way
       // on the same page, so it is the environment, not the filter. Everything
       // a client component can actually break still fails this spec.
+      expect(
+        consoleErrors.filter(
+          (error) => !error.startsWith('Failed to load resource')
+        )
+      ).toEqual([])
+      expect(pageErrors).toEqual([])
+    })
+  })
+}
+
+/**
+ * The industry rail, the view toggle and how they compose with the search
+ * (case-study-scoreboard).
+ *
+ * As above, nothing hardcodes a brand or a count: the rail's own numbers are
+ * checked against the cards that survive selecting them, so the spec follows
+ * the portfolio rather than a snapshot of it.
+ */
+for (const { locale, hub, prefix, copy, listing } of HUBS) {
+  test.describe(`Case-study hub industry rail and views (${locale})`, () => {
+    test(`filters, composes and toggles on ${hub}`, async ({ page }) => {
+      const { consoleErrors, pageErrors } = collectPageErrors(page)
+      const imageRequests = trackImageRequests(page)
+      await page.setViewportSize({ width: 1440, height: 1000 })
+      await page.emulateMedia({ reducedMotion: 'reduce' })
+      await gotoHydrated(page, hub)
+
+      const cards = page.locator(`main a[href^="${prefix}"]`)
+      const total = await cards.count()
+      test.skip(
+        total === 0 && EMPTY_CMS_OK,
+        'CI ephemeral DB is unseeded — no case studies to filter'
+      )
+
+      const rail = page.getByRole('navigation', {
+        name: listing.filters.label,
+      })
+      const chips = rail.getByRole('button')
+      const listed = await chips.evaluateAll((nodes) =>
+        nodes.map((node) => (node.textContent ?? '').trim())
+      )
+      // `Wszystkie` plus at most one entry per industry the taxonomy knows.
+      expect(listed.length).toBeGreaterThan(1)
+      expect(listed.length).toBeLessThanOrEqual(INDUSTRY_KEYS.length + 1)
+      expect(listed[0]).toContain(listing.filters.all)
+
+      // —— Every listed count equals the cards that survive selecting it ——
+      // This is the honest reading of "Motoryzacja 4", and it is also the
+      // check that an industry with no studies is never offered: a chip whose
+      // count did not match would either strand the visitor on an empty grid
+      // or lie about the portfolio.
+      const railCount = await chips.count()
+      for (let i = 1; i < railCount; i++) {
+        const chip = chips.nth(i)
+        const text = (await chip.innerText()).trim()
+        const claimed = Number(text.split(/\s+/).at(-1))
+        expect(claimed).toBeGreaterThan(0)
+        await chip.click()
+        await expect(chip).toHaveAttribute('aria-pressed', 'true')
+        expect((await visibleCardText(cards)).length).toBe(claimed)
+        await expect(page.locator('p[aria-live="polite"]')).toHaveText(
+          copy.results(claimed)
+        )
+      }
+
+      // —— Industry ANDs with the search ————————————————————————————————
+      const narrow = chips.nth(1)
+      await narrow.click()
+      const inIndustry = await visibleCardText(cards)
+      const search = page.getByRole('searchbox', { name: copy.label })
+      const word =
+        (inIndustry[0] ?? '')
+          .split('\n')
+          .find((line) => line.trim().length > 3)
+          ?.trim() ?? ''
+      await search.fill(word)
+      const both = await visibleCardText(cards)
+      expect(both.length).toBeGreaterThan(0)
+      expect(both.length).toBeLessThanOrEqual(inIndustry.length)
+
+      // —— An empty intersection keeps the industry selected ————————————
+      await search.fill('qqzzxx')
+      expect(await visibleCardText(cards)).toEqual([])
+      await expect(page.getByText(copy.emptyTitle)).toBeAttached()
+      await expect(narrow).toHaveAttribute('aria-pressed', 'true')
+
+      await search.fill('')
+      await chips.first().click()
+      expect((await visibleCardText(cards)).length).toBe(total)
+
+      // —— The ledger shows the same set, and costs nothing ————————————
+      const beforeToggle = new Set(imageRequests)
+      const requestsAtRest = imageRequests.length
+      expect(requestsAtRest).toBeGreaterThan(0)
+
+      await page.getByRole('button', { name: listing.views.ledger }).click()
+      expect((await visibleCardText(cards)).length).toBe(total)
+
+      // Switching hides a pane, it does not unmount it: no image the page had
+      // already fetched may be fetched a second time.
+      expect(
+        imageRequests
+          .slice(requestsAtRest)
+          .filter((url) => beforeToggle.has(url))
+      ).toEqual([])
+
+      // —— No toggle on a phone ————————————————————————————————————————
+      await page.setViewportSize({ width: 390, height: 844 })
+      await expect(
+        page.getByRole('group', { name: listing.views.label })
+      ).toHaveCount(0)
+
+      // Resource 400s excluded for the same reason as the spec above: this hub
+      // asks for ~96 images in one paint and trips the dev rate limiter.
       expect(
         consoleErrors.filter(
           (error) => !error.startsWith('Failed to load resource')

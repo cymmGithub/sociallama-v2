@@ -2,48 +2,72 @@ import { ArrowRight } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { caseStudiesListing } from '@/lib/content/case-studies'
+import type { Locale } from '@/lib/i18n/slug-map'
+import { leadMetrics } from '@/lib/payload/case-study-scoreboard'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
+import { BrandIcon } from './[slug]/brand-icons'
 import s from './case-studies.module.css'
+import { MetricValue } from './metric-value'
 
-/** Listing card for /case-studies. Links to the detail page. */
+/**
+ * Listing card for /case-studies. Links to the detail page.
+ *
+ * The stage is the card's board now: the cover fills it instead of floating on
+ * it as a framed artefact, and the study's lead metric sits on the gradient's
+ * lower half. The excerpt is gone — 47 cards each carrying three lines of
+ * summary is 47 paragraphs asking to be read before anything can be compared,
+ * where one number per card can be scanned down a column.
+ */
 export function CaseStudyCard({
   study,
   basePath = '/case-studies',
   readLabel = caseStudiesListing.cardRead,
+  locale = 'pl',
 }: {
   study: CaseStudy
   basePath?: string
   readLabel?: string
+  locale?: Locale
 }) {
   const cover = resolveMedia(study.cover)
   const coverUrl = cover?.sizes?.card?.url ?? cover?.url
   const logo = resolveMedia(study.client.logo)
-  // Headline metric = the first result the editor ordered. There is no
-  // "featured" flag on the collection and this change adds no schema, so first
-  // stands in for most prominent. 47 of 48 studies carry at least one; the
-  // metric row is simply omitted for the one that does not.
-  const headline = study.results?.[0]
+  // The face of the study: results[0], the order an editor chose. One study of
+  // the 47 carries no results, and its board simply renders without a numeral
+  // — the board keeps its height either way, so the row stays level.
+  const [lead] = leadMetrics(study.results)
 
   return (
     <Link className={s.card} href={`${basePath}/${study.slug}`}>
-      <span className={s.cardMedia}>
-        <span className={s.cardArtefact}>
-          {coverUrl && (
-            <Image
-              src={coverUrl}
-              alt={cover?.alt ?? ''}
-              fill
-              objectFit="cover"
-              mobileSize="100vw"
-              desktopSize="33vw"
-            />
-          )}
-        </span>
-        {headline && (
+      <span className={s.cardBoard}>
+        {coverUrl && (
+          <Image
+            src={coverUrl}
+            alt={cover?.alt ?? ''}
+            fill
+            objectFit="cover"
+            mobileSize="100vw"
+            desktopSize="33vw"
+          />
+        )}
+        {lead && (
           <span className={s.cardMetric}>
-            <span className={s.cardMetricValue}>{headline.value}</span>
-            <span className={s.cardMetricLabel}>{headline.metric}</span>
+            <MetricValue
+              className={s.cardMetricValue}
+              locale={locale}
+              noteClassName={s.cardMetricNote}
+              value={lead.value}
+            />
+            <span className={s.cardMetricLabel}>
+              {lead.platform && (
+                <BrandIcon
+                  className={s.cardMetricMark}
+                  platform={lead.platform}
+                />
+              )}
+              {lead.label} · {lead.metric}
+            </span>
           </span>
         )}
       </span>
@@ -62,9 +86,6 @@ export function CaseStudyCard({
           <span className={s.cardClient}>{study.client.name}</span>
         )}
         <span className={s.cardTitle}>{caseStudyHeadline(study.title)}</span>
-        {study.excerpt && (
-          <span className={s.cardExcerpt}>{study.excerpt}</span>
-        )}
         {study.tags && study.tags.length > 0 && (
           <span className={s.cardTags}>
             {study.tags.map((tag) => (

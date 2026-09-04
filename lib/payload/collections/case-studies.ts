@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { INDUSTRY_OPTIONS } from '@/lib/content/branze'
 import {
   revalidateCaseStudyAfterChange,
   revalidateCaseStudyAfterDelete,
@@ -127,6 +128,30 @@ export const caseStudies: CollectionConfig = {
       ],
     },
     {
+      /**
+       * The study's industry — one of the branże the site publishes, or one of
+       * the categories waiting for a page (`PENDING_INDUSTRIES`).
+       *
+       * A closed list rather than a free tag, and NOT localized: it stores the
+       * branża's own `id`, which is the same in both locales, so the Polish and
+       * English hubs filter and count identically. `tags` stays what it is —
+       * three free descriptive labels for the card.
+       */
+      name: 'industry',
+      label: 'Branża',
+      type: 'select',
+      options: INDUSTRY_OPTIONS.map((option) => ({
+        label: option.label,
+        value: option.id,
+      })),
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Decyduje, pod którą branżą case study pojawia się w filtrze na liście /case-studies. Jedna branża na case study.',
+      },
+    },
+    {
       name: 'tags',
       label: 'Tagi',
       type: 'text',
@@ -214,7 +239,7 @@ export const caseStudies: CollectionConfig = {
       },
       admin: {
         description:
-          'Metryki pogrupowane po platformie — renderowane jako kafelki.',
+          'Pierwszy wynik jest twarzą case study: liczba na karcie na liście i duża liczba w nagłówku strony. Pierwszy wynik każdej grupy jest liczbą wiodącą tej grupy. Kolejność ma znaczenie.',
       },
       fields: [
         {
@@ -223,7 +248,8 @@ export const caseStudies: CollectionConfig = {
           type: 'text',
           required: true,
           admin: {
-            description: 'Np. „YouTube”, „TikTok”, „Volvo Car Warszawa”.',
+            description:
+              'Nazwa grupy wyników. Dokładna nazwa platformy („Facebook”, „Instagram”, „TikTok”, „LinkedIn”, „YouTube”) dodaje jej logo i wlicza case study do filtra na liście. Każda inna etykieta — marka, kanał, wydarzenie („Volvo Car Warszawa”, „Beesfund”, „Strona WWW”) — jest w porządku: grupa renderuje się normalnie, tylko bez logo i bez filtra. Dopisek przy nazwie platformy („Facebook (grupa)”) też liczy się jako inna etykieta.',
           },
         },
         {

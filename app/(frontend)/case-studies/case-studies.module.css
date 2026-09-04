@@ -150,6 +150,215 @@
   display: none;
 }
 
+/* —— Hub layout ——————————————————————————————————————————————————————
+   The platform index claims the left column from the desktop breakpoint; below
+   it, the same DOM lays itself out as a chip row above the grid. */
+.hub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 2);
+    align-items: start;
+  }
+}
+
+.hubMain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+
+/* Holds the view toggle at the end of the row, and collapses to nothing below
+   the breakpoint, where the toggle does not render. */
+.hubBar {
+  display: flex;
+  justify-content: flex-end;
+
+  &:empty {
+    display: none;
+  }
+}
+
+/* —— Platform index ——————————————————————————————————————————————— */
+
+.railNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  @media (--desktop) {
+    position: sticky;
+    /* Clears the fixed header, matching the detail page's anchor offset. */
+    top: calc(var(--header-height) + var(--gap));
+    align-self: start;
+  }
+}
+
+.railLabel {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* 72% is the floor that still clears 4.5:1 on the cream surface. */
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+
+  /* On mobile the chips are self-explanatory beside the search field, and a
+     second label above them only costs a line. */
+  @media (--mobile) {
+    display: none;
+  }
+}
+
+/* Below the breakpoint this is a wrapping chip row, not a sideways scroller.
+   A scroller was the original call, made when the filter held five platforms;
+   with the industry taxonomy it holds thirteen entries, and a 390px phone
+   showed three of them with no scrollbar to say the other ten existed. A
+   filter whose options are invisible is not a filter. Wrapping costs three
+   lines and shows the whole vocabulary at once. */
+.railList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  @media (--desktop) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.125rem;
+  }
+}
+
+.railChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75em;
+  /* Content-width as a wrapping chip, full-width as a rail line. */
+  width: auto;
+  white-space: nowrap;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  transition:
+    color var(--duration-fast),
+    border-color var(--duration-fast),
+    background-color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+  }
+
+  /* `aria-pressed` is the state, so it is also the hook — there is no second
+     class to fall out of step with it. */
+  &[aria-pressed="true"] {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-primary);
+  }
+
+  /* In the rail the pill becomes a list line: the round border reads as a
+     control in a row and as clutter in a column. */
+  @media (--desktop) {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: none;
+    border-left: 2px solid var(--line);
+    border-radius: 0;
+
+    &:hover {
+      border-left-color: var(--line-strong);
+    }
+
+    &[aria-pressed="true"] {
+      background: none;
+      border-left-color: var(--color-contrast);
+      color: var(--color-secondary);
+      font-weight: 700;
+    }
+  }
+}
+
+.railPageLink {
+  align-self: start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-contrast);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  /* On the chip row it would sit under a horizontally scrolling strip with
+     nothing to anchor it to; the rail is where it has a column of its own. */
+  @media (--mobile) {
+    display: none;
+  }
+}
+
+/* Takes the space the count does not, so a long name truncates instead of
+   pushing the count off the chip. */
+.railChipLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.railChipCount {
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, currentcolor 62%, transparent);
+}
+
+/* —— View toggle —————————————————————————————————————————————————— */
+
+.viewToggle {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+}
+
+.viewButton {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.35rem 0.85rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+  transition:
+    color var(--duration-fast),
+    background-color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-secondary);
+  }
+
+  &[aria-pressed="true"] {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+  }
+}
+
 .grid {
   display: grid;
   gap: var(--gap);
@@ -157,6 +366,226 @@
   @media (--desktop) {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* —— Ledger rows —————————————————————————————————————————————————————
+   The hub's second view: one row per study, showing what the card has no room
+   for — every group's lead, not only the study's. Rows carry no cover, so the
+   whole list is text plus one logo apiece. */
+.rows {
+  display: flex;
+  flex-direction: column;
+  /* The list's opening rule lives on the container, not on `.row:first-child`.
+     Each row sits inside its own `Filtered` veil, so every row IS a first
+     child of something and the child selector would draw 47 of them — the
+     hazard `.cardVeil` warns about. On the container it is also still correct
+     when the first study is filtered out. */
+  border-top: 1px solid var(--line);
+}
+
+/* Every track but the title is a fixed width, and that is the whole point.
+   Each row is its own grid — 47 of them — so any `auto` or content-sized track
+   is measured per row: a study with one platform mark gave its marks column a
+   different width from a study with three, which moved every column left of it
+   and left the numerals stepping across the list. Fixed tracks make 47
+   independent grids resolve to identical columns, without giving up the row
+   being one `<a>` (a shared parent grid would need `display: contents` here,
+   which drops the hover ground and the row's own box).
+
+   `align-items: start`, not `center`: a two-line title must not push its row's
+   numerals down relative to a one-line neighbour's. */
+.row {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr) 12rem 15rem 4.25rem 1.25rem;
+  align-items: start;
+  gap: var(--gap);
+  padding: var(--gap) 0.25rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color var(--duration-fast);
+
+  &:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--color-secondary) 4%,
+      transparent
+    );
+  }
+
+  &:hover .rowReadIcon {
+    transform: translateX(3px);
+  }
+}
+
+/* Same fixed slot as the card — see .cardLogo for why the box must keep the
+   emitted canvas's 280:72 aspect ratio. */
+.rowClient {
+  display: block;
+  width: 140px;
+  height: 36px;
+  /* Optically level with the first line of the title and the numerals, which
+     start at the top of their own cells. */
+  margin-top: 0.125rem;
+}
+
+.rowClient img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.rowClientName {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-contrast);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  /* Two lines: past that a row stops being a row. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rowTags {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-secondary) 66%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowLead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  /* The label is clamped and the numeral is one line, so the cell has a fixed
+     ceiling — which is what keeps 47 rows the same height. */
+}
+
+.rowLeadValue {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+
+  /* The rule hangs off the numeral rather than off the label, so the label is
+     free to be a plain clamped block — `-webkit-box` cannot also host a
+     pseudo-element child the way a flex column could. */
+  &::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: 0.5rem;
+    border-radius: 999px;
+    background-color: var(--color-orange);
+  }
+}
+
+/* Two lines at most. Unclamped, "Facebook · Volvo Car Warszawa — nowi
+   obserwatorzy" runs to three and makes its row half again as tall as its
+   neighbours — with 47 rows that reads as the list being broken, even though
+   every column is where it should be. */
+.rowLeadLabel {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--color-secondary) 68%, transparent);
+}
+
+/* Two fixed tracks, so the second and third numerals line up down the list
+    the way the lead does — and so a row with one other group leaves a gap
+    rather than stretching its single numeral across the cell. */
+.rowRest {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+  min-width: 0;
+}
+
+.rowSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.rowSmallValue {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowSmallLabel {
+  font-size: 0.6875rem;
+  color: color-mix(in srgb, var(--color-secondary) 62%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The parenthetical, on both row numerals. */
+.rowNote {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-contrast);
+}
+
+.rowMarks {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  /* Fits three marks; a study with one leaves the rest of the track empty
+     rather than pulling the arrow column left. */
+  height: 1.5rem;
+}
+
+.rowMark {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.rowRead {
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  color: color-mix(in srgb, var(--color-secondary) 60%, transparent);
+}
+
+.rowReadIcon {
+  transition: transform var(--duration-fast);
 }
 
 /* Card — same language as the blog listing card */
@@ -199,22 +628,31 @@
   }
 }
 
-/* —— Card stage ——————————————————————————————————————————————————————
-   Plum grain-gradient stage recipe — one of five copies, per house convention
-   (services, how-it-works, post, blog, case-studies modules). Keep the
-   gradient, blob, and grain values in sync across them by hand.
+/* —— Card board ——————————————————————————————————————————————————————
+   Plum grain-gradient stage recipe — one of the hand-synced copies, per house
+   convention (services, how-it-works, post, blog, case-study modules). Keep the
+   gradient, blob and grain values in step across them by hand.
 
    The covers are 48 unrelated photographs with no shared geometry or grade.
    Rather than grade them into a family — a full-bleed plum duotone was mocked
    and rejected, it throws away the client's own colour for something that reads
    as a filter — the unifier is a repeated frame around authentic content, and
-   the frame is the site's own stage. Nothing here is generated. */
-.cardMedia {
+   the frame is the site's own stage.
+
+   The stage is the board now. The cover fills it instead of floating inside it
+   as a framed artefact, and the lead metric sits on the gradient's lower half:
+   one number per card, so a column of them can be read down rather than
+   card by card. */
+.cardBoard {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) / 2);
-  padding: clamp(0.75rem, 4%, 1.25rem);
+  /* Bottom-anchored, inside a box whose height is set by the card's width
+     alone. That is the whole of the baseline guarantee (design D8): every card
+     in a row is the same width, so every board is the same height, so every
+     numeral block ends at the same y — including on a study with no results,
+     whose board simply carries no numeral. Nothing measures anything. */
+  justify-content: flex-end;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: linear-gradient(
@@ -225,7 +663,9 @@
   /* Pure-noise film grain tile — same data-URI as the sibling stages. */
   --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
 
-  /* Orange glow blob, top-right (services-stage recipe). */
+  /* Orange glow blob, top-right (services-stage recipe). Reaches the eye only
+     where the cover does not cover it — a study with no cover, or through the
+     photograph's own darks. */
   &::before {
     content: "";
     position: absolute;
@@ -242,74 +682,96 @@
     pointer-events: none;
   }
 
-  /* Grain overlay over the whole panel. */
+  /* Grain over the whole panel, photograph included. Sized 1:1 with the SVG's
+     own 700px canvas and the sibling stages' grain, so every panel carries
+     identical noise density and scale regardless of its own size. `cover` would
+     scale the tile with the card and silently break the match with the
+     homepage — this is fixed on purpose. */
   &::after {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     background-image: var(--grain);
-    /* 1:1 with the SVG's own 700px canvas and the sibling stages' grain, so
-       every panel carries identical noise density and scale regardless of its
-       own size. `cover` would scale the tile with the card and silently break
-       the match with the homepage — this is fixed on purpose. */
     background-size: 700px 700px;
     opacity: 0.38;
     mix-blend-mode: soft-light;
     pointer-events: none;
   }
-
-  /* Lift stage contents above the ::after grain (tree order paints the
-     pseudo-element over the children otherwise). */
-  & > * {
-    position: relative;
-    z-index: 1;
-  }
 }
 
-/* The client's real photograph, floating on the stage as a framed artefact.
-   Flexes to whatever the metric row leaves, so the composition holds at any
-   card width rather than depending on percentage offsets. */
-.cardArtefact {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: var(--color-plum-dark);
-  border: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
-  box-shadow: 0 14px 32px -12px rgb(0 0 0 / 0.55);
-}
+/* Headline metric — results[0], the editor's own ordering. The card re-points
+   --color-secondary to ink for its white body, so the board has to name its own
+   colours rather than inherit them.
 
-/* Headline metric — results[0], the editor's own ordering. The card sets
-   --color-secondary to ink for its white body, so the stage has to name its own
-   colours rather than inherit them. */
+   Its own scrim, so it grows with the numbers rather than being a fixed band
+   the content can outgrow. */
 .cardMetric {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 0.15em;
+  padding: calc(var(--gap) * 1.5) clamp(0.75rem, 4%, 1.25rem)
+    clamp(0.75rem, 4%, 1.25rem);
   color: var(--color-cream);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-plum-dark) 92%, transparent),
+    color-mix(in srgb, var(--color-plum-dark) 76%, transparent) 55%,
+    transparent
+  );
 }
 
 .cardMetricValue {
+  display: block;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-size: clamp(1.25rem, 2.6vw, 1.625rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  /* The parenthetical's line is reserved on every card, present or not. Five of
+     the 47 leads carry one (`4 806 (+956,3%)`), and without the reservation
+     those five would push their numeral a line higher than their neighbours' —
+     the row's shared baseline is the point of the board, and it cannot depend
+     on how a value happens to be worded. */
+  min-height: calc(1.1em + 1rem);
+}
+
+.cardMetricNote {
+  display: block;
+  height: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1rem;
+  letter-spacing: 0;
+  color: var(--color-orange);
 }
 
 .cardMetricLabel {
+  display: block;
   font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: color-mix(in srgb, var(--color-cream) 68%, transparent);
-  /* One line, always: the labels run from "Reakcje" to "Dzienny zasięg postów",
-     and a wrapping label would take height out of the artefact on some cards
-     and not others. */
+  color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  /* One line, always: the labels run from "Facebook · Reakcje" to "Facebook ·
+     Volvo Car Warszawa — nowi obserwatorzy", and a wrapping label would take
+     height out of one card's board and not its neighbour's. `block`, not flex —
+     `text-overflow` needs a block box, and the brand mark rides inline. */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cardMetricMark {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.45em;
+  vertical-align: -0.25em;
 }
 
 .cardBody {
@@ -358,14 +820,10 @@
   line-height: 1.15;
   letter-spacing: -0.01em;
   text-wrap: balance;
-}
-
-.cardExcerpt {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  /* Four lines is where ENGIE and ASUS land in a 290px column beside the
+     platform rail; past that a title stops being a headline. */
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

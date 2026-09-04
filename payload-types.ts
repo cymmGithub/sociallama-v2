@@ -316,6 +316,32 @@ export interface CaseStudy {
     } | null;
   };
   /**
+   * Decyduje, pod którą branżą case study pojawia się w filtrze na liście /case-studies. Jedna branża na case study.
+   */
+  industry?:
+    | (
+        | 'automotive'
+        | 'elektronika-i-agd'
+        | 'beauty'
+        | 'health'
+        | 'finanse'
+        | 'petcare'
+        | 'alkohole'
+        | 'fashion'
+        | 'horeca'
+        | 'hotele-i-miejsca-wypoczynkowe'
+        | 'nieruchomosci-i-deweloperzy'
+        | 'rozrywka'
+        | 'retail'
+        | 'energetyka'
+        | 'zywnosc'
+        | 'edukacja-i-hr'
+        | 'logistyka'
+        | 'rolnictwo'
+        | 'b2b-i-uslugi'
+      )
+    | null;
+  /**
    * Słowa kluczowe pokazywane w nagłówku, np. „Rekrutacja”.
    */
   tags?: string[] | null;
@@ -369,12 +395,12 @@ export interface CaseStudy {
       }[]
     | null;
   /**
-   * Metryki pogrupowane po platformie — renderowane jako kafelki.
+   * Pierwszy wynik jest twarzą case study: liczba na karcie na liście i duża liczba w nagłówku strony. Pierwszy wynik każdej grupy jest liczbą wiodącą tej grupy. Kolejność ma znaczenie.
    */
   results?:
     | {
         /**
-         * Np. „YouTube”, „TikTok”, „Volvo Car Warszawa”.
+         * Nazwa grupy wyników. Dokładna nazwa platformy („Facebook”, „Instagram”, „TikTok”, „LinkedIn”, „YouTube”) dodaje jej logo i wlicza case study do filtra na liście. Każda inna etykieta — marka, kanał, wydarzenie („Volvo Car Warszawa”, „Beesfund”, „Strona WWW”) — jest w porządku: grupa renderuje się normalnie, tylko bez logo i bez filtra. Dopisek przy nazwie platformy („Facebook (grupa)”) też liczy się jako inna etykieta.
          */
         platform: string;
         /**
@@ -588,6 +614,7 @@ export interface CaseStudiesSelect<T extends boolean = true> {
         logo?: T;
         about?: T;
       };
+  industry?: T;
   tags?: T;
   excerpt?: T;
   cover?: T;

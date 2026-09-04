@@ -1358,6 +1358,71 @@ export const industryNav = INDUSTRIES.map((industry) => ({
   href: `/branze/${industry.slug}`,
 }))
 
+/**
+ * Categories a case study can be filed under that do not have a landing page
+ * yet.
+ *
+ * The case-study hub filters by industry, and the portfolio covers ground the
+ * twelve pages above do not: three shopping centres, two energy brands, a
+ * logistics operator, a seed producer. Filing those under the nearest existing
+ * page would make the filter lie about what the studies are, and leaving them
+ * uncategorised would put a third of the portfolio out of reach of the filter.
+ *
+ * So the taxonomy is complete here and the pages catch up. Each of these is a
+ * page waiting to be written — moving one into `INDUSTRIES` is what publishes
+ * it, and the `id` never changes, so nothing has to be re-filed when it does.
+ */
+export const PENDING_INDUSTRIES = [
+  { id: 'retail', label: 'Retail i\u00A0centra handlowe' },
+  { id: 'energetyka', label: 'Energetyka' },
+  { id: 'zywnosc', label: 'Żywność i\u00A0FMCG' },
+  { id: 'edukacja-i-hr', label: 'Edukacja i\u00A0HR' },
+  { id: 'logistyka', label: 'Logistyka' },
+  { id: 'rolnictwo', label: 'Rolnictwo' },
+  { id: 'b2b-i-uslugi', label: 'B2B i\u00A0usługi' },
+] as const
+
+/**
+ * Filter-length names.
+ *
+ * A branża page can afford "Hotele i Miejsca Wypoczynkowe" as its title; a
+ * 190px filter column cannot, and an ellipsis would eat the word that tells
+ * the two property entries apart. Only the names that overflow are listed —
+ * everything else keeps its page title, and the page itself always shows the
+ * full one.
+ */
+const FILTER_LABELS: Record<string, string> = {
+  'hotele-i-miejsca-wypoczynkowe': 'Hotele i\u00A0wypoczynek',
+  'nieruchomosci-i-deweloperzy': 'Nieruchomości',
+  retail: 'Retail',
+}
+
+/**
+ * Every industry a case study may carry, published or not — the closed
+ * vocabulary behind the `industry` field and the hub's filter.
+ *
+ * `id` is the stored key and is locale-independent; `label` and `href` are
+ * this locale's. An entry without an `href` has no page to link to yet.
+ */
+export const INDUSTRY_OPTIONS: {
+  id: string
+  label: string
+  href?: string
+}[] = [
+  ...INDUSTRIES.map((industry) => ({
+    id: industry.id,
+    label: FILTER_LABELS[industry.id] ?? industry.label,
+    href: `/branze/${industry.slug}`,
+  })),
+  ...PENDING_INDUSTRIES.map((industry) => ({
+    id: industry.id,
+    label: FILTER_LABELS[industry.id] ?? industry.label,
+  })),
+]
+
+/** The stored keys, in the order the hub's rail lists them. */
+export const INDUSTRY_KEYS = INDUSTRY_OPTIONS.map((option) => option.id)
+
 /** Lookup by this-locale slug (route params → page content). */
 export function findIndustry(slug: string): Industry | undefined {
   return INDUSTRIES.find((industry) => industry.slug === slug)

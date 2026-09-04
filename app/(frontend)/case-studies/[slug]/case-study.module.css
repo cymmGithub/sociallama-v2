@@ -1,6 +1,11 @@
 .article {
   --measure: 72rem;
   --prose: 70ch;
+  /* Where an in-page anchor lands, once the fixed header has taken its cut.
+     One source of truth: `.sectionTitle` uses it as `scroll-margin-top` (which
+     serves a `#wyniki` landing and a no-JS anchor click natively), and
+     section-rail.tsx reads it back off the target rather than hardcoding it. */
+  --cs-anchor-offset: calc(var(--header-height) + var(--gap));
 
   display: flex;
   flex-direction: column;
@@ -14,11 +19,43 @@
 
 /* —— Hero ———————————————————————————————————————————————————————— */
 
+/* Title block, scoreboard, meta rail.
+
+   DOM order is title -> board -> meta, and that is the mobile order too: the
+   proof comes straight after the headline, and the derived meta rows close the
+   block. Desktop places the same three into two columns with named areas
+   rather than reordering them, so what a screen reader hears and what the page
+   shows stay the same sentence. */
 .hero {
   width: min(100%, var(--measure));
   display: flex;
   flex-direction: column;
+  gap: calc(var(--gap) * 1.5);
+
+  @media (--desktop) {
+    display: grid;
+    /* ~448px of board against ~672px of measure. The board carries the LCP
+       image, and this is the number that makes it a smaller one than the
+       full-width 16:9 cover it replaces. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "title board"
+      "meta  board";
+    align-items: start;
+    column-gap: calc(var(--gap) * 2);
+    row-gap: calc(var(--gap) * 1.5);
+  }
+}
+
+.heroTitle {
+  display: flex;
+  flex-direction: column;
   gap: var(--gap);
+
+  @media (--desktop) {
+    grid-area: title;
+  }
 }
 
 .breadcrumb {
@@ -42,7 +79,7 @@
   }
 }
 
-.heroMeta {
+.heroClient {
   display: flex;
   align-items: center;
   gap: var(--gap);
@@ -94,36 +131,330 @@
   max-width: var(--prose);
 }
 
-.tags {
+/* —— Scoreboard ——————————————————————————————————————————————————————
+   Plum grain-gradient stage recipe — one of the hand-synced copies, per house
+   convention (services, how-it-works, post, blog, case-studies modules, and
+   now this one). Keep the gradient, blob and grain values in step by hand.
+
+   The difference from the listing card's stage is deliberate and is the whole
+   change: there the cover floats on the plum as a framed artefact, here it
+   fills the board and the plum becomes a scrim the numbers sit on. A study
+   without a cover renders the board on the plum alone, with the same numerals
+   — there is no placeholder and nothing collapses. */
+.scoreboard {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* A preferred height, not a cap: `min-height: auto` on this flex box means a
+     long group label pushes the board taller rather than spilling out of it. */
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  color: var(--color-cream);
+  background: linear-gradient(
+    160deg,
+    var(--color-plum-dark),
+    var(--color-plum) 65%
+  );
+  --grain: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700"><filter id="n" x="0" y="0" width="100%25" height="100%25"><feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="3"/><feFuncG type="linear" slope="3"/><feFuncB type="linear" slope="3"/></feComponentTransfer><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 17 -9"/></filter><rect width="100%25" height="100%25" filter="url(%23n)"/></svg>');
+
+  @media (--desktop) {
+    grid-area: board;
+  }
+
+  /* Orange glow blob, top-right (services-stage recipe). Only visible on a
+     study with no cover — which is exactly when the board needs it. */
+  &::before {
+    content: "";
+    position: absolute;
+    width: 45%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    top: -30%;
+    right: -8%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-orange) 70%, transparent),
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  /* Grain over the whole board, photograph included: it is what makes 48
+     unrelated photographs read as one family. Sized 1:1 with the SVG's own
+     700px canvas, like every sibling stage, so density never scales with the
+     panel. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: var(--grain);
+    background-size: 700px 700px;
+    opacity: 0.38;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+  }
+}
+
+.scoreboardCover {
+  position: absolute;
+  inset: 0;
+  /* Below the grain (z-index 1) and below the figures (z-index 2). */
+  z-index: 0;
+}
+
+/* The scrim is this block's own background, so it grows with the numbers
+   instead of being a fixed band the content can outgrow. */
+.scoreFigures {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: calc(var(--gap) * 3) var(--gap) var(--gap);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-plum-dark) 94%, transparent),
+    color-mix(in srgb, var(--color-plum-dark) 82%, transparent) 55%,
+    transparent
+  );
+}
+
+.scoreLead {
+  /* So the numeral can size against the board's own width. */
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  min-width: 0;
+}
+
+.scoreLeadValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* Hold the display size until the value's own length stops fitting the
+     board, then step down rather than wrap. --len is a character count stamped
+     server-side from the numeral alone (the parenthetical is its own line), so
+     it covers the English strings too and stays put while CountUp ticks. */
+  font-size: clamp(
+    1.75rem,
+    calc(100cqi / var(--len) * 1.9),
+    clamp(2.5rem, 5vw, 3.75rem)
+  );
+  line-height: 1;
+  letter-spacing: -0.02em;
+  /* Steady width while the digits tick, so the board doesn't jitter. */
+  font-variant-numeric: tabular-nums;
+}
+
+.scoreRest {
   display: flex;
   flex-wrap: wrap;
-  gap: calc(var(--gap) / 2);
+  gap: var(--gap);
+  padding-top: calc(var(--gap) / 2);
+  border-top: 1px solid color-mix(in srgb, var(--color-cream) 22%, transparent);
 }
 
-.tag {
-  padding: 0.375em 0.875em;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
+.scoreSmall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  min-width: 0;
+  flex: 1 1 8rem;
+}
+
+.scoreSmallValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Orange, not `--color-contrast`: the board is plum inside a cream chapter, so
+   the inherited accent would be plum on plum. */
+.scoreNote {
+  display: block;
+  margin-top: 0.35em;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-orange);
+}
+
+.scoreLabel {
+  /* `-webkit-box`, not flex: the label needs the line clamp more than it needs
+     a gap, and the two cannot share a `display`. Two lines at most — the
+     labels run to "Volvo Car Warszawa — nowi obserwatorzy", and a third line
+     would eat the photograph. The mark rides along as an inline child, spaced
+     by its own margin. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   font-size: 0.75rem;
   font-weight: 700;
+  line-height: 1.35;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--color-cream) 76%, transparent);
 }
 
-.cover {
-  position: relative;
+.scoreMark {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  margin-right: 0.5em;
+  vertical-align: -0.28em;
+}
+
+/* —— Hero meta rail ——————————————————————————————————————————————————
+   Three derived rows — platforms, industry, scope — each omitted when the
+   study has nothing for it. The topic tags moved here from the pill row that
+   used to close the hero: as a labelled row they say what they are, where the
+   pills only said "tags" to someone who already knew. */
+.metaRail {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) / 2);
+  padding-top: var(--gap);
+  border-top: 1px solid var(--line);
+
+  @media (--desktop) {
+    grid-area: meta;
+    align-self: end;
+  }
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: calc(var(--gap) / 2);
+  align-items: baseline;
+}
+
+.metaLabel {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* 72% is the floor that still clears 4.5:1 on the cream surface. */
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+}
+
+.metaValue {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.metaMarks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 1rem;
+}
+
+.metaMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.metaMarkIcon {
+  width: 1.125em;
+  height: 1.125em;
+}
+
+/* —— Body ————————————————————————————————————————————————————————————
+   The rail claims the left margin the prose measure used to leave empty, so
+   the page gains a way to move without giving up its line length. */
+.body {
   width: min(100%, var(--measure));
-  aspect-ratio: 16 / 9;
-  border-radius: 18px;
-  overflow: hidden;
-  background-color: var(--surface-2);
-  border: 1px solid var(--line);
+
+  @media (--desktop) {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 2);
+    align-items: start;
+  }
+}
+
+.bodyColumn {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap) * 2.5);
+  /* Without this the column's automatic minimum is its widest content, which
+     a wide creative or a long unbroken word would push past the grid track. */
+  min-width: 0;
+}
+
+/* Sticky only where there is a column for it to live in. Below the desktop
+   breakpoint section-rail.tsx renders nothing at all, so there is no hidden
+   observer running on a phone — these rules only dress what mounted. */
+.rail {
+  position: sticky;
+  top: var(--cs-anchor-offset);
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  align-self: start;
+  max-height: calc(100dvh - var(--cs-anchor-offset) - var(--gap));
+  min-height: 0;
+}
+
+.railLabel {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+}
+
+.railList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.railLink {
+  display: block;
+  padding: 0.375rem 0 0.375rem 0.75rem;
+  border-left: 2px solid var(--line);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+  transition:
+    color var(--duration-fast),
+    border-color var(--duration-fast);
+
+  &:hover {
+    color: var(--color-secondary);
+  }
+
+  /* The current section. `aria-current` is the state, so it is also the hook —
+     no parallel `is-active` class to keep in sync with it. */
+  &[aria-current] {
+    border-left-color: var(--color-contrast);
+    color: var(--color-secondary);
+    font-weight: 700;
+  }
 }
 
 /* —— Sections ————————————————————————————————————————————————————— */
 
+/* Full width of the body column now, not of the page: the section rail owns
+   the left margin from `--desktop` up. */
 .section {
-  width: min(100%, var(--measure));
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--gap);
@@ -136,6 +467,9 @@
   line-height: 1.1;
   letter-spacing: -0.01em;
   text-transform: uppercase;
+  /* Serves three paths from one number: a `#wyniki` landing, a no-JS anchor
+     click, and the rail, which reads this back rather than hardcoding it. */
+  scroll-margin-top: var(--cs-anchor-offset);
 }
 
 /* Rich-text prose — mirrors the blog post body (single styling surface). */
@@ -370,21 +704,31 @@
   }
 }
 
-/* —— Results (metric tiles) ——————————————————————————————————————— */
+/* —— Results ledger ——————————————————————————————————————————————————
+   The orange tiles are gone, and with them the twelve-track grid and the
+   row-balancing that kept them from stranding. The tiles' problem was never
+   their geometry: a filled tile is a claim of equal weight, so 30 comments
+   arrived looking exactly as important as 432 616 views, and a page that
+   shouts every number equally is a page with no proof on it.
+
+   A group now leads with one number set large under its own rule, and carries
+   the rest small. The hierarchy is the argument. */
 
 .results {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap) * 1.5);
+  gap: calc(var(--gap) * 2);
 }
 
-.resultGroup {
+.ledgerGroup {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+  padding-top: var(--gap);
+  border-top: 1px solid var(--line-strong);
 }
 
-.resultGroupTitle {
+.ledgerGroupTitle {
   display: flex;
   align-items: center;
   gap: 0.5em;
@@ -400,71 +744,99 @@
   height: 1.5em;
 }
 
-/* Twelve tracks rather than four, because the track count was the bug: a fixed
-   four ignored how many metrics a group actually holds, so a group of one took
-   a quarter of the row and left three quarters of empty page. The component
-   stamps each tile's span (see tileSpans), and every balanced row length —
-   1, 2, 3, 4 — divides 12, so a row fills the measure. The one deliberate
-   exception is a group holding a single metric, which the component keeps at a
-   normal tile's width rather than stretching (see spanDesktop). minmax(0, 1fr)
-   rather than 1fr: a track's automatic minimum is its content, and CountUp
-   rewrites the value on every frame. */
-.tiles {
-  display: grid;
-  gap: var(--gap);
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-/* Orange tiles — the numbers are the shareable, distinctive payload, so they
-   carry the brand accent and count up on scroll into view. */
-.tile {
-  display: flex;
-  grid-column: span var(--span-m);
-  /* Without this the item's automatic minimum is its min-content width, which
-     already pulled 13 mobile tiles off the grid (165/175 instead of 170). */
-  min-width: 0;
-  /* So .tileValue can size itself against the width this tile actually got. */
+.ledgerLead {
+  /* So the numeral sizes against the width it actually got, not the page's. */
   container-type: inline-size;
+  display: flex;
   flex-direction: column;
-  gap: 0.25em;
-  padding: var(--gap);
-  border-radius: 18px;
-  background-color: var(--color-orange);
-  border: 1px solid
-    color-mix(in srgb, var(--color-ink) 12%, var(--color-orange));
-  color: var(--color-ink);
-  box-shadow: 0 6px 20px
-    color-mix(in srgb, var(--color-orange) 45%, transparent);
-
-  @media (--desktop) {
-    grid-column: span var(--span-d);
-  }
+  gap: 0.5rem;
+  /* The lead is a headline, not a measure: past this it stops reading as one
+     number and starts reading as a banner. */
+  max-width: 28rem;
+  min-width: 0;
 }
 
-.tileValue {
+.ledgerLeadValue {
   font-family: var(--font-display);
   font-weight: 800;
-  /* Hold the display size until the group's longest value stops fitting the
-     tile it landed in, then step down rather than break mid-parenthetical —
-     "+52,8% (z 366 do 546)" was taking three lines. --len is a character count
-     stamped server-side, so it covers the English strings too (worst case 24)
-     and stays put while CountUp ticks the digits. */
+  /* Only the lead scales with its own length (--len is the numeral's character
+     count, stamped server-side): the small numerals below are one fixed size,
+     which is what keeps a row of them reading as a row. */
   font-size: clamp(
-    1.25rem,
+    2rem,
     calc(100cqi / var(--len) * 2),
-    clamp(1.75rem, 4vw, 2.75rem)
+    clamp(2.75rem, 6vw, 4.5rem)
   );
   line-height: 1;
   letter-spacing: -0.02em;
-  /* Steady width while the digits tick so the tile doesn't jitter. */
+  /* Steady width while the digits tick, so nothing jitters. */
   font-variant-numeric: tabular-nums;
 }
 
-.tileMetric {
+/* The rule sits between the numeral and its label, so it reads as the
+   number's underline rather than as the block's border. */
+.ledgerLeadMetric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
+
+  &::before {
+    content: "";
+    width: 3.5rem;
+    height: 3px;
+    border-radius: 999px;
+    background-color: var(--color-orange);
+  }
+}
+
+/* Four tracks on desktop, two below, wrapping naturally — no balancing pass,
+   because nothing here is a filled box whose empty half would show. */
+.ledgerRest {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media (--desktop) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.ledgerItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.ledgerItemValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ledgerItemMetric {
   font-size: 0.8125rem;
   line-height: 1.35;
-  font-weight: 600;
-  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
+}
+
+/* The parenthetical, on the lead and on the small metrics alike. Absolute
+   size, not `em`: against a 4.5rem lead it would be a second headline. */
+.ledgerNote {
+  display: block;
+  margin-top: 0.35em;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--color-contrast);
 }
 
 /* —— Gallery —————————————————————————————————————————————————————— */

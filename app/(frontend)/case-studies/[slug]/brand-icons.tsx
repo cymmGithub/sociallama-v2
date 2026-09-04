@@ -1,10 +1,13 @@
 /**
  * Full-color official brand marks for the case-study result platforms, rendered
- * inline so the Wyniki tiles show the real logos rather than the plum CMS
- * glyphs. Keyed by the same normalized platform label the article uses to match
- * CMS logos; `brandIcon()` returns null for anything not in this set so the
- * caller can fall back to the CMS logo.
+ * inline so the results ledger shows the real logos rather than the plum CMS
+ * glyphs. Keyed by the normalized platform label `case-study-scoreboard.ts`
+ * produces; `BrandIcon` returns null for anything not in this set so the caller
+ * can fall back to the CMS logo.
  */
+
+import { useId } from 'react'
+import type { PlatformKey } from '@/lib/payload/case-study-scoreboard'
 
 type IconProps = { className?: string | undefined }
 
@@ -34,11 +37,29 @@ function YouTube({ className }: IconProps) {
 }
 
 function Instagram({ className }: IconProps) {
+  /**
+   * The one mark that needs a paint server, and therefore the one that needs a
+   * unique id.
+   *
+   * A fixed `id="ig-gradient"` worked while a page held one Instagram mark. The
+   * hub holds 27 — a card, a row and a rail entry per study — and every
+   * `url(#ig-gradient)` in a document resolves to the FIRST element with that
+   * id. The grid and ledger views are both mounted with one of them `hidden`,
+   * so whichever pane is hidden owns the winning definition, and every
+   * Instagram mark on the visible pane renders unfilled: a white square where
+   * the brand should be. It only appeared on toggling the view, which is
+   * exactly the kind of bug a duplicate id gives you.
+   *
+   * `useId` is stable across server render and hydration, and works here in a
+   * Server Component, so each mark carries its own gradient and no ordering
+   * matters.
+   */
+  const gradientId = useId()
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
       <defs>
         <radialGradient
-          id="ig-gradient"
+          id={gradientId}
           cx="0.3"
           cy="1.05"
           r="1.1"
@@ -51,7 +72,7 @@ function Instagram({ className }: IconProps) {
           <stop offset="1" stopColor="#4F5BD5" />
         </radialGradient>
       </defs>
-      <rect width="24" height="24" rx="6" fill="url(#ig-gradient)" />
+      <rect width="24" height="24" rx="6" fill={`url(#${gradientId})`} />
       <rect
         x="5.25"
         y="5.25"
@@ -102,7 +123,10 @@ function LinkedIn({ className }: IconProps) {
   )
 }
 
-const ICONS: Record<string, (props: IconProps) => React.ReactElement> = {
+/* Typed against `PlatformKey` rather than `string`: the platform set is
+   defined once, by the read rules, and a key added there without a mark here
+   is a compile error instead of a blank square on the hub's rail. */
+const ICONS: Record<PlatformKey, (props: IconProps) => React.ReactElement> = {
   tiktok: TikTok,
   youtube: YouTube,
   instagram: Instagram,
@@ -111,7 +135,8 @@ const ICONS: Record<string, (props: IconProps) => React.ReactElement> = {
 }
 
 /** Whether a full-color brand mark ships for this normalized platform key. */
-export const hasBrandIcon = (platform: string) => platform in ICONS
+export const hasBrandIcon = (platform: string): platform is PlatformKey =>
+  platform in ICONS
 
 /** Render the full-color brand mark for a normalized platform key, or null. */
 export function BrandIcon({
@@ -121,6 +146,9 @@ export function BrandIcon({
   platform: string
   className?: string | undefined
 }) {
+  if (!hasBrandIcon(platform)) {
+    return null
+  }
   const Icon = ICONS[platform]
-  return Icon ? <Icon className={className} /> : null
+  return <Icon className={className} />
 }

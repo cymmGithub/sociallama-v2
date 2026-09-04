@@ -18,6 +18,17 @@ export const caseStudiesListing = {
   subhead:
     'How we work and what comes of it. Selected Social\u00A0Lama projects, with the numbers that describe them.',
   cardRead: 'VIEW CASE STUDY',
+  // Category names come from `branze.en.ts`, not from here.
+  filters: {
+    label: 'Industries',
+    all: 'All',
+    page: 'View industry page',
+  },
+  views: {
+    label: 'List view',
+    grid: 'Grid',
+    ledger: 'Ledger',
+  },
   empty: {
     title: 'Coming soon',
     text: "We're writing up our projects — check back shortly.",
@@ -27,6 +38,15 @@ export const caseStudiesListing = {
 export const caseStudyChrome = {
   breadcrumbAria: 'Breadcrumb',
   listingLabel: 'Case studies',
+  meta: {
+    platforms: 'Platforms',
+    industry: 'Industry',
+    scope: 'Scope',
+  },
+  rail: {
+    label: 'On this page',
+    aria: 'Case study sections',
+  },
   sections: {
     client: 'Our client',
     challenge: 'The challenge',

@@ -16,7 +16,7 @@ For every case study the **lead metric** SHALL be the first entry of `results` i
 - **THEN** the hub card shows the cover on the stage with no numeral, and the detail hero renders the cover without a scoreboard; nothing renders a placeholder value
 
 ### Requirement: Platform normalization on read
-The system SHALL derive a study's platforms by normalizing each `results[].platform` value (lower-cased, non-alphanumerics stripped) and keeping only the five keys the brand-icon set knows: `facebook`, `instagram`, `tiktok`, `linkedin`, `youtube`. Any other value SHALL be treated as a result group without a platform and SHALL NOT be rewritten, counted, or surfaced as a platform. A value that contains more than one platform name (`Facebook / Instagram`) SHALL match neither.
+The system SHALL derive a study's platforms by normalizing each `results[].platform` value (lower-cased, non-alphanumerics stripped) and keeping only the five keys the brand-icon set knows: `facebook`, `instagram`, `tiktok`, `linkedin`, `youtube`. Any other value SHALL be treated as a result group without a platform and SHALL NOT be rewritten or surfaced as a platform. A value that contains more than one platform name (`Facebook / Instagram`) SHALL match neither. Platforms SHALL label metrics — the brand mark beside a numeral, the hero's `Platformy` row, the ledger row's marks — and SHALL NOT drive the hub's filter, which is the study's industry.
 
 #### Scenario: Brand group is not a platform
 - **WHEN** a study's results include the group `FoodSaver` beside `Facebook` and `Instagram`
@@ -24,11 +24,11 @@ The system SHALL derive a study's platforms by normalizing each `results[].platf
 
 #### Scenario: Composite label matches nothing
 - **WHEN** a result group is labelled `Facebook / Instagram (Niemcy)`
-- **THEN** it contributes no platform; the study is still listed under `Wszystkie`
+- **THEN** it contributes no platform mark; the study's place in the industry index is unaffected
 
 #### Scenario: No known platform
 - **WHEN** every result group of a study is a non-platform label
-- **THEN** the study has no platforms, appears only under `Wszystkie`, and its ledger row shows no platform marks
+- **THEN** the study has no platform marks anywhere, and is still filed and filtered under its own industry
 
 ### Requirement: Parenthetical values render in two parts
 A metric value whose text ends in a parenthesized suffix, such as `432 616 (+1 380%)` or `+50% (z 368 do 549)`, SHALL render the part before the parenthesis as the numeral and the parenthesized part as a secondary line in the accent color, on every surface that shows the value. The stored value SHALL NOT change and the accessible name of the metric SHALL remain the full string.
@@ -95,24 +95,43 @@ Each hub card SHALL present, top to bottom: the cover under the plum stage gradi
 - **WHEN** any card renders
 - **THEN** the study's excerpt text is not present in the card
 
-### Requirement: Hub platform rail
-The hub SHALL render a platform index listing `Wszystkie` and each of the five known platforms that at least one published study has, with the count of studies per entry. Selecting an entry SHALL filter the grid to studies whose normalized platforms include it, composing with the text search (both must match). `Wszystkie` SHALL be selected by default. The filter SHALL be client state only: no route, no query parameter, no card image re-requested on change. From the desktop breakpoint the index SHALL be a sticky rail in the left column; below it, a horizontal chip row above the grid. Counts SHALL be computed at build from the published studies and SHALL NOT change while filtering.
+### Requirement: Case study industry
+Every case study SHALL carry exactly one `industry`, chosen from a closed list whose keys are the `id` values of the site's own branże (`lib/content/branze.ts`) plus the categories that have no landing page yet. The field SHALL NOT be localized: one stored key names the same category in both locales, and its display name and route come from that locale's industry content. `tags` SHALL remain free descriptive labels and SHALL NOT drive any filter.
 
-#### Scenario: Filter by platform
-- **WHEN** a visitor selects `TikTok`
-- **THEN** only studies with a `tiktok` platform remain visible, in manual order, and the live region announces the count
+#### Scenario: One taxonomy, not two
+- **WHEN** a study is filed under `automotive`
+- **THEN** the Polish hub labels it `Motoryzacja` and the English hub `Automotive`, both reading the branża's own name, and both count the study under the same key
 
-#### Scenario: Platform and search compose
-- **WHEN** `LinkedIn` is selected and the visitor types `engie`
-- **THEN** only ENGIE remains; clearing the search keeps the LinkedIn filter
+#### Scenario: Category without a page
+- **WHEN** a study is filed under a category that has no `/branze` page yet, such as `retail`
+- **THEN** the hub still lists and filters it, and offers no link to a page that does not exist
+
+#### Scenario: Tags are not categories
+- **WHEN** a study carries the tags `Supermarket`, `Retail`, `Moderacja`
+- **THEN** none of them appears in the industry index; the study is filtered by its `industry` alone
+
+### Requirement: Hub industry rail
+The hub SHALL render an industry index listing `Wszystkie` and every industry that at least one published study carries, with the count of studies per entry, in the taxonomy's own order. Selecting an entry SHALL filter the grid to studies carrying it, composing with the text search (both must match). `Wszystkie` SHALL be selected by default. The filter SHALL be client state only: no route, no query parameter, no card image re-requested on change. From the desktop breakpoint the index SHALL be a sticky rail in the left column; below it, a horizontal chip row above the grid. Counts SHALL be computed at build from the published studies and SHALL NOT change while filtering. An industry with a published page SHALL offer a link to it while selected.
+
+#### Scenario: Filter by industry
+- **WHEN** a visitor selects `Motoryzacja`
+- **THEN** only studies filed under `automotive` remain visible, in manual order, and the live region announces the count
+
+#### Scenario: Industry and search compose
+- **WHEN** `Nieruchomości i Deweloperzy` is selected and the visitor types `ed-invest`
+- **THEN** only Ed-Invest remains; clearing the search keeps the industry filter
 
 #### Scenario: Empty intersection
-- **WHEN** a platform and a query match no study together
-- **THEN** the search empty state renders and the platform selection remains
+- **WHEN** an industry and a query match no study together
+- **THEN** the search empty state renders and the industry selection remains
 
 #### Scenario: Counts are honest
 - **WHEN** the rail renders
-- **THEN** each platform's count equals the number of published studies whose normalized platforms include it; a platform no study has is not listed
+- **THEN** each industry's count equals the number of published studies carrying it, and an industry no study carries is not listed — so no selection can produce an empty grid
+
+#### Scenario: An unwritten page is not linked
+- **WHEN** the visitor selects an industry whose `/branze` page has not been written
+- **THEN** the rail filters the grid and shows no page link
 
 ### Requirement: Hub grid and ledger views
 The hub SHALL offer a two-state view toggle, `Siatka` (default) and `Ledger`, from the desktop breakpoint only. The ledger view SHALL render one row per study: client logo (or name), title with the tags as a line beneath, the lead metric as a numeral with an orange rule and its label, the other groups' lead metrics as small numerals, the study's platform marks, and a link affordance; the whole row SHALL link to the study. Both views SHALL show the same filtered set in the same order; switching SHALL NOT change the URL or re-request card images.
@@ -130,8 +149,8 @@ The hub SHALL offer a two-state view toggle, `Siatka` (default) and `Ledger`, fr
 - **THEN** no view toggle renders and the grid is used
 
 ### Requirement: English hub and detail mirror the Polish surfaces
-The `/en/case-studies` hub and `/en/case-studies/[slug]` detail SHALL render the same scoreboard, rail, ledger and view surfaces over English-resolved fields with English chrome copy (`Platforms`, `Industry`, `Scope`, `All`, `Grid`, `Ledger`, section names). Platform normalization SHALL be locale-independent.
+The `/en/case-studies` hub and `/en/case-studies/[slug]` detail SHALL render the same scoreboard, rail, ledger and view surfaces over English-resolved fields with English chrome copy (`Platforms`, `Industry`, `Scope`, `All`, `Grid`, `Ledger`, section names). Platform normalization and the industry key SHALL both be locale-independent.
 
 #### Scenario: English chrome
 - **WHEN** `/en/case-studies` renders
-- **THEN** the rail reads `All` and the platform names, the toggle reads `Grid` / `Ledger`, and counts equal the Polish hub's
+- **THEN** the rail reads `All` and the English branża names, the toggle reads `Grid` / `Ledger`, and every count equals the Polish hub's

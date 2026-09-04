@@ -7,6 +7,26 @@
  */
 
 import type { Localized } from '@/lib/i18n/parity'
+import type { PlatformKey } from '@/lib/payload/case-study-scoreboard'
+
+/**
+ * Display names for the five platforms the read rules know.
+ *
+ * One export, not a key in each locale file: these are brand names, so a
+ * translation of one would be a mistake rather than a variant. The detail
+ * page's meta rail names them; the locale-parity test holds the two files
+ * equal in case someone re-inlines it.
+ *
+ * `satisfies` ties the set to `PlatformKey`, so a sixth platform cannot ship
+ * without a name here — or, via `brand-icons.tsx`, without a mark.
+ */
+export const PLATFORM_NAMES = {
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  tiktok: 'TikTok',
+  linkedin: 'LinkedIn',
+  youtube: 'YouTube',
+} satisfies Record<PlatformKey, string>
 
 export const caseStudiesListing = {
   metaTitle: 'Case studies',
@@ -18,6 +38,22 @@ export const caseStudiesListing = {
   subhead:
     'Jak pracujemy i\u00A0co z\u00A0tego wynika. Wybrane projekty Social\u00A0Lama wraz z\u00A0liczbami, które je opisują.',
   cardRead: 'ZOBACZ CASE STUDY',
+  // The hub's industry index. The category NAMES are not here: they come from
+  // `lib/content/branze.ts`, which is where the site's industry pages already
+  // take theirs, so the filter and the pages cannot end up calling the same
+  // branża two different things.
+  filters: {
+    label: 'Branże',
+    all: 'Wszystkie',
+    page: 'Zobacz stronę branży',
+  },
+  views: {
+    label: 'Widok listy',
+    grid: 'Siatka',
+    // Not translated, in either locale: it is the name of the view, and the
+    // Polish alternatives ("Zestawienie", "Tabela") describe a spreadsheet.
+    ledger: 'Ledger',
+  },
   empty: {
     title: 'Już wkrótce',
     text: 'Pracujemy nad opisami naszych projektów — zajrzyj niebawem.',
@@ -27,6 +63,19 @@ export const caseStudiesListing = {
 export const caseStudyChrome = {
   breadcrumbAria: 'Ścieżka nawigacji',
   listingLabel: 'Case studies',
+  // Hero meta rail — three derived rows, each omitted when the study has
+  // nothing for it. `scope` reads the distinct pillar hashtags, which is the
+  // closest thing the model holds to "what we did".
+  meta: {
+    platforms: 'Platformy',
+    industry: 'Branża',
+    scope: 'Zakres',
+  },
+  // The body's sticky section index.
+  rail: {
+    label: 'Na tej stronie',
+    aria: 'Sekcje case study',
+  },
   sections: {
     client: 'Nasz klient',
     challenge: 'Wyzwanie',

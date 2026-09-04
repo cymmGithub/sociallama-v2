@@ -1,0 +1,428 @@
+[23:01:53] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+# Case-study leads — PL, 47 published, dev
+
+CARD is the numeral on the hub card and the large one in the hero.
+LEAD is a group’s first metric — its numeral on the scoreboard and in
+the results ledger. The indented rows are the rest of that group, in
+order; promoting one is a drag in the admin.
+
+── irobot — iRobot
+   CARD 11 mln                 TikTok                         Wyświetlenia [tiktok]
+        · 149 tys.                                             Widzowie
+        · 27 tys.                                              Polubienia
+        · 1 616                                                Udostępnienia
+        · 1 843                                                Komentarze
+   LEAD 742 tys.               YouTube                        Wyświetlenia [youtube]
+        · +7,9 tys.                                            Nowe subskrypcje
+
+── asus — ASUS
+   CARD 26 000 000             Facebook                       Polubienia [facebook]
+        · 22                                                   Posty graficzne i animacje
+        · 3                                                    Karuzele (Facebook i Instagram)
+   LEAD 4                      YouTube                        Filmy edukacyjne o AI [youtube]
+   LEAD 5                      Instagram                      Reelsy z @technokrata [instagram]
+        · 10                                                   Stories
+
+── volvo — Volvo Car Warszawa & Dom Volvo
+   CARD +1000                  Facebook                       Volvo Car Warszawa — nowi obserwatorzy [facebook]
+        · +1000                                                Dom Volvo — nowi obserwatorzy
+   LEAD +184                   Instagram                      Volvo Car Warszawa — nowi obserwatorzy [instagram]
+        · +97                                                  Dom Volvo — nowi obserwatorzy
+
+── pracuj-pl — Pracuj.pl
+   CARD 95,4 mln               TikTok                         Wyświetlenia filmów [tiktok]
+        · 94,8 mln                                             Całkowita liczba widzów
+        · 52,6 tys.                                            Obserwujący
+        · 104,8 tys.                                           Polubienia materiałów
+
+── engie — ENGIE
+   CARD 263 996                LinkedIn                       Łączna liczba wyświetleń publikacji [linkedin]
+        · 5 375                                                Reakcje
+        · 1 248                                                Nowi obserwatorzy
+   LEAD 69,1 tys.              Facebook                       Łączna liczba wyświetleń [facebook]
+        · 917                                                  Interakcje z zawartością
+        · 75                                                   Nowi obserwatorzy (organicznie)
+
+── fm-logistics — FM Logistic
+   CARD +800K                  LinkedIn                       Wyświetlenia postów (od startu współpracy) [linkedin]
+        · +10,7K                                               Reakcje
+        · +7,5K                                                Wyświetlenia strony
+        · +2 111                                               Nowi obserwujący (organicznie)
+        · 6 894 → 9 005 fanów                                  Społeczność
+        · 324 000                                              Wyświetlenia postów (kampanie płatne)
+        · 317 000                                              Odtworzenia wideo (kampanie płatne)
+        · 14 500 zł                                            Budżet reklamowy
+
+── julius-meinl — Julius Meinl
+   CARD 4 806 (+956,3%)        Facebook                       Interakcje [facebook]
+        · 432 616 (+1 380%)                                    Wyświetlenia
+        · 147 040                                              Widzowie
+        · 4 430 (+24 511%)                                     Kliknięcia
+   LEAD 2 350 (+587,1%)        Instagram                      Interakcje [instagram]
+        · 104 518 (+229%)                                      Wyświetlenia
+        · 24 179 (+998%)                                       Zasięg
+        · 87 (+100%)                                           Kliknięcia
+   LEAD 1 670                  LinkedIn                       Obserwujący profil [linkedin]
+        · 413 408                                              Wyświetlenia
+        · 994                                                  Reakcje
+        · 30                                                   Komentarze
+
+── breville — Breville
+   CARD 32 283                 Facebook                       Całkowita liczba obserwujących [facebook]
+        · 4 647                                                Reakcje
+        · 77                                                   Komentarze
+        · 214                                                  Udostępnienia
+   LEAD 3 332                  Instagram                      Całkowita liczba obserwujących [instagram]
+        · 394                                                  Polubienia
+        · 12                                                   Komentarze
+        · 37                                                   Zapisane
+
+── foodsaver — FoodSaver
+   CARD 9 433                  Facebook                       Całkowita liczba obserwujących [facebook]
+        · 3 591                                                Polubienia
+        · 169                                                  Komentarze
+        · 151                                                  Udostępnienia
+   LEAD 1 411                  Instagram                      Całkowita liczba obserwujących [instagram]
+        · 380                                                  Polubienia
+        · 11                                                   Komentarze
+        · 59                                                   Zapisane
+   LEAD 588                    FoodSaver                      Odnotowana sprzedaż — liczba konwersji [—]
+        · 328 949,11 zł                                        Odnotowana sprzedaż — łączna wartość
+
+── laurastar — Laurastar
+   CARD 3,8 mln                TikTok                         Wyświetlenia filmów [tiktok]
+        · 1,8 mln                                              Całkowita liczba widzów
+        · 1500                                                 Wzrost liczby fanów
+        · 330                                                  Komentarze
+        · 351                                                  Udostępnienia
+        · 1,15 zł                                              Koszt jednego fana
+        · 103                                                  Sprzedane sprzęty
+        · 41                                                   Zapytania o sprzęty
+
+── stadler-form — Stadler Form
+   CARD 7,2 mln                TikTok                         Wyświetlenia filmów [tiktok]
+        · 7 308                                                Wyświetlenia profilu
+        · 2 118                                                Obserwujący
+        · 12 tys.                                              Polubienia
+        · 377                                                  Udostępnienia
+        · 107                                                  Opublikowane wideo
+        · 204                                                  Komentarze
+        · 2,02                                                 Koszt jednego fana
+
+── mercator — Mercator Medical
+   CARD 2 968                  Facebook                       Reakcje [facebook]
+        · 4 mln                                                Łączna ilość wyświetleń publikacji
+        · 113                                                  Nowi obserwatorzy
+   LEAD 2 820                  Instagram                      Reakcje [instagram]
+        · 542,2 tys.                                           Łączna ilość wyświetleń publikacji
+        · 94                                                   Nowi obserwatorzy
+
+── motointegrator — Motointegrator
+   CARD 554 320                Facebook                       Średni miesięczny zasięg — najlepszy rynek [facebook]
+        · 1 305                                                Średnia miesięczna liczba komentarzy — najlepszy rynek
+   LEAD 1 431                  Instagram                      Średnia miesięczna liczba wizyt na profilu — najlepszy rynek [instagram]
+        · 46                                                   Średnia miesięczna liczba nowych obserwacji — najlepszy rynek
+   LEAD 0,08 €                 Facebook / Instagram           Najniższy średni koszt kliknięcia linku w reklamach [—]
+   LEAD 620%                   Facebook / Instagram (Niemcy)  ROAS kampanii remarketingowej (2,5 miesiąca) [—]
+        · 50                                                   Liczba zakupów w kampanii remarketingowej
+
+── polomarket — POLOmarket
+   CARD 30 mln                 POLOmarket                     Wyświetlenia filmów [—]
+        · 2188                                                 Udostępnienia
+        · 103                                                  Sprzedane sprzęty
+   LEAD 128 K                  TikTok                         Polubienia [tiktok]
+        · 12 mln                                               Całkowita liczba fanów
+        · 2 709                                                Komentarze
+   LEAD 158 706                Facebook                       Liczba fanów [facebook]
+        · 1,15                                                 Koszt jednego fana
+        · 46 370                                               Reakcje
+
+── vistula — Vistula
+   CARD +794                   Facebook                       Nowi obserwujący [facebook]
+        · +142 534                                             Wzrost wyświetleń
+        · +24                                                  Wzrost średniego zasięgu
+        · +6 060 217                                           Wzrost liczby zaangażowanych
+   LEAD +1 615                 Instagram                      Nowi obserwujący [instagram]
+        · +93 937                                              Wzrost wyświetleń
+        · 4 351                                                Wzrost średniego zasięgu
+        · +3 879 244                                           Wzrost wyświetleń profilu
+
+── vobis — Vobis
+   CARD 788 753                Facebook                       Wyświetlenia postów (12.2023–11.2024) [facebook]
+        · +2 874                                               Wzrost liczby fanów
+        · 7 689 (+3 345)                                       Liczba zaangażowanych
+        · 20,58% (+7,98 p.p.)                                  Odsetek zaangażowanych względem wielkości profilu
+        · 21 879 (+4 848)                                      Interactivity Index (wg Sotrender)
+        · 443 (+315)                                           Odpowiedzi marki na komentarze
+        · 3 048                                                Przejścia na stronę
+
+── riviera — Centrum Riviera
+   CARD 306% rocznego KPI      TikTok                         Zasięg [tiktok]
+        · 3 mln+                                               Osoby, do których dotarliśmy
+   LEAD 163% rocznego KPI      Instagram                      Zasięg [instagram]
+   LEAD 160% rocznego KPI      Facebook                       Nowi obserwujący [facebook]
+        · 1,28 mln                                             Odsłony filmu „Fabryka Pisanek”
+        · −400%                                                Koszt pozyskania fana
+
+── kontigo — Kontigo
+   CARD 1 100                  Facebook                       Zgromadzone ambasadorki [facebook]
+        · 79                                                   Średnia miesięczna liczba postów od ambasadorek
+        · 1 500                                                Średnia miesięczna liczba polubień postów w grupie
+
+── aquael — Aquael
+   CARD 388 717                Facebook                       Wyświetlenia (średnia miesięczna) [facebook]
+        · 184 799                                              Zasięg (średnia miesięczna)
+        · 9 033                                                Zaangażowanie (średnia miesięczna)
+        · +660                                                 Przyrost fanów (średnia miesięczna)
+
+── ariadna — Ariadna
+   CARD 8,6 mln+               TikTok                         Wyświetlenia filmów (rok) [tiktok]
+        · 24,2 tys.+                                           Polubienia (rok)
+        · 1 tys.                                               Przejścia na stronę z BIO (rok)
+        · 4 332                                                Obserwujący
+        · 1,15 zł                                              Średni koszt pozyskania obserwatora
+        · 564                                                  Nowi zarejestrowani (kampania 14 dni)
+        · 4 896                                                Wejścia na stronę (kampania 14 dni)
+        · 988                                                  Nowi zarejestrowani (influencerka, 24h)
+        · 4 415                                                Wejścia na stronę (influencerka, 24h)
+
+── entelo — Entelo
+   CARD 2,9 mln                Facebook                       Wyświetlenia [facebook]
+        · 686 tys.                                             Zasięg
+        · 5,6 tys.                                             Interakcje
+   LEAD 491 tys.               Instagram                      Wyświetlenia [instagram]
+        · 158 tys.                                             Zasięg
+   LEAD 2,5 mln                TikTok                         Wyświetlenia filmów [tiktok]
+        · 10 tys.                                              Polubienia
+        · 346 tys.                                             Wyświetlenia najpopularniejszego filmu
+
+── belvedere — Belvedere
+   CARD 75 718                 Belvedere                      Średnia liczba wyświetleń miesięcznie [—]
+        · 28 959                                               Średni całkowity zasięg miesięczny
+        · 1 530                                                Średnia liczba zaangażowanych miesięcznie
+   LEAD 92% (612 opinii)       Facebook                       Rekomendacje [facebook]
+
+── dolina-charlotty — Dolina Charlotty
+   CARD 15,5 mln (+44,7%)      Facebook                       Wyświetlenia [facebook]
+        · 285 593 (+87,7%)                                     Zasięg
+        · 51 278 (+168,8%)                                     Interakcje z zawartością
+        · 99 509 (+67,4%)                                      Kliknięcia linku
+        · 4 869 (+141,4%)                                      Rozpoczęte obserwowania
+   LEAD 680 730 (+1706%)       Instagram                      Wyświetlenia [instagram]
+        · 8 625 (+100%)                                        Interakcje z zawartością
+        · 1 678 (+8,55%)                                       Rozpoczęte obserwowania
+
+── galeria-rondo-wiatraczna — Galeria Rondo Wiatraczna
+   CARD 2,5 mln                Facebook                       Wyświetlenia [facebook]
+        · 750 tys.                                             Widzów
+        · 14,5 tys.                                            Polubień
+   LEAD 2,5 mln                Instagram                      Wyświetlenia [instagram]
+        · 280 tys.                                             Widzów
+   LEAD 77 tys.                TikTok                         Widzów [tiktok]
+   LEAD 2,14 mln               Strona WWW                     Wyświetlenia w wyszukiwarce (Google Search Console) [—]
+        · 26 559                                               Kliknięcia łącznie
+
+── faktoria-win — Faktoria Win
+   CARD 417 tys.               Facebook                       Zasięg (średnia miesięczna) [facebook]
+        · 827 tys.                                             Wyświetlenia (średnia miesięczna)
+        · 17 tys.                                              Odwiedziny profilu (średnia miesięczna)
+        · 25 tys.                                              Kliknięcia linku (średnia miesięczna)
+        · 3,6 tys.                                             Interakcje (średnia miesięczna)
+   LEAD 226 tys.               Instagram                      Zasięg (średnia miesięczna) [instagram]
+        · 381 tys.                                             Wyświetlenia (średnia miesięczna)
+        · 1,8 tys.                                             Odwiedziny profilu (średnia miesięczna)
+        · 1,5 tys.                                             Interakcje (średnia miesięczna)
+
+── skrzat — Skrzat. Nowy początek
+   CARD 35 mln                 TikTok                         Wyświetlenia [tiktok]
+        · 100 tys.                                             Polubienia
+   LEAD 4,38 mln               Instagram                      Wyświetlenia [instagram]
+        · 1,14 mln                                             Zasięg
+        · 59 575                                               Interakcje z zawartością
+   LEAD 3,46 mln               Facebook                       Wyświetlenia [facebook]
+        · 10 884                                               Interakcje z zawartością
+
+── power-elements — Power Elements
+   CARD 125                    Facebook                       Rozpoczęte obserwowania [facebook]
+        · 1,4 mln                                              Wyświetlenia
+        · 661 064                                              Zasięg
+        · 10 080                                               Kliknięcia linku
+        · 2 137                                                Interakcje z zawartością
+   LEAD 609,9 tys.             Instagram                      Wyświetlenia [instagram]
+        · 253 797                                              Zasięg
+        · 2 619                                                Interakcje z zawartością
+   LEAD 436                    TikTok                         Rozpoczęte obserwowania [tiktok]
+        · 1,6 mln                                              Wyświetlenia
+        · 2,2 tys.                                             Interakcje z zawartością
+   LEAD 24                     LinkedIn                       Rozpoczęte obserwowania [linkedin]
+        · 2 133                                                Wyświetlenia
+        · 179                                                  Interakcje z zawartością
+
+── mazurska-manufaktura-alkoholi — Mazurska Manufaktura Alkoholi
+   CARD 2,54 mln zł            Beesfund                       Zebrane środki [—]
+        · 1010                                                 Nowi akcjonariusze
+        · 3.                                                   Miejsce w historii emisji crowdfundingowych
+   LEAD 155                    Media                          Wzmianki w czołowych polskich mediach [—]
+   LEAD 401 625 PLN            Ambasadorka                    Wartość inwestycji Magdy Gessler [—]
+
+── las-vegans — Las Vegan's
+   CARD 361                    Las Vegan's                    Liczba inwestorów [—]
+        · 999 999 zł                                           Wartość objętych akcji
+        · 5 dni przed terminem                                 Realizacja celu emisji
+   LEAD 123 935 odbiorców      Facebook                       Zasięg postów o emisji (37 postów) [facebook]
+        · 335 tys.+ osób                                       Zasięg w grupach wege i eko
+   LEAD 18                     Instagram/Facebook             Influencerzy zaangażowani barterowo [—]
+   LEAD 94 631                 Strona www                     Użytkownicy strony (2020) [—]
+        · 460 270                                              Odsłony strony (2020)
+
+── kohersen — Kohersen
+   CARD 16 821                 Facebook                       Całkowita liczba obserwujących [facebook]
+        · 444                                                  Reakcje
+        · 350                                                  Komentarze
+        · 4 182                                                Udostępnienia
+   LEAD 3 418                  Instagram                      Całkowita liczba obserwujących [instagram]
+        · 102                                                  Polubienia
+        · 61                                                   Komentarze
+        · 750                                                  Zapisane
+   LEAD 613                    Kohersen                       Odnotowana sprzedaż — liczba konwersji [—]
+        · 313 589,05 zł                                        Odnotowana sprzedaż — łączna wartość
+
+── a1-karting — A1 Karting
+   CARD 3,7 mln                Facebook                       Wyświetlenia [facebook]
+        · 312 903                                              Zasięg
+        · 34 373 (+79%)                                        Kliknięcia linku
+        · 7 768 (+397%)                                        Interakcje z zawartością
+        · 608                                                  Rozpoczęte obserwowania
+   LEAD 552,1 tys.             Instagram                      Wyświetlenia [instagram]
+        · 5 765 (+100%)                                        Interakcje z zawartością
+        · 312 903 (+78%)                                       Zasięg
+   LEAD 767 tys.               TikTok                         Wyświetlenia [tiktok]
+        · 926                                                  Rozpoczęte obserwowania
+        · 10 tys.                                              Interakcje z zawartością
+
+── bioagris — Bioagris
+   CARD 8107                   YouTube                        Subskrybenci [youtube]
+        · do 270 tys.                                          Wyświetlenia treści
+   LEAD 1782                   TikTok                         Obserwujący [tiktok]
+        · 250–500 tys.                                         Wyświetlenia treści
+
+── rabkoland — Rabkoland
+   CARD +38%                   Instagram                      Wzrost dziennego zasięgu postów [instagram]
+   LEAD prawie 3 mln           YouTube — Zaczarowany Świat Sary Wyświetlenia odcinka nakręconego w Rabkolandzie [—]
+
+── skibooking — SkiBooking.pl
+   CARD 2 194                  Instagram                      Reakcje [instagram]
+        · 1,2 mln                                              Wyświetlenia
+        · 1 007                                                Nowi obserwatorzy
+   LEAD 3 068                  Facebook                       Interakcje z zawartością [facebook]
+        · 3,7 mln                                              Wyświetlenia
+        · 2 301                                                Nowi obserwatorzy
+
+── getaway — Getaway
+   CARD +913%                  Getaway                        Odwiedziny na stronie [—]
+        · +362%                                                Interakcje z zawartością
+        · +155%                                                Wzrost obserwujących
+        · +100%                                                Zasięg organiczny
+        · 1,9 mln                                              Zasięg
+        · 1 mln                                                Wyświetlenia
+        · 30 207                                               Interakcje z zawartością
+        · 473                                                  Komentarze
+        · 329                                                  Udostępnienia
+
+── jw-construction — JW Construction
+   CARD 27 178                 LinkedIn                       Łączna liczba wyświetleń organicznych [linkedin]
+        · 819                                                  Reakcje
+        · 186                                                  Nowi obserwatorzy
+
+── dynamic-development — Dynamic Development
+   CARD 3,4 mln                Facebook                       Zasięg [facebook]
+        · 600 tys.                                             Wyświetlenia
+        · 27 tys.                                              Odwiedziny profilu
+        · 25,6 tys.                                            Interakcje
+        · 45 tys.                                              Kliknięcia linku
+        · 6050                                                 Nowi obserwujący
+   LEAD 1,2 mln                Instagram                      Zasięg [instagram]
+        · 491 tys.                                             Wyświetlenia
+        · 2,8 tys.                                             Odwiedziny profilu
+        · 3,5 tys.                                             Interakcje
+        · 2 tys.                                               Kliknięcia profilu
+        · 159                                                  Nowi obserwujący
+
+── ed-invest — ED Invest
+   CARD 2,6 mln (+180%)        Facebook                       Wyświetlenia [facebook]
+        · 1,9 tys. (+181,5%)                                   Interakcje z zawartością
+        · 270 (+260%)                                          Nowi obserwujący
+        · 7 tys. (+3,4%)                                       Odwiedziny profilu
+        · 27 tys. (+6,8%)                                      Kliknięcia linku
+   LEAD 259,3 tys. (+272,2%)   Instagram                      Wyświetlenia [instagram]
+        · 94 tys. (+372,2%)                                    Zasięg
+        · 23 (+66%)                                            Nowi obserwujący
+        · 563 (+100%)                                          Interakcje
+        · 1 466 (+224,3%)                                      Odwiedziny profilu
+        · 4 163 (+1072,7%)                                     Kliknięcia linku
+   LEAD 13 tys. (+32%)         LinkedIn                       Wyświetlenia [linkedin]
+        · 6 tys. (+37%)                                        Zasięg
+        · 85 (+45%)                                            Nowi obserwujący
+
+── n-energia — N Energia
+   CARD 196                    Profil N Energia               Średnia liczba reakcji na posty (miesięcznie) [—]
+        · 129                                                  Średnia liczba udostępnień postów (miesięcznie)
+        · 58                                                   Średnia liczba aktywnych użytkowników (miesięcznie)
+
+── produkty-cukiernicze-brzesc — Produkty Cukiernicze Brześć
+   CARD +50% (z 368 do 549)    Facebook                       Dzienny zasięg postów [facebook]
+        · +52,8% (z 366 do 546)                                Dzienny zasięg organiczny
+   LEAD 10x                    Produkty Cukiernicze Brześć    Wzrost eksportu (m.in. USA, Wielka Brytania, kraje EMEA) [—]
+
+── ozgasl — O, ZGAsł?
+   CARD 90 tys.                TikTok                         Obserwujący [tiktok]
+        · 2,1 mln wyświetleń                                   Najbardziej viralowy film
+        · 25 tys.+                                             Zasięg posta edukacyjnego (bez promocji płatnej)
+        · blisko 800                                           Polubienia posta edukacyjnego
+        · 244                                                  Komentarze pod postem edukacyjnym
+
+── personal-effect — Personal Effect
+   CARD 4300%                  Facebook                       Wzrost liczby nowych obserwujących [facebook]
+        · 264                                                  Rozpoczęte obserwowania
+        · 15 485 075                                           Wyświetlenia
+        · 285 593                                              Zasięg
+        · 2847                                                 Interakcje z zawartością
+        · 6909                                                 Kliknięcia linku
+   LEAD 1706%                  Instagram                      Wzrost wyświetleń [instagram]
+        · 1678                                                 Rozpoczęte obserwowania
+        · 680 730                                              Wyświetlenia
+        · 8625                                                 Interakcje z zawartością
+
+── imid-cmv — LeczenieCMV.pl
+   CARD +159,1% (2 508)        Facebook (strona)              Wzrost interakcji z zawartością [—]
+        · +167,97% (257)                                       Wzrost liczby obserwujących
+        · 825 522 (+44,7%)                                     Wyświetlenia
+   LEAD +116 200% (1 163)      Instagram                      Wzrost interakcji z zawartością [instagram]
+        · +5 845% (250 505)                                    Wzrost wyświetleń
+        · +735% (238)                                          Wzrost liczby obserwujących
+   LEAD +273                   Facebook (grupa)               Nowi członkowie (maj–sierpień) [—]
+        · 4 706                                                Wyświetlenia (maj–sierpień)
+
+── fundacja-saventic — Fundacja Saventic
+   CARD 3 418                  Instagram                      Całkowita liczba obserwujących [instagram]
+        · 750                                                  Polubienia
+        · 102                                                  Komentarze
+        · 61                                                   Zapisane posty
+   LEAD 1 009                  Facebook                       Całkowita liczba obserwujących [facebook]
+        · 115                                                  Reakcje
+
+── kbp — Kongres Bezpieczeństwo Polski
+   CARD prawie 4 000           Kongres Bezpieczeństwo Polski  Uczestnicy wydarzenia [—]
+        · ponad 2 000                                          Prelegenci
+        · przeszło 90                                          Partnerzy komercyjni
+        · ponad 120                                            Partnerzy medialni i instytucjonalni
+
+── luisse — LUISSE
+   (no results — the card shows the cover with no numeral)
+
+── mmhygienic — MM Hygienic
+   CARD 5 718                  MM Hygienic                    Średnia liczba wyświetleń miesięcznie [—]
+        · 8 959                                                Średni zasięg miesięczny
+        · 530                                                  Średnia liczba zaangażowanych osób miesięcznie
+
+46 studies carry a lead; 1 carry none.

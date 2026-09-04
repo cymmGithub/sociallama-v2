@@ -11,6 +11,7 @@
  *   - every pillar's `media` array is byte-identical to PL (creatives reused,
  *     never re-uploaded or re-paired)
  *   - pillar and results counts match PL                  (index pairing intact)
+ *   - PL and EN resolve the same lead metric               (reported, not enforced)
  *   - the EN content is on the PUBLISHED version          (design D5)
  *
  * Run:  bun ./lib/payload/verify-case-study-en.ts riviera skrzat
@@ -48,6 +49,7 @@ if (!isAll && slugArgs.length === 0) {
   )
 }
 
+const { platformOf } = await import('./case-study-scoreboard')
 const { default: config } = await import('@payload-config')
 const { getPayload } = await import('payload')
 const payload = await getPayload({ config })
@@ -201,6 +203,25 @@ for (const slug of slugs) {
     'results count matches PL',
     plResults.length === enResults.length,
     `pl=${plResults.length} en=${enResults.length}`
+  )
+  // `results` is localized as a whole array, so each locale carries its own
+  // order — and order is now what picks the card's numeral and the hero's.
+  // The two were seeded from one source and agree today; an editor reordering
+  // one locale in the admin is legitimate and would silently give the study
+  // two different faces. Reported, not failed: the spec ties the lead to the
+  // rendering locale, so a divergence is a decision, not a break.
+  //
+  // Compared by platform key, not by the label: brand-group labels ARE
+  // translated ("Facebook (strona)" / "Facebook (page)"), so comparing the
+  // raw strings would warn on every study that leads on one and never on a
+  // real reorder between two brand groups. The key answers the question the
+  // surfaces actually ask — which mark the numeral carries.
+  const leadKey = (row: { platform?: string } | undefined) =>
+    row?.platform ? (platformOf(row.platform) ?? '(brand group)') : '(none)'
+  soft(
+    'PL and EN lead on the same platform',
+    leadKey(plResults[0]) === leadKey(enResults[0]),
+    `pl=${leadKey(plResults[0])} en=${leadKey(enResults[0])}`
   )
   for (let i = 0; i < plResults.length; i++) {
     check(
