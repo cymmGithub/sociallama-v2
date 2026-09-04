@@ -214,6 +214,7 @@
   flex-direction: column;
   gap: var(--gap);
   padding: calc(var(--gap) * 3) var(--gap) var(--gap);
+  --note-color: var(--color-orange);
   background: linear-gradient(
     to top,
     color-mix(in srgb, var(--color-plum-dark) 94%, transparent),
@@ -272,18 +273,6 @@
   line-height: 1.1;
   letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
-}
-
-/* Orange, not `--color-contrast`: the board is plum inside a cream chapter, so
-   the inherited accent would be plum on plum. */
-.scoreNote {
-  display: block;
-  margin-top: 0.35em;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  color: var(--color-orange);
 }
 
 .scoreLabel {
@@ -827,16 +816,21 @@
   color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
 }
 
-/* The parenthetical, on the lead and on the small metrics alike. Absolute
-   size, not `em`: against a 4.5rem lead it would be a second headline. */
-.ledgerNote {
+/* The parenthetical, on every numeral this page sets — the scoreboard's and
+   the ledger's alike. Absolute size, not `em`: against a 4.5rem lead it would
+   be a second headline.
+
+   The colour is the one thing that is per-surface, so it is the one thing the
+   surface names: the board is plum inside a cream chapter, where the inherited
+   `--color-contrast` would be plum on plum. */
+.note {
   display: block;
   margin-top: 0.35em;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0;
-  color: var(--color-contrast);
+  color: var(--note-color, var(--color-contrast));
 }
 
 /* —— Gallery —————————————————————————————————————————————————————— */

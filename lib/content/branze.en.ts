@@ -146,6 +146,7 @@ export const INDUSTRIES = [
     slug: 'electronics',
     pairSlug: 'elektronika-i-agd',
     label: 'Electronics & Appliances',
+    shortLabel: 'Electronics',
     // Imagery: Pexels (free license) — photo IDs 844874, 7533923, 29292011.
     collage: [
       {
@@ -974,6 +975,7 @@ export const INDUSTRIES = [
     slug: 'real-estate',
     pairSlug: 'nieruchomosci-i-deweloperzy',
     label: 'Real Estate & Developers',
+    shortLabel: 'Real Estate',
     // Numbers verbatim from the ED Invest case study.
     numbers: [
       { value: '2,6 mln', label: 'Views', delta: '+180%' },
@@ -1165,38 +1167,38 @@ export const industryNav = INDUSTRIES.map((industry) => ({
 }))
 
 /** EN twin of `PENDING_INDUSTRIES` — same ids, English names. */
-export const PENDING_INDUSTRIES = [
-  { id: 'retail', label: 'Retail & Shopping Centres' },
-  { id: 'energetyka', label: 'Energy' },
-  { id: 'zywnosc', label: 'Food & FMCG' },
-  { id: 'edukacja-i-hr', label: 'Education & HR' },
-  { id: 'logistyka', label: 'Logistics' },
-  { id: 'rolnictwo', label: 'Agriculture' },
-  { id: 'b2b-i-uslugi', label: 'B2B & Services' },
-] as const
-
-/** EN twin of `FILTER_LABELS` — the names too long for the filter column. */
-const FILTER_LABELS: Record<string, string> = {
-  'nieruchomosci-i-deweloperzy': 'Real Estate',
-  'elektronika-i-agd': 'Electronics',
-  'hotele-i-miejsca-wypoczynkowe': 'Hotels & Resorts',
-  retail: 'Retail',
-}
+const PENDING_INDUSTRIES: { id: string; label: string; shortLabel?: string }[] =
+  [
+    {
+      id: 'retail',
+      label: 'Retail & Shopping Centres',
+      shortLabel: 'Retail',
+    },
+    { id: 'energetyka', label: 'Energy' },
+    { id: 'zywnosc', label: 'Food & FMCG' },
+    { id: 'edukacja-i-hr', label: 'Education & HR' },
+    { id: 'logistyka', label: 'Logistics' },
+    { id: 'rolnictwo', label: 'Agriculture' },
+    { id: 'b2b-i-uslugi', label: 'B2B & Services' },
+  ] as const
 
 /** EN twin of `INDUSTRY_OPTIONS`; same ids and order, English labels/routes. */
 export const INDUSTRY_OPTIONS: {
   id: string
   label: string
-  href?: string
+  shortLabel?: string | undefined
+  href?: string | undefined
 }[] = [
-  ...INDUSTRIES.map((industry) => ({
+  ...(INDUSTRIES as readonly Industry[]).map((industry) => ({
     id: industry.id,
-    label: FILTER_LABELS[industry.id] ?? industry.label,
+    label: industry.label,
+    shortLabel: industry.shortLabel,
     href: `/en/industries/${industry.slug}`,
   })),
   ...PENDING_INDUSTRIES.map((industry) => ({
     id: industry.id,
-    label: FILTER_LABELS[industry.id] ?? industry.label,
+    label: industry.label,
+    shortLabel: industry.shortLabel,
   })),
 ]
 

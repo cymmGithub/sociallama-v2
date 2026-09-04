@@ -49,7 +49,8 @@ export function CaseStudiesListingView({
     .filter((option) => (counts.get(option.id) ?? 0) > 0)
     .map((option) => ({
       id: option.id,
-      label: option.label,
+      // The rail is the one surface tight enough to need the short name.
+      label: option.shortLabel ?? option.label,
       count: counts.get(option.id) ?? 0,
       href: option.href,
     }))

@@ -1,8 +1,10 @@
 import cn from 'clsx'
-import type { CSSProperties, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { PostRichText } from '@/app/(frontend)/[slug]/rich-text'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
+import { INDUSTRY_OPTIONS as industriesPl } from '@/lib/content/branze'
+import { INDUSTRY_OPTIONS as industriesEn } from '@/lib/content/branze.en'
 import {
   type LocalizedCaseStudies,
   PLATFORM_NAMES,
@@ -14,12 +16,12 @@ import {
   leadMetrics,
   normalizePlatform,
   platformsOf,
-  splitValue,
+  SECONDARY_LEADS,
 } from '@/lib/payload/case-study-scoreboard'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy, SocialPlatform } from '@/payload-types'
 import { MetricValue } from '../metric-value'
-import { BrandIcon, hasBrandIcon } from './brand-icons'
+import { BrandIcon } from './brand-icons'
 import s from './case-study.module.css'
 import { CaseStudyJsonLd } from './json-ld'
 import { type RailSection, SectionRail } from './section-rail'
@@ -44,6 +46,36 @@ import { type RailSection, SectionRail } from './section-rail'
  *
  * A study with no cover still renders the board, on the plum ground alone.
  */
+/** One numeral and its group label — the board's large figure and its small
+ *  ones differ only in which type scale they take. */
+function Figure({
+  item,
+  valueClassName,
+  locale,
+}: {
+  item: LeadMetric
+  valueClassName: string | undefined
+  locale: Locale
+}) {
+  return (
+    <>
+      <MetricValue
+        animate
+        className={valueClassName}
+        locale={locale}
+        noteClassName={s.note}
+        value={item.value}
+      />
+      <p className={s.scoreLabel}>
+        {item.platform && (
+          <BrandIcon className={s.scoreMark} platform={item.platform} />
+        )}
+        {item.label} · {item.metric}
+      </p>
+    </>
+  )
+}
+
 function Scoreboard({
   cover,
   leads,
@@ -54,10 +86,7 @@ function Scoreboard({
   locale: Locale
 }) {
   const [lead, ...rest] = leads
-  // Two, not "the rest": three small numerals under a large one stops reading
-  // as a hierarchy and starts reading as a table. The results ledger below is
-  // where every group gets its say.
-  const secondary = rest.slice(0, 2)
+  const secondary = rest.slice(0, SECONDARY_LEADS)
 
   return (
     <div className={s.scoreboard}>
@@ -76,48 +105,22 @@ function Scoreboard({
       )}
       {lead && (
         <div className={s.scoreFigures}>
-          <div
-            className={s.scoreLead}
-            style={
-              {
-                '--len': splitValue(lead.value).numeral.length,
-              } as CSSProperties
-            }
-          >
-            <MetricValue
-              animate
-              className={s.scoreLeadValue}
+          <div className={s.scoreLead}>
+            <Figure
+              item={lead}
               locale={locale}
-              noteClassName={s.scoreNote}
-              value={lead.value}
+              valueClassName={s.scoreLeadValue}
             />
-            <p className={s.scoreLabel}>
-              {lead.platform && (
-                <BrandIcon className={s.scoreMark} platform={lead.platform} />
-              )}
-              {lead.label} · {lead.metric}
-            </p>
           </div>
           {secondary.length > 0 && (
             <div className={s.scoreRest}>
               {secondary.map((item) => (
                 <div className={s.scoreSmall} key={item.label}>
-                  <MetricValue
-                    animate
-                    className={s.scoreSmallValue}
+                  <Figure
+                    item={item}
                     locale={locale}
-                    noteClassName={s.scoreNote}
-                    value={item.value}
+                    valueClassName={s.scoreSmallValue}
                   />
-                  <p className={s.scoreLabel}>
-                    {item.platform && (
-                      <BrandIcon
-                        className={s.scoreMark}
-                        platform={item.platform}
-                      />
-                    )}
-                    {item.label} · {item.metric}
-                  </p>
                 </div>
               ))}
             </div>
@@ -162,6 +165,8 @@ export function CaseStudyArticle({
       platformLogos.set(normalizePlatform(platform.name), media)
     }
   }
+  const platformLogoFor = (label: string) =>
+    platformLogos.get(normalizePlatform(label))
 
   // Embedded rich text may link out to posts and categories, so it takes the
   // BLOG prefixes for this locale, not the case-study `basePath` above.
@@ -173,9 +178,17 @@ export function CaseStudyArticle({
 
   const logo = resolveMedia(study.client.logo)
   const cover = resolveMedia(study.cover)
+  // Grouped once: `leadMetrics` and `platformsOf` both read these, and
+  // grouping is O(results x groups).
   const resultGroups = groupResults(study.results)
-  const leads = leadMetrics(study.results)
-  const studyPlatforms = platformsOf(study.results)
+  const leads = leadMetrics(resultGroups)
+  const studyPlatforms = platformsOf(resultGroups)
+  // The study's filed industry, named and linked in this locale. This is the
+  // same key the hub filters on, so the page and the filter cannot disagree
+  // about what sector a study belongs to.
+  const industry = (locale === 'en' ? industriesEn : industriesPl).find(
+    (option) => option.id === study.industry
+  )
   const gallery = (study.gallery ?? [])
     .map((item) => resolveMedia(item))
     .filter((media): media is NonNullable<typeof media> => media !== null)
@@ -206,35 +219,52 @@ export function CaseStudyArticle({
     hasGallery && { id: 'galeria', label: chrome.sections.gallery },
   ].filter((section): section is RailSection => Boolean(section))
 
-  const metaRows: MetaRow[] = (
-    [
-      studyPlatforms.length > 0 && {
-        key: 'platforms',
-        label: chrome.meta.platforms,
-        value: (
-          <span className={s.metaMarks}>
-            {studyPlatforms.map((platform) => (
-              <span className={s.metaMark} key={platform}>
-                <BrandIcon className={s.metaMarkIcon} platform={platform} />
-                {PLATFORM_NAMES[platform]}
-              </span>
-            ))}
-          </span>
-        ),
+  // Annotated where it is built rather than cast where it is filtered: the
+  // literal's own `value` types are narrower than `ReactNode`, so inference
+  // alone leaves the filter's predicate unassignable.
+  const metaCandidates: (MetaRow | false)[] = [
+    studyPlatforms.length > 0 && {
+      key: 'platforms',
+      label: chrome.meta.platforms,
+      value: (
+        <span className={s.metaMarks}>
+          {studyPlatforms.map((platform) => (
+            <span className={s.metaMark} key={platform}>
+              <BrandIcon className={s.metaMarkIcon} platform={platform} />
+              {PLATFORM_NAMES[platform]}
+            </span>
+          ))}
+        </span>
+      ),
+    },
+    // The study's own `industry`, not its tags. The tags are free keywords
+    // ("Rekrutacja", "Filtr AR"); labelling them "Branża" made this page
+    // contradict the hub's filter about the same study in public.
+    industry !== undefined && {
+      key: 'industry',
+      label: chrome.meta.industry,
+      value: industry.href ? (
+        <Link className={s.metaLink} href={industry.href}>
+          {industry.label}
+        </Link>
+      ) : (
+        industry.label
+      ),
+    },
+    study.tags !== null &&
+      study.tags !== undefined &&
+      study.tags.length > 0 && {
+        key: 'tags',
+        label: chrome.meta.tags,
+        value: study.tags.join(' · '),
       },
-      study.tags &&
-        study.tags.length > 0 && {
-          key: 'industry',
-          label: chrome.meta.industry,
-          value: study.tags.join(' · '),
-        },
-      scope.length > 0 && {
-        key: 'scope',
-        label: chrome.meta.scope,
-        value: scope.join(' · '),
-      },
-    ] as (MetaRow | false)[]
-  ).filter((row): row is MetaRow => row !== false)
+    scope.length > 0 && {
+      key: 'scope',
+      label: chrome.meta.scope,
+      value: scope.join(' · '),
+    },
+  ]
+  const metaRows = metaCandidates.filter((row): row is MetaRow => row !== false)
 
   return (
     <>
@@ -340,46 +370,44 @@ export function CaseStudyArticle({
                     30 comments the same weight as 432 616 views are gone. */}
                 <div className={s.results}>
                   {resultGroups.map((group) => {
-                    const platformKey = normalizePlatform(group.label)
-                    const platformLogo = platformLogos.get(platformKey)
                     const [lead, ...rest] = group.items
                     return (
                       <div key={group.label} className={s.ledgerGroup}>
                         <h3 className={s.ledgerGroupTitle}>
-                          {/* Prefer the full-color brand mark; fall back to the
-                              CMS logo only for groups we ship no icon for. */}
-                          <BrandIcon
-                            platform={platformKey}
-                            className={s.platformLogo}
-                          />
-                          {!hasBrandIcon(platformKey) && platformLogo?.url && (
-                            <Image
+                          {/* `group.platform` already carries the strict match
+                              — the one that decides "Facebook (grupa)" is its
+                              own group. Re-normalizing the label here put a
+                              second, looser answer to the same question beside
+                              it. The CMS logo is the fallback for a group the
+                              brand-icon set has no mark for. */}
+                          {group.platform ? (
+                            <BrandIcon
+                              platform={group.platform}
                               className={s.platformLogo}
-                              src={platformLogo.url}
-                              alt=""
-                              width={platformLogo.width ?? 24}
-                              height={platformLogo.height ?? 24}
                             />
+                          ) : (
+                            platformLogoFor(group.label)?.url && (
+                              <Image
+                                className={s.platformLogo}
+                                src={platformLogoFor(group.label)?.url ?? ''}
+                                alt=""
+                                width={24}
+                                height={24}
+                              />
+                            )
                           )}
                           {group.label}
                         </h3>
                         {lead && (
-                          <div
-                            className={s.ledgerLead}
-                            style={
-                              {
-                                // Only the lead scales with its own length —
-                                // the small numerals are one fixed size, so a
-                                // row of them stays a row.
-                                '--len': splitValue(lead.value).numeral.length,
-                              } as CSSProperties
-                            }
-                          >
+                          // Only the lead scales with its own length (via the
+                          // `--len` MetricValue stamps) — the small numerals
+                          // are one fixed size, so a row of them stays a row.
+                          <div className={s.ledgerLead}>
                             <MetricValue
                               animate
                               className={s.ledgerLeadValue}
                               locale={locale}
-                              noteClassName={s.ledgerNote}
+                              noteClassName={s.note}
                               value={lead.value}
                             />
                             <span className={s.ledgerLeadMetric}>
@@ -398,7 +426,7 @@ export function CaseStudyArticle({
                                   animate
                                   className={s.ledgerItemValue}
                                   locale={locale}
-                                  noteClassName={s.ledgerNote}
+                                  noteClassName={s.note}
                                   value={item.value}
                                 />
                                 <span className={s.ledgerItemMetric}>

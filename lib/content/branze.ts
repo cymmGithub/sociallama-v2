@@ -154,6 +154,16 @@ export interface Industry {
   pairSlug: string
   /** Bare-noun label (no "Branża" prefix) — also the hero wordmark. */
   label: string
+  /**
+   * Filter-length name, when `label` is too long for one.
+   *
+   * A page can afford "Hotele i Miejsca Wypoczynkowe" as its title; the hub's
+   * 190px filter column cannot, and an ellipsis would eat the word that tells
+   * the two property entries apart. It sits here rather than in a lookup map
+   * so it cannot be orphaned by an `id` rename, and so each locale carries its
+   * own — the names that overflow differ between them.
+   */
+  shortLabel?: string
   meta: { title: string; description: string }
   /** Hero lead paragraph (both variants). */
   tagline: string
@@ -1045,6 +1055,7 @@ export const INDUSTRIES = [
     slug: 'hotele-i-miejsca-wypoczynkowe',
     pairSlug: 'hospitality',
     label: 'Hotele i Miejsca Wypoczynkowe',
+    shortLabel: 'Hotele i\u00A0wypoczynek',
     // Numbers verbatim from the Dolina Charlotty case study.
     numbers: [
       { value: '15,5 mln', label: 'Wyświetlenia', delta: '+44,7%' },
@@ -1156,6 +1167,7 @@ export const INDUSTRIES = [
     slug: 'nieruchomosci-i-deweloperzy',
     pairSlug: 'real-estate',
     label: 'Nieruchomości i Deweloperzy',
+    shortLabel: 'Nieruchomości',
     // Numbers verbatim from the ED Invest case study.
     numbers: [
       { value: '2,6 mln', label: 'Wyświetlenia', delta: '+180%' },
@@ -1372,51 +1384,49 @@ export const industryNav = INDUSTRIES.map((industry) => ({
  * page waiting to be written — moving one into `INDUSTRIES` is what publishes
  * it, and the `id` never changes, so nothing has to be re-filed when it does.
  */
-export const PENDING_INDUSTRIES = [
-  { id: 'retail', label: 'Retail i\u00A0centra handlowe' },
-  { id: 'energetyka', label: 'Energetyka' },
-  { id: 'zywnosc', label: 'Żywność i\u00A0FMCG' },
-  { id: 'edukacja-i-hr', label: 'Edukacja i\u00A0HR' },
-  { id: 'logistyka', label: 'Logistyka' },
-  { id: 'rolnictwo', label: 'Rolnictwo' },
-  { id: 'b2b-i-uslugi', label: 'B2B i\u00A0usługi' },
-] as const
-
-/**
- * Filter-length names.
- *
- * A branża page can afford "Hotele i Miejsca Wypoczynkowe" as its title; a
- * 190px filter column cannot, and an ellipsis would eat the word that tells
- * the two property entries apart. Only the names that overflow are listed —
- * everything else keeps its page title, and the page itself always shows the
- * full one.
- */
-const FILTER_LABELS: Record<string, string> = {
-  'hotele-i-miejsca-wypoczynkowe': 'Hotele i\u00A0wypoczynek',
-  'nieruchomosci-i-deweloperzy': 'Nieruchomości',
-  retail: 'Retail',
-}
+const PENDING_INDUSTRIES: { id: string; label: string; shortLabel?: string }[] =
+  [
+    {
+      id: 'retail',
+      label: 'Retail i\u00A0centra handlowe',
+      shortLabel: 'Retail',
+    },
+    { id: 'energetyka', label: 'Energetyka' },
+    { id: 'zywnosc', label: 'Żywność i\u00A0FMCG' },
+    { id: 'edukacja-i-hr', label: 'Edukacja i\u00A0HR' },
+    { id: 'logistyka', label: 'Logistyka' },
+    { id: 'rolnictwo', label: 'Rolnictwo' },
+    { id: 'b2b-i-uslugi', label: 'B2B i\u00A0usługi' },
+  ] as const
 
 /**
  * Every industry a case study may carry, published or not — the closed
  * vocabulary behind the `industry` field and the hub's filter.
  *
- * `id` is the stored key and is locale-independent; `label` and `href` are
- * this locale's. An entry without an `href` has no page to link to yet.
+ * `id` is the stored key and is locale-independent; `label`, `shortLabel` and
+ * `href` are this locale's. An entry without an `href` has no page to link to
+ * yet, and one without a `shortLabel` has a name that fits everywhere.
+ *
+ * `label` is the full name — the admin dropdown and the detail page's meta rail
+ * both have room for it. Only the hub's 190px filter column reaches for
+ * `shortLabel`.
  */
 export const INDUSTRY_OPTIONS: {
   id: string
   label: string
-  href?: string
+  shortLabel?: string | undefined
+  href?: string | undefined
 }[] = [
-  ...INDUSTRIES.map((industry) => ({
+  ...(INDUSTRIES as readonly Industry[]).map((industry) => ({
     id: industry.id,
-    label: FILTER_LABELS[industry.id] ?? industry.label,
+    label: industry.label,
+    shortLabel: industry.shortLabel,
     href: `/branze/${industry.slug}`,
   })),
   ...PENDING_INDUSTRIES.map((industry) => ({
     id: industry.id,
-    label: FILTER_LABELS[industry.id] ?? industry.label,
+    label: industry.label,
+    shortLabel: industry.shortLabel,
   })),
 ]
 

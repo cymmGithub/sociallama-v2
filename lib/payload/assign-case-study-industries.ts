@@ -1,69 +1,36 @@
+import type { Industry } from '@/lib/content/branze'
 import type { CaseStudy } from '@/payload-types'
 
 /**
- * slug → industry id.
+ * The judgement calls — the sixteen studies no branża page covers.
  *
- * `[branze]` marks an assignment this file did not invent: the branża page
- * already lists that study. `[new]` marks a judgement call — the sixteen
- * studies no branża page covers today.
+ * The other thirty-one are NOT here. They are derived from `branze.ts` below,
+ * because each branża page already names its own case studies and that
+ * curation is the site's existing answer. Transcribing it into this file would
+ * have made a second copy that drifts the first time someone edits a page, and
+ * would have buried sixteen decisions in thirty-one restatements.
  */
-const INDUSTRY_BY_SLUG: Record<string, string> = {
-  // —— from lib/content/branze.ts —————————————————————————————————————
-  volvo: 'automotive', // [branze]
-  motointegrator: 'automotive', // [branze]
-  ozgasl: 'automotive', // [branze]
-  // [branze] A karting track, filed under automotive by the branża page
-  // itself. Left where the site's own curation put it.
-  'a1-karting': 'automotive',
-  irobot: 'elektronika-i-agd', // [branze]
-  asus: 'elektronika-i-agd', // [branze]
-  vobis: 'elektronika-i-agd', // [branze]
-  breville: 'elektronika-i-agd', // [branze]
-  kohersen: 'elektronika-i-agd', // [branze]
-  'stadler-form': 'elektronika-i-agd', // [branze]
-  laurastar: 'elektronika-i-agd', // [branze]
-  kontigo: 'beauty', // [branze]
-  luisse: 'beauty', // [branze]
-  mercator: 'health', // [branze]
-  'imid-cmv': 'health', // [branze]
-  'fundacja-saventic': 'health', // [branze]
-  'power-elements': 'health', // [branze]
-  mmhygienic: 'health', // [branze]
-  aquael: 'petcare', // [branze]
-  'faktoria-win': 'alkohole', // [branze]
-  'mazurska-manufaktura-alkoholi': 'alkohole', // [branze]
-  'julius-meinl': 'horeca', // [branze]
-  belvedere: 'horeca', // [branze]
-  'dolina-charlotty': 'hotele-i-miejsca-wypoczynkowe', // [branze]
-  skibooking: 'hotele-i-miejsca-wypoczynkowe', // [branze]
-  getaway: 'hotele-i-miejsca-wypoczynkowe', // [branze]
-  'ed-invest': 'nieruchomosci-i-deweloperzy', // [branze]
-  'jw-construction': 'nieruchomosci-i-deweloperzy', // [branze]
-  'dynamic-development': 'nieruchomosci-i-deweloperzy', // [branze]
-  skrzat: 'rozrywka', // [branze]
-  rabkoland: 'rozrywka', // [branze]
-
-  // —— no branża page covers these ———————————————————————————————————
-  polomarket: 'retail', // [new] supermarket chain
-  riviera: 'retail', // [new] shopping centre
-  'galeria-rondo-wiatraczna': 'retail', // [new] shopping centre
-  engie: 'energetyka', // [new]
-  'n-energia': 'energetyka', // [new] photovoltaics
-  'produkty-cukiernicze-brzesc': 'zywnosc', // [new] confectionery
-  'las-vegans': 'zywnosc', // [new] vegan food brand
-  // [new] Vacuum sealers are an appliance, so this sits with the AGD brands
-  // rather than with the food it preserves.
+const NEW_ASSIGNMENTS: Record<string, string> = {
+  polomarket: 'retail', // supermarket chain
+  riviera: 'retail', // shopping centre
+  'galeria-rondo-wiatraczna': 'retail', // shopping centre
+  engie: 'energetyka',
+  'n-energia': 'energetyka', // photovoltaics
+  'produkty-cukiernicze-brzesc': 'zywnosc', // confectionery
+  'las-vegans': 'zywnosc', // vegan food brand
+  // Vacuum sealers are an appliance, so this sits with the AGD brands rather
+  // than with the food it preserves.
   foodsaver: 'elektronika-i-agd',
-  'pracuj-pl': 'edukacja-i-hr', // [new] recruitment
-  vistula: 'edukacja-i-hr', // [new] university
-  'fm-logistics': 'logistyka', // [new]
-  bioagris: 'rolnictwo', // [new]
-  ariadna: 'b2b-i-uslugi', // [new] research panel
-  kbp: 'b2b-i-uslugi', // [new] industry congress
-  'personal-effect': 'b2b-i-uslugi', // [new] psychotherapy practice
-  // [new] Ergonomic office furniture. Not an appliance and not a service —
-  // the honest home is a `wyposazenie-wnetrz` category that does not exist
-  // yet, so it sits under B2B until someone decides otherwise.
+  'pracuj-pl': 'edukacja-i-hr', // recruitment
+  vistula: 'edukacja-i-hr', // university
+  'fm-logistics': 'logistyka',
+  bioagris: 'rolnictwo',
+  ariadna: 'b2b-i-uslugi', // research panel
+  kbp: 'b2b-i-uslugi', // industry congress
+  'personal-effect': 'b2b-i-uslugi', // psychotherapy practice
+  // Ergonomic office furniture. Not an appliance and not a service — the
+  // honest home is a `wyposazenie-wnetrz` category that does not exist yet, so
+  // it sits under B2B until someone decides otherwise.
   entelo: 'b2b-i-uslugi',
 }
 
@@ -74,16 +41,61 @@ if (process.argv.includes('--prod')) {
   targetProdEnv('assign-case-study-industries')
 }
 
-const { INDUSTRY_KEYS, INDUSTRY_OPTIONS } = await import('@/lib/content/branze')
+const { INDUSTRIES, INDUSTRY_KEYS, INDUSTRY_OPTIONS } = await import(
+  '@/lib/content/branze'
+)
+const industries = INDUSTRIES as readonly Industry[]
 
-// A typo in the table would silently file a study under nothing, so the table
-// is checked against the field's own vocabulary before anything is read.
+/**
+ * slug → industry id, derived from the branża pages plus the sixteen calls
+ * above.
+ *
+ * A study named by two branża pages is a contradiction in the content, not
+ * something to resolve silently by whichever page happens to come first, so it
+ * aborts. Likewise a study the derivation and `NEW_ASSIGNMENTS` disagree
+ * about — that means a page has picked up a study this file already filed
+ * elsewhere, and a human has to say which is right.
+ */
+const INDUSTRY_BY_SLUG: Record<string, string> = {}
+for (const industry of industries) {
+  // Both fields are optional — `finanse` and `fashion` have pages but no case
+  // studies yet, which is exactly why the rail drops them.
+  const slugs = [
+    ...(industry.relatedCaseStudies ?? []).map((study) => study.slug),
+    ...(industry.caseStudy ? [industry.caseStudy.slug] : []),
+  ]
+  for (const slug of slugs) {
+    const existing = INDUSTRY_BY_SLUG[slug]
+    if (existing && existing !== industry.id) {
+      throw new Error(
+        `${slug} is named by two branża pages: ${existing} and ${industry.id}`
+      )
+    }
+    INDUSTRY_BY_SLUG[slug] = industry.id
+  }
+}
+for (const [slug, id] of Object.entries(NEW_ASSIGNMENTS)) {
+  const derived = INDUSTRY_BY_SLUG[slug]
+  if (derived && derived !== id) {
+    throw new Error(
+      `${slug} is filed as ${id} here but ${derived} by its branża page`
+    )
+  }
+  INDUSTRY_BY_SLUG[slug] = id
+}
+
+// A typo would silently file a study under nothing, so every id is checked
+// against the field's own vocabulary before anything is read.
 const unknown = [...new Set(Object.values(INDUSTRY_BY_SLUG))].filter(
   (id) => !INDUSTRY_KEYS.includes(id)
 )
 if (unknown.length > 0) {
-  throw new Error(`unknown industry ids in the table: ${unknown.join(', ')}`)
+  throw new Error(`unknown industry ids: ${unknown.join(', ')}`)
 }
+console.log(
+  `${Object.keys(INDUSTRY_BY_SLUG).length} assignments ` +
+    `(${Object.keys(NEW_ASSIGNMENTS).length} from this file, the rest from branze.ts)\n`
+)
 
 const { default: config } = await import('@payload-config')
 const { getPayload } = await import('payload')

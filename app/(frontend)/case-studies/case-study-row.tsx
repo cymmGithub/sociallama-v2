@@ -2,7 +2,12 @@ import { ArrowRight } from 'lucide-react'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import type { Locale } from '@/lib/i18n/slug-map'
-import { leadMetrics, platformsOf } from '@/lib/payload/case-study-scoreboard'
+import {
+  groupResults,
+  leadMetrics,
+  platformsOf,
+  SECONDARY_LEADS,
+} from '@/lib/payload/case-study-scoreboard'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
 import { BrandIcon } from './[slug]/brand-icons'
@@ -30,14 +35,13 @@ export function CaseStudyRow({
   locale: Locale
 }) {
   const logo = resolveMedia(study.client.logo)
-  const [lead, ...groups] = leadMetrics(study.results)
-  // Two, like the scoreboard. The row has two fixed tracks for them, and a
-  // study with four result groups (Motointegrator, Galeria Rondo) would
-  // otherwise wrap a third onto a second line and push its own row taller than
-  // its neighbours — which is exactly what makes a list stop reading as one.
-  // The full set is on the study's own page.
-  const rest = groups.slice(0, 2)
-  const platforms = platformsOf(study.results)
+  const groups = groupResults(study.results)
+  const [lead, ...secondary] = leadMetrics(groups)
+  // The row has exactly `SECONDARY_LEADS` fixed tracks for these; a study with
+  // four result groups (Motointegrator, Galeria Rondo) would otherwise wrap a
+  // third onto a second line and push its own row taller than its neighbours.
+  const rest = secondary.slice(0, SECONDARY_LEADS)
+  const platforms = platformsOf(groups)
 
   return (
     <Link className={s.row} href={`${basePath}/${study.slug}`}>
@@ -70,7 +74,7 @@ export function CaseStudyRow({
             <MetricValue
               className={s.rowLeadValue}
               locale={locale}
-              noteClassName={s.rowNote}
+              noteClassName={s.note}
               value={lead.value}
             />
             <span className={s.rowLeadLabel}>
@@ -86,7 +90,7 @@ export function CaseStudyRow({
             <MetricValue
               className={s.rowSmallValue}
               locale={locale}
-              noteClassName={s.rowNote}
+              noteClassName={s.note}
               value={item.value}
             />
             <span className={s.rowSmallLabel}>{item.label}</span>

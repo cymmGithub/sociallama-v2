@@ -3,7 +3,7 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { caseStudiesListing } from '@/lib/content/case-studies'
 import type { Locale } from '@/lib/i18n/slug-map'
-import { leadMetrics } from '@/lib/payload/case-study-scoreboard'
+import { groupResults, leadMetrics } from '@/lib/payload/case-study-scoreboard'
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy } from '@/payload-types'
 import { BrandIcon } from './[slug]/brand-icons'
@@ -36,7 +36,7 @@ export function CaseStudyCard({
   // The face of the study: results[0], the order an editor chose. One study of
   // the 47 carries no results, and its board simply renders without a numeral
   // — the board keeps its height either way, so the row stays level.
-  const [lead] = leadMetrics(study.results)
+  const [lead] = leadMetrics(groupResults(study.results))
 
   return (
     <Link className={s.card} href={`${basePath}/${study.slug}`}>
@@ -56,7 +56,7 @@ export function CaseStudyCard({
             <MetricValue
               className={s.cardMetricValue}
               locale={locale}
-              noteClassName={s.cardMetricNote}
+              noteClassName={s.note}
               value={lead.value}
             />
             <span className={s.cardMetricLabel}>

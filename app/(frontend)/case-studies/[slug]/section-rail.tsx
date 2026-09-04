@@ -2,6 +2,7 @@
 
 import { useLenis } from 'lenis/react'
 import { type MouseEvent, useEffect, useRef, useState } from 'react'
+import { headerOffset } from '@/app/(frontend)/[slug]/toc'
 import { Link } from '@/components/ui/link'
 import { useIsDesktop } from '@/lib/hooks'
 import s from './case-study.module.css'
@@ -25,22 +26,16 @@ import s from './case-study.module.css'
  *    column for it to live in — so there is nothing to keep in sync.
  *
  * The header offset is read back from the target's computed
- * `scroll-margin-top`, so `case-study.module.css` stays the single source for
- * it and a direct `/case-studies/x#wyniki` landing lands in the same place.
+ * `scroll-margin-top` — via the blog TOC's `headerOffset`, which asks the same
+ * question of the same contract — so `case-study.module.css` stays the single
+ * source for it and a direct `/case-studies/x#wyniki` landing lands in the
+ * same place.
  */
 
 export interface RailSection {
   /** The heading's existing element id. */
   id: string
   label: string
-}
-
-/** Resolved px offset a heading wants above itself to clear the fixed header. */
-function headerOffset(target: HTMLElement): number {
-  const value = Number.parseFloat(
-    getComputedStyle(target).scrollMarginTop || '0'
-  )
-  return Number.isFinite(value) ? value : 0
 }
 
 /**

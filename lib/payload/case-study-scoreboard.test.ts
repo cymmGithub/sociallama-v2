@@ -22,11 +22,20 @@ const results = (
 ): CaseStudy['results'] =>
   rows.map(([platform, metric, value]) => ({ platform, metric, value }))
 
+/**
+ * `leadMetrics` and `platformsOf` read groups rather than raw results, so a
+ * caller that needs both pays for grouping once. The tests group the same way
+ * the surfaces do.
+ */
+const grouped = (
+  ...rows: [platform: string, metric: string, value: string][]
+) => groupResults(results(...rows))
+
 describe('leadMetrics — array order is the editorial ranking', () => {
   it('takes the first result as the study lead', () => {
     // irobot
     const leads = leadMetrics(
-      results(
+      grouped(
         ['TikTok', 'Wyświetlenia', '11 mln'],
         ['TikTok', 'Polubienia', '742 tys.'],
         ['YouTube', 'Wyświetlenia', '742 tys.']
@@ -43,7 +52,7 @@ describe('leadMetrics — array order is the editorial ranking', () => {
   it('gives one lead per group, in first-appearance order', () => {
     // engie: LinkedIn group first, Facebook second, interleaved rows.
     const leads = leadMetrics(
-      results(
+      grouped(
         ['LinkedIn', 'Łączna liczba wyświetleń publikacji', '263 996'],
         ['LinkedIn', 'Obserwujący', '+1 200'],
         ['Facebook', 'Wyświetlenia', '69,1 tys.'],
@@ -59,9 +68,9 @@ describe('leadMetrics — array order is the editorial ranking', () => {
 
   it('is empty for a study with no results', () => {
     // luisse is the one published study carrying none.
-    expect(leadMetrics(null)).toEqual([])
-    expect(leadMetrics([])).toEqual([])
-    expect(platformsOf(null)).toEqual([])
+    expect(leadMetrics(groupResults(null))).toEqual([])
+    expect(leadMetrics(groupResults([]))).toEqual([])
+    expect(platformsOf(groupResults(null))).toEqual([])
     expect(groupResults(null)).toEqual([])
   })
 })
@@ -123,7 +132,7 @@ describe('platformsOf — brand groups sit beside platform groups', () => {
       ['Instagram', 'Zasięg', '1,2 mln'],
       ['FoodSaver', 'Sprzedaż', '+38%']
     )
-    expect(platformsOf(rows)).toEqual(['facebook', 'instagram'])
+    expect(platformsOf(groupResults(rows))).toEqual(['facebook', 'instagram'])
     // The brand group still renders, and can still be a lead.
     expect(groupResults(rows).map((g) => g.label)).toEqual([
       'Facebook',
@@ -139,20 +148,20 @@ describe('platformsOf — brand groups sit beside platform groups', () => {
       'Uczestnicy wydarzenia',
       'prawie 4 000',
     ])
-    expect(platformsOf(rows)).toEqual([])
-    expect(leadMetrics(rows)[0]).toMatchObject({
+    expect(platformsOf(groupResults(rows))).toEqual([])
+    expect(leadMetrics(groupResults(rows))[0]).toMatchObject({
       label: 'Kongres Bezpieczeństwo Polski',
       platform: null,
       value: 'prawie 4 000',
     })
     // getaway is the same shape with nine metrics under the one group.
-    expect(platformsOf(results(['Getaway', 'Odwiedziny', '+913%']))).toEqual([])
+    expect(platformsOf(grouped(['Getaway', 'Odwiedziny', '+913%']))).toEqual([])
   })
 
   it('lists each platform once, in first-appearance order', () => {
     expect(
       platformsOf(
-        results(
+        grouped(
           ['Instagram', 'A', '1'],
           ['Facebook', 'B', '2'],
           ['Instagram', 'C', '3']

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { Locale } from '@/lib/i18n/slug-map'
 import { splitValue } from '@/lib/payload/case-study-scoreboard'
 import { CountUp } from './[slug]/count-up'
@@ -19,6 +20,12 @@ import { CountUp } from './[slug]/count-up'
  *
  * A value with no parenthetical takes none of that machinery — it is one
  * span, announced as itself.
+ *
+ * The numeral's own character count is stamped as `--len` on the span that
+ * carries it, because that span is the one whose `font-size` reads it. The
+ * callers used to compute it themselves, which meant splitting every value
+ * twice and smuggling a custom property through an `as CSSProperties` cast at
+ * each site; a surface that does not size on `--len` simply ignores it.
  */
 export function MetricValue({
   value,
@@ -41,7 +48,11 @@ export function MetricValue({
 
   return (
     <>
-      <span className={className} {...(note ? { 'aria-hidden': true } : {})}>
+      <span
+        className={className}
+        style={{ '--len': numeral.length } as CSSProperties}
+        {...(note ? { 'aria-hidden': true } : {})}
+      >
         {animate ? (
           <CountUp className={undefined} value={numeral} locale={locale} />
         ) : (

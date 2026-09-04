@@ -8,8 +8,8 @@
  *   homepage team grid derives from it per locale;
  * - the services collage CSS slots are tuned to the exact panel dimensions,
  *   so a width/height drift breaks the collage in one locale only;
- * - the case-study hub's platform filter is keyed by brand, and its labels ARE
- *   those brands, so a translated one would read as a different platform.
+ * - the case-study hub's industry filter is keyed by a branża id, so the two
+ *   locales must offer the same categories in the same order.
  *
  * Run with: bun test lib/content/locale-parity.test.ts
  */
@@ -17,10 +17,6 @@
 import { expect, test } from 'bun:test'
 import { INDUSTRY_OPTIONS as industriesPl } from './branze'
 import { INDUSTRY_OPTIONS as industriesEn } from './branze.en'
-import {
-  PLATFORM_NAMES as platformsEn,
-  PLATFORM_NAMES as platformsPl,
-} from './case-studies'
 import type { LocalizedHome } from './home'
 import * as pl from './home'
 import * as en from './home.en'
@@ -72,8 +68,4 @@ test('industry options are the same categories in both locales', () => {
   for (const option of [...industriesPl, ...industriesEn]) {
     expect(option.label.length).toBeGreaterThan(0)
   }
-})
-
-test('platform names are brands, not translations', () => {
-  expect(platformsEn).toEqual(platformsPl)
 })

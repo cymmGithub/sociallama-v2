@@ -17,8 +17,15 @@ import s from './post.module.css'
  * `scroll-margin-top` natively (design D4).
  */
 
-/** Resolved px offset a heading wants above itself to clear the fixed header. */
-function headerOffset(target: HTMLElement): number {
+/**
+ * Resolved px offset a heading wants above itself to clear the fixed header.
+ *
+ * Exported because the case-study section rail asks the same question of the
+ * same contract: the number lives in CSS as `scroll-margin-top`, so a direct
+ * `#heading` landing and a no-JS anchor click get it natively, and anything
+ * driving the scroll itself has to read it back rather than hardcode it.
+ */
+export function headerOffset(target: HTMLElement): number {
   const value = Number.parseFloat(
     getComputedStyle(target).scrollMarginTop || '0'
   )

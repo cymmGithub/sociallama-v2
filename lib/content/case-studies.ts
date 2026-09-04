@@ -69,6 +69,7 @@ export const caseStudyChrome = {
   meta: {
     platforms: 'Platformy',
     industry: 'Branża',
+    tags: 'Tagi',
     scope: 'Zakres',
   },
   // The body's sticky section index.

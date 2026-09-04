@@ -101,14 +101,27 @@ export function groupResults(results: CaseStudy['results']): ResultGroup[] {
 }
 
 /**
+ * How many groups a compact surface shows beside the lead.
+ *
+ * Three small numerals under a large one stops reading as a hierarchy and
+ * starts reading as a table, so the scoreboard and the hub's ledger row both
+ * stop at two. The study's own results section shows every group.
+ */
+export const SECONDARY_LEADS = 2
+
+/**
  * One lead per group, in group order. The first entry is the study's lead —
  * the card's numeral and the scoreboard's large one.
+ *
+ * Takes groups rather than raw results so a caller that also needs the groups
+ * themselves pays for grouping once: `groupResults` is O(results x groups),
+ * and the detail page was running it three times per render.
  *
  * Locale-bound, because `results` is localized as a whole array: this reads
  * whatever locale resolved the study it was handed.
  */
-export function leadMetrics(results: CaseStudy['results']): LeadMetric[] {
-  return groupResults(results).flatMap((group) => {
+export function leadMetrics(groups: ResultGroup[]): LeadMetric[] {
+  return groups.flatMap((group) => {
     const first = group.items[0]
     return first
       ? [
@@ -124,9 +137,9 @@ export function leadMetrics(results: CaseStudy['results']): LeadMetric[] {
 }
 
 /** The study's platforms, distinct and in first-appearance order. */
-export function platformsOf(results: CaseStudy['results']): PlatformKey[] {
+export function platformsOf(groups: ResultGroup[]): PlatformKey[] {
   const seen: PlatformKey[] = []
-  for (const group of groupResults(results)) {
+  for (const group of groups) {
     if (group.platform && !seen.includes(group.platform)) {
       seen.push(group.platform)
     }

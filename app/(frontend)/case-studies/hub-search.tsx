@@ -57,9 +57,7 @@ const LISTING_COPY: Record<Locale, LocalizedCaseStudies['caseStudiesListing']> =
     en: listingEn,
   }
 
-/** Which industry the rail has selected; `all` is the resting state. */
-export type IndustryFilter = string
-export type HubView = 'grid' | 'ledger'
+type HubView = 'grid' | 'ledger'
 
 /** One rail entry, built on the server so its count and name never move. */
 export interface IndustryRailItem {
@@ -73,12 +71,9 @@ export interface IndustryRailItem {
 interface SearchState {
   query: string
   setQuery: (value: string) => void
-  /** True once the query has non-whitespace content. */
-  searching: boolean
-  industry: IndustryFilter
-  setIndustry: (value: IndustryFilter) => void
-  view: HubView
-  setView: (value: HubView) => void
+  /** `all` while the rail is at rest, else the selected industry's id. */
+  industry: string
+  setIndustry: (value: string) => void
   /** True while either filter is narrowing the set. */
   filtering: boolean
   /** Slugs passing both filters. Every slug while neither is active. */
@@ -89,11 +84,36 @@ interface SearchState {
 
 const SearchContext = createContext<SearchState | null>(null)
 
+/**
+ * The view lives in its own context, deliberately.
+ *
+ * It is orthogonal to the filters — switching grid/ledger cannot change which
+ * studies are visible — so sharing the filters' context would hand a new value
+ * to all 94 `Filtered` wrappers and the rail on every toggle, and rebuild the
+ * 47-element `visible` set for a change that cannot affect it. Design D3
+ * argues for ONE context because query and industry must AND into one set;
+ * that argument says nothing about the view.
+ */
+const ViewContext = createContext<{
+  view: HubView
+  setView: (value: HubView) => void
+} | null>(null)
+
 function useSearch(): SearchState {
   const state = useContext(SearchContext)
   if (!state) {
     throw new Error(
       'Case-study search components must render inside CaseStudySearch.'
+    )
+  }
+  return state
+}
+
+function useView() {
+  const state = useContext(ViewContext)
+  if (!state) {
+    throw new Error(
+      'Case-study view components must render inside CaseStudySearch.'
     )
   }
   return state
@@ -109,7 +129,7 @@ export function CaseStudySearch({
   children: ReactNode
 }) {
   const [query, setQuery] = useState('')
-  const [industry, setIndustry] = useState<IndustryFilter>('all')
+  const [industry, setIndustry] = useState('all')
   const [view, setView] = useState<HubView>('grid')
   const content = SEARCH_COPY[locale]
   const listing = LISTING_COPY[locale]
@@ -120,11 +140,8 @@ export function CaseStudySearch({
     return {
       query,
       setQuery,
-      searching,
       industry,
       setIndustry,
-      view,
-      setView,
       filtering: searching || industry !== 'all',
       visible: new Set(
         entries
@@ -138,9 +155,15 @@ export function CaseStudySearch({
       content,
       listing,
     }
-  }, [content, entries, industry, listing, query, view])
+  }, [content, entries, industry, listing, query])
 
-  return <SearchContext value={value}>{children}</SearchContext>
+  const viewValue = useMemo(() => ({ view, setView }), [view])
+
+  return (
+    <SearchContext value={value}>
+      <ViewContext value={viewValue}>{children}</ViewContext>
+    </SearchContext>
+  )
 }
 
 export function CaseStudySearchInput() {
@@ -282,7 +305,8 @@ export function IndustryRail({
  * its tab order.
  */
 export function ViewToggle() {
-  const { view, setView, listing } = useSearch()
+  const { listing } = useSearch()
+  const { view, setView } = useView()
   const isDesktop = useIsDesktop()
 
   if (!isDesktop) {
@@ -314,18 +338,28 @@ export function ViewToggle() {
 }
 
 /**
- * The two view containers. Both stay mounted and one is `hidden`, so switching
- * never unmounts a card and never refetches an image — the same reason the
- * filters hide rather than unmount.
+ * A view container. On desktop both are mounted and one is `hidden`, so
+ * switching never unmounts a card and never refetches an image — the same
+ * reason the filters hide rather than unmount.
  */
 export function ViewPane({
   view,
   children,
 }: {
-  view: HubView
+  view: 'grid' | 'ledger'
   children: ReactNode
 }) {
-  const { view: current } = useSearch()
+  const { view: current } = useView()
+  const isDesktop = useIsDesktop()
+
+  // The ledger is a desktop view — `ViewToggle` renders no control for it
+  // below the breakpoint, and `.row` has no mobile geometry. Rendering it
+  // there anyway shipped all 47 rows, their logos and their brand marks into
+  // markup nothing could ever reveal. The never-unmount bargain the toggle
+  // relies on is a bargain between two views that both exist.
+  if (view === 'ledger' && !isDesktop) {
+    return null
+  }
   return <div hidden={current !== view}>{children}</div>
 }
 

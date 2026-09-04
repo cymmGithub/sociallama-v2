@@ -41,6 +41,7 @@ export const caseStudyChrome = {
   meta: {
     platforms: 'Platforms',
     industry: 'Industry',
+    tags: 'Topics',
     scope: 'Scope',
   },
   rail: {
