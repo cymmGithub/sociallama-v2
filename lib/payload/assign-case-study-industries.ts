@@ -35,8 +35,9 @@ const NEW_ASSIGNMENTS: Record<string, string> = {
 }
 
 const apply = process.argv.includes('--apply')
+const isProd = process.argv.includes('--prod')
 
-if (process.argv.includes('--prod')) {
+if (isProd) {
   const { targetProdEnv } = await import('./prod-env')
   targetProdEnv('assign-case-study-industries')
 }
@@ -116,6 +117,7 @@ const nameOf = (id: string) =>
 let pending = 0
 let already = 0
 const missing: string[] = []
+const writes: (() => Promise<unknown>)[] = []
 
 for (const study of studies.docs) {
   const target = INDUSTRY_BY_SLUG[study.slug]
@@ -133,19 +135,30 @@ for (const study of studies.docs) {
     `${apply ? 'set  ' : 'would'} ${study.slug.padEnd(32)} ${from}${target}  (${nameOf(target)})`
   )
   if (apply) {
-    await payload.update({
-      collection: 'case-studies',
-      id: study.id,
-      // Not localized, so one write covers PL and EN. `draft: false` publishes
-      // the change rather than parking it on a draft version nobody promotes.
-      // The table is validated against `INDUSTRY_KEYS` above, so this cast
-      // asserts what that check already proved: `target` is one of the
-      // field's options. Payload types the column as the literal union.
-      data: { industry: target as NonNullable<CaseStudy['industry']> },
-      draft: false,
-      depth: 0,
-    })
+    // Queued, not awaited: the writes are independent, and against a remote
+    // database 47 serialized round trips is a quarter-minute of pure latency.
+    // The plan is printed here, in `_order`, before any of it is drained.
+    writes.push(() =>
+      payload.update({
+        collection: 'case-studies',
+        id: study.id,
+        // Not localized, so one write covers PL and EN. `draft: false`
+        // publishes the change rather than parking it on a draft version
+        // nobody promotes. The table is validated against `INDUSTRY_KEYS`
+        // above, so the cast asserts what that check already proved.
+        data: { industry: target as NonNullable<CaseStudy['industry']> },
+        draft: false,
+        depth: 0,
+      })
+    )
   }
+}
+
+// Five at a time — enough to hide the latency, few enough not to open a
+// connection pool's worth of transactions against a serverless database.
+const CONCURRENCY = 5
+for (let i = 0; i < writes.length; i += CONCURRENCY) {
+  await Promise.all(writes.slice(i, i + CONCURRENCY).map((run) => run()))
 }
 
 if (missing.length > 0) {
@@ -175,5 +188,37 @@ console.log(
 )
 if (!apply && pending > 0) {
   console.log('Dry run — re-run with --apply to write.')
+}
+
+/**
+ * Revalidate what was written.
+ *
+ * A collection hook calls `revalidateTag` on change, but that is a no-op from
+ * a CLI process — the tag lives in the running server's cache, not in this
+ * one. `findCaseStudies` is `'use cache'` with `cacheLife('weeks')`, so
+ * without this the deployed hub keeps serving the pre-backfill payload for
+ * weeks and the industry rail renders empty. This was not theory: it happened
+ * on dev while building the feature, and only the POST cleared it.
+ */
+if (apply && pending > 0) {
+  const host = isProd
+    ? 'https://sociallama.pl'
+    : `http://localhost:${process.env.PORT ?? 3000}`
+  const url = `${host}/api/revalidate?tag=case-studies`
+  const secret = process.env.REVALIDATE_SECRET
+  if (!secret) {
+    console.log(`\nSet REVALIDATE_SECRET and POST ${url} — nothing was purged.`)
+  } else {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'x-revalidate-secret': secret },
+    })
+    console.log(
+      res.ok
+        ? `\nRevalidated case-studies at ${host}.`
+        : `\nRevalidate FAILED (${res.status}) — the data is written but ` +
+            `${host} will serve the old payload until you POST ${url}.`
+    )
+  }
 }
 process.exit(0)

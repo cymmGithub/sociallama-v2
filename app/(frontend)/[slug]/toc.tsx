@@ -2,9 +2,9 @@
 
 import { useLenis } from 'lenis/react'
 import type { MouseEvent } from 'react'
-import { useEffect, useState } from 'react'
 import { Link } from '@/components/ui/link'
 import type { TocEntry } from '@/lib/blog/toc'
+import { useCurrentSection } from '@/lib/hooks'
 import s from './post.module.css'
 
 /**
@@ -33,53 +33,11 @@ export function headerOffset(target: HTMLElement): number {
 }
 
 export function Toc({ entries }: { entries: readonly TocEntry[] }) {
-  const [activeSlug, setActiveSlug] = useState<string | null>(null)
   const lenis = useLenis()
-
-  // Derived key rather than the array itself: a fresh array identity on re-render
-  // would tear down and rebuild the observer for no reason.
-  const slugKey = entries.map((entry) => entry.slug).join(',')
-
-  useEffect(() => {
-    const targets = slugKey
-      .split(',')
-      .map((slug) => document.getElementById(slug))
-      .filter((element): element is HTMLElement => element !== null)
-
-    const first = targets[0]
-    if (!first) {
-      return
-    }
-
-    /**
-     * The last heading whose top has passed the header line is the section the
-     * reader is in. Recomputed from live rects on every trigger, so the answer
-     * is right even if the observer's own margin is a resize behind.
-     */
-    const update = () => {
-      const line = headerOffset(first) + 1
-      let current = first.id
-      for (const target of targets) {
-        if (target.getBoundingClientRect().top > line) {
-          break
-        }
-        current = target.id
-      }
-      setActiveSlug(current)
-    }
-
-    // The observer is only a trigger: it fires as each heading crosses the
-    // header line, and `update` re-derives the answer from scratch.
-    const observer = new IntersectionObserver(update, {
-      rootMargin: `-${headerOffset(first)}px 0px 0px 0px`,
-    })
-    for (const target of targets) {
-      observer.observe(target)
-    }
-    update()
-
-    return () => observer.disconnect()
-  }, [slugKey])
+  const [activeSlug, setActiveSlug] = useCurrentSection({
+    ids: entries.map((entry) => entry.slug),
+    offset: headerOffset,
+  })
 
   const handleClick = (event: MouseEvent<HTMLElement>, slug: string) => {
     const target = document.getElementById(slug)

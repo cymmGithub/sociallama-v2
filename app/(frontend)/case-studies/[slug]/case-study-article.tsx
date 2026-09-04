@@ -21,7 +21,7 @@ import {
 import { caseStudyHeadline, resolveMedia } from '@/lib/payload/queries'
 import type { CaseStudy, SocialPlatform } from '@/payload-types'
 import { MetricValue } from '../metric-value'
-import { BrandIcon } from './brand-icons'
+import { BrandIcon, BrandIconSprite } from './brand-icons'
 import s from './case-study.module.css'
 import { CaseStudyJsonLd } from './json-ld'
 import { type RailSection, SectionRail } from './section-rail'
@@ -268,6 +268,7 @@ export function CaseStudyArticle({
 
   return (
     <>
+      <BrandIconSprite />
       <CaseStudyJsonLd
         study={study}
         coverUrl={cover?.url}

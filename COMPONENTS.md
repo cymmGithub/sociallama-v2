@@ -67,6 +67,7 @@ Quick-reference for every component, hook, and utility in the Satus starter kit.
 
 | Hook | Import | Signature |
 |------|--------|-----------|
+| useCurrentSection | `@/hooks/use-current-section` | `({ ids, offset, scope, }: { /** Element ids to track, in document order. */ ids: readonly string[] /** Px above a target that counts as "reached" — the fixed header's cut. */ offset: (target: HTMLElement) => number /** Subtree to resolve the ids in. Defaults to the whole document. */ scope?: () => ParentNode | null | undefined }) => [string | null, (id: string) => void]` |
 | useDeviceDetection | `@/hooks/use-device-detection` | `()` |
 | useReveal | `@/hooks/use-reveal` | `({ threshold = 0, rootMargin = '0px 0px -25% 0px', once = true, }: UseRevealOptions = {})` |
 | useRotator | `@/hooks/use-rotator` | `(length: number) => { ref: RefObject<T | null>; rotation: RotationState }` |

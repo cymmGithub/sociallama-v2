@@ -1,10 +1,10 @@
 'use client'
 
 import { useLenis } from 'lenis/react'
-import { type MouseEvent, useEffect, useRef, useState } from 'react'
+import { type MouseEvent, useRef } from 'react'
 import { headerOffset } from '@/app/(frontend)/[slug]/toc'
 import { Link } from '@/components/ui/link'
-import { useIsDesktop } from '@/lib/hooks'
+import { useCurrentSection, useIsDesktop } from '@/lib/hooks'
 import s from './case-study.module.css'
 
 /**
@@ -65,53 +65,13 @@ function Rail({
   aria: string
 }) {
   const navRef = useRef<HTMLElement>(null)
-  const [current, setCurrent] = useState<string | null>(null)
   const lenis = useLenis()
-
-  // Derived key rather than the array: a fresh identity every render would
-  // tear the observer down and rebuild it for nothing.
-  const idKey = sections.map((section) => section.id).join(',')
-
-  useEffect(() => {
-    const article = navRef.current?.closest('article')
-    if (!article) {
-      return
-    }
-    const targets = idKey
-      .split(',')
-      .map((id) => article.querySelector<HTMLElement>(`[id="${id}"]`))
-      .filter((element): element is HTMLElement => element !== null)
-
-    const first = targets[0]
-    if (!first) {
-      return
-    }
-
-    // The last heading whose top has passed the header line is the section the
-    // reader is in. Recomputed from live rects on every trigger, so the answer
-    // survives a resize the observer's own margin has not caught up with.
-    const update = () => {
-      const line = headerOffset(first) + 1
-      let now = first.id
-      for (const target of targets) {
-        if (target.getBoundingClientRect().top > line) {
-          break
-        }
-        now = target.id
-      }
-      setCurrent(now)
-    }
-
-    const observer = new IntersectionObserver(update, {
-      rootMargin: `-${headerOffset(first)}px 0px 0px 0px`,
-    })
-    for (const target of targets) {
-      observer.observe(target)
-    }
-    update()
-
-    return () => observer.disconnect()
-  }, [idKey])
+  const [current, setCurrent] = useCurrentSection({
+    ids: sections.map((section) => section.id),
+    offset: headerOffset,
+    // This rail's own article, not the document — see the hook.
+    scope: () => navRef.current?.closest('article'),
+  })
 
   const handleClick = (event: MouseEvent<HTMLElement>, id: string) => {
     const target = navRef.current

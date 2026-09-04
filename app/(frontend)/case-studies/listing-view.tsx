@@ -3,6 +3,7 @@ import { INDUSTRY_OPTIONS as industriesPl } from '@/lib/content/branze'
 import { INDUSTRY_OPTIONS as industriesEn } from '@/lib/content/branze.en'
 import type { LocalizedCaseStudies } from '@/lib/content/case-studies'
 import type { CaseStudy } from '@/payload-types'
+import { BrandIconSprite } from './[slug]/brand-icons'
 import s from './case-studies.module.css'
 import { CaseStudyCard } from './case-study-card'
 import { CaseStudyRow } from './case-study-row'
@@ -57,6 +58,8 @@ export function CaseStudiesListingView({
 
   return (
     <Wrapper theme="cream">
+      {/* Once, outside both view panes — the marks are `<use>` references. */}
+      <BrandIconSprite />
       <CaseStudiesListingJsonLd
         studies={studies}
         basePath={basePath}
