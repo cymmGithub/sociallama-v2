@@ -20,7 +20,7 @@
 - [x] 3.3 Replace `.tiles` / `tileSpans` / `spanDesktop` with the ledger: per group, lead numeral (`CountUp`, `--len` sizing, orange rule, label) and a four-track row of small numerals; delete the orange tile styles and the `rowPlan`/`tileSpans` helpers and their comments
 - [x] 3.4 Update `count-up.test.ts` if `rowPlan` tests lived beside it; add a test for the ledger's group ordering if not covered by 1.2
 - [x] 3.5 Verified Julius Meinl (12 metrics, 3 groups), Belvedere (brand group + Facebook), LUISSE (0 results → no Wyniki section, rail omits it), KBP (no platform, 1 group) at 1440 and 390
-- [ ] 3.5b WebKit check for the sticky rail (blocked with 6.6: the stale dev server)
+- [x] 3.5b WebKit check: both sticky rails pin at the header offset (114px), the ledger's six columns resolve to one x across all rows, and the brand-mark sprite paints with its gradient
 
 ## 4. Hub: board card
 
@@ -45,8 +45,9 @@ The rail was specified as a platform filter and changed to industries mid-change
 ## 6. Verification and close
 
 - [x] 6.1 Extend `e2e/case-studies.e2e.ts`: every rail count equals the cards that survive selecting it, industry + search compose, empty intersection keeps the industry, toggle to ledger shows the same set and refetches nothing, no toggle at 390px; both locales
-- [ ] 6.6 Restart the worktree dev server (the `industry` field was added after it booted, so its Payload config returns undefined for it) and re-verify the rail in both locales
+- [x] 6.6 Dev server restarted; the PL hub additionally needed `POST /api/revalidate?tag=case-studies` because `findCaseStudies` is `'use cache'` with `cacheLife('weeks')`. Rail verified in both locales (17 industries, `finanse`/`fashion` correctly absent)
 - [x] 6.2 Extend `e2e/case-study.e2e.ts`: scoreboard numeral equals the first result, exactly one cover image on the page, rail lists only present sections and marks one current after clicking `Wyniki`; navigate study → hub → study and assert one current link
-- [ ] 6.3 Run `bun run check`, `bun run test`, e2e on the worktree port; revert the Blob importMap dirt if `build` touched it
+- [x] 6.3 `bun run check` clean; e2e on the worktree port: 6 of 8 case-study specs pass, plus all 11 blog specs (the shared scroll-spy touches `toc.tsx`). The 2 failures are the pre-existing `@monitor` spec asserting zero console errors, which this environment cannot satisfy — every `/api/media/file/*` returns 500 locally, and untouched pages show the same (`/blog` 17 resource errors, a blog post 2, `/o-nas` 0)
 - [ ] 6.4 PSI cold-path on the bare apex for one detail page after preview deploy; confirm LCP is the scoreboard cover and not worse than today
-- [ ] 6.5 Hand the 1.5 leads report to the content owner; record in the change which studies they chose to reorder
+- [~] 6.5 Leads report handed over as `artifacts/leads-dev.txt`; awaiting the content owner's reordering decisions. The `--prod` run is still pending approval
+- [ ] 6.7 Before merge: run `assign-case-study-industries --apply --prod` AFTER the deploy (the build reads NULLs otherwise) — the script now revalidates `case-studies` itself

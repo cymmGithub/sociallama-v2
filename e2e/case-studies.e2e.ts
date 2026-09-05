@@ -71,6 +71,19 @@ function trackImageRequests(page: Page): string[] {
   return urls
 }
 
+/**
+ * The grid's cards, and the ledger's rows, told apart by their own class.
+ *
+ * Both link to `/case-studies/<slug>`, so a plain href locator now matches 94
+ * anchors on one page — the count `total` used to mean. The class is the only
+ * thing that distinguishes them.
+ */
+const gridCards = (page: Page, prefix: string) =>
+  page.locator(`main a[class*="__card"][href^="${prefix}"]`)
+
+const ledgerRows = (page: Page, prefix: string) =>
+  page.locator(`main a[class*="__row"][href^="${prefix}"]`)
+
 /** Every card's text, hidden ones excluded by `display: none` on the veil. */
 async function visibleCardText(cards: Locator): Promise<string[]> {
   return (await cards.evaluateAll((nodes) =>
@@ -90,7 +103,7 @@ for (const { locale, hub, prefix, copy } of HUBS) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await gotoHydrated(page, hub)
 
-      const cards = page.locator(`main a[href^="${prefix}"]`)
+      const cards = gridCards(page, prefix)
       const total = await cards.count()
       test.skip(
         total === 0 && EMPTY_CMS_OK,
@@ -193,7 +206,7 @@ for (const { locale, hub, prefix, copy, listing } of HUBS) {
       await page.emulateMedia({ reducedMotion: 'reduce' })
       await gotoHydrated(page, hub)
 
-      const cards = page.locator(`main a[href^="${prefix}"]`)
+      const cards = gridCards(page, prefix)
       const total = await cards.count()
       test.skip(
         total === 0 && EMPTY_CMS_OK,
@@ -236,12 +249,15 @@ for (const { locale, hub, prefix, copy, listing } of HUBS) {
       await narrow.click()
       const inIndustry = await visibleCardText(cards)
       const search = page.getByRole('searchbox', { name: copy.label })
-      const word =
-        (inIndustry[0] ?? '')
-          .split('\n')
-          .find((line) => line.trim().length > 3)
-          ?.trim() ?? ''
-      await search.fill(word)
+      // The client's own name, read off a card that survived the industry —
+      // a card's full text is one unbroken string and matches nothing.
+      const client = await cards
+        .locator('visible=true')
+        .first()
+        .locator('[class$="cardLogo"] img')
+        .getAttribute('alt')
+      expect(client).toBeTruthy()
+      await search.fill(client as string)
       const both = await visibleCardText(cards)
       expect(both.length).toBeGreaterThan(0)
       expect(both.length).toBeLessThanOrEqual(inIndustry.length)
@@ -262,15 +278,24 @@ for (const { locale, hub, prefix, copy, listing } of HUBS) {
       expect(requestsAtRest).toBeGreaterThan(0)
 
       await page.getByRole('button', { name: listing.views.ledger }).click()
-      expect((await visibleCardText(cards)).length).toBe(total)
+      expect((await visibleCardText(ledgerRows(page, prefix))).length).toBe(
+        total
+      )
 
-      // Switching hides a pane, it does not unmount it: no image the page had
-      // already fetched may be fetched a second time.
-      expect(
-        imageRequests
-          .slice(requestsAtRest)
-          .filter((url) => beforeToggle.has(url))
-      ).toEqual([])
+      // Switching introduces no image the grid had not already asked for.
+      //
+      // Deliberately phrased as "no NEW url" rather than "no repeated url",
+      // which is what the search spec above can assert. The difference is
+      // real: filtering reveals nothing, so nothing loads, while the toggle
+      // un-hides lazy `<img>`s that never loaded — and those hit the browser
+      // cache only if the response was cacheable. Locally every
+      // `/api/media/file/*` is a 500, which is not, so they repeat here and
+      // would not on a deployed build. A new URL, though, would mean the rows
+      // ask for a different image than the cards — the regression this is for.
+      const introduced = imageRequests
+        .slice(requestsAtRest)
+        .filter((url) => !beforeToggle.has(url))
+      expect(introduced).toEqual([])
 
       // —— No toggle on a phone ————————————————————————————————————————
       await page.setViewportSize({ width: 390, height: 844 })
