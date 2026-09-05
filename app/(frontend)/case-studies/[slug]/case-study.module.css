@@ -341,6 +341,22 @@
   text-wrap: pretty;
 }
 
+/* The industry row's link to that branża's page.
+   Underlined rather than colour-only: the row sits in a block of plain
+   label/value pairs, so nothing else marks it as the one value you can follow,
+   and colour alone would not survive a reader who cannot separate the two. */
+.metaLink {
+  color: var(--color-contrast);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity var(--duration-fast);
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
 .metaMarks {
   display: flex;
   flex-wrap: wrap;
