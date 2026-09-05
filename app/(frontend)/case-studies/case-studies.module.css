@@ -315,10 +315,19 @@
   text-overflow: ellipsis;
 }
 
+/* Muted with `opacity`, not with a colour.
+   `color-mix(in srgb, currentcolor 62%, transparent)` was the obvious way to
+   say "the chip's colour, quieter", and it does not work: `currentcolor` inside
+   a `color-mix()` on the `color` property does not resolve to the inherited
+   value, so every count came out cream — near-invisible on the cream rail
+   until a click repainted it. `opacity` fades whatever the chip actually
+   inherits, which is what was meant, and it stays correct in all three states:
+   the ink of an idle chip, the ink of a pressed rail entry, and the cream of a
+   pressed chip on its dark pill below the breakpoint. */
 .railChipCount {
   font-size: 0.6875rem;
   font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, currentcolor 62%, transparent);
+  opacity: 0.62;
 }
 
 /* —— View toggle —————————————————————————————————————————————————— */
