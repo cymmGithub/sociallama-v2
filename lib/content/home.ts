@@ -196,9 +196,14 @@ export interface Step {
      */
     client?: 'irobot' | 'volvo' | 'pracuj-pl'
     /**
-     * Case-study slug plus the section anchor carrying the same evidence,
-     * resolved against the locale's case-study base. Absent on the closing
-     * step, which has no call to action (decision, 2026-07-28).
+     * Case-study slug, resolved against the locale's case-study base. Absent
+     * on the closing step, which has no call to action (decision,
+     * 2026-07-28).
+     *
+     * The slug alone, with no `#section` anchor: the card promises a case
+     * study, so it opens one at the top like every other link into the
+     * collection. Landing mid-article skipped the study's own framing to
+     * re-show a figure the card had just made.
      */
     href?: string
   }
@@ -770,7 +775,7 @@ export const howItWorks = {
           { figure: '17', label: 'miesięcy' },
         ],
         client: 'irobot',
-        href: 'irobot#wyzwanie',
+        href: 'irobot',
       },
     },
     {
@@ -794,7 +799,7 @@ export const howItWorks = {
           { figure: '6', label: 'strategii' },
         ],
         client: 'volvo',
-        href: 'volvo#podejscie',
+        href: 'volvo',
       },
     },
     {
@@ -817,7 +822,7 @@ export const howItWorks = {
           { figure: '1', label: 'rok opieki' },
         ],
         client: 'irobot',
-        href: 'irobot#wyniki',
+        href: 'irobot',
       },
     },
     {
@@ -853,7 +858,7 @@ export const howItWorks = {
           { figure: '4 885', label: 'filmów użytkowników' },
         ],
         client: 'pracuj-pl',
-        href: 'pracuj-pl#podejscie',
+        href: 'pracuj-pl',
       },
     },
   ] satisfies Step[],

@@ -487,7 +487,7 @@ export const howItWorks = {
           { figure: '17', label: 'months' },
         ],
         client: 'irobot',
-        href: 'irobot#wyzwanie',
+        href: 'irobot',
       },
     },
     {
@@ -508,7 +508,7 @@ export const howItWorks = {
           { figure: '6', label: 'strategies' },
         ],
         client: 'volvo',
-        href: 'volvo#podejscie',
+        href: 'volvo',
       },
     },
     {
@@ -528,7 +528,7 @@ export const howItWorks = {
           { figure: '1', label: 'year in our care' },
         ],
         client: 'irobot',
-        href: 'irobot#wyniki',
+        href: 'irobot',
       },
     },
     {
@@ -564,7 +564,7 @@ export const howItWorks = {
           { figure: '4,885', label: 'user videos' },
         ],
         client: 'pracuj-pl',
-        href: 'pracuj-pl#podejscie',
+        href: 'pracuj-pl',
       },
     },
   ],
