@@ -269,6 +269,16 @@ export function IndustryRail({
   // of the categories are waiting for theirs to be written.
   const selected = items.find((item) => item.id === industry)
 
+  // Nothing filed yet — render no rail rather than a lone `Wszystkie`, which
+  // reads as a filter that lost its options. The window this covers is real
+  // and short: `payload migrate` adds the column empty, the build that follows
+  // it reads NULLs, and the backfill runs after the deploy. A one-choice rail
+  // would be the first thing a visitor saw in between. Below the hooks, so the
+  // hook order never depends on the data.
+  if (items.length === 0) {
+    return null
+  }
+
   return (
     <nav aria-label={listing.filters.label} className={s.railNav}>
       <p className={s.railLabel}>{listing.filters.label}</p>
