@@ -131,7 +131,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.1",
     "babel-plugin-react-compiler": "^1.0.0",
-    "deslop-cli": "0.7.3",
+    "deslop-cli": "0.9.1",
     "happy-dom": "^20.10.6",
     "jsdom": "^29.1.1",
     "lefthook": "^2.1.9",
