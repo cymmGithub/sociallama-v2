@@ -38,6 +38,7 @@
     "payload:refresh:author-avatar": "bun ./lib/payload/refresh-author-avatar.ts",
     "payload:backfill:authors": "bun ./lib/payload/backfill-guest-authors.ts",
     "payload:repair:embed-links": "bun ./lib/payload/repair-wp-embed-links.ts",
+    "payload:repair:embed-quotes": "bun ./lib/payload/repair-embed-quotes.ts",
     "payload:audit:post-formatting": "bun ./lib/payload/audit-post-formatting.ts",
     "payload:audit:blog-images": "bun ./lib/payload/audit-blog-images.ts",
     "payload:repoint:en-images": "bun ./lib/payload/repoint-en-images.ts",

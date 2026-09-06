@@ -200,3 +200,68 @@ describe('prePass — presentational debris', () => {
     expect(notes).toEqual([])
   })
 })
+
+describe('prePass — Instagram / TikTok embed fallback', () => {
+  const IG_POST =
+    'https://www.instagram.com/p/DA8IGsNqmdc/?utm_source=ig_embed&amp;utm_campaign=loading'
+
+  it('collapses an Instagram fallback to the post permalink', () => {
+    const html = `
+      <blockquote class="instagram-media" data-instgrm-permalink="${IG_POST}" data-instgrm-version="14" style="background:#FFF;">
+        <div style="padding:16px;">
+          <a href="${IG_POST}" style="background:#FFFFFF;" target="_blank">
+            <div style="display:flex;"><div style="background-color:#F4F4F4;"></div></div>
+            <div style="padding:19% 0;"></div>
+            <div style="display:block;"><svg width="50px" height="50px"><g></g></svg></div>
+            <div style="padding-top:8px;"><div style="color:#3897f0;">Wyświetl ten post na Instagramie</div></div>
+            <div style="padding:12.5% 0;"></div>
+          </a>
+          <p style="color:#c9c8cd;text-align:center;"><a href="${IG_POST}" style="color:#c9c8cd;" target="_blank">Post udostępniony przez Biżuteria YES (@bizuteriayes)</a></p>
+        </div>
+      </blockquote>
+      <script async src="//www.instagram.com/embed.js"></script>
+    `
+    const { html: out, notes } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out.trim()).toBe(
+      `<blockquote><a href="${IG_POST}">Post udostępniony przez Biżuteria YES (@bizuteriayes)</a></blockquote>`
+    )
+    expect(out).not.toContain('<script')
+    expect(
+      notes.some((n) => n.startsWith('instagram embed → quote + link'))
+    ).toBe(true)
+  })
+
+  it('collapses a TikTok video fallback to the creator link, dropping hashtags and music', () => {
+    const html = `
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@irobotpolska/video/7429" data-video-id="7429" style="max-width: 605px;">
+        <section>
+          <a target="_blank" title="@irobotpolska" href="https://www.tiktok.com/@irobotpolska?refer=embed">@irobotpolska</a>
+          Radzi sobie przerażająco dobrze…🎃 <a title="halloween" target="_blank" href="https://www.tiktok.com/tag/halloween?refer=embed">#halloween</a>
+          <a target="_blank" title="♬ dźwięk oryginalny – iRobot Polska" href="https://www.tiktok.com/music/dźwięk-oryginalny-7429?refer=embed">♬ dźwięk oryginalny – iRobot Polska</a>
+        </section>
+      </blockquote>
+      <script async src="https://www.tiktok.com/embed.js"></script>
+    `
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out.trim()).toBe(
+      '<blockquote><a href="https://www.tiktok.com/@irobotpolska?refer=embed">@irobotpolska na TikToku</a></blockquote>'
+    )
+  })
+
+  it('collapses a TikTok creator embed the same way', () => {
+    const html = `<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@pracuj.pl" data-unique-id="pracuj.pl" data-embed-type="creator"><section><a target="_blank" href="https://www.tiktok.com/@pracuj.pl?refer=creator_embed">@pracuj.pl</a></section></blockquote>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+
+    expect(out).toBe(
+      '<blockquote><a href="https://www.tiktok.com/@pracuj.pl?refer=creator_embed">@pracuj.pl na TikToku</a></blockquote>'
+    )
+  })
+
+  it('leaves an authored blockquote alone', () => {
+    const html = `<blockquote><p>Kto ma czas, ten ma pieniądze.</p></blockquote>`
+    const { html: out } = prePass(html, 'Post title', WP_ORIGIN)
+    expect(out).toBe(html)
+  })
+})

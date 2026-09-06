@@ -10,6 +10,12 @@
 // this is the exact constructor shape convertHTMLToLexical expects.
 // @ts-expect-error jsdom has no bundled or @types declarations
 import { JSDOM } from 'jsdom'
+import {
+  type EmbedKind,
+  embedKindOfUrl,
+  embedLinkLabel,
+  PRIMARY_EMBED_PATH,
+} from '@/lib/payload/embed-quote-rules'
 import { type NbspLeaf, planNbsp } from '@/lib/payload/post-formatting-rules'
 
 /** Decode entities and strip tags via a DOM body. */
@@ -268,12 +274,50 @@ export function prePass(
     ''
   )
 
-  // Embed scripts (Instagram/TikTok) — their blockquote fallback (with the
-  // permalink) survives conversion as a quote + link.
+  // Embed scripts (Instagram/TikTok) — the blockquote fallback next to them
+  // is collapsed below, so the script itself carries nothing worth keeping.
   html = html.replace(/<script[\s\S]*?<\/script>/gi, () => {
-    notes.push('embed <script> stripped (blockquote fallback kept)')
+    notes.push('embed <script> stripped')
     return ''
   })
+
+  // Instagram/TikTok fallback blockquotes: the inner `<div>`s have no Lexical
+  // node and used to flatten into a pile of `linebreak`s (24 of them around
+  // "Wyświetl ten post na Instagramie"); a TikTok caption arrived as hashtag
+  // and music links. Collapse each to the one link that stands for the embed
+  // — the same shape repair-embed-quotes.ts writes for the posts already in.
+  html = html.replace(
+    /<blockquote(?=[^>]*class="[^"]*\b(?:instagram-media|tiktok-embed)\b)[^>]*>[\s\S]*?<\/blockquote>/gi,
+    (blockquoteHtml) => {
+      const doc = new JSDOM(`<body>${blockquoteHtml}</body>`).window.document
+      const anchors = [...doc.querySelectorAll('a[href]')]
+      let primary: HTMLAnchorElement | undefined
+      for (const anchor of anchors) {
+        const kind = embedKindOfUrl(anchor.href)
+        if (
+          kind &&
+          PRIMARY_EMBED_PATH[kind].test(new URL(anchor.href).pathname)
+        ) {
+          primary = anchor
+        }
+      }
+      if (!primary) {
+        notes.push(
+          'WARNING: embed blockquote without a primary link — kept as-is'
+        )
+        return blockquoteHtml
+      }
+      const kind = embedKindOfUrl(primary.href) as EmbedKind
+      const label = embedLinkLabel(
+        kind,
+        primary.href,
+        primary.textContent ?? '',
+        'pl'
+      )
+      notes.push(`${kind} embed → quote + link: ${primary.href}`)
+      return `<blockquote><a href="${primary.href}">${label}</a></blockquote>`
+    }
+  )
 
   // WordPress internal post embeds ship TWO elements: a
   // `<blockquote class="wp-embedded-content">` carrying the titled permalink
