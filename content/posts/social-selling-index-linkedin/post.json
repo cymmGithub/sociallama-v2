@@ -1,0 +1,20 @@
+{
+  "$comment": [
+    "Authored metadata for import-post.ts; content lives in source.pl.md alongside.",
+    "Cover is Pexels photo 33440149 (free license, no attribution required) — LinkedIn logo on a phone over a keyboard."
+  ],
+  "slug": "social-selling-index-linkedin",
+  "title": "Social Selling Index – jak skutecznie promować się na LinkedIn?",
+  "excerpt": "Social Selling Index (SSI) to wskaźnik LinkedIn, który w skali 0–100 mierzy Twoją markę osobistą, sieć kontaktów, angażowanie treściami i relacje. Sprawdź, jak go odczytać, co oznacza Twój wynik i jakie kroki realnie go podnoszą.",
+  "categorySlug": "marketing",
+  "authorName": "Łukasz Płociński",
+  "publishedAt": "2026-09-07T10:00:00.000Z",
+  "seo": {
+    "metaDescription": "Czym jest Social Selling Index (SSI) na LinkedIn, jak go sprawdzić i interpretować? Cztery filary wskaźnika, znaczenie wysokiego wyniku i praktyczne kroki, które pomagają go poprawić."
+  },
+  "cover": {
+    "file": "content/media/cover-art/linkedin-logo-phone.jpg",
+    "altPl": "Smartfon z logo LinkedIn na ekranie, leżący na podświetlanej klawiaturze laptopa",
+    "altEn": "A smartphone showing the LinkedIn logo, lying on a backlit laptop keyboard"
+  }
+}
