@@ -741,7 +741,11 @@
 .stat {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  /* Centred, not baseline-aligned (design D2). A caption is one sentence, but
+     one sentence wraps to two lines at this measure — on a baseline the figure
+     would line up with the caption's FIRST line and the rest would hang below
+     it, which reads as the caption having slipped. */
+  align-items: center;
   gap: 0.25rem 1rem;
   margin-block: calc(var(--gap) / 2);
   padding: 0.5rem 0 0.5rem 1.375rem;
@@ -758,6 +762,10 @@
   /* The figure must not be re-flowed by the caption wrapping around it: it is
      one token and it reads as a unit. */
   flex: none;
+}
+
+.body .stat > p {
+  margin-top: 0;
 }
 
 .statCaption {
@@ -824,8 +832,23 @@
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
 
-/* Only rendered when the block carries a chip — never as an empty pill. */
-.pillarChip {
+/*
+ * The card's paragraphs, freed from the prose rule.
+ *
+ * `.body li > :is(ul, ol, p)` sets a top margin so a paragraph glossing a list
+ * item clears it — correct for prose, wrong here: it doubles the card's own
+ * `gap`, and it out-scores `.pillarChip { margin-top: auto }`, which is what
+ * pins the chip to the bottom edge. Without this the chips in one row sit at
+ * whatever height their card's text happened to end at.
+ */
+.body .pillarCard > p {
+  margin-top: 0;
+}
+
+/* Only rendered when the block carries a chip — never as an empty pill.
+   The selector carries `p` so it out-scores the reset directly above it: both
+   start `.body .pillarCard > `, and a class alone would lose the tie. */
+.body .pillarCard > p.pillarChip {
   margin-top: auto;
   padding: 0.25rem 0.625rem;
   border: 1px solid var(--color-contrast);

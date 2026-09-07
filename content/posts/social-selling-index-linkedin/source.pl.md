@@ -4,6 +4,10 @@ Z tego artykułu dowiesz się, czym dokładnie jest ten wskaźnik, jak go sprawd
 
 Wskaźnik **social selling index ssi** to parametr, który pozwala ocenić, jak skutecznie realizujesz cztery główne filary sprzedaży społecznościowej. Zrozumienie, z czego **social selling index składa** się w swojej strukturze, pozwala na precyzyjne zidentyfikowanie obszarów wymagających optymalizacji. Często klienci pytają nas, czy warto inwestować czas w poprawę tego wyniku. Odpowiedź jest prosta: **statystyki pokazują**, że osoby z wysokim SSI generują o 45% więcej szans sprzedażowych niż te z niskim wynikiem. Jeśli Twoim celem jest skuteczne i [profesjonalne prowadzenie LinkedIn](/uslugi/prowadzenie-social-media), nie możesz ignorować danych, które serwuje Ci platforma. To właśnie analiza tych parametrów pozwala nam w Social Lama tworzyć strategie komunikacji, które realnie angażują potencjalnych klientów i budują trwałą przewagę konkurencyjną.
 
+<stat value="45%">
+  więcej szans sprzedażowych generują osoby z wysokim SSI niż te z niskim wynikiem
+</stat>
+
 Aby w pełni wykorzystać potencjał, jaki dają współczesne media społecznościowe, warto spojrzeć na nie szerzej niż tylko przez pryzmat jednej platformy. Skuteczna obecność w sieci wymaga integracji działań na wielu polach. Jeśli interesuje Cię kompleksowe podejście, zapraszamy do zapoznania się z naszym artykułem [Prowadzenie social media](/prowadzenie-social-media), gdzie szczegółowo opisujemy, jak wspieramy firmy w budowaniu ich cyfrowego wizerunku. Wróćmy jednak do meritum – jak interpretować wynik SSI i co zrobić, by piąć się w górę w rankingach swojej branży?
 
 ## Czym dokładnie jest Social Selling Index (SSI)?
@@ -12,10 +16,12 @@ Aby w pełni wykorzystać potencjał, jaki dają współczesne media społeczno�
 
 Struktura SSI opiera się na **czterech głównych komponentach**, z których każdy jest wart maksymalnie 25 punktów:
 
-1. **Establish your professional brand** (Budowanie profesjonalnej marki osobistej).
-2. **Find the right people** (Znajdowanie odpowiednich osób).
-3. **Engage with insights** (Angażowanie treściami i informacjami).
-4. **Build relationships** (Budowanie relacji).
+<pillars>
+  1. **Establish your professional brand** (Budowanie profesjonalnej marki osobistej).
+  2. **Find the right people** (Znajdowanie odpowiednich osób).
+  3. **Engage with insights** (Angażowanie treściami i informacjami).
+  4. **Build relationships** (Budowanie relacji).
+</pillars>
 
 Zanim przejdziesz do intensywnych działań, powinieneś **sprawdzić social selling index**, aby wiedzieć, z jakiego pułapu startujesz. Wystarczy być zalogowanym na swoim koncie i wejść na dedykowaną podstronę LinkedIn Sales Navigator SSI. Twój **indywidualny wynik** zostanie zestawiony z osobami z Twojej branży oraz Twojej sieci kontaktów, co daje doskonały punkt odniesienia.
 
@@ -60,6 +66,10 @@ Zrozumienie, że social selling to maraton, a nie sprint, jest kluczowe. Budowan
 ## Dlaczego wysoki SSI jest tak ważny dla Twojej firmy?
 
 Można by pomyśleć, że **wynik social** to tylko cyfra, która ma łechtać ego handlowców. Nic bardziej mylnego. **Statistics show that as** (statystyki pokazują, że) liderzy z wysokim SSI mają o 51% większą szansę na osiągnięcie swoich celów sprzedażowych. Dlaczego tak się dzieje? Odpowiedź tkwi w zaufaniu. W dobie **tradycyjnej sprzedaży**, sprzedawca był intruzem. W modelu social sellingu, sprzedawca staje się doradcą i ekspertem.
+
+<stat value="51%">
+  większa szansa na osiągnięcie celów sprzedażowych u liderów z wysokim SSI
+</stat>
 
 Gdy **aktywnie działasz** na LinkedIn, Twoja marka osobista pracuje na Ciebie nawet wtedy, gdy śpisz. Potencjalni klienci, zanim zdecydują się na kontakt, często sprawdzają Twój profil. Widząc **wysoki social selling index**, regularne publikacje i potwierdzone umiejętności, są znacznie bardziej skłonni do podjęcia rozmowy. To właśnie ten **potencjał sprzedażowy** sprawia, że coraz więcej firm decyduje się na wdrożenie procesów social sellingowych w swoich zespołach handlowych.
 
