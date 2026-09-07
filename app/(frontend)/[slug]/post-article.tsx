@@ -12,6 +12,7 @@ import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolvePostAuthor } from '@/lib/blog/author'
 import { bodyWithoutFaq, detectFaq } from '@/lib/blog/faq'
+import { bindOrphans } from '@/lib/blog/orphans'
 import { readingTimeMinutes } from '@/lib/blog/reading-time'
 import { ctaSplitOrdinal, splitBeforeHeading } from '@/lib/blog/split-content'
 import { buildToc } from '@/lib/blog/toc'
@@ -119,8 +120,14 @@ export async function PostArticle({
   // below, and leaving it in would put the CTA cut inside it on a short post.
   const bodySource =
     post.content && faq ? bodyWithoutFaq(post.content, faq) : post.content
+  // Bound here rather than in the projection: `toc`, `faq` and the JSON-LD
+  // above all read the stored content, so they keep ordinary spaces while only
+  // the rendered prose gets U+00A0.
   const body = bodySource
-    ? splitBeforeHeading(bodySource, ctaSplitOrdinal(toc, CTA_BEFORE_H2))
+    ? splitBeforeHeading(
+        bindOrphans(bodySource, locale),
+        ctaSplitOrdinal(toc, CTA_BEFORE_H2)
+      )
     : null
   const showToc = toc.length >= MIN_TOC_ENTRIES
 

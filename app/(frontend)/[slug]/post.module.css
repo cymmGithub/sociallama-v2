@@ -631,6 +631,39 @@
     display: contents;
   }
 
+  /*
+   * Justified prose, with hyphenation.
+   *
+   * The child combinator is doing real work: a converted paragraph is a DIRECT
+   * child of the rich-text wrapper, while a stat's caption sits under an
+   * `aside`, a pillar's text under an `li`, and the in-article CTA outside the
+   * wrapper entirely. So this reaches the article's prose — including each FAQ
+   * answer, which has a wrapper of its own — and nothing that is a short
+   * measure or a UI label, without a single reset rule to fight it.
+   *
+   * `hyphens` is a free bonus, not the thing holding this up: it is a no-op in
+   * every browser available on this machine (headless Chromium and desktop
+   * Linux Chrome both ship no Polish dictionary), so the layout below has to
+   * be acceptable without it, and it only ever helps where a dictionary exists.
+   *
+   * Justification is gated on the MEASURE, not the viewport, and the two come
+   * apart here. Across the 82 published posts the 95th-percentile word gap is
+   * 16px from 1024px up (73 characters a line, no gap over 60px anywhere in the
+   * corpus), against 27px at 800px and 35px at 390px — where 42 lines open a
+   * hole wider than 60px. The site's own `--desktop` breakpoint is the worst
+   * width of all: at exactly 800px the table-of-contents rail appears and cuts
+   * the column from 74 characters to 47. So this gate is 64rem and cannot be
+   * `--desktop`.
+   */
+  > :global(.payload-richtext) > p,
+  .faqAnswer > :global(.payload-richtext) > p {
+    hyphens: auto;
+
+    @media (width >= 64rem) {
+      text-align: justify;
+    }
+  }
+
   h2,
   h3,
   h4 {

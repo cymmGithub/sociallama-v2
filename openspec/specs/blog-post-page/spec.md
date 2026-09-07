@@ -283,3 +283,22 @@ On devices with a fine pointer, selecting at least twelve characters of body tex
 - **WHEN** a visitor on a touch device selects body text
 - **THEN** only the platform's native selection UI appears
 
+
+### Requirement: Polish body typography
+Rendered Polish prose SHALL bind every one-letter word (`a i o u w z`) to the word after it with a non-breaking space, and SHALL justify body paragraphs only from a 64rem viewport up. Binding SHALL apply to the rendered DOM only — stored content, the table of contents, FAQ detection and the `FAQPage` JSON-LD keep ordinary spaces — and SHALL skip code. English pages SHALL be unaffected.
+
+#### Scenario: A one-letter word never ends a line
+- **WHEN** a Polish post is rendered at any width
+- **THEN** no line of body prose ends with `a`, `i`, `o`, `u`, `w` or `z`
+
+#### Scenario: Structured data keeps ordinary spaces
+- **WHEN** a post with a strict-shape FAQ is rendered
+- **THEN** its `FAQPage` JSON-LD contains no non-breaking space
+
+#### Scenario: A narrow column is not justified
+- **WHEN** a post is rendered below 64rem, including at the 800px breakpoint where the rail cuts the column from 74 characters to 47
+- **THEN** body paragraphs are set ragged-right
+
+#### Scenario: English is unaffected
+- **WHEN** an English post is rendered
+- **THEN** no non-breaking space is inserted into its prose

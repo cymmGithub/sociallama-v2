@@ -1,6 +1,7 @@
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { ChevronDown } from 'lucide-react'
 import type { FaqSection } from '@/lib/blog/faq'
+import { bindOrphans, bindOrphansInText } from '@/lib/blog/orphans'
 import type { TocEntry } from '@/lib/blog/toc'
 import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
@@ -61,7 +62,7 @@ export function PostFaq({
     <>
       <div className={s.headingRow}>
         <h2 {...(headingSlug ? { id: headingSlug } : {})}>
-          {section.headingText}
+          {bindOrphansInText(section.headingText, locale)}
         </h2>
         {headingSlug && (
           <HeadingAnchor content={headingContent} id={headingSlug} />
@@ -82,13 +83,15 @@ export function PostFaq({
                   render inside the heading would put a `div` in an `h3`. The
                   corpus's questions are unformatted sentences, which is what
                   makes the trade free. */}
-              <h3 className={s.faqQuestion}>{pair.questionText}</h3>
+              <h3 className={s.faqQuestion}>
+                {bindOrphansInText(pair.questionText, locale)}
+              </h3>
               <ChevronDown aria-hidden="true" className={s.faqSign} />
             </summary>
             <div className={s.faqAnswer}>
               <PostRichText
                 {...paths}
-                data={asBody(pair.answer)}
+                data={bindOrphans(asBody(pair.answer), locale)}
                 locale={locale}
                 unoptimized={unoptimized}
               />
