@@ -26,6 +26,13 @@
  * entry no line uses, or a file missing from disk all abort — a placeholder
  * that survives conversion renders as literal text in a published post.
  *
+ * `<stat>` and `<pillars>` blocks ride the same file. Their JSX syntax is
+ * parsed by the block configs' own `jsx.import`, but the guard against a
+ * malformed one cannot live there: Lexical catches everything an editor update
+ * throws, so a block that fails to parse is simply absent from the result. The
+ * source is therefore checked BEFORE conversion, and the block count checked
+ * after — a dropped block fails the import rather than shortening the article.
+ *
  * Publishing stays a manual per-post action in the admin panel — this script
  * never publishes, so it needs no revalidation of its own (the publish hook
  * does that). EN rides the existing pipeline afterwards:
@@ -38,6 +45,10 @@ import {
   convertMarkdownToLexical,
   editorConfigFactory,
 } from '@payloadcms/richtext-lexical'
+import {
+  assertPostBlockSyntax,
+  postEditorFeatures,
+} from '@/lib/payload/blocks/post-blocks'
 import { begin, finish, uploadMedia } from '@/lib/payload/media-ops'
 
 interface PostMeta {
@@ -103,6 +114,9 @@ for (const name of Object.keys(bodyImages)) {
   }
 }
 
+/** Throws on an unparseable `<pillars>` line, naming it. */
+const expectedBlocks = assertPostBlockSyntax(markdown)
+
 // begin() routes --prod through targetProdEnv and refuses a prod run while
 // media/ holds dev files, exactly the guards this write needs.
 const ctx = await begin({
@@ -137,13 +151,26 @@ const resolvedMarkdown = markdown.replace(
   (_match, name: string) => `![media:${bodyImageIds.get(name)}]()`
 )
 
-const editorConfig = await editorConfigFactory.default({
+// `fromFeatures`, not `default`: the latter returns the ROOT editor from
+// payload.config.ts, which carries no blocks — every `<stat>`/`<pillars>` in
+// the source would convert to nothing at all.
+const editorConfig = await editorConfigFactory.fromFeatures({
   config: payload.config,
+  features: postEditorFeatures,
 })
 const content = convertMarkdownToLexical({
   editorConfig,
   markdown: resolvedMarkdown,
 })
+
+const converted = (content.root.children as { type?: string }[]).filter(
+  (node) => node.type === 'block'
+).length
+if (converted !== expectedBlocks) {
+  throw new Error(
+    `source.pl.md declares ${expectedBlocks} block(s) but ${converted} survived conversion — a block was dropped`
+  )
+}
 
 const category = (
   await payload.find({

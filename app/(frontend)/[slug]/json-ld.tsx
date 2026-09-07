@@ -5,6 +5,7 @@ import {
   organizationRef,
 } from '@/components/seo/structured-data'
 import type { ResolvedAuthor } from '@/lib/blog/author'
+import type { FaqSection } from '@/lib/blog/faq'
 import { APP_BASE_URL } from '@/lib/env'
 import type { Locale } from '@/lib/i18n/slug-map'
 import type { Post } from '@/payload-types'
@@ -29,6 +30,12 @@ function authorNode(author: ResolvedAuthor) {
  * Structured data for a blog post: a `BlogPosting` plus a `BreadcrumbList`,
  * emitted as one JSON-LD script carrying both — mirroring the case-study
  * page's convention.
+ *
+ * A `FAQPage` joins them when — and only when — the page actually renders the
+ * disclosure list, because it is built from the SAME detection result the
+ * renderer used. Deriving it separately would let the two drift, and a
+ * `FAQPage` describing questions the page does not show is a structured-data
+ * lie rather than a missing feature.
  */
 export function BlogPostJsonLd({
   post,
@@ -38,6 +45,7 @@ export function BlogPostJsonLd({
   hubPath,
   hubLabel,
   locale,
+  faq,
 }: {
   post: Post
   author: ResolvedAuthor
@@ -49,6 +57,8 @@ export function BlogPostJsonLd({
   /** Its label — pass the same string as the visible breadcrumb. */
   hubLabel: string
   locale: Locale
+  /** The rendered FAQ section, or null when the body has none. */
+  faq: FaqSection | null
 }) {
   const pageUrl = `${APP_BASE_URL}${basePath}/${post.slug}`
   const image = absoluteUrl(imageUrl)
@@ -76,5 +86,22 @@ export function BlogPostJsonLd({
     { name: post.title, url: pageUrl },
   ])
 
-  return jsonLdScript([blogPosting, breadcrumbs])
+  // Plain text on both sides: the answers render as prose with links, and
+  // schema.org's `acceptedAnswer.text` is a string, not markup.
+  const faqPage = faq
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        inLanguage: locale,
+        mainEntity: faq.pairs.map((pair) => ({
+          '@type': 'Question',
+          name: pair.questionText,
+          acceptedAnswer: { '@type': 'Answer', text: pair.answerText },
+        })),
+      }
+    : null
+
+  return jsonLdScript(
+    faqPage ? [blogPosting, breadcrumbs, faqPage] : [blogPosting, breadcrumbs]
+  )
 }

@@ -3,6 +3,7 @@ import type * as pl from '@/lib/content/blog'
 import type { Localized } from '@/lib/i18n/parity'
 import s from './post.module.css'
 import { PostShare } from './post-share'
+import { ReadingProgress } from './reading-progress'
 import { Toc } from './toc'
 
 /**
@@ -26,18 +27,24 @@ export function PostRail({
   title,
   content,
   share,
+  readingTime,
 }: {
   toc: readonly TocEntry[]
   shareUrl: string
   title: string
   content: Localized<typeof pl.postToc>
+  /** The post's reading-time estimate, counted down as the reader scrolls. */
+  readingTime: number | null
   /** Forwarded to the share row, which the rail owns but does not read. */
   share: Localized<typeof pl.postShare>
 }) {
   return (
     <aside className={s.rail}>
       <nav aria-label={content.navLabel} className={s.railBox}>
-        <p className={s.railLabel}>{content.title}</p>
+        <div className={s.railLabelRow}>
+          <p className={s.railLabel}>{content.title}</p>
+          <ReadingProgress content={content} readingTime={readingTime} />
+        </div>
         <Toc entries={toc} />
       </nav>
 

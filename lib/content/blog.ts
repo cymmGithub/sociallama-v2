@@ -24,6 +24,23 @@ export const postRelated = {
 export const postToc = {
   title: 'W tym wpisie',
   navLabel: 'Spis treści',
+  /**
+   * Remaining reading time beside the rail label. A `{minutes}` slot rather
+   * than a function, for the reason `postShare`'s labels give: the rail's
+   * progress is a client component and its copy crosses the boundary as props.
+   */
+  remaining: 'zostało ~{minutes} min',
+  /** Replaces it once the body has been scrolled through. */
+  finished: 'przeczytane',
+} as const
+
+/**
+ * The copy-link control revealed beside an `h2` on desktop. Icon-only, so
+ * `copyLink` is its ONLY accessible name — not a tooltip.
+ */
+export const postHeading = {
+  copyLink: 'Kopiuj link do tej sekcji',
+  copied: 'Link do sekcji skopiowany',
 } as const
 
 /**
@@ -37,6 +54,19 @@ export const postShare = {
   facebook: 'Udostępnij „{title}” na Facebooku',
   copy: 'Kopiuj link do wpisu',
   copied: 'Link skopiowany',
+} as const
+
+/**
+ * The floating toolbar shown when a reader selects body text on a pointer
+ * device. `copy` carries the whole quote format, punctuation included, because
+ * the quotation marks themselves are language: Polish sets „…”, English “…”.
+ */
+export const postQuote = {
+  x: 'Udostępnij cytat na X',
+  linkedin: 'Udostępnij wpis na LinkedInie',
+  copy: 'Kopiuj cytat',
+  copied: 'Cytat skopiowany',
+  format: '„{quote}” — {title} {url}',
 } as const
 
 /** The author card's outbound link — one wording per `ResolvedAuthor.kind`. */
@@ -158,7 +188,9 @@ export const postArticle = {
   readingTimeSuffix: hub.readingTimeSuffix,
   cta: postCta,
   toc: postToc,
+  heading: postHeading,
   share: postShare,
+  quote: postQuote,
   author: postAuthor,
   related: postRelated,
   postCard,

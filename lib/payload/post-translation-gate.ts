@@ -23,6 +23,7 @@
 
 import { MAX_HEADING_LENGTH } from '@/lib/payload/post-formatting-rules'
 import {
+  blockSignature,
   type Projection,
   type ProjNode,
   parse,
@@ -176,7 +177,7 @@ export function checkRunMarkup(
  *
  * Compares what translation must never change: how many runs there are, which
  * node each run hangs off, and every structural node between them — uploads by
- * media id, headings by tag, in document order.
+ * media id, headings by tag, blocks by slug and shape, in document order.
  */
 export function checkTree(pl: ProjNode, en: ProjNode): Finding[] {
   const findings: Finding[] = []
@@ -206,6 +207,11 @@ export function checkTree(pl: ProjNode, en: ProjNode): Finding[] {
           out.push('hr')
         } else if (type === 'list') {
           out.push(`list:${String(child.listType ?? '')}`)
+        } else if (type === 'block') {
+          // Slug, field keys and row counts. A `pillars` block that lost an
+          // item is a translation that dropped a paragraph — the same class of
+          // defect as a missing upload, and caught the same way.
+          out.push(`block:${blockSignature(child)}`)
         } else if (type === 'quote' || type === 'listitem') {
           out.push(type)
         }

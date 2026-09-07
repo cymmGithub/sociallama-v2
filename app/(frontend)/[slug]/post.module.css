@@ -387,12 +387,33 @@
   color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
 }
 
+/* The label and the remaining-time readout share one baseline. `.railLabel`
+   itself is untouched — the share row wears it too, and it has no business
+   becoming a flex row there. */
+.railLabelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.railRemaining {
+  flex: none;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--color-contrast);
+}
+
 /* —— Table of contents ————————————————————————————————————————————————— */
 .tocList {
   list-style: none;
   margin: 0;
   padding: 0;
   margin-top: 0.875rem;
+  /* Offset parent for the fill below, and for the `offsetTop` the component
+     measures against it. */
+  position: relative;
   display: flex;
   flex-direction: column;
   /* The one scrollport in the rail. The share row sits outside it and stays
@@ -400,6 +421,30 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   min-height: 0;
+}
+
+/*
+ * The read part of the guide line. Each entry draws its own 2px track as a
+ * left border; this paints over it, down to the bottom of the current entry,
+ * which is why it is a positioned element (positioned content paints above
+ * in-flow borders) and why the list is its offset parent — an absolutely
+ * positioned child of a scroll container scrolls with the content, so the
+ * fill stays glued to its entries on a 20-entry list.
+ *
+ * `height` is transitioned rather than a transform: the value is a length the
+ * component sets, and the global reduced-motion rule already reaches ::before,
+ * so no second rule is needed to cancel it.
+ */
+.tocList::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 2px;
+  block-size: var(--toc-fill, 0px);
+  background-color: var(--color-contrast);
+  transition: block-size var(--duration) var(--ease-out-expo);
+  pointer-events: none;
 }
 
 .tocLink,
@@ -430,6 +475,13 @@
     color: var(--color-contrast);
     font-weight: 700;
     border-left-color: var(--color-contrast);
+  }
+
+  /* Already read. The fill above covers their track, so this is only the text:
+     settled rather than dimmed, so the list reads as a trail behind you and
+     not as a set of disabled entries. */
+  &[data-passed] {
+    color: var(--color-secondary);
   }
 }
 
@@ -675,6 +727,325 @@
  */
 .urlList a {
   overflow-wrap: anywhere;
+}
+
+/* —— Editor-authored blocks ————————————————————————————————————————————
+   Both sit in the body's flex column, so their spacing is the body's `gap`
+   plus the block's own margin — not a margin per neighbour. They use
+   `--color-contrast` for the accent exactly as the blockquote rule above does:
+   on this page's cream theme that resolves to plum, and a second accent token
+   would be a second answer to the same question. */
+
+/* A figure lifted out of prose: value and caption on one baseline axis, the
+   whole thing hung off the accent rule the blockquote already established. */
+.stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-block: calc(var(--gap) / 2);
+  padding: 0.5rem 0 0.5rem 1.375rem;
+  border-left: 3px solid var(--color-contrast);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 6vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-contrast);
+  /* The figure must not be re-flowed by the caption wrapping around it: it is
+     one token and it reads as a unit. */
+  flex: none;
+}
+
+.statCaption {
+  /* Bounded so a long caption stacks under the figure rather than squeezing
+     into a 6-character column beside it. */
+  flex: 1 1 14ch;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
+}
+
+/* Numbered cards. The ordinal is rendered rather than left to a list marker:
+   the article calls them "Filar 1…4", so the number is content, and a marker
+   would neither survive a copy-paste nor sit where the card wants it. */
+/* Scoped through `.body`, and it has to be: the prose rule `.body ul, ol` sets
+   `display: flex`, a padding and a gap, and out-scores a bare class — the grid
+   silently lost to it and every card stacked. */
+.body .pillars {
+  list-style: none;
+  margin: calc(var(--gap) / 2) 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+
+  /* One breakpoint short of the site's single `--desktop` cut: this grid lives
+     inside the 68ch measure, which is already narrow at 800px, so the split has
+     to be driven by the measure rather than by the page. */
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.pillarCard {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.25rem;
+  padding: 1rem 1.125rem 1.125rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background-color: var(--surface);
+}
+
+.pillarOrdinal {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-contrast);
+}
+
+.pillarTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.pillarText {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+}
+
+/* Only rendered when the block carries a chip — never as an empty pill. */
+.pillarChip {
+  margin-top: auto;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--color-contrast);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-contrast);
+}
+
+/* —— Heading copy-link ————————————————————————————————————————————————————
+   The row exists so the button is the heading's SIBLING rather than its
+   content (design D7) — that is an accessibility requirement, not a layout
+   preference. `.body h2` keeps styling the heading through the wrapper. */
+.headingRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.headingAnchor {
+  /* No gutter to reveal it in below the rail breakpoint, and no hover there to
+     reveal it with. */
+  display: none;
+
+  @media (--desktop) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: 8px;
+    color: var(--color-contrast);
+    cursor: pointer;
+    /* Hidden until wanted, but never `display: none` — a keyboard user has to
+       be able to reach it, and opacity keeps it in the tab order. */
+    opacity: 0;
+    transition:
+      opacity var(--duration-fast),
+      background-color var(--duration-fast);
+
+    svg {
+      inline-size: 1rem;
+      block-size: 1rem;
+    }
+
+    /* `:focus`, not only `:focus-visible`: a control that is focused but still
+       at zero opacity is a control the keyboard has reached and the reader
+       cannot see. The distinction only matters for mouse focus, which follows
+       a click on something already revealed by hover. */
+    &:focus {
+      opacity: 1;
+    }
+
+    &:hover {
+      background-color: var(--surface-2);
+    }
+  }
+}
+
+@media (--desktop) and (--hover) {
+  .headingRow:hover .headingAnchor {
+    opacity: 1;
+  }
+}
+
+/* —— Quote-share toolbar ————————————————————————————————————————————————
+   Fixed to the viewport and anchored to the selection's box, which the
+   component re-reads on every Lenis frame. `translate` rather than a `left`
+   offset so the bar centres on the selection without a second measurement. */
+.quoteBar {
+  position: fixed;
+  z-index: 20;
+  translate: -50% -100%;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background-color: var(--surface);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-ink) 18%, transparent);
+
+  /* The toolbar exists only where a fine pointer can make a selection worth
+     sharing; on touch the platform's own bar owns that space. The component
+     gates on the same query — this is the belt to its braces, so a stale
+     render can never leave a bar stranded over the native one. */
+  @media not (pointer: fine) {
+    display: none;
+  }
+}
+
+.quoteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 999px;
+  color: var(--color-secondary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast);
+
+  svg {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+/* —— FAQ disclosures ————————————————————————————————————————————————————
+   The homepage ledger's contract, on this page's ground: a hairline per row,
+   a +/− the row rotates, and a height transition that only exists where
+   `::details-content` does. Everything outside that @supports gate must render
+   correctly on its own — Safari shipped the pseudo in 18.4, and before that a
+   declared `block-size: 0` would have collapsed every open answer. */
+.faqList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line-strong);
+  margin-top: calc(var(--gap) / 2);
+}
+
+.faqItem {
+  /* Lets ::details-content animate from 0 to its intrinsic height where the
+     engine supports it; elsewhere the row snaps open, which is fine. */
+  interpolate-size: allow-keywords;
+
+  border-bottom: 1px solid var(--line-strong);
+  /* The question's anchor is on THIS element, not on the `h3` inside it, so
+     the offset that clears the fixed header has to be here too — a direct
+     `#pytanie` landing reads it natively. */
+  scroll-margin-top: var(--post-anchor-offset);
+}
+
+.faqSummary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--gap);
+  align-items: start;
+  padding-block: 0.875rem;
+  cursor: pointer;
+
+  /* Kill the UA disclosure triangle: where the marker survives it becomes an
+     extra grid item and shifts the row's columns along by one. */
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline-offset: -4px;
+  }
+}
+
+/* The heading keeps the body's `h2/h3` face — it is still a real `h3` — but
+   drops the top margin those carry, which inside a grid row reads as a dent. */
+.body .faqQuestion {
+  /* Scoped through `.body` on purpose: `.body h3` above sets the top margin
+     and the size, and inside a grid row that margin reads as a dent. Matching
+     its specificity beats an `!important`. */
+  margin-top: 0;
+  font-size: clamp(1.0625rem, 2vw, 1.25rem);
+  text-wrap: balance;
+  transition: color var(--duration-fast) var(--ease-out-expo);
+
+  @media (--hover) {
+    .faqSummary:hover & {
+      color: var(--color-contrast);
+    }
+  }
+}
+
+.faqSign {
+  width: 1.125em;
+  height: 1.125em;
+  flex: none;
+  margin-top: 0.25em;
+  color: var(--color-contrast);
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+
+  .faqItem[open] & {
+    transform: rotate(180deg);
+  }
+}
+
+/* content-visibility is left to the UA (hidden closed, visible open) and only
+   transitioned — declaring it here would override the open-state value and lay
+   the row out at zero height. */
+.faqItem::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size var(--duration) var(--ease-out-expo),
+    content-visibility var(--duration) allow-discrete;
+}
+
+.faqItem[open]::details-content {
+  block-size: auto;
+}
+
+.faqAnswer {
+  max-width: 74ch;
+  padding-bottom: 1.125rem;
+  padding-inline-end: 2.25rem;
+  color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
+}
+
+/* The global reduced-motion rule covers * and ::before/::after, but not
+   ::details-content — neutralise the height transition here. Must sit below
+   the rule it cancels: a media query adds no specificity. */
+@media (--reduced-motion) {
+  .faqItem::details-content {
+    transition-duration: 0.01ms;
+  }
 }
 
 /* —— In-article CTA ————————————————————————————————————————————————————

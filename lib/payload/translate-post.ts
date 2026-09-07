@@ -43,6 +43,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { counterpartPath, EN_HOME } from '@/lib/i18n/slug-map'
 import {
+  blockRunsOf,
   nodesOf,
   type ProjNode,
   parse,
@@ -113,6 +114,12 @@ interface Draft {
   /** English slug. Absent in the PL draft, required in the EN one. */
   slug?: string
   runs: { index: number; parent: string; text: string }[]
+  /**
+   * Text fields of the body's editor-authored blocks, keyed by a stable path
+   * rather than a position. Absent on a body with no blocks, which is every
+   * post imported from WordPress — so an old draft.en.json stays valid.
+   */
+  blocks?: { path: string; text: string }[]
 }
 
 const looksStub = (value?: string) =>
@@ -241,6 +248,8 @@ for (const post of found.docs) {
     continue
   }
 
+  const blockRuns = blockRunsOf(root)
+
   if (EXTRACT) {
     const draft: Draft = {
       source: slug,
@@ -254,13 +263,19 @@ for (const post of found.docs) {
         parent: String(run.parent.type),
         text: project(nodesOf(run)).text,
       })),
+      ...(blockRuns.length > 0
+        ? { blocks: blockRuns.map(({ path, text }) => ({ path, text })) }
+        : {}),
     }
     await mkdir(dir, { recursive: true })
     await writeFile(
       path.join(dir, 'draft.pl.json'),
       `${JSON.stringify(draft, null, 2)}\n`
     )
-    console.log(`  · ${slug} → ${draft.runs.length} run(s)`)
+    console.log(
+      `  · ${slug} → ${draft.runs.length} run(s)` +
+        (blockRuns.length > 0 ? ` + ${blockRuns.length} block field(s)` : '')
+    )
     extracted += 1
     continue
   }
@@ -303,6 +318,22 @@ for (const post of found.docs) {
     })
   }
 
+  // Keyed by path, not by order: a draft written before the body gained a
+  // second block still applies to the fields it does name, and the missing one
+  // is reported by path rather than shifting every later field by one.
+  const draftBlocks = new Map(
+    (draft.blocks ?? []).map((entry) => [entry.path, entry.text])
+  )
+  for (const run of blockRuns) {
+    if (!draftBlocks.has(run.path)) {
+      findings.push({
+        level: 'error',
+        where: run.path,
+        message: 'block field missing from the draft',
+      })
+    }
+  }
+
   if (hasErrors(findings)) {
     console.log(`  ✗ ${slug}\n${formatFindings(findings)}`)
     skipped += 1
@@ -337,6 +368,15 @@ for (const post of found.docs) {
       })
       broke = true
       break
+    }
+  }
+
+  if (!broke) {
+    for (const run of blockRunsOf(content.root)) {
+      const translated = draftBlocks.get(run.path)
+      if (translated !== undefined) {
+        run.write(translated)
+      }
     }
   }
 

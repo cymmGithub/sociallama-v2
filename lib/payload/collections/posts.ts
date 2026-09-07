@@ -1,4 +1,6 @@
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
+import { postEditorFeatures } from '@/lib/payload/blocks/post-blocks'
 import {
   revalidatePostAfterChange,
   revalidatePostAfterDelete,
@@ -130,6 +132,10 @@ export const posts: CollectionConfig = {
       label: 'Treść',
       type: 'richText',
       localized: true,
+      // Only the posts editor carries blocks. `payload.config.ts` keeps the
+      // bare root editor, so case studies and everything else are unchanged,
+      // and the block data lands inside this field's JSON — no migration.
+      editor: lexicalEditor({ features: postEditorFeatures }),
     },
     {
       name: 'seo',

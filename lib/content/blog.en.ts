@@ -28,7 +28,14 @@ export const postRelated = {
 export const postToc = {
   title: 'In this post',
   navLabel: 'Table of contents',
+  remaining: '~{minutes} min left',
+  finished: 'all read',
 } satisfies Localized<typeof pl.postToc>
+
+export const postHeading = {
+  copyLink: 'Copy a link to this section',
+  copied: 'Section link copied',
+} satisfies Localized<typeof pl.postHeading>
 
 export const postShare = {
   title: 'Share',
@@ -37,6 +44,14 @@ export const postShare = {
   copy: 'Copy link to this post',
   copied: 'Link copied',
 } satisfies Localized<typeof pl.postShare>
+
+export const postQuote = {
+  x: 'Share this quote on X',
+  linkedin: 'Share this post on LinkedIn',
+  copy: 'Copy quote',
+  copied: 'Quote copied',
+  format: '\u201C{quote}\u201D — {title} {url}',
+} satisfies Localized<typeof pl.postQuote>
 
 export const postAuthor = {
   personLink: 'Author profile',
@@ -111,7 +126,9 @@ export const postArticle = {
   readingTimeSuffix: hub.readingTimeSuffix,
   cta: postCta,
   toc: postToc,
+  heading: postHeading,
   share: postShare,
+  quote: postQuote,
   author: postAuthor,
   related: postRelated,
   postCard,

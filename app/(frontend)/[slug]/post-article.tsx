@@ -11,6 +11,7 @@ import { PostCard } from '@/app/(frontend)/blog/post-card'
 import { Image } from '@/components/ui/image'
 import { Link } from '@/components/ui/link'
 import { resolvePostAuthor } from '@/lib/blog/author'
+import { bodyWithoutFaq, detectFaq } from '@/lib/blog/faq'
 import { readingTimeMinutes } from '@/lib/blog/reading-time'
 import { ctaSplitOrdinal, splitBeforeHeading } from '@/lib/blog/split-content'
 import { buildToc } from '@/lib/blog/toc'
@@ -31,8 +32,10 @@ import type { Post } from '@/payload-types'
 import { AuthorCard } from './author-card'
 import { BlogPostJsonLd } from './json-ld'
 import s from './post.module.css'
+import { PostFaq } from './post-faq'
 import { PostRail } from './post-rail'
 import { PostShare } from './post-share'
+import { QuoteShare } from './quote-share'
 import { PostRichText } from './rich-text'
 import { Toc } from './toc'
 
@@ -78,6 +81,10 @@ export async function PostArticle({
   const author = resolvePostAuthor(post, locale)
   const cover = resolveMedia(post.cover)
   const toc = post.content ? buildToc(post.content, locale) : []
+  // Detected once, in the rendering locale, and read by three places: the
+  // disclosure list below, the `FAQPage` block, and the table of contents,
+  // which has to open a row before it jumps into one (design D4).
+  const faq = post.content ? detectFaq(post.content) : null
   const readingTime = post.content ? readingTimeMinutes(post.content) : null
   const publishedDate = post.publishedAt
     ? formatPostDate(post.publishedAt, locale)
@@ -108,8 +115,12 @@ export async function PostArticle({
      still opt out. */
   const coverSource = mediaSource(cover, false)
 
-  const body = post.content
-    ? splitBeforeHeading(post.content, ctaSplitOrdinal(toc, CTA_BEFORE_H2))
+  // The FAQ section is cut off before the split: it renders as disclosures
+  // below, and leaving it in would put the CTA cut inside it on a short post.
+  const bodySource =
+    post.content && faq ? bodyWithoutFaq(post.content, faq) : post.content
+  const body = bodySource
+    ? splitBeforeHeading(bodySource, ctaSplitOrdinal(toc, CTA_BEFORE_H2))
     : null
   const showToc = toc.length >= MIN_TOC_ENTRIES
 
@@ -134,6 +145,7 @@ export async function PostArticle({
       <BlogPostJsonLd
         author={author}
         basePath={basePath}
+        faq={faq}
         hubLabel={content.hubLabel}
         hubPath={hubPath}
         imageUrl={schemaImage}
@@ -214,6 +226,7 @@ export async function PostArticle({
           {showToc && (
             <PostRail
               content={content.toc}
+              readingTime={readingTime}
               share={content.share}
               shareUrl={shareUrl}
               title={post.title}
@@ -235,13 +248,17 @@ export async function PostArticle({
               </details>
             )}
 
+            {/* `data-post-body` is the reading-progress hook: the fraction
+                read is measured off THIS box, not the document's, so the
+                author card and related grid below never count as unread. */}
             {body && (
-              <div className={s.body}>
+              <div className={s.body} data-post-body>
                 <PostRichText
                   basePath={basePath}
                   categoryPath={categoryPath}
                   data={body.before}
                   fallbackHref={hubPath}
+                  headingContent={content.heading}
                   locale={locale}
                   toc={toc}
                   unoptimized={unoptimized}
@@ -253,14 +270,36 @@ export async function PostArticle({
                     categoryPath={categoryPath}
                     data={body.after}
                     fallbackHref={hubPath}
+                    headingContent={content.heading}
                     headingOffset={body.headingsBefore}
                     locale={locale}
                     toc={toc}
                     unoptimized={unoptimized}
                   />
                 )}
+                {faq && (
+                  <PostFaq
+                    basePath={basePath}
+                    categoryPath={categoryPath}
+                    fallbackHref={hubPath}
+                    headingContent={content.heading}
+                    locale={locale}
+                    section={faq}
+                    toc={toc}
+                    unoptimized={unoptimized}
+                  />
+                )}
               </div>
             )}
+
+            {/* Mounted once for the whole body rather than per paragraph:
+                the selection is a document-level thing, and one listener is
+                what keeps it from fighting itself across nodes. */}
+            <QuoteShare
+              content={content.quote}
+              title={post.title}
+              url={shareUrl}
+            />
 
             <AuthorCard author={author} content={content.author} />
             <PostShare

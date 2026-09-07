@@ -363,3 +363,116 @@ export function replaceRun(run: Run, nodes: ProjNode[]): void {
   }
   children.splice(run.start, run.end - run.start, ...nodes)
 }
+
+/* —— Editor-authored blocks ————————————————————————————————————————————————
+ *
+ * A `block` node is not a run of inline children — its text lives in a plain
+ * `fields` object, and `runsOf` above walks `children`, so it sees nothing at
+ * all. That is the correct answer for the markup projection and the wrong one
+ * for translation: a `stat`'s caption and a `pillars` item's title are prose,
+ * and an English body that kept the Polish ones would read as a bug.
+ *
+ * So block text is a SECOND kind of run, keyed by a stable path
+ * (`block.0.fields.caption`, `block.1.fields.items.2.title`) rather than by
+ * position in a flat list. The two locales' trees are structurally identical —
+ * `translate-post` deep-copies the Polish one — so the path is the same on both
+ * sides, and a draft written against one applies cleanly to the other even if
+ * the body gained a block in between.
+ */
+
+/** Fields that identify a block or a row rather than say anything. */
+const BLOCK_META_KEYS = new Set(['blockType', 'blockName', 'id'])
+
+export interface BlockRun {
+  /** Stable key, identical in both locales' copies of the same body. */
+  path: string
+  text: string
+  /** Replace this field's value in the tree the run was read from. */
+  write: (value: string) => void
+}
+
+/**
+ * Every translatable string inside every `block` node, in document order.
+ *
+ * Keys are visited sorted rather than in insertion order: a body written by the
+ * admin panel and one written by the markdown importer can order the same
+ * fields differently, and the path has to name the field, not its position in
+ * an object literal.
+ *
+ * Empty and whitespace-only values are skipped — there is nothing to translate,
+ * and an empty row in a draft is a prompt to invent one.
+ */
+export function blockRunsOf(root: ProjNode): BlockRun[] {
+  const runs: BlockRun[] = []
+  let blockIndex = 0
+
+  const collect = (holder: Record<string, unknown>, prefix: string) => {
+    for (const key of Object.keys(holder).sort()) {
+      if (BLOCK_META_KEYS.has(key)) {
+        continue
+      }
+      const value = holder[key]
+      if (typeof value === 'string') {
+        if (value.trim() !== '') {
+          runs.push({
+            path: `${prefix}.${key}`,
+            text: value,
+            write: (next: string) => {
+              holder[key] = next
+            },
+          })
+        }
+        continue
+      }
+      if (Array.isArray(value)) {
+        value.forEach((entry, index) => {
+          if (entry && typeof entry === 'object') {
+            collect(
+              entry as Record<string, unknown>,
+              `${prefix}.${key}.${index}`
+            )
+          }
+        })
+      }
+    }
+  }
+
+  const walk = (node: ProjNode) => {
+    if (node.type === 'block') {
+      const fields = node.fields
+      if (fields && typeof fields === 'object') {
+        collect(fields as Record<string, unknown>, `block.${blockIndex}.fields`)
+      }
+      blockIndex += 1
+      // A block's children, if the editor ever gains a nested rich-text field,
+      // are not this function's business — it projects flat text fields, which
+      // is the shape D2 pins the two blocks to.
+      return
+    }
+    for (const child of node.children ?? []) {
+      walk(child)
+    }
+  }
+
+  walk(root)
+  return runs
+}
+
+/**
+ * A block's shape, as the structural gate compares it: which block it is, which
+ * fields it carries, and how many rows each of its arrays holds —
+ * `stat:caption,value` or `pillars:chip,items[4]`.
+ *
+ * Values are deliberately absent. They are the translation; the shape is not.
+ */
+export function blockSignature(node: ProjNode): string {
+  const fields = (node.fields ?? {}) as Record<string, unknown>
+  const parts = Object.keys(fields)
+    .sort()
+    .filter((key) => !BLOCK_META_KEYS.has(key))
+    .map((key) => {
+      const value = fields[key]
+      return Array.isArray(value) ? `${key}[${value.length}]` : key
+    })
+  return `${String(fields.blockType ?? '')}:${parts.join(',')}`
+}
