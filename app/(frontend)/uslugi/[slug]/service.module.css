@@ -21,7 +21,7 @@
   gap: 0.45em;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -41,7 +41,7 @@
 .kicker {
   margin: 0 0 var(--gap);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -150,7 +150,7 @@
   color: var(--color-plum-dark);
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 1rem;
   text-decoration: none;
 }
 
@@ -233,7 +233,7 @@
 .relatedKicker {
   margin: 0 0 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -263,7 +263,7 @@
 
 .relatedCategory {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -349,7 +349,7 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: calc(var(--safe) * 1.4);
-  border-radius: 22px;
+  border-radius: var(--radius-panel);
   background: var(--color-white);
   box-shadow: var(--shadow-raised);
 }
@@ -408,7 +408,7 @@
 .cardBody {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.98rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
@@ -446,7 +446,7 @@
 .partnerKicker {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -480,13 +480,13 @@
   color: var(--color-plum-dark);
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
   text-decoration: none;
 }
 
 .partnerMedia {
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: var(--radius-panel);
 }
 
 /* —— Partner cover (full-bleed video — DIEA / Folks) ——————————————————————————— */
@@ -879,14 +879,14 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: calc(var(--safe) * 1.4);
-  border-radius: 22px;
+  border-radius: var(--radius-panel);
   background: var(--color-white);
   box-shadow: var(--shadow-raised);
   text-decoration: none;
   color: inherit;
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -1226,7 +1226,7 @@
 .stepBody {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.98rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
@@ -1293,7 +1293,7 @@
   color: var(--color-plum-dark);
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 1rem;
   text-decoration: none;
 
   @media (--desktop) {
@@ -1408,8 +1408,8 @@
   text-decoration: none;
   color: inherit;
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -1419,7 +1419,7 @@
 
 .postCategory {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1594,7 +1594,7 @@
   padding-bottom: calc(var(--gap) * 1.5);
   padding-inline-end: calc(var(--sign-size) + var(--gap));
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.6;
   /* 88%, matching `.bannerText` — the page's other plum band — rather than the
      dark-backdrop checklist's 82%, which answers a different ground. */
@@ -1627,7 +1627,7 @@
   max-width: 1240px;
   margin-inline: auto;
   padding: calc(var(--safe) * 4.5) var(--safe);
-  border-radius: 28px;
+  border-radius: var(--radius-panel);
   background: var(--color-plum-dark);
   color: var(--color-cream);
   text-align: center;
