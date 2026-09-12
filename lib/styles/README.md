@@ -104,6 +104,13 @@ in the hand-authored `css/easings.css`. Key families:
   defined in `css/easings.css` as a hand-authored `@theme` block (static
   cubic-bezier strings, no generation needed). This eliminates the duplicate
   declarations that previously appeared in both `root.css` and `tailwind.css`.
+- **Radius / elevation / motion** — `--radius-*`, `--shadow-*` and
+  `--duration-*` live in the hand-authored `css/tokens.css`, alongside
+  `easings.css`. It uses `@theme static` on purpose: Tailwind drops theme
+  variables it sees no use of, and CSS modules are compiled separately, so a
+  plain `@theme` would leave `var(--radius-card)` resolving to nothing. The
+  values are the shipped site's own — [`DESIGN.md`](../../DESIGN.md) records
+  where each came from and which variants it was chosen over.
 - **Layout** — `--gap`, `--device-width`, and the column grid that powers
   `columns()` and `dr-*-col-*`.
 
@@ -135,7 +142,12 @@ bun setup:styles
 `css/root.css` (layout custom properties) and `css/tailwind.css` (`@theme` + utilities)
 are **generated** by `bun setup:styles`. Hand-edits are overwritten on the next run.
 
-`css/easings.css` and `css/global.css` are **not generated** — edit them directly.
+`css/easings.css`, `css/tokens.css` and `css/global.css` are **not generated** —
+edit them directly.
+
+Run `bun run styles:audit` to inventory every value the CSS modules use per
+visual property (`lib/styles/scripts/audit-tokens.ts`, read-only). It is how
+`DESIGN.md`'s numbers are produced and how drift is measured.
 
 - `css/easings.css` — hand-authored `@theme` block for all `--ease-*` custom
   properties. Static cubic-bezier strings; update by editing this file directly.

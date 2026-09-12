@@ -492,6 +492,7 @@ Pre-commit hook (lefthook) runs in parallel on staged files: Biome check + tsc t
 
 | Document | Purpose |
 |----------|---------|
+| `DESIGN.md` | The shipped visual system: palette, type roles, tokens, standing visual rules |
 | `ARCHITECTURE.md` | Architectural decisions, patterns, and customization boundaries |
 | `COMPONENTS.md` | Auto-generated component / hook / utility inventory |
 | `CHANGELOG.md` | Release history and versioning policy |

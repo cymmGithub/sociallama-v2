@@ -1,0 +1,30 @@
+/*
+ * Radius, elevation and motion tokens — hand-authored, single source of truth,
+ * extracted from the shipped site on 2026-09-11 (`bun run styles:audit`).
+ * Every value is one the site already uses; see DESIGN.md for the variants
+ * these were chosen over.
+ *
+ * `static` is required: Tailwind drops @theme variables it sees no use of, and
+ * these are meant to be available to CSS modules, which it compiles separately.
+ * The namespace needs no `initial` reset — css/index.css imports only
+ * `tailwindcss/utilities.css`, so no default radius/shadow scale is loaded.
+ */
+@theme static {
+  /* Radius. `--radius-card` is also the `.shot` creative radius (see CLAUDE.md). */
+  --radius-chip: 12px;
+  --radius-card: 18px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* Elevation: one ink-tinted ramp (ink #2b1f24), lifted by tier. */
+  --shadow-card: 0 6px 18px -10px rgb(43 31 36 / 35%);
+  --shadow-raised: 0 18px 40px -24px rgb(43 31 36 / 45%);
+  --shadow-overlay: 0 26px 50px -22px rgb(43 31 36 / 55%);
+
+  /* Motion. Moved here from css/global.css at their shipped values:
+     --duration-fast has ~100 consumers, --duration ~19, --duration-slow none. */
+  --duration-fast: 200ms;
+  --duration: 400ms;
+  --duration-slow: 800ms;
+}

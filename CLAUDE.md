@@ -8,6 +8,24 @@ Shared flows — worktree handoff and closing, migration rules, git/deploy
 hygiene — live in the parent guide (`../CLAUDE.md`). This file holds only
 sociallama-specific facts.
 
+## Design Context
+
+The shipped visual system is recorded in [`DESIGN.md`](./DESIGN.md) — palette
+origins, type roles, radius/elevation/motion tokens, spacing rhythm, component
+vocabulary and the variants not to reuse. **Read it before styling any
+surface**, and re-run `bun run styles:audit` after: a grown "distinct" column
+means a value was invented.
+
+- Palette: plum `#913155`, plum-dark `#722341`, orange `#f09b39`, ink
+  `#2b1f24`, ink-deep `#161216`, cream `#faf9f5`, sand `#e0ddd3` — as
+  `--color-*` tokens, never as literals in a component.
+- Faces: Exo 2 (300/400/700/800) display, Manrope (400/600/700) body. No others,
+  and no unloaded weight (Manrope 500 is not loaded).
+- Chapters as themes: `plum` (hero), `cream` (sand ground, light), `plum-deep`
+  (closing) — set with `<Wrapper theme="…">`, then use the slots.
+- Hard rules: Lucide icons only; `.shot` creative radius is 18px and mockup
+  corners are baked per file (see "Creative corner radius" below).
+
 ## Project facts
 
 - Local Postgres runs in the `sociallama-postgres` container on **:5434**;

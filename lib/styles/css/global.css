@@ -41,10 +41,6 @@ html {
   );
   --line: color-mix(in srgb, var(--color-secondary) 14%, transparent);
   --line-strong: color-mix(in srgb, var(--color-secondary) 28%, transparent);
-
-  --duration-fast: 200ms;
-  --duration: 400ms;
-  --duration-slow: 800ms;
 }
 
 html.overflow-hidden {

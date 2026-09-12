@@ -67,6 +67,7 @@
     "doctor": "bun ./lib/scripts/doctor.ts",
     "email:health": "bun ./lib/scripts/email-health.ts",
     "setup:styles": "bun ./lib/styles/scripts/setup-styles.ts",
+    "styles:audit": "bun ./lib/styles/scripts/audit-tokens.ts",
     "generate": "bun ./lib/scripts/generate.ts",
     "generate:manifest": "bun ./lib/scripts/generate-manifest.ts",
     "manifest:check": "bun ./lib/scripts/generate-manifest.ts --check",
