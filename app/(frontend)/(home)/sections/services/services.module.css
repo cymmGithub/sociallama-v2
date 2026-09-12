@@ -17,7 +17,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--color-contrast);
 }
 
@@ -48,7 +48,7 @@
   position: relative;
   isolation: isolate;
   height: clamp(340px, 52svh, 680px);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 
@@ -1001,7 +1001,7 @@
 
 .body {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.55;
   color: currentColor;
   flex: 1;
@@ -1016,7 +1016,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--color-contrast);
   border-bottom: 2px solid currentColor;
   padding-bottom: 0.3em;

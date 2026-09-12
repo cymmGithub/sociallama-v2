@@ -29,7 +29,7 @@
 
   & thead th {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -51,7 +51,7 @@
 .provider,
 .policy {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
 }
 
 .provider {
@@ -65,6 +65,6 @@
 
 .cookieName {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   white-space: nowrap;
 }

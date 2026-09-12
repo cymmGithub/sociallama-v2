@@ -213,7 +213,7 @@
      sticky reveal leaves behind it — an axe failure CI caught. There is no
      room below the token either; the dimmest value that still clears plum is
      98% of `--muted`, so `--muted` IS the floor here. */
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   line-height: 1;
   color: var(--muted);
 }
@@ -293,7 +293,7 @@
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   letter-spacing: 0.02em;
   transition:
     background-color var(--duration-fast) var(--ease-out-expo),
@@ -325,7 +325,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
@@ -368,7 +368,7 @@
 .link {
   width: fit-content;
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: color-mix(in srgb, var(--ink) 82%, transparent);
   transition: color var(--duration-fast) var(--ease-out-expo);
 
@@ -384,7 +384,7 @@
      cannot — see lib/styles/css/global.css for the numbers. */
   text-wrap: balance;
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--muted);
   max-width: 24ch;
 }

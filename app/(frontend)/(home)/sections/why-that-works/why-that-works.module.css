@@ -398,7 +398,7 @@
   align-items: center;
   justify-content: center;
   padding: clamp(10px, 1.4vw, 14px) clamp(20px, 2.5vw, 32px);
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
   background-color: var(--color-white);
   box-shadow: 0 6px 18px rgb(0 0 0 / 0.14);
 }

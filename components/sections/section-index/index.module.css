@@ -6,7 +6,7 @@
 .breadcrumb {
   margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -79,14 +79,14 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: calc(var(--safe) * 1.6);
-  border-radius: 22px;
+  border-radius: var(--radius-panel);
   background: var(--color-white);
   box-shadow: var(--shadow-raised);
   text-decoration: none;
   color: inherit;
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -124,7 +124,7 @@
   margin-top: auto;
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--color-plum);
 }
 
@@ -142,13 +142,13 @@
   aspect-ratio: 3 / 2;
   overflow: hidden;
   padding: calc(var(--safe) * 1.2);
-  border-radius: 22px;
+  border-radius: var(--radius-panel);
   box-shadow: var(--shadow-raised);
   text-decoration: none;
   color: var(--color-cream);
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
 
   &:hover {
     transform: translateY(-4px);
@@ -222,6 +222,6 @@
   gap: 0.4rem;
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--color-orange);
 }

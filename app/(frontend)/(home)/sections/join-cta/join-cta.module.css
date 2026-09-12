@@ -107,7 +107,7 @@
 /* Direct child only: a bare `p` here would reach into the card's caption
    and thread and repaint them on white. */
 .services > .servicesLead {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -159,7 +159,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 1.05rem;
+  font-size: 1rem;
   transition: transform var(--duration-fast) var(--ease-out-expo);
 
   @media (--desktop) {

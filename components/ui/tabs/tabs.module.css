@@ -21,8 +21,8 @@
   font-family: inherit;
   opacity: 0.6;
   transition:
-    opacity 150ms ease,
-    color 150ms ease;
+    opacity var(--duration-fast) ease,
+    color var(--duration-fast) ease;
   position: relative;
 
   @media (--desktop) {

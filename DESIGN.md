@@ -9,24 +9,27 @@ Two standing rules for this document:
 - **The shipped site wins.** Where the brand book and the code disagree, the
   code is recorded here and the book is noted as origin. Nothing in this
   document changes a rendered pixel.
-- **It is a snapshot with a date.** Inventory taken **2026-09-12** by
+- **It is a snapshot with a date.** Inventory taken **2026-09-13** by
   `bun run styles:audit` (`lib/styles/scripts/audit-tokens.ts`), which walks
   every `*.module.css` under `app/`, `components/`, `lib/` and counts literal
   values only — a bare `var(--name)` reference is on the system and is not
   counted. Re-run it after adding a surface: if the "distinct" column grew, you
   invented a value.
 
-## Inventory, 2026-09-12 (62 CSS modules)
+## Inventory, 2026-09-13 (62 CSS modules)
 
-Before → after the literal → token substitution (`c6a8addd`).
+Before the token work (2026-09-12) → now, after the literal → token
+substitution (`c6a8addd`), the service-page unification (`d57b2530`) and the
+site-wide snap of labels, small and body text, near-miss radii and hover
+timings.
 
 | Property | Occurrences | Distinct values |
 |---|---|---|
-| `font-size` | 461 | 189 |
+| `font-size` | 461 | 189 → 181 |
 | `padding` / `margin` / `gap` | 1051 | 383 |
-| `border-radius` | 214 → 106 | 53 → 49 |
+| `border-radius` | 214 → 88 | 53 → 45 |
 | `box-shadow` | 38 → 26 | 29 → 26 |
-| transition/animation duration | 172 → 136 | 41 → 39 |
+| transition/animation duration | 172 → 125 | 41 → 38 |
 | hex literals | 64 → 48 | 32 → 31 |
 
 That spread is the reason this document exists. The tokens below are the
@@ -233,22 +236,41 @@ Counts are class-name occurrences across the 62 modules.
 Recorded so a later migration has the map. These are *shipped* values; leave
 them where they are, but don't copy them into new work.
 
-- **Font size** (189 distinct): label cluster `0.6875`, `0.7`, `0.72`, `0.78`,
-  `0.8rem`; small cluster `0.8125`, `0.85rem`; body cluster `0.9`, `0.9375`,
-  `0.95`, `0.98`, `1.05rem`; a second title scale
+- **Font size** (181 distinct): the label (`0.62`–`0.8rem`), small
+  (`0.82`–`0.9rem`) and body (`0.92`–`1.05rem`) clusters were snapped to
+  `0.75rem` / `0.875rem` / `1rem` across `app/` and `components/` on
+  2026-09-13 — don't reintroduce them. Deliberate keeps: `/case-studies`
+  `.cardMetricLabel` stays `0.6875rem`, because it is a one-line, ellipsis-cut
+  metric label sized to fit ("Facebook · Reakcje") and 0.75rem truncated
+  more of it on every card; the case-study closing `.ctaPrimary` stays
+  `0.9375rem`, because at 1rem its label wraps to two lines on 375px phones;
+  how-it-works keeps `.panelSay` (mobile 0.98rem), `.subhead`, base
+  `.stepTitle`, `.statLabel` and `.proofCta` at their shipped sizes, because
+  its stage is pinned at 100svh and the snapped sizes pushed it past a
+  640–650px-tall phone screen (and, at 1440, under the consent banner); and
+  the whole consent module (`components/consent/consent.module.css`) is
+  unchanged — the fixed banner and its settings dialog are sized to their
+  content, and the snap wrapped the banner's buttons on phones and pushed
+  "Save choice" below the dialog's height cap.
+  Still shipped: `0.8125rem` captions, a
+  second title scale
   `clamp(2.75rem, 9vw, 7rem)` (why-that-works and how-it-works headings, with
   `-0.03em`); plus the Satus viewport forms `desktop-vw(14px)`,
   `calc(11 / 1440 * 100vw)`, `dr-text-*`, and `em`-relative sizes.
 - **Font weight:** `font-weight: 500` on three `0.875rem` rules — not a loaded
   Manrope weight.
-- **Radius** (49 distinct): `10`, `14`, `16`, `22`, `24`, `28px`, `1rem`,
-  `0.6em`, `100%`, and the viewport-scaled `mobile-vw(4px)` /
-  `desktop-vw(4px)` pairs inside Satus components.
+- **Radius** (45 distinct): `10`/`14`/`16`/`22`/`24`/`28px` were snapped to
+  `--radius-chip` / `--radius-card` / `--radius-panel` on 2026-09-13, with three
+  deliberate keeps — join-cta's mock post-card dropdown (`.menu` 14px,
+  `.menuItem` 10px) and the services stage `.panel` (10px), whose corner clips
+  a marketing creative. Also `1rem`, `0.6em`, `100%`, and the viewport-scaled
+  `mobile-vw(4px)` / `desktop-vw(4px)` pairs inside Satus components.
 - **Elevation** (26 distinct): one-off shadows, most of them black
   (`rgb(0 0 0 / 0.35)`) rather than ink-tinted.
-- **Duration** (39 distinct): `150ms` is a second "fast" tier with 27 uses —
-  the token is 200ms; also `250`, `280`, `300`, `350`, `420`, `480`, `500`,
-  `520`, `540`, `600`, `620`, `640`, `650`, `700ms`. Values above ~1s
+- **Duration** (38 distinct): hover and state transitions use
+  `--duration-fast` since 2026-09-13; `150ms` survives only inside the Satus
+  `components/ui` kit (25 uses). The remaining `280`–`700ms` values are paced
+  reveal and entrance choreography, not near-misses of a token. Values above ~1s
   (`1.95s`–`32s`) are animation loops (marquees, orbits), not UI transitions,
   and are out of the token's scope.
 - **Spacing:** the odd factors `safe*1.2`, `safe*1.4`, `safe*3.5`.

@@ -188,7 +188,7 @@
     width: 13.5rem;
     flex: 0 0 auto;
     padding: 0.6rem 0.7rem;
-    border-radius: 10px;
+    border-radius: var(--radius-chip);
     grid-template-columns: 2.1rem 1fr;
     gap: 0.55rem;
   }
@@ -231,7 +231,7 @@
   color: var(--color-cream);
 
   @media (--mobile) {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     line-height: 1.12;
   }
 }
@@ -498,7 +498,7 @@
    Tying the two to the same threshold keeps them from drifting apart. */
 @media (--mobile) and (min-height: 680px) {
   .stepTitle {
-    font-size: 0.84rem;
+    font-size: 0.875rem;
   }
 
   .number {
@@ -520,15 +520,15 @@
   }
 
   .statLabel {
-    font-size: 0.66rem;
+    font-size: 0.75rem;
   }
 
   .proofLabel {
-    font-size: 0.86rem;
+    font-size: 0.875rem;
   }
 
   .proofCta {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -551,12 +551,12 @@
      section ran 19px past the screen; 0.9rem plus the tighter gaps above brings
      it back inside. */
   .panelTitle {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     line-height: 1.14;
   }
 
   .panelSay {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     line-height: 1.16;
   }
 
@@ -569,7 +569,7 @@
   }
 
   .statFigure {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .statLabel {
@@ -638,12 +638,12 @@
 }
 
 .proofLabel {
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   line-height: 1.3;
   color: color-mix(in srgb, var(--color-cream) 78%, transparent);
 
   @media (--mobile) {
-    font-size: 0.76rem;
+    font-size: 0.75rem;
   }
 }
 

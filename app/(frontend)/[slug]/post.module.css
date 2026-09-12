@@ -367,7 +367,7 @@
 
 .railBox {
   border: 1px solid var(--line-strong);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   padding: 1.125rem 1.125rem 1rem;
   background-color: var(--surface);
   /* Column so the label stays put and only the list below it scrolls;
@@ -379,7 +379,7 @@
 }
 
 .railLabel {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -399,7 +399,7 @@
 
 .railRemaining {
   flex: none;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: var(--color-contrast);
@@ -488,7 +488,7 @@
 /* h3 entries read as subordinate to the h2 above them. */
 .tocLinkNested {
   padding-left: 1.625rem;
-  font-size: 0.78125rem;
+  font-size: 0.75rem;
 }
 
 /*
@@ -498,7 +498,7 @@
  */
 .tocDetails {
   border: 1px solid var(--line-strong);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   padding: 0.875rem 1.125rem;
   background-color: var(--surface);
 
@@ -513,7 +513,7 @@
   justify-content: space-between;
   gap: var(--gap);
   cursor: pointer;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -805,7 +805,7 @@
   /* Bounded so a long caption stacks under the figure rather than squeezing
      into a 6-character column beside it. */
   flex: 1 1 14ch;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: color-mix(in srgb, var(--color-secondary) 80%, transparent);
 }
@@ -838,7 +838,7 @@
   gap: 0.25rem;
   padding: 1rem 1.125rem 1.125rem;
   border: 1px solid var(--line-strong);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   background-color: var(--surface);
 }
 
@@ -860,7 +860,7 @@
 }
 
 .pillarText {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.55;
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
@@ -886,7 +886,7 @@
   padding: 0.25rem 0.625rem;
   border: 1px solid var(--color-contrast);
   border-radius: var(--radius-pill);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1169,7 +1169,7 @@
   background-color: var(--color-orange);
   color: var(--color-ink-deep);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1227,7 +1227,7 @@
 
 .authorRole {
   margin-top: 0.1875rem;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--color-contrast);
@@ -1235,7 +1235,7 @@
 
 .authorBio {
   margin-top: 0.625rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: color-mix(in srgb, var(--color-secondary) 72%, transparent);
   text-wrap: pretty;
@@ -1248,7 +1248,7 @@
   gap: 0.45em;
   margin-top: 0.75rem;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--color-contrast);
   transition: opacity var(--duration-fast);
 
@@ -1286,7 +1286,7 @@
 }
 
 .relatedAll {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;

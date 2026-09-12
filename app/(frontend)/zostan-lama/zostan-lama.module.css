@@ -193,7 +193,7 @@
 .tab {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.96rem;
+  font-size: 1rem;
   letter-spacing: -0.01em;
   cursor: pointer;
   padding: 13px 22px;
@@ -238,7 +238,7 @@
 }
 
 .panelHead {
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -253,7 +253,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   line-height: 1.55;
   color: color-mix(in srgb, var(--color-cream) 82%, transparent);
 }
@@ -291,7 +291,7 @@
 
 .shareLabel {
   margin: 0;
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -372,7 +372,7 @@
   align-items: center;
   gap: 14px;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -402,7 +402,7 @@
 .formLede {
   margin-top: 20px;
   max-width: 42ch;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: color-mix(in srgb, var(--color-cream) 78%, transparent);
 }
@@ -450,7 +450,7 @@
 .formShell textarea,
 .formShell select {
   font-family: inherit;
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: var(--color-cream);
   /* `background-color`, NOT the `background` shorthand: the shorthand resets
      background-image/position/size, which would throw the select's chevron
@@ -522,7 +522,7 @@
 /* CV drop-zone: the file control is clipped by the kit, its label is the card. */
 .cvField label {
   border: 1.5px dashed var(--line-strong);
-  border-radius: 14px;
+  border-radius: var(--radius-chip);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -550,7 +550,7 @@
   align-items: center;
   gap: 14px;
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-cream);
   text-transform: none;
@@ -566,7 +566,7 @@
 
 .cvField label > span:last-of-type {
   padding-left: 38px;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   color: var(--muted);
   text-transform: none;
   letter-spacing: normal;
@@ -643,7 +643,7 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 0.86rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-cream);
 }
@@ -770,7 +770,7 @@
 /* Two classes, so it out-specifies `.formShell label`'s uppercase mono
    treatment — this is a sentence of legal copy, not a field label. */
 .formShell .consentLabel {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   line-height: 1.55;
   color: color-mix(in srgb, var(--color-cream) 72%, transparent);
   text-transform: none;

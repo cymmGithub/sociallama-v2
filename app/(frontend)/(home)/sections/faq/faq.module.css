@@ -264,7 +264,7 @@
 .answer {
   margin-bottom: calc(var(--gap) * 1.5);
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.6;
   max-width: 74ch;
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
@@ -330,7 +330,7 @@
 .answerCta {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--color-contrast);
   text-decoration: none;

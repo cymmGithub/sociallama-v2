@@ -85,7 +85,7 @@
 
 .excerpt {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1.55;
   color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
@@ -136,7 +136,7 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   /* Same cream-lifted orange as .category — AA on the card gradient. */
   color: color-mix(in srgb, var(--color-orange) 45%, var(--color-cream));
   border-bottom: 2px solid currentColor;
