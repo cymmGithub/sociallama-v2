@@ -11,28 +11,23 @@ Two standing rules for this document:
   document changes a rendered pixel.
 - **It is a snapshot with a date.** Inventory taken **2026-09-12** by
   `bun run styles:audit` (`lib/styles/scripts/audit-tokens.ts`), which walks
-  every `*.module.css` under `app/`, `components/`, `lib/`. Re-run it after
-  adding a surface: if the "literal" column grew, you invented a value.
+  every `*.module.css` under `app/`, `components/`, `lib/` and counts literal
+  values only — a bare `var(--name)` reference is on the system and is not
+  counted. Re-run it after adding a surface: if the "distinct" column grew, you
+  invented a value.
 
 ## Inventory, 2026-09-12 (62 CSS modules)
 
-After the literal → token substitution. The audit counts a `var(--radius-pill)`
-as a value like any other, so its "distinct" column includes the token
-references; "literal" excludes them and is the number that tracks drift.
-Duration and hex count occurrences the audit can parse, so a value moved into
-a token leaves those totals.
+Before → after the literal → token substitution (`c6a8addd`).
 
-| Property | Occurrences | Distinct (audit) | Literal |
-|---|---|---|---|
-| `font-size` | 463 | 191 | 191 |
-| `padding` / `margin` / `gap` | 1155 | 387 | 387 |
-| `border-radius` | 215 | 55 | 50 |
-| `box-shadow` | 38 | 29 | 26 |
-| transition/animation duration | 136 | 39 | 39 |
-| hex literals | 48 | 31 | 31 |
-
-On 2026-09-11, before the substitution: radius 54, shadow 29, duration 172/41,
-hex 64/32.
+| Property | Occurrences | Distinct values |
+|---|---|---|
+| `font-size` | 461 | 189 |
+| `padding` / `margin` / `gap` | 1051 | 383 |
+| `border-radius` | 214 → 106 | 53 → 49 |
+| `box-shadow` | 38 → 26 | 29 → 26 |
+| transition/animation duration | 172 → 136 | 41 → 39 |
+| hex literals | 64 → 48 | 32 → 31 |
 
 That spread is the reason this document exists. The tokens below are the
 most-used member of each cluster; everything else is listed under
@@ -238,7 +233,7 @@ Counts are class-name occurrences across the 62 modules.
 Recorded so a later migration has the map. These are *shipped* values; leave
 them where they are, but don't copy them into new work.
 
-- **Font size** (191 distinct): label cluster `0.6875`, `0.7`, `0.72`, `0.78`,
+- **Font size** (189 distinct): label cluster `0.6875`, `0.7`, `0.72`, `0.78`,
   `0.8rem`; small cluster `0.8125`, `0.85rem`; body cluster `0.9`, `0.9375`,
   `0.95`, `0.98`, `1.05rem`; a second title scale
   `clamp(2.75rem, 9vw, 7rem)` (why-that-works and how-it-works headings, with
@@ -246,12 +241,12 @@ them where they are, but don't copy them into new work.
   `calc(11 / 1440 * 100vw)`, `dr-text-*`, and `em`-relative sizes.
 - **Font weight:** `font-weight: 500` on three `0.875rem` rules — not a loaded
   Manrope weight.
-- **Radius** (50 literal): `10`, `14`, `16`, `22`, `24`, `28px`, `1rem`,
+- **Radius** (49 distinct): `10`, `14`, `16`, `22`, `24`, `28px`, `1rem`,
   `0.6em`, `100%`, and the viewport-scaled `mobile-vw(4px)` /
   `desktop-vw(4px)` pairs inside Satus components.
-- **Elevation** (26 literal): one-off shadows, most of them black
+- **Elevation** (26 distinct): one-off shadows, most of them black
   (`rgb(0 0 0 / 0.35)`) rather than ink-tinted.
-- **Duration** (39 literal): `150ms` is a second "fast" tier with 27 uses —
+- **Duration** (39 distinct): `150ms` is a second "fast" tier with 27 uses —
   the token is 200ms; also `250`, `280`, `300`, `350`, `420`, `480`, `500`,
   `520`, `540`, `600`, `620`, `640`, `650`, `700ms`. Values above ~1s
   (`1.95s`–`32s`) are animation loops (marquees, orbits), not UI transitions,

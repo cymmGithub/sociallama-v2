@@ -145,9 +145,11 @@ are **generated** by `bun setup:styles`. Hand-edits are overwritten on the next 
 `css/easings.css`, `css/tokens.css` and `css/global.css` are **not generated** —
 edit them directly.
 
-Run `bun run styles:audit` to inventory every value the CSS modules use per
-visual property (`lib/styles/scripts/audit-tokens.ts`, read-only). It is how
-`DESIGN.md`'s numbers are produced and how drift is measured.
+Run `bun run styles:audit` to inventory every literal value the CSS modules use
+per visual property (`lib/styles/scripts/audit-tokens.ts`, read-only). A value
+that is only a `var(--name)` reference is not counted, so moving a literal into
+a token lowers the numbers. It is how `DESIGN.md`'s numbers are produced and how
+drift is measured.
 
 - `css/easings.css` — hand-authored `@theme` block for all `--ease-*` custom
   properties. Static cubic-bezier strings; update by editing this file directly.

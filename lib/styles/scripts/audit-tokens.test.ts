@@ -15,13 +15,32 @@ describe('auditStylesheets', () => {
     expect([...inventory['font-size']]).toEqual([['1rem', 2]])
     expect([...inventory.spacing]).toEqual([
       ['16px 24px', 1],
-      ['var(--gap)', 1],
       ['auto', 1],
     ])
     expect([...inventory['border-radius']]).toEqual([
       ['18px', 1],
       ['4px', 1],
     ])
+  })
+
+  // A value that is only a reference is on the system, not a literal; a value
+  // that mixes one with literals still carries literals that can drift.
+  test('skips values that are a single var() reference', () => {
+    const inventory = auditStylesheets([
+      `
+      .a { border-radius: var(--radius-pill); box-shadow: var(--shadow-card) !important; }
+      .b { border-radius: var(--j) var(--j) 0 0; box-shadow: 0 0 0 2px var(--color-plum); }
+      .c { padding: var(--safe); gap: calc(var(--gap) * 2); }
+      `,
+    ])
+
+    expect([...inventory['border-radius']]).toEqual([
+      ['var(--j) var(--j) 0 0', 1],
+    ])
+    expect([...inventory['box-shadow']]).toEqual([
+      ['0 0 0 2px var(--color-plum)', 1],
+    ])
+    expect([...inventory.spacing]).toEqual([['calc(var(--gap) * 2)', 1]])
   })
 
   test('takes one duration per shorthand layer, in ms', () => {
