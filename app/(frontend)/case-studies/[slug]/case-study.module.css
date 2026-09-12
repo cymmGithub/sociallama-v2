@@ -150,7 +150,7 @@
   /* A preferred height, not a cap: `min-height: auto` on this flex box means a
      long group label pushes the board taller rather than spilling out of it. */
   aspect-ratio: 4 / 3;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   color: var(--color-cream);
   background: linear-gradient(
     160deg,
@@ -170,7 +170,7 @@
     position: absolute;
     width: 45%;
     aspect-ratio: 1;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     top: -30%;
     right: -8%;
     background: radial-gradient(
@@ -688,7 +688,7 @@
    captures, where a big corner reads as a bite taken out of the card. */
 .shot {
   flex: 0 1 30rem;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   line-height: 0;
 
@@ -793,7 +793,7 @@
     content: "";
     width: 3.5rem;
     height: 3px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background-color: var(--color-orange);
   }
 }
@@ -865,7 +865,7 @@
 .galleryItem {
   break-inside: avoid;
   margin-bottom: var(--gap);
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   background-color: var(--surface-2);
   border: 1px solid var(--line);
@@ -942,7 +942,7 @@
 .ctaPrimary {
   position: relative;
   padding: 0.9em 2em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-orange);
   color: var(--color-ink);
   font-weight: 700;
@@ -977,7 +977,7 @@
   content: "";
   position: absolute;
   inset: -4px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 2px;
   pointer-events: none;
   background: conic-gradient(

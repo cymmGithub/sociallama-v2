@@ -189,7 +189,7 @@
   text-wrap: balance;
   position: relative;
   aspect-ratio: 4 / 5;
-  border-radius: 12px;
+  border-radius: var(--radius-chip);
   overflow: hidden;
   background: radial-gradient(
     115% 90% at 50% 0%,
@@ -211,7 +211,7 @@
     transform-origin: center top;
     transition:
       transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
-      filter 0.4s ease;
+      filter var(--duration) ease;
   }
 }
 
@@ -399,7 +399,7 @@
   justify-content: center;
   padding: clamp(10px, 1.4vw, 14px) clamp(20px, 2.5vw, 32px);
   border-radius: 10px;
-  background-color: #fff;
+  background-color: var(--color-white);
   box-shadow: 0 6px 18px rgb(0 0 0 / 0.14);
 }
 

@@ -242,7 +242,7 @@
 .cardAvatar {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   object-fit: cover;
   flex: none;
 }
@@ -307,13 +307,13 @@
   color: var(--color-ink);
   background: var(--color-orange);
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.6em 1.4em;
   cursor: pointer;
   white-space: nowrap;
   transition:
-    transform 200ms var(--ease-out-expo),
-    box-shadow 200ms var(--ease-out-expo);
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
 }
 
 .ctaIcon {

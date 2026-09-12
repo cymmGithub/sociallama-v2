@@ -235,16 +235,16 @@
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   border: 1.5px solid var(--color-cream);
   background: color-mix(in srgb, var(--color-plum-dark) 82%, transparent);
   color: var(--color-cream);
   cursor: pointer;
   backdrop-filter: blur(6px);
   transition:
-    background-color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    color 200ms var(--ease-out-expo);
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
 }
 
 .navPrev {
@@ -384,7 +384,7 @@
   display: flex;
   align-items: center;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-cream);
 
   /* Height, not width: the two marks have different aspect ratios (DIMAQ is

@@ -31,7 +31,7 @@
 
 .categoryPill {
   padding: 0.5em 1.125em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-strong);
   font-size: 0.8125rem;
   font-weight: 700;
@@ -82,7 +82,7 @@
 
   display: flex;
   flex-direction: column;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   background-color: var(--color-primary);
   border: 1px solid var(--line);
@@ -124,7 +124,7 @@
 
 .cardCategory {
   padding: 0.375em 0.875em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-contrast);
   color: var(--color-primary);
   font-weight: 700;
@@ -189,7 +189,7 @@
 .pageLink {
   min-width: 2.5em;
   padding: 0.5em 0.875em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-strong);
   text-align: center;
   font-weight: 700;
@@ -233,7 +233,7 @@
   align-items: center;
   gap: calc(var(--gap) / 2);
   padding: calc(var(--safe) * 4) var(--safe);
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   border: 1px dashed var(--line-strong);
   text-align: center;
 }
@@ -259,7 +259,7 @@
 .stage {
   position: relative;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: var(--radius-panel);
   background: linear-gradient(
     160deg,
     var(--color-plum-dark),
@@ -273,7 +273,7 @@
     position: absolute;
     width: var(--blob-size, 45%);
     aspect-ratio: 1;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     top: var(--blob-top, -30%);
     right: var(--blob-right, -8%);
     background: radial-gradient(
@@ -489,7 +489,7 @@
   position: relative;
   display: block;
   aspect-ratio: 16 / 9;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   border: 1px solid var(--line);
   background-color: var(--surface-2);
@@ -499,7 +499,7 @@
   display: inline-block;
   margin-top: 1.25rem;
   padding: 0.375em 0.875em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-contrast);
   color: var(--color-primary);
   font-size: 0.75rem;
@@ -784,7 +784,7 @@
   position: relative;
   display: block;
   aspect-ratio: 16 / 9;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   border: 1px solid var(--line);
   background-color: var(--surface-2);
@@ -813,7 +813,7 @@
   align-items: center;
   gap: 0.6em;
   padding: 0.62em 1.1em 0.62em 0.9em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-cream);
   color: var(--color-ink-deep);
   font-size: 0.72rem;
@@ -833,7 +833,7 @@
 .spotlightBadge {
   display: inline-block;
   padding: 0.375em 0.875em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background-color: var(--color-contrast);
   color: var(--color-primary);
   font-size: 0.75rem;

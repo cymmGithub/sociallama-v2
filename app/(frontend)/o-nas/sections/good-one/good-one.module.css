@@ -169,7 +169,7 @@
   left: 50%;
   width: var(--dot-size);
   height: var(--dot-size);
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: var(--color-orange);
   transform: translate(-50%, -50%) rotate(var(--base))
     translateY(calc(-1 * var(--ring-r)));

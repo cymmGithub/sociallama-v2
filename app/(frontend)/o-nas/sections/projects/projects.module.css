@@ -48,7 +48,7 @@
 
 .card {
   position: relative;
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   aspect-ratio: 3 / 4;
   /* Dark ground behind the cover, so the scrim/title read even before the
@@ -148,7 +148,7 @@
     opacity: 0;
     overflow: hidden;
     transition:
-      max-height var(--duration, 400ms) var(--ease-out-expo),
+      max-height var(--duration) var(--ease-out-expo),
       opacity var(--duration-fast) var(--ease-out-expo);
 
     .card:hover & {

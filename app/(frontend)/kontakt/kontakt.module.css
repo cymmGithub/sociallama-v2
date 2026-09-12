@@ -249,14 +249,14 @@
   /* Primary conversion CTA — solid orange fill, dark ink (mirrors the metrics
      band's orange-on-ink pairing). Hover inverts to cream below. */
   border: 1.5px solid var(--color-orange);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-orange);
   color: var(--band-ink);
   cursor: pointer;
   transition:
-    background-color 200ms var(--ease-out-expo),
-    color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo);
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
 }
 
 /* Neutralise the kit's black clip-path "ripple" ::before — it's built for the

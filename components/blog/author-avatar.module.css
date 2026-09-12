@@ -18,7 +18,7 @@
   flex-shrink: 0;
   width: var(--author-avatar-size);
   height: var(--author-avatar-size);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
   background-color: var(--author-avatar-backing);
   border: 1px solid var(--line);

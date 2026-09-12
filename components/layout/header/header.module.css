@@ -92,7 +92,7 @@
   gap: 0.5em;
   /* Slimmer pills on mobile (see .actions) — desktop keeps the roomier pad. */
   padding: 0.6em 0.85em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-family: var(--font-display);
   font-weight: 400;
   text-transform: uppercase;

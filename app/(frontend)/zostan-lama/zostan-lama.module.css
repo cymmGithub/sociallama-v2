@@ -197,14 +197,14 @@
   letter-spacing: -0.01em;
   cursor: pointer;
   padding: 13px 22px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--color-cream);
   border: 1px solid var(--line);
   transition:
-    color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (--hover) {
@@ -269,7 +269,7 @@
   content: "";
   width: 5px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   background: var(--color-orange);
   margin-top: 8px;
   margin-left: 4px;
@@ -309,15 +309,15 @@
   place-items: center;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: var(--radius-circle);
   border: 1px solid var(--line-strong);
   background: none;
   color: var(--color-cream);
   cursor: pointer;
   transition:
-    color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (--hover) {
@@ -457,12 +457,12 @@
      into the top-left corner at full size. */
   background-color: rgb(0 0 0 / 0.22);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: var(--radius-chip);
   padding: 13px 15px;
   width: 100%;
   transition:
-    border-color 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+    border-color var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 .formShell textarea {
@@ -532,8 +532,8 @@
   text-transform: none;
   letter-spacing: normal;
   transition:
-    border-color 200ms var(--ease-out-expo),
-    background-color 200ms var(--ease-out-expo);
+    border-color var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (--hover) {
@@ -652,7 +652,7 @@
   flex-shrink: 0;
   padding: 3px 8px;
   border: 1px solid color-mix(in srgb, var(--color-orange) 45%, transparent);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -681,8 +681,8 @@
   text-underline-offset: 3px;
   text-decoration-color: var(--line-strong);
   transition:
-    color 200ms var(--ease-out-expo),
-    text-decoration-color 200ms var(--ease-out-expo);
+    color var(--duration-fast) var(--ease-out-expo),
+    text-decoration-color var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (--hover) {
@@ -820,14 +820,14 @@
   font-size: 15px;
   padding: 16px 34px;
   border: 1.5px solid var(--color-orange);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--color-orange);
   color: var(--band-ink);
   cursor: pointer;
   transition:
-    background-color 200ms var(--ease-out-expo),
-    color 200ms var(--ease-out-expo),
-    border-color 200ms var(--ease-out-expo);
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
 }
 
 /* Neutralise the kit's black clip-path "ripple" ::before — built for the kit's

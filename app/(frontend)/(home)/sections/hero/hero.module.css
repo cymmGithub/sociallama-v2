@@ -512,7 +512,7 @@
   height: 44px;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--line-strong);
   transition: border-color var(--duration-fast) var(--ease-out-expo);
 

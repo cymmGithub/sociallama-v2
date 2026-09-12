@@ -57,8 +57,8 @@
   height: 2px;
   background-color: var(--color-contrast);
   transition:
-    left 200ms ease-out,
-    width 200ms ease-out;
+    left var(--duration-fast) ease-out,
+    width var(--duration-fast) ease-out;
 }
 
 .panel {

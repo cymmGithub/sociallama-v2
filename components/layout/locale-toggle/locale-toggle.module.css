@@ -16,7 +16,7 @@
    footer ground drops the inactive link below the 4.5:1 contrast floor (a11y).
    Context-independent: font-weight works in both the footer and the menu. */
 .toggle a {
-  transition: color 0.2s ease;
+  transition: color var(--duration-fast) ease;
 }
 
 .toggle a[aria-current] {

@@ -60,7 +60,7 @@
 }
 .link[data-social="tiktok"],
 .link[data-social="x"] {
-  --brand: #000;
+  --brand: var(--color-black);
 }
 .link[data-social="youtube"] {
   --brand: #f00;
